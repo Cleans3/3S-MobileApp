@@ -18,6 +18,8 @@ The app that brings the three subjects together is **ShelfTap**, an NFC smart li
 
 Each subject has a source-of-truth folder at the repo root for its docs and specs: `smart-card/`, `optimization/`, `security/`. Write subject material in its own folder, never in another subject's.
 
+The `lab/` folder at the repo root is for storing labs. Put each lab there, not in a subject folder, as `lab/labN/<subject>/` (`smart-card`, `optimization` or `security`, since each subject numbers its labs separately), with a `README.md` that starts with the lab's date and subject.
+
 Keep each subject as its own module or feature area, so that one subject's code and dependencies do not leak into another. Smart-card and security code needs native platform APIs (NFC, Keystore/Keychain), so keep it behind a narrow interface the rest of the app calls.
 
 ## Current state
