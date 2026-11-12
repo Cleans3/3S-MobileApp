@@ -7,4 +7,6 @@ Scope:
 - Member cards: DESFire / JavaCard, or the phone via HCE. APDU challenge-response.
 - Member onboarding: reading the chip ID card (CCCD, ICAO 9303).
 
+Course deliverables and deadlines: [`requirements.md`](requirements.md).
+
 Security decisions about keys and tag passwords belong in `../security/`; this folder records how the chips work.
