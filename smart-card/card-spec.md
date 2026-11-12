@@ -66,7 +66,7 @@ Session flags are transient and cleared in `select()` and on deselect:
 | C6 | UPDATE PROFILE | `80 32 00 00` | padded profile, 16–192, multiple of 16 | – | P\|A | no |
 | C9 | PHOTO BEGIN | `80 40 00 00` | 2: padded length `L` (16–8192, multiple of 16) | – | P\|A | no |
 | C9 | PHOTO WRITE | `80 42 offH offL` | chunk, 16–240, multiple of 16 | – | P\|A | no |
-| C10 | PHOTO READ | `80 44 offH offL` | – (Le = wanted length, multiple of 16, ≤ 240) | `min(Le, L − offset)` bytes | P | no |
+| C10 | PHOTO READ | `80 44 offH offL` | – (Le = `F0`) | `min(240, L − offset)` bytes | P | no |
 | C7 | AUTHENTICATE | `80 60 00 00` | 32: nonce | signature bytes 0–127 | state `ACTIVE` | yes |
 | C7 | AUTHENTICATE (part 2) | `80 60 01 00` | – | signature bytes 128–255 | right after part 1 | yes |
 | C7 | GET PUBLIC KEY | `80 62 P1 00` | – | `P1=00`: modulus bytes 0–127; `01`: bytes 128–255; `02`: exponent (3) | key generated | yes |
@@ -151,6 +151,8 @@ Each item was reproduced with a probe applet run on `jcardsim-2.2.2.jar` from La
 | 6 | Re-selecting the applet does not clear a `TYPE_AES_TRANSIENT_DESELECT` key | `select()` clears the session itself (§4) |
 | 7 | `APDU.getProtocol()` always reports contact (`00`) | The contactless rule is only testable on the real card |
 | 8 | jCardSim 3.x is not on Maven Central (only 2.2.1 and 2.2.2) and has no GitHub release | Stay on 2.2.2 and the Java Card 2.2.2 API |
+| 9 | `APDU.setOutgoing()` does not return the command's Le | PHOTO READ always returns a fixed 240-byte chunk (less at the end) instead of honouring Le |
+| 10 | `Simulator.installApplet(aid, class)` passes empty install parameters, so the usual `register(bArray, bOffset + 1, bArray[bOffset])` fails | Tests install with GlobalPlatform-style parameters (AID length, AID, empty privileges, empty applet data) |
 
 **Check on the real card when it arrives:** RSA-2048 key generation time at ISSUE; that the 256-byte NOPAD path signs and verifies without the retry; that the contactless rule returns `6986` from the phone; and free EEPROM after ISSUE plus an 8 KB photo (about 10 KB is needed).
 
@@ -163,3 +165,5 @@ Each item was reproduced with a probe applet run on `jcardsim-2.2.2.jar` from La
 | 3 (2026-12-28) | No new card commands. The desktop app and the server complete the flows in §8. |
 
 The host-side command set is the same at every checkpoint. Checkpoint 2 changes how the card stores data, not the wire format.
+
+As of 2026-11-12 the applet in `card/` already implements checkpoints 1 and 2 in full; `./gradlew :card:test` runs 17 jCardSim tests against this contract.

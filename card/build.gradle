@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // jCardSim ships the Java Card 2.2.2 API classes (javacard.*), so it is the compile classpath for the applet.
+    compileOnly 'com.licel:jcardsim:2.2.2'
+
+    testImplementation 'com.licel:jcardsim:2.2.2'
+    testImplementation platform('org.junit:junit-bom:6.1.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// The applet is Java Card code: old class files for the CAP converter, no Java features past the Java Card subset.
+tasks.named('compileJava') {
+    options.release = 8
+    options.compilerArgs << '-Xlint:-options'
+}
+
+tasks.named('compileTestJava') {
+    options.release = 21
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

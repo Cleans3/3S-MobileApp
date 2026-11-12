@@ -24,7 +24,21 @@ Keep each subject as its own module or feature area, so that one subject's code 
 
 ## Current state
 
-The repository is empty: there is no source code, build tooling or git history yet, and the mobile stack has not been chosen. Once the project is scaffolded, update this file with:
+The product spec is `SPEC.md`. The system is a Java Card applet, a JavaFX desktop app, a Java server with PostgreSQL, and an Android app. So far only the card exists.
 
-- the build, lint, test and single-test commands
-- the module layout for the three subjects, and how shared code is organised
+Build: Gradle 9.4.1 through the wrapper, one multi-project build rooted at `settings.gradle`, running on JDK 21.
+
+| Module | What | Status |
+|---|---|---|
+| `card/` | Java Card 2.2.2 applet `shelftap.card.LibraryCardApplet`, the wire contract in `smart-card/card-spec.md` | Built, 17 jCardSim tests |
+| `desktop/`, `server/`, `android/` | See `SPEC.md` §2 | Not started |
+
+Commands:
+- All tests: `./gradlew test`
+- Card tests only: `./gradlew :card:test`
+- One test: `./gradlew :card:test --tests 'shelftap.card.LibraryCardAppletTest.threeWrongPinsBlockTheCard'`
+
+Card code rules:
+- Applet code is compiled with `--release 8` against the Java Card API that jCardSim ships. Use only the Java Card subset: `byte`, `short` and `boolean`, no `int`/`long`/`String`, no allocation outside the constructor.
+- `smart-card/card-spec.md` §9 lists the jCardSim quirks the applet works around. Read it before touching RSA or APDU lengths.
+- A CAP file for the real card is not built yet. That needs the Oracle Java Card SDK and ant-javacard, and gets added when the card arrives.
