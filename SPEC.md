@@ -26,8 +26,8 @@ ShelfTap runs one library both at the desk and online. A Java Card smart card is
 |---|---|---|
 | `card/` applet | Java (Java Card Classic subset) | Only language Java Card supports |
 | `desktop/` | Java + JavaFX | `javax.smartcardio` ships with the JDK; same language as the applet |
-| `server/` | Java + PostgreSQL | Shares the domain model and crypto checks with the desktop app |
-| `android/` | Java or Kotlin, decided when it starts | Only Jetpack Compose would force Kotlin |
+| `server/` | Java + Spring Boot + PostgreSQL | Shares the domain model and crypto checks with the desktop app; Spring Security covers auth, headers and TLS |
+| `android/` | Kotlin + Jetpack Compose | Compose forces Kotlin; current Android security APIs (Keystore, BiometricPrompt) are documented Kotlin-first |
 
 The server is the only thing that decides. The desktop and Android apps request actions; the server checks policy and records them. Loans are never stored on the card or decided on the phone.
 
@@ -152,3 +152,5 @@ A stored-value balance on the card is out too. Fines are already owed to the ser
 - 2026-11-12: books use a barcode at the desk and an NFC tag on the phone (§2.1).
 - 2026-11-12: no stored-value balance on the card (§8).
 - 2026-11-12: member photo stored on the card, encrypted, not printed (§3.1).
+- 2026-11-16: server is Spring Boot, Android is Kotlin + Compose (§2). The REST contract is `server/API.md`.
+- 2026-11-16: members do not self-register. Staff create the account after the ID check, and the member must change the first password at first login.

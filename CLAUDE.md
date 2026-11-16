@@ -24,19 +24,25 @@ Keep each subject as its own module or feature area, so that one subject's code 
 
 ## Current state
 
-The product spec is `SPEC.md`. The system is a Java Card applet, a JavaFX desktop app, a Java server with PostgreSQL, and an Android app. So far only the card exists.
+The product spec is `SPEC.md`. The system is a Java Card applet, a JavaFX desktop app, a Java server with PostgreSQL, and an Android app. The card, the server and the Android app exist. The desktop app does not exist yet.
 
-Build: Gradle 9.4.1 through the wrapper, one multi-project build rooted at `settings.gradle`, running on JDK 21.
+Build: Gradle 9.4.1 through the wrapper, one multi-project build rooted at `settings.gradle` (`card`, `server`), running on JDK 21. `android/` is its own Gradle build with its own wrapper, so the root build does not need the Android SDK.
 
 | Module | What | Status |
 |---|---|---|
 | `card/` | Java Card 2.2.2 applet `shelftap.card.LibraryCardApplet`, the wire contract in `smart-card/card-spec.md` | Built, 17 jCardSim tests |
-| `desktop/`, `server/`, `android/` | See `SPEC.md` §2 | Not started |
+| `server/` | Spring Boot REST API + PostgreSQL. The wire contract is `server/API.md`, and run steps are in `server/README.md` | Barebone |
+| `android/` | Kotlin + Jetpack Compose member app, run steps in `android/README.md` | Barebone |
+| `desktop/` | See `SPEC.md` §2 | Not started |
+
+The API contract is `server/API.md`. Change it there first, then change the server and the clients. The security mechanisms built into each function are listed in `security/README.md`.
 
 Commands:
-- All tests: `./gradlew test`
+- All root tests: `./gradlew test` (server tests need Docker for Testcontainers)
 - Card tests only: `./gradlew :card:test`
 - One test: `./gradlew :card:test --tests 'shelftap.card.LibraryCardAppletTest.threeWrongPinsBlockTheCard'`
+- Server tests: `./gradlew :server:test`
+- Android: `cd android && ./gradlew assembleDebug testDebugUnitTest`
 
 Card code rules:
 - Applet code is compiled with `--release 8` against the Java Card API that jCardSim ships. Use only the Java Card subset: `byte`, `short` and `boolean`, no `int`/`long`/`String`, no allocation outside the constructor.

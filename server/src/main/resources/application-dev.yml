@@ -1,0 +1,11 @@
+spring:
+  flyway:
+    locations: classpath:db/migration,classpath:db/dev
+
+server:
+  ssl:
+    key-store: ${SHELFTAP_TLS_KEYSTORE:dev-tls/shelftap-dev.p12}
+
+logging:
+  level:
+    shelftap: DEBUG

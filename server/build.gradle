@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.1.2'
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    cardSim
+}
+
+dependencies {
+    implementation platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-flyway'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+    // Argon2PasswordEncoder needs BouncyCastle; Spring Boot's BOM does not manage it.
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.87'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
+    testImplementation 'org.testcontainers:testcontainers-postgresql'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // The card login test drives the real applet in jCardSim. jCardSim bundles a 2014 BouncyCastle that clashes with
+    // the one Argon2 needs, so it stays off the test classpath and runs in its own class loader (JCardSimCard).
+    cardSim project(':card')
+    cardSim 'com.licel:jcardsim:2.2.2'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+    options.compilerArgs << '-parameters'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    inputs.files(configurations.cardSim)
+    doFirst {
+        systemProperty 'shelftap.cardsim.classpath', configurations.cardSim.asPath
+    }
+}

@@ -1,0 +1,22 @@
+name: shelftap
+
+# Dev PostgreSQL only, bound to localhost. Credentials come from server/.env (never committed).
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: shelftap
+      POSTGRES_USER: ${SHELFTAP_DB_USER:-shelftap}
+      POSTGRES_PASSWORD: ${SHELFTAP_DB_PASSWORD:?set SHELFTAP_DB_PASSWORD in server/.env}
+    ports:
+      - "127.0.0.1:${SHELFTAP_DB_PORT:-5432}:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d shelftap"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  dbdata:

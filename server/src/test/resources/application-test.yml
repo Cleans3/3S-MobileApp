@@ -1,0 +1,3 @@
+shelftap:
+  rate-limit:
+    max-requests: 100000

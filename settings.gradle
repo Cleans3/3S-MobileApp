@@ -1,3 +1,4 @@
 rootProject.name = 'shelftap'
 
 include 'card'
+include 'server'
