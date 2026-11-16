@@ -1,2 +1,10 @@
 .gradle/
 build/
+
+# Secrets and dev keys never enter this public repo
+.env
+*.p12
+*.jks
+*.keystore
+server/dev-tls/
+local.properties
