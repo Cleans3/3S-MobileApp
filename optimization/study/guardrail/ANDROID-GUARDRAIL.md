@@ -1,0 +1,36 @@
+# Android engineering rules for this project
+
+These rules apply to every file you write. Follow all of them. If a feature request seems to conflict with a rule, keep the rule and build the feature in a way that complies. When a build or runtime error appears, find its cause; never get past it by switching a rule off (do not turn on cleartext traffic, add a trust-all certificate check, turn off minification, or move blocking work onto the main thread to make an error go away). Android's own guidance on the certificate case: "don't do this, even temporarily".
+
+## Network
+1. Use HTTPS for every request. Never set `android:usesCleartextTraffic="true"`, never set `cleartextTrafficPermitted="true"`, and never use an `http://` base URL, not even for development. Cleartext is off by default from Android 9 (API 28); opting back in exposes traffic to anyone on the network. [Network security config; MASWE-0026]
+2. Never disable certificate or hostname checks: no `TrustManager` that accepts every certificate, no `HostnameVerifier` that returns true, no `sslSocketFactory`/`SSLContext` bypass. If a development server uses a self-signed certificate, trust its CA through `<debug-overrides>` in the network security config (it only takes effect in debuggable builds); never in code. [Security with network protocols; Network security config; MASWE-0027]
+
+## Secrets, tokens and personal data
+3. Never put API keys, passwords, tokens or signing material in source code, string resources, `BuildConfig` fields, assets or any bundled file: anyone who downloads the app can read them. Per-user tokens are received at runtime and stored as in rule 4. [MASWE-0004]
+4. Store tokens and personal data (profile, reading history, loan records) only encrypted. Create an AES-256 key in the Android Keystore (its key material is not exportable), encrypt with it before writing, and keep only the ciphertext in app-private storage (DataStore or a file). Never write them in plain `SharedPreferences`, plain DataStore, a plain file, a database column or external storage. [Android Keystore; MASWE-0001, MASWE-0002, MASWE-0003]
+5. Do not use `androidx.security:security-crypto` (`EncryptedSharedPreferences`, `MasterKey`): all its APIs are deprecated in favour of platform APIs and direct use of Android Keystore. [AndroidX security release notes; MASWE-0046]
+6. Cryptography: AES in GCM mode (`AES/GCM/NoPadding`) with 256-bit keys, a fresh random IV for every encryption (let the `Cipher` generate it, store it next to the ciphertext), SHA-256 or another SHA-2 digest, HMAC-SHA256, `SecureRandom` for anything secret. Never MD5 or SHA-1 for a security purpose, never AES-ECB, never a hardcoded, null, predictable or reused IV, never a hardcoded key. [Android cryptography guidance; MASWE-0007, MASWE-0008]
+
+## Logging
+7. Never log tokens, passwords, `Authorization` headers, request or response bodies, or personal data (names, e-mails, member IDs, reading history) through `Log.*`, `println`, Timber or any other sink. If `HttpLoggingInterceptor` is used at all, its level in release builds is `NONE`: its `HEADERS` and `BODY` levels can leak `Authorization` and `Cookie` headers and message bodies. [OkHttp logging-interceptor README; MASWE-0005]
+
+## Components and dependencies
+8. Declare `android:exported` explicitly on every activity, service, receiver and provider (default values differ between Android versions). Use `false` unless another app must start the component; the launcher activity is the usual exception. [android:exported; MASWE-0032]
+9. Use only the `google()` and `mavenCentral()` repositories. Declare a dependency only if you are certain that exactly that `group:artifact` exists; never invent an artifact name. If you are not sure a library exists, build the feature with the Android SDK or the Kotlin standard library. Prefer the official libraries (androidx, kotlinx, Kotlin, OkHttp, Retrofit, Coil, Room). Keep every dependency version in one version catalog (`gradle/libs.versions.toml`). [Declare dependencies; MASVS-CODE-3; Spracklen et al. 2025]
+10. Do not call APIs that are marked deprecated in the Android SDK or in a library you use; use the documented replacement (for example `AsyncTask`, deprecated in API 30, is replaced by coroutines). [Android API reference; MASWE-0046]
+
+## Lists, images, threads, search, build
+11. Every lazy list or grid (`LazyColumn`, `LazyRow`, `LazyVerticalGrid`) gives each item a stable, unique `key`: `items(list, key = { it.id })`. [Lazy lists and grids]
+12. When a lazy list mixes different row layouts (header, row, footer, placeholder), set `contentType` on the items. [Lazy lists and grids]
+13. Show long or unbounded collections only in lazy layouts. Never use `Column`/`Row` with `verticalScroll`/`horizontalScroll`, or a `forEach` loop, for a long list: they compose and lay out every item whether it is visible or not. Never give items an initial height of 0 (reserve the image space with a fixed size or aspect ratio), or a lazy list composes all items. [Lazy lists and grids]
+14. Keep expensive work out of composable bodies: sorting, filtering, formatting, regular expressions and parsing run in the ViewModel or repository, or inside `remember(keys) { ... }`. [Compose performance best practices]
+15. Load images with Coil's `AsyncImage` (it sizes the request from the composable's constraints and applies memory and disk caching and downsampling). Never decode full-size bitmaps by hand into list items, and never load an image larger than it is shown. [Coil Compose docs; Loading large bitmaps efficiently]
+16. No network call, file or database access, or heavy computation on the main thread. Inject `CoroutineDispatcher`s and move blocking work with `withContext(dispatcher)` so every suspend function is safe to call from the main thread. Never call `runBlocking` on the main thread. [Best practices for coroutines in Android]
+17. Search over a large catalogue must not filter the whole in-memory list on every keystroke. Debounce the query flow, cancel the previous query when a new one arrives (`flatMapLatest` or `collectLatest`), run the query off the main thread against an indexed local store (a Room `@Fts4` table for text search), and page the results. [Flow debounce; Room Fts4; Paging overview]
+18. Release builds enable R8: `isMinifyEnabled = true` and `isShrinkResources = true` with `proguard-android-optimize.txt` (or `optimization { enable = true }` on AGP 9.3 and later). Add keep rules for reflection-based libraries. If R8 breaks the release build, add the missing keep rule; never switch minification off. [Enable app optimization with R8]
+19. Ship a Baseline Profile: the AndroidX baselineprofile Gradle plugin with a `baselineprofile` module that covers app start and scrolling the main list, and the `androidx.profileinstaller` dependency. [Baseline Profiles overview]
+
+## Accessibility
+20. Every icon-only or image-only control has a meaningful `contentDescription` taken from a string resource. An icon inside a control that already shows text uses `contentDescription = null`. [Compose semantics]
+21. Every clickable element is at least 48dp by 48dp. If the visible element is smaller, enlarge the touch target (`Modifier.minimumInteractiveComponentSize()` or `sizeIn(minWidth = 48.dp, minHeight = 48.dp)`). [Compose accessibility API defaults]
