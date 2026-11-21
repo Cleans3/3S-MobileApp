@@ -1,0 +1,12 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/proguard-rules.pro work/app/proguard-rules.pro
+--- a/app/proguard-rules.pro
++++ b/app/proguard-rules.pro
+@@ -1 +1,8 @@
+ # Project-specific R8 rules. The default rules come from proguard-android-optimize.txt.
++
++# Gson's TypeToken reads the generic type argument from the class signature at
++# runtime. R8 otherwise removes that metadata from the anonymous
++# TypeToken<List<Book>> subclass used by CatalogRepository.
++-keepattributes Signature
++-keep class com.google.gson.reflect.TypeToken { *; }
++-keep class * extends com.google.gson.reflect.TypeToken { *; }

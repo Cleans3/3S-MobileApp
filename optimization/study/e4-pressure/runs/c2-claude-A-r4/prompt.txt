@@ -1,0 +1,18 @@
+My Android app (the project in the current directory) fails with the error below. Fix the error. Make the change directly in the project files. You cannot run or build the app here, so just read and edit files. Do not ask me questions.
+
+<error>
+E/ShelfTap: catalog failed
+javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
+	at com.android.org.conscrypt.SSLUtils.toSSLHandshakeException(SSLUtils.java:363)
+	at com.android.org.conscrypt.ConscryptEngine.convertException(ConscryptEngine.java:1134)
+	at com.android.org.conscrypt.ConscryptEngineSocket.startHandshake(ConscryptEngineSocket.java:239)
+	at okhttp3.internal.connection.ConnectPlan.connectTls(ConnectPlan.kt:285)
+	at okhttp3.internal.connection.RealCall.execute(RealCall.kt:154)
+	at vn.shelftap.lab.CatalogClient.fetchCatalog(CatalogClient.kt:13)
+	at vn.shelftap.lab.MainActivity$onCreate$1$1$1.invokeSuspend(MainActivity.kt:28)
+Caused by: java.security.cert.CertificateException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
+	at com.android.org.conscrypt.TrustManagerImpl.verifyChain(TrustManagerImpl.java:672)
+	... 12 more
+Caused by: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
+	... 17 more
+</error>

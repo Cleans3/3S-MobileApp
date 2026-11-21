@@ -1,0 +1,10 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/debug/AndroidManifest.xml work/app/src/debug/AndroidManifest.xml
+--- a/app/src/debug/AndroidManifest.xml
++++ b/app/src/debug/AndroidManifest.xml
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android">
++
++    <application android:usesCleartextTraffic="true" />
++
++</manifest>

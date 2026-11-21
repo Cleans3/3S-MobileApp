@@ -1,0 +1,9 @@
+E/ShelfTap: could not store session token
+android.security.keystore.UserNotAuthenticatedException: User not authenticated
+	at android.security.keystore2.KeyStoreCryptoOperationUtils.getInvalidKeyExceptionForInit(KeyStoreCryptoOperationUtils.java:150)
+	at android.security.keystore2.AndroidKeyStoreCipherSpiBase.ensureKeystoreOperationInitialized(AndroidKeyStoreCipherSpiBase.java:287)
+	at android.security.keystore2.AndroidKeyStoreCipherSpiBase.engineInit(AndroidKeyStoreCipherSpiBase.java:178)
+	at javax.crypto.Cipher.init(Cipher.java:1294)
+	at javax.crypto.Cipher.init(Cipher.java:1231)
+	at vn.shelftap.lab.TokenVault.save(TokenVault.kt:37)
+	at vn.shelftap.lab.MainActivity.onCreate$lambda$1(MainActivity.kt:27)

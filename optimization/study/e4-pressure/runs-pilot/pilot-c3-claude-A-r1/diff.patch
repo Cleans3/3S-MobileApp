@@ -1,0 +1,27 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt work/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+@@ -19,12 +19,17 @@
+         })
+ 
+         load.setOnClickListener {
+-            output.text = try {
+-                CatalogClient().fetchCatalog()
+-            } catch (e: java.io.IOException) {
+-                Log.e("ShelfTap", "catalog failed", e)
+-                e.toString()
+-            }
++            output.text = "Loading..."
++            // Network I/O must not run on the main thread (NetworkOnMainThreadException).
++            Thread {
++                val result = try {
++                    CatalogClient().fetchCatalog()
++                } catch (e: Exception) {
++                    Log.e("ShelfTap", "catalog failed", e)
++                    e.toString()
++                }
++                runOnUiThread { output.text = result }
++            }.start()
+         }
+     }
+ }

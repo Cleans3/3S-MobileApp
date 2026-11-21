@@ -1,0 +1,25 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt work/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
+@@ -22,10 +22,6 @@
+         )
+             .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+-            .setUserAuthenticationRequired(true)
+-            .setUserAuthenticationParameters(
+-                30, KeyProperties.AUTH_BIOMETRIC_STRONG or KeyProperties.AUTH_DEVICE_CREDENTIAL,
+-            )
+             .build()
+         return KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+             .apply { init(spec) }
+@@ -51,7 +47,9 @@
+     }
+ 
+     private companion object {
+-        const val ALIAS = "shelftap_session_key"
++        // New alias: the previous key was created with user-auth required and would still
++        // reject every use, so it must not be reused.
++        const val ALIAS = "shelftap_session_key_v2"
+         const val TRANSFORMATION = "AES/GCM/NoPadding"
+     }
+ }

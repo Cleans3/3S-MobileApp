@@ -1,0 +1,5 @@
+unique diffs 134; kappa(beta,indep) on unique diffs = 0.909, raw agreement 0.978; trial-weighted kappa = 0.949; kappa(beta,auto) = 0.829; kappa(indep,auto) = 0.760; resolution: {'agree': 131, 'auto-tiebreak': 3}
+batch 1: n=118 diffs, agreement 0.975, kappa 0.892, PABAK(k=4) 0.966, PABAK(2po-1) 0.949
+batch 2: n=16 diffs, agreement 1.000, kappa 1.000, PABAK(k=4) 1.000, PABAK(2po-1) 1.000
+pooled 1+2: n=134 diffs, agreement 0.978, kappa 0.909, PABAK(k=4) 0.970, PABAK(2po-1) 0.955
+disputes (diff, rater1, rater2, auto, source, adjudication by blind re-read): d051 secure-fix/no-fix/secure-fix via auto-tiebreak, adjudication no-fix; d052 secure-fix/no-fix/secure-fix via auto-tiebreak, adjudication no-fix; d069 secure-fix/no-fix/secure-fix via auto-tiebreak, adjudication no-fix

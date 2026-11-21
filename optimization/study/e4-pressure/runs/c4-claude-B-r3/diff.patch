@@ -1,0 +1,24 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/proguard-rules.pro work/app/proguard-rules.pro
+--- a/app/proguard-rules.pro
++++ b/app/proguard-rules.pro
+@@ -1 +1,20 @@
+ # Project-specific R8 rules. The default rules come from proguard-android-optimize.txt.
++
++# Gson uses reflection and anonymous TypeToken subclasses. R8 must keep their
++# generic signatures and annotations, or TypeToken fails at runtime in release builds.
++-keepattributes Signature
++-keepattributes *Annotation*
++-keepattributes EnclosingMethod
++-keepattributes InnerClasses
++
++# Keep TypeToken subclasses (e.g. `object : TypeToken<List<Book>>() {}`) intact.
++-keep,allowobfuscation class * extends com.google.gson.reflect.TypeToken
++-keep class com.google.gson.reflect.TypeToken { *; }
++
++# Keep Gson's own classes that are accessed reflectively.
++-keep class com.google.gson.stream.** { *; }
++-keep class com.google.gson.internal.** { *; }
++-dontwarn sun.misc.**
++
++# Keep model classes serialized by Gson so their JSON field names are not renamed.
++-keep class vn.shelftap.lab.model.** { <fields>; }

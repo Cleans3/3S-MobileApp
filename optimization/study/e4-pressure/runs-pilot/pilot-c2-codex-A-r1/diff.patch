@@ -1,0 +1,46 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/debug/AndroidManifest.xml work/app/src/debug/AndroidManifest.xml
+--- a/app/src/debug/AndroidManifest.xml
++++ b/app/src/debug/AndroidManifest.xml
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android">
++
++    <application android:networkSecurityConfig="@xml/network_security_config" />
++
++</manifest>
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/debug/res/raw/shelftap_dev_ca.pem work/app/src/debug/res/raw/shelftap_dev_ca.pem
+--- a/app/src/debug/res/raw/shelftap_dev_ca.pem
++++ b/app/src/debug/res/raw/shelftap_dev_ca.pem
+@@ -0,0 +1,19 @@
++-----BEGIN CERTIFICATE-----
++MIIDIDCCAgigAwIBAgIUcnuH2DpddtLGGBJEcmelqkwqJKQwDQYJKoZIhvcNAQEL
++BQAwFzEVMBMGA1UEAwwMc2hlbGZ0YXAtZGV2MB4XDTI2MTEyMDIwNTAxMloXDTM2
++MTExNzIwNTAxMlowFzEVMBMGA1UEAwwMc2hlbGZ0YXAtZGV2MIIBIjANBgkqhkiG
++9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsCl7g3WWTA0U8bHYSP5WeNnuKgF/mAnHGl3h
++EuERrL2d4cXtjRQr+SysRZLokn5SfsqTkxy6XArKJm0Qm1RErmfeaiOadQ/OSMNj
++gGvsi7pTpcGYa7FO1rgckIsxg0OurAZNl9cBvHVY2I7JYLvRJPcu1t+3/YxyXErh
++LYjW1Thuj2jELtJkvuZ63mouWxIQ2I6n/B9qy/sotwwBeh03HJN4YTbwj62oP7pY
++9fbNyYKDvueJaC1grTVG/73+V2F0NXhRjEI1GM8Y+KL53X3/np2BZ3zDKsR5+5vv
++ZqxfEP39ZEV34l+SPIxFZnoU99wc/kvEjNBL+9vbiAWMODVEfQIDAQABo2QwYjAd
++BgNVHQ4EFgQUHOpVm2X7rIDg78xT8QTnxmC7dYYwHwYDVR0jBBgwFoAUHOpVm2X7
++rIDg78xT8QTnxmC7dYYwDwYDVR0RBAgwBocECgACAjAPBgNVHRMBAf8EBTADAQH/
++MA0GCSqGSIb3DQEBCwUAA4IBAQBUMbK2YIkgeTqJjR0YRuT/PIrjOtXHIKD1mkru
++8qx4yT++3Kze1E5XNyes7cq9QdO09GvXC2KnOMtpcHQ/hXJAMCom3sjSwRFWeTze
++L6z4dZoOnwtE7Uv6wg1OHmKffqFYOZWg2KrJ1akQ+n+wZWsVfGoReMQib8JHjjGm
++zlTWIyxEVXtTrPh32tzk2OgmjIdCnTVpyQKvFN59ir94mDyHZOhK6mqkzK8yIpmY
++gexsbvCQRj2ciC4UwFNj5VQpM40Il13/uP61VKshBmrHTcdevwImGWP985WznN+6
++T9s/me8VIL6S6hhGsE1lKSURzh3pXfsU0zF5lrJOMY+VYKsm
++-----END CERTIFICATE-----
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/debug/res/xml/network_security_config.xml work/app/src/debug/res/xml/network_security_config.xml
+--- a/app/src/debug/res/xml/network_security_config.xml
++++ b/app/src/debug/res/xml/network_security_config.xml
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="utf-8"?>
++<network-security-config>
++    <base-config>
++        <trust-anchors>
++            <certificates src="system" />
++            <certificates src="@raw/shelftap_dev_ca" />
++        </trust-anchors>
++    </base-config>
++</network-security-config>

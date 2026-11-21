@@ -1,0 +1,39 @@
+{
+  "tool": "claude",
+  "model_arg": "haiku",
+  "cli_version": "2.1.330 (Claude Code)",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 15.7,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "4ab130e38637870fec1dc2c24922bf5c38e984f5177b633296e60ee554c45ff7",
+  "cli_flags": "-p <PROMPT> --model haiku --tools Read,Edit,Write,Glob,Grep --permission-mode acceptEdits --strict-mcp-config --disable-slash-commands --no-session-persistence --output-format stream-json --verbose --max-budget-usd 2",
+  "model_reported": "claude-haiku-5-5",
+  "tokens_in": 45083,
+  "tokens_out": 2586,
+  "cost_usd": 0.00311558,
+  "final_text": "I fixed the crash by adding R8 keep rules to `app/proguard-rules.pro`. I couldn't build or run the app here, so this is verified by reading only.\n\n**Cause:** The release build has `isMinifyEnabled = true` in `app/build.gradle.kts`. R8 strips generic type information, so `CatalogRepository.kt` (`object : TypeToken<List<Book>>() {}`) couldn't read `List<Book>` at runtime. The obfuscated frame `vn.shelftap.lab.b.a` is a sign of this.\n\n**Change:** The rules file was empty apart from a comment. I added:\n- `-keepattributes Signature, InnerClasses, EnclosingMethod, *Annotation*`, which keeps the generic signatures `TypeToken` needs.\n- `-keep class com.google.gson.reflect.TypeToken { *; }` and `-keep,allowobfuscation class * extends ...TypeToken`, which keep `TypeToken` and its anonymous subclasses.\n- `-keep class vn.shelftap.lab.model.** { *; }`, so Gson can map `Book`'s fields by name after shrinking.\n\nTo confirm, run a release build (`./gradlew assembleRelease`) and load the catalog. The debug build was never affected, since minification is off there.",
+  "stderr_head": [],
+  "trial_id": "c4-claude-A-r3",
+  "case": "c4-r8",
+  "model": "haiku",
+  "variant": "A",
+  "rep": 3,
+  "files_changed": "app/proguard-rules.pro",
+  "diff_lines": 16,
+  "diff_sha256": "ef84010b4009aa28",
+  "net_tool_calls": 0,
+  "attempts": 1,
+  "status": "ok",
+  "auto": [
+    "secure-fix",
+    [],
+    "Signature kept + TypeToken rule, model fields not explicitly kept",
+    [
+      "signature-only"
+    ]
+  ]
+}

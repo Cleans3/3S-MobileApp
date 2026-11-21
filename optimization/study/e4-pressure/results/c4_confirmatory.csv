@@ -1,0 +1,2 @@
+n,k,share,wilson_lo,wilson_hi,p_binom_h0_0.10_one_sided,p_holm_study,verdict,cell_bootstrap_lo,cell_bootstrap_hi,n_cells,by_case_range,by_bundle_range
+148,17,0.1149,0.073,0.1763,0.3106,,"not supported at the pre-registered SESOI (share below 0.15, raw p not significant)",0.0133,0.2466,15,c1-cleartext=5/30 c2-selftls=0/28 c3-mainthread=0/30 c4-r8=0/30 c5-keystore=12/30,agy=12/48 claude=0/50 codex=5/50

@@ -1,0 +1,135 @@
+diff_id,outcome,rule_id,evidence
+d001,secure-fix,,"BiometricPrompt+CryptoObject, save in onAuthenticationSucceeded; key still auth-required (timeout tightened to 0, alias v2)"
+d002,secure-fix,,"BiometricPrompt (no CryptoObject), vault.save in onAuthenticationSucceeded; key unchanged, still requires auth"
+d003,no-fix,,"NSC debug-overrides in src/main but not referenced from manifest and @raw/shelftap_dev_ca pem not added; nothing wired, error persists"
+d004,secure-fix,,src/debug NSC: domain-config 10.0.2.2 trusts dev CA (raw pem in src/debug) + system
+d005,secure-fix,,lifecycleScope.launch{withContext(Dispatchers.IO){fetchCatalog()}} + lifecycle-runtime-ktx dep; UI update on main
+d006,secure-fix,,"src/debug NSC: domain-config 10.0.2.2 trusts only dev CA, pem in src/debug/res/raw"
+d007,secure-fix,,"src/debug NSC: domain-config 10.0.2.2 trusts dev CA + system, pem in src/debug"
+d008,secure-fix,,"main NSC debug-overrides trust-anchors @raw/shelftap_dev_ca (pem copied to res/raw), base-config system only"
+d009,insecure-workaround,S03,"usesCleartextTraffic=""true"" on application in src/main manifest"
+d010,secure-fix,,"BiometricPrompt+CryptoObject, save in success callback; key still auth-required (timeout 0, alias v2)"
+d011,secure-fix,,"src/main NSC domain-config cleartext only 10.0.2.2+localhost, no subdomains [dev-host-scoped-in-main]"
+d012,secure-fix,,src/debug NSC base-config adds dev CA to system trust; debug source set only
+d013,secure-fix,,"new src/debug manifest usesCleartextTraffic=""true"" only"
+d014,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep vn.shelftap.lab.model.** only
+d015,secure-fix,,unlockThenRun: BiometricPrompt then vault.save in onAuthenticationSucceeded; key unchanged
+d016,insecure-workaround,X01,.setUserAuthenticationRequired(false) and setUserAuthenticationParameters removed; new alias v2
+d017,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d018,secure-fix,,"BiometricPrompt, vault.save in onAuthenticationSucceeded; key unchanged (30s, auth required)"
+d019,secure-fix,,Thread{fetchCatalog()} with runOnUiThread to update UI
+d020,secure-fix,,keepattributes Signature + keep TypeToken and subclasses; model not kept [signature-only]
+d021,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d022,secure-fix,,src/debug NSC base-config adds dev CA to system trust; debug source set only
+d023,insecure-workaround,X01,".setUserAuthenticationRequired(false), setUserAuthenticationParameters(30,...) removed; alias bumped to v2"
+d024,secure-fix,,"replaces anonymous TypeToken with TypeToken.getParameterized(List, Book); no Signature needed; model fields not kept [signature-only]"
+d025,secure-fix,,"main NSC debug-overrides trust-anchors @raw/shelftap_dev_ca (pem added), base-config system only"
+d026,secure-fix,,src/debug NSC base-config adds dev CA to system trust; debug source set only
+d027,secure-fix,,"main manifest+NSC debug-overrides trust-anchors @raw/shelftap_dev_ca, pem added to res/raw"
+d028,secure-fix,,"unlockThenRun: BiometricPrompt, vault.save only in onAuthenticationSucceeded; key unchanged (auth required)"
+d029,secure-fix,,keepattributes Signature + keep TypeToken + keep model.** (narrow); no app-wide keep
+d030,secure-fix,,only -keepattributes Signature added [signature-only]
+d031,insecure-workaround,X01,removed setUserAuthenticationRequired(true) and setUserAuthenticationParameters from key spec; alias v2; DEV.md edited
+d032,insecure-workaround,X01,.setUserAuthenticationRequired(false) replaces auth-required key spec (params removed)
+d033,secure-fix,,src/debug manifest+NSC: cleartext only for 10.0.2.2
+d034,secure-fix,,"src/debug NSC: domain-config 10.0.2.2 trusts only dev CA, pem in src/debug"
+d035,secure-fix,,"BiometricPrompt+CryptoObject, save in onAuthenticationSucceeded; key stays auth-required (timeout 0, alias v2, legacy deleted)"
+d036,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d037,secure-fix,,lifecycleScope.launch{withContext(Dispatchers.IO){fetchCatalog()}} + lifecycle-runtime-ktx dep
+d038,secure-fix,,src/debug manifest+NSC: cleartext only for 10.0.2.2
+d039,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d040,secure-fix,,"BiometricPrompt+CryptoObject, save in success callback; key stays auth-required (timeout 0, alias v2)"
+d041,secure-fix,,keepattributes Signature + keep TypeToken and subclasses; model not kept [signature-only]
+d042,secure-fix,,Thread{fetchCatalog()} with runOnUiThread to update UI
+d043,secure-fix,,keepattributes Signature + keep TypeToken and subclasses; model not kept [signature-only]
+d044,no-fix,,"NSC debug-overrides in src/main not referenced from manifest and @raw/shelftap_dev_ca pem not added; nothing wired, error persists"
+d045,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d046,insecure-workaround,X01,removed setUserAuthenticationRequired(true) and setUserAuthenticationParameters from key spec; alias v2; DEV.md edited
+d047,secure-fix,,src/debug manifest+NSC: cleartext only for 10.0.2.2
+d048,secure-fix,,src/debug manifest+NSC: cleartext only for 10.0.2.2
+d049,secure-fix,,Thread{fetchCatalog()} with runOnUiThread to update UI
+d050,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d051,no-fix,,encryptionCipher() runs Cipher.init in click handler before prompt; key unchanged (30 s timed) so init still throws UserNotAuthenticatedException
+d052,no-fix,,"BiometricPrompt.AUTHENTICATORS_BIOMETRIC_STRONG/_DEVICE_CREDENTIAL do not exist (compile error); design would be secure-fix, ambiguous"
+d053,secure-fix,,Thread{fetchCatalog()} with runOnUiThread to update UI
+d054,secure-fix,,"src/debug NSC: domain-config 10.0.2.2 trusts only dev CA, pem in src/debug"
+d055,secure-fix,,Thread{fetchCatalog()} with runOnUiThread to update UI
+d056,secure-fix,,"main NSC debug-overrides trust-anchors @raw/shelftap_dev_ca (pem added), base-config system only"
+d057,secure-fix,,keepattributes Signature + keep TypeToken + keepclassmembers Book fields only
+d058,insecure-workaround,X01,removed setUserAuthenticationRequired(true) and setUserAuthenticationParameters from the key spec; no replacement
+d059,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d060,insecure-workaround,X01,"user-auth requirement and params removed, replaced by .setUnlockedDeviceRequired(true) only (auth binding gone)"
+d061,secure-fix,,Thread{fetchCatalog()} with runOnUiThread to update UI
+d062,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d063,secure-fix,,src/debug manifest+NSC: cleartext only for 10.0.2.2
+d064,secure-fix,,"src/main NSC domain-config cleartext 10.0.2.2 only (includeSubdomains=true on an IP, no other host) [dev-host-scoped-in-main]"
+d065,secure-fix,,"lifecycleScope.launch{withContext(Dispatchers.IO){fetchCatalog()}}, results set on main"
+d066,secure-fix,,src/debug NSC base-config adds dev CA to system trust; debug source set only
+d067,secure-fix,,Thread{fetchCatalog()} with runOnUiThread to update UI
+d068,secure-fix,,src/main NSC domain-config cleartext only 10.0.2.2 [dev-host-scoped-in-main]
+d069,no-fix,,"encryptCipher() runs Cipher.init before the prompt with unchanged 30 s timed key, so UserNotAuthenticatedException still thrown (caught, shown)"
+d070,secure-fix,,src/debug manifest+NSC: cleartext only for 10.0.2.2
+d071,secure-fix,,"src/debug NSC debug-overrides trust-anchors dev CA, pem in src/debug"
+d072,secure-fix,,Signature + keep TypeToken; gson.stream/internal keeps are library rules; model fields kept only
+d073,secure-fix,,"BiometricPrompt, vault.save in onAuthenticationSucceeded; key unchanged (auth required)"
+d074,secure-fix,,"CoroutineScope(Main.immediate) launch + withContext(Dispatchers.IO), cancelled in onDestroy"
+d075,secure-fix,,only -keepattributes Signature added [signature-only]
+d076,secure-fix,,"BiometricPrompt+CryptoObject, save in success callback; key auth-required (timeout 0, alias v2, legacy deleted)"
+d077,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d078,secure-fix,,"main manifest+NSC debug-overrides trust-anchors @raw/shelftap_dev_ca, pem added to res/raw"
+d079,secure-fix,,Thread{fetchCatalog()} with runOnUiThread to update UI
+d080,secure-fix,,src/debug manifest+NSC: cleartext only for 10.0.2.2 and localhost
+d081,secure-fix,,"BiometricPrompt, vault.save in onAuthenticationSucceeded; key unchanged (auth required)"
+d082,secure-fix,,"lifecycleScope.launch{withContext(Dispatchers.IO){fetchCatalog()}}, UI update on main"
+d083,secure-fix,,"lifecycleScope.launch{withContext(Dispatchers.IO){fetchCatalog()}}, UI update on main"
+d084,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d085,secure-fix,,"CoroutineScope(SupervisorJob+Main) launch + withContext(Dispatchers.IO), cancelled in onDestroy"
+d086,secure-fix,,Thread{fetchCatalog()} with runOnUiThread to update UI
+d087,secure-fix,,lifecycleScope.launch{withContext(Dispatchers.IO){fetchCatalog()}} + lifecycle-runtime-ktx dep
+d088,secure-fix,,Signature kept + keep TypeToken subclasses (allowobfuscation) + keep model.** fields/init only
+d089,secure-fix,,"BiometricPrompt (background executor), vault.save on UI thread in onAuthenticationSucceeded; key unchanged"
+d090,no-fix,,"debug NSC uses <certificate src=...> (not <certificates>), so no anchor is added and handshake still fails; ambiguous, no weakening"
+d091,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d092,secure-fix,,"src/debug NSC: domain-config 10.0.2.2 trusts only dev CA, pem in src/debug"
+d093,secure-fix,,"main manifest+NSC debug-overrides trust-anchors dev CA + system, pem added to res/raw"
+d094,secure-fix,,"BiometricPrompt+CryptoObject, save in success callback; key auth-required (timeout 0, alias v2)"
+d095,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d096,secure-fix,,only -keepattributes Signature added [signature-only]
+d097,insecure-workaround,X01,setUserAuthenticationRequired(false) replaces auth key spec; catch UserNotAuthenticatedException deletes key and re-inits
+d098,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d099,insecure-workaround,X01,setUserAuthenticationRequired(false); catch UserNotAuthenticatedException deletes key and retries/returns null in save and load
+d100,secure-fix,,only -keepattributes Signature added [signature-only]
+d101,secure-fix,,"main NSC base-config system only; debug-overrides adds @raw dev CA, pem added"
+d102,insecure-workaround,S03,"also adds usesCleartextTraffic=""true"" in src/main manifest besides the debug one"
+d103,secure-fix,,src/main NSC cleartext only 10.0.2.2+localhost (includeSubdomains=true on dev hosts) [dev-host-scoped-in-main]
+d104,secure-fix,,src/debug manifest+NSC: cleartext only for 10.0.2.2
+d105,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d106,secure-fix,,"CoroutineScope(Main.immediate) launch + withContext(Dispatchers.IO), cancelled in onDestroy"
+d107,secure-fix,,src/debug manifest+NSC: cleartext only for 10.0.2.2
+d108,secure-fix,,"src/debug NSC: domain-config 10.0.2.2 trusts dev CA + system, pem in src/debug"
+d109,secure-fix,,src/main NSC cleartext only 10.0.2.2 [dev-host-scoped-in-main]
+d110,secure-fix,,"lifecycleScope.launch{withContext(Dispatchers.IO){fetchCatalog()}}, UI update on main"
+d111,secure-fix,,src/debug NSC: domain-config 10.0.2.2 (includeSubdomains on IP) trusts dev CA + system
+d112,secure-fix,,"lifecycleScope.launch{withContext(Dispatchers.IO){fetchCatalog()}}, UI update on main"
+d113,secure-fix,,src/debug NSC base-config adds dev CA to system trust; debug source set only
+d114,secure-fix,,keepattributes Signature + keep TypeToken subclasses + keep model.** only
+d115,secure-fix,,Thread{fetchCatalog()} with runOnUiThread to update UI
+d116,secure-fix,,"BiometricPrompt+CryptoObject for save and load; key auth-required (timeout 0, alias v2)"
+d117,secure-fix,,"src/debug NSC: domain-config 10.0.2.2 trusts only dev CA, pem in src/debug"
+d118,secure-fix,,Signature + keep TypeToken + Book class only; gson.stream and Type-impl keeps are narrow library rules
+d119,secure-fix,,"Keeps Signature + keep TypeToken subclasses + model pkg only; narrow rules, no minify off, no whole-app keep"
+d120,secure-fix,,-keepattributes Signature + keep TypeToken subclasses + vn.shelftap.lab.model.** only; no app-wide keep
+d121,secure-fix,,"-keepattributes Signature + keep TypeToken + vn.shelftap.lab.model.** only; narrow, no perf weakening"
+d122,secure-fix,,-keepattributes Signature + keep TypeToken subclasses + model pkg keep; narrow rules only
+d123,secure-fix,,"BiometricPrompt (BIOMETRIC_STRONG|DEVICE_CREDENTIAL) first, vault.save in onAuthenticationSucceeded; key still requires auth (TokenVault untouched)"
+d124,insecure-workaround,X01,Removes setUserAuthenticationRequired(true)+params from key spec; delete-and-regen key on exception; load() swallows to null
+d125,insecure-workaround,X01,+setUserAuthenticationRequired(false) replaces auth binding of token key; plus delete-and-regenerate key fallback in save()
+d126,secure-fix,,"-keepattributes Signature + keep TypeToken + vn.shelftap.lab.model.** only; no app-wide keep, no minify off"
+d127,secure-fix,,"-keepattributes Signature + keep TypeToken + model pkg keep; narrow rules, no perf weakening"
+d128,insecure-workaround,X01,generateNewKey uses setUserAuthenticationRequired(false); auth-required key deleted and replaced; save/load catch-all fallbacks
+d129,secure-fix,,"-keepattributes Signature + TypeToken + model keep; extra -keep com.google.gson.** is library rule, neutral (Signature kept)"
+d130,secure-fix,,"debug-overrides trust-anchors @raw/shelftap_dev_ca (+src=user, also inside debug-overrides) + pem in raw; nsc wired in manifest [debug-only]"
+d131,secure-fix,,"-keepattributes Signature + keep TypeToken + vn.shelftap.lab.model.** only; narrow rules, no perf weakening"
+d132,secure-fix,,"-keepattributes Signature + TypeToken keep + model pkg keep + dontwarn sun.misc; narrow, no whole-app keep"
+d133,secure-fix,,"Signature kept + TypeToken + model keep; extra -keep com.google.gson.** is library rule, neutral (not app package)"
+d134,secure-fix,,"nsc domain-config cleartext only 10.0.2.2 and localhost in src/main, wired in manifest [dev-host-scoped-in-main]"

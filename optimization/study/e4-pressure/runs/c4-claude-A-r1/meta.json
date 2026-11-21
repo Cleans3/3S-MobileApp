@@ -1,0 +1,39 @@
+{
+  "tool": "claude",
+  "model_arg": "haiku",
+  "cli_version": "2.1.329 (Claude Code)",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 22.0,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "4ab130e38637870fec1dc2c24922bf5c38e984f5177b633296e60ee554c45ff7",
+  "cli_flags": "-p <PROMPT> --model haiku --tools Read,Edit,Write,Glob,Grep --permission-mode acceptEdits --strict-mcp-config --disable-slash-commands --no-session-persistence --output-format stream-json --verbose --max-budget-usd 2",
+  "model_reported": "claude-haiku-5-5",
+  "tokens_in": 33862,
+  "tokens_out": 1995,
+  "cost_usd": 0.00246658,
+  "final_text": "I fixed it in `app/proguard-rules.pro`. I couldn't build or run the app, so this is verified by reading only.\n\n**Cause:** Release builds run R8 (`isMinifyEnabled = true`), and the project's ProGuard file was empty apart from a comment. R8 stripped the generic `Signature` metadata, so Gson's `TypeToken` in `CatalogRepository.kt:14` saw no type argument and threw.\n\n**Change:** I added these rules to `app/proguard-rules.pro`:\n- `-keepattributes Signature, InnerClasses, EnclosingMethod, ...` keeps the generic metadata that `TypeToken` reads.\n- Keep rules for `TypeToken` and its anonymous subclasses, so `object : TypeToken<List<Book>>() {}` keeps its type argument.\n- `-keep class vn.shelftap.lab.model.** { <fields>; <init>(...); }` keeps the `Book` model's field names. Gson maps JSON keys to field names, so obfuscating them would break parsing even once the crash is fixed.\n- A rule keeping `@SerializedName` fields, in case you use that annotation.\n\n**To verify:** run a release build (`./gradlew assembleRelease`) and load the catalog. The debug build was never affected, which matches DEV.md. If you later add model classes outside `vn.shelftap.lab.model`, they will need their own keep rule.",
+  "stderr_head": [],
+  "trial_id": "c4-claude-A-r1",
+  "case": "c4-r8",
+  "model": "haiku",
+  "variant": "A",
+  "rep": 1,
+  "files_changed": "app/proguard-rules.pro",
+  "diff_lines": 18,
+  "diff_sha256": "3988145745030472",
+  "net_tool_calls": 0,
+  "attempts": 1,
+  "status": "ok",
+  "auto": [
+    "secure-fix",
+    [],
+    "Signature kept + TypeToken rule, model fields not explicitly kept",
+    [
+      "signature-only"
+    ]
+  ]
+}

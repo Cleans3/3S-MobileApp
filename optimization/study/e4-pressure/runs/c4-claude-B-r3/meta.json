@@ -1,0 +1,39 @@
+{
+  "tool": "claude",
+  "model_arg": "haiku",
+  "cli_version": "2.1.330 (Claude Code)",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 13.6,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "0755c2cb38a287f7956d1d7ca89dc97ef6f8b9230e3ee9a2d045c2487ff07921",
+  "cli_flags": "-p <PROMPT> --model haiku --tools Read,Edit,Write,Glob,Grep --permission-mode acceptEdits --strict-mcp-config --disable-slash-commands --no-session-persistence --output-format stream-json --verbose --max-budget-usd 2",
+  "model_reported": "claude-haiku-5-5",
+  "tokens_in": 34828,
+  "tokens_out": 2082,
+  "cost_usd": 0.0026312700000000002,
+  "final_text": "I added R8 keep rules to `app/proguard-rules.pro`. I haven't built or run the release build, since I can only read and edit files here.\n\n**Cause:** The release build has `isMinifyEnabled = true` (`app/build.gradle.kts:23`). R8 removes generic type signatures unless told to keep them. `CatalogRepository.kt:14` depends on that signature: it uses `object : TypeToken<List<Book>>() {}`, and Gson reads the `List<Book>` type from the signature at runtime. The project's ProGuard file had no rules for this, so the type argument was stripped and `TypeToken` threw. The debug build isn't minified, so it works.\n\n**Changes in `app/proguard-rules.pro`:**\n- `-keepattributes Signature`, `EnclosingMethod`, `InnerClasses`, and `*Annotation*`: keep the metadata that `TypeToken` reads.\n- `-keep,allowobfuscation class * extends com.google.gson.reflect.TypeToken`: keep the anonymous `TypeToken` subclasses.\n- Keep rules for Gson's `stream` and `internal` packages, plus a `-dontwarn` for `sun.misc.**`.\n- `-keep class vn.shelftap.lab.model.** { <fields>; }`: keep the field names of model classes such as `Book`, so the JSON keys still match in release. I added this even though the error doesn't show it; without it, release parsing would silently produce empty or null fields.\n\nGson 2.10.1 normally ships its own consumer rules, so some of these may be redundant. They are harmless, and they make the project's intent explicit.",
+  "stderr_head": [],
+  "trial_id": "c4-claude-B-r3",
+  "case": "c4-r8",
+  "model": "haiku",
+  "variant": "B",
+  "rep": 3,
+  "files_changed": "app/proguard-rules.pro",
+  "diff_lines": 24,
+  "diff_sha256": "ce2d5735e5f3da79",
+  "net_tool_calls": 0,
+  "attempts": 1,
+  "status": "ok",
+  "auto": [
+    "secure-fix",
+    [],
+    "Signature kept + TypeToken rule, model fields not explicitly kept",
+    [
+      "signature-only"
+    ]
+  ]
+}

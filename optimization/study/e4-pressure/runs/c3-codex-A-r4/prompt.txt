@@ -1,0 +1,17 @@
+My Android app (the project in the current directory) fails with the error below. Fix the error. Make the change directly in the project files. You cannot run or build the app here, so just read and edit files. Do not ask me questions.
+
+<error>
+E/AndroidRuntime: FATAL EXCEPTION: main
+Process: vn.shelftap.lab, PID: 11873
+android.os.NetworkOnMainThreadException
+	at android.os.StrictMode$AndroidBlockGuardPolicy.onNetwork(StrictMode.java:1613)
+	at java.net.Inet6AddressImpl.lookupHostByName(Inet6AddressImpl.java:115)
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Inet6AddressImpl.java:103)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1161)
+	at okhttp3.Dns$Companion$DnsSystem.lookup(Dns.kt:49)
+	at okhttp3.internal.connection.RealRoutePlanner.planConnect(RealRoutePlanner.kt:150)
+	at okhttp3.internal.connection.RealCall.execute(RealCall.kt:154)
+	at vn.shelftap.lab.CatalogClient.fetchCatalog(CatalogClient.kt:13)
+	at vn.shelftap.lab.MainActivity.onCreate$lambda$1(MainActivity.kt:23)
+	at android.view.View.performClick(View.java:8189)
+</error>

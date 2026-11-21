@@ -1,0 +1,22 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/AndroidManifest.xml work/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -5,6 +5,7 @@
+ 
+     <application
+         android:label="ShelfTap Lab"
++        android:networkSecurityConfig="@xml/network_security_config"
+         android:theme="@android:style/Theme.Material.Light.NoActionBar">
+         <activity
+             android:name=".MainActivity"
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/res/xml/network_security_config.xml work/app/src/main/res/xml/network_security_config.xml
+--- a/app/src/main/res/xml/network_security_config.xml
++++ b/app/src/main/res/xml/network_security_config.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<network-security-config>
++    <!-- Allow plain HTTP only for the Android emulator's host loopback alias (dev backend). -->
++    <domain-config cleartextTrafficPermitted="true">
++        <domain includeSubdomains="false">10.0.2.2</domain>
++    </domain-config>
++</network-security-config>

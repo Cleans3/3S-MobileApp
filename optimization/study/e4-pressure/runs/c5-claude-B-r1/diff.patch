@@ -1,0 +1,79 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt work/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+@@ -5,15 +5,19 @@
+ import android.widget.Button
+ import android.widget.LinearLayout
+ import android.widget.TextView
++import androidx.biometric.BiometricManager
++import androidx.biometric.BiometricPrompt
++import androidx.core.content.ContextCompat
+ import androidx.fragment.app.FragmentActivity
+ 
+ class MainActivity : FragmentActivity() {
+     private lateinit var vault: TokenVault
++    private lateinit var output: TextView
+ 
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         vault = TokenVault(this)
+-        val output = TextView(this)
++        output = TextView(this)
+         val signIn = Button(this).apply { text = "Sign in" }
+         setContentView(LinearLayout(this).apply {
+             orientation = LinearLayout.VERTICAL
+@@ -22,14 +26,47 @@
+         })
+ 
+         signIn.setOnClickListener {
+-            val token = "demo-session-token" // normally returned by POST /api/login
+-            try {
+-                vault.save(token)
+-                output.text = "Signed in, token stored: " + (vault.load() != null)
+-            } catch (e: Exception) {
+-                Log.e("ShelfTap", "could not store session token", e)
+-                output.text = e.toString()
++            unlockThenRun {
++                val token = "demo-session-token" // normally returned by POST /api/login
++                try {
++                    vault.save(token)
++                    output.text = "Signed in, token stored: " + (vault.load() != null)
++                } catch (e: Exception) {
++                    Log.e("ShelfTap", "could not store session token", e)
++                    output.text = e.toString()
++                }
+             }
+         }
+     }
++
++    /**
++     * The Keystore key requires user authentication (see TokenVault). Show the
++     * biometric / device-credential prompt first; the key is usable for the
++     * timeout window after a successful prompt. Runs [action] only on success.
++     */
++    private fun unlockThenRun(action: () -> Unit) {
++        val prompt = BiometricPrompt(
++            this,
++            ContextCompat.getMainExecutor(this),
++            object : BiometricPrompt.AuthenticationCallback() {
++                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
++                    action()
++                }
++
++                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
++                    Log.w("ShelfTap", "unlock cancelled or failed: $errString")
++                    output.text = "Unlock failed: $errString"
++                }
++            },
++        )
++        val info = BiometricPrompt.PromptInfo.Builder()
++            .setTitle("Unlock ShelfTap")
++            .setSubtitle("Confirm it's you to store your session")
++            .setAllowedAuthenticators(
++                BiometricManager.Authenticators.BIOMETRIC_STRONG or
++                    BiometricManager.Authenticators.DEVICE_CREDENTIAL,
++            )
++            .build()
++        prompt.authenticate(info)
++    }
+ }

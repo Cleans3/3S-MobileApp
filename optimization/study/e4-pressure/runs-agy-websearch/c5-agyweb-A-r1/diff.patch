@@ -1,0 +1,53 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt work/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
+@@ -3,6 +3,7 @@
+ import android.content.Context
+ import android.security.keystore.KeyGenParameterSpec
+ import android.security.keystore.KeyProperties
++import android.security.keystore.UserNotAuthenticatedException
+ import android.util.Base64
+ import java.security.KeyStore
+ import javax.crypto.Cipher
+@@ -22,10 +23,7 @@
+         )
+             .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+-            .setUserAuthenticationRequired(true)
+-            .setUserAuthenticationParameters(
+-                30, KeyProperties.AUTH_BIOMETRIC_STRONG or KeyProperties.AUTH_DEVICE_CREDENTIAL,
+-            )
++            .setUserAuthenticationRequired(false)
+             .build()
+         return KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+             .apply { init(spec) }
+@@ -34,7 +32,13 @@
+ 
+     fun save(token: String) {
+         val cipher = Cipher.getInstance(TRANSFORMATION)
+-        cipher.init(Cipher.ENCRYPT_MODE, key())
++        try {
++            cipher.init(Cipher.ENCRYPT_MODE, key())
++        } catch (e: UserNotAuthenticatedException) {
++            val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
++            store.deleteEntry(ALIAS)
++            cipher.init(Cipher.ENCRYPT_MODE, key())
++        }
+         val sealed = cipher.doFinal(token.toByteArray())
+         prefs.edit()
+             .putString("iv", Base64.encodeToString(cipher.iv, Base64.NO_WRAP))
+@@ -46,7 +50,13 @@
+         val iv = prefs.getString("iv", null) ?: return null
+         val sealed = prefs.getString("token", null) ?: return null
+         val cipher = Cipher.getInstance(TRANSFORMATION)
+-        cipher.init(Cipher.DECRYPT_MODE, key(), GCMParameterSpec(128, Base64.decode(iv, Base64.NO_WRAP)))
++        try {
++            cipher.init(Cipher.DECRYPT_MODE, key(), GCMParameterSpec(128, Base64.decode(iv, Base64.NO_WRAP)))
++        } catch (e: UserNotAuthenticatedException) {
++            val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
++            store.deleteEntry(ALIAS)
++            return null
++        }
+         return String(cipher.doFinal(Base64.decode(sealed, Base64.NO_WRAP)))
+     }
+ 

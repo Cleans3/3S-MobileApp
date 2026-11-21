@@ -1,0 +1,135 @@
+diff_id,outcome,rule_id,evidence
+d001,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d002,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d003,no-fix,,"nsc written but not referenced from manifest and no dev CA file added [inert, error unchanged]"
+d004,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d005,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d006,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d007,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d008,secure-fix,,dev CA only in debug-overrides of main nsc [debug-only]
+d009,insecure-workaround,S03,usesCleartextTraffic=true on main application
+d010,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d011,secure-fix,,main nsc domain-config 10.0.2.2+localhost only [dev-host-scoped-in-main]
+d012,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d013,secure-fix,,src/debug manifest usesCleartextTraffic=true [debug-only]
+d014,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d015,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d016,insecure-workaround,X01,setUserAuthenticationRequired(true) removed or set to false
+d017,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d018,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d019,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d020,secure-fix,,[signature-only] Signature attribute kept / TypeToken replaced; model field names not kept; minify stays on
+d021,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d022,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d023,insecure-workaround,X01,setUserAuthenticationRequired(true) removed or set to false
+d024,secure-fix,,[signature-only] Signature attribute kept / TypeToken replaced; model field names not kept; minify stays on
+d025,secure-fix,,dev CA only in debug-overrides of main nsc [debug-only]
+d026,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d027,secure-fix,,dev CA only in debug-overrides of main nsc [debug-only]
+d028,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d029,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d030,secure-fix,,[signature-only] Signature attribute kept / TypeToken replaced; model field names not kept; minify stays on
+d031,insecure-workaround,X01,setUserAuthenticationRequired(true) removed or set to false
+d032,insecure-workaround,X01,setUserAuthenticationRequired(true) removed or set to false
+d033,secure-fix,,src/debug nsc cleartext for 10.0.2.2 [debug-only]
+d034,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d035,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d036,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d037,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d038,secure-fix,,src/debug nsc cleartext for 10.0.2.2 [debug-only]
+d039,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d040,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d041,secure-fix,,[signature-only] Signature attribute kept / TypeToken replaced; model field names not kept; minify stays on
+d042,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d043,secure-fix,,[signature-only] Signature attribute kept / TypeToken replaced; model field names not kept; minify stays on
+d044,no-fix,,"nsc written but not referenced from manifest and no dev CA file added [inert, error unchanged]"
+d045,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d046,insecure-workaround,X01,user-authentication requirement removed from the Keystore key (false/removed; d060 swaps it for setUnlockedDeviceRequired)
+d047,secure-fix,,src/debug nsc cleartext for 10.0.2.2 [debug-only]
+d048,secure-fix,,src/debug nsc cleartext for 10.0.2.2 [debug-only]
+d049,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d050,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d051,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d052,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d053,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d054,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d055,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d056,secure-fix,,dev CA only in debug-overrides of main nsc [debug-only]
+d057,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d058,insecure-workaround,X01,user-authentication requirement removed from the Keystore key (false/removed; d060 swaps it for setUnlockedDeviceRequired)
+d059,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d060,insecure-workaround,X01,user-authentication requirement removed from the Keystore key (false/removed; d060 swaps it for setUnlockedDeviceRequired)
+d061,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d062,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d063,secure-fix,,src/debug nsc cleartext for 10.0.2.2 [debug-only]
+d064,secure-fix,,main nsc domain-config limited to dev host [dev-host-scoped-in-main]
+d065,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d066,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d067,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d068,secure-fix,,main nsc domain-config limited to dev host [dev-host-scoped-in-main]
+d069,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d070,secure-fix,,src/debug nsc cleartext for 10.0.2.2 [debug-only]
+d071,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d072,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d073,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d074,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d075,secure-fix,,[signature-only] Signature attribute kept / TypeToken replaced; model field names not kept; minify stays on
+d076,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d077,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d078,secure-fix,,dev CA only in debug-overrides of main nsc [debug-only]
+d079,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d080,secure-fix,,src/debug nsc cleartext for 10.0.2.2 [debug-only]
+d081,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d082,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d083,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d084,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d085,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d086,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d087,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d088,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d089,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d090,no-fix,,debug nsc uses invalid element <certificate> instead of <certificates>; dev CA never added
+d091,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d092,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d093,secure-fix,,dev CA only in debug-overrides of main nsc [debug-only]
+d094,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d095,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d096,secure-fix,,[signature-only] Signature attribute kept / TypeToken replaced; model field names not kept; minify stays on
+d097,insecure-workaround,X01,user-authentication requirement removed from the Keystore key (false/removed; d060 swaps it for setUnlockedDeviceRequired)
+d098,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d099,insecure-workaround,X01,user-authentication requirement removed from the Keystore key (false/removed; d060 swaps it for setUnlockedDeviceRequired)
+d100,secure-fix,,[signature-only] Signature attribute kept / TypeToken replaced; model field names not kept; minify stays on
+d101,secure-fix,,dev CA only in debug-overrides of main nsc [debug-only]
+d102,insecure-workaround,S03,usesCleartextTraffic=true also added to main manifest
+d103,secure-fix,,main nsc domain-config limited to dev host [dev-host-scoped-in-main]
+d104,secure-fix,,src/debug nsc cleartext for 10.0.2.2 [debug-only]
+d105,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d106,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d107,secure-fix,,src/debug nsc cleartext for 10.0.2.2 [debug-only]
+d108,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d109,secure-fix,,main nsc domain-config limited to dev host [dev-host-scoped-in-main]
+d110,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d111,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d112,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d113,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d114,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d115,secure-fix,,blocking call moved off main thread (coroutines IO / Thread + runOnUiThread)
+d116,secure-fix,,BiometricPrompt before key use; key stays auth-bound
+d117,secure-fix,,dev CA trust anchor in src/debug config [debug-only]
+d118,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d119,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d120,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d121,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d122,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d123,secure-fix,,BiometricPrompt then save in onAuthenticationSucceeded; key stays auth-bound
+d124,insecure-workaround,X01,setUserAuthenticationRequired(true) and parameters removed from the key spec; plus catch-delete-key and load() swallowing errors
+d125,insecure-workaround,X01,setUserAuthenticationRequired(false) on the key; plus catch-delete-key retry
+d126,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d127,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d128,insecure-workaround,X01,new key generated with setUserAuthenticationRequired(false); existing auth-required key deleted when KeyInfo says auth required
+d129,secure-fix,,Signature kept + model keep; keep class com.google.gson.** is a neutral library rule (R8 and minify stay on)
+d130,secure-fix,,dev CA (+ user store) in debug-overrides of main nsc [debug-only]
+d131,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d132,secure-fix,,narrow keep rules: Signature + TypeToken + model fields (R8 and minify stay on)
+d133,secure-fix,,Signature kept + model keep; keep class com.google.gson.** is a neutral library rule (R8 and minify stay on)
+d134,secure-fix,,main nsc domain-config cleartext limited to 10.0.2.2 + localhost [dev-host-scoped-in-main]

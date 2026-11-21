@@ -1,0 +1,23 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/debug/AndroidManifest.xml work/app/src/debug/AndroidManifest.xml
+--- a/app/src/debug/AndroidManifest.xml
++++ b/app/src/debug/AndroidManifest.xml
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android">
++
++    <application android:usesCleartextTraffic="true" />
++
++</manifest>
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/AndroidManifest.xml work/app/src/main/AndroidManifest.xml
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -5,7 +5,8 @@
+ 
+     <application
+         android:label="ShelfTap Lab"
+-        android:theme="@android:style/Theme.Material.Light.NoActionBar">
++        android:theme="@android:style/Theme.Material.Light.NoActionBar"
++        android:usesCleartextTraffic="true">
+         <activity
+             android:name=".MainActivity"
+             android:exported="true">

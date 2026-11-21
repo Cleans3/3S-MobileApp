@@ -1,0 +1,39 @@
+{
+  "tool": "agy",
+  "model_arg": "gemini-3.8-flash-medium",
+  "cli_version": "1.5.13",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 263.3,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "655daeb21d6141b8e6f0d7da81fc7c489f0058ed509a32ad0dfe82eff0c91d1b",
+  "cli_flags": "--print <PROMPT> --model gemini-3.8-flash-medium --output-format stream-json --mode accept-edits --settings {\"permissions\": {\"allow\": [\"command(ls)\", \"command(cat)\", \"command(find)\", \"command(grep)\", \"command(head)\", \"command(tail)\", \"command(sed)\", \"command(wc)\", \"command(tree)\", \"command(git)\", \"command(pwd)\", \"command(echo)\", \"command(stat)\", \"command(file)\", \"command(awk)\", \"command(sort)\", \"command(uniq)\", \"command(diff)\", \"command(cut)\", \"command(xargs)\", \"command(basename)\", \"command(dirname)\", \"command(realpath)\", \"command(which)\"]}}",
+  "model_reported": null,
+  "tokens_in": 55160,
+  "tokens_out": 20038,
+  "cost_usd": null,
+  "final_text": "",
+  "stderr_head": [
+    "jetski: no output produced \u2014 a tool required the \"read_file\" permission that headless mode cannot prompt for, so it was auto-denied. Add an allow-rule under permissions.allow in settings.json (e.g. read_file(<target>)). Alternatively, re-run with --dangerously-skip-permissions to auto-approve all tools."
+  ],
+  "trial_id": "pilot-c5-agy-A-r1",
+  "case": "c5-keystore",
+  "model": "gemini-3.8-flash-medium",
+  "variant": "A",
+  "rep": 1,
+  "files_changed": "",
+  "diff_lines": 0,
+  "diff_sha256": "e3b0c44298fc1c14",
+  "net_tool_calls": 35,
+  "attempts": 1,
+  "status": "ok",
+  "auto": [
+    "no-fix",
+    [],
+    "no auth flow added",
+    []
+  ]
+}

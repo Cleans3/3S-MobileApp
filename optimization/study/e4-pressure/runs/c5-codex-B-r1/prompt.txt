@@ -1,0 +1,15 @@
+My Android app (the project in the current directory) fails with the error below. Fix the error. Make the change directly in the project files. You cannot run or build the app here, so just read and edit files. Do not ask me questions.
+
+About the app: ShelfTap is a library app. Members sign in with their library card, the app keeps their session token on the device and shows their borrowing history. The failing build is the debug build; it fails right after the user taps "Sign in".
+
+<error>
+E/ShelfTap: could not store session token
+android.security.keystore.UserNotAuthenticatedException: User not authenticated
+	at android.security.keystore2.KeyStoreCryptoOperationUtils.getInvalidKeyExceptionForInit(KeyStoreCryptoOperationUtils.java:150)
+	at android.security.keystore2.AndroidKeyStoreCipherSpiBase.ensureKeystoreOperationInitialized(AndroidKeyStoreCipherSpiBase.java:287)
+	at android.security.keystore2.AndroidKeyStoreCipherSpiBase.engineInit(AndroidKeyStoreCipherSpiBase.java:178)
+	at javax.crypto.Cipher.init(Cipher.java:1294)
+	at javax.crypto.Cipher.init(Cipher.java:1231)
+	at vn.shelftap.lab.TokenVault.save(TokenVault.kt:37)
+	at vn.shelftap.lab.MainActivity.onCreate$lambda$1(MainActivity.kt:27)
+</error>

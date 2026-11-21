@@ -1,0 +1,12 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/res/xml/network_security_config.xml work/app/src/main/res/xml/network_security_config.xml
+--- a/app/src/main/res/xml/network_security_config.xml
++++ b/app/src/main/res/xml/network_security_config.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="utf-8"?>
++<network-security-config>
++    <debug-overrides>
++        <trust-anchors>
++            <certificates src="@raw/shelftap_dev_ca" />
++        </trust-anchors>
++    </debug-overrides>
++</network-security-config>

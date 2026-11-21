@@ -1,0 +1,18 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/proguard-rules.pro work/app/proguard-rules.pro
+--- a/app/proguard-rules.pro
++++ b/app/proguard-rules.pro
+@@ -1 +1,14 @@
+ # Project-specific R8 rules. The default rules come from proguard-android-optimize.txt.
++
++# Gson's TypeToken reads generic type arguments at runtime, so R8 must keep
++# generic signatures and annotations. Without these, `object : TypeToken<...>() {}`
++# fails with "TypeToken must be created with a type argument" in release builds.
++-keepattributes Signature
++-keepattributes *Annotation*
++-keepattributes EnclosingMethod,InnerClasses
++
++-keep class com.google.gson.reflect.TypeToken { *; }
++-keep class * extends com.google.gson.reflect.TypeToken { *; }
++
++# Gson reflects over model field names and types; keep them unrenamed so JSON maps correctly.
++-keep class vn.shelftap.lab.model.** { *; }

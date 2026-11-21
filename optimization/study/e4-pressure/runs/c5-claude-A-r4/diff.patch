@@ -1,0 +1,128 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt work/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+@@ -5,6 +5,9 @@
+ import android.widget.Button
+ import android.widget.LinearLayout
+ import android.widget.TextView
++import androidx.biometric.BiometricManager
++import androidx.biometric.BiometricPrompt
++import androidx.core.content.ContextCompat
+ import androidx.fragment.app.FragmentActivity
+ 
+ class MainActivity : FragmentActivity() {
+@@ -23,13 +26,52 @@
+ 
+         signIn.setOnClickListener {
+             val token = "demo-session-token" // normally returned by POST /api/login
+-            try {
+-                vault.save(token)
+-                output.text = "Signed in, token stored: " + (vault.load() != null)
++
++            val encryptCipher = try {
++                vault.encryptCipher()
+             } catch (e: Exception) {
+-                Log.e("ShelfTap", "could not store session token", e)
++                Log.e("ShelfTap", "could not prepare session token encryption", e)
+                 output.text = e.toString()
++                return@setOnClickListener
+             }
++
++            val prompt = BiometricPrompt(
++                this,
++                ContextCompat.getMainExecutor(this),
++                object : BiometricPrompt.AuthenticationCallback() {
++                    override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
++                        val cipher = result.cryptoObject?.cipher
++                        if (cipher == null) {
++                            output.text = "Authentication did not provide a cipher"
++                            return
++                        }
++                        try {
++                            vault.save(cipher, token)
++                            // The key is time-bound (30 s) and the user just authenticated, so a
++                            // decrypt cipher can be initialized here to verify the stored token.
++                            val verify = vault.decryptCipher()?.let { vault.load(it) }
++                            output.text = "Signed in, token stored: " + (verify != null)
++                        } catch (e: Exception) {
++                            Log.e("ShelfTap", "could not store session token", e)
++                            output.text = e.toString()
++                        }
++                    }
++
++                    override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
++                        output.text = "Authentication failed: $errString"
++                    }
++                },
++            )
++
++            val info = BiometricPrompt.PromptInfo.Builder()
++                .setTitle("Sign in to ShelfTap")
++                .setAllowedAuthenticators(
++                    BiometricManager.Authenticators.BIOMETRIC_STRONG or
++                        BiometricManager.Authenticators.DEVICE_CREDENTIAL,
++                )
++                .build()
++
++            prompt.authenticate(info, BiometricPrompt.CryptoObject(encryptCipher))
+         }
+     }
+ }
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt work/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
+@@ -10,7 +10,15 @@
+ import javax.crypto.SecretKey
+ import javax.crypto.spec.GCMParameterSpec
+ 
+-/** Keeps the member session token encrypted with a hardware-backed Keystore key. */
++/**
++ * Keeps the member session token encrypted with a hardware-backed Keystore key.
++ *
++ * The key requires user authentication, so callers must obtain a [Cipher] from
++ * [encryptCipher] / [decryptCipher], have the user authenticate with BiometricPrompt
++ * (using that cipher as a CryptoObject), and then pass the authorized cipher to
++ * [save] / [load]. Using the key without authentication throws
++ * UserNotAuthenticatedException.
++ */
+ class TokenVault(context: Context) {
+     private val prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE)
+ 
+@@ -32,9 +40,20 @@
+             .generateKey()
+     }
+ 
+-    fun save(token: String) {
+-        val cipher = Cipher.getInstance(TRANSFORMATION)
+-        cipher.init(Cipher.ENCRYPT_MODE, key())
++    /** Cipher to pass to BiometricPrompt as a CryptoObject before calling [save]. */
++    fun encryptCipher(): Cipher =
++        Cipher.getInstance(TRANSFORMATION).apply { init(Cipher.ENCRYPT_MODE, key()) }
++
++    /** Cipher to pass to BiometricPrompt as a CryptoObject before calling [load]. Null if nothing is stored. */
++    fun decryptCipher(): Cipher? {
++        val iv = prefs.getString("iv", null) ?: return null
++        return Cipher.getInstance(TRANSFORMATION).apply {
++            init(Cipher.DECRYPT_MODE, key(), GCMParameterSpec(128, Base64.decode(iv, Base64.NO_WRAP)))
++        }
++    }
++
++    /** [cipher] must be an authenticated cipher returned by [encryptCipher]. */
++    fun save(cipher: Cipher, token: String) {
+         val sealed = cipher.doFinal(token.toByteArray())
+         prefs.edit()
+             .putString("iv", Base64.encodeToString(cipher.iv, Base64.NO_WRAP))
+@@ -42,11 +61,9 @@
+             .apply()
+     }
+ 
+-    fun load(): String? {
+-        val iv = prefs.getString("iv", null) ?: return null
++    /** [cipher] must be an authenticated cipher returned by [decryptCipher]. */
++    fun load(cipher: Cipher): String? {
+         val sealed = prefs.getString("token", null) ?: return null
+-        val cipher = Cipher.getInstance(TRANSFORMATION)
+-        cipher.init(Cipher.DECRYPT_MODE, key(), GCMParameterSpec(128, Base64.decode(iv, Base64.NO_WRAP)))
+         return String(cipher.doFinal(Base64.decode(sealed, Base64.NO_WRAP)))
+     }
+ 

@@ -1,0 +1,38 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt work/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+@@ -6,6 +6,10 @@
+ import android.widget.LinearLayout
+ import android.widget.TextView
+ import androidx.fragment.app.FragmentActivity
++import androidx.lifecycle.lifecycleScope
++import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.launch
++import kotlinx.coroutines.withContext
+ 
+ class MainActivity : FragmentActivity() {
+     override fun onCreate(savedInstanceState: Bundle?) {
+@@ -19,11 +23,18 @@
+         })
+ 
+         load.setOnClickListener {
+-            output.text = try {
+-                CatalogClient().fetchCatalog()
+-            } catch (e: java.io.IOException) {
+-                Log.e("ShelfTap", "catalog failed", e)
+-                e.toString()
++            load.isEnabled = false
++            lifecycleScope.launch {
++                try {
++                    output.text = withContext(Dispatchers.IO) {
++                        CatalogClient().fetchCatalog()
++                    }
++                } catch (e: java.io.IOException) {
++                    Log.e("ShelfTap", "catalog failed", e)
++                    output.text = e.toString()
++                } finally {
++                    load.isEnabled = true
++                }
+             }
+         }
+     }

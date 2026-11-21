@@ -1,0 +1,151 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt work/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+@@ -5,6 +5,9 @@
+ import android.widget.Button
+ import android.widget.LinearLayout
+ import android.widget.TextView
++import androidx.biometric.BiometricManager
++import androidx.biometric.BiometricPrompt
++import androidx.core.content.ContextCompat
+ import androidx.fragment.app.FragmentActivity
+ 
+ class MainActivity : FragmentActivity() {
+@@ -23,9 +26,40 @@
+ 
+         signIn.setOnClickListener {
+             val token = "demo-session-token" // normally returned by POST /api/login
++
++            if (BiometricManager.from(this).canAuthenticate(TokenVault.AUTHENTICATORS) !=
++                BiometricManager.BIOMETRIC_SUCCESS
++            ) {
++                output.text = "Set up a screen lock or biometrics on this device first."
++                return@setOnClickListener
++            }
++
+             try {
+-                vault.save(token)
+-                output.text = "Signed in, token stored: " + (vault.load() != null)
++                val cipher = vault.encryptCipher()
++                val prompt = BiometricPrompt(
++                    this,
++                    ContextCompat.getMainExecutor(this),
++                    object : BiometricPrompt.AuthenticationCallback() {
++                        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
++                            try {
++                                vault.save(cipher, token)
++                                output.text = "Signed in, token stored: " + vault.hasToken()
++                            } catch (e: Exception) {
++                                Log.e("ShelfTap", "could not store session token", e)
++                                output.text = e.toString()
++                            }
++                        }
++
++                        override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
++                            output.text = "Sign-in cancelled: $errString"
++                        }
++                    },
++                )
++                val info = BiometricPrompt.PromptInfo.Builder()
++                    .setTitle("Confirm sign-in")
++                    .setAllowedAuthenticators(TokenVault.AUTHENTICATORS)
++                    .build()
++                prompt.authenticate(info, BiometricPrompt.CryptoObject(cipher))
+             } catch (e: Exception) {
+                 Log.e("ShelfTap", "could not store session token", e)
+                 output.text = e.toString()
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt work/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
+@@ -4,27 +4,37 @@
+ import android.security.keystore.KeyGenParameterSpec
+ import android.security.keystore.KeyProperties
+ import android.util.Base64
++import androidx.biometric.BiometricManager
+ import java.security.KeyStore
+ import javax.crypto.Cipher
+ import javax.crypto.KeyGenerator
+ import javax.crypto.SecretKey
+ import javax.crypto.spec.GCMParameterSpec
+ 
+-/** Keeps the member session token encrypted with a hardware-backed Keystore key. */
++/**
++ * Keeps the member session token encrypted with a hardware-backed Keystore key.
++ *
++ * The key requires user authentication for every use. Callers must get a Cipher from
++ * [encryptCipher] or [decryptCipher], authorize it with BiometricPrompt (CryptoObject),
++ * and only then pass that same Cipher to [save] or [load].
++ */
+ class TokenVault(context: Context) {
+     private val prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE)
+ 
+     private fun key(): SecretKey {
+         val store = KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
+         (store.getKey(ALIAS, null) as? SecretKey)?.let { return it }
++        // Remove the key from the earlier version (time-bound auth), which cannot be used with CryptoObject.
++        if (store.containsAlias(LEGACY_ALIAS)) store.deleteEntry(LEGACY_ALIAS)
+         val spec = KeyGenParameterSpec.Builder(
+             ALIAS, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT,
+         )
+             .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+             .setUserAuthenticationRequired(true)
++            // Timeout 0 = authentication is required for each operation, authorized via CryptoObject.
+             .setUserAuthenticationParameters(
+-                30, KeyProperties.AUTH_BIOMETRIC_STRONG or KeyProperties.AUTH_DEVICE_CREDENTIAL,
++                0, KeyProperties.AUTH_BIOMETRIC_STRONG or KeyProperties.AUTH_DEVICE_CREDENTIAL,
+             )
+             .build()
+         return KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+@@ -32,26 +42,38 @@
+             .generateKey()
+     }
+ 
+-    fun save(token: String) {
+-        val cipher = Cipher.getInstance(TRANSFORMATION)
+-        cipher.init(Cipher.ENCRYPT_MODE, key())
+-        val sealed = cipher.doFinal(token.toByteArray())
++    /** Returns a cipher to be authorized by BiometricPrompt before passing it to [save]. */
++    fun encryptCipher(): Cipher =
++        Cipher.getInstance(TRANSFORMATION).apply { init(Cipher.ENCRYPT_MODE, key()) }
++
++    /** Returns a cipher to be authorized by BiometricPrompt before passing it to [load], or null if nothing is stored. */
++    fun decryptCipher(): Cipher? {
++        val iv = prefs.getString("iv", null) ?: return null
++        return Cipher.getInstance(TRANSFORMATION).apply {
++            init(Cipher.DECRYPT_MODE, key(), GCMParameterSpec(128, Base64.decode(iv, Base64.NO_WRAP)))
++        }
++    }
++
++    fun save(authorizedCipher: Cipher, token: String) {
++        val sealed = authorizedCipher.doFinal(token.toByteArray())
+         prefs.edit()
+-            .putString("iv", Base64.encodeToString(cipher.iv, Base64.NO_WRAP))
++            .putString("iv", Base64.encodeToString(authorizedCipher.iv, Base64.NO_WRAP))
+             .putString("token", Base64.encodeToString(sealed, Base64.NO_WRAP))
+             .apply()
+     }
+ 
+-    fun load(): String? {
+-        val iv = prefs.getString("iv", null) ?: return null
++    fun load(authorizedCipher: Cipher): String? {
+         val sealed = prefs.getString("token", null) ?: return null
+-        val cipher = Cipher.getInstance(TRANSFORMATION)
+-        cipher.init(Cipher.DECRYPT_MODE, key(), GCMParameterSpec(128, Base64.decode(iv, Base64.NO_WRAP)))
+-        return String(cipher.doFinal(Base64.decode(sealed, Base64.NO_WRAP)))
++        return String(authorizedCipher.doFinal(Base64.decode(sealed, Base64.NO_WRAP)))
+     }
+ 
+-    private companion object {
+-        const val ALIAS = "shelftap_session_key"
+-        const val TRANSFORMATION = "AES/GCM/NoPadding"
++    fun hasToken(): Boolean = prefs.contains("token")
++
++    companion object {
++        const val AUTHENTICATORS = BiometricManager.Authenticators.BIOMETRIC_STRONG or
++            BiometricManager.Authenticators.DEVICE_CREDENTIAL
++        private const val ALIAS = "shelftap_session_key_v2"
++        private const val LEGACY_ALIAS = "shelftap_session_key"
++        private const val TRANSFORMATION = "AES/GCM/NoPadding"
+     }
+ }

@@ -1,0 +1,17 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/proguard-rules.pro work/app/proguard-rules.pro
+--- a/app/proguard-rules.pro
++++ b/app/proguard-rules.pro
+@@ -1 +1,13 @@
+ # Project-specific R8 rules. The default rules come from proguard-android-optimize.txt.
++
++# Gson's reflective TypeToken reads this metadata at runtime. Without it,
++# the anonymous TypeToken<List<Book>> loses its type argument in release builds.
++-keepattributes Signature
++-keep class com.google.gson.reflect.TypeToken { *; }
++-keep class * extends com.google.gson.reflect.TypeToken { *; }
++
++# Book is populated by Gson through reflection; keep its fields and names
++# intact so shrinking/obfuscation cannot change the JSON-to-model mapping.
++-keepclassmembers class vn.shelftap.lab.model.Book {
++    <fields>;
++}

@@ -1,0 +1,12 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/CatalogRepository.kt work/app/src/main/kotlin/vn/shelftap/lab/CatalogRepository.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/CatalogRepository.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/CatalogRepository.kt
+@@ -11,6 +11,7 @@
+     /** Blocking: run it off the main thread. */
+     fun loadBooks(): List<Book> {
+         val json = client.fetchCatalog()
+-        return gson.fromJson(json, object : TypeToken<List<Book>>() {}.type)
++        val booksType = TypeToken.getParameterized(List::class.java, Book::class.java).type
++        return gson.fromJson(json, booksType)
+     }
+ }

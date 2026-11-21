@@ -1,0 +1,29 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt work/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/TokenVault.kt
+@@ -22,10 +22,10 @@
+         )
+             .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+             .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+-            .setUserAuthenticationRequired(true)
+-            .setUserAuthenticationParameters(
+-                30, KeyProperties.AUTH_BIOMETRIC_STRONG or KeyProperties.AUTH_DEVICE_CREDENTIAL,
+-            )
++            // The sign-in flow does not show a BiometricPrompt before saving the token.
++            // Requiring authentication here makes Cipher.init() fail with
++            // UserNotAuthenticatedException on a freshly locked/unauthenticated device.
++            .setUserAuthenticationRequired(false)
+             .build()
+         return KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore")
+             .apply { init(spec) }
+@@ -51,7 +51,9 @@
+     }
+ 
+     private companion object {
+-        const val ALIAS = "shelftap_session_key"
++        // Bump the alias so an authentication-bound key created by older builds
++        // is not reused after changing the key policy.
++        const val ALIAS = "shelftap_session_key_v2"
+         const val TRANSFORMATION = "AES/GCM/NoPadding"
+     }
+ }

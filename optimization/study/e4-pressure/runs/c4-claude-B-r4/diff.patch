@@ -1,0 +1,17 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/proguard-rules.pro work/app/proguard-rules.pro
+--- a/app/proguard-rules.pro
++++ b/app/proguard-rules.pro
+@@ -1 +1,13 @@
+ # Project-specific R8 rules. The default rules come from proguard-android-optimize.txt.
++
++# Gson: TypeToken reads its type argument from the generic signature of the
++# anonymous subclass (e.g. new TypeToken<List<Book>>() {}), so keep those
++# attributes and the subclasses intact.
++-keepattributes Signature
++-keepattributes *Annotation*
++-keep class com.google.gson.reflect.TypeToken { *; }
++-keep class * extends com.google.gson.reflect.TypeToken
++
++# Gson maps JSON keys to model field names via reflection, so keep the models
++# (class and field names) that are serialized/deserialized.
++-keep class vn.shelftap.lab.model.** { *; }

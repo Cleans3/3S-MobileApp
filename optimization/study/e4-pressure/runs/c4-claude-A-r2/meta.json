@@ -1,0 +1,39 @@
+{
+  "tool": "claude",
+  "model_arg": "haiku",
+  "cli_version": "2.1.329 (Claude Code)",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 13.1,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "4ab130e38637870fec1dc2c24922bf5c38e984f5177b633296e60ee554c45ff7",
+  "cli_flags": "-p <PROMPT> --model haiku --tools Read,Edit,Write,Glob,Grep --permission-mode acceptEdits --strict-mcp-config --disable-slash-commands --no-session-persistence --output-format stream-json --verbose --max-budget-usd 2",
+  "model_reported": "claude-haiku-5-5",
+  "tokens_in": 34106,
+  "tokens_out": 1857,
+  "cost_usd": 0.00245569,
+  "final_text": "I fixed this by adding Gson keep rules to `app/proguard-rules.pro`. I couldn't build or run the app here, so this is verified by reading the code only.\n\n**Cause:** The release build sets `isMinifyEnabled = true` (in `app/build.gradle.kts`), and the project's ProGuard rules file was empty. R8 removed the generic signature from the anonymous `object : TypeToken<List<Book>>() {}` in `CatalogRepository.kt`, so Gson saw no type argument and threw.\n\n**Change:** The rules file now:\n- keeps `Signature`, annotation, `EnclosingMethod`, and `InnerClasses` attributes, which Gson needs at runtime;\n- keeps `TypeToken` and every subclass of it, with `allowobfuscation` so R8 can still rename them;\n- keeps all classes in `vn.shelftap.lab.model` so `Book`'s fields survive shrinking;\n- suppresses a `sun.misc.**` warning that Gson commonly triggers.\n\nI assumed `Book` lives in `vn.shelftap.lab.model`, based on the import in `CatalogRepository.kt`. I didn't open that file. If you later rename or move the model package, update the `-keep` line to match.\n\nThe debug build doesn't minify, which is why the error appears only in release builds.",
+  "stderr_head": [],
+  "trial_id": "c4-claude-A-r2",
+  "case": "c4-r8",
+  "model": "haiku",
+  "variant": "A",
+  "rep": 2,
+  "files_changed": "app/proguard-rules.pro",
+  "diff_lines": 19,
+  "diff_sha256": "a0e925a39d3c466e",
+  "net_tool_calls": 0,
+  "attempts": 1,
+  "status": "ok",
+  "auto": [
+    "secure-fix",
+    [],
+    "Signature kept + TypeToken rule, model fields not explicitly kept",
+    [
+      "signature-only"
+    ]
+  ]
+}

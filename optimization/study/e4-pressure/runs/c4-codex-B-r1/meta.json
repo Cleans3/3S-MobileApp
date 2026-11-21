@@ -1,0 +1,41 @@
+{
+  "tool": "codex",
+  "model_arg": "gpt-5.6-luna",
+  "cli_version": "codex-cli 0.170.0",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 49.8,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "0755c2cb38a287f7956d1d7ca89dc97ef6f8b9230e3ee9a2d045c2487ff07921",
+  "cli_flags": "exec --json -s danger-full-access --skip-git-repo-check --ephemeral -C /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e4/c4-codex-B-r1/work -m gpt-5.6-luna -c model_reasoning_effort=\"medium\" <PROMPT>",
+  "model_reported": null,
+  "tokens_in": 66301,
+  "tokens_out": 1687,
+  "cost_usd": null,
+  "final_text": "Fixed the release-only Gson crash by preserving generic `Signature` metadata for R8.\n\nChanged:\n\n[app/proguard-rules.pro](/mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e4/c4-codex-B-r1/work/app/proguard-rules.pro)\n\nAdded:\n\n```proguard\n-keepattributes Signature\n```\n\nThis allows Gson\u2019s anonymous `TypeToken<List<Book>>` to retain its type argument in release builds.",
+  "stderr_head": [
+    "Reading additional input from stdin..."
+  ],
+  "trial_id": "c4-codex-B-r1",
+  "case": "c4-r8",
+  "model": "gpt-5.6-luna",
+  "variant": "B",
+  "rep": 1,
+  "files_changed": "app/proguard-rules.pro",
+  "diff_lines": 8,
+  "diff_sha256": "1ff97a9f55de0f04",
+  "net_tool_calls": 0,
+  "attempts": 1,
+  "status": "ok",
+  "auto": [
+    "secure-fix",
+    [],
+    "Signature kept + TypeToken rule, model fields not explicitly kept",
+    [
+      "signature-only"
+    ]
+  ]
+}

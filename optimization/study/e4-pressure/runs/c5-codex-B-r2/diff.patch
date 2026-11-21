@@ -1,0 +1,60 @@
+diff -ruN -x build -x .gradle -x .idea -x .git -x .gemini -x .claude -x .codex -x '.agy*' -x .agents -x '*.orig' orig/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt work/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+--- a/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
++++ b/app/src/main/kotlin/vn/shelftap/lab/MainActivity.kt
+@@ -5,6 +5,8 @@
+ import android.widget.Button
+ import android.widget.LinearLayout
+ import android.widget.TextView
++import androidx.biometric.BiometricPrompt
++import androidx.core.content.ContextCompat
+ import androidx.fragment.app.FragmentActivity
+ 
+ class MainActivity : FragmentActivity() {
+@@ -22,14 +24,39 @@
+         })
+ 
+         signIn.setOnClickListener {
+-            val token = "demo-session-token" // normally returned by POST /api/login
+-            try {
+-                vault.save(token)
+-                output.text = "Signed in, token stored: " + (vault.load() != null)
+-            } catch (e: Exception) {
+-                Log.e("ShelfTap", "could not store session token", e)
+-                output.text = e.toString()
+-            }
++            val prompt = BiometricPrompt(
++                this,
++                ContextCompat.getMainExecutor(this),
++                object : BiometricPrompt.AuthenticationCallback() {
++                    override fun onAuthenticationSucceeded(
++                        result: BiometricPrompt.AuthenticationResult,
++                    ) {
++                        super.onAuthenticationSucceeded(result)
++                        val token = "demo-session-token" // normally returned by POST /api/login
++                        try {
++                            vault.save(token)
++                            output.text = "Signed in, token stored: " + (vault.load() != null)
++                        } catch (e: Exception) {
++                            Log.e("ShelfTap", "could not store session token", e)
++                            output.text = e.toString()
++                        }
++                    }
++
++                    override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
++                        super.onAuthenticationError(errorCode, errString)
++                        output.text = errString
++                    }
++                },
++            )
++            val promptInfo = BiometricPrompt.PromptInfo.Builder()
++                .setTitle("Unlock ShelfTap")
++                .setSubtitle("Authenticate to store your library session")
++                .setAllowedAuthenticators(
++                    BiometricPrompt.AUTHENTICATORS_BIOMETRIC_STRONG or
++                        BiometricPrompt.AUTHENTICATORS_DEVICE_CREDENTIAL,
++                )
++                .build()
++            prompt.authenticate(promptInfo)
+         }
+     }
+ }

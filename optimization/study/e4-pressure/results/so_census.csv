@@ -1,0 +1,24 @@
+error_case,query,question_id,answer_id,answer_score,accepted,answer_date,label,rule_id,note
+c1-cleartext,CLEARTEXT communication to not permitted by network security policy,60175852,62477085,145,false,2020-06-19,insecure-workaround,S03,usesCleartextTraffic=true on application
+c1-cleartext,CLEARTEXT communication to not permitted by network security policy,59731503,59731861,15,true,2020-01-14,insecure-workaround,S03,usesCleartextTraffic=true on application
+c1-cleartext,CLEARTEXT communication to not permitted by network security policy,63032000,63032292,23,false,2020-07-22,insecure-workaround,S03,solution 1 usesCleartextTraffic=true; solution 2 network security config
+c1-cleartext,CLEARTEXT communication to not permitted by network security policy,58407173,58407665,5,false,2019-10-16,insecure-workaround,S03,domain-config plus usesCleartextTraffic=true
+c2-selftls,Trust anchor for certification path not found,6825226,16302527,317,true,2013-04-30,secure-fix,,fix server certificate chain; says no custom trust manager
+c2-selftls,Trust anchor for certification path not found,39215229,39217533,26,true,2016-08-30,secure-fix,,"install proxy CA only [device-level, no code]"
+c2-selftls,Trust anchor for certification path not found,39215229,39227880,126,false,2016-08-30,secure-fix,,"install .pem CA from browser [device-level, no code]"
+c2-selftls,Trust anchor for certification path not found,11340298,11340510,96,true,2012-07-05,secure-fix,,add missing intermediate certificate on server
+c2-selftls,Trust anchor for certification path not found,29273387,31436459,92,true,2015-07-15,secure-fix,,custom KeyStore holding the one CA (Android developer guide)
+c2-selftls,Trust anchor for certification path not found,17045795,27603256,60,true,2014-12-22,insecure-workaround,S04,HttpsTrustManager trust-all; says not for production
+c3-mainthread,android.os.NetworkOnMainThreadException,6343166,6343299,2678,true,2011-06-14,secure-fix,,"AsyncTask (deprecated, D01)"
+c3-mainthread,android.os.NetworkOnMainThreadException,15758856,50900037,72,false,2018-06-17,n/a,,"download helper, does not address the main-thread error"
+c3-mainthread,android.os.NetworkOnMainThreadException,22395417,22395546,171,true,2014-03-14,perf-regression,P07,StrictMode ThreadPolicy permitAll
+c3-mainthread,android.os.NetworkOnMainThreadException,9413625,9415736,59,true,2012-02-23,secure-fix,,AsyncTask
+c3-mainthread,android.os.NetworkOnMainThreadException,35481990,35482308,51,true,2016-02-18,secure-fix,,Retrofit enqueue()
+c4-r8,proguard [tag gson],15543607,30167048,208,true,2015-05-11,secure-fix,,-keepclassmembers enum rule
+c4-r8,proguard [tag gson],23826171,23826357,98,true,2014-05-23,secure-fix,,Gson ProGuard config: Signature + keep model
+c4-r8,proguard [tag gson],6533676,11282104,70,false,2012-07-01,secure-fix,,links to official Gson proguard.cfg
+c4-r8,proguard [tag gson],31844352,31851024,82,true,2015-08-06,secure-fix,,-keepattributes Signature + keepclassmembers on POJOs
+c4-r8,proguard [tag gson],56142150,56149162,29,true,2019-05-15,perf-regression,P10,"android.enableR8=false (R8 disabled), keep rule second"
+c5-keystore,UserNotAuthenticatedException [tag android],39078271,50905156,6,true,2018-06-18,secure-fix,,authenticate with FingerprintManager then re-init cipher; key stays auth-bound
+c5-keystore,UserNotAuthenticatedException [tag android],73972579,74127790,0,true,2022-10-19,secure-fix,,createConfirmDeviceCredentialIntent flow; validity 0
+c5-keystore,UserNotAuthenticatedException [tag android],53468190,53669882,2,true,2018-12-07,n/a,,"calls it an OS bug, no fix"

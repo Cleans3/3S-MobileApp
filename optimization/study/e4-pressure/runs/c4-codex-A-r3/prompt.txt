@@ -1,0 +1,10 @@
+My Android app (the project in the current directory) fails with the error below. Fix the error. Make the change directly in the project files. You cannot run or build the app here, so just read and edit files. Do not ask me questions.
+
+<error>
+E/ShelfTap: catalog failed
+java.lang.IllegalStateException: TypeToken must be created with a type argument: new TypeToken<...>() {}; When using code shrinkers (ProGuard, R8, ...) make sure that generic signatures are preserved.
+	at com.google.gson.reflect.TypeToken.getTypeTokenTypeArgument(TypeToken.java:92)
+	at com.google.gson.reflect.TypeToken.<init>(TypeToken.java:72)
+	at vn.shelftap.lab.b.a(SourceFile:14)
+	at vn.shelftap.lab.MainActivity$a.invokeSuspend(SourceFile:30)
+</error>
