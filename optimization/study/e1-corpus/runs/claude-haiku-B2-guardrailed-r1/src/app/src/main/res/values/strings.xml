@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <string name="sign_in_title">Sign in</string>
+    <string name="sign_in_email">Email</string>
+    <string name="sign_in_password">Password</string>
+    <string name="sign_in_button">Sign in</string>
+
+    <string name="profile_title">Profile</string>
+    <string name="profile_full_name">Full name</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_member_type">Member type</string>
+    <string name="profile_status">Status</string>
+    <string name="profile_change_password">Change password</string>
+    <string name="profile_sign_out">Sign out</string>
+
+    <string name="change_password_title">Change password</string>
+    <string name="change_password_forced_notice">You must change your password before you can use ShelfTap.</string>
+    <string name="change_password_current">Current password</string>
+    <string name="change_password_new">New password</string>
+    <string name="change_password_confirm">Confirm new password</string>
+    <string name="change_password_submit">Change password</string>
+
+    <string name="action_retry">Try again</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="loading">Loading</string>
+
+    <string name="error_fields_required">Fill in every field.</string>
+    <string name="error_invalid_credentials">The email or password is not correct.</string>
+    <string name="error_account_locked">This account is locked. Contact your library.</string>
+    <string name="error_rate_limited">Too many attempts. Wait a moment and try again.</string>
+    <string name="error_rate_limited_seconds">Too many attempts. Try again in %1$d seconds.</string>
+    <string name="error_session_ended">Your session has ended. Sign in again.</string>
+    <string name="error_network">No connection to ShelfTap. Check your network and try again.</string>
+    <string name="error_wrong_current_password">The current password is not correct.</string>
+    <string name="error_passwords_do_not_match">The new passwords do not match.</string>
+    <string name="error_unknown">Something went wrong. Try again.</string>
+</resources>

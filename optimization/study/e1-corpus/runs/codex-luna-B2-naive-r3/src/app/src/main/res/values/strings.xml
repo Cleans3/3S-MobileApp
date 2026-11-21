@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">My Library</string>
+    <string name="welcome_title">Welcome back</string>
+    <string name="welcome_subtitle">Sign in to manage your library account</string>
+    <string name="email_label">Email address</string>
+    <string name="password_label">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="member_account">Member account</string>
+    <string name="membership_active">Active member</string>
+    <string name="member_id">Member ID</string>
+    <string name="membership">Membership</string>
+    <string name="joined">Member since</string>
+    <string name="sign_out">Sign out</string>
+    <string name="email_required">Enter your email</string>
+    <string name="password_required">Enter your password</string>
+    <string name="session_expired">Your session has expired. Please sign in again.</string>
+</resources>

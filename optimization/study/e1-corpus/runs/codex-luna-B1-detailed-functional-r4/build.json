@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "",
+ "repairs": 0,
+ "gradle_s_first": 11.3,
+ "build": "fail",
+ "build_error_first_line": "Plugin [id: 'org.jetbrains.kotlin.plugin.compose', version: '1.9.24', apply: false] was not found in any of the following sources:",
+ "lint": "no-report"
+}

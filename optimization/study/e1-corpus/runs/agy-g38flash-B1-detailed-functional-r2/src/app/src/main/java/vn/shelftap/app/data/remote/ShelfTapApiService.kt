@@ -1,0 +1,21 @@
+package vn.shelftap.app.data.remote
+
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
+
+interface ShelfTapApiService {
+
+    @GET("/api/titles")
+    suspend fun getTitles(
+        @Query("q") query: String? = null,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 50
+    ): Response<TitleListResponse>
+
+    @GET("/api/titles/{id}")
+    suspend fun getTitleById(
+        @Path("id") id: String
+    ): Response<TitleDto>
+}

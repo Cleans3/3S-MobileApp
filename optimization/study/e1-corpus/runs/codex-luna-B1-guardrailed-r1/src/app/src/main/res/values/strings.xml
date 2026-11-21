@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="search_catalogue">Search catalogue</string>
+    <string name="back">Back</string>
+    <string name="cover_description">Cover of %1$s</string>
+    <string name="no_cover">No cover</string>
+    <string name="available">Available</string>
+    <string name="all_copies_out">All copies out</string>
+    <string name="no_books_found">No books found</string>
+    <string name="clear_search">Clear search</string>
+    <string name="catalogue">Catalogue</string>
+    <string name="subjects">Subjects</string>
+    <string name="isbn">ISBN</string>
+    <string name="year">Year</string>
+    <string name="copies_available">Copies available</string>
+    <string name="offline_catalogue">Showing saved catalogue</string>
+</resources>

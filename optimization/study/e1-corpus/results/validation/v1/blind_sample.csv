@@ -1,0 +1,1895 @@
+sample_id,rule_id,rule_definition,file_tail,line,evidence,context
+a35cff61dc,U04,"Colour literal (Color(0x..), Color.<Named> except Transparent/Unspecified) or fontSize = N.sp literal outside the theme package and previews.",app/MainActivity.kt,35,"hardcoded Color(0xFF526B5D)), content = content) } bypasses the theme","  29          ShelfTapViewModelFactory(ShelfTapApi(SignedInAuthRepository), EncryptedCache(applicationContext))
+  30      }
+  31      override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState); setContent { ShelfTapTheme { ShelfTapApp(model) } } }
+  32  }
+  33  
+  34  @Composable private fun ShelfTapTheme(content: @Composable () -> Unit) {
+  35>     MaterialTheme(colorScheme = lightColorScheme(primary = androidx.compose.ui.graphics.Color(0xFF245B4A), secondary = androidx.compose.ui.graphics.Color(0xFF526B5D)), content = content)
+  36  }
+  37  
+  38  private enum class Tab { LOANS, HISTORY }
+  39  
+  40  @Composable private fun ShelfTapApp(vm: ShelfTapViewModel) {
+  41      val state by vm.state.collectAsState()"
+17bd1a6d2d,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",xml/network_security_config.xml,3,cleartextTrafficPermitted=true,"   1  <?xml version=""1.0"" encoding=""utf-8""?>
+   2  <network-security-config>
+   3>     <!-- Rule 1: Use HTTPS for every request. Never set cleartextTrafficPermitted=""true"" -->
+   4      <base-config cleartextTrafficPermitted=""false"">
+   5          <trust-anchors>
+   6              <certificates src=""system"" />
+   7          </trust-anchors>
+   8      </base-config>
+   9  </network-security-config>"
+e66838f5ea,P11,No Baseline Profile: no baselineprofile plugin and no baseline-prof.txt anywhere in the project.,app/build.gradle.kts,1,no baselineprofile plugin and no baseline-prof.txt,"   1> plugins {
+   2      alias(libs.plugins.android.application)
+   3      alias(libs.plugins.kotlin.android)
+   4      alias(libs.plugins.kotlin.serialization)
+   5  }
+   6  
+   7  android {"
+ba23d9a7b1,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",build.gradle.kts,1,no release build type: R8 minification off by default,"   1> plugins {
+   2      alias(libs.plugins.android.application) apply false
+   3      alias(libs.plugins.kotlin.android) apply false
+   4      alias(libs.plugins.kotlin.compose) apply false
+   5  }"
+e50c74c06c,S02,"Hardcoded secret: provider-key patterns, secret-named string constants with a non-placeholder high-entropy value, buildConfigField/signing passwords with literals.",app/build.gradle,29,storePassword literal in build script,"  23  
+  24      signingConfigs {
+  25          debug {
+  26              keyAlias 'androiddebugkey'
+  27              keyPassword 'android'
+  28              storeFile file('./signature/debug.keystore')
+  29>             storePassword 'android'
+  30          }
+  31          nightly {
+  32              keyAlias System.env.ELEMENT_ANDROID_NIGHTLY_KEYID ?: project.property(""signing.element.nightly.keyId"")
+  33              keyPassword System.env.ELEMENT_ANDROID_NIGHTLY_KEYPASSWORD ?: project.property(""signing.element.nightly.keyPassword"")
+  34              storeFile file('./signature/nightly.keystore')
+  35              storePassword System.env.ELEMENT_ANDROID_NIGHTLY_STOREPASSWORD ?: project.property(""signing.element.nightly.storePassword"")"
+f27caecec4,U01,Icon/Image with contentDescription null (or absent) acting as the only content of a clickable control (IconButton/FAB/toggle) or carrying its own click modifier.,password/ChangePasswordScreen.kt,226,Icon contentDescription=null is the only content of IconButton," 220                          label = { Text(""Confirm New Password"") },
+ 221                          leadingIcon = {
+ 222                              Icon(imageVector = Icons.Default.Lock, contentDescription = null)
+ 223                          },
+ 224                          trailingIcon = {
+ 225                              IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+ 226>                                 Icon(
+ 227                                      imageVector = if (confirmPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+ 228                                      contentDescription = null
+ 229                                  )
+ 230                              }
+ 231                          },
+ 232                          singleLine = true,"
+0c3a788360,S08,"MD5/SHA-1 digest, AES default/ECB/DES/RC4, static or all-zero IV, hardcoded SecretKeySpec key, or androidx.security-crypto (EncryptedSharedPreferences/MasterKey/EncryptedFile).",app/build.gradle.kts,74,dependency androidx.security:security-crypto (deprecated since 1.1.0-alpha07/1.1.0),"  68      implementation(""androidx.compose.ui:ui-graphics"")
+  69      implementation(""androidx.compose.ui:ui-tooling-preview"")
+  70      implementation(""androidx.compose.material3:material3"")
+  71      implementation(""androidx.compose.material:material-icons-extended"")
+  72  
+  73      // Security / EncryptedSharedPreferences
+  74>     implementation(""androidx.security:security-crypto:1.1.0-alpha06"")
+  75  
+  76      // Retrofit & OkHttp
+  77      implementation(""com.squareup.retrofit2:retrofit:2.11.0"")
+  78      implementation(""com.squareup.retrofit2:converter-gson:2.11.0"")
+  79      implementation(""com.squareup.okhttp3:okhttp:4.12.0"")
+  80      implementation(""com.squareup.okhttp3:logging-interceptor:4.12.0"")"
+8e8dd9ebd7,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",storage/RoomCleanupStore.kt,16,runBlocking blocks the calling (main) thread,"  10  
+  11  internal class RoomCleanupStore(
+  12      private val database: VrkaDatabase,
+  13      private val clock: () -> Long,
+  14  ) : CleanupStore {
+  15      override fun pending(): List<PendingStagingCleanup> {
+  16>         val tasks = runBlocking(Dispatchers.IO) { database.cleanupTaskDao().all() }
+  17          return tasks.filter { it.resourceType == RESOURCE_TYPE && it.jobId != null && !it.deadLetter }.map { task ->
+  18              PendingStagingCleanup(
+  19                  jobId = task.jobId!!,
+  20                  attempts = task.retryCount,
+  21                  firstSeenAt = task.createdAt,
+  22                  updatedAt = task.updatedAt,"
+bbdc997ad9,U02,"Modifier chain with a clickable/toggleable/selectable and an explicit size/width/height under 48dp, without minimumInteractiveComponentSize or a 48dp minimum.",brushsource/ColorListItem.kt,63,clickable chain with .size(40.dp (< 48dp touch target),"  57          headlineColor = headlineColor.value,
+  58        ),
+  59      content = { Text(LocalScriptableDisplay.current.displayString(scriptableColor)) },
+  60      leadingContent = {
+  61        val shape = polygon.toShape()
+  62        Box(
+  63>         Modifier.clip(shape)
+  64            .clickable(onClick = onIconClick)
+  65            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, shape)
+  66            .background(color)
+  67            .size(40.dp)
+  68        )
+  69      },"
+4edaba5cc9,P04,Sort/filter/group/regex/date-format/JSON parsing executed in a composable body outside remember/derivedStateOf/effects/event lambdas.,detail/AccountDetailScreen.kt,145,".groupBy { it.date }.forEach { (date, transactions) -> stickyHeader { in composable AccountDetailScreen without remember"," 139                                  modifier = Modifier.paddingFromBaseline(top = 30.dp)
+ 140                              )
+ 141                          }
+ 142                      }
+ 143                  }
+ 144              } else {
+ 145>                 state.transactions.groupBy { it.date }.forEach { (date, transactions) ->
+ 146                      stickyHeader {
+ 147                          TransactionDateHeader(date)
+ 148                      }
+ 149                      itemsIndexed(transactions) { index, transaction ->
+ 150                          val needsDivider = index != transactions.lastIndex
+ 151                          TransactionItem("
+24495932e4,U03,"Material colour-scheme foreground/background pairs (on* vs base, both explicit) with WCAG contrast below 4.5:1; Text colour literal Gray/LightGray on the default light surface.",theme/Theme.kt,14,lightColorScheme: onSecondary on secondary contrast 3.74:1 < 4.5,"   8  import androidx.compose.runtime.Composable
+   9  import androidx.compose.runtime.SideEffect
+  10  import androidx.compose.ui.graphics.toArgb
+  11  import androidx.compose.ui.platform.LocalView
+  12  import androidx.core.view.WindowCompat
+  13  
+  14> private val LightColorScheme = lightColorScheme(
+  15      primary = NavyPrimary,
+  16      onPrimary = NavyOnPrimary,
+  17      primaryContainer = NavyPrimaryContainer,
+  18      onPrimaryContainer = NavyOnPrimaryContainer,
+  19      secondary = TealSecondary,
+  20      onSecondary = TealOnSecondary,"
+6afe77f4c3,S01,"Token/credential/PII written to plain SharedPreferences, plain Preferences DataStore, a plain file, or a Room entity, with no Keystore/Cipher use in the same file.",data/SessionStore.kt,9,"putString(""token"", ...) plaintext SharedPreferences","   3  import android.content.Context
+   4  
+   5  class SessionStore(context: Context) {
+   6      private val preferences = context.getSharedPreferences(""library_session"", Context.MODE_PRIVATE)
+   7      var token: String?
+   8          get() = preferences.getString(""token"", null)
+   9>         set(value) = preferences.edit().putString(""token"", value).apply()
+  10  
+  11      fun clear() = preferences.edit().clear().apply()
+  12  }"
+4b462224a8,S09,"SQL built by string interpolation/concatenation, WebView.loadUrl on a non-literal with JavaScript on, or a credential-submitting function with no validation predicate in its file.",local/ShelfTapDatabaseHelper.kt,124,"SQL built by interpolation: execSQL(""DROP TABLE IF EXISTS $TABLE_PROFILE"") db.execSQL(""DRO"," 118          )
+ 119      }
+ 120  
+ 121      override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+ 122          db.execSQL(""DROP TABLE IF EXISTS $TABLE_LOANS"")
+ 123          db.execSQL(""DROP TABLE IF EXISTS $TABLE_HISTORY"")
+ 124>         db.execSQL(""DROP TABLE IF EXISTS $TABLE_PROFILE"")
+ 125          db.execSQL(""DROP TABLE IF EXISTS $TABLE_TITLES"")
+ 126          onCreate(db)
+ 127      }
+ 128  
+ 129      // --- Loans Caching ---
+ 130  "
+2f064855b4,S09,"SQL built by string interpolation/concatenation, WebView.loadUrl on a non-literal with JavaScript on, or a credential-submitting function with no validation predicate in its file.",local/ShelfTapDatabaseHelper.kt,125,"SQL built by interpolation: execSQL(""DROP TABLE IF EXISTS $TABLE_TITLES"") onCreate(db)"," 119      }
+ 120  
+ 121      override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+ 122          db.execSQL(""DROP TABLE IF EXISTS $TABLE_LOANS"")
+ 123          db.execSQL(""DROP TABLE IF EXISTS $TABLE_HISTORY"")
+ 124          db.execSQL(""DROP TABLE IF EXISTS $TABLE_PROFILE"")
+ 125>         db.execSQL(""DROP TABLE IF EXISTS $TABLE_TITLES"")
+ 126          onCreate(db)
+ 127      }
+ 128  
+ 129      // --- Loans Caching ---
+ 130  
+ 131      @Synchronized"
+96942e4e94,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",jbwatch/JbWatchFaceHost.kt,289,cleartext URL literal http://xml.org/sax/features/external-parameter-ent," 283      private fun String.toFloatOrZero(default: Float = 0f): Float = toFloatOrNull() ?: default
+ 284      private fun String.toIntOrZero(default: Int = 0): Int = toIntOrNull() ?: default
+ 285      private fun newSecureDocumentBuilderFactory(): DocumentBuilderFactory {
+ 286          return DocumentBuilderFactory.newInstance().apply {
+ 287              runCatching { setFeature(""http://apache.org/xml/features/disallow-doctype-decl"", true) }
+ 288              runCatching { setFeature(""http://xml.org/sax/features/external-general-entities"", false) }
+ 289>             runCatching { setFeature(""http://xml.org/sax/features/external-parameter-entities"", false) }
+ 290              runCatching { setFeature(""http://apache.org/xml/features/nonvalidating/load-external-dtd"", false) }
+ 291              runCatching { isXIncludeAware = false }
+ 292              runCatching { isExpandEntityReferences = false }
+ 293          }
+ 294      }
+ 295  "
+72ae8c4e2a,P02,Lazy list with >= 2 content blocks (or a type-switching items lambda) and no contentType anywhere in it.,catalogue/CatalogueScreen.kt,160,"LazyColumn with 2 content blocks, no contentType"," 154                              color = MaterialTheme.colorScheme.onSurfaceVariant
+ 155                          )
+ 156                      }
+ 157                  }
+ 158              } else {
+ 159                  // The list starts at the top and can be scrolled through all titles
+ 160>                 LazyColumn(
+ 161                      modifier = Modifier.fillMaxSize()
+ 162                  ) {
+ 163                      items(
+ 164                          count = titles.itemCount,
+ 165                          key = titles.itemKey { it.id }
+ 166                      ) { index ->"
+1066998e48,S06,allowBackup is true or absent (default true) and the application has no dataExtractionRules/fullBackupContent exclusion file.,main/AndroidManifest.xml,7,"allowBackup=true, no backup exclusion rules","   1  <?xml version=""1.0"" encoding=""utf-8""?>
+   2  <manifest xmlns:android=""http://schemas.android.com/apk/res/android"">
+   3  
+   4      <uses-permission android:name=""android.permission.INTERNET"" />
+   5      <uses-permission android:name=""android.permission.ACCESS_NETWORK_STATE"" />
+   6  
+   7>     <application
+   8          android:name="".ShelfTapApp""
+   9          android:allowBackup=""true""
+  10          android:icon=""@mipmap/ic_launcher""
+  11          android:label=""@string/app_name""
+  12          android:roundIcon=""@mipmap/ic_launcher_round""
+  13          android:supportsRtl=""true"""
+667288220c,S07,Component exported=true (or implicitly exported by an intent-filter) with no android:permission and not the MAIN/LAUNCHER activity.,main/AndroidManifest.xml,71,activity .ShortcutReceiverActivity exported without permission,"  65                  <action android:name=""android.intent.action.MAIN"" />
+  66                  <category android:name=""android.intent.category.LAUNCHER"" />
+  67              </intent-filter>
+  68          </activity>
+  69  
+  70          <activity
+  71>             android:name="".ShortcutReceiverActivity""
+  72              android:exported=""true""
+  73              android:excludeFromRecents=""true""
+  74              android:noHistory=""true""
+  75              android:theme=""@style/Theme.WatchLauncher"">
+  76              <intent-filter>
+  77                  <action android:name=""android.content.pm.action.CONFIRM_PIN_SHORTCUT"" />"
+81c05f5061,P04,Sort/filter/group/regex/date-format/JSON parsing executed in a composable body outside remember/derivedStateOf/effects/event lambdas.,collections/CollectionsScreen.kt,375,.filterNot { it.first == UNLABELLED_COLLECTION } var useSelectorInput by remember in composable CollectionsScreen without remember," 369                  false
+ 370              }
+ 371          }
+ 372      )
+ 373  
+ 374      if (isMergingCollections) {
+ 375>         val labelledCollections = state.selection.selectedItems.sortedByDescending { it.size}.map { it.name to it }.filterNot { it.first == UNLABELLED_COLLECTION }
+ 376          var useSelectorInput by remember { mutableStateOf(labelledCollections.isNotEmpty()) }
+ 377  
+ 378          if (useSelectorInput) {
+ 379              SelectorModal(
+ 380                  isVisible = labelledCollections.isNotEmpty(),
+ 381                  initialOption = labelledCollections.first().second,"
+ed6ea552b1,S05,"Sensitive logging: a log call whose arguments name a token/credential/Authorization/body/PII, or HttpLoggingInterceptor at BODY/HEADERS not guarded by BuildConfig.DEBUG.",api/NetworkClient.kt,20,HttpLoggingInterceptor Level.BODY not guarded for release,"  14  
+  15      fun createApiService(
+  16          sessionManager: SessionManager,
+  17          deviceIdProvider: DeviceIdProvider
+  18      ): ShelfTapApiService {
+  19          val loggingInterceptor = HttpLoggingInterceptor().apply {
+  20>             level = HttpLoggingInterceptor.Level.BODY
+  21          }
+  22  
+  23          val authInterceptor = AuthInterceptor(
+  24              sessionManager = sessionManager,
+  25              deviceIdProvider = deviceIdProvider,
+  26              baseUrl = BASE_URL"
+8f78cd8848,P13,"Search implemented as a linear in-memory filter or an unindexed SQL LIKE (no FTS/index), or a per-keystroke remote search with no debounce.",profile/HelpSectionScreen.kt,102,"linear filter over the list on the search query, no index; debounce=no","  96      }
+  97  
+  98      val filteredFaqs = remember(searchQuery.text) {
+  99          if (searchQuery.text.isBlank()) {
+ 100              faqs
+ 101          } else {
+ 102>             faqs.filter {
+ 103                  it.first.contains(searchQuery.text, ignoreCase = true) ||
+ 104                          it.second.contains(searchQuery.text, ignoreCase = true)
+ 105              }
+ 106          }
+ 107      }
+ 108  "
+8459aea9ad,U01,Icon/Image with contentDescription null (or absent) acting as the only content of a clickable control (IconButton/FAB/toggle) or carrying its own click modifier.,icons/SearchIcon.kt,16,Icon contentDescription=null is the only content of IconButton,"  10  fun SearchIcon(
+  11      onSearchIconClick: () -> Unit
+  12  ) {
+  13      IconButton(
+  14          onClick = onSearchIconClick
+  15      ) {
+  16>         Icon(
+  17              Icons.Filled.Search,
+  18              contentDescription = null
+  19          )
+  20      }
+  21  }"
+fe588a663d,D01,"Use of a deprecated API/DSL from TABLE/GRADLE (code, manifests and build scripts); security-crypto is also reported by S08 (taxonomy overlap is intended).",libraryloans/MainActivity.kt,17,deprecated Window.statusBarColor: use edge-to-edge insets (deprecated API 35),"  11  
+  12  data class Book(val title: String, val author: String, val due: String, val color: Int, val renewed: Boolean = false)
+  13  
+  14  class MainActivity : Activity() {
+  15      override fun onCreate(savedInstanceState: Bundle?) {
+  16          super.onCreate(savedInstanceState)
+  17>         window.statusBarColor = Color.rgb(247, 248, 245)
+  18          window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+  19          setContentView(LibraryView(this))
+  20      }
+  21  }
+  22  
+  23  private class LibraryView(context: android.content.Context) : View(context) {"
+8f07ebcc68,D01,"Use of a deprecated API/DSL from TABLE/GRADLE (code, manifests and build scripts); security-crypto is also reported by S08 (taxonomy overlap is intended).",presentation/MomentumEntry.kt,17,deprecated accompanist: use official Compose APIs (Accompanist deprecation notices),"  11  import androidx.compose.ui.graphics.Color
+  12  import androidx.navigation.NavHostController
+  13  import androidx.navigation.compose.currentBackStackEntryAsState
+  14  import androidx.navigation.compose.rememberNavController
+  15  import com.google.accompanist.navigation.material.BottomSheetNavigator
+  16  import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+  17> import com.google.accompanist.systemuicontroller.rememberSystemUiController
+  18  import com.mwaibanda.momentum.android.core.utils.ScreenConfiguration
+  19  import com.mwaibanda.momentum.android.core.utils.ScreenConfiguration.ScreensWithoutNavigation
+  20  import com.mwaibanda.momentum.android.presentation.components.rememberBottomSheetNavigator
+  21  import com.mwaibanda.momentum.android.presentation.navigation.BottomBar
+  22  import com.mwaibanda.momentum.android.presentation.navigation.TopBar
+  23  "
+b8e978e6b1,U02,"Modifier chain with a clickable/toggleable/selectable and an explicit size/width/height under 48dp, without minimumInteractiveComponentSize or a 48dp minimum.",wlauncher/SettingsActivity.kt,2721,clickable chain with .size(30.dp (< 48dp touch target),"2715              )
+2716              Spacer(modifier = Modifier.height(22.dp))
+2717              Row(verticalAlignment = Alignment.CenterVertically) {
+2718                  Image(
+2719                      painter = painterResource(id = R.drawable.author_avatar),
+2720                      contentDescription = null,
+2721>                     modifier = Modifier
+2722                          .size(30.dp)
+2723                          .clip(CircleShape)
+2724                          .clickable(onClick = ::openAuthorProfile)
+2725                  )
+2726                  Spacer(modifier = Modifier.width(10.dp))
+2727                  Column {"
+38bf089f43,S07,Component exported=true (or implicitly exported by an intent-filter) with no android:permission and not the MAIN/LAUNCHER activity.,main/AndroidManifest.xml,72,activity com.app.ecomapp.presentation.screens.home.PrimePayScreen exported without permission,"  66              android:exported=""true""
+  67              android:theme=""@style/Theme.Transparent"" />
+  68          <activity
+  69              android:name=""com.app.ecomapp.presentation.screens.cart.HandleActivity""
+  70              android:exported=""true"" />
+  71          <activity
+  72>             android:name=""com.app.ecomapp.presentation.screens.home.PrimePayScreen""
+  73              android:theme=""@style/Theme.Transparent""
+  74              android:exported=""true"" />
+  75  
+  76          <provider
+  77              android:name=""androidx.core.content.FileProvider""
+  78              android:authorities=""${applicationId}.provider"""
+7e55258dbe,S06,allowBackup is true or absent (default true) and the application has no dataExtractionRules/fullBackupContent exclusion file.,main/AndroidManifest.xml,7,"allowBackup=true, no backup exclusion rules","   1  <?xml version=""1.0"" encoding=""utf-8""?>
+   2  <manifest xmlns:android=""http://schemas.android.com/apk/res/android"">
+   3  
+   4      <uses-permission android:name=""android.permission.INTERNET"" />
+   5      <uses-permission android:name=""android.permission.ACCESS_NETWORK_STATE"" />
+   6  
+   7>     <application
+   8          android:name="".LibraryApp""
+   9          android:allowBackup=""true""
+  10          android:icon=""@drawable/ic_launcher""
+  11          android:label=""@string/app_name""
+  12          android:supportsRtl=""true""
+  13          android:theme=""@style/Theme.LibraryCatalogue"">"
+4bd67dd884,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",build.gradle.kts,1,no release build type: R8 minification off by default,"   1> plugins {
+   2      id(""com.android.application"") version ""8.2.2"" apply false
+   3      id(""org.jetbrains.kotlin.android"") version ""1.9.22"" apply false
+   4  }"
+6d6c83d7d1,S06,allowBackup is true or absent (default true) and the application has no dataExtractionRules/fullBackupContent exclusion file.,main/AndroidManifest.xml,4,"allowBackup=true, no backup exclusion rules","   1  <?xml version=""1.0"" encoding=""utf-8""?>
+   2  <manifest xmlns:android=""http://schemas.android.com/apk/res/android"">
+   3  
+   4>     <application
+   5          android:allowBackup=""true""
+   6          android:icon=""@drawable/ic_launcher""
+   7          android:label=""@string/app_name""
+   8          android:supportsRtl=""true""
+   9          android:theme=""@style/Theme.LibraryApp"">
+  10          <activity"
+8df05d140b,P13,"Search implemented as a linear in-memory filter or an unindexed SQL LIKE (no FTS/index), or a per-keystroke remote search with no debounce.",viewmodel/LoansViewModel.kt,87,"linear filter over the list on the search query, no index; debounce=no","  81              }
+  82              .sortedByDescending { it.loan.returnDate }
+  83  
+  84          val filteredActive = if (query.isBlank()) {
+  85              activeLoanItems
+  86          } else {
+  87>             activeLoanItems.filter {
+  88                  it.book.title.contains(query, ignoreCase = true) ||
+  89                  it.book.author.contains(query, ignoreCase = true) ||
+  90                  it.book.genre.contains(query, ignoreCase = true)
+  91              }
+  92          }
+  93  "
+a184740d0e,S08,"MD5/SHA-1 digest, AES default/ECB/DES/RC4, static or all-zero IV, hardcoded SecretKeySpec key, or androidx.security-crypto (EncryptedSharedPreferences/MasterKey/EncryptedFile).",di/AppModule.kt,9,deprecated androidx.security-crypto API androidx.security.crypto,"   3   * All rights reserved.
+   4   */
+   5  package kasem.sm.slime.di
+   6  
+   7  import android.content.Context
+   8  import android.content.SharedPreferences
+   9> import androidx.security.crypto.EncryptedSharedPreferences
+  10  import androidx.security.crypto.MasterKey
+  11  import androidx.work.Constraints
+  12  import androidx.work.NetworkType
+  13  import androidx.work.WorkManager
+  14  import coil.ImageLoader
+  15  import coil.memory.MemoryCache"
+c384ec2fe5,P04,Sort/filter/group/regex/date-format/JSON parsing executed in a composable body outside remember/derivedStateOf/effects/event lambdas.,components/RenewConfirmDialog.kt,48,"DateTimeFormatter.ofPattern(""MMM dd, yyyy"") val baseDate = if (loan.dueDate.isBefore( in composable RenewConfirmDialog without remember","  42      item: LoanWithBook,
+  43      onConfirm: (loanId: String) -> Unit,
+  44      onDismiss: () -> Unit
+  45  ) {
+  46      val loan = item.loan
+  47      val book = item.book
+  48>     val dateFormatter = DateTimeFormatter.ofPattern(""MMM dd, yyyy"")
+  49  
+  50      val baseDate = if (loan.dueDate.isBefore(LocalDate.now())) LocalDate.now() else loan.dueDate
+  51      val proposedDueDate = baseDate.plusDays(14)
+  52      val remainingRenewalsAfter = loan.maxRenewals - (loan.renewalCount + 1)
+  53  
+  54      AlertDialog("
+80cff11a14,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",jbwatch/JbWatchFaceStorage.kt,136,cleartext URL literal http://xml.org/sax/features/external-parameter-ent," 130      }
+ 131  
+ 132      private fun newSecureDocumentBuilderFactory(): DocumentBuilderFactory {
+ 133          return DocumentBuilderFactory.newInstance().apply {
+ 134              runCatching { setFeature(""http://apache.org/xml/features/disallow-doctype-decl"", true) }
+ 135              runCatching { setFeature(""http://xml.org/sax/features/external-general-entities"", false) }
+ 136>             runCatching { setFeature(""http://xml.org/sax/features/external-parameter-entities"", false) }
+ 137              runCatching { setFeature(""http://apache.org/xml/features/nonvalidating/load-external-dtd"", false) }
+ 138              runCatching { isXIncludeAware = false }
+ 139              runCatching { isExpandEntityReferences = false }
+ 140          }
+ 141      }
+ 142  "
+5057323fc3,U04,"Colour literal (Color(0x..), Color.<Named> except Transparent/Unspecified) or fontSize = N.sp literal outside the theme package and previews.",signin/SignInScreen.kt,188,"hardcoded fontSize = 16.sp, bypasses the theme"," 182                              modifier = Modifier.size(24.dp),
+ 183                              strokeWidth = 2.dp
+ 184                          )
+ 185                      } else {
+ 186                          Text(
+ 187                              text = ""Sign In"",
+ 188>                             fontSize = 16.sp,
+ 189                              fontWeight = FontWeight.SemiBold
+ 190                          )
+ 191                      }
+ 192                  }
+ 193  
+ 194                  // Error message under the fields"
+7a1ed7e032,U04,"Colour literal (Color(0x..), Color.<Named> except Transparent/Unspecified) or fontSize = N.sp literal outside the theme package and previews.",screens/ActiveLoansScreen.kt,114,hardcoded fontSize = 14.sp bypasses the theme," 108                      Spacer(modifier = Modifier.width(10.dp))
+ 109                      Column {
+ 110                          Text(
+ 111                              text = ""$dueSoonCount book(s) due soon"",
+ 112                              fontWeight = FontWeight.Bold,
+ 113                              color = DueSoonAmber,
+ 114>                             fontSize = 14.sp
+ 115                          )
+ 116                          Text(
+ 117                              text = ""You can renew eligible loans below to extend your lending period."",
+ 118                              color = DueSoonAmber,
+ 119                              fontSize = 12.sp
+ 120                          )"
+2a70229e11,S07,Component exported=true (or implicitly exported by an intent-filter) with no android:permission and not the MAIN/LAUNCHER activity.,main/AndroidManifest.xml,25,receiver androidx.media.session.MediaButtonReceiver exported without permission,"  19          <service
+  20              android:name=""com.jlong.miccheck.RecorderService""
+  21              android:enabled=""true""
+  22              android:exported=""false""
+  23              android:foregroundServiceType=""microphone"" />
+  24  
+  25>         <receiver android:name=""androidx.media.session.MediaButtonReceiver"">
+  26              <intent-filter>
+  27                  <action android:name=""android.intent.action.MEDIA_BUTTON"" />
+  28              </intent-filter>
+  29          </receiver>
+  30  
+  31          <service"
+bbb180308c,P03,Composable parameter whose type is a Kotlin collection interface/array or a project class with a var property (not @Stable/@Immutable).,app/MainActivity.kt,61,fun LoansList(list: List<Loan>) unstable parameter,"  55      LaunchedEffect(state.message) { state.message?.let { snack.showSnackbar(it) } }
+  56      if (detailId != null) { BookScreen(detailId!!, vm) { detailId = null }; return }
+  57      Scaffold(snackbarHost = { SnackbarHost(snack) }, bottomBar = { NavigationBar { NavigationBarItem(tab == Tab.Loans, { tab = Tab.Loans }, label = { Text(""Loans"") }, icon = {}); NavigationBarItem(tab == Tab.History, { tab = Tab.History }, label = { Text(""History"") }, icon = {}) } }) { pad ->
+  58          Column(Modifier.fillMaxSize().padding(pad).padding(horizontal = 16.dp)) { Text(if (tab == Tab.Loans) ""My loans"" else ""Reading history"", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(vertical = 18.dp)); if (state.saved) Text(""Showing saved data"", color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(bottom = 8.dp)); if (state.loading) CircularProgressIndicator() else if (tab == Tab.Loans) LoansList(state.loans, vm, { detailId = it }) else HistoryList(state, vm, { detailId = it }) }
+  59      }
+  60  }
+  61> @Composable private fun LoansList(list: List<Loan>, vm: ShelfTapViewModel, open: (String) -> Unit) { LazyColumn { items(list, key = { it.loanId }, contentType = { ""loan"" }) { loan -> val days = vm.daysLeft(loan.dueAt); Card(Modifier.fillMaxWidth().padding(bottom = 10.dp).clickable { open(loan.titleId) }) { Column(Modifier.padding(16.dp)) { Text(loan.title, style = MaterialTheme.typography.titleMedium); Text(""Due ${vm.format(loan.dueAt)}""); if (days < 0L) Text(""Overdue"", color = MaterialTheme.colorScheme.error); else Text(""$days days left""); Spacer(Modifier.height(8.dp)); Button({ vm.renew(loan) }, enabled = loan.renewable, modifier = Modifier.size(110.dp, 48.dp)) { Text(stringResource(R.string.renew)) } } } } } }
+  62  @Composable private fun HistoryList(state: ShelfState, vm: ShelfTapViewModel, open: (String) -> Unit) { var confirm by remember { mutableStateOf(false) }; val scope = rememberCoroutineScope(); Column { Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) { Text(stringResource(R.string.keep_history)); Switch(checked = state.member?.historyEnabled == true, onCheckedChange = { if (!it) confirm = true else vm.setHistory(true) }) }; HorizontalDivider(); LazyColumn { items(state.history, key = { ""${it.titleId}-${it.outAt}"" }, contentType = { ""history"" }) { item -> Row(Modifier.fillMaxWidth().clickable { open(item.titleId) }.padding(vertical = 14.dp), horizontalArrangement = Arrangement.SpaceBetween) { Column { Text(item.title, style = MaterialTheme.typography.titleMedium); Text(""Borrowed ${vm.format(item.outAt)}""); item.returnedAt?.let { Text(""Returned ${vm.format(it)}"") } } } } } }; if (confirm) AlertDialog(onDismissRequest = { confirm = false }, title = { Text(stringResource(R.string.confirm_history_title)) }, text = { Text(stringResource(R.string.confirm_history_message)) }, confirmButton = { TextButton({ confirm = false; scope.launch { vm.setHistory(false) } }) { Text(stringResource(R.string.turn_off)) } }, dismissButton = { TextButton({ confirm = false }) { Text(stringResource(R.string.cancel)) } }) }
+  63  }
+  64  @Composable private fun BookScreen(id: String, vm: ShelfTapViewModel, back: () -> Unit) { var book by remember { mutableStateOf<BookDetail?>(null) }; LaunchedEffect(id) { book = runCatching { vm.book(id) }.getOrNull() }; Column(Modifier.fillMaxSize().padding(16.dp)) { TextButton(back) { Text(""‹  ${stringResource(R.string.back)}"") }; val b = book; if (b == null) CircularProgressIndicator() else { AsyncImage(model = b.coverUrl, contentDescription = stringResource(R.string.cover), modifier = Modifier.fillMaxWidth().aspectRatio(0.67f)); Spacer(Modifier.height(16.dp)); Text(b.title, style = MaterialTheme.typography.headlineSmall); Text(b.authors.joinToString(), style = MaterialTheme.typography.bodyLarge); Spacer(Modifier.height(12.dp)); Text(""Subjects: ${b.subjects.joinToString()}""); Text(""${b.copiesAvailable} of ${b.copiesTotal} copies available"") } }
+  65  }"
+e7b95f2354,U01,Icon/Image with contentDescription null (or absent) acting as the only content of a clickable control (IconButton/FAB/toggle) or carrying its own click modifier.,password/ChangePasswordScreen.kt,195,Icon contentDescription=null is the only content of IconButton," 189                          label = { Text(""New Password"") },
+ 190                          leadingIcon = {
+ 191                              Icon(imageVector = Icons.Default.Lock, contentDescription = null)
+ 192                          },
+ 193                          trailingIcon = {
+ 194                              IconButton(onClick = { newPasswordVisible = !newPasswordVisible }) {
+ 195>                                 Icon(
+ 196                                      imageVector = if (newPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+ 197                                      contentDescription = null
+ 198                                  )
+ 199                              }
+ 200                          },
+ 201                          singleLine = true,"
+b8d9a5d24d,S02,"Hardcoded secret: provider-key patterns, secret-named string constants with a non-placeholder high-entropy value, buildConfigField/signing passwords with literals.",androidApp/build.gradle.kts,131,keyPassword literal in build script," 125      signingConfigs {
+ 126          register(""release"")
+ 127          getByName(""debug"") {
+ 128              storeFile = rootProject.file(""release/debug.jks"")
+ 129              storePassword = ""android""
+ 130              keyAlias = ""androiddebugkey""
+ 131>             keyPassword = ""android""
+ 132          }
+ 133      }
+ 134      if (hasReleaseKey) {
+ 135          signingConfigs[""release""].apply {
+ 136              keyAlias(getLocalProperty(""yaba.key.alias""))
+ 137              keyPassword(getLocalProperty(""yaba.key.password""))"
+d352fd232d,P08,"Decorative effects (blur/RenderEffect, shadow or elevation > 2dp, gradient brush, graphicsLayer alpha/renderEffect, infinite animation) inside a lazy-list item or a composable it calls. Also computes the R13 effect-density metrics.",profile/ProfileScreen.kt,193,shadow>2dp: defaultElevation = 6.dp) ) { Box( modifier = M in list item scope DigitalLibraryCard," 187  fun DigitalLibraryCard(profile: MemberProfile) {
+ 188      Card(
+ 189          modifier = Modifier
+ 190              .fillMaxWidth()
+ 191              .height(200.dp),
+ 192          shape = RoundedCornerShape(16.dp),
+ 193>         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+ 194      ) {
+ 195          Box(
+ 196              modifier = Modifier
+ 197                  .fillMaxSize()
+ 198                  .background(
+ 199                      Brush.horizontalGradient("
+d9198be22c,P06,"Image decoded/loaded without bounds or with caching off: manual BitmapFactory decode without inSampleSize, AsyncImage with no size-bounding modifier, Size.ORIGINAL, cache disabled.",miccheck/AudioService.kt,653,BitmapFactory.decodeResource without inSampleSize (full-resolution decode)," 647                      ImageDecoder.createSource(
+ 648                          contentResolver,
+ 649                          Uri.parse(it)
+ 650                      )
+ 651                  )
+ 652              else
+ 653>                 BitmapFactory.decodeResource(resources, R.drawable.ic_notification_temp)
+ 654          }
+ 655          // 7
+ 656          initializeNotification(
+ 657              mediaDescription,
+ 658              bitmap
+ 659          )"
+9a0cd0dda5,P13,"Search implemented as a linear in-memory filter or an unindexed SQL LIKE (no FTS/index), or a per-keystroke remote search with no debounce.",data/TitleDao.kt,16,"unindexed LIKE query, no FTS table; debounce=yes","  10  interface TitleDao {
+  11  
+  12      @Query(""SELECT * FROM titles ORDER BY title COLLATE NOCASE, id"")
+  13      fun pagingAll(): PagingSource<Int, TitleEntity>
+  14  
+  15      /** [pattern] must already be lower-cased and LIKE-escaped. */
+  16>     @Query(""SELECT * FROM titles WHERE searchText LIKE '%' || :pattern || '%' ESCAPE '\\' ORDER BY title COLLATE NOCASE, id"")
+  17      fun pagingSearch(pattern: String): PagingSource<Int, TitleEntity>
+  18  
+  19      @Query(""SELECT * FROM titles WHERE id = :id"")
+  20      suspend fun getById(id: String): TitleEntity?
+  21  
+  22      @Insert(onConflict = OnConflictStrategy.REPLACE)"
+e3bb02111a,S09,"SQL built by string interpolation/concatenation, WebView.loadUrl on a non-literal with JavaScript on, or a credential-submitting function with no validation predicate in its file.",auth/AuthViewModel.kt,40,signIn(...) submits credentials; no validation predicate in MomentumAndroid/src/main/java/com/mwaibanda/momentum/android/presentation/auth/AuthViewModel.kt,"  34                  }
+  35              }
+  36              Log.d(""Auth"", ""User {id: ${res.data?.uid}, isGuest: ${res.data?.isAnonymous}}"")
+  37          }
+  38      }
+  39  
+  40>     fun signIn(email: String, password: String, onCompletion: () -> Unit = {}) {
+  41          authController.signInWithEmail(email = email, password = password) { res ->
+  42              when (res) {
+  43                  is Failure -> {
+  44                      Log.d(""Auth/Failure"", res.message ?: """")
+  45                  }
+  46                  is Success -> {"
+88d8a1d5de,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",ui/CatalogueScreen.kt,1,data screen file renders no loading state,"   1> @file:OptIn(ExperimentalMaterial3Api::class)
+   2  
+   3  package vn.shelftap.app.ui
+   4  
+   5  import androidx.compose.foundation.layout.padding
+   6  import androidx.compose.material3.ExperimentalMaterial3Api
+   7  import androidx.compose.material3.Scaffold"
+6579b5fa54,P08,"Decorative effects (blur/RenderEffect, shadow or elevation > 2dp, gradient brush, graphicsLayer alpha/renderEffect, infinite animation) inside a lazy-list item or a composable it calls. Also computes the R13 effect-density metrics.",ui/GalleryScreen.kt,179,shadow>2dp: elevation = 8.dp ) { Column( modifier = Modifi in list item scope GalleryItemCard," 173              .clickable {
+ 174                  onDetailsNavigate(
+ 175                      nftProps.id.toString()
+ 176                  )
+ 177              },
+ 178          shape = RoundedCornerShape(24.dp),
+ 179>         elevation = 8.dp
+ 180      ) {
+ 181          Column(
+ 182              modifier = Modifier
+ 183                  .background(CardDarkBlue)
+ 184                  .padding(24.dp)
+ 185          ) {"
+2497f57d14,U03,"Material colour-scheme foreground/background pairs (on* vs base, both explicit) with WCAG contrast below 4.5:1; Text colour literal Gray/LightGray on the default light surface.",theme/Theme.kt,10,darkColorScheme: onPrimary on primary contrast 4.30:1 < 4.5,"   4  import androidx.compose.material3.MaterialTheme
+   5  import androidx.compose.material3.darkColorScheme
+   6  import androidx.compose.material3.lightColorScheme
+   7  import androidx.compose.runtime.Composable
+   8  import androidx.compose.ui.graphics.Color
+   9  
+  10> private val DarkColorScheme = darkColorScheme(
+  11      primary = NavyLight,
+  12      secondary = GoldLight,
+  13      background = Color(0xFF121212),
+  14      surface = Color(0xFF1E1E1E),
+  15      onPrimary = Color.White,
+  16      onSecondary = Color.Black,"
+cb9c769ebf,P06,"Image decoded/loaded without bounds or with caching off: manual BitmapFactory decode without inSampleSize, AsyncImage with no size-bounding modifier, Size.ORIGINAL, cache disabled.",ui/BookImage.kt,27,BitmapFactory.decodeStream without inSampleSize (full-resolution decode),"  21  
+  22  @Composable
+  23  fun BookImage(url: String?, modifier: Modifier = Modifier) {
+  24      var bitmap by remember(url) { mutableStateOf<android.graphics.Bitmap?>(null) }
+  25      var loading by remember(url) { mutableStateOf(url != null) }
+  26      LaunchedEffect(url) {
+  27>         bitmap = if (url == null) null else withContext(Dispatchers.IO) { runCatching { URL(url).openStream().use { stream -> BitmapFactory.decodeStream(stream) } }.getOrNull() }
+  28          loading = false
+  29      }
+  30      Box(modifier.background(MaterialTheme.colorScheme.surfaceVariant), contentAlignment = Alignment.Center) {
+  31          when {
+  32              bitmap != null -> Image(bitmap!!.asImageBitmap(), ""Book cover"", Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+  33              loading -> CircularProgressIndicator(Modifier.size(22.dp), strokeWidth = 2.dp)"
+5728b63547,P02,Lazy list with >= 2 content blocks (or a type-switching items lambda) and no contentType anywhere in it.,app/MainActivity.kt,100,"LazyColumn with 2 content blocks, no contentType","  94      }) { padding ->
+  95          Column(Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp)) {
+  96              OutlinedTextField(value = search, onValueChange = vm::setSearch, modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp), placeholder = { Text(""Search titles, authors, ISBN or subjects"") }, leadingIcon = { Icon(Icons.Default.Search, ""Search"") }, singleLine = true, shape = RoundedCornerShape(14.dp))
+  97              if (items.itemCount == 0 && items.loadState.refresh is androidx.paging.LoadState.NotLoading && search.isNotBlank()) {
+  98                  Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(""No books found"", color = MaterialTheme.colorScheme.onSurfaceVariant) }
+  99              } else {
+ 100>                 LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxSize()) {
+ 101                      items(items.itemCount, key = { index -> items[index]?.id ?: index }) { index -> items[index]?.toTitle()?.let { TitleRow(it, open) } }
+ 102                      if (items.loadState.append is androidx.paging.LoadState.Loading) item { Box(Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) { CircularProgressIndicator(Modifier.size(24.dp)) } }
+ 103                  }
+ 104              }
+ 105          }
+ 106      }"
+a1c18bbfb7,D01,"Use of a deprecated API/DSL from TABLE/GRADLE (code, manifests and build scripts); security-crypto is also reported by S08 (taxonomy overlap is intended).",app/build.gradle.kts,35,deprecated kotlinOptions: use compilerOptions DSL (Kotlin Gradle plugin),"  29  
+  30      compileOptions {
+  31          sourceCompatibility = JavaVersion.VERSION_17
+  32          targetCompatibility = JavaVersion.VERSION_17
+  33      }
+  34  
+  35>     kotlinOptions {
+  36          jvmTarget = ""17""
+  37      }
+  38  
+  39      buildFeatures {
+  40          compose = true
+  41      }"
+db2b0b6d3d,U04,"Colour literal (Color(0x..), Color.<Named> except Transparent/Unspecified) or fontSize = N.sp literal outside the theme package and previews.",app/MainActivity.kt,36,hardcoded Color(0xFF8B1A10));if(tab==0)LoansScreen bypasses the theme,"  30  import java.net.URL
+  31  import vn.shelftap.app.data.*
+  32  
+  33  class MainActivity:ComponentActivity(){override fun onCreate(b:Bundle?){super.onCreate(b);setContent{ShelfTapApp()}}}
+  34  private val green=Color(0xFF315F51);private val dateFmt=DateTimeFormatter.ofPattern(""MMM d, yyyy"").withZone(ZoneId.systemDefault())
+  35  private fun date(s:String)=runCatching{dateFmt.format(Instant.parse(s))}.getOrDefault(s.take(10));private fun days(s:String)=runCatching{ChronoUnit.DAYS.between(Instant.now(),Instant.parse(s)).toInt()}.getOrDefault(0)
+  36> @Composable fun ShelfTapApp(vm:MainViewModel=viewModel()){val st by vm.state.collectAsState();var tab by remember{mutableIntStateOf(0)};var detail by remember{mutableStateOf<String?>(null)};MaterialTheme(colorScheme=lightColorScheme(primary=green,background=Color(0xFFF8F9F6))){if(detail!=null)DetailScreen(st.title,detail!!,onBack={detail=null}) else Scaffold(topBar={TopAppBar(title={Text(if(tab==0)""My loans"" else ""Reading history"")},actions={IconButton({vm.refresh()}){Icon(Icons.Default.Refresh,""Refresh"")}})},bottomBar={NavigationBar{NavigationBarItem(tab==0,{tab=0},icon={Icon(Icons.Default.MenuBook,""Loans"")},label={Text(""Loans"")});NavigationBarItem(tab==1,{tab=1},icon={Icon(Icons.Default.History,""History"")},label={Text(""History"")})}}){pad->Column(Modifier.padding(pad).fillMaxSize()){if(st.message!=null)Text(st.message!!,Modifier.fillMaxWidth().background(Color(0xFFFFE0DC)).padding(12.dp),color=Color(0xFF8B1A10));if(tab==0)LoansScreen(st,vm){vm.loadTitle(it);detail=it}else HistoryScreen(st,vm){vm.loadTitle(it);detail=it}}}}}
+  37  @Composable fun LoansScreen(st:AppState,vm:MainViewModel,onDetail:(String)->Unit){if(st.loansOffline)SavedNote();if(st.loading&&st.loans.isEmpty())Loading();LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){items(st.loans){loan->val left=days(loan.dueAt);Card(Modifier.fillMaxWidth().clickable{onDetail(loan.titleId)} ){Column(Modifier.padding(16.dp)){Text(loan.title,style=MaterialTheme.typography.titleMedium,fontWeight=FontWeight.SemiBold);Spacer(Modifier.height(8.dp));if(left<0)Text(""Overdue"",color=Color(0xFFB3261E),fontWeight=FontWeight.Bold);Text(if(left<0)""Due ${date(loan.dueAt)} · ${-left} days overdue"" else ""Due ${date(loan.dueAt)} · $left days left"",color=Color.Gray);Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.End){Button({vm.renew(loan.loanId)},enabled=loan.renewable){Text(""Renew"")}}}}}}}
+  38  @Composable fun HistoryScreen(st:AppState,vm:MainViewModel,onDetail:(String)->Unit){var confirm by remember{mutableStateOf(false)};Row(Modifier.fillMaxWidth().padding(horizontal=16.dp,vertical=8.dp),verticalAlignment=Alignment.CenterVertically){Text(""Keep my reading history"",Modifier.weight(1f),fontWeight=FontWeight.Medium);Switch(checked=st.member?.historyEnabled==true,onCheckedChange={if(!it)confirm=true else vm.setHistory(true)})};if(st.historyOffline)SavedNote();LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){items(st.history.sortedByDescending{it.outAt}){h->Card(Modifier.fillMaxWidth().clickable{onDetail(h.titleId)}){Column(Modifier.padding(16.dp)){Text(h.title,fontWeight=FontWeight.SemiBold);Text(""Borrowed ${date(h.outAt)}"",color=Color.Gray);Text(""Returned ${date(h.returnedAt)}"",color=Color.Gray)}}}};if(confirm)AlertDialog(onDismissRequest={confirm=false},title={Text(""Turn off reading history?"")},text={Text(""Your future reading history will not be saved, and existing history will no longer be shown."")},confirmButton={TextButton({confirm=false;vm.setHistory(false)}){Text(""Turn off"")}},dismissButton={TextButton({confirm=false}){Text(""Cancel"")}})} }
+  39  @Composable fun DetailScreen(d:TitleDetails?,id:String,onBack:()->Unit){var bitmap by remember(d?.coverUrl){mutableStateOf<Bitmap?>(null)};LaunchedEffect(d?.coverUrl){val url=d?.coverUrl;if(url!=null)bitmap=withContext(Dispatchers.IO){runCatching{BitmapFactory.decodeStream(URL(url).openStream())}.getOrNull()}};Scaffold(topBar={TopAppBar(title={Text(""Book details"")},navigationIcon={IconButton(onBack){Icon(Icons.Default.ArrowBack,""Back"")}})}){p->Column(Modifier.padding(p).padding(20.dp),horizontalAlignment=Alignment.CenterHorizontally){if(bitmap!=null)Image(bitmap!!.asImageBitmap(),""Cover"",Modifier.size(150.dp,210.dp))else Box(Modifier.size(150.dp,210.dp).background(Color(0xFFDDE8E1)),contentAlignment=Alignment.Center){Icon(Icons.Default.MenuBook,""Book"",Modifier.size(64.dp),tint=green)};Spacer(Modifier.height(20.dp));Text(d?.title?:""Loading…"",style=MaterialTheme.typography.headlineSmall,fontWeight=FontWeight.Bold);Text(""Title ID: $id"",color=Color.Gray);Spacer(Modifier.height(18.dp));Text(""Authors"",fontWeight=FontWeight.Bold);Text(d?.authors?.joinToString()?:""Loading…"");Spacer(Modifier.height(12.dp));Text(""Subjects"",fontWeight=FontWeight.Bold);Text(d?.subjects?.joinToString()?:""—"");Spacer(Modifier.height(18.dp));Text(""Copies available"",fontWeight=FontWeight.Bold);Text(""${d?.copiesAvailable?:0} of ${d?.copiesTotal?:0}"")}}}
+  40  @Composable fun SavedNote(){Text(""Showing saved data"",Modifier.fillMaxWidth().background(Color(0xFFE3F1EA)).padding(12.dp),color=green)}
+  41  @Composable fun Loading(){Box(Modifier.fillMaxWidth().padding(24.dp),contentAlignment=Alignment.Center){CircularProgressIndicator()}}"
+2d670fa3a9,P11,No Baseline Profile: no baselineprofile plugin and no baseline-prof.txt anywhere in the project.,app/build.gradle.kts,1,no baselineprofile plugin and no baseline-prof.txt,"   1> plugins {
+   2      id(""com.android.application"")
+   3      id(""org.jetbrains.kotlin.android"")
+   4      id(""com.google.devtools.ksp"")
+   5  }
+   6  
+   7  android {"
+7554fb91ce,P05,"Scroll position (firstVisibleItemIndex/ScrollOffset, scrollState.value) read directly in composition, not via derivedStateOf/snapshotFlow/deferred lambda.",playlist/PlaylistRootPage.kt,165,"index - listState.firstVisibleItemIndex }, read in composition of PlaylistRootPage"," 159                                  playlist,
+ 160                                  editMode,
+ 161                                  playlist.id in selectedPlaylistIds,
+ 162                                  { onPlaylistClick(playlist) },
+ 163                                  { onRenamePlaylist(playlist) },
+ 164                                  Modifier.libraryListEntrance(entrance) {
+ 165>                                     index - listState.firstVisibleItemIndex
+ 166                                  },
+ 167                              )
+ 168                              LibraryDivider()
+ 169                          }
+ 170                          item(key = ""footer"") {
+ 171                              LibraryFooter(R.plurals.playlists_count, playlists.size)"
+7e646efa7f,S08,"MD5/SHA-1 digest, AES default/ECB/DES/RC4, static or all-zero IV, hardcoded SecretKeySpec key, or androidx.security-crypto (EncryptedSharedPreferences/MasterKey/EncryptedFile).",local/PreferenceManager.kt,5,deprecated androidx.security-crypto API androidx.security.crypto,"   1  package vn.shelftap.app.data.local
+   2  
+   3  import android.content.Context
+   4  import android.content.SharedPreferences
+   5> import androidx.security.crypto.EncryptedSharedPreferences
+   6  import androidx.security.crypto.MasterKey
+   7  import java.util.UUID
+   8  
+   9  class PreferenceManager(context: Context) {
+  10  
+  11      private val prefs: SharedPreferences = try {"
+ee762f0876,U02,"Modifier chain with a clickable/toggleable/selectable and an explicit size/width/height under 48dp, without minimumInteractiveComponentSize or a 48dp minimum.",components/CategoryCard.kt,24,clickable chain with .height(40.dp (< 48dp touch target),"  18      isSelected: Boolean = false,
+  19      onSelectedCategoryChanged: (String) -> Unit,
+  20      onExecuteSearch: () -> Unit
+  21  ) {
+  22  
+  23      Surface(
+  24>         modifier = Modifier
+  25              .height(40.dp)
+  26              .padding(end = 16.dp)
+  27              .toggleable(
+  28                  value = isSelected,
+  29                  onValueChange = {
+  30                      onSelectedCategoryChanged(category)"
+26faf21eff,S08,"MD5/SHA-1 digest, AES default/ECB/DES/RC4, static or all-zero IV, hardcoded SecretKeySpec key, or androidx.security-crypto (EncryptedSharedPreferences/MasterKey/EncryptedFile).",security/CryptoManager.kt,92,deprecated androidx.security-crypto API EncryptedFile,"  86          val cipher = Cipher.getInstance(TRANSFORMATION)
+  87          val spec = GCMParameterSpec(TAG_LENGTH_BITS, iv)
+  88          cipher.init(Cipher.DECRYPT_MODE, getOrCreateKey(), spec)
+  89          cipher.doFinal(ciphertext)
+  90      }
+  91  
+  92>     suspend fun writeEncryptedFile(fileName: String, data: ByteArray) = withContext(dispatcherProvider.io) {
+  93          val encrypted = encryptData(data)
+  94          val file = File(context.filesDir, fileName)
+  95          FileOutputStream(file).use { it.write(encrypted) }
+  96      }
+  97  
+  98      suspend fun readEncryptedFile(fileName: String): ByteArray? = withContext(dispatcherProvider.io) {"
+4152d9f51b,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",search/SearchScreen.kt,1,data screen file renders no error state,"   1> package vn.shelftap.app.ui.search
+   2  
+   3  import androidx.compose.foundation.layout.Box
+   4  import androidx.compose.foundation.layout.Column
+   5  import androidx.compose.foundation.layout.fillMaxSize
+   6  import androidx.compose.foundation.layout.fillMaxWidth
+   7  import androidx.compose.foundation.layout.padding"
+4053da5311,P04,Sort/filter/group/regex/date-format/JSON parsing executed in a composable body outside remember/derivedStateOf/effects/event lambdas.,components/LoanItemCard.kt,48,"DateTimeFormatter.ofPattern(""MMM dd, yyyy"") Card( modifier = modifier in composable LoanItemCard without remember","  42  fun LoanItemCard(
+  43      loan: Loan,
+  44      onBookClick: (Loan) -> Unit,
+  45      onRenewClick: (Loan) -> Unit,
+  46      modifier: Modifier = Modifier
+  47  ) {
+  48>     val dateFormatter = DateTimeFormatter.ofPattern(""MMM dd, yyyy"")
+  49  
+  50      Card(
+  51          modifier = modifier
+  52              .fillMaxWidth()
+  53              .clickable { onBookClick(loan) },
+  54          shape = RoundedCornerShape(12.dp),"
+703027d523,P08,"Decorative effects (blur/RenderEffect, shadow or elevation > 2dp, gradient brush, graphicsLayer alpha/renderEffect, infinite animation) inside a lazy-list item or a composable it calls. Also computes the R13 effect-density metrics.",profile/ProfileScreen.kt,236,gradient: Brush.linearGradient( colors = listOf(CardGrad in list item scope DigitalLibraryCard," 230          elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+ 231      ) {
+ 232          Box(
+ 233              modifier = Modifier
+ 234                  .fillMaxSize()
+ 235                  .background(
+ 236>                     Brush.linearGradient(
+ 237                          colors = listOf(CardGradientStart, CardGradientEnd)
+ 238                      )
+ 239                  )
+ 240                  .padding(20.dp)
+ 241          ) {
+ 242              Column("
+38155aac84,S08,"MD5/SHA-1 digest, AES default/ECB/DES/RC4, static or all-zero IV, hardcoded SecretKeySpec key, or androidx.security-crypto (EncryptedSharedPreferences/MasterKey/EncryptedFile).",adb/AdbKey.kt,175,textbook RSA transformation RSA/ECB/NoPadding," 169              }
+ 170          }
+ 171          return privateKey
+ 172      }
+ 173  
+ 174      fun sign(data: ByteArray?): ByteArray {
+ 175>         val cipher = Cipher.getInstance(""RSA/ECB/NoPadding"")
+ 176          cipher.init(Cipher.ENCRYPT_MODE, privateKey)
+ 177          cipher.update(PADDING)
+ 178          return cipher.doFinal(data)
+ 179      }
+ 180  
+ 181      private val keyManager"
+d92e91c985,U02,"Modifier chain with a clickable/toggleable/selectable and an explicit size/width/height under 48dp, without minimumInteractiveComponentSize or a 48dp minimum.",playlist/PlaylistDialogs.kt,136,clickable chain with .size(32.dp (< 48dp touch target)," 130                                      onDone = { if (enabled) onConfirm(request, value.text) }
+ 131                                  ),
+ 132                          )
+ 133                          Image(
+ 134                              rememberSmartisanDrawablePainter(R.drawable.quick_icon_delete),
+ 135                              stringResource(R.string.delete),
+ 136>                             Modifier.size(32.dp).clickable(
+ 137                                  remember { MutableInteractionSource() },
+ 138                                  null,
+ 139                              ) {
+ 140                                  value = TextFieldValue()
+ 141                              },
+ 142                              contentScale = ContentScale.Inside,"
+3b4f5f237a,S02,"Hardcoded secret: provider-key patterns, secret-named string constants with a non-placeholder high-entropy value, buildConfigField/signing passwords with literals.",login/LoginViewModel.kt,89,"password = ""libraryPass2024"", literal secret","  83      }
+  84  
+  85      fun fillDemoCredentials() {
+  86          _uiState.update {
+  87              it.copy(
+  88                  email = ""eleanor.vance@citylibrary.org"",
+  89>                 password = ""libraryPass2024"",
+  90                  emailError = null,
+  91                  passwordError = null,
+  92                  generalError = null
+  93              )
+  94          }
+  95      }"
+b95b744271,S02,"Hardcoded secret: provider-key patterns, secret-named string constants with a non-placeholder high-entropy value, buildConfigField/signing passwords with literals.",app/build.gradle,27,keyPassword literal in build script,"  21          }
+  22      }
+  23  
+  24      signingConfigs {
+  25          debug {
+  26              keyAlias 'androiddebugkey'
+  27>             keyPassword 'android'
+  28              storeFile file('./signature/debug.keystore')
+  29              storePassword 'android'
+  30          }
+  31          nightly {
+  32              keyAlias System.env.ELEMENT_ANDROID_NIGHTLY_KEYID ?: project.property(""signing.element.nightly.keyId"")
+  33              keyPassword System.env.ELEMENT_ANDROID_NIGHTLY_KEYPASSWORD ?: project.property(""signing.element.nightly.keyPassword"")"
+7018db434b,P06,"Image decoded/loaded without bounds or with caching off: manual BitmapFactory decode without inSampleSize, AsyncImage with no size-bounding modifier, Size.ORIGINAL, cache disabled.",common/TitleRow.kt,96,AsyncImage without a size-bounding modifier (decodes at original size),"  90                  style = MaterialTheme.typography.labelSmall,
+  91                  textAlign = TextAlign.Center,
+  92                  modifier = Modifier.padding(4.dp)
+  93              )
+  94          }
+  95      } else {
+  96>         AsyncImage(
+  97              model = ImageRequest.Builder(LocalContext.current)
+  98                  .data(coverUrl)
+  99                  .crossfade(true)
+ 100                  .build(),
+ 101              contentDescription = contentDescription,
+ 102              contentScale = ContentScale.Crop,"
+e0b20ef8e9,S05,"Sensitive logging: a log call whose arguments name a token/credential/Authorization/body/PII, or HttpLoggingInterceptor at BODY/HEADERS not guarded by BuildConfig.DEBUG.",module/RetrofitModule.kt,33,HttpLoggingInterceptor Level.BODY not guarded for release,"  27      @Provides
+  28      fun provideOkHttp(): OkHttpClient {
+  29          val interceptor = HttpLoggingInterceptor { message ->
+  30              Log.i(""API CALL : "", message + """")
+  31          }
+  32  
+  33>         val logger = interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+  34  
+  35          return OkHttpClient.Builder()
+  36              .addNetworkInterceptor(logger)
+  37              .build()
+  38      }
+  39  "
+f68483b173,P11,No Baseline Profile: no baselineprofile plugin and no baseline-prof.txt anywhere in the project.,app/build.gradle.kts,1,no baselineprofile plugin and no baseline-prof.txt,"   1> plugins {
+   2      alias(libs.plugins.android.application)
+   3      alias(libs.plugins.kotlin.android)
+   4      alias(libs.plugins.kotlin.serialization)
+   5      alias(libs.plugins.compose.compiler)
+   6  }
+   7  "
+a53286d380,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",utils/KotlinUtils.kt,103,cleartext URL literal http://123.121.147.7:88/ve//downloadZyFj.shtml,"  97      }
+  98  
+  99      fun getJSESSIONIDOfHomeworkToDownload(): String {
+ 100          var cookies = """"
+ 101  
+ 102          SmartCurriculumPlatformRepository.client.cookieJar.loadForRequest(
+ 103>             Request.Builder().url(""http://123.121.147.7:88/ve//downloadZyFj.shtml"").build().url
+ 104          ).forEach {
+ 105              cookies += ""${it.name}=${it.value};""
+ 106          }
+ 107          return cookies
+ 108      }
+ 109  }"
+634eaa5d35,S04,"TLS validation disabled: trust-all X509TrustManager, ALLOW_ALL/true HostnameVerifier, onReceivedSslError proceed(), custom sslSocketFactory with a trust-all manager.",adb/AdbKey.kt,220,X509TrustManager that does not validate the chain," 214          }
+ 215  
+ 216  
+ 217      private val trustManager
+ 218          get() =
+ 219              @RequiresApi(Build.VERSION_CODES.R)
+ 220>             object : X509ExtendedTrustManager() {
+ 221  
+ 222                  @SuppressLint(""TrustAllX509TrustManager"")
+ 223                  override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?, socket: Socket?) {
+ 224                  }
+ 225  
+ 226                  @SuppressLint(""TrustAllX509TrustManager"")"
+60935d9548,P01,"Lazy list items()/itemsIndexed() call without a key (named, or a positional lambda as the 2nd argument).",app/MainActivity.kt,38,items(st.history.sortedByDescending{it.outAt}) in LazyColumn has no key,"  32  
+  33  class MainActivity:ComponentActivity(){override fun onCreate(b:Bundle?){super.onCreate(b);setContent{ShelfTapApp()}}}
+  34  private val green=Color(0xFF315F51);private val dateFmt=DateTimeFormatter.ofPattern(""MMM d, yyyy"").withZone(ZoneId.systemDefault())
+  35  private fun date(s:String)=runCatching{dateFmt.format(Instant.parse(s))}.getOrDefault(s.take(10));private fun days(s:String)=runCatching{ChronoUnit.DAYS.between(Instant.now(),Instant.parse(s)).toInt()}.getOrDefault(0)
+  36  @Composable fun ShelfTapApp(vm:MainViewModel=viewModel()){val st by vm.state.collectAsState();var tab by remember{mutableIntStateOf(0)};var detail by remember{mutableStateOf<String?>(null)};MaterialTheme(colorScheme=lightColorScheme(primary=green,background=Color(0xFFF8F9F6))){if(detail!=null)DetailScreen(st.title,detail!!,onBack={detail=null}) else Scaffold(topBar={TopAppBar(title={Text(if(tab==0)""My loans"" else ""Reading history"")},actions={IconButton({vm.refresh()}){Icon(Icons.Default.Refresh,""Refresh"")}})},bottomBar={NavigationBar{NavigationBarItem(tab==0,{tab=0},icon={Icon(Icons.Default.MenuBook,""Loans"")},label={Text(""Loans"")});NavigationBarItem(tab==1,{tab=1},icon={Icon(Icons.Default.History,""History"")},label={Text(""History"")})}}){pad->Column(Modifier.padding(pad).fillMaxSize()){if(st.message!=null)Text(st.message!!,Modifier.fillMaxWidth().background(Color(0xFFFFE0DC)).padding(12.dp),color=Color(0xFF8B1A10));if(tab==0)LoansScreen(st,vm){vm.loadTitle(it);detail=it}else HistoryScreen(st,vm){vm.loadTitle(it);detail=it}}}}}
+  37  @Composable fun LoansScreen(st:AppState,vm:MainViewModel,onDetail:(String)->Unit){if(st.loansOffline)SavedNote();if(st.loading&&st.loans.isEmpty())Loading();LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){items(st.loans){loan->val left=days(loan.dueAt);Card(Modifier.fillMaxWidth().clickable{onDetail(loan.titleId)} ){Column(Modifier.padding(16.dp)){Text(loan.title,style=MaterialTheme.typography.titleMedium,fontWeight=FontWeight.SemiBold);Spacer(Modifier.height(8.dp));if(left<0)Text(""Overdue"",color=Color(0xFFB3261E),fontWeight=FontWeight.Bold);Text(if(left<0)""Due ${date(loan.dueAt)} · ${-left} days overdue"" else ""Due ${date(loan.dueAt)} · $left days left"",color=Color.Gray);Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.End){Button({vm.renew(loan.loanId)},enabled=loan.renewable){Text(""Renew"")}}}}}}}
+  38> @Composable fun HistoryScreen(st:AppState,vm:MainViewModel,onDetail:(String)->Unit){var confirm by remember{mutableStateOf(false)};Row(Modifier.fillMaxWidth().padding(horizontal=16.dp,vertical=8.dp),verticalAlignment=Alignment.CenterVertically){Text(""Keep my reading history"",Modifier.weight(1f),fontWeight=FontWeight.Medium);Switch(checked=st.member?.historyEnabled==true,onCheckedChange={if(!it)confirm=true else vm.setHistory(true)})};if(st.historyOffline)SavedNote();LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){items(st.history.sortedByDescending{it.outAt}){h->Card(Modifier.fillMaxWidth().clickable{onDetail(h.titleId)}){Column(Modifier.padding(16.dp)){Text(h.title,fontWeight=FontWeight.SemiBold);Text(""Borrowed ${date(h.outAt)}"",color=Color.Gray);Text(""Returned ${date(h.returnedAt)}"",color=Color.Gray)}}}};if(confirm)AlertDialog(onDismissRequest={confirm=false},title={Text(""Turn off reading history?"")},text={Text(""Your future reading history will not be saved, and existing history will no longer be shown."")},confirmButton={TextButton({confirm=false;vm.setHistory(false)}){Text(""Turn off"")}},dismissButton={TextButton({confirm=false}){Text(""Cancel"")}})} }
+  39  @Composable fun DetailScreen(d:TitleDetails?,id:String,onBack:()->Unit){var bitmap by remember(d?.coverUrl){mutableStateOf<Bitmap?>(null)};LaunchedEffect(d?.coverUrl){val url=d?.coverUrl;if(url!=null)bitmap=withContext(Dispatchers.IO){runCatching{BitmapFactory.decodeStream(URL(url).openStream())}.getOrNull()}};Scaffold(topBar={TopAppBar(title={Text(""Book details"")},navigationIcon={IconButton(onBack){Icon(Icons.Default.ArrowBack,""Back"")}})}){p->Column(Modifier.padding(p).padding(20.dp),horizontalAlignment=Alignment.CenterHorizontally){if(bitmap!=null)Image(bitmap!!.asImageBitmap(),""Cover"",Modifier.size(150.dp,210.dp))else Box(Modifier.size(150.dp,210.dp).background(Color(0xFFDDE8E1)),contentAlignment=Alignment.Center){Icon(Icons.Default.MenuBook,""Book"",Modifier.size(64.dp),tint=green)};Spacer(Modifier.height(20.dp));Text(d?.title?:""Loading…"",style=MaterialTheme.typography.headlineSmall,fontWeight=FontWeight.Bold);Text(""Title ID: $id"",color=Color.Gray);Spacer(Modifier.height(18.dp));Text(""Authors"",fontWeight=FontWeight.Bold);Text(d?.authors?.joinToString()?:""Loading…"");Spacer(Modifier.height(12.dp));Text(""Subjects"",fontWeight=FontWeight.Bold);Text(d?.subjects?.joinToString()?:""—"");Spacer(Modifier.height(18.dp));Text(""Copies available"",fontWeight=FontWeight.Bold);Text(""${d?.copiesAvailable?:0} of ${d?.copiesTotal?:0}"")}}}
+  40  @Composable fun SavedNote(){Text(""Showing saved data"",Modifier.fillMaxWidth().background(Color(0xFFE3F1EA)).padding(12.dp),color=green)}
+  41  @Composable fun Loading(){Box(Modifier.fillMaxWidth().padding(24.dp),contentAlignment=Alignment.Center){CircularProgressIndicator()}}"
+b8bedfc64b,U02,"Modifier chain with a clickable/toggleable/selectable and an explicit size/width/height under 48dp, without minimumInteractiveComponentSize or a 48dp minimum.",components/ToolbarWithBackButtonAndTitle.kt,74,clickable chain with .size(30.dp (< 48dp touch target),"  68  
+  69  @Composable
+  70  fun BackArrow(
+  71      onClick: () -> Unit
+  72  ) {
+  73      Box(
+  74>         modifier = Modifier
+  75              .size(30.dp)
+  76              .clip(CircleShape)
+  77              .clickable { onClick() },
+  78          contentAlignment = Alignment.Center
+  79      ) {
+  80          Image("
+8708be8b22,U03,"Material colour-scheme foreground/background pairs (on* vs base, both explicit) with WCAG contrast below 4.5:1; Text colour literal Gray/LightGray on the default light surface.",theme/Theme.kt,7,lightColorScheme: onSecondary on secondary contrast 3.74:1 < 4.5,"   1  package vn.shelftap.app.ui.theme
+   2  
+   3  import androidx.compose.material3.MaterialTheme
+   4  import androidx.compose.material3.lightColorScheme
+   5  import androidx.compose.runtime.Composable
+   6  
+   7> private val LightColorScheme = lightColorScheme(
+   8      primary = PrimaryBlue,
+   9      onPrimary = OnPrimaryBlue,
+  10      primaryContainer = PrimaryBlueContainer,
+  11      onPrimaryContainer = OnPrimaryBlueContainer,
+  12      secondary = SecondaryTeal,
+  13      onSecondary = OnSecondaryTeal,"
+4041e2a2f2,P04,Sort/filter/group/regex/date-format/JSON parsing executed in a composable body outside remember/derivedStateOf/effects/event lambdas.,app/MainActivity.kt,37,".sortedByDescending{it.outAt}){x->ListItem(headlineContent={Text(x.title,fontWeight=FontWe in composable History without remember","  31  private fun date(s:String)=runCatching{fmt.format(Instant.parse(s))}.getOrDefault(s.take(10))
+  32  private fun days(s:String)=runCatching{ChronoUnit.DAYS.between(Instant.now(),Instant.parse(s)).toInt()}.getOrDefault(0)
+  33  @Composable fun App(repo:ShelfTapRepository){val vm:ShelfViewModel=viewModel(factory=ShelfViewModelFactory(repo));val nav=rememberNavController();val s by vm.state.collectAsState();MaterialTheme(colorScheme=lightColorScheme(primary=Color(0xFF3F5F90),surface=Color(0xFFFBF8FF))){NavHost(nav,""loans""){composable(""loans""){Scaffold(bottomBar={Bar(nav,""loans"")}){p->Loans(s,vm,{nav.navigate(""book/$it"")},Modifier.padding(p))}};composable(""history""){Scaffold(bottomBar={Bar(nav,""history"")}){p->History(s,vm,{nav.navigate(""book/$it"")},Modifier.padding(p))}};composable(""book/{id}"",arguments=listOf(navArgument(""id""){type=NavType.StringType})){Book(repo,it.arguments?.getString(""id"")?="""",nav)}}}}
+  34  @Composable private fun Bar(nav:androidx.navigation.NavHostController,cur:String){NavigationBar{NavigationBarItem(cur==""loans"",{nav.navigate(""loans"")},Icons.Default.MenuBook,{Text(""Loans"")});NavigationBarItem(cur==""history"",{nav.navigate(""history"")},Icons.Default.History,{Text(""History"")})}}
+  35  @Composable private fun Head(t:String,off:Boolean,refresh:()->Unit){Column(Modifier.fillMaxWidth().padding(20.dp)){Row(verticalAlignment=Alignment.CenterVertically,modifier=Modifier.fillMaxWidth()){Text(t,style=MaterialTheme.typography.headlineMedium,fontWeight=FontWeight.Bold,modifier=Modifier.weight(1f));IconButton(refresh){Icon(Icons.Default.Refresh,""Refresh"")}};if(off)Text(""Showing saved data"",color=MaterialTheme.colorScheme.secondary)}}
+  36  @Composable private fun Loans(s:ShelfState,vm:ShelfViewModel,open:(String)->Unit,m:Modifier){var chosen by remember{mutableStateOf<Loan?>(null)};Column(m){Head(""My loans"",s.offlineLoans,vm::refresh);if(s.loading)LinearProgressIndicator(Modifier.fillMaxWidth());if(s.loans.isEmpty()&&!s.loading)Empty(""No current loans"");LazyColumn{items(s.loans,key={it.loanId}){x->val left=days(x.dueAt);Card(Modifier.padding(6.dp).fillMaxWidth().clickable{open(x.titleId)}){Column(Modifier.padding(16.dp)){Text(x.title,style=MaterialTheme.typography.titleMedium,fontWeight=FontWeight.SemiBold);Text(""Due ${date(x.dueAt)}"");if(left<0)Text(""Overdue"",color=MaterialTheme.colorScheme.error,fontWeight=FontWeight.Bold)else Text(""$left days left"",color=MaterialTheme.colorScheme.primary);Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.End){Button(enabled=x.renewable,onClick={chosen=x}){Text(""Renew"")}}}}}}};chosen?.let{x->Confirm(""Renew loan?"",""Renew ‘${x.title}’ now?"",{vm.renew(x);chosen=null},{chosen=null})};s.message?.let{AlertDialog(onDismissRequest=vm::clearMessage,confirmButton={TextButton(vm::clearMessage){Text(""OK"")}},title={Text(""ShelfTap"")},text={Text(it)})}}}
+  37> @Composable private fun History(s:ShelfState,vm:ShelfViewModel,open:(String)->Unit,m:Modifier){var confirm by remember{mutableStateOf(false)};Column(m){Head(""Reading history"",s.offlineHistory,vm::refresh);Row(Modifier.fillMaxWidth().padding(20.dp,8.dp),verticalAlignment=Alignment.CenterVertically){Text(""Keep my reading history"",Modifier.weight(1f),style=MaterialTheme.typography.titleMedium);Switch(s.member?.historyEnabled?:true,{if(!it)confirm=true else vm.setHistory(true)})};if(s.history.isEmpty()&&!s.loading)Empty(""No reading history"");LazyColumn{items(s.history.sortedByDescending{it.outAt}){x->ListItem(headlineContent={Text(x.title,fontWeight=FontWeight.SemiBold)},supportingContent={Text(""Borrowed ${date(x.outAt)} • Returned ${x.returnedAt?.let(::date)?:""—""}"")},modifier=Modifier.clickable{open(x.titleId)})}}};if(confirm)Confirm(""Turn off history?"",""Your past loans will no longer be saved or shown."",{vm.setHistory(false);confirm=false},{confirm=false})}
+  38  @Composable private fun Confirm(t:String,msg:String,yes:()->Unit,no:()->Unit){AlertDialog(onDismissRequest=no,title={Text(t)},text={Text(msg)},confirmButton={TextButton(yes){Text(""Confirm"")}},dismissButton={TextButton(no){Text(""Cancel"")}})}
+  39  @Composable private fun Empty(t:String){Box(Modifier.fillMaxWidth().padding(48.dp),contentAlignment=Alignment.Center){Text(t,color=MaterialTheme.colorScheme.onSurfaceVariant)}}
+  40  @Composable private fun Book(repo:ShelfTapRepository,id:String,nav:androidx.navigation.NavHostController){var b by remember{mutableStateOf<BookDetail?>(null)};var error by remember{mutableStateOf(false)};LaunchedEffect(id){runCatching{repo.book(id)}.onSuccess{b=it}.onFailure{error=true}};Scaffold(topBar={TopAppBar(title={Text(""Book details"")},navigationIcon={IconButton({nav.popBackStack()}){Icon(Icons.Default.ArrowBack,""Back"")}})}){p->if(b==null){if(error)Empty(""Unable to load book details"")else Box(Modifier.fillMaxSize().padding(p),contentAlignment=Alignment.Center){CircularProgressIndicator()}}else Column(Modifier.padding(p).padding(20.dp)){b!!.coverUrl?.let{AsyncImage(it,null,Modifier.fillMaxWidth().height(230.dp),contentScale=ContentScale.Fit)};Spacer(Modifier.height(18.dp));Text(b!!.title,style=MaterialTheme.typography.headlineSmall,fontWeight=FontWeight.Bold);if(b!!.authors.isNotEmpty())Text(b!!.authors.joinToString(),style=MaterialTheme.typography.titleMedium);Spacer(Modifier.height(14.dp));Text(""Subjects"",style=MaterialTheme.typography.titleMedium,fontWeight=FontWeight.Bold);Text(b!!.subjects.joinToString("" • "").ifBlank{""No subjects listed""});Spacer(Modifier.height(20.dp));Text(""${b!!.copiesAvailable} of ${b!!.copiesTotal} copies available"",style=MaterialTheme.typography.titleMedium)}}}"
+ee10cf229f,U01,Icon/Image with contentDescription null (or absent) acting as the only content of a clickable control (IconButton/FAB/toggle) or carrying its own click modifier.,password/ChangePasswordScreen.kt,164,Icon contentDescription=null is the only content of IconButton," 158                          label = { Text(""Current Password"") },
+ 159                          leadingIcon = {
+ 160                              Icon(imageVector = Icons.Default.Lock, contentDescription = null)
+ 161                          },
+ 162                          trailingIcon = {
+ 163                              IconButton(onClick = { currentPasswordVisible = !currentPasswordVisible }) {
+ 164>                                 Icon(
+ 165                                      imageVector = if (currentPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+ 166                                      contentDescription = null
+ 167                                  )
+ 168                              }
+ 169                          },
+ 170                          singleLine = true,"
+03b1a5c65f,P03,Composable parameter whose type is a Kotlin collection interface/array or a project class with a var property (not @Stable/@Immutable).,app/MainActivity.kt,80,fun FlowChips(values: List<String>) unstable parameter,"  74          }
+  75      }
+  76  }
+  77  
+  78  @Composable private fun DetailLine(label: String, value: String) { Row(Modifier.fillMaxWidth().padding(vertical = 5.dp), horizontalArrangement = Arrangement.SpaceBetween) { Text(label, color = MaterialTheme.colorScheme.onSurfaceVariant); Text(value, fontWeight = FontWeight.Medium) } }
+  79  
+  80> @Composable private fun FlowChips(values: List<String>) { Row(Modifier.fillMaxWidth().padding(top = 8.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) { values.forEach { AssistChip(onClick = {}, label = { Text(it) }) } } }
+  81  
+  82  @Composable private fun ShelfTapTheme(content: @Composable () -> Unit) { MaterialTheme(colorScheme = lightColorScheme(primary = androidx.compose.ui.graphics.Color(0xFF315F72), secondary = androidx.compose.ui.graphics.Color(0xFF526B75), surface = androidx.compose.ui.graphics.Color(0xFFF7F9FA)), content = content) }"
+560608a15e,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",app/build.gradle.kts,1,no release build type: R8 minification off by default,"   1> plugins {
+   2      id(""katana.android.application"")
+   3      id(""katana.sentry"")
+   4      id(""katana.sonarqube.android"")
+   5  }
+   6  
+   7  dependencies {"
+7110a0dfa6,P05,"Scroll position (firstVisibleItemIndex/ScrollOffset, scrollState.value) read directly in composition, not via derivedStateOf/snapshotFlow/deferred lambda.",terminal/AccessibilityOverlay.kt,126,lazyListState.firstVisibleItemIndex == index read in composition of AccessibilityOverlay," 120              key = { index -> allLines[index].row to allLines[index].lastModified },
+ 121          ) { index ->
+ 122              val line = allLines[index]
+ 123  
+ 124              // Get the first visible item to highlight current focus in Review Mode
+ 125              val isCurrentlyFocused = isReviewMode &&
+ 126>                 lazyListState.firstVisibleItemIndex == index
+ 127  
+ 128              // Transparent box with semantic annotations and optional highlight
+ 129              Box(
+ 130                  modifier = Modifier
+ 131                      .fillMaxWidth()
+ 132                      .height(with(density) { charHeight.toDp() })"
+aba73745b3,U03,"Material colour-scheme foreground/background pairs (on* vs base, both explicit) with WCAG contrast below 4.5:1; Text colour literal Gray/LightGray on the default light surface.",theme/Theme.kt,8,lightColorScheme: onSurfaceVariant on surfaceVariant contrast 4.34:1 < 4.5,"   2  
+   3  import androidx.compose.foundation.isSystemInDarkTheme
+   4  import androidx.compose.material3.MaterialTheme
+   5  import androidx.compose.material3.lightColorScheme
+   6  import androidx.compose.runtime.Composable
+   7  
+   8> private val LightColorScheme = lightColorScheme(
+   9      primary = BluePrimary,
+  10      onPrimary = BlueOnPrimary,
+  11      primaryContainer = BluePrimaryContainer,
+  12      onPrimaryContainer = BlueOnPrimaryContainer,
+  13      secondary = SlateSecondary,
+  14      onSecondary = SlateOnSecondary,"
+4eb7e4a2d5,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",app/build.gradle.kts,24,release build type has no isMinifyEnabled = true (R8 off by default),"  18          targetSdk = 35
+  19          versionCode = 1
+  20          versionName = ""1.0""
+  21      }
+  22  
+  23      buildTypes {
+  24>         release {
+  25              isMinifyEnabled = false
+  26              proguardFiles(
+  27                  getDefaultProguardFile(""proguard-android-optimize.txt""),
+  28                  ""proguard-rules.pro"",
+  29              )
+  30          }"
+d90307c378,P02,Lazy list with >= 2 content blocks (or a type-switching items lambda) and no contentType anywhere in it.,ui/ShelfTapApp.kt,114,"LazyColumn with 7 content blocks, no contentType"," 108  private fun DetailScreen(vm: ShelfTapViewModel, id: String) {
+ 109      val title by vm.observeTitle(id).collectAsState(initial = null)
+ 110      val backDescription = stringResource(R.string.back)
+ 111      LaunchedEffect(id) { vm.refreshDetail(id) }
+ 112      Scaffold(topBar = { TopAppBar(title = { Text(title?.title ?: """") }, navigationIcon = { IconButton(onClick = vm::closeDetail, modifier = Modifier.semantics { contentDescription = backDescription }) { Text(""←"") } }) }) { padding ->
+ 113          title?.let { book ->
+ 114>             LazyColumn(contentPadding = PaddingValues(20.dp), modifier = Modifier.padding(padding), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+ 115                  item(key = ""cover"") { Cover(book, Modifier.fillMaxWidth().height(300.dp)) }
+ 116                  item(key = ""title"") { Text(book.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold) }
+ 117                  item(key = ""authors"") { Text(book.authors.joinToString("", ""), style = MaterialTheme.typography.titleMedium) }
+ 118                  item(key = ""year"") { Text(""${stringResource(R.string.year)}: ${book.year}"") }
+ 119                  item(key = ""isbn"") { Text(""${stringResource(R.string.isbn)}: ${book.isbn}"") }
+ 120                  item(key = ""copies"") { Text(""${stringResource(R.string.copies_available)}: ${book.copiesAvailable}"") }"
+4651fd777b,U03,"Material colour-scheme foreground/background pairs (on* vs base, both explicit) with WCAG contrast below 4.5:1; Text colour literal Gray/LightGray on the default light surface.",theme/Theme.kt,28,darkColorScheme: onSurfaceVariant on surfaceVariant contrast 4.04:1 < 4.5,"  22      onSurface = SlateTextPrimary,
+  23      surfaceVariant = Color(0xFFF1F5F9),
+  24      onSurfaceVariant = SlateTextSecondary,
+  25      outline = SlateBorder
+  26  )
+  27  
+  28> private val DarkColorScheme = darkColorScheme(
+  29      primary = NavyLight,
+  30      onPrimary = Color.White,
+  31      primaryContainer = Color(0xFF1E293B),
+  32      onPrimaryContainer = Color(0xFF93C5FD),
+  33      secondary = Color(0xFF2DD4BF),
+  34      onSecondary = Color(0xFF0F172A),"
+c0ea21c3f9,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",screens/CatalogueScreen.kt,1,data screen file renders no error state,"   1> package com.example.librarycatalogue.ui.screens
+   2  
+   3  import androidx.compose.animation.AnimatedVisibility
+   4  import androidx.compose.animation.fadeIn
+   5  import androidx.compose.animation.fadeOut
+   6  import androidx.compose.foundation.background
+   7  import androidx.compose.foundation.layout.Arrangement"
+cd7eba6c28,S01,"Token/credential/PII written to plain SharedPreferences, plain Preferences DataStore, a plain file, or a Room entity, with no Keystore/Cipher use in the same file.",session/SessionManager.kt,88,"putString(KEY_MEMBER_NUMBER, ...) plaintext SharedPreferences","  82      fun saveCachedProfile(profile: MemberProfile) {
+  83          val json = gson.toJson(profile)
+  84          prefs.edit()
+  85              .putString(KEY_CACHED_PROFILE, json)
+  86              .putString(KEY_USER_EMAIL, profile.email)
+  87              .putString(KEY_USER_NAME, profile.fullName)
+  88>             .putString(KEY_MEMBER_NUMBER, profile.memberNumber)
+  89              .apply()
+  90      }
+  91  
+  92      fun getCachedProfile(): MemberProfile? {
+  93          val json = prefs.getString(KEY_CACHED_PROFILE, null) ?: return null
+  94          return try {"
+0592f29ca6,P03,Composable parameter whose type is a Kotlin collection interface/array or a project class with a var property (not @Stable/@Immutable).,layer/Renderer.kt,38,fun NestedRenderer(layers: List<Layer.Evaluated>) unstable parameter,"  32    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+  33      NestedRenderer(layers, renderOption, null, onGloballyPositioned, this)
+  34    }
+  35  }
+  36  
+  37  @Composable
+  38> internal fun NestedRenderer(
+  39    layers: List<Layer.Evaluated>,
+  40    renderOption: RenderOption,
+  41    parentId: Int?,
+  42    onGloballyPositioned: (Int, LayoutCoordinates) -> Unit,
+  43    scope: Any,
+  44  ) {"
+d4f157be79,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",jbwatch/JbWatchFaceStorage.kt,135,cleartext URL literal http://xml.org/sax/features/external-general-entit," 129          return cleaned.ifBlank { ""jbwatch_${System.currentTimeMillis()}"" }
+ 130      }
+ 131  
+ 132      private fun newSecureDocumentBuilderFactory(): DocumentBuilderFactory {
+ 133          return DocumentBuilderFactory.newInstance().apply {
+ 134              runCatching { setFeature(""http://apache.org/xml/features/disallow-doctype-decl"", true) }
+ 135>             runCatching { setFeature(""http://xml.org/sax/features/external-general-entities"", false) }
+ 136              runCatching { setFeature(""http://xml.org/sax/features/external-parameter-entities"", false) }
+ 137              runCatching { setFeature(""http://apache.org/xml/features/nonvalidating/load-external-dtd"", false) }
+ 138              runCatching { isXIncludeAware = false }
+ 139              runCatching { isExpandEntityReferences = false }
+ 140          }
+ 141      }"
+b8907df7d6,D01,"Use of a deprecated API/DSL from TABLE/GRADLE (code, manifests and build scripts); security-crypto is also reported by S08 (taxonomy overlap is intended).",app/build.gradle.kts,44,deprecated kotlinOptions: use compilerOptions DSL (Kotlin Gradle plugin),"  38  
+  39      compileOptions {
+  40          sourceCompatibility = JavaVersion.VERSION_17
+  41          targetCompatibility = JavaVersion.VERSION_17
+  42      }
+  43  
+  44>     kotlinOptions {
+  45          jvmTarget = ""17""
+  46          freeCompilerArgs += listOf(
+  47              ""-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"",
+  48              ""-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi""
+  49          )
+  50      }"
+ce49efc40d,S01,"Token/credential/PII written to plain SharedPreferences, plain Preferences DataStore, a plain file, or a Room entity, with no Keystore/Cipher use in the same file.",repository/DataStoreRepository.kt,21,"Preferences DataStore key ""password"" stored without encryption","  15  import team.bjtuss.bjtuselfservice.entity.GradeSelectionRecord
+  16  import team.bjtuss.bjtuselfservice.statemanager.Credentials
+  17  
+  18  object DataStoreRepository {
+  19      private val Context.dataStore by preferencesDataStore(""settings"")
+  20      private val USERNAME_KEY = stringPreferencesKey(""username"")
+  21>     private val PASSWORD_KEY = stringPreferencesKey(""password"")
+  22  
+  23      // 新增自动同步设置Key
+  24      private val SYNC_GRADES_KEY = booleanPreferencesKey(""auto_sync_grades"")
+  25      private val SYNC_HOMEWORK_KEY = booleanPreferencesKey(""auto_sync_homework"")
+  26      private val SYNC_SCHEDULE_KEY = booleanPreferencesKey(""auto_sync_schedule"")
+  27      private val SYNC_EXAMS_KEY = booleanPreferencesKey(""auto_sync_exams"")"
+e15ab066ad,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",repository/SessionRepository.kt,117,newCall(request).execute() } catch (e: Exception) { clearSessi not under an IO dispatcher/thread," 111              val request = Request.Builder()
+ 112                  .url(""https://api.shelftap.example/api/auth/refresh"")
+ 113                  .post(refreshPayload.toRequestBody(""application/json"".toMediaType()))
+ 114                  .build()
+ 115  
+ 116              val response = try {
+ 117>                 rawOkHttpClient.newCall(request).execute()
+ 118              } catch (e: Exception) {
+ 119                  clearSessionSync()
+ 120                  return null
+ 121              }
+ 122  
+ 123              if (response.isSuccessful) {"
+c73308e671,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",book/BookScreen.kt,1,data screen file renders no loading state,"   1> package vn.shelftap.app.ui.book
+   2  
+   3  import androidx.compose.foundation.layout.Arrangement
+   4  import androidx.compose.foundation.layout.Box
+   5  import androidx.compose.foundation.layout.Column
+   6  import androidx.compose.foundation.layout.PaddingValues
+   7  import androidx.compose.foundation.layout.aspectRatio"
+47ea44ce17,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",splash/SplashScreen.kt,1,data screen file renders no error state,"   1> package com.dk.piley.ui.splash
+   2  
+   3  import androidx.compose.animation.core.*
+   4  import androidx.compose.foundation.background
+   5  import androidx.compose.foundation.layout.*
+   6  import androidx.compose.material3.Icon
+   7  import androidx.compose.material3.MaterialTheme"
+3603d05938,P05,"Scroll position (firstVisibleItemIndex/ScrollOffset, scrollState.value) read directly in composition, not via derivedStateOf/snapshotFlow/deferred lambda.",drawer/ListDrawerScreen.kt,594,listState.firstVisibleItemScrollOffset val dragRowShift = dragFromI read in composition of ListDrawerScreen," 588              val leftSafeInset = maxWidth * (leftSafeInsetPercent.coerceIn(0, 50) / 100f)
+ 589              val launchOriginX = with(density) {
+ 590                  (leftSafeInset + 12.dp + scaledRowHorizontalPadding + scaledIconSize * 0.5f).toPx()
+ 591              }.coerceIn(0f, screenWidthPx) / screenWidthPx
+ 592              val fisheyeVisibleItems = visibleItemMap
+ 593              val fisheyeScrollTick = listState.firstVisibleItemIndex * 100_000 +
+ 594>                 listState.firstVisibleItemScrollOffset
+ 595              val dragRowShift = dragFromIndex?.let {
+ 596                  itemHeights[it] ?: fisheyeVisibleItems[it]?.size?.toFloat()
+ 597              } ?: with(density) { estimatedItemHeight.toPx() }
+ 598              val dragOverlayHeightPx = dragFromIndex?.let {
+ 599                  itemHeights[it] ?: fisheyeVisibleItems[it]?.size?.toFloat()
+ 600              } ?: with(density) { (scaledIconSize + scaledRowVerticalPadding * 2f).toPx() }"
+2832bb9897,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",repository/SmartCurriculumPlatformRepository.kt,494,cleartext URL literal http://123.121.147.7:1936/kk/rp/," 488                              }
+ 489  
+ 490                              val key = pathSegments.takeLast(5)
+ 491                              Log.d(""TeachingCalendar"", ""提取到的key: $key"")
+ 492  
+ 493                              // 构建最终的PDF下载地址
+ 494>                             val pdfUrl = ""http://123.121.147.7:1936/kk/rp/"" + key.joinToString(""/"")
+ 495                              Log.d(""TeachingCalendar"", ""最终的pdf下载地址为: $pdfUrl"")
+ 496  
+ 497                              return@withContext pdfUrl
+ 498                          } else {
+ 499                              Log.w(""TeachingCalendar"", ""找到了iframe元素，但没有src属性"")
+ 500                              return@withContext null"
+1dd647c889,S09,"SQL built by string interpolation/concatenation, WebView.loadUrl on a non-literal with JavaScript on, or a credential-submitting function with no validation predicate in its file.",viewmodels/SignInViewModel.kt,26,login(...) submits credentials; no validation predicate in app/src/main/java/com/example/myapplication/presentation/viewmodels/SignInViewModel.kt,"  20      val password  = mutableStateOf("""")
+  21      val loading = mutableStateOf(false)
+  22  
+  23      private val _signInResult = MutableLiveData<ProcessUiState>()
+  24      val signInResult: LiveData<ProcessUiState> = _signInResult
+  25  
+  26>     fun login(email: String, password: String) {
+  27  
+  28          viewModelScope.launch {
+  29  
+  30              loading.value = true
+  31  
+  32              val result = signIn.invoke(email,password)"
+d6ced7ddd9,S07,Component exported=true (or implicitly exported by an intent-filter) with no android:permission and not the MAIN/LAUNCHER activity.,main/AndroidManifest.xml,65,activity com.app.ecomapp.presentation.screens.payment.PaymentScreen exported without permission,"  59                      android:pathPattern=""/product/"" />
+  60              </intent-filter>
+  61          </activity>
+  62  
+  63  
+  64          <activity
+  65>             android:name=""com.app.ecomapp.presentation.screens.payment.PaymentScreen""
+  66              android:exported=""true""
+  67              android:theme=""@style/Theme.Transparent"" />
+  68          <activity
+  69              android:name=""com.app.ecomapp.presentation.screens.cart.HandleActivity""
+  70              android:exported=""true"" />
+  71          <activity"
+f71483c025,P05,"Scroll position (firstVisibleItemIndex/ScrollOffset, scrollState.value) read directly in composition, not via derivedStateOf/snapshotFlow/deferred lambda.",loved/LovedSongsPage.kt,253,"index - list.firstVisibleItemIndex }, read in composition of LovedSongsPage"," 247                              onCheckboxBoundsChanged = { bounds ->
+ 248                                  if (bounds == null) checkboxBounds.remove(item.mediaId)
+ 249                                  else checkboxBounds[item.mediaId] = bounds
+ 250                              },
+ 251                              modifier =
+ 252                                  Modifier.libraryListEntrance(entrance) {
+ 253>                                     index - list.firstVisibleItemIndex
+ 254                                  },
+ 255                          )
+ 256                          LibraryDivider()
+ 257                      }
+ 258                      item(""footer"") { LibraryFooter(R.plurals.track_count, entries.size) }
+ 259                  }"
+22cc15bac4,P02,Lazy list with >= 2 content blocks (or a type-switching items lambda) and no contentType anywhere in it.,profile/ProfileScreen.kt,109,"LazyColumn with 7 content blocks, no contentType"," 103                      modifier = Modifier.align(Alignment.Center),
+ 104                      color = GreenPrimary
+ 105                  )
+ 106              } else {
+ 107                  val profile = state.profile
+ 108                  if (profile != null) {
+ 109>                     LazyColumn(
+ 110                          modifier = Modifier.fillMaxSize(),
+ 111                          contentPadding = PaddingValues(16.dp),
+ 112                          verticalArrangement = Arrangement.spacedBy(16.dp)
+ 113                      ) {
+ 114                          // Digital Member Card
+ 115                          item {"
+7d9bc6aca8,S01,"Token/credential/PII written to plain SharedPreferences, plain Preferences DataStore, a plain file, or a Room entity, with no Keystore/Cipher use in the same file.",data/SessionStore.kt,25,"Preferences DataStore key ""access_token"" stored without encryption","  19   * Persists the device id and the current token pair in app-private DataStore.
+  20   * The device id is created once and kept for the life of the installation.
+  21   */
+  22  class SessionStore(private val context: Context) {
+  23  
+  24      private val deviceIdKey = stringPreferencesKey(""device_id"")
+  25>     private val accessTokenKey = stringPreferencesKey(""access_token"")
+  26      private val refreshTokenKey = stringPreferencesKey(""refresh_token"")
+  27  
+  28      suspend fun read(): SessionSnapshot {
+  29          val prefs = context.sessionDataStore.data.first()
+  30          return SessionSnapshot(
+  31              deviceId = prefs[deviceIdKey],"
+5b87298248,P03,Composable parameter whose type is a Kotlin collection interface/array or a project class with a var property (not @Stable/@Immutable).,app/MainActivity.kt,54,fun LoansScreen(loans: List<Loan>) unstable parameter,"  48          state.message?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(16.dp)) }
+  49          if (state.loading) LinearProgressIndicator(Modifier.fillMaxWidth())
+  50          if (tab == Tab.LOANS) LoansScreen(state.loans, vm::renew, vm::openDetail) else HistoryScreen(state, vm::setHistory, vm::openDetail)
+  51      } }
+  52  }
+  53  
+  54> @Composable private fun LoansScreen(loans: List<Loan>, renew: (Loan) -> Unit, detail: (String) -> Unit) {
+  55      LazyColumn(contentPadding = PaddingValues(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) { items(loans, key = { it.loanId }, contentType = { ""loan"" }) { loan ->
+  56          val days = remember(loan.dueAt) { loan.daysLeft() }; val dueDate = remember(loan.dueAt) { loan.dueAt.prettyDate() }
+  57          Card(Modifier.fillMaxWidth().clickable { detail(loan.titleId) }) { Column(Modifier.padding(16.dp)) {
+  58              Text(loan.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+  59              if (days < 0) Text(""Overdue"", color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold)
+  60              Text(""Due $dueDate · ${if (days < 0) ""${-days} days overdue"" else ""$days days left""}"")"
+574725d59e,P03,Composable parameter whose type is a Kotlin collection interface/array or a project class with a var property (not @Stable/@Immutable).,screens/MainLoansScreen.kt,378,fun ActiveLoansList(loans: List<Loan>) unstable parameter," 372              )
+ 373          }
+ 374      }
+ 375  }
+ 376  
+ 377  @Composable
+ 378> fun ActiveLoansList(
+ 379      loans: List<Loan>,
+ 380      onBookClick: (Loan) -> Unit,
+ 381      onRenewClick: (Loan) -> Unit
+ 382  ) {
+ 383      if (loans.isEmpty()) {
+ 384          Box("
+2e3996e3c5,P02,Lazy list with >= 2 content blocks (or a type-switching items lambda) and no contentType anywhere in it.,components/ToolPicker.kt,122,"LazyColumn with 4 content blocks, no contentType"," 116                      EmptySearchState(
+ 117                          modifier = Modifier
+ 118                              .fillMaxWidth()
+ 119                              .weight(1f)
+ 120                      )
+ 121                  } else {
+ 122>                     LazyColumn(
+ 123                          modifier = Modifier
+ 124                              .fillMaxWidth()
+ 125                              .weight(1f),
+ 126                          contentPadding = PaddingValues(
+ 127                              start = 20.dp,
+ 128                              end = 20.dp,"
+f50d02e8e6,P01,"Lazy list items()/itemsIndexed() call without a key (named, or a positional lambda as the 2nd argument).",ui/HistoryScreen.kt,216,items(state.items) in LazyColumn has no key," 210                              ""Reading history is off, so new loans are not recorded.""
+ 211                          } else {
+ 212                              ""No past loans yet.""
+ 213                          },
+ 214                      )
+ 215                  }
+ 216>                 else -> items(state.items) { entry ->
+ 217                      HistoryRow(entry, onClick = { onOpenTitle(entry.titleId) })
+ 218                  }
+ 219              }
+ 220          }
+ 221      }
+ 222  }"
+1d9e0047aa,P08,"Decorative effects (blur/RenderEffect, shadow or elevation > 2dp, gradient brush, graphicsLayer alpha/renderEffect, infinite animation) inside a lazy-list item or a composable it calls. Also computes the R13 effect-density metrics.",compose/GroupScreen.kt,103,gradient: Brush.linearGradient( colors = in list item scope GroupCard,"  97                                  .align(Alignment.TopStart),
+  98                              contentScale = ContentScale.Crop
+  99                          ) else Box(
+ 100                              Modifier
+ 101                                  .fillMaxSize()
+ 102                                  .background(
+ 103>                                     Brush.linearGradient(
+ 104                                          colors = listOf(
+ 105                                              Color(
+ 106                                                  if (isSystemInDarkTheme())
+ 107                                                      ColorUtils.blendARGB(
+ 108                                                          group.fallbackColor,
+ 109                                                          Color.Black.toArgb(),"
+223dba6220,S06,allowBackup is true or absent (default true) and the application has no dataExtractionRules/fullBackupContent exclusion file.,sandbox/AndroidManifest.xml,6,"allowBackup=absent (default true), no backup exclusion rules","   1  <?xml version=""1.0"" encoding=""utf-8""?>
+   2  <manifest xmlns:android=""http://schemas.android.com/apk/res/android""
+   3      xmlns:tools=""http://schemas.android.com/tools""
+   4      package=""tech.alexib.yaba.android"">
+   5  
+   6>     <application>
+   7          <meta-data
+   8              android:name=""isSandbox""
+   9              android:value=""true""
+  10              tools:replace=""android:value"" />
+  11          <meta-data
+  12              android:name=""base_url"""
+b5ef7e8963,P13,"Search implemented as a linear in-memory filter or an unindexed SQL LIKE (no FTS/index), or a per-keystroke remote search with no debounce.",app/MainActivity.kt,31,"search triggered on every keystroke, no debounce anywhere in the project","  25  
+  26  @OptIn(ExperimentalMaterial3Api::class)
+  27  @Composable private fun CatalogueScreen(vm: CatalogueViewModel) {
+  28      val items by vm.items; val q by vm.query; val syncing by vm.syncing
+  29      Scaffold(topBar = { TopAppBar(title = { Text(""ShelfTap"") }, actions = { if (syncing) CircularProgressIndicator(Modifier.size(22.dp).padding(end = 8.dp), strokeWidth = 2.dp) }) }) { pad ->
+  30          Column(Modifier.padding(pad).fillMaxSize()) {
+  31>             OutlinedTextField(value = q, onValueChange = { vm.query.value = it; vm.searchLocal() }, modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp), label = { Text(""Search catalogue"") }, singleLine = true)
+  32              if (items.isEmpty()) Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(""No books found"", color = MaterialTheme.colorScheme.onSurfaceVariant) }
+  33              else LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 16.dp)) { items(items, key = { it.id }) { BookRow(it) { vm.open(it.id) } } }
+  34          }
+  35      }
+  36  }
+  37  "
+6b7331181d,P06,"Image decoded/loaded without bounds or with caching off: manual BitmapFactory decode without inSampleSize, AsyncImage with no size-bounding modifier, Size.ORIGINAL, cache disabled.",app/MainActivity.kt,110,AsyncImage without a size-bounding modifier (decodes at original size)," 104          }
+ 105      }
+ 106  }
+ 107  
+ 108  @Composable
+ 109  private fun Cover(title: Title, modifier: Modifier) {
+ 110>     if (title.coverUrl != null) AsyncImage(model = title.coverUrl, contentDescription = stringResource(R.string.cover_description, title.title), modifier = modifier.clip(RoundedCornerShape(6.dp)).background(MaterialTheme.colorScheme.surfaceVariant), contentScale = ContentScale.Crop)
+ 111      else Surface(modifier = modifier.clip(RoundedCornerShape(6.dp)), color = MaterialTheme.colorScheme.surfaceVariant) { Text(""No cover"", modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.labelSmall) }
+ 112  }
+ 113  
+ 114  @OptIn(ExperimentalMaterial3Api::class)
+ 115  @Composable
+ 116  private fun DetailScreen(title: Title, onBack: () -> Unit) {"
+18a3363967,P11,No Baseline Profile: no baselineprofile plugin and no baseline-prof.txt anywhere in the project.,app/build.gradle.kts,1,no baselineprofile plugin and no baseline-prof.txt,"   1> plugins {
+   2      alias(libs.plugins.android.application)
+   3      alias(libs.plugins.kotlin.android)
+   4  }
+   5  
+   6  android {
+   7      namespace = ""vn.shelftap.app"""
+77ad49b845,S05,"Sensitive logging: a log call whose arguments name a token/credential/Authorization/body/PII, or HttpLoggingInterceptor at BODY/HEADERS not guarded by BuildConfig.DEBUG.",di/NetworkModule.kt,41,HttpLoggingInterceptor Level.BODY not guarded for release,"  35      fun providesBaseUrl(): String {
+  36          return BASE_URL
+  37      }
+  38  
+  39      @Provides
+  40      fun providesLoggingInterceptor(): HttpLoggingInterceptor {
+  41>         return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+  42      }
+  43  
+  44      @Provides
+  45      fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+  46          val okHttpClient = OkHttpClient().newBuilder()
+  47  "
+80cbefb19c,U02,"Modifier chain with a clickable/toggleable/selectable and an explicit size/width/height under 48dp, without minimumInteractiveComponentSize or a 48dp minimum.",profile/DeliveryAddress.kt,919,clickable chain with .size(32.dp (< 48dp touch target)," 913                          }
+ 914                      }
+ 915                  }
+ 916  
+ 917                  Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+ 918                      Box(
+ 919>                         modifier = Modifier
+ 920                              .size(32.dp)
+ 921                              .clip(CircleShape)
+ 922                              .background(Color(0xFFEFF6FF))
+ 923                              .clickable { onEditClick(address.id.toString()) },
+ 924                          contentAlignment = Alignment.Center
+ 925                      ) {"
+ea3dc10405,S08,"MD5/SHA-1 digest, AES default/ECB/DES/RC4, static or all-zero IV, hardcoded SecretKeySpec key, or androidx.security-crypto (EncryptedSharedPreferences/MasterKey/EncryptedFile).",app/build.gradle.kts,63,dependency androidx.security:security-crypto (deprecated since 1.1.0-alpha07/1.1.0),"  57      implementation(""androidx.compose.material3:material3"")
+  58      implementation(""androidx.lifecycle:lifecycle-runtime-ktx:2.8.7"")
+  59      implementation(""androidx.lifecycle:lifecycle-runtime-compose:2.8.7"")
+  60      implementation(""androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7"")
+  61  
+  62      // Secure, encrypted storage for the signed-in session token.
+  63>     implementation(""androidx.security:security-crypto:1.0.0"")
+  64  
+  65      // REST client.
+  66      implementation(""com.squareup.retrofit2:retrofit:2.11.0"")
+  67      implementation(""com.squareup.retrofit2:converter-gson:2.11.0"")
+  68      implementation(""com.squareup.okhttp3:okhttp:4.12.0"")
+  69  "
+32423fc412,U01,Icon/Image with contentDescription null (or absent) acting as the only content of a clickable control (IconButton/FAB/toggle) or carrying its own click modifier.,donate/DonateScreen.kt,54,Icon contentDescription=null is the only content of IconButton,"  48      LaunchedEffect(Unit) {
+  49          onTopBarChange(
+  50              TopBarState(
+  51                  title = screenTitle,
+  52                  navigationIcon = {
+  53                      IconButton(onClick = onBack) {
+  54>                         Icon(
+  55                              Icons.AutoMirrored.Filled.ArrowBack,
+  56                              contentDescription = null
+  57                          )
+  58                      }
+  59                  }
+  60              )"
+2327758c59,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",build.gradle.kts,1,no release build type: R8 minification off by default,"   1> plugins {
+   2      alias(libs.plugins.android.application) apply false
+   3      alias(libs.plugins.android.test) apply false
+   4      alias(libs.plugins.kotlin.android) apply false
+   5      alias(libs.plugins.kotlin.compose) apply false
+   6      alias(libs.plugins.kotlin.serialization) apply false
+   7      alias(libs.plugins.androidx.baselineprofile) apply false"
+a8b7fc9549,U04,"Colour literal (Color(0x..), Color.<Named> except Transparent/Unspecified) or fontSize = N.sp literal outside the theme package and previews.",app/MainActivity.kt,102,hardcoded Color.White) } } } bypasses the theme,"  96              Column(Modifier.weight(1f)) {
+  97                  Text(title.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+  98                  Spacer(Modifier.height(3.dp))
+  99                  Text(title.authors.joinToString("", ""), style = MaterialTheme.typography.bodyMedium, maxLines = 2)
+ 100                  Text(title.year.toString(), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+ 101                  Spacer(Modifier.height(5.dp))
+ 102>                 Badge(containerColor = if (title.copiesAvailable > 0) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error) { Text(if (title.copiesAvailable > 0) stringResource(R.string.available) else stringResource(R.string.all_copies_out), modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp), color = Color.White) }
+ 103              }
+ 104          }
+ 105      }
+ 106  }
+ 107  
+ 108  @Composable"
+4df3db5aba,U03,"Material colour-scheme foreground/background pairs (on* vs base, both explicit) with WCAG contrast below 4.5:1; Text colour literal Gray/LightGray on the default light surface.",components/PageLightbox.kt,383,Text colour Color.Gray on the default light surface 3.46:1 < 4.5," 377                                  scope.launch { pagerState.scrollToPage(pageNum - 1) }
+ 378                                  showJumpDialog = false
+ 379                              }
+ 380                          }) { Text(""GO"", fontWeight = FontWeight.Black, color = PaperPink) }
+ 381                      },
+ 382                      dismissButton = {
+ 383>                         TextButton(onClick = { showJumpDialog = false }) { Text(""CANCEL"", color = Color.Gray) }
+ 384                      },
+ 385                      shape = RoundedCornerShape(28.dp),
+ 386                      containerColor = MaterialTheme.colorScheme.surface,
+ 387                      tonalElevation = 6.dp
+ 388                  )
+ 389              }"
+a29426e1a0,P03,Composable parameter whose type is a Kotlin collection interface/array or a project class with a var property (not @Stable/@Immutable).,info/MoveInfoScreen.kt,116,fun RelationPokemonGrid(learnedPokemon: List<Pokemon>) unstable parameter," 110          )
+ 111          Text(text = amount.toString(), style = MaterialTheme.typography.body1)
+ 112      }
+ 113  }
+ 114  
+ 115  @Composable
+ 116> private fun RelationPokemonGrid(learnedPokemon: List<Pokemon>) {
+ 117      LazyVerticalGrid(
+ 118          columns = GridCells.Adaptive(100.dp),
+ 119          content = {
+ 120              items(learnedPokemon) {
+ 121                  Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(14.dp)) {
+ 122                      DarkPokeBall("
+b6d88a8a41,S07,Component exported=true (or implicitly exported by an intent-filter) with no android:permission and not the MAIN/LAUNCHER activity.,main/AndroidManifest.xml,72,receiver .boardcast.GeoFencingBroadcastReceiver exported without permission,"  66                  <action android:name=""com.ramzmania.aicammvd.ACTION_RECEIVE_GEOFENCE""/>
+  67  
+  68              </intent-filter>
+  69          </receiver>-->
+  70  
+  71          <receiver
+  72>             android:name="".boardcast.GeoFencingBroadcastReceiver""
+  73              android:enabled=""true""
+  74              android:exported=""true"">
+  75              <!--            <intent-filter>-->
+  76              <!--                <action android:name=""com.google.android.gms.location.geofencing.ACTION_GEOFENCE_TRANSITION"" />-->
+  77              <!--            </intent-filter>-->
+  78          </receiver>"
+85204068d8,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,components/BookDetailSheet.kt,323,Column+scroll iterates (repeat(pastLoan.userRating) {)," 317                              style = MaterialTheme.typography.labelSmall,
+ 318                              color = Slate600
+ 319                          )
+ 320                          if (pastLoan.userRating != null) {
+ 321                              Spacer(modifier = Modifier.height(4.dp))
+ 322                              Row(verticalAlignment = Alignment.CenterVertically) {
+ 323>                                 repeat(pastLoan.userRating) {
+ 324                                      Icon(
+ 325                                          imageVector = Icons.Default.Star,
+ 326                                          contentDescription = null,
+ 327                                          tint = Color(0xFFF59E0B),
+ 328                                          modifier = Modifier.size(12.dp)
+ 329                                      )"
+cac7e2abcf,S09,"SQL built by string interpolation/concatenation, WebView.loadUrl on a non-literal with JavaScript on, or a credential-submitting function with no validation predicate in its file.",local/ShelfTapDatabaseHelper.kt,123,"SQL built by interpolation: execSQL(""DROP TABLE IF EXISTS $TABLE_HISTORY"") db.execSQL(""DRO"," 117              """""".trimIndent()
+ 118          )
+ 119      }
+ 120  
+ 121      override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+ 122          db.execSQL(""DROP TABLE IF EXISTS $TABLE_LOANS"")
+ 123>         db.execSQL(""DROP TABLE IF EXISTS $TABLE_HISTORY"")
+ 124          db.execSQL(""DROP TABLE IF EXISTS $TABLE_PROFILE"")
+ 125          db.execSQL(""DROP TABLE IF EXISTS $TABLE_TITLES"")
+ 126          onCreate(db)
+ 127      }
+ 128  
+ 129      // --- Loans Caching ---"
+9159a90818,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",build.gradle.kts,1,no release build type: R8 minification off by default,"   1> plugins {
+   2      id(""com.android.application"") version ""8.5.2"" apply false
+   3      id(""org.jetbrains.kotlin.android"") version ""2.0.21"" apply false
+   4      id(""org.jetbrains.kotlin.plugin.compose"") version ""2.0.21"" apply false
+   5      id(""com.google.devtools.ksp"") version ""2.0.21-1.0.28"" apply false
+   6  }"
+a1e8957408,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,widget/ScrollableDataTable.kt,78,"Row+scroll iterates (processLabelList.forEachIndexed { index, header ->)","  72                      .horizontalScroll(scrollState)
+  73                      .padding(horizontal = 20.dp, vertical = 16.dp),
+  74                  verticalAlignment = Alignment.CenterVertically
+  75              ) {
+  76  
+  77  
+  78>                 processLabelList.forEachIndexed { index, header ->
+  79                      if (index == 0)
+  80                          HeaderBox(
+  81                              header.label, modifier = Modifier
+  82                                  .weight(2f)
+  83                                  .clickable(onClick = {
+  84                                      viewModel.sortProcess(header)"
+fb7626422c,S01,"Token/credential/PII written to plain SharedPreferences, plain Preferences DataStore, a plain file, or a Room entity, with no Keystore/Cipher use in the same file.",data/SessionStore.kt,19,"putString(""accessToken"", ...) plaintext SharedPreferences","  13  
+  14      @Synchronized fun accessToken(): String? = prefs.getString(""accessToken"", null)
+  15      @Synchronized fun refreshToken(): String? = prefs.getString(""refreshToken"", null)
+  16      @Synchronized fun mustChangePassword(): Boolean = prefs.getBoolean(""mustChangePassword"", false)
+  17  
+  18      @Synchronized fun saveAuth(auth: AuthResponse) {
+  19>         prefs.edit().putString(""accessToken"", auth.accessToken)
+  20              .putString(""refreshToken"", auth.refreshToken)
+  21              .putBoolean(""mustChangePassword"", auth.mustChangePassword).apply()
+  22      }
+  23  
+  24      @Synchronized fun setMustChangePassword(value: Boolean) = prefs.edit().putBoolean(""mustChangePassword"", value).apply()
+  25      @Synchronized fun clear() = prefs.edit().remove(""accessToken"").remove(""refreshToken"")"
+5319ff45e6,S05,"Sensitive logging: a log call whose arguments name a token/credential/Authorization/body/PII, or HttpLoggingInterceptor at BODY/HEADERS not guarded by BuildConfig.DEBUG.",remote/NetworkClient.kt,16,HttpLoggingInterceptor Level.BODY not guarded for release,"  10  object NetworkClient {
+  11  
+  12      private const val BASE_URL = ""https://api.library.example.org/""
+  13  
+  14      fun createApiService(sessionManager: SessionManager): LibraryApiService {
+  15          val loggingInterceptor = HttpLoggingInterceptor().apply {
+  16>             level = HttpLoggingInterceptor.Level.BODY
+  17          }
+  18  
+  19          // Auth interceptor adds Bearer token header
+  20          val authInterceptor = AuthInterceptor(sessionManager)
+  21  
+  22          // Mock interceptor handles standalone execution or demo mode"
+d31b9c46a6,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",ui/SearchScreen.kt,1,data screen file renders no error state,"   1> @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class, FlowPreview::class)
+   2  
+   3  package vn.shelftap.app.ui
+   4  
+   5  import androidx.compose.foundation.layout.Column
+   6  import androidx.compose.foundation.layout.fillMaxSize
+   7  import androidx.compose.foundation.layout.fillMaxWidth"
+09a6671c3f,P08,"Decorative effects (blur/RenderEffect, shadow or elevation > 2dp, gradient brush, graphicsLayer alpha/renderEffect, infinite animation) inside a lazy-list item or a composable it calls. Also computes the R13 effect-density metrics.",home/HomeScreen.kt,1290,gradient: Brush.verticalGradient( colors = listOf( in list item scope AutoSlidingBannerVertical,"1284      }
+1285  
+1286      Box(
+1287          modifier = Modifier
+1288              .fillMaxWidth()
+1289              .background(
+1290>                 Brush.verticalGradient(
+1291                      colors = listOf(
+1292                          animatedBackgroundColor.copy(alpha = 0.7f),
+1293                          BackgroundContent
+1294                      )
+1295                  )
+1296              )"
+692323f12d,P01,"Lazy list items()/itemsIndexed() call without a key (named, or a positional lambda as the 2nd argument).",profile/ProfileScreen.kt,175,items(profile.loans) in LazyColumn has no key," 169                              color = MaterialTheme.colorScheme.onSurfaceVariant
+ 170                          )
+ 171                      }
+ 172                  }
+ 173              }
+ 174          } else {
+ 175>             items(profile.loans) { loan ->
+ 176                  LoanItemRow(loan = loan)
+ 177              }
+ 178          }
+ 179  
+ 180          // Sign Out Button at bottom
+ 181          item {"
+685b730f17,P01,"Lazy list items()/itemsIndexed() call without a key (named, or a positional lambda as the 2nd argument).",screens/UserScreen.kt,67,items(userImages) in LazyColumn has no key,"  61        item { Spacer(Modifier.statusBarsPadding()) }
+  62        item {
+  63          UserHeaderContent(user, nav)
+  64          Spacer(modifier = Modifier.height(16.dp))
+  65        }
+  66  
+  67>       items(userImages) {
+  68          UserImageRow(it!!, nav)
+  69          Spacer(modifier = Modifier.height(8.dp))
+  70        }
+  71        when {
+  72          loadState.refresh is LoadState.Loading -> {
+  73            item { LoadingIndicator(Modifier.fillMaxWidth()) }"
+7a303cdc74,U01,Icon/Image with contentDescription null (or absent) acting as the only content of a clickable control (IconButton/FAB/toggle) or carrying its own click modifier.,components/UltraPreview.kt,490,Icon contentDescription=null is the only content of IconButton," 484                          Text(fileName, fontWeight = FontWeight.Black, fontSize = 14.sp, maxLines = 1, color = MaterialTheme.colorScheme.onSurface)
+ 485                          Text(""PDF VIEWER"", fontSize = 10.sp, fontWeight = FontWeight.Black, color = PaperPink, letterSpacing = 1.sp)
+ 486                      }
+ 487  
+ 488                      Box {
+ 489                          IconButton(onClick = { showMoreMenu = true }) {
+ 490>                             Icon(Icons.Filled.MoreVert, null, tint = MaterialTheme.colorScheme.onSurface)
+ 491                          }
+ 492                          DropdownMenu(
+ 493                              expanded = showMoreMenu,
+ 494                              onDismissRequest = { showMoreMenu = false }
+ 495                          ) {
+ 496                              DropdownMenuItem("
+b1d29c48e8,S01,"Token/credential/PII written to plain SharedPreferences, plain Preferences DataStore, a plain file, or a Room entity, with no Keystore/Cipher use in the same file.",settings/AuthSettings.kt,55,"putString(AUTH_TOKEN, ...) plaintext SharedPreferences","  49          override fun showOnboarding(): Flow<Boolean> =
+  50              flowSettings.getBooleanFlow(SHOW_ONBOARDING, true)
+  51  
+  52          override fun token(): Flow<String?> = flowSettings.getStringOrNullFlow(AUTH_TOKEN)
+  53  
+  54          override suspend fun clearAuthToken() {
+  55>             flowSettings.putString(AUTH_TOKEN, """")
+  56          }
+  57  
+  58          override suspend fun clearAppSettings() {
+  59              flowSettings.clear()
+  60          }
+  61  "
+f41a9400d6,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",data/CatalogueApi.kt,25,URL(urlString).openConnection() as HttpURLConnection).apply { requestMethod = not under an IO dispatcher/thread,"  19  
+  20      suspend fun title(id: String): Title = withContext(Dispatchers.IO) {
+  21          parse(request(""https://api.shelftap.example/api/titles/${Uri.encode(id)}""))
+  22      }
+  23  
+  24      private fun request(urlString: String): JSONObject {
+  25>         val connection = (URL(urlString).openConnection() as HttpURLConnection).apply {
+  26              requestMethod = ""GET""; connectTimeout = 10_000; readTimeout = 15_000
+  27              setRequestProperty(""Accept"", ""application/json"")
+  28          }
+  29          return try {
+  30              if (connection.responseCode !in 200..299) error(""Catalogue request failed"")
+  31              JSONObject(connection.inputStream.bufferedReader().use { it.readText() })"
+9a84fdfd73,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",remote/AuthInterceptor.kt,102,newCall(request).execute() if (refreshResponse.isSuccessful) { not under an IO dispatcher/thread,"  96          val request = Request.Builder()
+  97              .url(""$baseUrl/api/auth/refresh"")
+  98              .post(requestBody)
+  99              .build()
+ 100  
+ 101          return try {
+ 102>             val refreshResponse = rawClientProvider().newCall(request).execute()
+ 103              if (refreshResponse.isSuccessful) {
+ 104                  val responseBody = refreshResponse.body?.string()
+ 105                  if (!responseBody.isNullOrEmpty()) {
+ 106                      val authResponse = gson.fromJson(responseBody, AuthResponse::class.java)
+ 107                      // Save new single-use refresh token and access token
+ 108                      sessionManager.saveAuth(authResponse)"
+fbb78b1acc,P08,"Decorative effects (blur/RenderEffect, shadow or elevation > 2dp, gradient brush, graphicsLayer alpha/renderEffect, infinite animation) inside a lazy-list item or a composable it calls. Also computes the R13 effect-density metrics.",profile/ProfileScreen.kt,230,shadow>2dp: defaultElevation = 6.dp) ) { Box( modifier = M in list item scope DigitalLibraryCard," 224  fun DigitalLibraryCard(profile: MemberProfile) {
+ 225      Card(
+ 226          modifier = Modifier
+ 227              .fillMaxWidth()
+ 228              .height(210.dp),
+ 229          shape = RoundedCornerShape(16.dp),
+ 230>         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+ 231      ) {
+ 232          Box(
+ 233              modifier = Modifier
+ 234                  .fillMaxSize()
+ 235                  .background(
+ 236                      Brush.linearGradient("
+48e12aeb9d,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,components/BookDetailSheet.kt,300,Column+scroll iterates (p)) pastLoans.forEach { pastLoan -> Column()," 294                          color = MaterialTheme.colorScheme.onSurface
+ 295                      )
+ 296                  }
+ 297  
+ 298                  Spacer(modifier = Modifier.height(8.dp))
+ 299  
+ 300>                 pastLoans.forEach { pastLoan ->
+ 301                      Column(
+ 302                          modifier = Modifier
+ 303                              .fillMaxWidth()
+ 304                              .padding(vertical = 4.dp)
+ 305                              .clip(RoundedCornerShape(8.dp))
+ 306                              .background(Slate100)"
+371ce91568,P06,"Image decoded/loaded without bounds or with caching off: manual BitmapFactory decode without inSampleSize, AsyncImage with no size-bounding modifier, Size.ORIGINAL, cache disabled.",app/MainActivity.kt,39,BitmapFactory.decodeStream without inSampleSize (full-resolution decode),"  33  class MainActivity:ComponentActivity(){override fun onCreate(b:Bundle?){super.onCreate(b);setContent{ShelfTapApp()}}}
+  34  private val green=Color(0xFF315F51);private val dateFmt=DateTimeFormatter.ofPattern(""MMM d, yyyy"").withZone(ZoneId.systemDefault())
+  35  private fun date(s:String)=runCatching{dateFmt.format(Instant.parse(s))}.getOrDefault(s.take(10));private fun days(s:String)=runCatching{ChronoUnit.DAYS.between(Instant.now(),Instant.parse(s)).toInt()}.getOrDefault(0)
+  36  @Composable fun ShelfTapApp(vm:MainViewModel=viewModel()){val st by vm.state.collectAsState();var tab by remember{mutableIntStateOf(0)};var detail by remember{mutableStateOf<String?>(null)};MaterialTheme(colorScheme=lightColorScheme(primary=green,background=Color(0xFFF8F9F6))){if(detail!=null)DetailScreen(st.title,detail!!,onBack={detail=null}) else Scaffold(topBar={TopAppBar(title={Text(if(tab==0)""My loans"" else ""Reading history"")},actions={IconButton({vm.refresh()}){Icon(Icons.Default.Refresh,""Refresh"")}})},bottomBar={NavigationBar{NavigationBarItem(tab==0,{tab=0},icon={Icon(Icons.Default.MenuBook,""Loans"")},label={Text(""Loans"")});NavigationBarItem(tab==1,{tab=1},icon={Icon(Icons.Default.History,""History"")},label={Text(""History"")})}}){pad->Column(Modifier.padding(pad).fillMaxSize()){if(st.message!=null)Text(st.message!!,Modifier.fillMaxWidth().background(Color(0xFFFFE0DC)).padding(12.dp),color=Color(0xFF8B1A10));if(tab==0)LoansScreen(st,vm){vm.loadTitle(it);detail=it}else HistoryScreen(st,vm){vm.loadTitle(it);detail=it}}}}}
+  37  @Composable fun LoansScreen(st:AppState,vm:MainViewModel,onDetail:(String)->Unit){if(st.loansOffline)SavedNote();if(st.loading&&st.loans.isEmpty())Loading();LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){items(st.loans){loan->val left=days(loan.dueAt);Card(Modifier.fillMaxWidth().clickable{onDetail(loan.titleId)} ){Column(Modifier.padding(16.dp)){Text(loan.title,style=MaterialTheme.typography.titleMedium,fontWeight=FontWeight.SemiBold);Spacer(Modifier.height(8.dp));if(left<0)Text(""Overdue"",color=Color(0xFFB3261E),fontWeight=FontWeight.Bold);Text(if(left<0)""Due ${date(loan.dueAt)} · ${-left} days overdue"" else ""Due ${date(loan.dueAt)} · $left days left"",color=Color.Gray);Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.End){Button({vm.renew(loan.loanId)},enabled=loan.renewable){Text(""Renew"")}}}}}}}
+  38  @Composable fun HistoryScreen(st:AppState,vm:MainViewModel,onDetail:(String)->Unit){var confirm by remember{mutableStateOf(false)};Row(Modifier.fillMaxWidth().padding(horizontal=16.dp,vertical=8.dp),verticalAlignment=Alignment.CenterVertically){Text(""Keep my reading history"",Modifier.weight(1f),fontWeight=FontWeight.Medium);Switch(checked=st.member?.historyEnabled==true,onCheckedChange={if(!it)confirm=true else vm.setHistory(true)})};if(st.historyOffline)SavedNote();LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){items(st.history.sortedByDescending{it.outAt}){h->Card(Modifier.fillMaxWidth().clickable{onDetail(h.titleId)}){Column(Modifier.padding(16.dp)){Text(h.title,fontWeight=FontWeight.SemiBold);Text(""Borrowed ${date(h.outAt)}"",color=Color.Gray);Text(""Returned ${date(h.returnedAt)}"",color=Color.Gray)}}}};if(confirm)AlertDialog(onDismissRequest={confirm=false},title={Text(""Turn off reading history?"")},text={Text(""Your future reading history will not be saved, and existing history will no longer be shown."")},confirmButton={TextButton({confirm=false;vm.setHistory(false)}){Text(""Turn off"")}},dismissButton={TextButton({confirm=false}){Text(""Cancel"")}})} }
+  39> @Composable fun DetailScreen(d:TitleDetails?,id:String,onBack:()->Unit){var bitmap by remember(d?.coverUrl){mutableStateOf<Bitmap?>(null)};LaunchedEffect(d?.coverUrl){val url=d?.coverUrl;if(url!=null)bitmap=withContext(Dispatchers.IO){runCatching{BitmapFactory.decodeStream(URL(url).openStream())}.getOrNull()}};Scaffold(topBar={TopAppBar(title={Text(""Book details"")},navigationIcon={IconButton(onBack){Icon(Icons.Default.ArrowBack,""Back"")}})}){p->Column(Modifier.padding(p).padding(20.dp),horizontalAlignment=Alignment.CenterHorizontally){if(bitmap!=null)Image(bitmap!!.asImageBitmap(),""Cover"",Modifier.size(150.dp,210.dp))else Box(Modifier.size(150.dp,210.dp).background(Color(0xFFDDE8E1)),contentAlignment=Alignment.Center){Icon(Icons.Default.MenuBook,""Book"",Modifier.size(64.dp),tint=green)};Spacer(Modifier.height(20.dp));Text(d?.title?:""Loading…"",style=MaterialTheme.typography.headlineSmall,fontWeight=FontWeight.Bold);Text(""Title ID: $id"",color=Color.Gray);Spacer(Modifier.height(18.dp));Text(""Authors"",fontWeight=FontWeight.Bold);Text(d?.authors?.joinToString()?:""Loading…"");Spacer(Modifier.height(12.dp));Text(""Subjects"",fontWeight=FontWeight.Bold);Text(d?.subjects?.joinToString()?:""—"");Spacer(Modifier.height(18.dp));Text(""Copies available"",fontWeight=FontWeight.Bold);Text(""${d?.copiesAvailable?:0} of ${d?.copiesTotal?:0}"")}}}
+  40  @Composable fun SavedNote(){Text(""Showing saved data"",Modifier.fillMaxWidth().background(Color(0xFFE3F1EA)).padding(12.dp),color=green)}
+  41  @Composable fun Loading(){Box(Modifier.fillMaxWidth().padding(24.dp),contentAlignment=Alignment.Center){CircularProgressIndicator()}}"
+5e30f04013,P05,"Scroll position (firstVisibleItemIndex/ScrollOffset, scrollState.value) read directly in composition, not via derivedStateOf/snapshotFlow/deferred lambda.",notification/NotificationLayer.kt,174,istAtTop = listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset read in composition of NotificationLayer," 168              dismissDragDistance = 0f
+ 169              dismissDragVelocityY = 0f
+ 170              lastDismissDragEventUptime = 0L
+ 171              overscroll.snapTo(0f)
+ 172          }
+ 173      }
+ 174>     val listAtTop = listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset == 0
+ 175      val updateDismissDrag: (Float) -> Unit = { delta ->
+ 176          dismissDragDistance = (dismissDragDistance + delta).coerceIn(0f, dismissDragRangePx)
+ 177          onTransitionProgressChange(
+ 178              (1f - dismissDragDistance / dismissDragRangePx).coerceIn(0f, 1f)
+ 179          )
+ 180      }"
+7a747139cf,S02,"Hardcoded secret: provider-key patterns, secret-named string constants with a non-placeholder high-entropy value, buildConfigField/signing passwords with literals.",models/AppSettings.kt,13,"KEY_OPENAI_API_KEY = ""openai_api_key_v2"" literal secret","   7  
+   8  class AppSettings(context: Context) {
+   9  
+  10      companion object {
+  11          private const val PREFS_NAME = ""kanjilens_prefs""
+  12          private const val KEY_TEXT_SIZE = ""text_size""
+  13>         private const val KEY_OPENAI_API_KEY = ""openai_api_key_v2""
+  14          private const val KEY_GEMINI_API_KEY = ""gemini_api_key""
+  15          private const val KEY_APP_MODE = ""app_mode""
+  16          private const val KEY_TRANSLATE_STYLE = ""translate_style""
+  17          private const val KEY_AI_MODEL = ""ai_model""
+  18  
+  19          const val TEXT_SIZE_SMALL = 0"
+ea9526d6f1,P04,Sort/filter/group/regex/date-format/JSON parsing executed in a composable body outside remember/derivedStateOf/effects/event lambdas.,app/MainActivity.kt,38,.sortedByDescending{it.outAt}){h->Card(Modifier.fillMaxWidth().clickable{onDetail(h.titleI in composable HistoryScreen without remember,"  32  
+  33  class MainActivity:ComponentActivity(){override fun onCreate(b:Bundle?){super.onCreate(b);setContent{ShelfTapApp()}}}
+  34  private val green=Color(0xFF315F51);private val dateFmt=DateTimeFormatter.ofPattern(""MMM d, yyyy"").withZone(ZoneId.systemDefault())
+  35  private fun date(s:String)=runCatching{dateFmt.format(Instant.parse(s))}.getOrDefault(s.take(10));private fun days(s:String)=runCatching{ChronoUnit.DAYS.between(Instant.now(),Instant.parse(s)).toInt()}.getOrDefault(0)
+  36  @Composable fun ShelfTapApp(vm:MainViewModel=viewModel()){val st by vm.state.collectAsState();var tab by remember{mutableIntStateOf(0)};var detail by remember{mutableStateOf<String?>(null)};MaterialTheme(colorScheme=lightColorScheme(primary=green,background=Color(0xFFF8F9F6))){if(detail!=null)DetailScreen(st.title,detail!!,onBack={detail=null}) else Scaffold(topBar={TopAppBar(title={Text(if(tab==0)""My loans"" else ""Reading history"")},actions={IconButton({vm.refresh()}){Icon(Icons.Default.Refresh,""Refresh"")}})},bottomBar={NavigationBar{NavigationBarItem(tab==0,{tab=0},icon={Icon(Icons.Default.MenuBook,""Loans"")},label={Text(""Loans"")});NavigationBarItem(tab==1,{tab=1},icon={Icon(Icons.Default.History,""History"")},label={Text(""History"")})}}){pad->Column(Modifier.padding(pad).fillMaxSize()){if(st.message!=null)Text(st.message!!,Modifier.fillMaxWidth().background(Color(0xFFFFE0DC)).padding(12.dp),color=Color(0xFF8B1A10));if(tab==0)LoansScreen(st,vm){vm.loadTitle(it);detail=it}else HistoryScreen(st,vm){vm.loadTitle(it);detail=it}}}}}
+  37  @Composable fun LoansScreen(st:AppState,vm:MainViewModel,onDetail:(String)->Unit){if(st.loansOffline)SavedNote();if(st.loading&&st.loans.isEmpty())Loading();LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){items(st.loans){loan->val left=days(loan.dueAt);Card(Modifier.fillMaxWidth().clickable{onDetail(loan.titleId)} ){Column(Modifier.padding(16.dp)){Text(loan.title,style=MaterialTheme.typography.titleMedium,fontWeight=FontWeight.SemiBold);Spacer(Modifier.height(8.dp));if(left<0)Text(""Overdue"",color=Color(0xFFB3261E),fontWeight=FontWeight.Bold);Text(if(left<0)""Due ${date(loan.dueAt)} · ${-left} days overdue"" else ""Due ${date(loan.dueAt)} · $left days left"",color=Color.Gray);Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.End){Button({vm.renew(loan.loanId)},enabled=loan.renewable){Text(""Renew"")}}}}}}}
+  38> @Composable fun HistoryScreen(st:AppState,vm:MainViewModel,onDetail:(String)->Unit){var confirm by remember{mutableStateOf(false)};Row(Modifier.fillMaxWidth().padding(horizontal=16.dp,vertical=8.dp),verticalAlignment=Alignment.CenterVertically){Text(""Keep my reading history"",Modifier.weight(1f),fontWeight=FontWeight.Medium);Switch(checked=st.member?.historyEnabled==true,onCheckedChange={if(!it)confirm=true else vm.setHistory(true)})};if(st.historyOffline)SavedNote();LazyColumn(contentPadding=PaddingValues(16.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){items(st.history.sortedByDescending{it.outAt}){h->Card(Modifier.fillMaxWidth().clickable{onDetail(h.titleId)}){Column(Modifier.padding(16.dp)){Text(h.title,fontWeight=FontWeight.SemiBold);Text(""Borrowed ${date(h.outAt)}"",color=Color.Gray);Text(""Returned ${date(h.returnedAt)}"",color=Color.Gray)}}}};if(confirm)AlertDialog(onDismissRequest={confirm=false},title={Text(""Turn off reading history?"")},text={Text(""Your future reading history will not be saved, and existing history will no longer be shown."")},confirmButton={TextButton({confirm=false;vm.setHistory(false)}){Text(""Turn off"")}},dismissButton={TextButton({confirm=false}){Text(""Cancel"")}})} }
+  39  @Composable fun DetailScreen(d:TitleDetails?,id:String,onBack:()->Unit){var bitmap by remember(d?.coverUrl){mutableStateOf<Bitmap?>(null)};LaunchedEffect(d?.coverUrl){val url=d?.coverUrl;if(url!=null)bitmap=withContext(Dispatchers.IO){runCatching{BitmapFactory.decodeStream(URL(url).openStream())}.getOrNull()}};Scaffold(topBar={TopAppBar(title={Text(""Book details"")},navigationIcon={IconButton(onBack){Icon(Icons.Default.ArrowBack,""Back"")}})}){p->Column(Modifier.padding(p).padding(20.dp),horizontalAlignment=Alignment.CenterHorizontally){if(bitmap!=null)Image(bitmap!!.asImageBitmap(),""Cover"",Modifier.size(150.dp,210.dp))else Box(Modifier.size(150.dp,210.dp).background(Color(0xFFDDE8E1)),contentAlignment=Alignment.Center){Icon(Icons.Default.MenuBook,""Book"",Modifier.size(64.dp),tint=green)};Spacer(Modifier.height(20.dp));Text(d?.title?:""Loading…"",style=MaterialTheme.typography.headlineSmall,fontWeight=FontWeight.Bold);Text(""Title ID: $id"",color=Color.Gray);Spacer(Modifier.height(18.dp));Text(""Authors"",fontWeight=FontWeight.Bold);Text(d?.authors?.joinToString()?:""Loading…"");Spacer(Modifier.height(12.dp));Text(""Subjects"",fontWeight=FontWeight.Bold);Text(d?.subjects?.joinToString()?:""—"");Spacer(Modifier.height(18.dp));Text(""Copies available"",fontWeight=FontWeight.Bold);Text(""${d?.copiesAvailable?:0} of ${d?.copiesTotal?:0}"")}}}
+  40  @Composable fun SavedNote(){Text(""Showing saved data"",Modifier.fillMaxWidth().background(Color(0xFFE3F1EA)).padding(12.dp),color=green)}
+  41  @Composable fun Loading(){Box(Modifier.fillMaxWidth().padding(24.dp),contentAlignment=Alignment.Center){CircularProgressIndicator()}}"
+916b055d8d,P01,"Lazy list items()/itemsIndexed() call without a key (named, or a positional lambda as the 2nd argument).",home/HomeScreen.kt,529,items(topRatedTvSeries) in LazyRow has no key," 523                          .fillMaxWidth()
+ 524                          .height(210.dp),
+ 525                      contentAlignment = Alignment.Center
+ 526                  ) {
+ 527                      LazyRow(content = {
+ 528                          if (viewModel.selectedOption.value == ""Tv Shows"") {
+ 529>                             items(topRatedTvSeries) { film ->
+ 530  
+ 531                                  MovieItem(
+ 532                                      modifier = Modifier
+ 533                                          .height(200.dp)
+ 534                                          .width(130.dp)
+ 535                                          .clickable {"
+97a9a1075e,D01,"Use of a deprecated API/DSL from TABLE/GRADLE (code, manifests and build scripts); security-crypto is also reported by S08 (taxonomy overlap is intended).",theme/Theme.kt,63,deprecated Window.statusBarColor: use edge-to-edge insets (deprecated API 35),"  57  
+  58      val view = LocalView.current
+  59      if (!view.isInEditMode) {
+  60          SideEffect {
+  61              val window = (view.context as? Activity)?.window
+  62              if (window != null) {
+  63>                 window.statusBarColor = colorScheme.background.toArgb()
+  64                  WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+  65              }
+  66          }
+  67      }
+  68  
+  69      MaterialTheme("
+296fda9a06,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,app/MainActivity.kt,148,"forEach/for inside a single lazy item() (angement.spacedBy(8.dp)) { row.forEach { AssistChip(onClick = {}, label = { Text)"," 142                  Spacer(Modifier.height(12.dp)); Cover(book.coverUrl, Modifier.size(width = 190.dp, height = 285.dp)); Spacer(Modifier.height(20.dp))
+ 143                  Text(book.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold); Spacer(Modifier.height(8.dp))
+ 144                  Info(""Authors"", book.authors.ifEmpty { listOf(""Unknown author"") }.joinToString("", "")); Info(""Year"", book.year.toString()); Info(""ISBN"", book.isbn); Info(""Copies available"", book.copiesAvailable.toString())
+ 145                  Text(""Subjects"", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp))
+ 146                  Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+ 147                      book.subjects.chunked(2).forEach { row ->
+ 148>                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) { row.forEach { AssistChip(onClick = {}, label = { Text(it) }) } }
+ 149                      }
+ 150                  }
+ 151                  Spacer(Modifier.height(32.dp))
+ 152              }
+ 153          }
+ 154      }"
+c31d060269,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,screens/EvilPortalScreen.kt,286,Column+scroll iterates () { aps.forEach { ap -> val isSel)," 280                  )
+ 281              } else {
+ 282                  Column(
+ 283                      Modifier.heightIn(max = 240.dp).verticalScroll(rememberScrollState()),
+ 284                      verticalArrangement = Arrangement.spacedBy(6.dp),
+ 285                  ) {
+ 286>                     aps.forEach { ap ->
+ 287                          val isSel = selected == ap.index
+ 288                          Surface(
+ 289                              shape = RoundedCornerShape(10.dp),
+ 290                              color = if (isSel) MaterialTheme.colorScheme.primary.copy(alpha = 0.14f) else MaterialTheme.colorScheme.surfaceVariant,
+ 291                              modifier = Modifier.fillMaxWidth().clickable { onSelect(if (isSel) null else ap.index) },
+ 292                          ) {"
+89df33dd1b,P13,"Search implemented as a linear in-memory filter or an unindexed SQL LIKE (no FTS/index), or a per-keystroke remote search with no debounce.",screens/MessagesScreen.kt,48,"linear filter over the list on the search query, no index; debounce=no","  42  
+  43      LaunchedEffect(searchText) {
+  44          // todo search server, set allGroups
+  45      }
+  46  
+  47      LaunchedEffect(allGroups, searchText) {
+  48>         groups = if (searchText.isBlank()) allGroups else allGroups.filter {
+  49              it.members?.any { it.person?.name?.contains(searchText, true) ?: false } ?: false
+  50          }
+  51      }
+  52  
+  53      Column {
+  54          TopAppBar("
+0aca4aceba,S06,allowBackup is true or absent (default true) and the application has no dataExtractionRules/fullBackupContent exclusion file.,main/AndroidManifest.xml,3,"allowBackup=true, no backup exclusion rules","   1  <manifest xmlns:android=""http://schemas.android.com/apk/res/android"">
+   2      <uses-permission android:name=""android.permission.INTERNET"" />
+   3>     <application
+   4          android:allowBackup=""true""
+   5          android:label=""ShelfTap""
+   6          android:supportsRtl=""true""
+   7          android:theme=""@style/Theme.ShelfTap"">
+   8          <activity android:name="".MainActivity"" android:exported=""true"">
+   9              <intent-filter>"
+4ef1884cd2,P05,"Scroll position (firstVisibleItemIndex/ScrollOffset, scrollState.value) read directly in composition, not via derivedStateOf/snapshotFlow/deferred lambda.",screen/HomeworkScreen.kt,312,"t > 300 || listState.firstVisibleItemIndex > 0, modifier = Modifier read in composition of HomeworkList"," 306                          HomeworkItemCard(homework)
+ 307                      }
+ 308                  }
+ 309              }
+ 310  
+ 311              AnimatedVisibility(
+ 312>                 visible = listState.firstVisibleItemScrollOffset > 300 || listState.firstVisibleItemIndex > 0,
+ 313                  modifier = Modifier
+ 314                      .align(Alignment.BottomEnd)
+ 315                      .padding(16.dp),
+ 316                  enter = fadeIn() + scaleIn(),
+ 317                  exit = fadeOut() + scaleOut()
+ 318              ) {"
+0d0bc7c3ab,P02,Lazy list with >= 2 content blocks (or a type-switching items lambda) and no contentType anywhere in it.,app/MainActivity.kt,80,"LazyColumn with 5 content blocks, no contentType","  74      }
+  75      if (confirm) AlertDialog(onDismissRequest = { confirm = false }, title = { Text(stringResource(R.string.confirm_history_off)) }, text = { Text(stringResource(R.string.history_off_message)) }, confirmButton = { TextButton(onClick = { confirm = false; setHistory(false) }) { Text(stringResource(R.string.turn_off)) } }, dismissButton = { TextButton(onClick = { confirm = false }) { Text(stringResource(R.string.cancel)) } })
+  76  }
+  77  
+  78  @Composable private fun BookDetailScreen(book: BookDetail, back: () -> Unit) {
+  79      Scaffold(topBar = { TopAppBar(title = { Text(""Book details"") }, navigationIcon = { TextButton(onClick = back, modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)) { Text(""‹ ${stringResource(R.string.back)}"") } }) }) { padding ->
+  80>         LazyColumn(Modifier.padding(padding), contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+  81              item { AsyncImage(model = book.coverUrl, contentDescription = stringResource(R.string.cover), contentScale = ContentScale.Crop, modifier = Modifier.fillMaxWidth().height(240.dp)) }
+  82              item { Text(book.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold) }
+  83              item { Text(if (book.authors.isEmpty()) ""Unknown author"" else book.authors.joinToString()) }
+  84              item { Text(""Subjects: ${book.subjects.ifEmpty { listOf(""—"") }.joinToString()}"") }
+  85              item { Text(""Copies available: ${book.copiesAvailable} of ${book.copiesTotal}"", style = MaterialTheme.typography.titleMedium) }
+  86          }"
+53e62da5e3,S02,"Hardcoded secret: provider-key patterns, secret-named string constants with a non-placeholder high-entropy value, buildConfigField/signing passwords with literals.",auth/AuthViewModel.kt,65,"password = ""libraryPass123"", literal secret","  59      }
+  60  
+  61      fun fillDemoCredentials() {
+  62          _uiState.update {
+  63              it.copy(
+  64                  email = ""member@library.org"",
+  65>                 password = ""libraryPass123"",
+  66                  emailError = null,
+  67                  passwordError = null,
+  68                  generalError = null
+  69              )
+  70          }
+  71      }"
+f949dea0cd,S06,allowBackup is true or absent (default true) and the application has no dataExtractionRules/fullBackupContent exclusion file.,main/AndroidManifest.xml,7,"allowBackup=true, no backup exclusion rules","   1  <?xml version=""1.0"" encoding=""utf-8""?>
+   2  <manifest xmlns:android=""http://schemas.android.com/apk/res/android""
+   3      package=""com.kanyideveloper.muviz"">
+   4  
+   5      <uses-permission android:name=""android.permission.INTERNET""/>
+   6  
+   7>     <application
+   8          android:name="".MuvizApp""
+   9          android:allowBackup=""true""
+  10          android:icon=""@mipmap/ic_launcher""
+  11          android:label=""@string/app_name""
+  12          android:roundIcon=""@mipmap/ic_launcher_round""
+  13          android:supportsRtl=""true"""
+33248260f6,S09,"SQL built by string interpolation/concatenation, WebView.loadUrl on a non-literal with JavaScript on, or a credential-submitting function with no validation predicate in its file.",auth/AuthViewModel.kt,66,signUp(...) submits credentials; no validation predicate in MomentumAndroid/src/main/java/com/mwaibanda/momentum/android/presentation/auth/AuthViewModel.kt,"  60                      onCompletion()
+  61                  }
+  62              }
+  63          }
+  64      }
+  65  
+  66>     fun signUp(email: String, password: String, onCompletion: () -> Unit = {}) {
+  67          authController.signUpWithEmail(email = email, password = password) { res ->
+  68              when (res) {
+  69                  is Failure -> {
+  70                      Log.d(""Auth/Failure"", res.message ?: """")
+  71                  }
+  72                  is Success -> {"
+359af3c459,P01,"Lazy list items()/itemsIndexed() call without a key (named, or a positional lambda as the 2nd argument).",components/GenreFilterRow.kt,42,items(genres) in LazyRow has no key,"  36                      selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+  37                      selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+  38                  )
+  39              )
+  40          }
+  41  
+  42>         items(genres) { genre ->
+  43              FilterChip(
+  44                  selected = genre == selectedGenre,
+  45                  onClick = { onGenreSelected(genre) },
+  46                  label = { Text(genre) },
+  47                  colors = FilterChipDefaults.filterChipColors(
+  48                      selectedContainerColor = MaterialTheme.colorScheme.primary,"
+5a6ddb515f,P06,"Image decoded/loaded without bounds or with caching off: manual BitmapFactory decode without inSampleSize, AsyncImage with no size-bounding modifier, Size.ORIGINAL, cache disabled.",util/bitmap.kt,28,BitmapFactory.decodeByteArray without inSampleSize (full-resolution decode),"  22  import java.util.Base64
+  23  
+  24  @Suppress(""FunctionParameterNaming"", ""FunctionNaming"", ""TooGenericExceptionCaught"")
+  25  fun base64ToBitmap(b64: String): Bitmap {
+  26      return try {
+  27          val imageAsBytes: ByteArray = Base64.getDecoder().decode(b64.toByteArray())
+  28>         BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.size)
+  29      } catch (e: Throwable) {
+  30          Log.e(""base64ToBitmap"", b64)
+  31          defaultLogo
+  32      }
+  33  }"
+227d79209c,P11,No Baseline Profile: no baselineprofile plugin and no baseline-prof.txt anywhere in the project.,app/build.gradle,1,no baselineprofile plugin and no baseline-prof.txt,"   1> plugins {
+   2      id 'kotlin-android'
+   3      id 'kotlin-kapt'
+   4      id 'com.android.application'
+   5      id 'org.jetbrains.kotlin.android'
+   6      id 'dagger.hilt.android.plugin'
+   7  }"
+4e7d78da31,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,vrka/HomeScreen.kt,964,"Column+scroll iterates (tring? = null for ((k, v) in customHeaders) {)"," 958                  if (issue != null) {
+ 959                      validation = issue
+ 960                      return@VrkaPrimaryButton
+ 961                  }
+ 962  
+ 963                  var headerError: String? = null
+ 964>                 for ((k, v) in customHeaders) {
+ 965                      if (k.isNotBlank()) {
+ 966                          when (val r = HeaderValidation.validateHeaderName(k)) {
+ 967                              is HeaderValidationResult.Invalid -> {
+ 968                                  headerError = context.resources.getString(R.string.error_invalid_header_name, k, r.reason)
+ 969                                  break
+ 970                              }"
+1140f4d31c,P13,"Search implemented as a linear in-memory filter or an unindexed SQL LIKE (no FTS/index), or a per-keystroke remote search with no debounce.",librarycatalogue/MainActivity.kt,103,"linear filter over the list on the search query, no index; debounce=no","  97          private var offset = 0f
+  98          private var lastY = 0f
+  99          private var dragging = false
+ 100          var query: String = """"
+ 101              set(value) { field = value; offset = 0f; invalidate() }
+ 102          val matchCount get() = filtered().size
+ 103>         private fun filtered(): List<Book> = if (query.isBlank()) books else books.filter {
+ 104              it.title.contains(query, true) || it.author.contains(query, true)
+ 105          }
+ 106          private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
+ 107  
+ 108          override fun onDraw(canvas: Canvas) {
+ 109              super.onDraw(canvas)"
+fd588fa1eb,D01,"Use of a deprecated API/DSL from TABLE/GRADLE (code, manifests and build scripts); security-crypto is also reported by S08 (taxonomy overlap is intended).",profile/ProfileScreen.kt,220,deprecated non-AutoMirrored Icons: use Icons.AutoMirrored.* (material-icons 1.7)," 214                              modifier = Modifier.size(24.dp),
+ 215                              color = MaterialTheme.colorScheme.onPrimary,
+ 216                              strokeWidth = 2.dp
+ 217                          )
+ 218                      } else {
+ 219                          Icon(
+ 220>                             imageVector = Icons.Default.ExitToApp,
+ 221                              contentDescription = null,
+ 222                              modifier = Modifier.size(18.dp)
+ 223                          )
+ 224                          Text(
+ 225                              text = stringResource(R.string.sign_out_button),
+ 226                              modifier = Modifier.padding(start = 8.dp),"
+860465dd4e,U04,"Colour literal (Color(0x..), Color.<Named> except Transparent/Unspecified) or fontSize = N.sp literal outside the theme package and previews.",home/WatchFaceLayer.kt,994,"hardcoded Color.White.copy(alpha = 0.08f), bypasses the theme"," 988                  color = quietText.copy(alpha = 0.18f),
+ 989                  topLeft = Offset(left, bottom),
+ 990                  size = Size(side * 0.36f, side * 0.15f),
+ 991                  cornerRadius = CornerRadius(panelRadius, panelRadius)
+ 992              )
+ 993              drawRoundRect(
+ 994>                 color = Color.White.copy(alpha = 0.08f),
+ 995                  topLeft = Offset(size.width - inset - side * 0.34f, bottom),
+ 996                  size = Size(side * 0.34f, side * 0.15f),
+ 997                  cornerRadius = CornerRadius(panelRadius, panelRadius)
+ 998              )
+ 999  
+1000              val ringTopLeft = Offset(size.width / 2f - ringSize / 2f, size.height / 2f - ringSize / 2f)"
+c089fd0535,S05,"Sensitive logging: a log call whose arguments name a token/credential/Authorization/body/PII, or HttpLoggingInterceptor at BODY/HEADERS not guarded by BuildConfig.DEBUG.",api/ApiClient.kt,22,HttpLoggingInterceptor Level.BODY not guarded for release,"  16      const val BASE_URL = ""https://api.shelftap.example/""
+  17  
+  18      val gson: Gson = Gson()
+  19  
+  20      fun createRefreshService(): ShelfTapApiService {
+  21          val logging = HttpLoggingInterceptor().apply {
+  22>             level = HttpLoggingInterceptor.Level.BODY
+  23          }
+  24  
+  25          val okHttpClient = OkHttpClient.Builder()
+  26              .addInterceptor(logging)
+  27              .connectTimeout(30, TimeUnit.SECONDS)
+  28              .readTimeout(30, TimeUnit.SECONDS)"
+18f96a26a7,S07,Component exported=true (or implicitly exported by an intent-filter) with no android:permission and not the MAIN/LAUNCHER activity.,main/AndroidManifest.xml,46,activity .ShareReceiverActivity exported without permission,"  40                  <category android:name=""android.intent.category.LAUNCHER"" />
+  41              </intent-filter>
+  42          </activity>
+  43  
+  44          <!-- Dedicated transparent share target: its own task keeps the source app visible. -->
+  45          <activity
+  46>             android:name="".ShareReceiverActivity""
+  47              android:excludeFromRecents=""true""
+  48              android:exported=""true""
+  49              android:launchMode=""singleInstance""
+  50              android:theme=""@style/Theme.VRKA.TranslucentShare"">
+  51              <intent-filter>
+  52                  <action android:name=""android.intent.action.SEND"" />"
+3e9ee46683,P11,No Baseline Profile: no baselineprofile plugin and no baseline-prof.txt anywhere in the project.,app/build.gradle.kts,1,no baselineprofile plugin and no baseline-prof.txt,"   1> plugins {
+   2      id(""com.android.application"")
+   3      id(""org.jetbrains.kotlin.android"")
+   4      id(""org.jetbrains.kotlin.plugin.compose"")
+   5  }
+   6  
+   7  android { namespace = ""vn.shelftap.app""; compileSdk = 35"
+5609ec1fc5,S05,"Sensitive logging: a log call whose arguments name a token/credential/Authorization/body/PII, or HttpLoggingInterceptor at BODY/HEADERS not guarded by BuildConfig.DEBUG.",api/ApiClient.kt,29,HttpLoggingInterceptor Level.BODY not guarded for release,"  23              apiService ?: createApiService(sessionManager, baseUrl).also { apiService = it }
+  24          }
+  25      }
+  26  
+  27      private fun createApiService(sessionManager: SessionManager, baseUrl: String): LibraryApiService {
+  28          val loggingInterceptor = HttpLoggingInterceptor().apply {
+  29>             level = HttpLoggingInterceptor.Level.BODY
+  30          }
+  31  
+  32          val okHttpClient = OkHttpClient.Builder()
+  33              .addInterceptor(AuthInterceptor(sessionManager))
+  34              .addInterceptor(MockLibraryApiInterceptor(sessionManager))
+  35              .addInterceptor(loggingInterceptor)"
+eb3d79b7cb,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",data/LibraryApi.kt,28,.openConnection() as HttpURLConnection).apply { requestMethod = method not under an IO dispatcher/thread,"  22              email = json.optString(""email"", """"),
+  23              memberSince = json.optString(""memberSince"").ifBlank { null }
+  24          )
+  25      }
+  26  
+  27      private fun request(path: String, method: String, body: String?, token: String?): JSONObject {
+  28>         val connection = (URL(baseUrl.trimEnd('/') + path).openConnection() as HttpURLConnection).apply {
+  29              requestMethod = method
+  30              connectTimeout = 15000
+  31              readTimeout = 15000
+  32              setRequestProperty(""Accept"", ""application/json"")
+  33              if (token != null) setRequestProperty(""Authorization"", ""Bearer $token"")
+  34              if (body != null) { doOutput = true; setRequestProperty(""Content-Type"", ""application/json"") }"
+0caa8a5bc9,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",data/ApiClient.kt,46,newCall(refreshRequest).execute() }.getOrNull() ?: return null refreshResponse not under an IO dispatcher/thread,"  40              }
+  41              val refresh = session.refreshToken() ?: return null
+  42              val client = OkHttpClient()
+  43              val body = JSONObject().put(""refreshToken"", refresh).put(""deviceId"", session.deviceId)
+  44                  .toString().toRequestBody(""application/json"".toMediaType())
+  45              val refreshRequest = Request.Builder().url(BASE_URL + ""api/auth/refresh"").post(body).build()
+  46>             val refreshResponse = runCatching { client.newCall(refreshRequest).execute() }.getOrNull() ?: return null
+  47              refreshResponse.use {
+  48                  if (!it.isSuccessful) { session.clear(); return null }
+  49                  val json = JSONObject(it.body?.string().orEmpty())
+  50                  session.saveAuth(AuthResponse(json.getString(""accessToken""), json.optLong(""accessExpiresIn""),
+  51                      json.getString(""refreshToken""), json.optBoolean(""mustChangePassword"")))
+  52              }"

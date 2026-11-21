@@ -1,0 +1,5 @@
+Lvn/shelftap/app/ShelfTapApp;
+Lvn/shelftap/app/ShelfTapApp;->onCreate()V
+Lvn/shelftap/app/AppContainer;
+Lvn/shelftap/app/MainActivity;
+Lvn/shelftap/app/MainActivity;->onCreate(Landroid/os/Bundle;)V

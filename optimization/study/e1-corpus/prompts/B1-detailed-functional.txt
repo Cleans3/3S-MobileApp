@@ -1,0 +1,17 @@
+Work in the current empty directory. Create the complete Android project for the app described below by writing its files here: Gradle build files, the manifest, Kotlin sources and resources. Do not run any commands that use the network, do not install anything, do not ask me questions: decide anything that is not specified yourself. When the project is complete, stop and reply with the single word DONE.
+
+Platform: Android phone app, Kotlin, Jetpack Compose with Material 3, minSdk 26, a single Gradle module named app, package vn.shelftap.app.
+
+App: ShelfTap catalogue, for library members.
+
+The library catalogue holds about 100,000 titles. A title has: id (string), isbn (string), title (string), authors (list of strings), year (integer), subjects (list of strings), coverUrl (https URL of a 600 by 900 JPEG, may be absent), copiesAvailable (integer).
+
+The catalogue is served by a REST API at https://api.shelftap.example :
+  GET /api/titles?q=<text>&page=<n>&size=<n>  returns {"items":[title,...],"page":n,"size":n,"total":n}, where q matches title, author, ISBN and subject, page starts at 0 and size is at most 50.
+  GET /api/titles/{id}  returns one title (the same fields).
+Members use the app on the shelves, where the network is often poor: after the catalogue has been downloaded once, browsing and searching must keep working with no connection.
+
+Screens:
+1. Catalogue: a list of titles, one row per title, showing the cover, title, authors, year and a badge "Available" (copiesAvailable > 0) or "All copies out". The list starts at the top and can be scrolled through all titles.
+2. Search: a search field above the list. The list updates as the member types and shows titles whose title, author, ISBN or subject contains what was typed. An empty result shows the message "No books found".
+3. Title detail: opened from a row. Shows the large cover, all fields, the subjects as chips, and a back button.

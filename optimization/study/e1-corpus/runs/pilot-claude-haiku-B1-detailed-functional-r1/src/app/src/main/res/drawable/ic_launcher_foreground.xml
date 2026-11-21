@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- A book on a shelf: cover, spine line and shelf. -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,28h40v52h-40z" />
+    <path
+        android:fillColor="#1B4D3E"
+        android:pathData="M40,28h3v52h-3z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,82h60v4h-60z" />
+</vector>

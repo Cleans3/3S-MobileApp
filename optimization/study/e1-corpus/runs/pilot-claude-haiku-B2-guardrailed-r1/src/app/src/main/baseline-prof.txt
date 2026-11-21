@@ -1,0 +1,13 @@
+# Hand-written baseline profile for app start and the sign-in / profile flow.
+# Regenerate with a Macrobenchmark BaselineProfileRule run when a baselineprofile module is added.
+Lvn/shelftap/app/ShelfTapApp;
+Lvn/shelftap/app/MainActivity;
+Lvn/shelftap/app/AppContainer;
+Lvn/shelftap/app/data/ApiClient;
+Lvn/shelftap/app/data/AccountRepository;
+Lvn/shelftap/app/data/SessionStore;
+Lvn/shelftap/app/ui/AccountViewModel;
+Lvn/shelftap/app/ui/ShelfTapRootKt;
+Lvn/shelftap/app/ui/SignInScreenKt;
+Lvn/shelftap/app/ui/ProfileScreenKt;
+Lvn/shelftap/app/ui/ChangePasswordScreenKt;

@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="nav_loans">Loans</string>
+    <string name="nav_history">History</string>
+    <string name="book_detail_title">Book Detail</string>
+
+    <!-- Loans Screen -->
+    <string name="loans_title">My Loans</string>
+    <string name="no_loans">You currently have no loans.</string>
+    <string name="overdue">Overdue</string>
+    <string name="due_date">Due: %1$s</string>
+    <string name="days_left">%1$d days left</string>
+    <string name="due_today">Due today</string>
+    <string name="one_day_left">1 day left</string>
+    <string name="renew">Renew</string>
+    <string name="renewing">Renewing…</string>
+    <string name="renew_failed">This loan cannot be renewed</string>
+    <string name="loan_renewed_success">Loan renewed successfully</string>
+    <string name="barcode_label">Barcode: %1$s</string>
+
+    <!-- History Screen -->
+    <string name="history_title">Reading History</string>
+    <string name="keep_history_switch">Keep my reading history</string>
+    <string name="no_history">No reading history available.</string>
+    <string name="history_disabled">Reading history is switched off.</string>
+    <string name="borrowed_date">Borrowed: %1$s</string>
+    <string name="returned_date">Returned: %1$s</string>
+    <string name="not_returned_yet">Currently out</string>
+    <string name="confirm_disable_history_title">Turn off reading history?</string>
+    <string name="confirm_disable_history_message">If you turn off reading history, your past reading records will not be kept.</string>
+    <string name="confirm_turn_off">Turn Off</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Book Detail Screen -->
+    <string name="copies_available">Copies available: %1$d of %2$d</string>
+    <string name="isbn_label">ISBN: %1$s</string>
+    <string name="authors_label">Authors: %1$s</string>
+    <string name="subjects_label">Subjects: %1$s</string>
+
+    <!-- General / Status -->
+    <string name="showing_saved_data">Showing saved data</string>
+    <string name="retry">Retry</string>
+    <string name="error_loading">Failed to load data.</string>
+
+    <!-- Accessibility Content Descriptions -->
+    <string name="cd_navigate_back">Navigate back</string>
+    <string name="cd_refresh">Refresh data</string>
+    <string name="cd_book_cover">Cover of book %1$s</string>
+    <string name="cd_history_toggle">Toggle reading history</string>
+</resources>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ShelfTap</string><string name="back">Back</string><string name="cover">Book cover</string>
+    <string name="open_book">Open book details</string><string name="refresh">Refresh</string><string name="confirm_history_off">Turn off reading history?</string>
+    <string name="history_off_message">New reading activity will not be saved while this is off.</string><string name="cancel">Cancel</string><string name="turn_off">Turn off</string>
+</resources>

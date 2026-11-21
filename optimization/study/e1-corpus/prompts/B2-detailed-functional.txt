@@ -1,0 +1,22 @@
+Work in the current empty directory. Create the complete Android project for the app described below by writing its files here: Gradle build files, the manifest, Kotlin sources and resources. Do not run any commands that use the network, do not install anything, do not ask me questions: decide anything that is not specified yourself. When the project is complete, stop and reply with the single word DONE.
+
+Platform: Android phone app, Kotlin, Jetpack Compose with Material 3, minSdk 26, a single Gradle module named app, package vn.shelftap.app.
+
+App: ShelfTap member account, for library members.
+
+REST API at https://api.shelftap.example . JSON, camelCase. Errors are JSON {"type","title","status","detail","code"}; branch on code.
+  POST /api/auth/login    {"email","password","deviceId"}  returns {"accessToken","accessExpiresIn","refreshToken","mustChangePassword"}
+  POST /api/auth/refresh  {"refreshToken","deviceId"}      returns the same shape
+  POST /api/auth/logout   {"refreshToken"}                 returns 204
+  GET  /api/me            returns {"memberId","fullName","email","memberType","status","historyEnabled","mustChangePassword"}
+  POST /api/me/password   {"currentPassword","newPassword"}  returns 204
+Authenticated calls send the header Authorization: Bearer <accessToken>. An access token lives 15 minutes. A refresh token is single use: every refresh returns a new refresh token, and the old one must not be used again. deviceId is a UUID that the app creates once, on first launch, and keeps for the life of the installation.
+Error codes to handle: INVALID_CREDENTIALS (401), ACCOUNT_LOCKED (423), RATE_LIMITED (429, header Retry-After in seconds), TOKEN_INVALID (401), PASSWORD_CHANGE_REQUIRED (403).
+
+Behaviour:
+- A member who signed in stays signed in when the app is closed and reopened, without typing the password again.
+- When a call fails with 401 TOKEN_INVALID, the app refreshes the token once and repeats the call; if the refresh also fails, the member is returned to the sign-in screen.
+- Signing out tells the server and removes the session from the phone.
+- If mustChangePassword is true after sign-in, the member must change the password before anything else.
+
+Screens: Sign in (email, password, button, error message under the fields), Profile (full name, email, member type, status, a Sign out button), Change password (current, new, confirm new; the two new entries must match).

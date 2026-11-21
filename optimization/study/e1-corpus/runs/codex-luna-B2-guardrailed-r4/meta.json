@@ -1,0 +1,53 @@
+{
+  "tool": "codex",
+  "model_arg": "gpt-5.6-luna",
+  "cli_version": "codex-cli 0.170.0",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 219.1,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "329be32cf4fe03551e09e50c4a52f65f3a0febedee3b98db31fb5228b2b71a0c",
+  "cli_flags": "exec --json -s danger-full-access --skip-git-repo-check --ephemeral -C /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/corpus/codex-luna-B2-guardrailed-r4 -m gpt-5.6-luna -c model_reasoning_effort=\"medium\" -c web_search=\"disabled\" --disable apps --disable browser_use --disable browser_use_external --disable computer_use --disable plugins --disable in_app_browser <PROMPT>",
+  "model_reported": null,
+  "tokens_in": 150719,
+  "tokens_out": 11405,
+  "cost_usd": null,
+  "final_text": "DONE",
+  "stderr_head": [
+    "Reading additional input from stdin..."
+  ],
+  "run_id": "codex-luna-B2-guardrailed-r4",
+  "bundle": "codex-luna",
+  "brief": "B2",
+  "prompt_style": "guardrailed",
+  "rep": 4,
+  "pilot": false,
+  "files": 18,
+  "kotlin_loc": 410,
+  "valid": true,
+  "context_file": "AGENTS.md",
+  "guardrail_sha256": "ae5639033f70ca6587f2eb7d9d33d3ab75ba8b7fb1521370657dfb7a624d49cf",
+  "attempts": [
+    {
+      "attempt": 1,
+      "files": 18,
+      "exit_code": 0,
+      "infra_failure": false,
+      "denied_actions": 0,
+      "harness_denied_empty": false
+    }
+  ],
+  "net_audit": "none",
+  "n_commands": 4,
+  "denied_actions": 0,
+  "web_tool_calls": 0,
+  "web_tools": "",
+  "web_denied": "na",
+  "generated_at": "2026-11-21T17:31:13+0700",
+  "invalid_reason": "",
+  "transcript_path": "optimization/study/e1-corpus/runs/codex-luna-B2-guardrailed-r4/transcript.jsonl.gz",
+  "temperature_or_seed": "not exposed by CLI"
+}

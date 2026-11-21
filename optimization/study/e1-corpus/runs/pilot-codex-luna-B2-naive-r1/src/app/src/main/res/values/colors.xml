@@ -1,0 +1,11 @@
+<resources>
+    <color name="library_navy">#18324B</color>
+    <color name="library_blue">#2F6F9F</color>
+    <color name="library_gold">#D89B38</color>
+    <color name="paper">#FFFDF9</color>
+    <color name="ink">#1D2935</color>
+    <color name="muted_ink">#667481</color>
+    <color name="line">#D6DEE3</color>
+    <color name="error">#B3261E</color>
+    <color name="white">#FFFFFF</color>
+</resources>

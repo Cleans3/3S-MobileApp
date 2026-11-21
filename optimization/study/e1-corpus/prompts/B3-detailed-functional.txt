@@ -1,0 +1,20 @@
+Work in the current empty directory. Create the complete Android project for the app described below by writing its files here: Gradle build files, the manifest, Kotlin sources and resources. Do not run any commands that use the network, do not install anything, do not ask me questions: decide anything that is not specified yourself. When the project is complete, stop and reply with the single word DONE.
+
+Platform: Android phone app, Kotlin, Jetpack Compose with Material 3, minSdk 26, a single Gradle module named app, package vn.shelftap.app.
+
+App: ShelfTap loans and reading history, for library members who are already signed in. Assume the app has an AuthRepository with suspend fun accessToken(): String that returns a valid access token; you only use it.
+
+REST API at https://api.shelftap.example , JSON, camelCase, header Authorization: Bearer <accessToken>:
+  GET  /api/me/loans     returns [Loan], the current loans
+  GET  /api/me/history   returns [HistoryItem], past loans (an empty list when the member has switched history off)
+  POST /api/loans/{loanId}/renew  returns the updated Loan, or an error with code RENEWAL_NOT_ALLOWED (409)
+  GET  /api/me           returns {"memberId","fullName","email","memberType","status","historyEnabled","mustChangePassword"}
+  PUT  /api/me/privacy   {"historyEnabled": boolean}  returns the updated /api/me object
+  GET  /api/titles/{titleId}  returns {"titleId","isbn","title","authors","subjects","coverUrl","copiesAvailable","copiesTotal"}
+Loan = {"loanId","copyId","titleId","title","barcode","outAt","dueAt","returnedAt","renewals","renewable"}; HistoryItem = {"titleId","title","outAt","returnedAt"}; times are ISO-8601 UTC strings, returnedAt is null while the book is out.
+
+Screens:
+1. Loans: one row per loan with title, due date, days left, a highlighted "Overdue" marker when past due, and a Renew button that is enabled only when renewable is true. After renewing, the row shows the new due date; RENEWAL_NOT_ALLOWED shows "This loan cannot be renewed".
+2. History: one row per past loan with title, borrowed date and returned date, newest first, and a switch "Keep my reading history" bound to historyEnabled; turning it off asks for confirmation first.
+3. Book detail: opened from either list; shows the cover, title, authors, subjects and how many copies are available.
+Loans and History must show the last data that was loaded when the network is unavailable, with a note "Showing saved data".

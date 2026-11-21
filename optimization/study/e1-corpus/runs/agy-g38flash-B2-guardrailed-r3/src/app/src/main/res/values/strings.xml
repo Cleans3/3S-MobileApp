@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <!-- Sign In Screen -->
+    <string name="sign_in_title">ShelfTap Member Sign In</string>
+    <string name="email_label">Email</string>
+    <string name="email_placeholder">member@shelftap.example</string>
+    <string name="password_label">Password</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="signing_in">Signing in…</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title">Member Profile</string>
+    <string name="full_name_label">Full Name</string>
+    <string name="member_type_label">Member Type</string>
+    <string name="status_label">Status</string>
+    <string name="sign_out_button">Sign Out</string>
+    <string name="signing_out">Signing out…</string>
+    <string name="profile_avatar_description">Member Profile Avatar</string>
+
+    <!-- Change Password Screen -->
+    <string name="change_password_title">Change Password</string>
+    <string name="change_password_instruction">Please change your password before proceeding.</string>
+    <string name="current_password_label">Current Password</string>
+    <string name="new_password_label">New Password</string>
+    <string name="confirm_new_password_label">Confirm New Password</string>
+    <string name="change_password_button">Change Password</string>
+    <string name="passwords_do_not_match">The two new passwords do not match.</string>
+    <string name="current_password_required">Current password cannot be empty.</string>
+    <string name="new_password_required">New password cannot be empty.</string>
+    <string name="password_changed_success">Password changed successfully.</string>
+    <string name="changing_password">Updating password…</string>
+
+    <!-- Error Messages -->
+    <string name="error_invalid_credentials">Invalid email or password.</string>
+    <string name="error_account_locked">Your account has been locked. Please contact library support.</string>
+    <string name="error_rate_limited">Too many requests. Please retry after %1$d seconds.</string>
+    <string name="error_token_invalid">Your session has expired. Please sign in again.</string>
+    <string name="error_password_change_required">Password change is required before proceeding.</string>
+    <string name="error_generic">An error occurred (%1$s). Please try again.</string>
+    <string name="error_network">Unable to connect to the server. Please check your network connection.</string>
+
+    <!-- Accessibility Descriptions -->
+    <string name="cd_app_logo">ShelfTap Logo</string>
+    <string name="cd_toggle_password_visibility">Toggle password visibility</string>
+</resources>

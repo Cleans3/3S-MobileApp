@@ -1,0 +1,14 @@
+[
+ "codex-luna-B2-detailed-functional-r2",
+ "codex-luna-B3-guardrailed-r1",
+ "claude-haiku-B1-guardrailed-r3",
+ "codex-luna-B1-naive-r3",
+ "agy-g38flash-B2-naive-r1",
+ "claude-haiku-B3-detailed-functional-r3",
+ "agy-g38flash-B2-detailed-functional-r2",
+ "claude-haiku-B2-naive-r2",
+ "agy-g38flash-B1-guardrailed-r2",
+ "codex-luna-B3-detailed-functional-r4",
+ "codex-luna-B1-guardrailed-r2",
+ "claude-haiku-B3-guardrailed-r1"
+]

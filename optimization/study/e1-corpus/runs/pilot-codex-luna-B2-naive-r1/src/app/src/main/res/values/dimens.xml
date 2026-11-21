@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="screen_padding">24dp</dimen>
+    <dimen name="section_spacing">20dp</dimen>
+</resources>

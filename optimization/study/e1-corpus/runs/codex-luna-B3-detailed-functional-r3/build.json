@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 62.7,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/codex-luna-B3-detailed-functional-r3/app/src/main/java/vn/shelftap/app/MainActivity.kt:29:59 Argument type mismatch: actual type is",
+ "lint": "no-report"
+}

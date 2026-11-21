@@ -1,0 +1,4 @@
+HSPLvn/shelftap/app/MainActivity;-><init>()V
+HSPLvn/shelftap/app/MainActivity;->onCreate(Landroid/os/Bundle;)V
+HSPLvn/shelftap/app/ShelfTapApplication;-><init>()V
+HSPLvn/shelftap/app/ShelfTapApplication;->onCreate()V

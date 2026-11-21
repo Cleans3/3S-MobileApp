@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loans_title">My loans</string>
+    <string name="loans_history_title">Reading history</string>
+    <string name="loans_open_history">Open reading history</string>
+    <string name="loans_details_title">Book details</string>
+    <string name="loans_back">Back</string>
+    <string name="loans_empty">You have no borrowed books.</string>
+    <string name="loans_history_empty">No books in your history yet.</string>
+    <string name="loans_renew">Renew</string>
+    <string name="loans_renew_success">Renewed. New due date: %1$s</string>
+    <string name="loans_renew_overdue">Overdue loans cannot be renewed.</string>
+    <string name="loans_renew_limit">Renewal limit reached.</string>
+    <string name="loans_renew_returned">This loan has already been returned.</string>
+    <string name="loans_renew_not_found">Loan not found.</string>
+    <string name="loans_author">by %1$s</string>
+    <string name="loans_due">Due %1$s</string>
+    <string name="loans_overdue">Overdue</string>
+    <string name="loans_borrowed_on">Borrowed %1$s</string>
+    <string name="loans_returned_on">Returned %1$s</string>
+    <string name="loans_renewals">Renewals: %1$d of %2$d</string>
+    <string name="loans_isbn">ISBN %1$s</string>
+    <string name="loans_pages">%1$d pages</string>
+</resources>

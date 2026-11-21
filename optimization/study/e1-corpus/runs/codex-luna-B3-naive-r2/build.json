@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 20.9,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/codex-luna-B3-naive-r2/app/src/main/kotlin/com/example/libraryloans/MainActivity.kt:34:193 'if' must have both main and 'else' bran",
+ "lint": "no-report"
+}

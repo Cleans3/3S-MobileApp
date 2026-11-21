@@ -1,0 +1,158 @@
+sample_id,rater,label,note
+a35cff61dc,r1,tp,
+17bd1a6d2d,r1,fp,match is inside an XML comment that forbids the setting; base-config sets false
+e66838f5ea,r1,tp,
+ba23d9a7b1,r1,fp,root build script applies the application plugin with apply false; not an application module
+e50c74c06c,r1,tp,"debug keystore, well-known password, literal signing password matches the clause"
+f27caecec4,r1,tp,
+0c3a788360,r1,tp,
+8e8dd9ebd7,r1,tp,
+bbdc997ad9,r1,tp,
+4edaba5cc9,r1,tp,groupBy inside the lazy list content lambda re-runs on recomposition
+24495932e4,r1,tp,
+6afe77f4c3,r1,tp,
+4b462224a8,r1,tp,"interpolates a constant table name; pattern holds, no user input"
+2f064855b4,r1,tp,same as previous: constant interpolated
+96942e4e94,r1,fp,"SAX feature identifier URI passed to setFeature, not a network request"
+72ae8c4e2a,r1,tp,second content block lies outside the window; evidence consistent
+1066998e48,r1,tp,
+667288220c,r1,tp,
+81c05f5061,r1,tp,
+ed6ea552b1,r1,tp,
+8f78cd8848,r1,tp,"linear filter over a small FAQ list, pattern holds"
+8459aea9ad,r1,tp,
+fe588a663d,r1,tp,
+8f07ebcc68,r1,tp,
+b8e978e6b1,r1,tp,"Image, not a button, but click modifier plus size 30dp"
+38bf089f43,r1,tp,
+7e55258dbe,r1,tp,
+4bd67dd884,r1,fp,"root build script, application plugin only declared with apply false"
+6d6c83d7d1,r1,tp,
+8df05d140b,r1,tp,linear filter on the query over the loan list
+a184740d0e,r1,tp,
+c384ec2fe5,r1,tp,
+80cff11a14,r1,fp,"SAX feature identifier URI, not a network request"
+5057323fc3,r1,tp,
+7a1ed7e032,r1,tp,
+2a70229e11,r1,tp,"implicit export through intent-filter, no permission"
+bbb180308c,r1,tp,
+e7b95f2354,r1,tp,
+b8d9a5d24d,r1,tp,"debug keystore, literal signing password"
+d352fd232d,r1,tp,
+d9198be22c,r1,tp,"small notification icon from resources; the pattern (decodeResource, no inSampleSize) holds"
+9a0cd0dda5,r1,tp,debounce exists but the LIKE is unindexed
+e3bb02111a,r1,tp,
+88d8a1d5de,r1,unclear,"window shows only imports and the file header, state handling is outside it"
+6579b5fa54,r1,tp,
+2497f57d14,r1,tp,colour constants not visible; trusting the computed ratio
+cb9c769ebf,r1,tp,
+5728b63547,r1,tp,
+a1c18bbfb7,r1,tp,
+db2b0b6d3d,r1,tp,
+2d670fa3a9,r1,tp,
+7554fb91ce,r1,fp,"the read sits inside a lambda argument of the modifier, so it is evaluated later, not in composition"
+7e646efa7f,r1,tp,
+ee762f0876,r1,tp,
+26faf21eff,r1,fp,"function name contains EncryptedFile; the code uses javax Cipher AES-GCM, no androidx.security-crypto API"
+4152d9f51b,r1,unclear,window shows imports only; state handling is outside it
+4053da5311,r1,tp,
+703027d523,r1,tp,
+38155aac84,r1,tp,textbook RSA transformation present
+d92e91c985,r1,tp,
+3b4f5f237a,r1,tp,literal password in demo-fill function
+b95b744271,r1,tp,"debug keystore, literal signing password"
+7018db434b,r1,unclear,modifier argument of AsyncImage lies below the window
+e0b20ef8e9,r1,tp,
+f68483b173,r1,tp,
+a53286d380,r1,tp,
+634eaa5d35,r1,tp,empty checkClientTrusted bodies
+60935d9548,r1,tp,"items call is on the flagged line, truncated in the window"
+b8bedfc64b,r1,tp,
+8708be8b22,r1,tp,colour constants not visible; trusting the computed ratio
+4041e2a2f2,r1,tp,
+ee10cf229f,r1,tp,
+03b1a5c65f,r1,tp,
+560608a15e,r1,unclear,module applies a convention plugin that may configure the release type; not visible
+7110a0dfa6,r1,tp,
+aba73745b3,r1,tp,colour constants not visible; trusting the computed ratio
+4eb7e4a2d5,r1,tp,
+d90307c378,r1,tp,
+4651fd777b,r1,unclear,the visible surfaceVariant belongs to the previous (light) scheme; the dark pair is outside the window
+c0ea21c3f9,r1,unclear,window shows imports only
+cd7eba6c28,r1,tp,"PII written to prefs, no Keystore use visible"
+0592f29ca6,r1,tp,
+d4f157be79,r1,fp,"SAX feature identifier URI, not a network request"
+b8907df7d6,r1,tp,
+ce49efc40d,r1,tp,
+e15ab066ad,r1,unclear,enclosing function not visible; likely an OkHttp Authenticator on a background thread
+c73308e671,r1,unclear,window shows imports only
+47ea44ce17,r1,unclear,window shows imports only
+3603d05938,r1,tp,
+2832bb9897,r1,tp,
+1dd647c889,r1,tp,
+d6ced7ddd9,r1,tp,
+f71483c025,r1,fp,"the read sits inside a lambda argument of the modifier, evaluated later, not in composition"
+22cc15bac4,r1,tp,
+7d9bc6aca8,r1,tp,
+5b87298248,r1,tp,
+574725d59e,r1,tp,
+2e3996e3c5,r1,tp,blocks not visible; evidence consistent
+f50d02e8e6,r1,tp,
+1d9e0047aa,r1,tp,
+223dba6220,r1,fp,flavor overlay manifest holding only meta-data; allowBackup comes from the main manifest in the merge
+b5ef7e8963,r1,unclear,"searchLocal suggests a local query, not remote; implementation not visible"
+6b7331181d,r1,unclear,modifier is inherited from the caller and the line is truncated
+18a3363967,r1,tp,
+77ad49b845,r1,tp,
+80cbefb19c,r1,tp,
+ea3dc10405,r1,tp,
+32423fc412,r1,tp,
+2327758c59,r1,fp,"root build script, application plugin declared with apply false"
+a8b7fc9549,r1,tp,
+4df3db5aba,r1,tp,
+a29426e1a0,r1,tp,
+b6d88a8a41,r1,tp,"explicit exported=true, no permission; the intent-filter is commented out"
+85204068d8,r1,fp,"repeat over a small rating count (stars), not iteration of a collection"
+cac7e2abcf,r1,tp,constant table name interpolated; pattern holds
+9159a90818,r1,fp,"root build script, application plugin declared with apply false"
+a1e8957408,r1,tp,
+fb7626422c,r1,tp,
+5319ff45e6,r1,tp,
+d31b9c46a6,r1,unclear,window shows imports only
+09a6671c3f,r1,tp,
+692323f12d,r1,tp,
+685b730f17,r1,tp,
+7a303cdc74,r1,tp,
+b1d29c48e8,r1,fp,"the flagged call writes an empty string to clear the token, it does not store a credential"
+f41a9400d6,r1,fp,"blocking call lives in request(), whose visible caller wraps it in withContext(Dispatchers.IO)"
+9a84fdfd73,r1,unclear,enclosing function not visible; interceptors run on OkHttp threads
+fbb78b1acc,r1,tp,
+48e12aeb9d,r1,tp,scroll modifier not visible; evidence consistent
+371ce91568,r1,tp,
+5e30f04013,r1,tp,
+7a747139cf,r1,fp,"constant holds a preference key name, not a secret value"
+ea9526d6f1,r1,tp,
+916b055d8d,r1,tp,
+97a9a1075e,r1,tp,
+296fda9a06,r1,tp,
+c31d060269,r1,tp,
+89df33dd1b,r1,tp,
+0aca4aceba,r1,tp,
+4ef1884cd2,r1,tp,
+0d0bc7c3ab,r1,tp,
+53e62da5e3,r1,tp,literal password in demo-fill function
+f949dea0cd,r1,tp,
+33248260f6,r1,tp,
+359af3c459,r1,tp,
+5a6ddb515f,r1,tp,
+227d79209c,r1,tp,
+4e7d78da31,r1,fp,"the loop validates headers inside an onClick handler, it emits no children"
+1140f4d31c,r1,tp,
+fd588fa1eb,r1,tp,
+860465dd4e,r1,tp,
+c089fd0535,r1,tp,
+18f96a26a7,r1,tp,
+3e9ee46683,r1,tp,
+5609ec1fc5,r1,tp,
+eb3d79b7cb,r1,unclear,caller of request() not visible
+0caa8a5bc9,r1,unclear,enclosing function not visible; likely an authenticator or interceptor thread

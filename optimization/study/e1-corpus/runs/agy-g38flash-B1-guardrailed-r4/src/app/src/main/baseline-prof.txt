@@ -1,0 +1,8 @@
+HSPLvn/shelftap/app/MainActivity;->onCreate(Landroid/os/Bundle;)V
+HSPLvn/shelftap/app/ShelfTapApp;->onCreate()V
+HSPLvn/shelftap/app/ui/catalogue/CatalogueScreenKt;->CatalogueScreen(Lvn/shelftap/app/ui/catalogue/CatalogueViewModel;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;)V
+HSPLvn/shelftap/app/ui/catalogue/CatalogueScreenKt;->TitleRow(Lvn/shelftap/app/data/model/Title;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;)V
+HSPLvn/shelftap/app/ui/catalogue/CatalogueViewModel;-><init>(Lvn/shelftap/app/data/repository/CatalogueRepository;Lkotlinx/coroutines/CoroutineDispatcher;)V
+HSPLvn/shelftap/app/data/repository/CatalogueRepository;-><init>(Lvn/shelftap/app/data/local/TitleDao;Lvn/shelftap/app/data/api/ShelfTapApiService;Lkotlinx/coroutines/CoroutineDispatcher;)V
+HSPLvn/shelftap/app/data/local/TitleDao;->getAllTitlesPaged()Landroidx/paging/PagingSource;
+HSPLvn/shelftap/app/data/local/TitleDao;->searchTitlesFts(Ljava/lang/String;)Landroidx/paging/PagingSource;

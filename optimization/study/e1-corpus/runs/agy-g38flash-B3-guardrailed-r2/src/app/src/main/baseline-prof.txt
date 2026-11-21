@@ -1,0 +1,9 @@
+HSPLvn/shelftap/app/MainActivity;-><init>()V
+HSPLvn/shelftap/app/ShelfTapApp;-><init>()V
+HSPLvn/shelftap/app/ShelfTapApp;->onCreate()V
+HSPLvn/shelftap/app/ui/loans/LoansScreenKt;->LoansScreen
+HSPLvn/shelftap/app/ui/history/HistoryScreenKt;->HistoryScreen
+HSPLvn/shelftap/app/ui/detail/TitleDetailScreenKt;->TitleDetailScreen
+HSPLvn/shelftap/app/data/crypto/EncryptedStorageManager;-><init>
+HSPLvn/shelftap/app/data/repository/LoanRepository;->getLoans
+HSPLvn/shelftap/app/data/repository/HistoryRepository;->getHistory

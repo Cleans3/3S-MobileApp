@@ -1,0 +1,105 @@
+repo,stratum,rank,accepted,reason
+KapilYadav-dev/ComposeIntro,pre,1,0,vendor/sample/tutorial by name/description/owner
+tom5079/Minamo,pre,2,0,first commit 2023-07-03 after cutoff
+rubenquadros/Jetpack-Compose-Video-Games-Example,pre,3,0,vendor/sample/tutorial by name/description/owner
+Ruthvikbr/Starbucks-India-Compose,pre,4,0,no application module
+AnastasiaRainMaker/Compose-MVVM-app-sample,pre,5,0,vendor/sample/tutorial by name/description/owner
+D000L/pokedex-compose,pre,6,1,
+AlexMamo/FireMag,pre,7,1,
+nameisjayant/IMDB-Movie-App,pre,8,0,kotlin_loc 571 outside 2000-50000
+justdeko/piley,pre,9,1,
+j-osephlong/MicCheck,pre,10,1,
+dropbox/componentbox,pre,11,0,fork/archived
+lelandrichardson/astrobin-compose,pre,12,1,
+kasem-sm/SlimeKT,pre,13,1,
+meshramaravind/E-commerceShopAppUI-Android,pre,14,0,kotlin_loc 1350 outside 2000-50000
+S-ResearchStack/app-sdk,pre,15,1,
+ahmed-shehataa/Movie-clean,pre,16,0,kotlin_loc 1521 outside 2000-50000
+MReP1/LittleGooseOffice,pre,17,1,
+ibrajix/MyMusic,pre,18,0,kotlin_loc 1333 outside 2000-50000
+GetStream/whatsApp-clone-compose,pre,19,0,vendor/sample/tutorial by name/description/owner
+BLumia/pineapple-lock-screen,pre,20,0,kotlin_loc 962 outside 2000-50000
+CuriousNikhil/k5-compose,pre,21,0,no application module
+massivemadness/Fragula,pre,22,0,fork/archived
+manueldidonna/waves-timer-animation,pre,23,0,kotlin_loc 597 outside 2000-50000
+GetStream/stream-log,pre,24,0,kotlin_loc 783 outside 2000-50000
+salmanashraf/android-ai-chat-sdk,pre,25,0,no androidx.compose in Gradle files
+Ericgacoki/Kripto,pre,26,1,
+canopas/compose-animations-examples,pre,27,0,vendor/sample/tutorial by name/description/owner
+mouredev/Pokemon-JetpackCompose,pre,28,0,kotlin_loc 213 outside 2000-50000
+raheemadamboev/online-video-player,pre,29,0,kotlin_loc 639 outside 2000-50000
+maxkeppeler/sheets-compose-dialogs,pre,30,0,no application module
+radusalagean/info-bar-compose,pre,31,0,fork/archived
+mertceyhan/push-note-android,pre,32,0,kotlin_loc 1523 outside 2000-50000
+ruffCode/yaba-kmm,pre,33,1,
+SmartToolFactory/Compose-Zoom,pre,34,1,
+yogeshpaliyal/Speld,pre,35,0,kotlin_loc 321 outside 2000-50000
+IamCheng5/ComposeWheelPicker,pre,36,0,kotlin_loc 482 outside 2000-50000
+devrath/droid-pure-kotlin-application,pre,37,0,vendor/sample/tutorial by name/description/owner
+MwaiBanda/Momentum,pre,38,1,
+yasanglass/tehro-android,pre,39,0,fork/archived
+K1rakishou/KurobaSubsamplingScaleImage,pre,40,1,
+joelkanyi/Muviz,pre,41,1,
+VictorKabata/Kotlin-Multiplatform-Template,pre,42,0,fork/archived
+X1nto/Mauth,pre,43,1,
+rodrigomartind/MixAnimationsJetpackCompose,pre,44,0,kotlin_loc 543 outside 2000-50000
+vinodbaste/Image-compressor,pre,45,0,no androidx.compose in Gradle files
+team-aliens/DMS-Android,pre,46,0,no application module
+seve-andre/jetpack-compose-template,pre,47,0,vendor/sample/tutorial by name/description/owner
+cyph3rcod3r/Nike-Store,pre,48,0,kotlin_loc 737 outside 2000-50000
+leavesczy/compose-multiplatform-tetris,pre,49,0,kotlin_loc 1783 outside 2000-50000
+creativedrewy/NATIV,pre,50,1,
+Raed-Mughaus/compose-color-picker,pre,51,0,kotlin_loc 1067 outside 2000-50000
+element-hq/element-x-android,pre,52,1,
+Lastaapps/menza,pre,53,0,no application module
+Kashif-E/KmMScientists,pre,54,0,kotlin_loc 1584 outside 2000-50000
+Queatz/AiLaAi,pre,55,1,
+alvr/katana,pre,56,1,
+leavesczy/compose_chat,pre,57,0,no application module
+ch8n/Compose-Fruit-Ninja,pre,58,0,no application module
+ixiDev/JetSpring,pre,59,0,no application module
+re-ovo/compose-setting,pre,60,0,kotlin_loc 821 outside 2000-50000
+aqua30/GraphCompose,pre,61,0,vendor/sample/tutorial by name/description/owner
+oucifmohammed/ShopApp,pre,62,1,
+ApimorLabs/Reluct,pre,63,0,
+DmytroShuba/DailyTags,pre,64,0,kotlin_loc 1113 outside 2000-50000
+lyh990517/Compose-Calendar,post,1,0,vendor/sample/tutorial by name/description/owner
+84593320z/GKD-XA,post,2,0,kotlin_loc 72016 outside 2000-50000
+android/appfunctions,post,3,0,vendor/sample/tutorial by name/description/owner
+Entity-Now/WJFakeLocation,post,4,1,
+K-M-9/Payment-Paymob-Android-Compose,post,5,0,kotlin_loc 435 outside 2000-50000
+ritesh-kanwar/Cashiro,post,6,0,kotlin_loc 127893 outside 2000-50000
+0xsys/ESP32-Marauder-Mobile,post,7,1,
+NuvioMedia/NuvioTV,post,8,0,kotlin_loc 260127 outside 2000-50000
+BKK31/pixel-gallery,post,9,0,fork/archived
+KaushalVasava/DocumentScanner,post,10,0,no application module
+connectbot/termlib,post,11,1,
+Dinesh2510/JetShop-E-commerce-App-with-Jetpack-Compose,post,12,1,
+MaverickRox/VRKA-Android,post,13,1,
+xumidcm/Flue-compose,post,14,1,
+HFDLYS/BJTUselfService,post,15,1,
+Yukioooooo0/QingZai,post,16,1,
+braze-taffo/tellev,post,17,0,kotlin_loc 51406 outside 2000-50000
+taha-cmyk/exposed,post,18,0,kotlin_loc 746 outside 2000-50000
+NobilityDeviant/ZenDownloader,post,19,0,fork/archived
+magiobus/thortranslate,post,20,1,
+by-architect/Operator,post,21,1,
+sadellie/sukko,post,22,1,
+rameshvoltella/KeralaAICameraTracker,post,23,1,
+MuhammetKonukcu/LitLounge,post,24,0,no application module
+uukjtisa/filet,post,25,0,kotlin_loc 121467 outside 2000-50000
+smartscanapp/smartscan-android,post,26,1,
+kerneldroid/Nightzuku,post,27,1,
+KoukeNeko/EssentialKeyTools,post,28,1,
+Hsia97/CFSTAPP,post,29,1,
+Mangi-11/SmartisanMusic-Revived,post,30,1,
+Turtlecute33/Fonte,post,31,1,
+koma-kt/koma,post,32,0,no application module
+potatameister/PaperKnifePlus,post,33,1,
+aldefy/compose-rebound,post,34,1,
+KaushalVasava/ComposeUI,post,35,0,no application module
+SRGSSR/MediaMaestro,post,36,0,
+laizhixingxingdeli/MiNavigateRing,post,37,0,
+AndroidCSIDE/ACSIDE,post,38,0,no application module
+jia070310/lomenTV-VDS,post,39,0,
+spideydotjs/ollama-android,post,40,0,

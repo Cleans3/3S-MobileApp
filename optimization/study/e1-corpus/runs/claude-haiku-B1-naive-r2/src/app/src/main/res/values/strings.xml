@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Library Catalogue</string>
+    <string name="catalogue_title">Book catalogue</string>
+    <string name="search_hint">Search title, author or ISBN</string>
+    <string name="cover_description">Cover of %1$s</string>
+    <string name="no_author">Unknown author</string>
+    <string name="error_loading">Could not load books.</string>
+    <string name="retry">Retry</string>
+    <string name="no_results">No books found.</string>
+    <string name="clear_search">Clear search</string>
+</resources>

@@ -1,0 +1,8 @@
+run_id,attempt_at,duration_s,reason,action
+agy-g38flash-B1-detailed-functional-r4,2026-11-21T17:31:47+0700,61.6,"agy OAuth expired: authentication failed or timed out; no model call made, 0 tokens","moved to 3S-study-work/infra-failed, cell to be regenerated once"
+agy-g38flash-B1-naive-r4,2026-11-21T17:38:17+0700,61.3,"agy OAuth expired: authentication failed or timed out; no model call made, 0 tokens","moved to 3S-study-work/infra-failed, cell to be regenerated once"
+agy-g38flash-B2-detailed-functional-r4,2026-11-21T17:23:19+0700,61.1,"agy OAuth expired: authentication failed or timed out; no model call made, 0 tokens","moved to 3S-study-work/infra-failed, cell to be regenerated once"
+agy-g38flash-B2-guardrailed-r4,2026-11-21T17:32:14+0700,60.8,"agy OAuth expired: authentication failed or timed out; no model call made, 0 tokens","moved to 3S-study-work/infra-failed, cell to be regenerated once"
+agy-g38flash-B3-detailed-functional-r4,2026-11-21T17:23:19+0700,61.1,"agy OAuth expired: authentication failed or timed out; no model call made, 0 tokens","moved to 3S-study-work/infra-failed, cell to be regenerated once"
+agy-g38flash-B3-guardrailed-r4,2026-11-21T17:33:16+0700,61.9,"agy OAuth expired: authentication failed or timed out; no model call made, 0 tokens","moved to 3S-study-work/infra-failed, cell to be regenerated once"
+agy-g38flash-B3-naive-r4,2026-11-21T17:24:22+0700,61.2,"agy OAuth expired: authentication failed or timed out; no model call made, 0 tokens","moved to 3S-study-work/infra-failed, cell to be regenerated once"

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <string name="sign_in_title">Sign in</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="button_sign_in">Sign in</string>
+
+    <string name="profile_title">My account</string>
+    <string name="label_full_name">Full name</string>
+    <string name="label_member_type">Member type</string>
+    <string name="label_status">Status</string>
+    <string name="button_sign_out">Sign out</string>
+    <string name="button_change_password">Change password</string>
+
+    <string name="change_password_title">Change password</string>
+    <string name="label_current_password">Current password</string>
+    <string name="label_new_password">New password</string>
+    <string name="label_confirm_password">Confirm new password</string>
+    <string name="button_save_password">Save new password</string>
+    <string name="password_mismatch">The new passwords do not match.</string>
+    <string name="password_change_required_notice">You must change your password before you can continue.</string>
+    <string name="action_back">Back</string>
+
+    <string name="button_retry">Try again</string>
+</resources>

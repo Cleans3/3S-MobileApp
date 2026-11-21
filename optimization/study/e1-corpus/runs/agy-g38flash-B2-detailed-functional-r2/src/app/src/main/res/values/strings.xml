@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email_label">Email</string>
+    <string name="email_placeholder">member@shelftap.example</string>
+    <string name="password_label">Password</string>
+    <string name="current_password_label">Current Password</string>
+    <string name="new_password_label">New Password</string>
+    <string name="confirm_new_password_label">Confirm New Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="profile">Member Profile</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="full_name">Full Name</string>
+    <string name="member_type">Member Type</string>
+    <string name="status">Account Status</string>
+    <string name="history_enabled">Borrowing History Enabled</string>
+    <string name="error_passwords_dont_match">The new passwords do not match.</string>
+    <string name="error_empty_fields">All fields are required.</string>
+    <string name="mandatory_password_change_notice">You must change your password before continuing to your account.</string>
+</resources>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">City Central Library - Loans</string>
+    <string name="my_loans">My Loans</string>
+    <string name="active_loans_tab">Borrowed Books</string>
+    <string name="history_tab">Reading History</string>
+    <string name="renew_loan">Renew Loan</string>
+    <string name="renew_success">Loan successfully renewed!</string>
+    <string name="renew_max_reached">Maximum renewals reached for this item.</string>
+    <string name="due_date">Due Date</string>
+    <string name="borrowed_on">Borrowed on</string>
+    <string name="returned_on">Returned on</string>
+    <string name="days_left">%1$d days left</string>
+    <string name="due_today">Due today!</string>
+    <string name="overdue_by">%1$d days overdue</string>
+</resources>

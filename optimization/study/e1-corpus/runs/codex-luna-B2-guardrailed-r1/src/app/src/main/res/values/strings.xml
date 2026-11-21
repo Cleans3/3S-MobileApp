@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="profile">Profile</string>
+    <string name="full_name">Full name</string>
+    <string name="member_type">Member type</string>
+    <string name="status">Status</string>
+    <string name="sign_out">Sign out</string>
+    <string name="change_password">Change password</string>
+    <string name="current_password">Current password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="save_password">Save password</string>
+    <string name="passwords_do_not_match">New passwords do not match.</string>
+    <string name="required_password">Please enter your password.</string>
+    <string name="required_fields">Please complete all fields.</string>
+    <string name="generic_error">Something went wrong. Please try again.</string>
+    <string name="invalid_credentials">Email or password is incorrect.</string>
+    <string name="account_locked">Your account is locked. Please contact the library.</string>
+    <string name="rate_limited">Too many attempts. Try again in %1$d seconds.</string>
+    <string name="password_changed">Password changed.</string>
+    <string name="email_value">Email: %1$s</string>
+    <string name="member_type_value">Member type: %1$s</string>
+    <string name="status_value">Status: %1$s</string>
+    <string name="sign_out_description">Sign out</string>
+</resources>

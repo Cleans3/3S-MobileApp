@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 25.6,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/pilot-claude-haiku-B1-detailed-functional-r1/app/src/main/java/vn/shelftap/app/data/db/TitleEntity.kt:25:54 Cannot infer type for t",
+ "lint": "no-report"
+}

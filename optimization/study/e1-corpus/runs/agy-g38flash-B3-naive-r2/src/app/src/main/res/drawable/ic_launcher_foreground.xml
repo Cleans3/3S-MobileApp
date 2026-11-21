@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Book Icon -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,24h38c4.4,0 8,3.6 8,8v48c0,2.2 -1.8,4 -4,4H34c-4.4,0 -8,-3.6 -8,-8V32c0,-4.4 3.6,-8 8,-8zm4,8c-2.2,0 -4,1.8 -4,4v40c1.2,-0.6 2.6,-1 4,-1h34V32H34z" />
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M38,40h24v4H38zm0,10h24v4H38zm0,10h16v4H38z" />
+</vector>

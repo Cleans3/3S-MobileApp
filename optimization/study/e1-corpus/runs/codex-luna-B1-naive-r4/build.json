@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "",
+ "repairs": 0,
+ "gradle_s_first": 42.7,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/codex-luna-B1-naive-r4/app/src/main/java/com/example/librarycatalogue/MainActivity.kt:116:9 Unresolved reference 'singleLine'.",
+ "lint": "no-report"
+}

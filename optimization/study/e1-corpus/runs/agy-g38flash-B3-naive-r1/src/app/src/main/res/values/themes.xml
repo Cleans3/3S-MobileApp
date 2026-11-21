@@ -1,0 +1,5 @@
+<resources>
+    <style name="Theme.LibraryLoans" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#1E3A8A</item>
+    </style>
+</resources>

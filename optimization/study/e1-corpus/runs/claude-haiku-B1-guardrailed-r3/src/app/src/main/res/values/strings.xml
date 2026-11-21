@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <string name="tab_catalogue">Catalogue</string>
+    <string name="tab_search">Search</string>
+    <string name="search_hint">Search title, author, ISBN or subject</string>
+    <string name="search_clear">Clear search</string>
+    <string name="no_books_found">No books found</string>
+    <string name="catalogue_empty">No titles yet. Connect to the network to download the catalogue.</string>
+
+    <string name="badge_available">Available</string>
+    <string name="badge_all_out">All copies out</string>
+
+    <string name="field_authors">Authors: %1$s</string>
+    <string name="field_year">Year: %1$d</string>
+    <string name="field_isbn">ISBN: %1$s</string>
+    <string name="field_copies">Copies available: %1$d</string>
+    <string name="subjects_heading">Subjects</string>
+    <string name="subjects_none">No subjects listed</string>
+
+    <string name="back">Back</string>
+    <string name="detail_title">Title details</string>
+    <string name="cover_description">Cover of %1$s</string>
+    <string name="detail_not_found">This title is not in the catalogue.</string>
+    <string name="detail_unavailable">This title is not downloaded yet. Connect to the network and try again.</string>
+
+    <string name="sync_running">Downloading catalogue: %1$d of %2$d titles</string>
+    <string name="sync_paused">Download paused. You can still browse the titles already downloaded.</string>
+    <string name="sync_retry">Retry</string>
+</resources>

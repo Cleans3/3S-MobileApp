@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <string name="nav_catalogue">Catalogue</string>
+    <string name="nav_search">Search</string>
+
+    <string name="catalogue_title">ShelfTap catalogue</string>
+    <string name="refresh">Refresh catalogue</string>
+    <string name="retry">Try again</string>
+    <string name="catalogue_empty">The catalogue has not been downloaded yet.</string>
+    <string name="downloading_catalogue_start">Downloading catalogue...</string>
+    <string name="downloading_catalogue">Downloading catalogue: %1$d of %2$d titles</string>
+    <string name="download_failed">Could not download the catalogue. Check the connection and try again.</string>
+    <string name="update_failed">Could not update the catalogue. Showing saved titles.</string>
+
+    <string name="search_title">Search</string>
+    <string name="search_hint">Search by title, author, ISBN or subject</string>
+    <string name="no_books_found">No books found</string>
+
+    <string name="available">Available</string>
+    <string name="all_copies_out">All copies out</string>
+    <string name="cover_description">Cover of %1$s</string>
+
+    <string name="title_detail">Title details</string>
+    <string name="back">Back</string>
+    <string name="title_not_found">This title is not saved on this device and could not be loaded.</string>
+    <string name="label_authors">Authors</string>
+    <string name="label_isbn">ISBN</string>
+    <string name="label_year">Year</string>
+    <string name="label_copies">Copies available</string>
+    <string name="label_subjects">Subjects</string>
+</resources>

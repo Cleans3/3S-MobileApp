@@ -1,0 +1,6 @@
+HSPLvn/shelftap/app/MainActivity;-><init>()V
+HSPLvn/shelftap/app/MainActivity;->onCreate(Landroid/os/Bundle;)V
+HSPLvn/shelftap/app/ShelfTapApplication;-><init>()V
+HSPLvn/shelftap/app/ShelfTapApplication;->onCreate()V
+HSPLvn/shelftap/app/ui/loans/LoansScreenKt;->LoansScreen(Lvn/shelftap/app/ui/loans/LoansViewModel;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;)V
+HSPLvn/shelftap/app/ui/history/HistoryScreenKt;->HistoryScreen(Lvn/shelftap/app/ui/history/HistoryViewModel;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;)V

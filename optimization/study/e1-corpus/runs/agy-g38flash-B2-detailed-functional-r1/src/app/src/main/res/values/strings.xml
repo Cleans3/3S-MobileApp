@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="sign_in_title">Library Member Sign In</string>
+    <string name="sign_in_subtitle">Access your library account, loans, and resources</string>
+    <string name="email_label">Email address</string>
+    <string name="password_label">Password</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="sign_out_button">Sign Out</string>
+    <string name="profile_title">Member Profile</string>
+    <string name="change_password_title">Change Password</string>
+    <string name="current_password_label">Current Password</string>
+    <string name="new_password_label">New Password</string>
+    <string name="confirm_new_password_label">Confirm New Password</string>
+    <string name="submit_change_password">Update Password</string>
+    <string name="must_change_password_notice">You must change your password before proceeding to use your account.</string>
+</resources>

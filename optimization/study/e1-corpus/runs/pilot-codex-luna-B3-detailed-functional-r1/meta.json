@@ -1,0 +1,51 @@
+{
+  "tool": "codex",
+  "model_arg": "gpt-5.6-luna",
+  "cli_version": "codex-cli 0.170.0",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 143.7,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "629319abde47651f7644b1461d3397d35ce403d8a7c80de44b3174fe9339e233",
+  "cli_flags": "exec --json -s danger-full-access --skip-git-repo-check --ephemeral -C /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/corpus/pilot-codex-luna-B3-detailed-functional-r1 -m gpt-5.6-luna -c model_reasoning_effort=\"medium\" <PROMPT>",
+  "model_reported": null,
+  "tokens_in": 98031,
+  "tokens_out": 7439,
+  "cost_usd": null,
+  "final_text": "DONE",
+  "stderr_head": [
+    "Reading additional input from stdin..."
+  ],
+  "run_id": "pilot-codex-luna-B3-detailed-functional-r1",
+  "bundle": "codex-luna",
+  "brief": "B3",
+  "prompt_style": "detailed-functional",
+  "rep": 1,
+  "pilot": true,
+  "files": 7,
+  "kotlin_loc": 92,
+  "valid": true,
+  "context_file": null,
+  "guardrail_sha256": null,
+  "attempts": [
+    {
+      "attempt": 1,
+      "files": 7,
+      "exit_code": 0,
+      "infra_failure": false
+    }
+  ],
+  "net_audit": "none",
+  "n_commands": 4,
+  "transcript_path": "optimization/study/e1-corpus/runs/pilot-codex-luna-B3-detailed-functional-r1/transcript.jsonl.gz",
+  "temperature_or_seed": "not exposed by CLI",
+  "denied_actions": 0,
+  "invalid_reason": "",
+  "web_tool_calls": 0,
+  "web_tools": "",
+  "web_denied": "na",
+  "generated_at": "2026-11-21T07:15:37+0700"
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1A5C4A</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#A3F2D4</color>
+    <color name="on_primary_container">#002117</color>
+    <color name="surface">#FDFDFD</color>
+    <color name="on_surface">#1A1C1E</color>
+    <color name="background">#FAFAFC</color>
+    <color name="available_green">#2E7D32</color>
+    <color name="unavailable_red">#C62828</color>
+</resources>

@@ -1,0 +1,13 @@
+# Hand-written Baseline Profile for app start and the main lists.
+# AGP packages this file into the APK; androidx.profileinstaller installs it.
+# Class-level rules only, so the file does not depend on exact method signatures.
+Lvn/shelftap/app/MainActivity;
+Lvn/shelftap/app/ShelfTapApplication;
+Lvn/shelftap/app/AppContainer;
+Lvn/shelftap/app/ui/ShelfTapRootKt;
+Lvn/shelftap/app/ui/CatalogueScreenKt;
+Lvn/shelftap/app/ui/SearchScreenKt;
+Lvn/shelftap/app/ui/ComponentsKt;
+Lvn/shelftap/app/ui/ViewModelsKt;
+Lvn/shelftap/app/data/TitleRepository;
+Lvn/shelftap/app/data/local/AppDatabase_Impl;

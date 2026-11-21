@@ -1,0 +1,242 @@
+{
+ "date": "2026-11-21 06:49",
+ "runs": [
+  {
+   "name": "agy-A",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "1.5.13",
+   "exit_code": 0,
+   "duration_s": 9.0,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE CANARY-7Q\n",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true
+  },
+  {
+   "name": "agy-B",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "1.5.13",
+   "exit_code": 0,
+   "duration_s": 9.6,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE\n",
+   "hello_written": true,
+   "stderr_head": [],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": null,
+   "recheck": "leak scan excludes the init plugin array (paths contain the user name)"
+  },
+  {
+   "name": "agy-C-AGENTS.md",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "C",
+   "ctxfile": "AGENTS.md",
+   "cli_version": "1.5.13",
+   "exit_code": 0,
+   "duration_s": 11.4,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE\n",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ]
+  },
+  {
+   "name": "agy-C-GEMINI.md",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "C",
+   "ctxfile": "GEMINI.md",
+   "cli_version": "1.5.13",
+   "exit_code": 0,
+   "duration_s": 8.4,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE\n",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ]
+  },
+  {
+   "name": "claude-A",
+   "tool": "claude",
+   "model": "haiku",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "2.1.330 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 6.1,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE\n\nCANARY-7Q",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true
+  },
+  {
+   "name": "claude-B",
+   "tool": "claude",
+   "model": "haiku",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "2.1.330 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 5.8,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": [
+    "compact-pilot",
+    "model-gate",
+    "usage-meter",
+    "cc-plugin-sec-default",
+    "cc-plugin-agents-md",
+    "cc-plugin-telemetry",
+    "cc-plugin-privacy",
+    "cc-plugin-plugin-authoring"
+   ],
+   "recheck": "leak scan excludes the init plugin array (paths contain the user name)"
+  },
+  {
+   "name": "claude-C-CLAUDE.md",
+   "tool": "claude",
+   "model": "haiku",
+   "kind": "C",
+   "ctxfile": "CLAUDE.md",
+   "cli_version": "2.1.330 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 6.9,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ]
+  },
+  {
+   "name": "codex-A",
+   "tool": "codex",
+   "model": "gpt-5.6-luna",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "codex-cli 0.170.0",
+   "exit_code": 0,
+   "duration_s": 13.1,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE CANARY-7Q",
+   "hello_written": true,
+   "stderr_head": [
+    "Reading additional input from stdin..."
+   ],
+   "pass": true
+  },
+  {
+   "name": "codex-B",
+   "tool": "codex",
+   "model": "gpt-5.6-luna",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "codex-cli 0.170.0",
+   "exit_code": 0,
+   "duration_s": 8.6,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [
+    "Reading additional input from stdin..."
+   ],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": null,
+   "recheck": "leak scan excludes the init plugin array (paths contain the user name)"
+  },
+  {
+   "name": "codex-C-AGENTS.md",
+   "tool": "codex",
+   "model": "gpt-5.6-luna",
+   "kind": "C",
+   "ctxfile": "AGENTS.md",
+   "cli_version": "codex-cli 0.170.0",
+   "exit_code": 0,
+   "duration_s": 8.7,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [
+    "Reading additional input from stdin..."
+   ],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ]
+  },
+  {
+   "name": "opencode-A",
+   "tool": "opencode",
+   "model": "opencode/big-pickle",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "1.18.33",
+   "exit_code": 0,
+   "duration_s": 10.1,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE\n\nCANARY-7Q",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true
+  },
+  {
+   "name": "opencode-B",
+   "tool": "opencode",
+   "model": "opencode/big-pickle",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "1.18.33",
+   "exit_code": 0,
+   "duration_s": 8.6,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": null,
+   "recheck": "leak scan excludes the init plugin array (paths contain the user name)"
+  },
+  {
+   "name": "opencode-C-AGENTS.md",
+   "tool": "opencode",
+   "model": "opencode/big-pickle",
+   "kind": "C",
+   "ctxfile": "AGENTS.md",
+   "cli_version": "1.18.33",
+   "exit_code": 0,
+   "duration_s": 14.8,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="nav_loans">Loans</string>
+    <string name="nav_history">History</string>
+    <string name="nav_book_detail">Book Detail</string>
+    <string name="showing_saved_data">Showing saved data</string>
+    <string name="overdue">Overdue</string>
+    <string name="renew">Renew</string>
+    <string name="renewing">Renewing...</string>
+    <string name="renewal_not_allowed">This loan cannot be renewed</string>
+    <string name="keep_reading_history">Keep my reading history</string>
+    <string name="turn_off_history_title">Turn off reading history?</string>
+    <string name="turn_off_history_message">Turning off reading history will stop saving your past loans. Are you sure you want to proceed?</string>
+    <string name="confirm_turn_off">Turn off</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_loans">You have no active loans</string>
+    <string name="no_history">No borrowing history recorded</string>
+    <string name="history_disabled_note">Reading history is currently switched off</string>
+    <string name="due_date_label">Due: %1$s</string>
+    <string name="borrowed_date_label">Borrowed: %1$s</string>
+    <string name="returned_date_label">Returned: %1$s</string>
+    <string name="not_returned">Not returned</string>
+    <string name="copies_available_format">%1$d of %2$d copies available</string>
+    <string name="retry">Retry</string>
+</resources>

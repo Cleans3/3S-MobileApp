@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Library App</string>
+    <string name="sign_in_title">Member Sign In</string>
+    <string name="sign_in_subtitle">Welcome back to your library account</string>
+    <string name="email_label">Email Address</string>
+    <string name="email_hint">member@library.org</string>
+    <string name="password_label">Password</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="sign_out_button">Sign Out</string>
+    <string name="sign_out_confirm_title">Confirm Sign Out</string>
+    <string name="sign_out_confirm_message">Are you sure you want to sign out of your library account?</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    
+    <!-- Profile Strings -->
+    <string name="profile_title">Member Profile</string>
+    <string name="membership_card_title">Digital Library Card</string>
+    <string name="member_id_label">Member ID</string>
+    <string name="member_tier_label">Membership Tier</string>
+    <string name="member_status_active">Active</string>
+    <string name="member_status_expired">Expired</string>
+    <string name="member_status_suspended">Suspended</string>
+    
+    <string name="account_details_section">Account Information</string>
+    <string name="email_info_label">Email</string>
+    <string name="phone_info_label">Phone</string>
+    <string name="joined_info_label">Member Since</string>
+    <string name="expires_info_label">Membership Valid Until</string>
+    
+    <string name="borrowing_summary_section">Borrowing Summary</string>
+    <string name="current_loans_label">Books on Loan</string>
+    <string name="max_loans_label">Allowed Limit</string>
+    <string name="outstanding_fines_label">Fines Due</string>
+    <string name="active_loans_section">Currently Borrowed Books</string>
+    <string name="no_active_loans">No books currently checked out.</string>
+    <string name="due_date_format">Due: %s</string>
+    <string name="overdue_badge">OVERDUE</string>
+    <string name="refresh_profile">Refresh Profile</string>
+    
+    <!-- Error strings -->
+    <string name="error_invalid_email">Please enter a valid email address</string>
+    <string name="error_empty_password">Please enter your password</string>
+    <string name="error_network">Unable to connect to the library server. Please check your network.</string>
+    <string name="error_auth_failed">Invalid email or password. Please try again.</string>
+</resources>

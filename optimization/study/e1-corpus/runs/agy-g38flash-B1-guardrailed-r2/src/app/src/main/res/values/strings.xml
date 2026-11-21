@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="search_hint">Search title, author, ISBN or subject…</string>
+    <string name="cd_search_icon">Search</string>
+    <string name="cd_clear_search">Clear search text</string>
+    <string name="cd_cover_image">Book cover for %1$s</string>
+    <string name="cd_navigate_back">Back to catalogue</string>
+    <string name="cd_catalogue_list">Catalogue book list</string>
+    <string name="no_books_found">No books found</string>
+    <string name="badge_available">Available</string>
+    <string name="badge_all_copies_out">All copies out</string>
+    <string name="detail_authors_label">Authors</string>
+    <string name="detail_year_label">Published</string>
+    <string name="detail_isbn_label">ISBN</string>
+    <string name="detail_availability_label">Availability</string>
+    <string name="detail_subjects_label">Subjects</string>
+    <string name="detail_copies_available_count">%1$d copies currently available</string>
+    <string name="catalogue_title">Library Catalogue</string>
+    <string name="loading_more">Loading more titles…</string>
+    <string name="unknown_error">An error occurred while loading titles.</string>
+    <string name="retry">Retry</string>
+</resources>

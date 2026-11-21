@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Book icon foreground -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,26c-3.3,0 -6,2.7 -6,6v44c0,3.3 2.7,6 6,6h40c3.3,0 6,-2.7 6,-6L80,32c0,-3.3 -2.7,-6 -6,-6L34,26zM74,76L34,76c-1.1,0 -2,-0.9 -2,-2s0.9,-2 2,-2h40v4zM74,66L34,66c-3.3,0 -6,-2.7 -6,-6L28,32c0,-1.1 0.9,-2 2,-2s2,0.9 2,2v34c0,1.1 0.9,2 2,2h40v30zM40,36h28v4L40,40zM40,44h28v4L40,48zM40,52h20v4L40,56z"/>
+</vector>

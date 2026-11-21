@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <string name="sign_in_title">Sign in</string>
+    <string name="sign_in">Sign in</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+
+    <string name="profile_title">Profile</string>
+    <string name="full_name_label">Full name</string>
+    <string name="member_type_label">Member type</string>
+    <string name="status_label">Status</string>
+    <string name="sign_out">Sign out</string>
+    <string name="change_password">Change password</string>
+
+    <string name="change_password_title">Change password</string>
+    <string name="current_password_label">Current password</string>
+    <string name="new_password_label">New password</string>
+    <string name="confirm_password_label">Confirm new password</string>
+    <string name="save_password">Save new password</string>
+    <string name="back">Back</string>
+    <string name="forced_change_info">Your password must be changed before you can use ShelfTap.</string>
+
+    <string name="retry">Try again</string>
+
+    <string name="error_missing_fields">Fill in all fields.</string>
+    <string name="error_invalid_credentials">Email or password is incorrect.</string>
+    <string name="error_account_locked">This account is locked. Please contact the library.</string>
+    <string name="error_rate_limited">Too many attempts. Try again in %1$d seconds.</string>
+    <string name="error_session_ended">Your session has ended. Please sign in again.</string>
+    <string name="error_current_password_wrong">The current password is incorrect.</string>
+    <string name="error_passwords_do_not_match">The new passwords do not match.</string>
+    <string name="error_network">Could not reach ShelfTap. Check your connection and try again.</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+</resources>

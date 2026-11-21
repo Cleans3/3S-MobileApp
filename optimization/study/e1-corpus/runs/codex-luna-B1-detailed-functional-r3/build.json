@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 104.7,
+ "build": "fail",
+ "build_error_first_line": "e: [ksp] /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/codex-luna-B1-detailed-functional-r3/app/src/main/java/vn/shelftap/app/data/TitleDao.kt:11: To use PagingSource, you must add `room-",
+ "lint": "no-report"
+}

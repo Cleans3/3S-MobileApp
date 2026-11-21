@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <string name="tab_loans">Loans</string>
+    <string name="tab_history">History</string>
+    <string name="loans_title">My loans</string>
+    <string name="history_title">Reading history</string>
+    <string name="book_title">Book</string>
+    <string name="back">Back</string>
+
+    <string name="renew">Renew</string>
+    <string name="overdue">Overdue</string>
+    <string name="due_on">Due %1$s</string>
+    <string name="due_today">Due today</string>
+    <string name="loan_cannot_renew">This loan cannot be renewed</string>
+    <string name="renew_failed">Could not renew this loan. Check your connection and try again.</string>
+    <string name="no_loans">You have no current loans.</string>
+
+    <string name="showing_saved">Showing saved data</string>
+    <string name="load_failed">Could not load your data. Check your connection and try again.</string>
+    <string name="retry">Retry</string>
+
+    <string name="keep_history">Keep my reading history</string>
+    <string name="history_off">Reading history is turned off.</string>
+    <string name="no_history">No past loans yet.</string>
+    <string name="borrowed_on">Borrowed %1$s</string>
+    <string name="returned_on">Returned %1$s</string>
+    <string name="not_returned_yet">Not returned yet</string>
+    <string name="turn_off_history_title">Turn off reading history?</string>
+    <string name="turn_off_history_text">New loans will no longer be added to your reading history.</string>
+    <string name="turn_off">Turn off</string>
+    <string name="cancel">Cancel</string>
+    <string name="history_update_failed">Could not change this setting. Check your connection and try again.</string>
+
+    <string name="cover_of">Cover of %1$s</string>
+    <string name="by_authors">By %1$s</string>
+    <string name="subjects_list">Subjects: %1$s</string>
+    <string name="copies_available">%1$d of %2$d copies available</string>
+</resources>

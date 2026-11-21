@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_80">#D0BCFF</color>
+    <color name="purple_grey_80">#CCC2DC</color>
+    <color name="pink_80">#EFB8C8</color>
+
+    <color name="purple_40">#6650a4</color>
+    <color name="purple_grey_40">#625b71</color>
+    <color name="pink_40">#7D5260</color>
+
+    <!-- Library Theme Colors -->
+    <color name="library_primary">#1A5276</color>
+    <color name="library_primary_variant">#154360</color>
+    <color name="library_secondary">#D4AC0D</color>
+    <color name="library_background">#F8F9F9</color>
+    <color name="library_surface">#FFFFFF</color>
+    <color name="library_error">#B00020</color>
+</resources>

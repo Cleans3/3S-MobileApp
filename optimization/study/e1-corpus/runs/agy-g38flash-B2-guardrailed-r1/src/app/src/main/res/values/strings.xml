@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <!-- Sign In Screen -->
+    <string name="sign_in_title">Library Member Sign In</string>
+    <string name="sign_in_subtitle">Access your library account, loans, and details</string>
+    <string name="label_email">Email</string>
+    <string name="placeholder_email">member@example.com</string>
+    <string name="label_password">Password</string>
+    <string name="placeholder_password">Enter your password</string>
+    <string name="btn_sign_in">Sign In</string>
+    <string name="signing_in">Signing in…</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title">Member Profile</string>
+    <string name="label_full_name">Full Name</string>
+    <string name="label_member_type">Membership Type</string>
+    <string name="label_status">Status</string>
+    <string name="label_member_id">Member ID</string>
+    <string name="btn_sign_out">Sign Out</string>
+    <string name="signing_out">Signing out…</string>
+
+    <!-- Change Password Screen -->
+    <string name="change_password_title">Change Password</string>
+    <string name="change_password_subtitle">Please update your password to continue</string>
+    <string name="label_current_password">Current Password</string>
+    <string name="label_new_password">New Password</string>
+    <string name="label_confirm_new_password">Confirm New Password</string>
+    <string name="btn_change_password">Update Password</string>
+    <string name="updating_password">Updating password…</string>
+
+    <!-- Errors & Validation -->
+    <string name="err_invalid_credentials">Invalid email or password. Please try again.</string>
+    <string name="err_account_locked">Your account is locked. Please contact library staff.</string>
+    <string name="err_rate_limited">Too many attempts. Please try again after %1$d seconds.</string>
+    <string name="err_token_invalid">Your session has expired. Please sign in again.</string>
+    <string name="err_password_change_required">Password change is required before proceeding.</string>
+    <string name="err_passwords_do_not_match">New passwords do not match.</string>
+    <string name="err_empty_fields">All fields are required.</string>
+    <string name="err_generic">An unexpected error occurred. Please try again.</string>
+    <string name="err_network">Unable to connect to server. Please check your connection.</string>
+
+    <!-- Accessibility Content Descriptions (Rule 20) -->
+    <string name="cd_toggle_password_visibility">Toggle password visibility</string>
+    <string name="cd_member_avatar">Member avatar image</string>
+    <string name="cd_app_logo">ShelfTap application logo</string>
+    <string name="cd_back_button">Navigate back</string>
+    <string name="cd_loading_indicator">Loading indicator</string>
+</resources>

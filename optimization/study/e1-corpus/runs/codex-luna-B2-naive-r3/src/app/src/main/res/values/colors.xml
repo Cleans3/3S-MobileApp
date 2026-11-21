@@ -1,0 +1,8 @@
+<resources>
+    <color name="library_navy">#12304A</color>
+    <color name="library_teal">#177E89</color>
+    <color name="library_cream">#F7F5F0</color>
+    <color name="library_ink">#18232C</color>
+    <color name="library_muted">#66737D</color>
+    <color name="white">#FFFFFF</color>
+</resources>

@@ -1,0 +1,2 @@
+# Startup profile for the single app module.
+HSPLvn/shelftap/app/MainActivity;->onCreate(Landroid/os/Bundle;)V

@@ -1,0 +1,124 @@
+rule_id,kind,n,fired,evidence
+P01,mutant,1,1,items(books) in LazyColumn has no key
+P01,mutant,2,1,itemsIndexed(books) in LazyRow has no key
+P01,mutant,3,1,items(books) in LazyVerticalGrid has no key
+P01,mutant,4,1,items(p.itemCount) in LazyColumn has no key
+P02,mutant,1,1,"LazyColumn with 2 content blocks, no contentType"
+P02,mutant,2,1,"LazyColumn with 2 content blocks, no contentType"
+P02,mutant,3,1,"LazyColumn with 1 content blocks (type switch), no contentType"
+P03,mutant,1,1,fun BookList(books: List<Book>) unstable parameter
+P03,mutant,2,1,fun Tags(tags: MutableList<String>) unstable parameter
+P03,mutant,3,1,fun BookRow(b: UiBook) unstable parameter
+P03,mutant,4,1,fun Chips(items: Set<String>) unstable parameter
+P04,mutant,1,1,.filter { it.title.contains(q) }; Text(shown.size.toString()) } in composable A without re
+P04,mutant,2,1,.sortedBy { it.title }; Text(sorted.first().title) } in composable B without remember
+P04,mutant,3,1,"Regex(""[a-z]+""); Text(re.find(s)?.value ?: """") } in composable C without remember"
+P04,mutant,4,1,"SimpleDateFormat(""dd/MM/yyyy"").format(d); Text(f) } in composable D without remember"
+P05,mutant,1,1,"ate(); val show = ls.firstVisibleItemIndex > 0; if (show) Text(""top"") } read in compositio"
+P05,mutant,2,1,"ibility(visible = ls.firstVisibleItemScrollOffset > 100) { Text(""x"") } } read in compositi"
+P05,mutant,3,1,ate) { val shrink = scrollState.value > 50; Text(shrink.toString()) } read in composition 
+P06,mutant,1,1,AsyncImage without a size-bounding modifier (decodes at original size)
+P06,mutant,2,1,BitmapFactory.decodeStream without inSampleSize (full-resolution decode)
+P06,mutant,3,1,Size.ORIGINAL: size/cache protection switched off
+P06,mutant,4,1,CachePolicy.DISABLED: size/cache protection switched off
+P07,mutant,1,1,runBlocking blocks the calling (main) thread
+P07,mutant,2,1,"assets.open(""catalog.json"").bufferedReader().readText() } } not under an IO dispatcher/thr"
+P07,mutant,3,1,"URL(""https://api.example.com/x"").readText() } } } not under an IO dispatcher/thread"
+P07,mutant,4,1,allowMainThreadQueries( blocks the calling (main) thread
+P08,mutant,1,1,blur: .blur(8.dp)) { Text(b.title) } } } } in list item scope LazyColumn.items
+P08,mutant,2,1,"gradient: Brush.verticalGradient(listOf(Color.Red, Color.Blue)))) { Text(b.title in list i"
+P08,mutant,3,1,infinite-animation: rememberInfiniteTransition(); Text(b.title) } } } in list item scope L
+P08,mutant,4,1,shadow>2dp: defaultElevation = 8.dp)) { Text(b.title) } } } } in list item scope LazyColum
+P09,mutant,1,1,Column+scroll iterates (ememberScrollState())) { books.forEach { BookRow(it) } } })
+P09,mutant,2,1,Row+scroll iterates (oll(rememberScrollState())) { for (b in books) { Cover(b) } } })
+P09,mutant,3,1,forEach/for inside a single lazy item() (lumn { item { Column { results.forEach { Text(it.
+P10,mutant,1,1,release build type has no isMinifyEnabled = true (R8 off by default)
+P10,mutant,2,1,release build type has no isMinifyEnabled = true (R8 off by default)
+P10,mutant,3,1,minify enabled but isShrinkResources not enabled
+P11,mutant,1,1,no baselineprofile plugin and no baseline-prof.txt
+P11,mutant,2,1,no baselineprofile plugin and no baseline-prof.txt
+P11,mutant,3,1,no baselineprofile plugin and no baseline-prof.txt
+P13,mutant,1,1,"linear filter over the list on the search query, no index; debounce=no"
+P13,mutant,2,1,"unindexed LIKE query, no FTS table; debounce=no"
+P13,mutant,3,1,"search triggered on every keystroke, no debounce anywhere in the project"
+S01,mutant,1,1,"putString(""access_token"", ...) plaintext SharedPreferences"
+S01,mutant,2,1,"Preferences DataStore key ""refresh_token"" stored without encryption"
+S01,mutant,3,1,"plain file write of sensitive data: .writeText(""session "" + token) }"
+S01,mutant,4,1,Room entity Session stores ['accessToken'] in plaintext
+S02,mutant,1,1,"API_KEY = ""sk-live-FAKE0000FAKE0000FAKE"" literal secret"
+S02,mutant,2,1,provider key literal AIzaSyEX...
+S02,mutant,3,1,BuildConfig API_SECRET literal secret
+S02,mutant,4,1,hardcoded basic-auth credentials
+S03,mutant,1,1,android:usesCleartextTraffic=true
+S03,mutant,2,1,cleartextTrafficPermitted=true
+S03,mutant,3,1,cleartext URL literal http://api.shelftap.example/
+S03,mutant,4,1,cleartext URL literal http://10.0.2.2:8080/
+S04,mutant,1,1,X509TrustManager that does not validate the chain
+S04,mutant,2,1,hostname verifier accepts every host
+S04,mutant,3,1,WebView SslErrorHandler.proceed() ignores TLS errors
+S04,mutant,4,1,hostname verifier accepts every host
+S05,mutant,1,1,"Log.d logs token: Log.d(""Auth"", ""token="" + token) }"
+S05,mutant,2,1,HttpLoggingInterceptor Level.BODY not guarded for release
+S05,mutant,3,1,"Timber.d logs response.body: Timber.d(""login response "" + response.body()) }"
+S05,mutant,4,1,"println logs passw: println(""password: "" + password) }"
+S06,mutant,1,1,"allowBackup=true, no backup exclusion rules"
+S06,mutant,2,1,"allowBackup=absent (default true), no backup exclusion rules"
+S06,mutant,3,1,"allowBackup=true, no backup exclusion rules"
+S07,mutant,1,1,activity .Deep exported without permission
+S07,mutant,2,1,service .Sync exported without permission
+S07,mutant,3,1,receiver .Sync exported without permission
+S07,mutant,4,1,provider .P exported without permission
+S08,mutant,1,1,weak digest MD5
+S08,mutant,2,1,weak cipher transformation AES/ECB/PKCS5Padding
+S08,mutant,3,1,static/zero IV IvParameterSpec(ByteArray(16))
+S08,mutant,4,1,deprecated androidx.security-crypto API EncryptedSharedPreferences
+S08,mutant,5,1,hardcoded symmetric key
+S09,mutant,1,1,"SQL built by interpolation: rawQuery(""SELECT * FROM books WHERE title = '$query'"", null)"
+S09,mutant,2,1,WebView loads non-literal URL userUrl with JavaScript enabled
+S09,mutant,3,1,login(...) submits credentials; no validation predicate in src/main/kotlin/mutants/SignInV
+U01,mutant,1,1,Icon contentDescription=null is the only content of IconButton
+U01,mutant,2,1,Icon contentDescription=null is the only content of a clickable modifier
+U01,mutant,3,1,Icon contentDescription=null is the only content of FloatingActionButton
+U01,mutant,4,1,Icon contentDescription=null is the only content of IconToggleButton
+U02,mutant,1,1,clickable chain with .size(24.dp (< 48dp touch target)
+U02,mutant,2,1,clickable chain with .size(32.dp (< 48dp touch target)
+U02,mutant,3,1,clickable chain with .height(30.dp (< 48dp touch target)
+U03,mutant,1,1,lightColorScheme: onPrimary on primary contrast 1.92:1 < 4.5
+U03,mutant,2,1,lightColorScheme: onBackground on background contrast 1.61:1 < 4.5
+U03,mutant,3,1,Text colour Color.LightGray on the default light surface 1.57:1 < 4.5
+U04,mutant,1,1,hardcoded Color(0xFF123456)) } bypasses the theme
+U04,mutant,2,1,hardcoded Color.Red)) } bypasses the theme
+U04,mutant,3,1,hardcoded fontSize = 17.sp) } bypasses the theme
+U05,mutant,1,1,data screen file renders no loading state
+U05,mutant,2,1,data screen file renders no error state
+U05,mutant,3,1,data screen file renders no empty state
+D01,mutant,1,1,deprecated onBackPressed: use OnBackPressedDispatcher / BackHandler (deprecated API 33)
+D01,mutant,2,1,deprecated AsyncTask: use coroutines / Executors (deprecated API 30)
+D01,mutant,3,1,deprecated Divider (M3): use HorizontalDivider (Material3 1.3.0)
+D01,mutant,4,1,deprecated non-AutoMirrored Icons: use Icons.AutoMirrored.* (material-icons 1.7)
+D01,mutant,5,1,deprecated kotlinOptions: use compilerOptions DSL (Kotlin Gradle plugin)
+D01,mutant,6,1,deprecated rememberRipple: use ripple() (Compose Material 1.7)
+P01,benign,1,0,
+P01,benign,2,0,
+P02,benign,1,0,
+P03,benign,1,0,
+P04,benign,1,0,
+P05,benign,1,0,
+P06,benign,1,0,
+P07,benign,1,0,
+P08,benign,1,0,
+P09,benign,1,0,
+P13,benign,1,0,
+S01,benign,1,0,
+S02,benign,1,0,
+S03,benign,1,0,
+S04,benign,1,0,
+S05,benign,1,0,
+S05,benign,2,0,
+S08,benign,1,0,
+U01,benign,1,0,
+U01,benign,2,0,
+U02,benign,1,0,
+U02,benign,2,0,
+U04,benign,1,0,
+D01,benign,1,0,

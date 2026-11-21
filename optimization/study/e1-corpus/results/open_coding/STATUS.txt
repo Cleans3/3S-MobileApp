@@ -1,0 +1,1 @@
+coded: 12 of 12 sample runs (44 rows). Substitution: agy-g38flash-B1-naive-r4 (cell lost to agy OAuth expiry, infra_failures.csv) replaced by the next run of its (bundle, style) stratum in the seeded round-robin, agy-g38flash-B2-naive-r1; sample.json is frozen (open_coding.py --redraw to redraw).

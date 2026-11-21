@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Library App</string>
+    <string name="sign_in_title">Library Member Sign In</string>
+    <string name="sign_in_subtitle">Access your account and digital library services</string>
+    <string name="email_label">Email Address</string>
+    <string name="password_label">Password</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="sign_out_button">Sign Out</string>
+    <string name="profile_title">Member Account</string>
+    <string name="invalid_email_error">Please enter a valid email address</string>
+    <string name="password_empty_error">Password cannot be empty</string>
+</resources>

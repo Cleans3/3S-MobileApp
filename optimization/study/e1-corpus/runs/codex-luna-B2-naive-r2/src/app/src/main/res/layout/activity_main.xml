@@ -1,0 +1,31 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fillViewport="true" android:background="@color/surface">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:padding="24dp">
+        <ImageView android:layout_width="56dp" android:layout_height="56dp" android:src="@drawable/ic_library"
+            android:contentDescription="@string/app_name" android:layout_marginTop="32dp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium" android:textColor="@color/ink" android:layout_marginTop="20dp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/welcome_subtitle"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" android:textColor="@color/muted" android:layout_marginTop="8dp" />
+        <LinearLayout android:id="@+id/sign_in_panel" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="32dp">
+            <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/email">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/email_input" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/password" android:layout_marginTop="14dp" app:endIconMode="password_toggle" xmlns:app="http://schemas.android.com/apk/res-auto">
+                <com.google.android.material.textfield.TextInputEditText android:id="@+id/password_input" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <TextView android:id="@+id/error_text" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/error" android:visibility="gone" android:layout_marginTop="12dp" />
+            <Button android:id="@+id/sign_in_button" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/sign_in" android:layout_marginTop="20dp" />
+            <ProgressBar android:id="@+id/progress" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:visibility="gone" android:layout_marginTop="16dp" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/profile_panel" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone" android:layout_marginTop="32dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/your_profile" android:textAppearance="@style/TextAppearance.Material3.TitleLarge" android:textColor="@color/ink" />
+            <TextView android:id="@+id/profile_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall" android:textColor="@color/ink" android:layout_marginTop="24dp" />
+            <TextView android:id="@+id/member_since" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/muted" android:layout_marginTop="8dp" />
+            <TextView android:id="@+id/member_id" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="@color/muted" android:layout_marginTop="4dp" />
+            <Button android:id="@+id/sign_out_button" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/sign_out" android:layout_marginTop="28dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="search_hint">Search titles, authors, ISBN, subjects…</string>
+    <string name="no_books_found">No books found</string>
+    <string name="badge_available">Available</string>
+    <string name="badge_all_copies_out">All copies out</string>
+    <string name="sync_catalogue">Download Catalogue</string>
+    <string name="syncing_catalogue">Downloading catalogue (%1$d / %2$d)…</string>
+    <string name="sync_complete">Catalogue up to date (%1$d titles)</string>
+    <string name="sync_failed">Download interrupted. Using offline catalogue.</string>
+    <string name="offline_notice">Offline mode — browsing downloaded catalogue</string>
+    <string name="detail_title">Title Detail</string>
+    <string name="detail_year">Year: %1$d</string>
+    <string name="detail_isbn">ISBN: %1$s</string>
+    <string name="detail_copies">Copies available: %1$d</string>
+    <string name="detail_subjects">Subjects</string>
+    <string name="detail_authors">Authors: %1$s</string>
+    <string name="cd_book_cover">Cover image for %1$s</string>
+    <string name="cd_placeholder_cover">Placeholder book cover</string>
+    <string name="cd_back">Back to catalogue</string>
+    <string name="cd_clear_search">Clear search query</string>
+    <string name="cd_sync">Sync catalogue from server</string>
+    <string name="cd_search_icon">Search icon</string>
+</resources>

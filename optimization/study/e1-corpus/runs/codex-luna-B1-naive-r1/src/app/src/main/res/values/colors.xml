@@ -1,0 +1,8 @@
+<resources>
+    <color name="ink">#18212B</color>
+    <color name="muted">#697586</color>
+    <color name="paper">#F7F8FA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="lavender">#6257D9</color>
+    <color name="lavender_soft">#EEEDFF</color>
+</resources>

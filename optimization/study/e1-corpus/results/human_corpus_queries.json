@@ -1,0 +1,30 @@
+{
+ "date": "2026-11-21",
+ "seed": 20261121,
+ "target_per_stratum": 20,
+ "queries": [
+  "language:Kotlin topic:jetpack-compose created:<range> stars:<band>",
+  "language:Kotlin topic:compose created:<range> stars:<band>",
+  "language:Kotlin \"jetpack compose\" in:readme created:<range> stars:<band>"
+ ],
+ "bands": [
+  "5..30",
+  "31..100",
+  "101..400",
+  "401..5000"
+ ],
+ "strata": {
+  "pre": {
+   "created": "2021-06-01..2022-11-30"
+  },
+  "post": {
+   "created": ">=2024-01-01"
+  }
+ },
+ "pool": {
+  "pre": 1255,
+  "post": 1942
+ },
+ "search_log_entries": 50,
+ "search_errors": []
+}

@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 43.7,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/claude-haiku-B1-naive-r2/app/src/main/java/com/example/libcatalog/ui/CatalogScreen.kt:41:18 Type 'androidx.compose.runtime.State<ko",
+ "lint": "no-report"
+}

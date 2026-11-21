@@ -1,0 +1,29 @@
+run_id,step,kind,detail
+pilot-claude-haiku-B1-detailed-functional-r1,1,missing-import,1 imports: MainActivity.kt:fillMaxSize
+pilot-codex-luna-B3-detailed-functional-r1,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+pilot-codex-luna-B3-detailed-functional-r1,2,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+pilot-codex-luna-B3-detailed-functional-r1,3,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+pilot-agy-g38flash-B3-guardrailed-r1,1,gradle-properties,"android.useAndroidX=true (androidx dependencies declared, flag missing)"
+claude-haiku-B2-naive-r1,1,missing-import,1 imports: AppRoot.kt:collectAsStateWithLifecycle
+codex-luna-B2-detailed-functional-r1,1,missing-import,1 imports: MainActivity.kt:remember
+codex-luna-B1-detailed-functional-r1,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-B3-detailed-functional-r1,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+claude-haiku-B1-detailed-functional-r2,1,missing-import,1 imports: CatalogueScreen.kt:Spacer
+agy-g38flash-B1-guardrailed-r2,1,gradle-properties,"android.useAndroidX=true (androidx dependencies declared, flag missing)"
+codex-luna-B1-naive-r2,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-B3-naive-r2,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-B2-detailed-functional-r2,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-B3-detailed-functional-r2,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+claude-haiku-B1-naive-r2,1,missing-import,1 imports: BookRow.kt:fillMaxSize
+claude-haiku-B3-naive-r2,1,missing-import,1 imports: MainActivity.kt:fillMaxSize
+codex-luna-B1-detailed-functional-r2,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-B1-guardrailed-r3,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-B2-detailed-functional-r3,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-B1-detailed-functional-r3,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+claude-haiku-B2-naive-r4,1,missing-import,1 imports: MainActivity.kt:fillMaxSize
+codex-luna-B2-detailed-functional-r4,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-B3-detailed-functional-r3,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-B2-guardrailed-r4,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-B3-detailed-functional-r4,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+claude-haiku-B3-naive-r4,1,missing-import,1 imports: MainActivity.kt:fillMaxSize
+codex-luna-B2-naive-r4,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)

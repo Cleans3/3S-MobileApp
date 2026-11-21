@@ -1,0 +1,7 @@
+run_id,composables,effect_density_item,effect_density_screen,effects_item,effects_total,item_scopes,kotlin_loc,kotlin_nws,kt_files,screens
+pilot-agy-g38flash-B1-naive-r1,0,0.0,0.0,0,0,0,0,0,0,0
+pilot-agy-g38flash-B3-guardrailed-r1,9,0.0,0.333,0,1,4,1860,49961,32,3
+pilot-claude-haiku-B1-detailed-functional-r1,13,0.0,0.0,0,0,4,947,27919,13,3
+pilot-claude-haiku-B2-guardrailed-r1,6,0.0,0.0,0,0,0,901,25296,13,3
+pilot-codex-luna-B2-naive-r1,0,0.0,0.0,0,0,0,259,8297,3,0
+pilot-codex-luna-B3-detailed-functional-r1,5,0.0,0.0,0,0,3,92,12297,1,0

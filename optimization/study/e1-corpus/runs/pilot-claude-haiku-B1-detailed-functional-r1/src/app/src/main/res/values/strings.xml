@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <string name="catalogue_title">ShelfTap catalogue</string>
+    <string name="catalogue_empty">No titles yet. Connect to the internet once to download the catalogue.</string>
+
+    <string name="search_title">Search</string>
+    <string name="search_hint">Title, author, ISBN or subject</string>
+    <string name="search_no_results">No books found</string>
+
+    <string name="badge_available">Available</string>
+    <string name="badge_all_out">All copies out</string>
+
+    <string name="action_search">Search</string>
+    <string name="action_refresh">Refresh catalogue</string>
+    <string name="action_back">Back</string>
+    <string name="action_clear">Clear search</string>
+
+    <string name="sync_progress">Downloading catalogue: %1$d of %2$d</string>
+    <string name="sync_failed">Could not update the catalogue. Showing titles saved on this phone.</string>
+
+    <string name="no_cover">No cover</string>
+    <string name="label_year">Year</string>
+    <string name="label_isbn">ISBN</string>
+    <string name="label_copies">Copies available</string>
+    <string name="label_subjects">Subjects</string>
+    <string name="no_subjects">No subjects listed</string>
+
+    <string name="title_not_found">This title is not on this phone and could not be found online.</string>
+    <string name="title_load_error">Could not load this title. Check the connection and try again.</string>
+</resources>

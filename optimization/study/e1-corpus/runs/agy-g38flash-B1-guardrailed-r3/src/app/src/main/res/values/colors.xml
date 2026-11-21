@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1E40AF</color>
+    <color name="primary_container">#DBEAFE</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_primary_container">#1E3A8A</color>
+    <color name="secondary">#0D9488</color>
+    <color name="background">#F8FAFC</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="error">#DC2626</color>
+    <color name="error_container">#FEE2E2</color>
+    <color name="on_error_container">#991B1B</color>
+    <color name="success">#15803D</color>
+    <color name="success_container">#DCFCE7</color>
+    <color name="on_success_container">#14532D</color>
+</resources>

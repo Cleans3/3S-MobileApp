@@ -1,0 +1,10 @@
+<resources>
+    <color name="primary">#1E3A8A</color>
+    <color name="primary_variant">#172554</color>
+    <color name="secondary">#0D9488</color>
+    <color name="background">#F8FAFC</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="status_overdue">#DC2626</color>
+    <color name="status_due_soon">#D97706</color>
+    <color name="status_good">#16A34A</color>
+</resources>

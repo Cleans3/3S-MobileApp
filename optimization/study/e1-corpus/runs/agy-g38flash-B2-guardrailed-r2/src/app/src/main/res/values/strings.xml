@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="sign_in_title">Library Member Sign In</string>
+    <string name="sign_in_subtitle">Access your library account and services</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="signing_in">Signing in…</string>
+
+    <string name="profile_title">Member Profile</string>
+    <string name="sign_out_button">Sign Out</string>
+    <string name="signing_out">Signing out…</string>
+    <string name="full_name_label">Full Name</string>
+    <string name="member_type_label">Member Type</string>
+    <string name="status_label">Status</string>
+    <string name="member_id_label">Member ID</string>
+    <string name="history_enabled_label">Reading History</string>
+    <string name="history_enabled_yes">Enabled</string>
+    <string name="history_enabled_no">Disabled</string>
+
+    <string name="change_password_title">Change Password</string>
+    <string name="change_password_mandatory_subtitle">You must change your password before accessing your account.</string>
+    <string name="change_password_voluntary_subtitle">Update your account password</string>
+    <string name="current_password_label">Current Password</string>
+    <string name="new_password_label">New Password</string>
+    <string name="confirm_new_password_label">Confirm New Password</string>
+    <string name="change_password_button">Change Password</string>
+    <string name="changing_password">Updating password…</string>
+    <string name="nav_change_password">Change Password</string>
+
+    <string name="password_mismatch_error">The two new passwords do not match.</string>
+    <string name="empty_fields_error">Please fill in all fields.</string>
+    <string name="error_invalid_credentials">Invalid email or password. Please try again.</string>
+    <string name="error_account_locked">Your account is locked. Please contact library support.</string>
+    <string name="error_rate_limited">Too many attempts. Please try again later.</string>
+    <string name="error_rate_limited_seconds">Too many attempts. Please try again in %1$d seconds.</string>
+    <string name="error_token_invalid">Your session has expired. Please sign in again.</string>
+    <string name="error_password_change_required">A password change is required.</string>
+    <string name="error_generic">An unexpected error occurred. Please try again.</string>
+
+    <string name="cd_show_password">Show password</string>
+    <string name="cd_hide_password">Hide password</string>
+    <string name="cd_navigate_back">Navigate back</string>
+    <string name="cd_sign_out">Sign out of library account</string>
+    <string name="cd_refresh">Refresh member profile</string>
+</resources>

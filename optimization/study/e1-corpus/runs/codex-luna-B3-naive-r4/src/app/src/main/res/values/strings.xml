@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Library Loans</string>
+    <string name="loans">My loans</string>
+    <string name="history">Reading history</string>
+    <string name="renew">Renew loan</string>
+    <string name="renewed">Renewed</string>
+    <string name="details">Book details</string>
+</resources>

@@ -1,0 +1,10 @@
+<resources>
+    <color name="primary">#006495</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="primary_container">#CCE5FF</color>
+    <color name="on_primary_container">#001D31</color>
+    <color name="secondary">#51606F</color>
+    <color name="background">#F8F9FA</color>
+    <color name="error">#BA1A1A</color>
+    <color name="error_container">#FFDAD6</color>
+</resources>

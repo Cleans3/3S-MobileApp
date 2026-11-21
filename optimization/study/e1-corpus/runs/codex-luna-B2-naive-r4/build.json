@@ -1,0 +1,10 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "pass",
+ "repairs": 1,
+ "gradle_s_first": 71.8,
+ "build": "pass",
+ "build_error_first_line": "",
+ "lint": "ran",
+ "lint_issues": 22
+}

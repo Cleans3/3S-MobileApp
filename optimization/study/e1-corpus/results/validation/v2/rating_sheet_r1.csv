@@ -1,0 +1,32 @@
+sample_id,rater,label,note
+1cb251ab7b,r1,tp,
+c05ae3fff2,r1,tp,
+b6ae5fc9ab,r1,tp,no progress indicator anywhere in the file; no error UI either
+ee6f6fb791,r1,tp,
+9fb6b9fbc2,r1,fp,"test-only code (instrumented test), runBlocking is the standard test idiom"
+0a232f38ae,r1,unclear,finding is anchored at line 1; the buildTypes block is outside the window
+2b164a6ef9,r1,tp,
+64766ab8ce,r1,tp,"release block shows minify true, no isShrinkResources"
+0ca3ed0afb,r1,tp,loading and empty states exist; no LoadState.Error / error UI anywhere in the file
+bc2df02d09,r1,unclear,callers of the private request() helper are not visible
+b1fac7e83b,r1,fp,file is an OkHttp interceptor; its refresh call runs on the interceptor-chain thread by contract
+3a16f0f116,r1,tp,
+78818637bb,r1,fp,"XML namespace inside a string constant, excluded by the rule text"
+10948883e9,r1,tp,
+9d1da0360e,r1,tp,
+0e01c61671,r1,fp,"the call is inside withContext(io), the dispatcher is held in a variable named io"
+17a5d13b5f,r1,tp,"small choices list, pattern as defined"
+4fdc3e05b7,r1,tp,
+d9aaecf87b,r1,tp,"file-level pattern: no progress indicator in the file; it delegates to TitleList and SyncBanner, whose content is not shown"
+0d54517700,r1,tp,
+5e03da9507,r1,tp,"suspend callers at lines 30-31 call request() directly, not under withContext"
+a45779be8b,r1,tp,"constant board list inside a scrolling Column, pattern as defined"
+3d4e347191,r1,unclear,callers of page() are not visible
+f4e4cc8798,r1,tp,
+7eddafc361,r1,tp,
+3f78716abe,r1,tp,
+466b74e151,r1,tp,no error branch or retry UI in the file
+d933e5794a,r1,fp,the else branch renders CenteredProgress and a FailedState with retry is also present
+b8a9e1a3b2,r1,tp,
+d090427ef6,r1,fp,SyncStatus.Failed renders an error banner and a failure-specific empty message
+2cdee52041,r1,tp,

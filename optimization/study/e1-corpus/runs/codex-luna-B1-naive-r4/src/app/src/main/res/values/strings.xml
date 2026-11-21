@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Library Catalogue</string>
+    <string name="search_hint">Search titles, authors, or ISBN</string>
+    <string name="catalogue_count">100,000 books</string>
+    <string name="clear_search">Clear search</string>
+</resources>

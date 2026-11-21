@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Library Catalogue</string>
+    <string name="search_hint">Search 100,000+ books, authors, ISBN...</string>
+    <string name="total_books_format">%1$,d books available</string>
+    <string name="all_genres">All</string>
+    <string name="available_only">Available Only</string>
+    <string name="no_books_found">No books found matching your query</string>
+    <string name="try_different_search">Try searching for a different title, author, or genre</string>
+    <string name="loading_catalogue">Loading catalogue…</string>
+    <string name="indexing_catalogue">Preparing library catalogue with 100,000 books…</string>
+    <string name="book_details">Book Details</string>
+    <string name="borrow_book">Borrow Book</string>
+    <string name="reserve_book">Reserve Book</string>
+    <string name="book_available">Available</string>
+    <string name="book_borrowed">Borrowed</string>
+</resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <string name="nav_loans">Loans</string>
+    <string name="nav_history">History</string>
+    <string name="loans_title">Loans</string>
+    <string name="history_title">Reading history</string>
+    <string name="book_title">Book</string>
+
+    <string name="action_back">Back</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_renew">Renew</string>
+    <string name="renew_for">Renew %1$s</string>
+    <string name="overdue">Overdue</string>
+    <string name="due_on">Due %1$s</string>
+    <string name="loans_empty">You have no loans right now.</string>
+    <string name="renew_not_allowed">This loan cannot be renewed</string>
+
+    <string name="history_empty">No past loans yet.</string>
+    <string name="history_disabled">Reading history is off. New loans are not recorded.</string>
+    <string name="keep_history">Keep my reading history</string>
+    <string name="history_off_title">Turn off reading history?</string>
+    <string name="history_off_text">New loans will no longer be added to your reading history.</string>
+    <string name="turn_off">Turn off</string>
+    <string name="cancel">Cancel</string>
+    <string name="borrowed_on">Borrowed %1$s</string>
+    <string name="returned_on">Returned %1$s</string>
+    <string name="not_returned">Not returned yet</string>
+
+    <string name="showing_saved_data">Showing saved data</string>
+    <string name="error_network">No connection. Check your network and try again.</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+
+    <string name="cover_of">Cover of %1$s</string>
+    <string name="authors_label">Authors: %1$s</string>
+    <string name="subjects_label">Subjects: %1$s</string>
+    <string name="copies_available">%1$d of %2$d copies available</string>
+    <string name="not_listed">Not listed</string>
+
+    <plurals name="days_left">
+        <item quantity="one">%d day left</item>
+        <item quantity="other">%d days left</item>
+    </plurals>
+    <plurals name="days_overdue">
+        <item quantity="one">%d day overdue</item>
+        <item quantity="other">%d days overdue</item>
+    </plurals>
+</resources>

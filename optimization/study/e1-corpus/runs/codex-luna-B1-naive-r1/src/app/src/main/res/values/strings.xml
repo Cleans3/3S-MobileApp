@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BookHaven</string>
+    <string name="search_hint">Search by title, author, or ISBN</string>
+</resources>

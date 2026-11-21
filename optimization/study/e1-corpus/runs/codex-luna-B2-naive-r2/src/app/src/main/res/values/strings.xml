@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Library Account</string>
+    <string name="welcome_subtitle">Sign in to manage your library membership.</string>
+    <string name="email">Email address</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_out">Sign out</string>
+    <string name="your_profile">Your profile</string>
+    <string name="invalid_email">Enter a valid email address.</string>
+    <string name="password_required">Enter your password.</string>
+    <string name="sign_in_failed">Could not sign in. Please try again.</string>
+    <string name="profile_failed">Could not load your profile.</string>
+    <string name="member_since_value">Member since %1$s</string>
+    <string name="member_since_unknown">Membership date unavailable</string>
+    <string name="member_id_value">Member ID: %1$s</string>
+</resources>

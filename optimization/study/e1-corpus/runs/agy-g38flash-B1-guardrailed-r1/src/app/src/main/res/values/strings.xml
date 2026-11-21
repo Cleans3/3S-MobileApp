@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="catalogue_title">ShelfTap Catalogue</string>
+    <string name="title_detail">Book Details</string>
+    <string name="search_placeholder">Search by title, author, ISBN, subject…</string>
+    <string name="no_books_found">No books found</string>
+    <string name="badge_available">Available</string>
+    <string name="badge_all_copies_out">All copies out</string>
+    <string name="back_button_content_description">Navigate back</string>
+    <string name="search_clear_content_description">Clear search query</string>
+    <string name="sync_catalogue_content_description">Download catalogue for offline use</string>
+    <string name="cover_image_content_description">Cover of %1$s</string>
+    <string name="copies_available_count">%1$d copies available</string>
+    <string name="field_authors">Authors</string>
+    <string name="field_year">Year</string>
+    <string name="field_isbn">ISBN</string>
+    <string name="field_id">Catalogue ID</string>
+    <string name="field_subjects">Subjects</string>
+    <string name="retry">Retry</string>
+    <string name="load_error">Failed to load catalogue</string>
+    <string name="append_error">Failed to load more titles</string>
+</resources>

@@ -1,0 +1,589 @@
+{
+ "mutants": {
+  "P01": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun A(books: List<Book>) { LazyColumn { items(books) { b -> Text(b.title) } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun B(books: List<Book>) { LazyRow { itemsIndexed(books) { i, b -> Text(b.title) } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun C(books: List<Book>) { LazyVerticalGrid(columns = GridCells.Fixed(2)) { items(books) { BookCard(it) } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun D(p: LazyPagingItems<Book>) { LazyColumn { items(p.itemCount) { i -> Text(p[i]!!.title) } } }"
+   }
+  ],
+  "P02": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun A(b: List<Book>) { LazyColumn { item { Header() }; items(b, key = { it.id }) { Row(it) } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun B(a: List<Book>, c: List<Book>) { LazyColumn { items(a, key = { it.id }) { A(it) }; items(c, key = { it.id }) { B(it) } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun C(rows: List<UiRow>) { LazyColumn { items(rows, key = { it.id }) { r -> when (r) { is UiRow.Header -> H(r); is UiRow.Book -> BK(r) } } } }"
+   }
+  ],
+  "P03": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun BookList(books: List<Book>) { Text(\"x\") }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun Tags(tags: MutableList<String>, modifier: Modifier = Modifier) { Text(\"x\") }"
+   },
+   {
+    "kind": "kt",
+    "code": "data class UiBook(var title: String, val id: String)\n@Composable fun BookRow(b: UiBook) { Text(b.title) }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun Chips(items: Set<String>) { Text(\"x\") }"
+   }
+  ],
+  "P04": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun A(books: List<Book>, q: String) { val shown = books.filter { it.title.contains(q) }; Text(shown.size.toString()) }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun B(books: List<Book>) { val sorted = books.sortedBy { it.title }; Text(sorted.first().title) }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun C(s: String) { val re = Regex(\"[a-z]+\"); Text(re.find(s)?.value ?: \"\") }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun D(d: Date) { val f = SimpleDateFormat(\"dd/MM/yyyy\").format(d); Text(f) }"
+   }
+  ],
+  "P05": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun A() { val ls = rememberLazyListState(); val show = ls.firstVisibleItemIndex > 0; if (show) Text(\"top\") }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun B(ls: LazyListState) { AnimatedVisibility(visible = ls.firstVisibleItemScrollOffset > 100) { Text(\"x\") } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun C(scrollState: ScrollState) { val shrink = scrollState.value > 50; Text(shrink.toString()) }"
+   }
+  ],
+  "P06": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun A(b: Book) { AsyncImage(model = b.coverUrl, contentDescription = null) }"
+   },
+   {
+    "kind": "kt",
+    "code": "fun load(url: String): Bitmap = BitmapFactory.decodeStream(URL(url).openStream())"
+   },
+   {
+    "kind": "kt",
+    "code": "fun req(ctx: Context, u: String) = ImageRequest.Builder(ctx).data(u).size(Size.ORIGINAL).build()"
+   },
+   {
+    "kind": "kt",
+    "code": "fun req2(ctx: Context, u: String) = ImageRequest.Builder(ctx).data(u).diskCachePolicy(CachePolicy.DISABLED).memoryCachePolicy(CachePolicy.DISABLED).build()"
+   }
+  ],
+  "P07": [
+   {
+    "kind": "kt",
+    "code": "class Repo { fun load(): List<Book> { val data = runBlocking { api.fetch() }; return data } }"
+   },
+   {
+    "kind": "kt",
+    "code": "class Vm { fun read(ctx: Context): String { return ctx.assets.open(\"catalog.json\").bufferedReader().readText() } }"
+   },
+   {
+    "kind": "kt",
+    "code": "class Vm2 : ViewModel() { fun go() { viewModelScope.launch { val t = URL(\"https://api.example.com/x\").readText() } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "fun db(ctx: Context) = Room.databaseBuilder(ctx, Db::class.java, \"d\").allowMainThreadQueries().build()"
+   }
+  ],
+  "P08": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun A(books: List<Book>) { LazyColumn { items(books, key = { it.id }) { b -> Card(modifier = Modifier.shadow(12.dp).blur(8.dp)) { Text(b.title) } } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun Row1(b: Book) { Box(Modifier.background(Brush.verticalGradient(listOf(Color.Red, Color.Blue)))) { Text(b.title) } }\n@Composable fun L(books: List<Book>) { LazyColumn { items(books, key = { it.id }) { Row1(it) } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun B(books: List<Book>) { LazyColumn { items(books, key = { it.id }) { b -> val t = rememberInfiniteTransition(); Text(b.title) } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun C(books: List<Book>) { LazyColumn { items(books, key = { it.id }) { b -> Card(elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)) { Text(b.title) } } } }"
+   }
+  ],
+  "P09": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun A(books: List<Book>) { Column(Modifier.verticalScroll(rememberScrollState())) { books.forEach { BookRow(it) } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun B(books: List<Book>) { Row(Modifier.horizontalScroll(rememberScrollState())) { for (b in books) { Cover(b) } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun C(results: List<Book>) { LazyColumn { item { Column { results.forEach { Text(it.title) } } } } }"
+   }
+  ],
+  "P10": [
+   {
+    "kind": "edit",
+    "file": "build.gradle.kts",
+    "old": "isMinifyEnabled = true",
+    "new": "isMinifyEnabled = false"
+   },
+   {
+    "kind": "edit",
+    "file": "build.gradle.kts",
+    "old": "            isMinifyEnabled = true\n            isShrinkResources = true\n",
+    "new": ""
+   },
+   {
+    "kind": "edit",
+    "file": "build.gradle.kts",
+    "old": "isShrinkResources = true",
+    "new": "isShrinkResources = false"
+   }
+  ],
+  "P11": [
+   [
+    {
+     "kind": "rm",
+     "path": "src/main/baseline-prof.txt"
+    },
+    {
+     "kind": "edit",
+     "file": "build.gradle.kts",
+     "old": "    id(\"androidx.baselineprofile\")\n",
+     "new": ""
+    }
+   ],
+   [
+    {
+     "kind": "rm",
+     "path": "src/main/baseline-prof.txt"
+    },
+    {
+     "kind": "edit",
+     "file": "build.gradle.kts",
+     "old": "    id(\"androidx.baselineprofile\")\n",
+     "new": ""
+    },
+    {
+     "kind": "edit",
+     "file": "build.gradle.kts",
+     "old": "    alias(libs.plugins.android.application)",
+     "new": "    id(\"com.android.application\")"
+    }
+   ],
+   [
+    {
+     "kind": "rm",
+     "path": "src/main/baseline-prof.txt"
+    },
+    {
+     "kind": "edit",
+     "file": "build.gradle.kts",
+     "old": "    id(\"androidx.baselineprofile\")\n",
+     "new": ""
+    },
+    {
+     "kind": "edit",
+     "file": "build.gradle.kts",
+     "old": "    alias(libs.plugins.kotlin.compose)\n",
+     "new": ""
+    }
+   ]
+  ],
+  "P13": [
+   {
+    "kind": "kt",
+    "code": "class SearchVm(val allBooks: List<Book>, val query: Flow<String>) { val results = query.map { q -> allBooks.filter { it.title.contains(q, ignoreCase = true) } } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Dao interface BookDao { @Query(\"SELECT * FROM book WHERE title LIKE '%' || :q || '%'\") fun search(q: String): List<Book> }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun S(vm: Vm) { var q by remember { mutableStateOf(\"\") }; OutlinedTextField(value = q, onValueChange = { q = it; vm.search(it) }) }"
+   }
+  ],
+  "S01": [
+   {
+    "kind": "kt",
+    "code": "class Store(val prefs: SharedPreferences) { fun save(token: String) { prefs.edit().putString(\"access_token\", token).apply() } }"
+   },
+   {
+    "kind": "kt",
+    "code": "val REFRESH = stringPreferencesKey(\"refresh_token\")"
+   },
+   {
+    "kind": "kt",
+    "code": "fun save(ctx: Context, token: String) { File(ctx.filesDir, \"session.json\").writeText(\"session \" + token) }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Entity data class Session(@PrimaryKey val id: Int, val accessToken: String)"
+   }
+  ],
+  "S02": [
+   {
+    "kind": "kt",
+    "code": "object Cfg { const val API_KEY = \"sk-live-FAKE0000FAKE0000FAKE\" }"
+   },
+   {
+    "kind": "kt",
+    "code": "object Cfg2 { val mapsKey = \"AIzaSyEXAMPLEEXAMPLEEXAMPLEEXAMPLE00000\" }"
+   },
+   {
+    "kind": "edit",
+    "file": "build.gradle.kts",
+    "old": "    defaultConfig {",
+    "new": "    defaultConfig {\n        buildConfigField(\"String\", \"API_SECRET\", \"\\\"a1b2c3d4e5f6g7h8i9j0\\\"\")"
+   },
+   {
+    "kind": "kt",
+    "code": "fun auth() = Credentials.basic(\"admin\", \"hunter2\")"
+   }
+  ],
+  "S03": [
+   {
+    "kind": "edit",
+    "file": "src/main/AndroidManifest.xml",
+    "old": "android:usesCleartextTraffic=\"false\"",
+    "new": "android:usesCleartextTraffic=\"true\""
+   },
+   {
+    "kind": "edit",
+    "file": "src/main/res/xml/network_security_config.xml",
+    "old": "<network-security-config>",
+    "new": "<network-security-config>\n    <domain-config cleartextTrafficPermitted=\"true\"><domain>api.example.com</domain></domain-config>"
+   },
+   {
+    "kind": "kt",
+    "code": "const val BASE_URL = \"http://api.shelftap.example/\""
+   },
+   {
+    "kind": "kt",
+    "code": "fun rt() = Retrofit.Builder().baseUrl(\"http://10.0.2.2:8080/\").build()"
+   }
+  ],
+  "S04": [
+   {
+    "kind": "kt",
+    "code": "val trustAll = object : X509TrustManager {\n    override fun checkClientTrusted(c: Array<X509Certificate>, a: String) {}\n    override fun checkServerTrusted(c: Array<X509Certificate>, a: String) {}\n    override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()\n}"
+   },
+   {
+    "kind": "kt",
+    "code": "fun client() = OkHttpClient.Builder().hostnameVerifier { _, _ -> true }.build()"
+   },
+   {
+    "kind": "kt",
+    "code": "class W : WebViewClient() { override fun onReceivedSslError(v: WebView, h: SslErrorHandler, e: SslError) { h.proceed() } }"
+   },
+   {
+    "kind": "kt",
+    "code": "fun setup() { HttpsURLConnection.setDefaultHostnameVerifier(HostnameVerifier { _, _ -> true }) }"
+   }
+  ],
+  "S05": [
+   {
+    "kind": "kt",
+    "code": "fun f(token: String) { Log.d(\"Auth\", \"token=\" + token) }"
+   },
+   {
+    "kind": "kt",
+    "code": "fun g() = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }"
+   },
+   {
+    "kind": "kt",
+    "code": "fun h(response: Response<Any>) { Timber.d(\"login response \" + response.body()) }"
+   },
+   {
+    "kind": "kt",
+    "code": "fun i(password: String) { println(\"password: \" + password) }"
+   }
+  ],
+  "S06": [
+   {
+    "kind": "edit",
+    "file": "src/main/AndroidManifest.xml",
+    "old": "android:allowBackup=\"false\"\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"",
+    "new": "android:allowBackup=\"true\""
+   },
+   {
+    "kind": "edit",
+    "file": "src/main/AndroidManifest.xml",
+    "old": "android:allowBackup=\"false\"\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"",
+    "new": ""
+   },
+   {
+    "kind": "edit",
+    "file": "src/main/AndroidManifest.xml",
+    "old": "android:allowBackup=\"false\"\n        android:dataExtractionRules=\"@xml/data_extraction_rules\"",
+    "new": "android:allowBackup=\"true\"\n        android:fullBackupContent=\"@xml/missing_rules\""
+   }
+  ],
+  "S07": [
+   {
+    "kind": "edit",
+    "file": "src/main/AndroidManifest.xml",
+    "old": "</application>",
+    "new": "<activity android:name=\".Deep\" android:exported=\"true\"/>\n    </application>"
+   },
+   {
+    "kind": "edit",
+    "file": "src/main/AndroidManifest.xml",
+    "old": "</application>",
+    "new": "<service android:name=\".Sync\" android:exported=\"true\"><intent-filter><action android:name=\"x.SYNC\"/></intent-filter></service>\n    </application>"
+   },
+   {
+    "kind": "edit",
+    "file": "src/main/AndroidManifest.xml",
+    "old": "</application>",
+    "new": "<receiver android:name=\".Sync\"><intent-filter><action android:name=\"com.example.ACTION_SYNC\"/></intent-filter></receiver>\n    </application>"
+   },
+   {
+    "kind": "edit",
+    "file": "src/main/AndroidManifest.xml",
+    "old": "</application>",
+    "new": "<provider android:name=\".P\" android:authorities=\"a.b\" android:exported=\"true\"/>\n    </application>"
+   }
+  ],
+  "S08": [
+   {
+    "kind": "kt",
+    "code": "fun h(pw: String) = MessageDigest.getInstance(\"MD5\").digest(pw.toByteArray())"
+   },
+   {
+    "kind": "kt",
+    "code": "fun c() = Cipher.getInstance(\"AES/ECB/PKCS5Padding\")"
+   },
+   {
+    "kind": "kt",
+    "code": "fun iv() = IvParameterSpec(ByteArray(16))"
+   },
+   {
+    "kind": "kt",
+    "code": "fun p(ctx: Context) = EncryptedSharedPreferences.create(ctx, \"s\", MasterKey.Builder(ctx).build(), A, B)"
+   },
+   {
+    "kind": "kt",
+    "code": "fun k() = SecretKeySpec(\"0123456789abcdef\".toByteArray(), \"AES\")"
+   }
+  ],
+  "S09": [
+   {
+    "kind": "kt",
+    "code": "fun find(db: SQLiteDatabase, query: String) = db.rawQuery(\"SELECT * FROM books WHERE title = '$query'\", null)"
+   },
+   {
+    "kind": "kt",
+    "code": "fun wv(webView: WebView, userUrl: String) { webView.settings.javaScriptEnabled = true; webView.loadUrl(userUrl) }"
+   },
+   {
+    "kind": "kt",
+    "name": "SignInViewModel.kt",
+    "code": "class AuthVm { fun login(email: String, password: String) { api.login(email, password) } }"
+   }
+  ],
+  "U01": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun A() { IconButton(onClick = {}) { Icon(Icons.Default.Search, contentDescription = null) } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun B() { Icon(Icons.Default.Add, null, Modifier.clickable { }) }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun C() { FloatingActionButton(onClick = {}) { Icon(Icons.Default.Add, contentDescription = null) } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun D(c: Boolean) { IconToggleButton(checked = c, onCheckedChange = {}) { Icon(Icons.Default.Favorite, null) } }"
+   }
+  ],
+  "U02": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun A() { Box(Modifier.size(24.dp).clickable { }) }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun B() { Icon(Icons.Default.Close, \"close\", Modifier.size(32.dp).clickable { }) }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun C() { Text(\"a\", Modifier.height(30.dp).clickable { }) }"
+   }
+  ],
+  "U03": [
+   {
+    "kind": "kt",
+    "code": "val s = lightColorScheme(primary = Color(0xFFBBBBBB), onPrimary = Color.White)"
+   },
+   {
+    "kind": "kt",
+    "code": "val s2 = lightColorScheme(background = Color(0xFFFFFFFF), onBackground = Color(0xFFCCCCCC))"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun T() { Text(\"hint\", color = Color.LightGray) }"
+   }
+  ],
+  "U04": [
+   {
+    "kind": "kt",
+    "code": "@Composable fun A() { Text(\"a\", color = Color(0xFF123456)) }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun B() { Box(Modifier.background(Color.Red)) }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun C() { Text(\"a\", fontSize = 17.sp) }"
+   }
+  ],
+  "U05": [
+   {
+    "kind": "kt",
+    "name": "HomeScreen.kt",
+    "code": "@Composable fun HomeScreen(vm: HomeVm = viewModel()) { val s by vm.state.collectAsState(); LazyColumn { items(s.books, key = { it.id }) { Text(it.title) } } }"
+   },
+   {
+    "kind": "kt",
+    "name": "ProductsScreen.kt",
+    "code": "@Composable fun ProductsScreen(vm: PVm = viewModel()) { val s by vm.state.collectAsState(); if (s.isLoading) CircularProgressIndicator(); LazyColumn { items(s.books, key = { it.id }) { Text(it.title) } } }"
+   },
+   {
+    "kind": "kt",
+    "name": "LoansScreen.kt",
+    "code": "@Composable fun LoansScreen(vm: LVm = viewModel()) { val s by vm.state.collectAsState(); if (s.isLoading) CircularProgressIndicator(); if (s.error != null) Text(s.error); LazyColumn { items(s.loans, key = { it.id }) { Text(it.title) } } }"
+   }
+  ],
+  "D01": [
+   {
+    "kind": "kt",
+    "code": "class A : Activity() { override fun onBackPressed() { super.onBackPressed() } }"
+   },
+   {
+    "kind": "kt",
+    "code": "class T : AsyncTask<Void, Void, String>()"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun D() { Divider() }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun I() { Icon(Icons.Filled.ArrowBack, null) }"
+   },
+   {
+    "kind": "edit",
+    "file": "build.gradle.kts",
+    "old": "kotlin {\n    jvmToolchain(21)\n}",
+    "new": "kotlin {\n    jvmToolchain(21)\n}\nandroid { kotlinOptions { jvmTarget = \"17\" } }"
+   },
+   {
+    "kind": "kt",
+    "code": "@Composable fun R() { val r = rememberRipple() }"
+   }
+  ]
+ },
+ "benign": {
+  "P01": [
+   "@Composable fun A(b: List<Book>) { LazyColumn { items(b, key = { it.id }) { Text(it.title) } } }",
+   "@Composable fun A2(b: List<Book>) { LazyColumn { items(b, { it.id }) { Text(it.title) } } }"
+  ],
+  "P02": [
+   "@Composable fun A(b: List<Book>) { LazyColumn { item(contentType = \"h\") { Header() }; items(b, key = { it.id }, contentType = { \"row\" }) { Row(it) } } }"
+  ],
+  "P03": [
+   "@Composable fun A(b: ImmutableList<Book>, onClick: (Int) -> Unit, m: Modifier = Modifier) { Text(\"x\") }"
+  ],
+  "P04": [
+   "@Composable fun A(b: List<Book>, q: String) { val s = remember(b, q) { b.filter { it.title.contains(q) } }; Button(onClick = { b.filter { it.ok } }) { Text(\"x\") }; Text(s.size.toString()) }"
+  ],
+  "P05": [
+   "@Composable fun A(ls: LazyListState) { val show by remember { derivedStateOf { ls.firstVisibleItemIndex > 0 } }; if (show) Text(\"x\") }"
+  ],
+  "P06": [
+   "@Composable fun A(b: Book) { AsyncImage(model = b.coverUrl, contentDescription = null, modifier = Modifier.size(48.dp, 72.dp)) }"
+  ],
+  "P07": [
+   "class R { suspend fun load(): String = withContext(Dispatchers.IO) { URL(\"https://x\").readText() } }"
+  ],
+  "P08": [
+   "@Composable fun A() { Card(elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)) { Text(\"not in a list\") } }"
+  ],
+  "P09": [
+   "@Composable fun A(b: List<Book>) { Column(Modifier.verticalScroll(rememberScrollState())) { listOf(\"a\", \"b\").forEach { Text(it) } } }"
+  ],
+  "P13": [
+   "@Dao interface D { @Query(\"SELECT * FROM book_fts WHERE book_fts MATCH :q\") fun s(q: String): List<Book> }"
+  ],
+  "S01": [
+   "class Store(val prefs: SharedPreferences) { fun save(token: String) { val c = Cipher.getInstance(\"AES/GCM/NoPadding\"); prefs.edit().putString(\"access_token\", encrypt(token)).apply() } }"
+  ],
+  "S02": [
+   "object Cfg { const val TOKEN_KEY = \"auth_token\"; const val PLACEHOLDER = \"YOUR_API_KEY_HERE\" }"
+  ],
+  "S03": [
+   "const val BASE_URL = \"https://api.shelftap.example/\""
+  ],
+  "S04": [
+   "fun client() = OkHttpClient.Builder().certificatePinner(CertificatePinner.Builder().build()).build()"
+  ],
+  "S05": [
+   "fun g() = HttpLoggingInterceptor().apply { level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE }",
+   "fun h() { Log.d(\"Catalog\", \"loaded titles\") }"
+  ],
+  "S08": [
+   "fun c() = Cipher.getInstance(\"AES/GCM/NoPadding\")"
+  ],
+  "U01": [
+   "@Composable fun A() { IconButton(onClick = {}) { Icon(Icons.Default.Search, contentDescription = \"Search\") } }",
+   "@Composable fun B() { Button(onClick = {}) { Icon(Icons.Default.Add, contentDescription = null); Text(\"Add\") } }"
+  ],
+  "U02": [
+   "@Composable fun A() { Box(Modifier.size(24.dp).minimumInteractiveComponentSize().clickable { }) }",
+   "@Composable fun B() { Box(Modifier.size(48.dp).clickable { }) }"
+  ],
+  "U04": [
+   "@Composable fun A() { Text(\"a\", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyLarge) }"
+  ],
+  "D01": [
+   "@Composable fun D() { HorizontalDivider() }"
+  ],
+  "S07": []
+ }
+}

@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="catalogue_title">Library Catalogue</string>
+    <string name="search_hint">Search title, author, ISBN, subject…</string>
+    <string name="clear_search">Clear search</string>
+    <string name="no_books_found">No books found</string>
+    <string name="no_books_sub">Try adjusting your search terms or keywords</string>
+    <string name="badge_available">Available</string>
+    <string name="badge_unavailable">All copies out</string>
+    <string name="detail_title">Book Details</string>
+    <string name="back">Back</string>
+    <string name="copies_available_label">Copies Available</string>
+    <string name="isbn_label">ISBN</string>
+    <string name="year_label">Publication Year</string>
+    <string name="catalog_id_label">Catalogue ID</string>
+    <string name="subjects_label">Subjects</string>
+    <string name="sync_button">Sync</string>
+    <string name="syncing_catalogue">Downloading catalogue: %1$d / %2$d titles…</string>
+    <string name="sync_complete">Catalogue downloaded (%1$d titles offline)</string>
+    <string name="sync_offline">Offline mode: Using cached catalogue</string>
+    <string name="offline_ready_banner">Offline ready: %1$d titles available</string>
+    <string name="download_catalogue_prompt">Download complete catalogue for offline shelf browsing</string>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">City Library Loans</string>
+    <string name="tab_current_loans">Current Loans</string>
+    <string name="tab_loan_history">Borrowing History</string>
+    <string name="renew_loan">Renew Loan</string>
+    <string name="book_details">Book Details</string>
+</resources>

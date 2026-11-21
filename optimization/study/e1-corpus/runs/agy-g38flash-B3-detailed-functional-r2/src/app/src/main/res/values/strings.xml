@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="nav_loans">Loans</string>
+    <string name="nav_history">History</string>
+    <string name="overdue">Overdue</string>
+    <string name="renew">Renew</string>
+    <string name="renewing">Renewing…</string>
+    <string name="showing_saved_data">Showing saved data</string>
+    <string name="keep_reading_history">Keep my reading history</string>
+    <string name="cannot_renew_error">This loan cannot be renewed</string>
+    <string name="dialog_disable_history_title">Disable reading history?</string>
+    <string name="dialog_disable_history_message">Past loans will no longer be tracked or visible. Are you sure you want to turn this off?</string>
+    <string name="confirm">Disable</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_loans">No active loans found</string>
+    <string name="no_history">No reading history available</string>
+    <string name="book_details">Book Details</string>
+    <string name="copies_available">Copies Available</string>
+    <string name="subjects">Subjects</string>
+    <string name="authors">Authors</string>
+    <string name="isbn">ISBN</string>
+</resources>

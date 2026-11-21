@@ -1,0 +1,10 @@
+Lvn/shelftap/app/ShelfTapApp;
+Lvn/shelftap/app/MainActivity;
+HSPLvn/shelftap/app/MainActivity;->onCreate(Landroid/os/Bundle;)V
+Lvn/shelftap/app/ui/ShelfTapRootKt;
+Lvn/shelftap/app/ui/loans/LoansViewModel;
+Lvn/shelftap/app/ui/loans/LoansScreenKt;
+Lvn/shelftap/app/ui/history/HistoryViewModel;
+Lvn/shelftap/app/ui/history/HistoryScreenKt;
+Lvn/shelftap/app/ui/book/BookViewModel;
+Lvn/shelftap/app/ui/book/BookScreenKt;

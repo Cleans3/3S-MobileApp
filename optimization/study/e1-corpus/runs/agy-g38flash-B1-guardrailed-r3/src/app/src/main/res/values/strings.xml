@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="available">Available</string>
+    <string name="all_copies_out">All copies out</string>
+    <string name="no_books_found">No books found</string>
+    <string name="search_placeholder">Search title, author, ISBN, subject…</string>
+    <string name="sync_catalogue">Download Catalogue</string>
+    <string name="syncing_catalogue">Downloading catalogue (%1$d titles)…</string>
+    <string name="sync_complete">Catalogue up to date</string>
+    <string name="sync_failed">Download failed. Working offline.</string>
+    <string name="retry">Retry</string>
+    <string name="catalogue_title">Catalogue</string>
+    <string name="book_details">Book Details</string>
+    <string name="label_isbn">ISBN: %1$s</string>
+    <string name="label_year">Published: %1$d</string>
+    <string name="label_copies_available">Copies available: %1$d</string>
+    <string name="label_subjects">Subjects</string>
+    <string name="label_authors">By %1$s</string>
+
+    <!-- Accessibility Content Descriptions -->
+    <string name="cd_back_button">Navigate back</string>
+    <string name="cd_clear_search">Clear search input</string>
+    <string name="cd_sync_catalogue">Download and update catalogue</string>
+    <string name="cd_book_cover">Cover image of %1$s</string>
+</resources>

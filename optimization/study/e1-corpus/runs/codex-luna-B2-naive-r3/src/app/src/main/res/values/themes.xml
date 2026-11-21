@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.LibraryAccount" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:colorAccent">@color/library_teal</item>
+        <item name="android:navigationBarColor">@color/library_cream</item>
+        <item name="android:statusBarColor">@color/library_navy</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

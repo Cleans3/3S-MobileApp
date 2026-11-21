@@ -1,0 +1,8 @@
+# Baseline profile for vn.shelftap.app
+HSPLvn/shelftap/app/MainActivity;->onCreate(Landroid/os/Bundle;)V
+HSPLvn/shelftap/app/ShelfTapApplication;->onCreate()V
+HSPLvn/shelftap/app/ui/catalogue/CatalogueScreenKt;->CatalogueScreen(Lvn/shelftap/app/ui/catalogue/CatalogueViewModel;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+HSPLvn/shelftap/app/ui/catalogue/TitleItemRowKt;->TitleItemRow(Lvn/shelftap/app/domain/model/Title;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+HSPLvn/shelftap/app/ui/catalogue/AvailabilityBadgeKt;->AvailabilityBadge(ZLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+HSPLvn/shelftap/app/data/local/AppDatabase;->titleDao()Lvn/shelftap/app/data/local/TitleDao;
+HSPLvn/shelftap/app/data/repository/CatalogueRepositoryImpl;->getTitles(Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;

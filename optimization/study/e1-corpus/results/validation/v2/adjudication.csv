@@ -1,0 +1,5 @@
+sample_id,rule_id,label,r1,r2,reason
+b1fac7e83b,P07,fp,fp,unclear,"performRefresh is a private helper of an OkHttp Interceptor, called from intercept(); blocking is the interceptor contract (class header is multi-line, which the v2 exemption missed: a remaining detector gap)"
+2b164a6ef9,P09,tp,tp,unclear,"forEachIndexed emits Rows inside OrderDetailsPopup Column with verticalScroll (line 739)"
+4fdc3e05b7,P09,tp,tp,unclear,"customHeaders.forEachIndexed emits Columns inside the screen Column with verticalScroll (line 315), no lazy container or dialog in between"
+0d54517700,P09,tp,tp,unclear,"diagnostics.forEachIndexed emits Columns in the SettingsScreen Column with verticalScroll (line 121); the earlier LazyColumn is closed before this point"

@@ -1,0 +1,8 @@
+# Baseline Profile for vn.shelftap.app
+HSPLvn/shelftap/app/ShelfTapApp;-><init>()V
+HSPLvn/shelftap/app/ShelfTapApp;->onCreate()V
+HSPLvn/shelftap/app/ui/MainActivity;-><init>()V
+HSPLvn/shelftap/app/ui/MainActivity;->onCreate(Landroid/os/Bundle;)V
+HSPLvn/shelftap/app/ui/theme/ThemeKt;->ShelfTapTheme(ZZLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+HSPLvn/shelftap/app/ui/auth/SignInScreenKt;->SignInScreen(Lvn/shelftap/app/ui/auth/SignInViewModel;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+HSPLvn/shelftap/app/ui/profile/ProfileScreenKt;->ProfileScreen(Lvn/shelftap/app/ui/profile/ProfileViewModel;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V

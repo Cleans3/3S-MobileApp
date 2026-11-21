@@ -1,0 +1,10 @@
+<resources>
+    <color name="ink">#162522</color>
+    <color name="muted">#6E7A76</color>
+    <color name="paper">#F7F8F5</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="teal">#156B61</color>
+    <color name="teal_light">#DCEDE8</color>
+    <color name="gold">#D6A84F</color>
+    <color name="line">#E4E9E6</color>
+</resources>

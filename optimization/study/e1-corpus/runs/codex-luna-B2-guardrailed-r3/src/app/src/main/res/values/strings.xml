@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="sign_in">Sign in</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="current_password">Current password</string>
+    <string name="new_password">New password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="change_password">Change password</string>
+    <string name="sign_out">Sign out</string>
+    <string name="profile">Profile</string>
+    <string name="full_name">Full name</string>
+    <string name="member_type">Member type</string>
+    <string name="status">Status</string>
+    <string name="passwords_do_not_match">New passwords do not match.</string>
+    <string name="required_field">This field is required.</string>
+    <string name="generic_error">Something went wrong. Please try again.</string>
+    <string name="password_change_required">Please change your password to continue.</string>
+    <string name="retry_after">Too many attempts. Try again in %1$d seconds.</string>
+</resources>

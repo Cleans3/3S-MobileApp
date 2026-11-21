@@ -1,0 +1,10 @@
+Lvn/shelftap/app/MainActivity;
+Lvn/shelftap/app/ShelfTapApplication;
+Lvn/shelftap/app/AppContainer;
+Lvn/shelftap/app/ui/ShelfTapAppKt;
+Lvn/shelftap/app/ui/catalogue/CatalogueScreenKt;
+Lvn/shelftap/app/ui/catalogue/CatalogueViewModel;
+Lvn/shelftap/app/ui/common/TitleRowKt;
+Lvn/shelftap/app/data/CatalogueRepository;
+Lvn/shelftap/app/data/TitleApi;
+Lvn/shelftap/app/data/TitleDao;

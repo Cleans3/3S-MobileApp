@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "",
+ "repairs": 0,
+ "gradle_s_first": 50.1,
+ "build": "fail",
+ "build_error_first_line": "e: [ksp] /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/claude-haiku-B1-guardrailed-r1/app/src/main/java/vn/shelftap/app/data/local/TitleSearchEntity.kt:18: [SQLITE_ERROR] SQL error or mis",
+ "lint": "no-report"
+}

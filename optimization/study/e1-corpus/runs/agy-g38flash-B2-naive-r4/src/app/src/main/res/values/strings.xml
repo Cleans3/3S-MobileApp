@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Library Member App</string>
+    <string name="login_title">Library Member Sign In</string>
+    <string name="login_subtitle">Enter your library credentials to access your account</string>
+    <string name="email_label">Email Address</string>
+    <string name="email_hint">member@library.org</string>
+    <string name="password_label">Password</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="sign_in_button">Sign In</string>
+    <string name="signing_in">Signing in...</string>
+    <string name="remember_me">Remember me</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="profile_title">Member Account</string>
+    <string name="library_card_number">Card Number</string>
+    <string name="member_since">Member Since</string>
+    <string name="membership_status">Status</string>
+    <string name="borrowed_books_count">Books Borrowed</string>
+    <string name="holds_count">Active Holds</string>
+    <string name="fines_due">Outstanding Fines</string>
+    <string name="current_loans">Current Loans</string>
+    <string name="no_loans">No items currently on loan.</string>
+    <string name="refresh">Refresh</string>
+    <string name="error_empty_credentials">Email and password cannot be empty</string>
+    <string name="error_invalid_email">Please enter a valid email address</string>
+</resources>

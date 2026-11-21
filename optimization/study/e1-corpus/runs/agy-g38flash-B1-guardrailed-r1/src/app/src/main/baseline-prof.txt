@@ -1,0 +1,6 @@
+HSPLvn/shelftap/app/ShelfTapApplication;->onCreate()V
+HSPLvn/shelftap/app/MainActivity;->onCreate(Landroid/os/Bundle;)V
+HSPLvn/shelftap/app/ui/catalogue/CatalogueScreenKt;->CatalogueScreen(Lvn/shelftap/app/ui/catalogue/CatalogueViewModel;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;)V
+HSPLvn/shelftap/app/ui/components/TitleRowItemKt;->TitleRowItem(Lvn/shelftap/app/data/model/Title;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;)V
+HSPLvn/shelftap/app/ui/components/AvailabilityBadgeKt;->AvailabilityBadge(ILandroidx/compose/ui/Modifier;)V
+HSPLvn/shelftap/app/ui/theme/ThemeKt;->ShelfTapTheme(ZLkotlin/jvm/functions/Function0;)V

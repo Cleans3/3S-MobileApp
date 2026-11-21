@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">ShelfTap</string>
+    <string name="nav_loans">Loans</string>
+    <string name="nav_history">History</string>
+    <string name="screen_loans_title">My Loans</string>
+    <string name="screen_history_title">Reading History</string>
+    <string name="screen_detail_title">Book Details</string>
+
+    <!-- Loans screen -->
+    <string name="overdue_badge">Overdue</string>
+    <string name="btn_renew">Renew</string>
+    <string name="renewing">Renewing…</string>
+    <string name="renewal_not_allowed">This loan cannot be renewed</string>
+    <string name="due_date_label">Due: %1$s</string>
+    <string name="days_left_single">1 day left</string>
+    <string name="days_left_plural">%1$d days left</string>
+    <string name="days_overdue_single">1 day overdue</string>
+    <string name="days_overdue_plural">%1$d days overdue</string>
+    <string name="due_today">Due today</string>
+    <string name="empty_loans">No current loans</string>
+
+    <!-- History screen -->
+    <string name="keep_history_switch">Keep my reading history</string>
+    <string name="dialog_confirm_history_title">Turn off reading history?</string>
+    <string name="dialog_confirm_history_message">Your past reading history will be cleared and new borrowing history will not be recorded.</string>
+    <string name="dialog_btn_confirm_turn_off">Turn off</string>
+    <string name="dialog_btn_cancel">Cancel</string>
+    <string name="borrowed_date_label">Borrowed: %1$s</string>
+    <string name="returned_date_label">Returned: %1$s</string>
+    <string name="not_returned_yet">Not returned yet</string>
+    <string name="empty_history">No reading history</string>
+    <string name="history_disabled_notice">Reading history is switched off</string>
+
+    <!-- Book detail screen -->
+    <string name="isbn_label">ISBN: %1$s</string>
+    <string name="authors_label">Authors</string>
+    <string name="subjects_label">Subjects</string>
+    <string name="availability_label">Availability</string>
+    <string name="copies_available_format">%1$d of %2$d copies available</string>
+    <string name="no_copies_available">No copies currently available</string>
+
+    <!-- General / Status -->
+    <string name="offline_saved_data">Showing saved data</string>
+    <string name="btn_retry">Retry</string>
+    <string name="loading">Loading…</string>
+    <string name="error_generic">Unable to load data. Please check your connection.</string>
+
+    <!-- Accessibility content descriptions -->
+    <string name="cd_nav_loans">Navigate to Loans</string>
+    <string name="cd_nav_history">Navigate to History</string>
+    <string name="cd_btn_back">Back</string>
+    <string name="cd_offline_status">Offline indicator</string>
+    <string name="cd_book_cover">Book cover for %1$s</string>
+    <string name="cd_loan_row">Loan for %1$s</string>
+    <string name="cd_history_row">Past loan for %1$s</string>
+</resources>

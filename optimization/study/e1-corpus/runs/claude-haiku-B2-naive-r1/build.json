@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 21.8,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/claude-haiku-B2-naive-r1/app/src/main/java/com/example/libraryapp/ui/AppRoot.kt:14:45 Unresolved reference 'collectAsStateWithLifec",
+ "lint": "no-report"
+}

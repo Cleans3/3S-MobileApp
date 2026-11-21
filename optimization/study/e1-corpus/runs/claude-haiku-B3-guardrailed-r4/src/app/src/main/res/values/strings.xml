@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <string name="nav_loans">Loans</string>
+    <string name="nav_history">History</string>
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+    <string name="retry">Try again</string>
+
+    <string name="loans_title">My loans</string>
+    <string name="history_title">Reading history</string>
+    <string name="book_title">Book</string>
+
+    <string name="due_on">Due %1$s</string>
+    <plurals name="days_left">
+        <item quantity="one">%1$d day left</item>
+        <item quantity="other">%1$d days left</item>
+    </plurals>
+    <string name="overdue">Overdue</string>
+    <string name="renew">Renew</string>
+    <string name="renewing">Renewing…</string>
+    <string name="renewal_not_allowed">This loan cannot be renewed</string>
+    <string name="no_loans">You have no loans right now.</string>
+
+    <string name="showing_saved_data">Showing saved data</string>
+    <string name="error_no_saved_data">You are offline and nothing has been saved yet. Connect to the internet and try again.</string>
+    <string name="error_offline">You are offline. Connect to the internet and try again.</string>
+    <string name="generic_error">Something went wrong. Please try again.</string>
+
+    <string name="history_switch">Keep my reading history</string>
+    <string name="history_off_title">Turn off reading history?</string>
+    <string name="history_off_text">Loans you return from now on will not be recorded, and the reading history saved on this phone will be deleted.</string>
+    <string name="turn_off">Turn off</string>
+    <string name="borrowed_on">Borrowed %1$s</string>
+    <string name="returned_on">Returned %1$s</string>
+    <string name="not_returned_yet">Not returned yet</string>
+    <string name="no_history">No past loans yet.</string>
+    <string name="history_off_empty">Reading history is off, so past loans are not shown. Turn it on to start recording again.</string>
+
+    <string name="cover_of">Cover of %1$s</string>
+    <string name="authors_label">Authors</string>
+    <string name="subjects_label">Subjects</string>
+    <string name="copies_available">%1$d of %2$d copies available</string>
+</resources>

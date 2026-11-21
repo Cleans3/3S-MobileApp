@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <string name="tab_loans">Loans</string>
+    <string name="tab_history">History</string>
+
+    <string name="showing_saved_data">Showing saved data</string>
+    <string name="refresh">Refresh</string>
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="renew">Renew</string>
+    <string name="renewing">Renewing…</string>
+    <string name="overdue">Overdue</string>
+    <string name="due_on">Due %1$s</string>
+    <string name="days_left">Days left: %1$d</string>
+    <string name="no_loans">You have no loans right now.</string>
+
+    <string name="keep_history">Keep my reading history</string>
+    <string name="history_off_notice">Reading history is off, so past loans are not shown. Turn it on to see new loans here.</string>
+    <string name="no_history">No past loans yet.</string>
+    <string name="borrowed_on">Borrowed %1$s</string>
+    <string name="returned_on">Returned %1$s</string>
+    <string name="not_returned">Not returned</string>
+    <string name="turn_off_title">Turn off reading history?</string>
+    <string name="turn_off_text">New loans will not be added to your reading history while it is off.</string>
+    <string name="turn_off">Turn off</string>
+
+    <string name="book_details">Book</string>
+    <string name="cover_description">Cover of %1$s</string>
+    <string name="authors">Authors: %1$s</string>
+    <string name="subjects">Subjects: %1$s</string>
+    <string name="copies_available">Copies available: %1$d of %2$d</string>
+    <string name="retry">Retry</string>
+
+    <string name="error_no_connection">No connection. Check your network and try again.</string>
+    <string name="error_load_failed">Something went wrong. Please try again.</string>
+    <string name="error_renewal_not_allowed">This loan cannot be renewed</string>
+    <string name="error_renew_failed">Renewal failed. Please try again.</string>
+    <string name="error_privacy_failed">Could not change your history setting. Please try again.</string>
+</resources>

@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 24.7,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/codex-luna-B2-detailed-functional-r2/app/src/main/java/vn/shelftap/app/Api.kt:18:66 Unresolved reference 'toRequestBody'.",
+ "lint": "no-report"
+}

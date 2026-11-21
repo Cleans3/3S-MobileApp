@@ -1,0 +1,11 @@
+<resources>
+    <color name="ink">#18212F</color>
+    <color name="muted_ink">#667085</color>
+    <color name="paper">#F8F9FC</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="navy">#243B64</color>
+    <color name="gold">#D7A84B</color>
+    <color name="line">#D9DEE8</color>
+    <color name="danger">#B42318</color>
+    <color name="success">#067647</color>
+</resources>

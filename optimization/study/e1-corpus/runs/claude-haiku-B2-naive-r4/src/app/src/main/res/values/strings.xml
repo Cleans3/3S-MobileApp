@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Library</string>
+
+    <string name="sign_in_title">Member sign in</string>
+    <string name="sign_in_subtitle">Sign in with your library account email and password.</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="show_password">Show</string>
+    <string name="hide_password">Hide</string>
+    <string name="sign_in">Sign in</string>
+
+    <string name="profile_title">My profile</string>
+    <string name="field_name">Name</string>
+    <string name="field_email">Email</string>
+    <string name="field_member_number">Member number</string>
+    <string name="field_status">Membership status</string>
+    <string name="field_joined">Member since</string>
+    <string name="not_available">Not available</string>
+    <string name="retry">Try again</string>
+    <string name="sign_out">Sign out</string>
+</resources>

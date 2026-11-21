@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_loans_title">My loans</string>
+    <string name="history_title">Reading history</string>
+    <string name="book_details_title">Book details</string>
+    <string name="history_action">History</string>
+    <string name="back_action">Back</string>
+    <string name="details_action">Details</string>
+    <string name="renew_action">Renew</string>
+    <string name="no_active_loans">You have no borrowed books.</string>
+    <string name="no_history">You have no past loans yet.</string>
+    <string name="book_not_found">Book not found.</string>
+    <string name="unknown_book">Unknown book</string>
+    <string name="due_on">Due: %1$s</string>
+    <string name="returned_on">Returned: %1$s</string>
+    <string name="renewals_used">Renewals used: %1$d of %2$d</string>
+    <string name="label_author">Author: %1$s</string>
+    <string name="label_isbn">ISBN: %1$s</string>
+    <string name="label_pages">Pages: %1$d</string>
+    <string name="renew_success">Loan renewed. New due date: %1$s</string>
+    <string name="reject_returned">This book has already been returned.</string>
+    <string name="reject_overdue">Overdue loans cannot be renewed. Please return the book.</string>
+    <string name="reject_limit">The renewal limit for this loan has been reached.</string>
+    <string name="reject_not_found">Loan not found.</string>
+</resources>

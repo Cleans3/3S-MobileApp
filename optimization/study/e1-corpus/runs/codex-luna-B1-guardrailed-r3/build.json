@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 55.9,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/codex-luna-B1-guardrailed-r3/app/src/main/java/vn/shelftap/app/CatalogueDb.kt:17:9 Unresolved reference 'insertWithOnConflict'.",
+ "lint": "no-report"
+}

@@ -1,0 +1,18 @@
+{
+ "raters_v1": [
+  "r1",
+  "r2"
+ ],
+ "raters_v2": [
+  "r1",
+  "r2"
+ ],
+ "n_pairs_v1": 157,
+ "n_pairs_v2": 31,
+ "kappa_v1": 0.671,
+ "kappa_v2": 0.748,
+ "kappa": 0.687,
+ "disagreements_v1": 22,
+ "disagreements_v2": 4,
+ "gate": "ok"
+}

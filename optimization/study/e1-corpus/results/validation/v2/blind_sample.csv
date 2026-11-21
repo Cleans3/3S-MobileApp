@@ -1,0 +1,1336 @@
+sample_id,rule_id,rule_definition,file_tail,line,evidence,context
+1cb251ab7b,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",speedtest/CloudflareTrace.kt,13,cleartext URL literal http://speed.cloudflare.com/cdn-cgi/trace,"   1  package com.cfst.app.speedtest
+   2  
+   3  import kotlinx.coroutines.Dispatchers
+   4  import kotlinx.coroutines.withContext
+   5  import okhttp3.ConnectionPool
+   6  import okhttp3.Dns
+   7  import okhttp3.OkHttpClient
+   8  import okhttp3.Request
+   9  import java.net.InetAddress
+  10  import java.util.concurrent.TimeUnit
+  11  
+  12  object CloudflareTrace {
+  13>     private const val TRACE_URL = ""http://speed.cloudflare.com/cdn-cgi/trace""
+  14      private const val HOST_NAME = ""speed.cloudflare.com""
+  15  
+  16      private val sharedConnectionPool = ConnectionPool(10, 2, TimeUnit.MINUTES)
+  17      private val baseClient = OkHttpClient.Builder()
+  18          .connectionPool(sharedConnectionPool)
+  19          .connectTimeout(2, TimeUnit.SECONDS)
+  20          .readTimeout(2, TimeUnit.SECONDS)
+  21          .build()
+  22  
+  23      suspend fun getRegionCode(ip: String): String = withContext(Dispatchers.IO) {
+  24          try {
+  25              val client = baseClient.newBuilder()"
+c05ae3fff2,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",app/build.gradle,26,release build type has no isMinifyEnabled = true (R8 off by default),"  14          minSdk 21
+  15          targetSdk 33
+  16          versionCode 1
+  17          versionName ""1.0""
+  18  
+  19          testInstrumentationRunner ""androidx.test.runner.AndroidJUnitRunner""
+  20          vectorDrawables {
+  21              useSupportLibrary true
+  22          }
+  23      }
+  24  
+  25      buildTypes {
+  26>         release {
+  27              minifyEnabled false
+  28              proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+  29          }
+  30      }
+  31      compileOptions {
+  32          sourceCompatibility JavaVersion.VERSION_1_8
+  33          targetCompatibility JavaVersion.VERSION_1_8
+  34      }
+  35      kotlinOptions {
+  36          jvmTarget = '1.8'
+  37          kotlin.sourceSets.all {
+  38              languageSettings.optIn(""kotlin.RequiresOptIn"") // experimental (material 3)"
+b6ae5fc9ab,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",ui/ShelfTapApp.kt,1,data screen file renders no loading state,"   1> package vn.shelftap.app.ui
+   2  
+   3  import androidx.compose.foundation.background
+   4  import androidx.compose.foundation.layout.Arrangement
+   5  import androidx.compose.foundation.layout.Box
+   6  import androidx.compose.foundation.layout.Column
+   7  import androidx.compose.foundation.layout.FlowRow
+   8  import androidx.compose.foundation.layout.PaddingValues
+   9  import androidx.compose.foundation.layout.Row
+  10  import androidx.compose.foundation.layout.Spacer
+  11  import androidx.compose.foundation.layout.fillMaxSize
+  12  import androidx.compose.foundation.layout.fillMaxWidth
+  13  import androidx.compose.foundation.layout.height
+  14  import androidx.compose.foundation.layout.padding
+  15  import androidx.compose.foundation.layout.size
+  16  import androidx.compose.foundation.layout.width
+  17  import androidx.compose.foundation.layout.ExperimentalLayoutApi
+  18  import androidx.compose.foundation.lazy.LazyColumn
+  19  import androidx.compose.foundation.lazy.items
+  20  import androidx.compose.material3.AssistChip
+  21  import androidx.compose.material3.Badge
+  22  import androidx.compose.material3.Card
+  23  import androidx.compose.material3.ExperimentalMaterial3Api
+  24  import androidx.compose.material3.IconButton
+  25  import androidx.compose.material3.MaterialTheme
+  26  import androidx.compose.material3.OutlinedTextField
+  27  import androidx.compose.material3.Scaffold
+  28  import androidx.compose.material3.Surface
+  29  import androidx.compose.material3.Text
+  30  import androidx.compose.material3.TopAppBar
+  31  import androidx.compose.material3.TopAppBarDefaults
+  32  import androidx.compose.runtime.Composable
+  33  import androidx.compose.runtime.LaunchedEffect
+  34  import androidx.compose.runtime.getValue
+  35  import androidx.compose.runtime.collectAsState
+  36  import androidx.compose.runtime.remember
+  37  import androidx.compose.ui.Alignment
+  38  import androidx.compose.ui.Modifier
+  39  import androidx.compose.ui.semantics.contentDescription
+  40  import androidx.compose.ui.semantics.semantics
+  41  import androidx.compose.ui.res.stringResource
+  42  import androidx.compose.ui.text.font.FontWeight
+  43  import androidx.compose.ui.unit.dp
+  44  import androidx.lifecycle.compose.collectAsStateWithLifecycle
+  45  import androidx.lifecycle.viewmodel.compose.viewModel
+  46  import androidx.paging.compose.collectAsLazyPagingItems
+  47  import coil.compose.AsyncImage
+  48  import vn.shelftap.app.R
+  49  import vn.shelftap.app.data.CatalogueRepository
+  50  import vn.shelftap.app.data.TitleEntity
+  51  
+  52  @Composable
+  53  fun ShelfTapApp(repository: CatalogueRepository) {
+  54      val vm: ShelfTapViewModel = viewModel(factory = ShelfTapViewModel.Factory(repository))
+  55      val selected by vm.selectedId.collectAsStateWithLifecycle()
+  56      MaterialTheme {
+  57          Surface(modifier = Modifier.fillMaxSize()) {
+  58              if (selected == null) CatalogueScreen(vm) else DetailScreen(vm, selected!!)
+  59          }
+  60      }
+  61  }
+  62  
+  63  @OptIn(ExperimentalMaterial3Api::class)
+  64  @Composable
+  65  private fun CatalogueScreen(vm: ShelfTapViewModel) {
+  66      val items = vm.titles.collectAsLazyPagingItems()
+  67      val query by vm.queryFlow.collectAsStateWithLifecycle()
+  68      Scaffold(topBar = { TopAppBar(title = { Text(""ShelfTap catalogue"") }, colors = TopAppBarDefaults.topAppBarColors()) }) { padding ->
+  69          Column(Modifier.padding(padding).fillMaxSize()) {
+  70              OutlinedTextField(value = query, onValueChange = vm::setQuery, label = { Text(stringResource(R.string.search_catalogue)) }, singleLine = true, modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp))
+  71              if (items.itemCount == 0 && items.loadState.refresh is androidx.paging.LoadState.NotLoading && query.isNotBlank()) {
+  72                  Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text(stringResource(R.string.no_books_found)) }
+  73              } else {
+  74                  LazyColumn(contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+  75                      items(items.itemCount, key = { items[it]?.id ?: ""placeholder-$it"" }, contentType = { ""title"" }) { index ->
+  76                          items[index]?.let { title ->
+  77                              TitleRow(title, Modifier.fillMaxWidth()) { vm.open(title.id) }
+  78                              if (index >= items.itemCount - 5) vm.loadNextPage()
+  79                          }
+  80                      }
+  81                  }
+  82              }
+  83          }
+  84      }
+  85  }
+  86  
+  87  @Composable
+  88  private fun TitleRow(title: TitleEntity, modifier: Modifier, onClick: () -> Unit) {
+  89      Card(onClick = onClick, modifier = modifier) {
+  90          Row(Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+  91              Cover(title, Modifier.size(width = 64.dp, height = 96.dp))
+  92              Spacer(Modifier.width(12.dp))
+  93              Column(Modifier.weight(1f)) {
+  94                  Text(title.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+  95                  Text(title.authors.joinToString("", ""), style = MaterialTheme.typography.bodyMedium)
+  96                  Text(title.year.toString(), style = MaterialTheme.typography.bodySmall)
+  97                  Spacer(Modifier.height(4.dp))
+  98                  Badge(containerColor = if (title.copiesAvailable > 0) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer) {
+  99                      Text(if (title.copiesAvailable > 0) stringResource(R.string.available) else stringResource(R.string.all_copies_out), Modifier.padding(horizontal = 8.dp, vertical = 3.dp))
+ 100                  }
+ 101              }
+ 102          }
+ 103      }
+ 104  }
+ 105  
+ 106  @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+ 107  @Composable
+ 108  private fun DetailScreen(vm: ShelfTapViewModel, id: String) {
+ 109      val title by vm.observeTitle(id).collectAsState(initial = null)
+ 110      val backDescription = stringResource(R.string.back)
+ 111      LaunchedEffect(id) { vm.refreshDetail(id) }
+ 112      Scaffold(topBar = { TopAppBar(title = { Text(title?.title ?: """") }, navigationIcon = { IconButton(onClick = vm::closeDetail, modifier = Modifier.semantics { contentDescription = backDescription }) { Text(""←"") } }) }) { padding ->
+ 113          title?.let { book ->
+ 114              LazyColumn(contentPadding = PaddingValues(20.dp), modifier = Modifier.padding(padding), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+ 115                  item(key = ""cover"") { Cover(book, Modifier.fillMaxWidth().height(300.dp)) }
+ 116                  item(key = ""title"") { Text(book.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold) }
+ 117                  item(key = ""authors"") { Text(book.authors.joinToString("", ""), style = MaterialTheme.typography.titleMedium) }
+ 118                  item(key = ""year"") { Text(""${stringResource(R.string.year)}: ${book.year}"") }
+ 119                  item(key = ""isbn"") { Text(""${stringResource(R.string.isbn)}: ${book.isbn}"") }
+ 120                  item(key = ""copies"") { Text(""${stringResource(R.string.copies_available)}: ${book.copiesAvailable}"") }
+ 121                  item(key = ""subjects"") {
+ 122                      Column { Text(stringResource(R.string.subjects), fontWeight = FontWeight.Bold); FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) { book.subjects.forEach { subject -> AssistChip(onClick = {}, label = { Text(subject) }) } } }
+ 123                  }
+ 124              }
+ 125          }
+ 126      }
+ 127  }
+ 128  
+ 129  @Composable
+ 130  private fun Cover(title: TitleEntity, modifier: Modifier) {
+ 131      if (title.coverUrl?.startsWith(""https://"") == true) AsyncImage(model = title.coverUrl, contentDescription = stringResource(R.string.cover_description, title.title), modifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant))
+ 132      else Box(modifier.background(MaterialTheme.colorScheme.surfaceVariant), contentAlignment = Alignment.Center) { Text(stringResource(R.string.no_cover), style = MaterialTheme.typography.labelSmall) }
+ 133  }"
+ee6f6fb791,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",app/build.gradle.kts,20,release build type has no isMinifyEnabled = true (R8 off by default),"   8      namespace = ""com.example.library.app""
+   9      compileSdk = 35
+  10  
+  11      defaultConfig {
+  12          applicationId = ""com.example.library.app""
+  13          minSdk = 26
+  14          targetSdk = 35
+  15          versionCode = 1
+  16          versionName = ""1.0""
+  17      }
+  18  
+  19      buildTypes {
+  20>         release {
+  21              isMinifyEnabled = false
+  22          }
+  23      }
+  24  
+  25      compileOptions {
+  26          sourceCompatibility = JavaVersion.VERSION_17
+  27          targetCompatibility = JavaVersion.VERSION_17
+  28      }
+  29  
+  30      buildFeatures {
+  31          compose = true
+  32      }"
+9fb6b9fbc2,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",data/WidgetDataRepositoryDeleteTest.kt,20,runBlocking blocks the calling (main) thread,"   8  import kotlinx.coroutines.runBlocking
+   9  import org.junit.Test
+  10  
+  11  class WidgetDataRepositoryDeleteTest {
+  12    private val context =
+  13      InstrumentationRegistry.getInstrumentation().targetContext.applicationContext
+  14    private val db = Room.inMemoryDatabaseBuilder<SukkoDatabase>(context).build()
+  15    private val widgetDataDao = db.widgetDataDao()
+  16    private val widgetDataRepository =
+  17      WidgetDataRepositoryImpl(dao = widgetDataDao, context = context, removeImageFromCache = {})
+  18  
+  19    @Test
+  20>   fun delete_nonExisting() = runBlocking {
+  21      // should not throw anything
+  22      widgetDataRepository.delete(18)
+  23      assert(true)
+  24    }
+  25  
+  26    @Test
+  27    fun delete_withAllFiles() = runBlocking {
+  28      val widgetData = WidgetData(appWidgetId = 20, name = ""Widget 1"", layers = emptyList())
+  29      widgetDataRepository.save(
+  30        widgetData = widgetData,
+  31        evaluatedLayers = emptyList(),
+  32        previewImageBitmap = null,"
+0a232f38ae,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",app/build.gradle,1,no release build type: R8 minification off by default,"   1> plugins {
+   2      id 'com.android.application'
+   3      id 'org.jetbrains.kotlin.android'
+   4  }
+   5  
+   6  android {
+   7      namespace 'com.example.librarycatalogue'
+   8      compileSdk 35
+   9  
+  10      defaultConfig {
+  11          applicationId 'com.example.librarycatalogue'
+  12          minSdk 23
+  13          targetSdk 35"
+2b164a6ef9,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,profile/UserOrderScreen.kt,785,"Column+scroll iterates (order.items.forEachIndexed { index, item ->)"," 773                                      Spacer(modifier = Modifier.width(8.dp))
+ 774                                      Text(
+ 775                                          text = ""Items in Order (${order.items.size})"",
+ 776                                          fontSize = 14.sp,
+ 777                                          fontWeight = FontWeight.Bold,
+ 778                                          color = Color(0xFF0F172A),
+ 779                                          fontFamily = Montserrat
+ 780                                      )
+ 781                                  }
+ 782  
+ 783                                  Spacer_12dp()
+ 784  
+ 785>                                 order.items.forEachIndexed { index, item ->
+ 786                                      Row(
+ 787                                          modifier = Modifier
+ 788                                              .fillMaxWidth()
+ 789                                              .padding(vertical = 4.dp),
+ 790                                          horizontalArrangement = Arrangement.SpaceBetween,
+ 791                                          verticalAlignment = Alignment.CenterVertically
+ 792                                      ) {
+ 793                                          Column(modifier = Modifier.weight(1f)) {
+ 794                                              Text(
+ 795                                                  text = ""${index + 1}. ${item.productName}"",
+ 796                                                  fontSize = 13.sp,
+ 797                                                  fontWeight = FontWeight.SemiBold,"
+64766ab8ce,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",app/build.gradle.kts,22,minify enabled but isShrinkResources not enabled,"  10      compileSdk = 35
+  11  
+  12      defaultConfig {
+  13          applicationId = ""vn.shelftap.app""
+  14          minSdk = 26
+  15          targetSdk = 35
+  16          versionCode = 1
+  17          versionName = ""1.0""
+  18      }
+  19  
+  20      buildTypes {
+  21          release {
+  22>             isMinifyEnabled = true
+  23              proguardFiles(
+  24                  getDefaultProguardFile(""proguard-android-optimize.txt""),
+  25                  ""proguard-rules.pro"",
+  26              )
+  27          }
+  28      }
+  29  
+  30      compileOptions {
+  31          sourceCompatibility = JavaVersion.VERSION_17
+  32          targetCompatibility = JavaVersion.VERSION_17
+  33      }
+  34  "
+0ca3ed0afb,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",catalog/CatalogScreen.kt,1,data screen file renders no error state,"   1> package com.library.catalogue.ui.catalog
+   2  
+   3  import androidx.compose.foundation.background
+   4  import androidx.compose.foundation.layout.Arrangement
+   5  import androidx.compose.foundation.layout.Box
+   6  import androidx.compose.foundation.layout.Column
+   7  import androidx.compose.foundation.layout.PaddingValues
+   8  import androidx.compose.foundation.layout.Row
+   9  import androidx.compose.foundation.layout.Spacer
+  10  import androidx.compose.foundation.layout.fillMaxSize
+  11  import androidx.compose.foundation.layout.fillMaxWidth
+  12  import androidx.compose.foundation.layout.height
+  13  import androidx.compose.foundation.layout.padding
+  14  import androidx.compose.foundation.layout.size
+  15  import androidx.compose.foundation.lazy.grid.GridCells
+  16  import androidx.compose.foundation.lazy.grid.GridItemSpan
+  17  import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+  18  import androidx.compose.material.icons.Icons
+  19  import androidx.compose.material.icons.filled.Book
+  20  import androidx.compose.material.icons.filled.SearchOff
+  21  import androidx.compose.material3.CircularProgressIndicator
+  22  import androidx.compose.material3.ExperimentalMaterial3Api
+  23  import androidx.compose.material3.Icon
+  24  import androidx.compose.material3.LinearProgressIndicator
+  25  import androidx.compose.material3.MaterialTheme
+  26  import androidx.compose.material3.Scaffold
+  27  import androidx.compose.material3.Text
+  28  import androidx.compose.material3.TopAppBar
+  29  import androidx.compose.material3.TopAppBarDefaults
+  30  import androidx.compose.runtime.Composable
+  31  import androidx.compose.runtime.collectAsState
+  32  import androidx.compose.runtime.getValue
+  33  import androidx.compose.ui.Alignment
+  34  import androidx.compose.ui.Modifier
+  35  import androidx.compose.ui.res.stringResource
+  36  import androidx.compose.ui.text.font.FontWeight
+  37  import androidx.compose.ui.unit.dp
+  38  import androidx.compose.ui.unit.sp
+  39  import androidx.paging.LoadState
+  40  import androidx.paging.compose.LazyPagingItems
+  41  import androidx.paging.compose.collectAsLazyPagingItems
+  42  import androidx.paging.compose.itemKey
+  43  import com.library.catalogue.R
+  44  import com.library.catalogue.data.model.Book
+  45  import com.library.catalogue.ui.components.BookCard
+  46  import com.library.catalogue.ui.components.BookDetailDialog
+  47  import com.library.catalogue.ui.components.GenreFilterRow
+  48  import com.library.catalogue.ui.components.LibrarySearchBar
+  49  
+  50  @OptIn(ExperimentalMaterial3Api::class)
+  51  @Composable
+  52  fun CatalogScreen(
+  53      viewModel: CatalogViewModel
+  54  ) {
+  55      val uiState by viewModel.uiState.collectAsState()
+  56      val books: LazyPagingItems<Book> = viewModel.booksFlow.collectAsLazyPagingItems()
+  57  
+  58      Scaffold(
+  59          topBar = {
+  60              TopAppBar(
+  61                  title = {
+  62                      Column {
+  63                          Row(verticalAlignment = Alignment.CenterVertically) {
+  64                              Icon(
+  65                                  imageVector = Icons.Default.Book,
+  66                                  contentDescription = null,
+  67                                  tint = MaterialTheme.colorScheme.primary,
+  68                                  modifier = Modifier.size(24.dp)
+  69                              )
+  70                              Spacer(modifier = Modifier.size(8.dp))
+  71                              Text(
+  72                                  text = stringResource(R.string.app_name),
+  73                                  style = MaterialTheme.typography.titleLarge,
+  74                                  fontWeight = FontWeight.Bold
+  75                              )
+  76                          }
+  77                          Text(
+  78                              text = if (uiState.totalCount > 0) {
+  79                                  stringResource(R.string.total_books_format, uiState.totalCount)
+  80                              } else {
+  81                                  stringResource(R.string.loading_catalogue)
+  82                              },
+  83                              style = MaterialTheme.typography.labelSmall,
+  84                              color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.65f)
+  85                          )
+  86                      }
+  87                  },
+  88                  colors = TopAppBarDefaults.topAppBarColors(
+  89                      containerColor = MaterialTheme.colorScheme.surface
+  90                  )
+  91              )
+  92          }
+  93      ) { innerPadding ->
+  94          Column(
+  95              modifier = Modifier
+  96                  .fillMaxSize()
+  97                  .padding(innerPadding)
+  98                  .background(MaterialTheme.colorScheme.background)
+  99          ) {
+ 100              // Seeding progress bar for initial 100k generation
+ 101              if (uiState.isSeeding) {
+ 102                  Column(
+ 103                      modifier = Modifier
+ 104                          .fillMaxWidth()
+ 105                          .padding(horizontal = 16.dp, vertical = 4.dp)
+ 106                  ) {
+ 107                      Text(
+ 108                          text = stringResource(R.string.indexing_catalogue),
+ 109                          fontSize = 11.sp,
+ 110                          color = MaterialTheme.colorScheme.primary
+ 111                      )
+ 112                      Spacer(modifier = Modifier.height(2.dp))
+ 113                      LinearProgressIndicator(
+ 114                          progress = { uiState.seedingProgress },
+ 115                          modifier = Modifier.fillMaxWidth()
+ 116                      )
+ 117                  }
+ 118              }
+ 119  
+ 120              // Search bar
+ 121              LibrarySearchBar(
+ 122                  query = uiState.searchQuery,
+ 123                  onQueryChange = viewModel::onSearchQueryChange,
+ 124                  modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+ 125              )
+ 126  
+ 127              // Genre filters
+ 128              GenreFilterRow(
+ 129                  genres = uiState.genres,
+ 130                  selectedGenre = uiState.selectedGenre,
+ 131                  onGenreSelected = viewModel::onGenreSelected,
+ 132                  onlyAvailable = uiState.onlyAvailable,
+ 133                  onToggleOnlyAvailable = viewModel::onToggleOnlyAvailable,
+ 134                  modifier = Modifier.padding(bottom = 8.dp)
+ 135              )
+ 136  
+ 137              // Book catalog grid (2-column layout for responsive browsing)
+ 138              LazyVerticalGrid(
+ 139                  columns = GridCells.Adaptive(minSize = 160.dp),
+ 140                  contentPadding = PaddingValues(16.dp),
+ 141                  horizontalArrangement = Arrangement.spacedBy(12.dp),
+ 142                  verticalArrangement = Arrangement.spacedBy(12.dp),
+ 143                  modifier = Modifier.fillMaxSize()
+ 144              ) {
+ 145                  items(
+ 146                      count = books.itemCount,
+ 147                      key = books.itemKey { it.id }
+ 148                  ) { index ->
+ 149                      val book = books[index]
+ 150                      if (book != null) {
+ 151                          BookCard(
+ 152                              book = book,
+ 153                              onClick = { viewModel.onBookSelected(book) }
+ 154                          )
+ 155                      }
+ 156                  }
+ 157  
+ 158                  // Loading item at the end of paging
+ 159                  if (books.loadState.append is LoadState.Loading) {
+ 160                      item(span = { GridItemSpan(maxLineSpan) }) {
+ 161                          Box(
+ 162                              modifier = Modifier
+ 163                                  .fillMaxWidth()
+ 164                                  .padding(16.dp),
+ 165                              contentAlignment = Alignment.Center
+ 166                          ) {
+ 167                              CircularProgressIndicator(modifier = Modifier.size(32.dp))
+ 168                          }
+ 169                      }
+ 170                  }
+ 171  
+ 172                  // Initial loading state
+ 173                  if (books.loadState.refresh is LoadState.Loading && books.itemCount == 0) {
+ 174                      item(span = { GridItemSpan(maxLineSpan) }) {
+ 175                          Box(
+ 176                              modifier = Modifier
+ 177                                  .fillMaxWidth()
+ 178                                  .height(300.dp),
+ 179                              contentAlignment = Alignment.Center
+ 180                          ) {
+ 181                              CircularProgressIndicator()
+ 182                          }
+ 183                      }
+ 184                  }
+ 185  
+ 186                  // Empty search result state
+ 187                  if (books.loadState.refresh is LoadState.NotLoading && books.itemCount == 0) {
+ 188                      item(span = { GridItemSpan(maxLineSpan) }) {
+ 189                          Column(
+ 190                              modifier = Modifier
+ 191                                  .fillMaxWidth()
+ 192                                  .padding(top = 64.dp),
+ 193                              horizontalAlignment = Alignment.CenterHorizontally
+ 194                          ) {
+ 195                              Icon(
+ 196                                  imageVector = Icons.Default.SearchOff,
+ 197                                  contentDescription = null,
+ 198                                  modifier = Modifier.size(64.dp),
+ 199                                  tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+ 200                              )
+ 201                              Spacer(modifier = Modifier.height(16.dp))
+ 202                              Text(
+ 203                                  text = stringResource(R.string.no_books_found),
+ 204                                  style = MaterialTheme.typography.titleMedium,
+ 205                                  color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+ 206                              )
+ 207                              Spacer(modifier = Modifier.height(4.dp))
+ 208                              Text(
+ 209                                  text = stringResource(R.string.try_different_search),
+ 210                                  style = MaterialTheme.typography.bodyMedium,
+ 211                                  color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+ 212                              )
+ 213                          }
+ 214                      }
+ 215                  }
+ 216              }
+ 217          }
+ 218  
+ 219          // Book detail dialog
+ 220          uiState.selectedBook?.let { book ->
+ 221              BookDetailDialog(
+ 222                  book = book,
+ 223                  onDismiss = { viewModel.onBookSelected(null) }
+ 224              )
+ 225          }
+ 226      }
+ 227  }"
+bc2df02d09,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",data/LibraryApi.kt,54,.openConnection() as HttpURLConnection).apply { requestMethod = method not under an IO dispatcher/thread,"  42                  joinedDate = json.optString(""joinedDate"", ""—"")
+  43              )
+  44          }
+  45      }
+  46  
+  47      private fun <T> request(
+  48          method: String,
+  49          path: String,
+  50          body: String?,
+  51          token: String? = null,
+  52          decode: (String) -> T
+  53      ): ApiResult<T> {
+  54>         val connection = (URL(baseUrl.trimEnd('/') + path).openConnection() as HttpURLConnection).apply {
+  55              requestMethod = method
+  56              connectTimeout = 15_000
+  57              readTimeout = 15_000
+  58              setRequestProperty(""Accept"", ""application/json"")
+  59              if (token != null) setRequestProperty(""Authorization"", ""Bearer $token"")
+  60              if (body != null) {
+  61                  doOutput = true
+  62                  setRequestProperty(""Content-Type"", ""application/json"")
+  63              }
+  64          }
+  65          return try {
+  66              if (body != null) connection.outputStream.use { it.write(body.toByteArray()) }"
+b1fac7e83b,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",api/AuthInterceptor.kt,118,newCall(refreshRequest).execute() if (refreshResponse.isSuccessful) { not under an IO dispatcher/thread," 106              val requestBodyJson = gson.toJson(RefreshRequest(refreshToken = refreshToken, deviceId = deviceId))
+ 107              val refreshUrl = if (baseUrl.endsWith(""/"")) {
+ 108                  baseUrl + ""api/auth/refresh""
+ 109              } else {
+ 110                  ""$baseUrl/api/auth/refresh""
+ 111              }
+ 112  
+ 113              val refreshRequest = Request.Builder()
+ 114                  .url(refreshUrl)
+ 115                  .post(requestBodyJson.toRequestBody(""application/json; charset=utf-8"".toMediaType()))
+ 116                  .build()
+ 117  
+ 118>             val refreshResponse = refreshClient.newCall(refreshRequest).execute()
+ 119              if (refreshResponse.isSuccessful) {
+ 120                  val bodyString = refreshResponse.body?.string()
+ 121                  refreshResponse.close()
+ 122                  if (!bodyString.isNullOrBlank()) {
+ 123                      val loginResponse = gson.fromJson(bodyString, LoginResponse::class.java)
+ 124                      if (loginResponse != null && !loginResponse.accessToken.isNullOrBlank()) {
+ 125                          sessionManager.updateTokens(loginResponse)
+ 126                          return true
+ 127                      }
+ 128                  }
+ 129              } else {
+ 130                  refreshResponse.close()"
+3a16f0f116,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",repository/SmartCurriculumPlatformRepository.kt,291,cleartext URL literal http://123.121.147.7:88/ve/back/coursePlatform/cou," 279                      ?.sessionId
+ 280                      ?.takeIf { it.isNotBlank() }
+ 281                      ?.also { headersBuilder.set(""sessionid"", it) }
+ 282                      ?: throw IllegalStateException(""SessionId not found in response"")
+ 283              }
+ 284          }
+ 285      }
+ 286  
+ 287      private suspend fun generateChildrenNodeList(parentNode: CoursewareNode): List<CoursewareNode> {
+ 288          return withContext(Dispatchers.IO) {
+ 289              val course = parentNode.course
+ 290              val url =
+ 291>                 ""http://123.121.147.7:88/ve/back/coursePlatform/courseResource.shtml?"" +
+ 292                          ""method=stuQueryUploadResourceForCourseList"" +
+ 293                          ""&courseId=${course.course_num}"" +
+ 294                          ""&cId=${course.course_num}"" +
+ 295                          ""&xkhId=${course.fz_id}"" +
+ 296                          ""&xqCode=${course.xq_code}"" +
+ 297                          ""&docType=1"" +
+ 298                          ""&up_id=${parentNode.id}"" +
+ 299                          ""&searchName=""
+ 300  
+ 301              val adapter = moshi.adapter(CourseResourceResponse::class.java)
+ 302              val courseWareNodeList = RequestKotlin.get(url,headersBuilder.build()).use { response ->
+ 303                  if (!response.isSuccessful) {"
+78818637bb,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",data/GpxAssembler.kt,22,cleartext URL literal http://www.topografix.com/GPX/1/1\,"  10   * wired GPS module). Output imports into GPX Studio, Google Earth, etc.
+  11   */
+  12  object GpxAssembler {
+  13  
+  14      const val TRACK_HEADER =
+  15          ""<?xml version=\""1.0\"" encoding=\""UTF-8\""?>\n"" +
+  16              ""<gpx version=\""1.1\"" creator=\""Marauder Mobile\"" xmlns=\""http://www.topografix.com/GPX/1/1\"">\n"" +
+  17              ""  <trk><name>Marauder Track</name><trkseg>\n""
+  18      const val TRACK_FOOTER = ""  </trkseg></trk>\n</gpx>\n""
+  19  
+  20      const val POI_HEADER =
+  21          ""<?xml version=\""1.0\"" encoding=\""UTF-8\""?>\n"" +
+  22>             ""<gpx version=\""1.1\"" creator=\""Marauder Mobile\"" xmlns=\""http://www.topografix.com/GPX/1/1\"">\n""
+  23      const val POI_FOOTER = ""</gpx>\n""
+  24  
+  25      fun trackPoint(loc: PhoneLocation): String =
+  26          ""    <trkpt lat=\""${loc.lat}\"" lon=\""${loc.lon}\"">"" +
+  27              ""<ele>${""%.2f"".format(loc.altMeters)}</ele><time>${iso(loc.timeMillis)}</time></trkpt>\n""
+  28  
+  29      fun waypoint(loc: PhoneLocation, name: String): String =
+  30          ""  <wpt lat=\""${loc.lat}\"" lon=\""${loc.lon}\"">"" +
+  31              ""<ele>${""%.2f"".format(loc.altMeters)}</ele><time>${iso(loc.timeMillis)}</time>"" +
+  32              ""<name>${escape(name)}</name></wpt>\n""
+  33  
+  34      private val fmt: DateTimeFormatter ="
+10948883e9,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",app/build.gradle,27,release build type has no isMinifyEnabled = true (R8 off by default),"  15          targetSdk 30
+  16          versionCode 1
+  17          versionName ""1.0""
+  18          buildConfigField(""String"",""SERVER_KEY"",SERVER_KEY)
+  19  
+  20          testInstrumentationRunner ""androidx.test.runner.AndroidJUnitRunner""
+  21          vectorDrawables {
+  22              useSupportLibrary true
+  23          }
+  24      }
+  25  
+  26      buildTypes {
+  27>         release {
+  28              minifyEnabled false
+  29              proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+  30          }
+  31      }
+  32      compileOptions {
+  33          sourceCompatibility JavaVersion.VERSION_1_8
+  34          targetCompatibility JavaVersion.VERSION_1_8
+  35      }
+  36      kotlinOptions {
+  37          jvmTarget = '1.8'
+  38          useIR = true
+  39      }"
+9d1da0360e,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",component/HomeworkNetworkComponent.kt,179,cleartext URL literal http://123.121.147.7:88/ve/back/course/courseWorkI," 167          withContext(Dispatchers.Main) {
+ 168              onProgress(0.1f)
+ 169          }
+ 170  
+ 171          // Create OkHttp client with timeout settings
+ 172          val client = SmartCurriculumPlatformRepository.client.newBuilder()
+ 173              .connectTimeout(30, TimeUnit.SECONDS)
+ 174              .readTimeout(30, TimeUnit.SECONDS)
+ 175              .writeTimeout(30, TimeUnit.SECONDS)
+ 176              .build()
+ 177  
+ 178          // Build URL for getting homework content
+ 179>         val courseWorkUrl = ""http://123.121.147.7:88/ve/back/course/courseWorkInfo.shtml""
+ 180              .toHttpUrlOrNull()
+ 181              ?.newBuilder()
+ 182              ?.addQueryParameter(""method"", ""piGaiDiv"")
+ 183              ?.addQueryParameter(""upId"", homework.upId.toString())
+ 184              ?.addQueryParameter(""id"", homework.idSnId.toString())
+ 185              ?.addQueryParameter(""score"", homework.score)
+ 186              ?.addQueryParameter(""uLevel"", ""1"")
+ 187              ?.addQueryParameter(""type"", ""1"")
+ 188              ?.addQueryParameter(""username"", ""null"")
+ 189              ?.addQueryParameter(""userId"", homework.userId.toString())
+ 190              ?.build() ?: throw IllegalStateException(""Failed to build URL"")
+ 191  "
+0e01c61671,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",data/ShelfTapApi.kt,75,newCall(call).execute().use { response -> val body = response.body?.string not under an IO dispatcher/thread,"  63          get(""/api/titles/${encodeSegment(titleId)}"") { parseTitleOrThrow(it) }
+  64  
+  65      private suspend fun <T> get(path: String, parse: (String) -> T): T =
+  66          send(Request.Builder().url(baseUrl + path).get(), parse)
+  67  
+  68      private suspend fun <T> send(request: Request.Builder, parse: (String) -> T): T =
+  69          withContext(io) {
+  70              val token = accessToken()
+  71              val call = request
+  72                  .header(""Authorization"", ""Bearer $token"")
+  73                  .header(""Accept"", ""application/json"")
+  74                  .build()
+  75>             client.newCall(call).execute().use { response ->
+  76                  val body = response.body?.string().orEmpty()
+  77                  if (!response.isSuccessful) {
+  78                      throw ApiException(response.code, errorCodeOf(body))
+  79                  }
+  80                  parse(body)
+  81              }
+  82          }
+  83  
+  84      private companion object {
+  85          val JSON_MEDIA_TYPE = ""application/json; charset=utf-8"".toMediaType()
+  86  
+  87          fun encodeSegment(value: String): String ="
+17a5d13b5f,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,settings/SettingsDialogs.kt,320,"Column+scroll iterates () { for ((index, choice) in choices.withIndex()) {)"," 308  ) {
+ 309      AlertDialog(
+ 310          onDismissRequest = onDismiss,
+ 311          title = { Text(title) },
+ 312          text = {
+ 313              Column(
+ 314                  modifier = Modifier
+ 315                      .fillMaxWidth()
+ 316                      .heightIn(max = 420.dp)
+ 317                      .verticalScroll(rememberScrollState()),
+ 318                  verticalArrangement = Arrangement.spacedBy(ListItemDefaults.SegmentedGap)
+ 319              ) {
+ 320>                 for ((index, choice) in choices.withIndex()) {
+ 321                      SettingsItem(
+ 322                          index = index,
+ 323                          count = choices.size,
+ 324                          icon = choice.icon,
+ 325                          title = choice.title,
+ 326                          summary = choice.summary,
+ 327                          showChevron = false,
+ 328                          onClick = { onSelect(index) },
+ 329                          trailing = {
+ 330                              RadioButton(
+ 331                                  selected = index == selectedIndex,
+ 332                                  onClick = { onSelect(index) }"
+4fdc3e05b7,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,vrka/HomeScreen.kt,853,"Column+scroll iterates (customHeaders.forEachIndexed { index, (hName, hVal) ->)"," 841                              style = MaterialTheme.typography.labelMedium,
+ 842                              fontWeight = FontWeight.SemiBold,
+ 843                              color = VrkaTokens.TextSecondary,
+ 844                          )
+ 845                          VrkaTextButton(
+ 846                              text = stringResource(R.string.btn_add_header),
+ 847                              onClick = {
+ 848                                  customHeaders = customHeaders + ("""" to """")
+ 849                              },
+ 850                          )
+ 851                      }
+ 852  
+ 853>                     customHeaders.forEachIndexed { index, (hName, hVal) ->
+ 854                          val nameValidation = HeaderValidation.validateHeaderName(hName)
+ 855                          val valValidation = HeaderValidation.validateHeaderValue(hVal)
+ 856                          val isSensitive = HeaderValidation.isSensitiveHeader(hName)
+ 857  
+ 858                          Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+ 859                              Row(
+ 860                                  modifier = Modifier.fillMaxWidth(),
+ 861                                  horizontalArrangement = Arrangement.spacedBy(8.dp),
+ 862                                  verticalAlignment = Alignment.CenterVertically,
+ 863                              ) {
+ 864                                  OutlinedTextField(
+ 865                                      value = hName,"
+d9aaecf87b,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",search/SearchScreen.kt,1,data screen file renders no loading state,"   1> package vn.shelftap.app.ui.search
+   2  
+   3  import androidx.compose.foundation.layout.Column
+   4  import androidx.compose.foundation.layout.fillMaxSize
+   5  import androidx.compose.foundation.layout.fillMaxWidth
+   6  import androidx.compose.foundation.layout.padding
+   7  import androidx.compose.material.icons.Icons
+   8  import androidx.compose.material.icons.filled.Search
+   9  import androidx.compose.material3.ExperimentalMaterial3Api
+  10  import androidx.compose.material3.Icon
+  11  import androidx.compose.material3.OutlinedTextField
+  12  import androidx.compose.material3.Text
+  13  import androidx.compose.material3.TopAppBar
+  14  import androidx.compose.runtime.Composable
+  15  import androidx.compose.runtime.collectAsState
+  16  import androidx.compose.runtime.getValue
+  17  import androidx.compose.ui.Modifier
+  18  import androidx.compose.ui.unit.dp
+  19  import androidx.lifecycle.ViewModel
+  20  import androidx.lifecycle.viewModelScope
+  21  import androidx.lifecycle.viewmodel.compose.viewModel
+  22  import androidx.lifecycle.viewmodel.initializer
+  23  import androidx.lifecycle.viewmodel.viewModelFactory
+  24  import androidx.paging.PagingData
+  25  import androidx.paging.cachedIn
+  26  import androidx.paging.compose.collectAsLazyPagingItems
+  27  import kotlinx.coroutines.FlowPreview
+  28  import kotlinx.coroutines.flow.Flow
+  29  import kotlinx.coroutines.flow.MutableStateFlow
+  30  import kotlinx.coroutines.flow.StateFlow
+  31  import kotlinx.coroutines.flow.asStateFlow
+  32  import kotlinx.coroutines.flow.debounce
+  33  import kotlinx.coroutines.flow.distinctUntilChanged
+  34  import kotlinx.coroutines.flow.flatMapLatest
+  35  import vn.shelftap.app.data.CatalogueRepository
+  36  import vn.shelftap.app.data.TitleEntity
+  37  import vn.shelftap.app.ui.components.SyncBanner
+  38  import vn.shelftap.app.ui.components.TitleList
+  39  
+  40  class SearchViewModel(private val repository: CatalogueRepository) : ViewModel() {
+  41  
+  42      private val queryState = MutableStateFlow("""")
+  43      val query: StateFlow<String> = queryState.asStateFlow()
+  44  
+  45      /** Results update as the member types, with a short pause so each keystroke does not query. */
+  46      @OptIn(FlowPreview::class)
+  47      val results: Flow<PagingData<TitleEntity>> = queryState
+  48          .debounce(SEARCH_DEBOUNCE_MS)
+  49          .distinctUntilChanged()
+  50          .flatMapLatest { repository.pagedSearch(it) }
+  51          .cachedIn(viewModelScope)
+  52  
+  53      fun onQueryChange(text: String) {
+  54          queryState.value = text
+  55      }
+  56  
+  57      companion object {
+  58          private const val SEARCH_DEBOUNCE_MS = 200L
+  59      }
+  60  }
+  61  
+  62  @OptIn(ExperimentalMaterial3Api::class)
+  63  @Composable
+  64  fun SearchScreen(
+  65      repository: CatalogueRepository,
+  66      onOpenTitle: (String) -> Unit,
+  67      modifier: Modifier = Modifier,
+  68  ) {
+  69      val viewModel = viewModel<SearchViewModel>(
+  70          factory = viewModelFactory { initializer { SearchViewModel(repository) } },
+  71      )
+  72      val query by viewModel.query.collectAsState()
+  73      val pagingItems = viewModel.results.collectAsLazyPagingItems()
+  74  
+  75      Column(modifier = modifier.fillMaxSize()) {
+  76          TopAppBar(title = { Text(""Search"") })
+  77          SyncBanner(repository = repository)
+  78          OutlinedTextField(
+  79              value = query,
+  80              onValueChange = viewModel::onQueryChange,
+  81              label = { Text(""Title, author, ISBN or subject"") },
+  82              leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+  83              singleLine = true,
+  84              modifier = Modifier
+  85                  .fillMaxWidth()
+  86                  .padding(horizontal = 16.dp, vertical = 8.dp),
+  87          )
+  88          TitleList(
+  89              pagingItems = pagingItems,
+  90              emptyText = ""No books found"",
+  91              onOpenTitle = onOpenTitle,
+  92          )
+  93      }
+  94  }"
+0d54517700,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,vrka/SettingsScreen.kt,1328,"Column+scroll iterates (} diagnostics.forEachIndexed { index, entry ->)","1316                      Text(
+1317                          ""${diagnostics.size} recorded ${if (diagnostics.size == 1) ""failure"" else ""failures""}"",
+1318                          style = MaterialTheme.typography.bodySmall.copy(fontFamily = VrkaMonoFamily),
+1319                          color = VrkaTokens.TextSecondary,
+1320                      )
+1321                      VrkaOutlinedButton(
+1322                          text = stringResource(R.string.btn_clear_all),
+1323                          onClick = onClearDiagnostics,
+1324                          height = 30.dp,
+1325                      )
+1326                  }
+1327  
+1328>                 diagnostics.forEachIndexed { index, entry ->
+1329                      if (index > 0) VrkaDivider()
+1330                      val isExpanded = expandedDiagnosticId == entry.id
+1331                      Column(
+1332                          modifier = Modifier
+1333                              .fillMaxWidth()
+1334                              .padding(vertical = 10.dp),
+1335                      ) {
+1336                          Row(
+1337                              modifier = Modifier.fillMaxWidth(),
+1338                              horizontalArrangement = Arrangement.SpaceBetween,
+1339                              verticalAlignment = Alignment.CenterVertically,
+1340                          ) {"
+5e03da9507,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",app/ApiClient.kt,42,URL(baseUrl + path).openConnection() as HttpURLConnection) try { conne not under an IO dispatcher/thread,"  30      suspend fun changePassword(accessToken: String, current: String, new: String) {
+  31          request(""POST"", ""/api/me/password"", jsonOf(""currentPassword"" to current, ""newPassword"" to new), accessToken)
+  32      }
+  33  
+  34      private fun parseSession(body: String): Session {
+  35          val json = JSONObject(body)
+  36          return Session(json.getString(""accessToken""), json.getString(""refreshToken""), json.optLong(""accessExpiresIn""), json.optBoolean(""mustChangePassword""))
+  37      }
+  38  
+  39      private fun jsonOf(vararg values: Pair<String, String>) = JSONObject().apply { values.forEach { put(it.first, it.second) } }.toString()
+  40  
+  41      private fun request(method: String, path: String, body: String? = null, token: String? = null): String {
+  42>         val connection = (URL(baseUrl + path).openConnection() as HttpURLConnection)
+  43          try {
+  44              connection.requestMethod = method
+  45              connection.connectTimeout = 15_000
+  46              connection.readTimeout = 15_000
+  47              connection.setRequestProperty(""Accept"", ""application/json"")
+  48              if (token != null) connection.setRequestProperty(""Authorization"", ""Bearer $token"")
+  49              if (body != null) {
+  50                  connection.doOutput = true
+  51                  connection.setRequestProperty(""Content-Type"", ""application/json"")
+  52                  connection.outputStream.use { it.write(body.toByteArray(Charsets.UTF_8)) }
+  53              }
+  54              val status = connection.responseCode"
+a45779be8b,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,screens/FlashScreen.kt,250,"Column+scroll iterates (S.filter { it.flashableInApp }.forEach { BoardRow(it, it.id)"," 238      onPick: (FlashProfile) -> Unit,
+ 239      onDismiss: () -> Unit,
+ 240  ) {
+ 241      AlertDialog(
+ 242          onDismissRequest = onDismiss,
+ 243          title = { Text(""Select your board"") },
+ 244          text = {
+ 245              Column(
+ 246                  Modifier.heightIn(max = 460.dp).verticalScroll(rememberScrollState()),
+ 247                  verticalArrangement = Arrangement.spacedBy(2.dp),
+ 248              ) {
+ 249                  PickerSection(""Classic ESP32 · flash in-app"")
+ 250>                 Firmware.PROFILES.filter { it.flashableInApp }.forEach {
+ 251                      BoardRow(it, it.id == selected.id, onPick)
+ 252                  }
+ 253                  PickerSection(""Other chips · use the web installer"")
+ 254                  Firmware.PROFILES.filterNot { it.flashableInApp }.forEach {
+ 255                      BoardRow(it, it.id == selected.id, onPick)
+ 256                  }
+ 257              }
+ 258          },
+ 259          confirmButton = {},
+ 260          dismissButton = { TextButton(onClick = onDismiss) { Text(""Close"") } },
+ 261      )
+ 262  }"
+3d4e347191,P07,"runBlocking / allowMainThreadQueries / blocking network, file or asset I/O outside withContext(IO|Default), Thread, executor or worker.",data/CatalogueApi.kt,13,"URL(""$base/api/titles?q=$encoded&page=$page&size=$size"").openConnection() as HttpURLConnec not under an IO dispatcher/thread","   1  package vn.shelftap.app.data
+   2  
+   3  import org.json.JSONObject
+   4  import vn.shelftap.app.model.Title
+   5  import java.net.HttpURLConnection
+   6  import java.net.URL
+   7  
+   8  class CatalogueApi {
+   9      private val base = ""https://api.shelftap.example""
+  10  
+  11      fun page(query: String = """", page: Int, size: Int = 50): Page {
+  12          val encoded = java.net.URLEncoder.encode(query, ""UTF-8"")
+  13>         val connection = (URL(""$base/api/titles?q=$encoded&page=$page&size=$size"").openConnection() as HttpURLConnection).apply {
+  14              requestMethod = ""GET""; connectTimeout = 10_000; readTimeout = 20_000
+  15          }
+  16          return try {
+  17              val c = connection
+  18              if (c.responseCode !in 200..299) error(""Catalogue request failed: ${c.responseCode}"")
+  19              val root = JSONObject(c.inputStream.bufferedReader().use { it.readText() })
+  20              val items = root.getJSONArray(""items"").let { array -> (0 until array.length()).map { parse(array.getJSONObject(it)) } }
+  21              Page(items, root.optInt(""page"", page), root.optInt(""size"", size), root.optInt(""total"", items.size))
+  22          } finally { connection.disconnect() }
+  23      }
+  24  
+  25      private fun parse(o: JSONObject) = Title(o.getString(""id""), o.optString(""isbn""), o.getString(""title""), o.array(""authors""), o.optInt(""year""), o.array(""subjects""), o.optString(""coverUrl"").takeIf { it.isNotBlank() }, o.optInt(""copiesAvailable""))"
+f4e4cc8798,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",repository/SmartCurriculumPlatformRepository.kt,406,cleartext URL literal http://123.121.147.7:88/ve/back/coursePlatform/cou," 394          }
+ 395          return homeworkList
+ 396  
+ 397      }
+ 398  
+ 399  
+ 400      /**
+ 401       * 根据课程名获取教师工号
+ 402       */
+ 403      private suspend fun getTeacherWorkNumByCourse(course: Course): String? {
+ 404          return withContext(Dispatchers.IO) {
+ 405              try {
+ 406>                 val url = ""http://123.121.147.7:88/ve/back/coursePlatform/coursePlatform.shtml?"" +
+ 407                          ""method=toCoursePlatform&courseId=${course.course_num}&"" +
+ 408                          ""dataSource=1&"" +
+ 409                          ""cId=${course.id}&"" +
+ 410                          ""xkhId=${course.fz_id}&"" +
+ 411                          ""xqCode=${course.xq_code}""
+ 412                  RequestKotlin.get(url,headersBuilder.build()).use { response ->
+ 413                      if (!response.isSuccessful) {
+ 414                          Log.e(""TeacherWorkNum"", ""Request failed: ${response.code}"")
+ 415                          return@withContext null
+ 416                      }
+ 417  
+ 418                      val html = response.body?.string()"
+7eddafc361,P09,Column/Row with verticalScroll/horizontalScroll that iterates a collection to emit children (or forEach inside a single lazy item) instead of using a lazy list.,classroom/ClassroomPlan.kt,141,forEach/for inside a single lazy item() (availableFloors.forEach { floor -> Fi)," 129                                          contentDescription = ""第${slot + 1}节""
+ 130                                      },
+ 131                              )
+ 132                          }
+ 133                      }
+ 134                  }
+ 135              }
+ 136              item {
+ 137                  Column {
+ 138                      Text(""楼层"", style = MaterialTheme.typography.titleSmall)
+ 139                      FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+ 140                          FilterChip(floors == null, { floors = null }, label = { Text(""全部"") })
+ 141>                         availableFloors.forEach { floor ->
+ 142                              FilterChip(
+ 143                                  selected = floor in floors.orEmpty(),
+ 144                                  onClick = {
+ 145                                      val selected = floors.orEmpty()
+ 146                                      val next =
+ 147                                          if (floor in selected) selected - floor
+ 148                                          else selected + floor
+ 149                                      floors =
+ 150                                          if (
+ 151                                              next.isEmpty() ||
+ 152                                                  next.toSet() == availableFloors.toSet()
+ 153                                          )"
+3f78716abe,P10,"Application module whose release build type does not enable R8 minification (and, when it does, resource shrinking).",app/build.gradle.kts,9,release build type has no isMinifyEnabled = true (R8 off by default),"   1  plugins {
+   2      id(""com.android.application"")
+   3      id(""org.jetbrains.kotlin.android"")
+   4      id(""org.jetbrains.kotlin.plugin.compose"")
+   5  }
+   6  
+   7  android { namespace = ""vn.shelftap.app""; compileSdk = 35
+   8      defaultConfig { applicationId = ""vn.shelftap.app""; minSdk = 26; targetSdk = 35; versionCode = 1; versionName = ""1.0"" }
+   9>     buildTypes { release { isMinifyEnabled = false; proguardFiles(getDefaultProguardFile(""proguard-android-optimize.txt""), ""proguard-rules.pro"") } }
+  10      compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+  11      kotlinOptions { jvmTarget = ""17"" }
+  12  }
+  13  
+  14  dependencies {
+  15      implementation(platform(""androidx.compose:compose-bom:2024.12.01""))
+  16      implementation(""androidx.activity:activity-compose:1.10.0"")
+  17      implementation(""androidx.compose.ui:ui"")
+  18      implementation(""androidx.compose.ui:ui-tooling-preview"")
+  19      implementation(""androidx.compose.material3:material3"")
+  20      implementation(""androidx.compose.material:material-icons-extended"")
+  21      implementation(""androidx.lifecycle:lifecycle-runtime-compose:2.8.7"")"
+466b74e151,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",profile/ProfileScreen.kt,1,data screen file renders no error state,"   1> package com.dk.piley.ui.profile
+   2  
+   3  import androidx.compose.foundation.layout.*
+   4  import androidx.compose.material.icons.Icons
+   5  import androidx.compose.material.icons.filled.Settings
+   6  import androidx.compose.material3.Icon
+   7  import androidx.compose.material3.IconButton
+   8  import androidx.compose.material3.MaterialTheme
+   9  import androidx.compose.material3.Surface
+  10  import androidx.compose.runtime.Composable
+  11  import androidx.compose.runtime.collectAsState
+  12  import androidx.compose.runtime.getValue
+  13  import androidx.compose.ui.Modifier
+  14  import androidx.compose.ui.unit.dp
+  15  import androidx.hilt.navigation.compose.hiltViewModel
+  16  import androidx.navigation.NavHostController
+  17  import androidx.navigation.compose.rememberNavController
+  18  import com.dk.piley.compose.PreviewMainScreen
+  19  import com.dk.piley.ui.nav.Screen
+  20  import com.dk.piley.ui.theme.PileyTheme
+  21  
+  22  
+  23  @Composable
+  24  fun ProfileScreen(
+  25      modifier: Modifier = Modifier,
+  26      navController: NavHostController = rememberNavController(),
+  27      viewModel: ProfileViewModel = hiltViewModel()
+  28  ) {
+  29      val viewState by viewModel.state.collectAsState()
+  30      ProfileScreen(
+  31          modifier = modifier,
+  32          viewState = viewState,
+  33          onClickSettings = { navController.navigate(Screen.Settings.route) })
+  34  }
+  35  
+  36  @Composable
+  37  private fun ProfileScreen(
+  38      modifier: Modifier = Modifier,
+  39      viewState: ProfileViewState,
+  40      onClickSettings: () -> Unit = {}
+  41  ) {
+  42      Column(
+  43          modifier = modifier.fillMaxSize(),
+  44      ) {
+  45          Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+  46              Spacer(modifier = Modifier.size(16.dp))
+  47              IconButton(onClick = onClickSettings) {
+  48                  Icon(
+  49                      Icons.Filled.Settings,
+  50                      tint = MaterialTheme.colorScheme.secondary,
+  51                      contentDescription = ""go to settings""
+  52                  )
+  53              }
+  54          }
+  55          UserInfo(name = viewState.userName)
+  56          TaskStats(
+  57              doneCount = viewState.doneTasks,
+  58              deletedCount = viewState.deletedTasks,
+  59              currentCount = viewState.currentTasks
+  60          )
+  61      }
+  62  }
+  63  
+  64  @PreviewMainScreen
+  65  @Composable
+  66  fun ProfileScreenPreview() {
+  67      PileyTheme {
+  68          Surface {
+  69              val state = ProfileViewState(""Thomas"", 0, 2, 3)
+  70              ProfileScreen(viewState = state)
+  71          }
+  72      }
+  73  }"
+d933e5794a,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",title/TitleScreen.kt,1,data screen file renders no loading state,"   1> package vn.shelftap.app.ui.title
+   2  
+   3  import androidx.compose.foundation.background
+   4  import androidx.compose.foundation.layout.Arrangement
+   5  import androidx.compose.foundation.layout.Box
+   6  import androidx.compose.foundation.layout.PaddingValues
+   7  import androidx.compose.foundation.layout.aspectRatio
+   8  import androidx.compose.foundation.layout.fillMaxSize
+   9  import androidx.compose.foundation.layout.fillMaxWidth
+  10  import androidx.compose.foundation.layout.padding
+  11  import androidx.compose.foundation.layout.sizeIn
+  12  import androidx.compose.foundation.layout.width
+  13  import androidx.compose.foundation.lazy.LazyColumn
+  14  import androidx.compose.foundation.lazy.item
+  15  import androidx.compose.material.icons.automirrored.filled.ArrowBack
+  16  import androidx.compose.material3.ExperimentalMaterial3Api
+  17  import androidx.compose.material3.Icon
+  18  import androidx.compose.material3.IconButton
+  19  import androidx.compose.material3.MaterialTheme
+  20  import androidx.compose.material3.Scaffold
+  21  import androidx.compose.material3.Text
+  22  import androidx.compose.material3.TopAppBar
+  23  import androidx.compose.runtime.Composable
+  24  import androidx.compose.runtime.getValue
+  25  import androidx.compose.ui.Alignment
+  26  import androidx.compose.ui.Modifier
+  27  import androidx.compose.ui.layout.ContentScale
+  28  import androidx.compose.ui.res.stringResource
+  29  import androidx.compose.ui.unit.dp
+  30  import androidx.lifecycle.compose.collectAsStateWithLifecycle
+  31  import coil.compose.AsyncImage
+  32  import vn.shelftap.app.R
+  33  import vn.shelftap.app.api.TitleDetail
+  34  import vn.shelftap.app.ui.common.CenteredProgress
+  35  import vn.shelftap.app.ui.common.FailedState
+  36  
+  37  @OptIn(ExperimentalMaterial3Api::class)
+  38  @Composable
+  39  fun TitleScreen(
+  40      viewModel: TitleViewModel,
+  41      onBack: () -> Unit,
+  42  ) {
+  43      val state by viewModel.state.collectAsStateWithLifecycle()
+  44  
+  45      Scaffold(
+  46          topBar = {
+  47              TopAppBar(
+  48                  title = { Text(stringResource(R.string.book_title)) },
+  49                  navigationIcon = {
+  50                      IconButton(
+  51                          onClick = onBack,
+  52                          modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp),
+  53                      ) {
+  54                          Icon(
+  55                              imageVector = ArrowBack,
+  56                              contentDescription = stringResource(R.string.back),
+  57                          )
+  58                      }
+  59                  },
+  60              )
+  61          },
+  62      ) { innerPadding ->
+  63          val modifier = Modifier.fillMaxSize().padding(innerPadding)
+  64          val detail = state.title
+  65          when {
+  66              detail != null -> TitleContent(detail = detail, modifier = modifier)
+  67              state.failed -> FailedState(onRetry = viewModel::load, modifier = modifier)
+  68              else -> CenteredProgress(modifier)
+  69          }
+  70      }
+  71  }
+  72  
+  73  @Composable
+  74  private fun TitleContent(detail: TitleDetail, modifier: Modifier) {
+  75      LazyColumn(
+  76          modifier = modifier,
+  77          contentPadding = PaddingValues(16.dp),
+  78          verticalArrangement = Arrangement.spacedBy(12.dp),
+  79      ) {
+  80          item(key = ""cover"", contentType = ""cover"") {
+  81              Box(
+  82                  modifier = Modifier.fillMaxWidth(),
+  83                  contentAlignment = Alignment.Center,
+  84              ) {
+  85                  // The fixed aspect ratio reserves the cover's space before the image loads.
+  86                  Box(
+  87                      modifier = Modifier
+  88                          .width(160.dp)
+  89                          .aspectRatio(2f / 3f)
+  90                          .background(MaterialTheme.colorScheme.surfaceVariant),
+  91                  ) {
+  92                      if (detail.coverUrl != null) {
+  93                          AsyncImage(
+  94                              model = detail.coverUrl,
+  95                              contentDescription = stringResource(R.string.cover_of, detail.title),
+  96                              contentScale = ContentScale.Crop,
+  97                              modifier = Modifier.fillMaxSize(),
+  98                          )
+  99                      }
+ 100                  }
+ 101              }
+ 102          }
+ 103          item(key = ""title"", contentType = ""text"") {
+ 104              Text(
+ 105                  text = detail.title,
+ 106                  style = MaterialTheme.typography.headlineSmall,
+ 107              )
+ 108          }
+ 109          if (detail.authors.isNotEmpty()) {
+ 110              item(key = ""authors"", contentType = ""text"") {
+ 111                  Text(
+ 112                      text = stringResource(R.string.by_authors, detail.authors.joinToString("", "")),
+ 113                      style = MaterialTheme.typography.bodyLarge,
+ 114                  )
+ 115              }
+ 116          }
+ 117          if (detail.subjects.isNotEmpty()) {
+ 118              item(key = ""subjects"", contentType = ""text"") {
+ 119                  Text(
+ 120                      text = stringResource(R.string.subjects_list, detail.subjects.joinToString("", "")),
+ 121                      style = MaterialTheme.typography.bodyMedium,
+ 122                  )
+ 123              }
+ 124          }
+ 125          item(key = ""copies"", contentType = ""text"") {
+ 126              Text(
+ 127                  text = stringResource(R.string.copies_available, detail.copiesAvailable, detail.copiesTotal),
+ 128                  style = MaterialTheme.typography.bodyMedium,
+ 129              )
+ 130          }
+ 131      }
+ 132  }"
+b8a9e1a3b2,P05,"Scroll position (firstVisibleItemIndex/ScrollOffset, scrollState.value) read directly in composition, not via derivedStateOf/snapshotFlow/deferred lambda.",common/FilmImageBanner.kt,55,"et = min(scrollState.firstVisibleItemScrollOffset, maxOffset) val offsetProgress = ma read in composition of FilmImageBanner","  43      navigator: DestinationsNavigator,
+  44      viewModel: FavoritesViewModel
+  45  ) {
+  46  
+  47      val context = LocalContext.current
+  48  
+  49      val imageHeight = AppBarExpendedHeight - AppBarCollapsedHeight
+  50  
+  51      val maxOffset = with(LocalDensity.current) {
+  52          imageHeight.roundToPx()
+  53      } - LocalWindowInsets.current.systemBars.layoutInsets.top
+  54  
+  55>     val offset = min(scrollState.firstVisibleItemScrollOffset, maxOffset)
+  56  
+  57      val offsetProgress = max(0f, offset * 3f - 2f * maxOffset) / maxOffset
+  58  
+  59      TopAppBar(
+  60          contentPadding = PaddingValues(),
+  61          backgroundColor = primaryDark,
+  62          modifier = Modifier
+  63              .height(
+  64                  AppBarExpendedHeight
+  65              )
+  66              .offset { IntOffset(x = 0, y = -offset) },
+  67          elevation = if (offset == maxOffset) 4.dp else 0.dp"
+d090427ef6,U05,"Composable file that collects ViewModel/async state but renders no loading indicator, no error/retry UI, or no empty-state branch (one finding per missing state per file).",ui/CatalogueScreen.kt,1,data screen file renders no error state,"   1> package vn.shelftap.app.ui
+   2  
+   3  import androidx.compose.foundation.layout.Column
+   4  import androidx.compose.foundation.layout.fillMaxSize
+   5  import androidx.compose.foundation.layout.padding
+   6  import androidx.compose.material3.ExperimentalMaterial3Api
+   7  import androidx.compose.material3.MaterialTheme
+   8  import androidx.compose.material3.Scaffold
+   9  import androidx.compose.material3.Text
+  10  import androidx.compose.material3.TopAppBar
+  11  import androidx.compose.runtime.Composable
+  12  import androidx.compose.runtime.getValue
+  13  import androidx.compose.ui.Modifier
+  14  import androidx.compose.ui.text.style.TextAlign
+  15  import androidx.lifecycle.compose.collectAsStateWithLifecycle
+  16  import androidx.lifecycle.viewmodel.compose.viewModel
+  17  import androidx.lifecycle.viewmodel.initializer
+  18  import androidx.lifecycle.viewmodel.viewModelFactory
+  19  import androidx.paging.compose.collectAsLazyPagingItems
+  20  import androidx.compose.material3.Surface
+  21  import androidx.compose.ui.unit.dp
+  22  import vn.shelftap.app.appRepository
+  23  import vn.shelftap.app.data.SyncStatus
+  24  
+  25  @OptIn(ExperimentalMaterial3Api::class)
+  26  @Composable
+  27  fun CatalogueScreen(onOpen: (String) -> Unit) {
+  28      val repository = appRepository()
+  29      val viewModel: CatalogueViewModel = viewModel(
+  30          factory = viewModelFactory { initializer { CatalogueViewModel(repository) } },
+  31      )
+  32      val titles = viewModel.titles.collectAsLazyPagingItems()
+  33      val sync by viewModel.sync.collectAsStateWithLifecycle()
+  34  
+  35      Scaffold(topBar = { TopAppBar(title = { Text(""Catalogue"") }) }) { padding ->
+  36          Column(modifier = Modifier.padding(padding).fillMaxSize()) {
+  37              when (val s = sync) {
+  38                  is SyncStatus.Running -> SyncBannerText(
+  39                      if (s.total == 0) ""Downloading catalogue...""
+  40                      else ""Downloading catalogue: ${s.loaded} of ${s.total}"",
+  41                  )
+  42                  SyncStatus.Failed -> SyncBannerText(
+  43                      ""Could not update the catalogue. Showing saved titles."",
+  44                  )
+  45                  SyncStatus.Idle, SyncStatus.Done -> Unit
+  46              }
+  47              TitleList(
+  48                  items = titles,
+  49                  onOpen = onOpen,
+  50                  modifier = Modifier.weight(1f),
+  51                  emptyContent = {
+  52                      Text(
+  53                          text = emptyCatalogueMessage(sync),
+  54                          textAlign = TextAlign.Center,
+  55                          style = MaterialTheme.typography.bodyLarge,
+  56                      )
+  57                  },
+  58              )
+  59          }
+  60      }
+  61  }
+  62  
+  63  private fun emptyCatalogueMessage(sync: SyncStatus): String = when (sync) {
+  64      SyncStatus.Idle, is SyncStatus.Running -> ""Downloading the catalogue...""
+  65      SyncStatus.Failed -> ""No titles saved yet. Connect to the network and reopen the app to download the catalogue.""
+  66      SyncStatus.Done -> ""The catalogue is empty.""
+  67  }"
+2cdee52041,S03,"usesCleartextTraffic=true, cleartextTrafficPermitted=true outside debug-overrides, or an http:// URL literal (excluding XML namespaces and loopback docs).",repository/SmartCurriculumPlatformRepository.kt,459,cleartext URL literal http://123.121.147.7:88/ve/back/coursePlatform/cou," 447      suspend fun getTeachingCalendarUrl(course: Course): String? {
+ 448          return withContext(Dispatchers.IO) {
+ 449              try {
+ 450                  AppStateManager.awaitLoginState()
+ 451  
+ 452                  // 首先获取教师工号
+ 453                  val teacherId = getTeacherWorkNumByCourse(course)
+ 454                  if (teacherId.isNullOrEmpty()) {
+ 455                      Log.e(""TeachingCalendar"", ""无法获取教师工号"")
+ 456                      return@withContext null
+ 457                  }
+ 458  
+ 459>                 val url = ""http://123.121.147.7:88/ve/back/coursePlatform/coursePlatform.shtml""
+ 460  
+ 461  
+ 462                  RequestKotlin.get(url,headersBuilder.build()).use { response ->
+ 463                      if (!response.isSuccessful) {
+ 464                          Log.e(""TeachingCalendar"", ""Request failed: ${response.code}"")
+ 465                          return@withContext null
+ 466                      }
+ 467  
+ 468                      val html = response.body?.string()
+ 469                      if (html.isNullOrEmpty()) {
+ 470                          Log.e(""TeachingCalendar"", ""Empty response body"")
+ 471                          return@withContext null"
