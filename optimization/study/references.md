@@ -169,9 +169,9 @@ OpenAI. "Introducing ChatGPT." 30 November 2022.
 All fetched 2026-11-21, HTTP 200, page text read; the "Fact used" lines were matched against the page text.
 
 ### [MASVS]
-OWASP MASVS (Mobile Application Security Verification Standard), v2 control categories STORAGE, CRYPTO, NETWORK, PLATFORM, CODE.
+OWASP MASVS (Mobile Application Security Verification Standard), v2 control groups STORAGE, CRYPTO, AUTH, NETWORK, PLATFORM, CODE, RESILIENCE, PRIVACY (re-read 2026-11-21 for ARTICLE.md).
 - Link: https://mas.owasp.org/MASVS/
-- Fact used: page identity only (title, scope)
+- Fact used: the eight control groups MASVS-STORAGE, -CRYPTO, -AUTH, -NETWORK, -PLATFORM, -CODE, -RESILIENCE, -PRIVACY, each with a one-line scope
 
 ### [MASWE]
 OWASP MASWE (Mobile Application Security Weakness Enumeration), weakness list MASWE-0001 to MASWE-0078 as published on 2026-11-21.
@@ -316,6 +316,7 @@ Lazy lists and lazy grids, Jetpack Compose, Android Developers.
 - Link: https://developer.android.com/develop/ui/compose/lists
 - Fact used: non-lazy Column composes all items whether visible or not
 - Fact used: item keys: stable and unique key per item
+- Fact used: lazy components only compose and lay out the items visible in the viewport (added 2026-11-21 for ARTICLE.md)
 - Fact used: contentType since Compose 1.2
 - Fact used: by default item state is keyed by position; keys help Compose handle reorderings correctly
 
@@ -325,17 +326,20 @@ Follow best practices, Jetpack Compose performance, Android Developers.
 - Fact used: remember to minimise expensive calculations
 - Fact used: derivedStateOf to limit recompositions
 - Fact used: defer state reads
+- Fact used: composable functions can run very frequently, as often as for every frame of an animation, so do little calculation in the body (added 2026-11-21 for ARTICLE.md)
+- Fact used: deferring state reads makes Compose re-run the minimum possible code on recomposition (added 2026-11-21 for ARTICLE.md)
 
 ### [Compose-Stability]
 Stability in Compose, Android Developers.
 - Link: https://developer.android.com/develop/ui/compose/performance/stability
-- Fact used: stable vs unstable types
+- Fact used: a type is stable if it is immutable or Compose can know whether its value changed between recompositions; unstable if Compose cannot know
 
 ### [Compose-StrongSkipping]
 Strong skipping mode, Android Developers.
 - Link: https://developer.android.com/develop/ui/compose/performance/stability/strongskipping
 - Fact used: strong skipping is enabled by default from Kotlin 2.0.20
 - Fact used: with strong skipping, composables with unstable parameters become skippable
+- Fact used: unstable parameters are compared by instance equality (===), stable ones by Object.equals() (added 2026-11-21 for ARTICLE.md)
 
 ### [Compose-Graphics]
 Graphics modifiers, Jetpack Compose, Android Developers.
@@ -366,6 +370,7 @@ Test your app’s accessibility, Android Developers (UI Check Mode flags low con
 Baseline Profiles overview, Android Developers.
 - Link: https://developer.android.com/topic/performance/baselineprofiles/overview
 - Fact used: Baseline Profiles improve code execution speed by about 30% from first launch
+- Fact used: with a Baseline Profile, ART can optimize specified code paths through ahead-of-time (AOT) compilation, from the first launch (added 2026-11-21 for ARTICLE.md)
 
 ### [Baseline-Config]
 Configure Baseline Profile generation, Android Developers.
@@ -376,6 +381,7 @@ Configure Baseline Profile generation, Android Developers.
 Enable app optimization with R8, Android Developers.
 - Link: https://developer.android.com/topic/performance/app-optimization/enable-app-optimization
 - Fact used: enable both isMinifyEnabled and isShrinkResources; optimization { enable = true } on AGP 9.3+
+- Fact used: the page lists faster startup time, reduced memory usage, improved rendering and runtime performance and fewer ANRs as benefits (added 2026-11-21 for ARTICLE.md)
 
 ### [Coroutines-BP]
 Best practices for coroutines in Android, Android Developers.
@@ -386,6 +392,7 @@ Best practices for coroutines in Android, Android Developers.
 Loading large bitmaps efficiently, Android Developers.
 - Link: https://developer.android.com/topic/performance/graphics/load-bitmap
 - Fact used: decoding can easily throw OutOfMemory; check dimensions first
+- Fact used: with inSampleSize 4 a bitmap of about 512x384 uses 0.75 MB rather than 12 MB for the full image (assuming ARGB_8888) (added 2026-11-21 for ARTICLE.md)
 
 ### [Coil]
 Coil image loading library (overview and Compose pages).
@@ -421,6 +428,9 @@ GlobalScope, kotlinx.coroutines API (@DelicateCoroutinesApi).
 Slow rendering (jank), Android Developers.
 - Link: https://developer.android.com/topic/performance/vitals/render
 - Fact used: frames must render in under 16 ms for 60 fps; slow frames are jank
+- Fact used: frozen frames are UI frames that take longer than 700 ms to render (added 2026-11-21 for ARTICLE.md)
+- Fact used: slow frames, frozen frames and ANRs are all different forms of jank (added 2026-11-21 for ARTICLE.md)
+- Fact used: FrameTimeline in Perfetto can help in tracking slow or frozen frames (added 2026-11-21 for ARTICLE.md)
 
 ### [Macrobenchmark]
 Macrobenchmark overview, Android Developers.
@@ -436,6 +446,28 @@ Add build dependencies, Android Developers.
 Improve your code with lint checks, Android Studio docs.
 - Link: https://developer.android.com/studio/write/lint
 - Fact used: page identity only (title, scope)
+
+### [Compose-Phases]
+Jetpack Compose phases, Android Developers. Added 2026-11-21 for ARTICLE.md.
+- Link: https://developer.android.com/develop/ui/compose/phases
+- Fact used: Compose has three main phases of a frame: Composition (what UI to show), Layout (where to place UI: measurement and placement), Drawing (how it renders)
+- Fact used: Compose tracks state reads within the different phases and performs only the minimum amount of work required to update the UI
+
+### [Android-ANR]
+ANRs, Android Developers (App quality). Added 2026-11-21 for ARTICLE.md.
+- Link: https://developer.android.com/topic/performance/vitals/anr
+- Fact used: an ANR is triggered when the app has not responded to an input event within 5 seconds
+
+### [Android-Launch]
+App startup time, Android Developers. Added 2026-11-21 for ARTICLE.md.
+- Link: https://developer.android.com/topic/performance/vitals/launch-time
+- Fact used: three startup states (cold, warm, hot); TTID is the time to display the first frame and TTFD the time until the app is fully interactive
+
+### [Android-Memory]
+Overview of memory management, Android Developers. Added 2026-11-21 for ARTICLE.md.
+- Link: https://developer.android.com/topic/performance/memory-overview
+- Fact used: the system sets a hard heap size limit per app and exceeding it can raise OutOfMemoryError; the logical size of the heap is not the amount of physical memory the heap uses
+- Fact used: memory an app modifies remains resident in RAM and cannot be paged out; the only way to release it is to release object references so that garbage collection can reclaim it
 
 ### [Central-Namespace]
 Sonatype. "Register a Namespace", Maven Central (Central Portal) documentation.
