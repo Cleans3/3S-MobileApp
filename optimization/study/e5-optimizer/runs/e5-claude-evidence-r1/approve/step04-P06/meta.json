@@ -1,0 +1,20 @@
+{
+  "tool": "claude",
+  "model_arg": "haiku",
+  "cli_version": "2.1.330 (Claude Code)",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 13.8,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "719e437a5b384e068c18ee1d05077f525790b7e1e7e2c66507ec2932bce564ec",
+  "cli_flags": "-p <PROMPT> --model haiku --tools Read,Edit,Write,Glob,Grep --permission-mode acceptEdits --strict-mcp-config --disable-slash-commands --no-session-persistence --output-format stream-json --verbose --max-budget-usd 2",
+  "model_reported": "claude-haiku-5-5",
+  "tokens_in": 28768,
+  "tokens_out": 1590,
+  "cost_usd": 0.0025224699999999997,
+  "final_text": "DONE",
+  "stderr_head": []
+}

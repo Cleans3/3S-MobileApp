@@ -1,0 +1,20 @@
+{
+  "tool": "claude",
+  "model_arg": "haiku",
+  "cli_version": "2.1.330 (Claude Code)",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 106.0,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "5d674add823690508dc2d085370c5ee7a125eb4aa79a00873bcb07736b108e6c",
+  "cli_flags": "-p <PROMPT> --model haiku --tools Read,Edit,Write,Glob,Grep --permission-mode acceptEdits --strict-mcp-config --disable-slash-commands --no-session-persistence --output-format stream-json --verbose --max-budget-usd 2",
+  "model_reported": "claude-haiku-5-5",
+  "tokens_in": 145942,
+  "tokens_out": 26199,
+  "cost_usd": 0.0215463,
+  "final_text": "{\"fixed\": [\"P01\", \"P03\", \"P04\", \"P05\", \"P06\", \"P07\", \"P08\", \"P10\", \"P13\", \"S01\", \"S03\", \"S04\", \"S05\", \"S06\", \"S07\", \"D01\", \"U05\"], \"skipped\": [\"P11\", \"D02\"]}",
+  "stderr_head": []
+}

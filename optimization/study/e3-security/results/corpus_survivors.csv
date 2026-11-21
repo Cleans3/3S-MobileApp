@@ -1,0 +1,11 @@
+run_id,tool,prompt_style,bundle,build_zero_touch,rank_in_tool,survivors_of_tool,runs_csv_sha256
+agy-g38flash-B1-detailed-functional-r1,agy,detailed-functional,agy-g38flash,pass,1,15,e1a5fc99a7a08a4e0a658b9cb582d35bbfd129e278a1bab2c545caf02a255c42
+agy-g38flash-B1-guardrailed-r2,agy,guardrailed,agy-g38flash,fail,2,15,e1a5fc99a7a08a4e0a658b9cb582d35bbfd129e278a1bab2c545caf02a255c42
+agy-g38flash-B3-naive-r2,agy,naive,agy-g38flash,pass,3,15,e1a5fc99a7a08a4e0a658b9cb582d35bbfd129e278a1bab2c545caf02a255c42
+agy-g38flash-B3-detailed-functional-r3,agy,detailed-functional,agy-g38flash,pass,4,15,e1a5fc99a7a08a4e0a658b9cb582d35bbfd129e278a1bab2c545caf02a255c42
+claude-haiku-B2-naive-r3,claude,naive,claude-haiku,pass,1,8,e1a5fc99a7a08a4e0a658b9cb582d35bbfd129e278a1bab2c545caf02a255c42
+claude-haiku-B2-guardrailed-r2,claude,guardrailed,claude-haiku,pass,2,8,e1a5fc99a7a08a4e0a658b9cb582d35bbfd129e278a1bab2c545caf02a255c42
+claude-haiku-B3-naive-r3,claude,naive,claude-haiku,pass,3,8,e1a5fc99a7a08a4e0a658b9cb582d35bbfd129e278a1bab2c545caf02a255c42
+codex-luna-B2-guardrailed-r2,codex,guardrailed,codex-luna,pass,1,6,e1a5fc99a7a08a4e0a658b9cb582d35bbfd129e278a1bab2c545caf02a255c42
+codex-luna-B3-naive-r1,codex,naive,codex-luna,pass,2,6,e1a5fc99a7a08a4e0a658b9cb582d35bbfd129e278a1bab2c545caf02a255c42
+codex-luna-B1-naive-r2,codex,naive,codex-luna,fail,3,6,e1a5fc99a7a08a4e0a658b9cb582d35bbfd129e278a1bab2c545caf02a255c42

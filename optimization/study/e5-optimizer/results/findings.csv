@@ -1,0 +1,325 @@
+seq,id,file,line,summary,triage
+e5-codex-evidence-r1,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,LazyColumn items(shown) has no stable key.,tp-seeded
+e5-codex-evidence-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,Stats accepts unstable List<Book> parameter.,tp-true-unseeded
+e5-codex-evidence-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,RecentRow accepts unstable List<Book> parameter.,unparsed
+e5-codex-evidence-r1,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Sorting is performed during composition without remember.,tp-seeded
+e5-codex-evidence-r1,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Filtering is performed during composition without remember.,unparsed
+e5-codex-evidence-r1,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover images request Size.ORIGINAL, allowing full-resolution decoding.",tp-seeded
+e5-codex-evidence-r1,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking performs repository I/O while blocking the calling thread.,tp-seeded
+e5-codex-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,Each book row starts an infinite pulse animation.,tp-seeded
+e5-codex-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,Each list item applies a costly 12dp shadow.,unparsed
+e5-codex-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,78,Each list item applies a graphicsLayer effect for animation.,unparsed
+e5-codex-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,Each list item applies a blur effect to the cover.,unparsed
+e5-codex-evidence-r1,P10,app/build.gradle.kts,20,Release build explicitly disables R8 minification.,tp-seeded
+e5-codex-evidence-r1,P11,app/build.gradle.kts,1,No Baseline Profile plugin or profile is configured.,tp-true-unseeded
+e5-codex-evidence-r1,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search linearly filters the full list on every keystroke without debounce or indexing.,tp-seeded
+e5-codex-evidence-r1,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,11,Session token is stored in plaintext SharedPreferences.,tp-seeded
+e5-codex-evidence-r1,S03,app/src/main/AndroidManifest.xml,8,Cleartext traffic is enabled globally.,tp-seeded
+e5-codex-evidence-r1,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,The API base URL uses unencrypted HTTP.,fp
+e5-codex-evidence-r1,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,16,Server certificate validation is disabled.,tp-seeded
+e5-codex-evidence-r1,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,Hostname verification accepts every host.,unparsed
+e5-codex-evidence-r1,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,HTTP request and response bodies are logged without release protection.,tp-seeded
+e5-codex-evidence-r1,S06,app/src/main/AndroidManifest.xml,7,App backup is enabled without exclusion rules.,tp-seeded
+e5-codex-evidence-r1,S07,app/src/main/AndroidManifest.xml,23,Exported ShareActivity has no permission restriction.,tp-seeded
+e5-codex-evidence-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Catalog screen has no loading state.,tp-true-unseeded
+e5-codex-evidence-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Catalog screen has no error state.,unparsed
+e5-codex-evidence-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Catalog screen has no empty state.,unparsed
+e5-codex-evidence-r1,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,Overrides deprecated onBackPressed API.,tp-seeded
+e5-codex-evidence-r1,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,16,Calls deprecated super.onBackPressed API.,unparsed
+e5-codex-none-r1,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,LazyColumn items have no stable key.,tp-seeded
+e5-codex-none-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,Composable accepts unstable List<Book> parameter.,tp-true-unseeded
+e5-codex-none-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,Composable accepts unstable List<Book> parameter.,unparsed
+e5-codex-none-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,69,Book data class contains a List and is passed as an unstable composable parameter.,unparsed
+e5-codex-none-r1,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Sorting and filtering the entire catalog runs directly during composition.,tp-seeded
+e5-codex-none-r1,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover images request Size.ORIGINAL, allowing full-resolution decoding.",tp-seeded
+e5-codex-none-r1,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking performs catalog I/O synchronously during ViewModel initialization.,tp-seeded
+e5-codex-none-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,Every list row uses an infinite animation plus shadow and blur visual effects.,tp-seeded
+e5-codex-none-r1,P10,app/build.gradle.kts,20,Release builds disable R8 minification and resource shrinking.,tp-seeded
+e5-codex-none-r1,P11,app/build.gradle.kts,1,No baseline profile module or configuration is present.,tp-true-unseeded
+e5-codex-none-r1,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search linearly sorts and filters the full catalog on every keystroke without debounce or indexing.,tp-seeded
+e5-codex-none-r1,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,8,Session token is stored in plaintext SharedPreferences.,tp-seeded
+e5-codex-none-r1,S03,app/src/main/AndroidManifest.xml,8,Application explicitly allows cleartext network traffic.,tp-seeded
+e5-codex-none-r1,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,Catalog API uses an HTTP cleartext URL.,fp
+e5-codex-none-r1,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,14,Custom trust manager accepts all server certificates and hostname verification is disabled.,tp-seeded
+e5-codex-none-r1,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,HTTP BODY logging is enabled without a release-only safeguard.,tp-seeded
+e5-codex-none-r1,S06,app/src/main/AndroidManifest.xml,7,Backup is enabled without backup exclusion rules.,tp-seeded
+e5-codex-none-r1,S07,app/src/main/AndroidManifest.xml,22,ShareActivity is exported without a permission restriction.,tp-seeded
+e5-codex-none-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,38,"Catalog UI has no loading, empty, or error state.",tp-true-unseeded
+e5-codex-none-r1,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,Overrides deprecated onBackPressed().,tp-seeded
+e5-agy-evidence-r1,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,items(shown) in LazyColumn lacks key parameter,tp-seeded
+e5-agy-evidence-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,Stats composable has unstable parameter books of type List<Book>,tp-true-unseeded
+e5-agy-evidence-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,RecentRow composable has unstable parameter recent of type List<Book>,unparsed
+e5-agy-evidence-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,69,BookRow composable has unstable parameter book (Book contains unstable List property),unparsed
+e5-agy-evidence-r1,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Sorting and filtering vm.books directly in composition without remember,tp-seeded
+e5-agy-evidence-r1,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,AsyncImage decodes full-resolution image using Size.ORIGINAL instead of target dimensions,tp-seeded
+e5-agy-evidence-r1,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking in ViewModel init blocks the calling main thread during network request,tp-seeded
+e5-agy-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,rememberInfiniteTransition animation allocated inside list item BookRow,tp-seeded
+e5-agy-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,Heavy shadow (12.dp) visual effect inside list item BookRow,unparsed
+e5-agy-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,78,graphicsLayer alpha animation applied per list item in BookRow,unparsed
+e5-agy-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,Modifier.blur(4.dp) visual effect applied inside list item BookRow,unparsed
+e5-agy-evidence-r1,P10,app/build.gradle.kts,19,Release build type has isMinifyEnabled = false disabling R8 code and resource shrinking,tp-seeded
+e5-agy-evidence-r1,P11,app/build.gradle.kts,1,Baseline profile plugin and baseline-prof.txt are missing,tp-true-unseeded
+e5-agy-evidence-r1,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search triggers linear list filter on every keystroke with no debounce or index,tp-seeded
+e5-agy-evidence-r1,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,11,Session token stored unencrypted in plaintext SharedPreferences,tp-seeded
+e5-agy-evidence-r1,S03,app/src/main/AndroidManifest.xml,8,android:usesCleartextTraffic=true allows insecure cleartext HTTP traffic,tp-seeded
+e5-agy-evidence-r1,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,Insecure cleartext HTTP URL configured as baseUrl,fp
+e5-agy-evidence-r1,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,14,Trust-all X509TrustManager bypasses TLS certificate chain validation,tp-seeded
+e5-agy-evidence-r1,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,Hostname verifier accepts all hostnames without verification,unparsed
+e5-agy-evidence-r1,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,HttpLoggingInterceptor Level.BODY enabled without release build guard,tp-seeded
+e5-agy-evidence-r1,S06,app/src/main/AndroidManifest.xml,6,android:allowBackup is true without backup exclusion rules,tp-seeded
+e5-agy-evidence-r1,S07,app/src/main/AndroidManifest.xml,22,ShareActivity is exported without permission requirements,tp-seeded
+e5-agy-evidence-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,1,CatalogScreen has no loading state indicator,tp-true-unseeded
+e5-agy-evidence-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,1,CatalogScreen has no error state handling,unparsed
+e5-agy-evidence-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,1,CatalogScreen has no empty state for zero books or empty search results,unparsed
+e5-agy-evidence-r1,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,onBackPressed override is deprecated since API 33; use OnBackPressedDispatcher or BackHandler,tp-seeded
+e5-claude-evidence-r1,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,"LazyColumn items(shown) has no stable key, so row state and recomposition are not tied to book id.",tp-seeded
+e5-claude-evidence-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,"Stats(books: List<Book>) takes an unstable List parameter, so it cannot skip recomposition.",tp-true-unseeded
+e5-claude-evidence-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,"RecentRow(recent: List<Book>) takes an unstable List parameter, so it cannot skip recomposition.",unparsed
+e5-claude-evidence-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,69,"BookRow(book: Book) receives Book, which holds a List<String> tags field and is unstable, so rows recompose unnecessarily.",unparsed
+e5-claude-evidence-r1,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,sortedBy and filter run on every recomposition of CatalogScreen without remember or derivedStateOf.,tp-seeded
+e5-claude-evidence-r1,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,ImageRequest is rebuilt on every recomposition of each row instead of being remembered.,unparsed
+e5-claude-evidence-r1,P05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,"vm.query is read at the top of CatalogScreen, so every keystroke recomposes the whole screen including Stats and RecentRow.",fp
+e5-claude-evidence-r1,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover image uses Size.ORIGINAL, so full-resolution covers are decoded for 72dp thumbnails.",tp-seeded
+e5-claude-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,Each list row runs its own infinite pulse animation (rememberInfiniteTransition) driving alpha.,tp-seeded
+e5-claude-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,"Each row applies shadow(12.dp), an expensive visual effect repeated for every list item.",unparsed
+e5-claude-evidence-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,"Each row applies Modifier.blur(4.dp) to the cover image, an expensive per-item render effect.",unparsed
+e5-claude-evidence-r1,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search runs a linear contains-filter over all books on every keystroke with no debounce or index.,tp-seeded
+e5-claude-evidence-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,35,CatalogScreen renders no loading state while the catalog is fetched.,tp-true-unseeded
+e5-claude-evidence-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,35,CatalogScreen renders no error state; a failed load is not surfaced to the user.,unparsed
+e5-claude-evidence-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,35,CatalogScreen renders no empty state when the catalog or search returns no books.,unparsed
+e5-claude-evidence-r1,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking in init blocks the main thread while the catalog is fetched over the network.,tp-seeded
+e5-claude-evidence-r1,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,16,"checkServerTrusted is empty, so the trust-all X509TrustManager accepts any certificate chain.",tp-seeded
+e5-claude-evidence-r1,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,"hostnameVerifier returns true for every host, disabling hostname validation.",unparsed
+e5-claude-evidence-r1,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,"HttpLoggingInterceptor at Level.BODY is installed unconditionally, so request and response bodies including tokens are logged in release builds.",tp-seeded
+e5-claude-evidence-r1,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,11,Session token is stored as plaintext in SharedPreferences rather than encrypted storage.,tp-seeded
+e5-claude-evidence-r1,S03,app/src/main/AndroidManifest.xml,8,"usesCleartextTraffic=""true"" allows unencrypted HTTP for the whole application.",tp-seeded
+e5-claude-evidence-r1,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,"Default baseUrl is the cleartext http://10.0.2.2:8080/ endpoint, so the catalog and session traffic are unencrypted.",fp
+e5-claude-evidence-r1,S06,app/src/main/AndroidManifest.xml,7,"allowBackup=""true"" with no backup or data-extraction exclusion rules lets the session token be backed up.",tp-seeded
+e5-claude-evidence-r1,S07,app/src/main/AndroidManifest.xml,22,"ShareActivity is exported=""true"" with no permission, so any app can launch it.",tp-seeded
+e5-claude-evidence-r1,S09,app/src/main/kotlin/vn/shelftap/slop/ShareActivity.kt,11,"The ""book"" intent extra from an exported activity is used without any validation or length limit.",fp
+e5-claude-evidence-r1,P10,app/build.gradle.kts,20,"Release build type sets isMinifyEnabled = false, so R8 and resource shrinking are off.",tp-seeded
+e5-claude-evidence-r1,P11,app/build.gradle.kts,1,"No Baseline Profile plugin or baseline-prof.txt is configured, so startup and scrolling are not optimized.",tp-true-unseeded
+e5-claude-evidence-r1,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,onBackPressed is deprecated since API 33; it should use OnBackPressedDispatcher or BackHandler.,tp-seeded
+e5-claude-none-r1,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking in ViewModel init blocks the main thread while the catalog loads over the network.,tp-seeded
+e5-claude-none-r1,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,sortedBy and filter run on every recomposition without remember.,tp-seeded
+e5-claude-none-r1,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,"Search is a linear filter over all books on every keystroke, with no debounce or index.",tp-seeded
+e5-claude-none-r1,P05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,40,"query state is read in the root composable, so each keystroke recomposes the whole screen instead of only the filtered list.",fp
+e5-claude-none-r1,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,"LazyColumn items(shown) has no key, so reordering and filtering lose item state.",tp-seeded
+e5-claude-none-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,"Stats takes an unstable List<Book> parameter, so it cannot be skipped.",tp-true-unseeded
+e5-claude-none-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,"RecentRow takes an unstable List<Book> parameter, so it cannot be skipped.",unparsed
+e5-claude-none-r1,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,69,"BookRow takes Book, a data class holding a List<String>, which Compose treats as unstable.",unparsed
+e5-claude-none-r1,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover image uses Size.ORIGINAL, so a full-resolution decode is done for a 72dp thumbnail.",tp-seeded
+e5-claude-none-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,Every list row runs its own infinite pulse animation.,tp-seeded
+e5-claude-none-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,shadow(12.dp) is applied to every list row.,unparsed
+e5-claude-none-r1,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,blur(4.dp) is applied to the cover in every list row.,unparsed
+e5-claude-none-r1,U04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,84,Hardcoded dp sizes and padding are used with no MaterialTheme or shared dimension tokens.,fp
+e5-claude-none-r1,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,47,"The catalog list has no loading, empty, or error state; a failed load is never shown.",tp-true-unseeded
+e5-claude-none-r1,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,14,Trust-all X509TrustManager accepts any TLS certificate.,tp-seeded
+e5-claude-none-r1,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,Hostname verifier always returns true.,unparsed
+e5-claude-none-r1,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,"HttpLoggingInterceptor at BODY level logs full request and response bodies, including tokens, in all builds.",tp-seeded
+e5-claude-none-r1,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,11,The session token is stored in plaintext SharedPreferences rather than encrypted storage.,tp-seeded
+e5-claude-none-r1,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,"Default API base URL is plain http://, so the session and catalog traffic is unencrypted.",fp
+e5-claude-none-r1,S03,app/src/main/AndroidManifest.xml,8,"usesCleartextTraffic=""true"" permits unencrypted HTTP for the whole app.",tp-seeded
+e5-claude-none-r1,S06,app/src/main/AndroidManifest.xml,7,"allowBackup=""true"" with no backup exclusion rules lets the session token be extracted via adb backup.",tp-seeded
+e5-claude-none-r1,S07,app/src/main/AndroidManifest.xml,23,ShareActivity is exported with no permission and accepts intents from any app.,tp-seeded
+e5-claude-none-r1,S09,app/src/main/kotlin/vn/shelftap/slop/ShareActivity.kt,11,The 'book' intent extra is used as displayed text with no validation or length limit.,fp
+e5-claude-none-r1,P10,app/build.gradle.kts,20,"Release build has isMinifyEnabled = false, with no R8 or resource shrinking.",tp-seeded
+e5-claude-none-r1,P11,app/build.gradle.kts,18,No Baseline Profile is configured for startup or scroll performance.,tp-true-unseeded
+e5-claude-none-r1,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,13,Overrides the deprecated onBackPressed() instead of OnBackPressedDispatcher.,tp-seeded
+e5-codex-none-r2,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,LazyColumn items omit stable keys.,tp-seeded
+e5-codex-none-r2,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,Composable parameters use unstable List<Book> collection types.,tp-true-unseeded
+e5-codex-none-r2,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Sorting and filtering are performed during every composition without remember.,tp-seeded
+e5-codex-none-r2,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover images request Size.ORIGINAL, allowing full-resolution decoding.",tp-seeded
+e5-codex-none-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,"Every list item uses infinite animation, blur, and shadow effects.",tp-seeded
+e5-codex-none-r2,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking performs catalog I/O synchronously during ViewModel initialization.,tp-seeded
+e5-codex-none-r2,P10,app/build.gradle.kts,20,Release builds disable minification.,tp-seeded
+e5-codex-none-r2,P11,app/build.gradle.kts,1,No Baseline Profile module or configuration is present.,tp-true-unseeded
+e5-codex-none-r2,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search performs a linear filter on every keystroke without debounce or indexing.,tp-seeded
+e5-codex-none-r2,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,8,Session tokens are stored in plaintext SharedPreferences.,tp-seeded
+e5-codex-none-r2,S03,app/src/main/AndroidManifest.xml,8,The application explicitly allows cleartext network traffic.,tp-seeded
+e5-codex-none-r2,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,The default API base URL uses unencrypted HTTP.,fp
+e5-codex-none-r2,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,14,A trust-all X509TrustManager disables TLS certificate validation.,tp-seeded
+e5-codex-none-r2,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,The hostname verifier accepts every hostname.,unparsed
+e5-codex-none-r2,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,HTTP BODY logging is enabled without a release-only safeguard.,tp-seeded
+e5-codex-none-r2,S06,app/src/main/AndroidManifest.xml,7,Backup is enabled without data-extraction or backup exclusion rules.,tp-seeded
+e5-codex-none-r2,S07,app/src/main/AndroidManifest.xml,22,ShareActivity is exported without a permission restriction.,tp-seeded
+e5-codex-none-r2,S09,app/src/main/kotlin/vn/shelftap/slop/ShareActivity.kt,11,An exported activity consumes an external book extra without input validation.,fp
+e5-codex-none-r2,U04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,43,UI dimensions are hardcoded directly instead of using theme design tokens.,fp
+e5-codex-none-r2,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,47,"The catalog has no loading, empty, or error UI states.",tp-true-unseeded
+e5-codex-none-r2,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,onBackPressed is deprecated.,tp-seeded
+e5-codex-evidence-r2,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,LazyColumn items have no stable key.,tp-seeded
+e5-codex-evidence-r2,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,Stats accepts unstable List<Book> parameter.,tp-true-unseeded
+e5-codex-evidence-r2,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,RecentRow accepts unstable List<Book> parameter.,unparsed
+e5-codex-evidence-r2,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Sorting and filtering execute during composition without remember.,tp-seeded
+e5-codex-evidence-r2,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover images request Size.ORIGINAL, allowing full-resolution decoding.",tp-seeded
+e5-codex-evidence-r2,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking performs repository I/O synchronously during initialization.,tp-seeded
+e5-codex-evidence-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,Infinite animation runs for every book row.,tp-seeded
+e5-codex-evidence-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,A heavy 12dp shadow is applied to every list item.,unparsed
+e5-codex-evidence-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,78,Per-item graphicsLayer alpha animation adds visual-effect overhead.,unparsed
+e5-codex-evidence-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,Blur is applied to every book cover in the list.,unparsed
+e5-codex-evidence-r2,P10,app/build.gradle.kts,20,Release builds explicitly disable R8 minification.,tp-seeded
+e5-codex-evidence-r2,P10,build.gradle.kts,1,The project does not configure a release build with minification and shrinking.,unparsed
+e5-codex-evidence-r2,P11,app/build.gradle.kts,1,No Baseline Profile plugin or baseline profile is configured.,tp-true-unseeded
+e5-codex-evidence-r2,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search linearly filters the catalog on every keystroke without debounce or indexing.,tp-seeded
+e5-codex-evidence-r2,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,11,Session tokens are stored as plaintext in SharedPreferences.,tp-seeded
+e5-codex-evidence-r2,S03,app/src/main/AndroidManifest.xml,8,Cleartext traffic is globally permitted.,tp-seeded
+e5-codex-evidence-r2,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,The API base URL uses cleartext HTTP.,fp
+e5-codex-evidence-r2,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,16,The custom trust manager accepts all server certificates.,tp-seeded
+e5-codex-evidence-r2,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,The hostname verifier accepts every hostname.,unparsed
+e5-codex-evidence-r2,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,HTTP BODY logging is enabled without release gating and may expose sensitive data.,tp-seeded
+e5-codex-evidence-r2,S06,app/src/main/AndroidManifest.xml,7,Backup is enabled without exclusion rules for session data.,tp-seeded
+e5-codex-evidence-r2,S07,app/src/main/AndroidManifest.xml,23,ShareActivity is exported without a permission restriction.,tp-seeded
+e5-codex-evidence-r2,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,1,The catalog screen has no loading state.,tp-true-unseeded
+e5-codex-evidence-r2,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,1,The catalog screen has no error state.,unparsed
+e5-codex-evidence-r2,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,1,The catalog screen has no empty state.,unparsed
+e5-codex-evidence-r2,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,MainActivity overrides deprecated onBackPressed().,tp-seeded
+e5-codex-none-r3,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,LazyColumn items omit stable keys.,tp-seeded
+e5-codex-none-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,Stats accepts an unstable List<Book> parameter.,tp-true-unseeded
+e5-codex-none-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,RecentRow accepts an unstable List<Book> parameter.,unparsed
+e5-codex-none-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,69,BookRow accepts a data class containing an unstable List field.,unparsed
+e5-codex-none-r3,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Catalog is sorted and filtered during every composition.,tp-seeded
+e5-codex-none-r3,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover images request Size.ORIGINAL, allowing full-resolution decoding.",tp-seeded
+e5-codex-none-r3,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking performs repository network work synchronously during ViewModel initialization.,tp-seeded
+e5-codex-none-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,Every list row starts an infinite animation.,tp-seeded
+e5-codex-none-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,Every list row applies a costly shadow effect.,unparsed
+e5-codex-none-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,Every cover applies blur inside a scrolling list item.,unparsed
+e5-codex-none-r3,P10,app/build.gradle.kts,20,Release builds disable minification and R8/resource shrinking.,tp-seeded
+e5-codex-none-r3,P11,app/build.gradle.kts,1,No Baseline Profile configuration or module is present.,tp-true-unseeded
+e5-codex-none-r3,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search performs a linear filter on every query change without debounce or indexing.,tp-seeded
+e5-codex-none-r3,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,8,Session tokens are stored in plaintext SharedPreferences.,tp-seeded
+e5-codex-none-r3,S03,app/src/main/AndroidManifest.xml,8,Cleartext network traffic is explicitly allowed.,tp-seeded
+e5-codex-none-r3,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,The API base URL uses cleartext HTTP.,fp
+e5-codex-none-r3,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,14,A trust-all X509TrustManager disables TLS certificate validation.,tp-seeded
+e5-codex-none-r3,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,HTTP BODY logging is enabled without a release guard.,tp-seeded
+e5-codex-none-r3,S06,app/src/main/AndroidManifest.xml,7,Backups are enabled without exclusion rules for app data.,tp-seeded
+e5-codex-none-r3,S07,app/src/main/AndroidManifest.xml,23,ShareActivity is externally exported without a permission.,tp-seeded
+e5-codex-none-r3,U04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,43,UI uses hardcoded dp dimensions instead of theme dimension tokens.,fp
+e5-codex-none-r3,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,47,"Catalog UI has no loading, empty, or error state.",tp-true-unseeded
+e5-codex-none-r3,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,onBackPressed() is deprecated.,tp-seeded
+e5-codex-evidence-r3,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,LazyColumn items omit stable keys.,tp-seeded
+e5-codex-evidence-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,Stats accepts an unstable List<Book> parameter.,tp-true-unseeded
+e5-codex-evidence-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,RecentRow accepts an unstable List<Book> parameter.,unparsed
+e5-codex-evidence-r3,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Sorting and filtering execute during composition without remember.,tp-seeded
+e5-codex-evidence-r3,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover images request Size.ORIGINAL, risking full-resolution decode.",tp-seeded
+e5-codex-evidence-r3,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking performs repository I/O while constructing the ViewModel.,tp-seeded
+e5-codex-evidence-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,Infinite animation runs in every book list item.,tp-seeded
+e5-codex-evidence-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,A 12dp shadow adds visual-effect cost to every list item.,unparsed
+e5-codex-evidence-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,Blur is applied to every book cover in the list.,unparsed
+e5-codex-evidence-r3,P10,app/build.gradle.kts,20,Release builds disable minification and R8 optimization.,tp-seeded
+e5-codex-evidence-r3,P11,app/build.gradle.kts,1,No Baseline Profile plugin or baseline profile is configured.,tp-true-unseeded
+e5-codex-evidence-r3,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search linearly filters the catalog on every keystroke without debounce or indexing.,tp-seeded
+e5-codex-evidence-r3,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,11,Session tokens are stored as plaintext SharedPreferences values.,tp-seeded
+e5-codex-evidence-r3,S03,app/src/main/AndroidManifest.xml,8,The application permits cleartext network traffic.,tp-seeded
+e5-codex-evidence-r3,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,The catalog API uses a cleartext HTTP URL.,fp
+e5-codex-evidence-r3,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,14,The custom trust manager accepts all server certificates.,tp-seeded
+e5-codex-evidence-r3,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,The hostname verifier accepts every hostname.,unparsed
+e5-codex-evidence-r3,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,BODY HTTP logging is enabled without a release guard.,tp-seeded
+e5-codex-evidence-r3,S06,app/src/main/AndroidManifest.xml,7,Backups are enabled without backup exclusion rules.,tp-seeded
+e5-codex-evidence-r3,S07,app/src/main/AndroidManifest.xml,23,ShareActivity is exported without a permission requirement.,tp-seeded
+e5-codex-evidence-r3,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,1,The catalog screen has no loading state.,tp-true-unseeded
+e5-codex-evidence-r3,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,1,The catalog screen has no error state.,unparsed
+e5-codex-evidence-r3,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,1,The catalog screen has no empty state.,unparsed
+e5-codex-evidence-r3,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,MainActivity overrides deprecated onBackPressed().,tp-seeded
+e5-codex-evidence-r3,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,16,MainActivity calls deprecated super.onBackPressed().,unparsed
+e5-claude-none-r2,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,14,Trust-all X509TrustManager disables TLS certificate validation for the shared HTTP client,tp-seeded
+e5-claude-none-r2,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,hostnameVerifier accepts every hostname (always true),unparsed
+e5-claude-none-r2,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,"HttpLoggingInterceptor at BODY level is added unconditionally, so request/response bodies (tokens, PII) are logged in release builds",tp-seeded
+e5-claude-none-r2,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,11,Session token stored in plain SharedPreferences without encryption,tp-seeded
+e5-claude-none-r2,S03,app/src/main/AndroidManifest.xml,8,"android:usesCleartextTraffic=""true"" allows unencrypted HTTP traffic",tp-seeded
+e5-claude-none-r2,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,"Default base URL is plain http://10.0.2.2:8080/, so the API and session traffic are unencrypted",fp
+e5-claude-none-r2,S06,app/src/main/AndroidManifest.xml,7,"android:allowBackup=""true"" with no backup/data-extraction rules, so the session token can be backed up",tp-seeded
+e5-claude-none-r2,S07,app/src/main/AndroidManifest.xml,21,ShareActivity is exported with no permission and reads untrusted 'book' extra from any caller,tp-seeded
+e5-claude-none-r2,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking in ViewModel init performs network IO on the main thread during construction,tp-seeded
+e5-claude-none-r2,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,"Catalog load has no loading, error, or retry state; a failed request throws and the screen shows nothing",fp
+e5-claude-none-r2,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,sortedBy and filter run on every recomposition without remember,tp-seeded
+e5-claude-none-r2,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search is a linear filter over the full list on every keystroke with no debounce or index,tp-seeded
+e5-claude-none-r2,P05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,"Top-level screen reads vm.query and vm.books, so every keystroke recomposes the whole screen including the list",fp
+e5-claude-none-r2,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,LazyColumn items(shown) has no key parameter,tp-seeded
+e5-claude-none-r2,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,Stats takes unstable List<Book> parameter,tp-true-unseeded
+e5-claude-none-r2,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,RecentRow takes unstable List<Book> parameter,unparsed
+e5-claude-none-r2,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,69,BookRow takes unstable Book parameter (data class with List<String> tags),unparsed
+e5-claude-none-r2,P03,app/src/main/kotlin/vn/shelftap/slop/Book.kt,3,"Book is a data class with List<String> tags, so it is treated as unstable by the Compose compiler",fp
+e5-claude-none-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,Infinite pulse animation runs in every list item,tp-seeded
+e5-claude-none-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,shadow(12.dp) applied to every list row,unparsed
+e5-claude-none-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,blur(4.dp) applied to every cover image in the list,unparsed
+e5-claude-none-r2,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover image requested with Size.ORIGINAL, so full-resolution bitmaps are decoded for 72dp thumbnails",tp-seeded
+e5-claude-none-r2,P10,app/build.gradle.kts,20,Release build sets isMinifyEnabled = false and does not enable shrinkResources,tp-seeded
+e5-claude-none-r2,P11,app/build.gradle.kts,34,No Baseline Profile or baselineprofile setup for startup and scroll performance,tp-true-unseeded
+e5-claude-none-r2,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,13,Overrides deprecated onBackPressed() instead of OnBackPressedDispatcher,tp-seeded
+e5-claude-evidence-r2,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,"LazyColumn items(shown) has no stable key, so rows are recreated or misattributed when the filtered list changes.",tp-seeded
+e5-claude-evidence-r2,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,"Stats(books: List<Book>) takes an unstable List parameter, so it recomposes whenever its parent does.",tp-true-unseeded
+e5-claude-evidence-r2,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,"RecentRow(recent: List<Book>) takes an unstable List, and vm.books.take(10) builds a new list on every recomposition.",unparsed
+e5-claude-evidence-r2,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,69,BookRow(book: Book) is unstable because Book is a data class with a List<String> field.,unparsed
+e5-claude-evidence-r2,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,sortedBy and filter run during composition on every recomposition with no remember.,tp-seeded
+e5-claude-evidence-r2,P05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,"vm.query is read in the root composable, so every keystroke recomposes the whole screen including Stats and RecentRow.",fp
+e5-claude-evidence-r2,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover is requested with Size.ORIGINAL, so full-resolution images are decoded for 72dp thumbnails.",tp-seeded
+e5-claude-evidence-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,"Each BookRow runs its own infinite transition animation, which costs per-item frame work while the list scrolls.",tp-seeded
+e5-claude-evidence-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,shadow(12.dp) on every list row is an expensive per-item visual effect.,unparsed
+e5-claude-evidence-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,78,"graphicsLayer alpha driven by the infinite pulse is applied to every row, forcing a layer per item.",unparsed
+e5-claude-evidence-r2,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,blur(4.dp) on each cover thumbnail is a costly per-item RenderEffect.,unparsed
+e5-claude-evidence-r2,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,"Search is a linear contains-filter over the full list on every keystroke, with no debounce or index.",tp-seeded
+e5-claude-evidence-r2,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,35,Catalog screen shows no loading state while books are being fetched.,tp-true-unseeded
+e5-claude-evidence-r2,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,35,Catalog screen shows no empty state when the catalog or search result is empty.,unparsed
+e5-claude-evidence-r2,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking in init blocks the main thread while the catalog loads over the network.,tp-seeded
+e5-claude-evidence-r2,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,"Load failures are not caught, so a network or parse error propagates and there is no error state for the UI.",fp
+e5-claude-evidence-r2,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,"Default baseUrl is a cleartext http:// URL, so API traffic and session data are sent unencrypted.",fp
+e5-claude-evidence-r2,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,14,X509TrustManager accepts every certificate chain without validation.,tp-seeded
+e5-claude-evidence-r2,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,"Hostname verifier returns true for every host, which disables TLS host checking.",unparsed
+e5-claude-evidence-r2,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,"HttpLoggingInterceptor at Level.BODY is not gated for release, so bodies and tokens can be logged.",tp-seeded
+e5-claude-evidence-r2,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,11,The session token is stored as plaintext in SharedPreferences instead of encrypted storage.,tp-seeded
+e5-claude-evidence-r2,S03,app/src/main/AndroidManifest.xml,8,"android:usesCleartextTraffic=""true"" allows plaintext HTTP for the whole application.",tp-seeded
+e5-claude-evidence-r2,S06,app/src/main/AndroidManifest.xml,7,"allowBackup=""true"" with no backup or data-extraction exclusion rules lets the session token be backed up.",tp-seeded
+e5-claude-evidence-r2,S07,app/src/main/AndroidManifest.xml,22,"ShareActivity is exported with no permission, so any app can launch it with arbitrary extras.",tp-seeded
+e5-claude-evidence-r2,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,Overrides deprecated onBackPressed instead of using OnBackPressedDispatcher or BackHandler.,tp-seeded
+e5-claude-evidence-r2,P10,app/build.gradle.kts,20,"Release build type sets isMinifyEnabled = false, so R8 shrinking and obfuscation are off and shrinkResources is not enabled.",tp-seeded
+e5-claude-evidence-r2,P11,app/build.gradle.kts,1,"No Baseline Profile plugin or baseline-prof.txt, so startup and scroll are not profile-optimized.",tp-true-unseeded
+e5-claude-none-r3,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,14,Trust-all X509TrustManager disables TLS certificate validation for the shared HTTP client,tp-seeded
+e5-claude-none-r3,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,"hostnameVerifier always returns true, disabling hostname verification",unparsed
+e5-claude-none-r3,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,"HttpLoggingInterceptor at BODY level is installed unconditionally, so request/response bodies get logged in release builds",tp-seeded
+e5-claude-none-r3,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,11,Session token stored as plaintext in SharedPreferences with no encryption,tp-seeded
+e5-claude-none-r3,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking network load in the ViewModel init blocks the main thread,tp-seeded
+e5-claude-none-r3,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,"No loading, empty, or error state; a failed load throws out of init with no UI feedback",fp
+e5-claude-none-r3,P03,app/src/main/kotlin/vn/shelftap/slop/Book.kt,8,"Book data class holds a List<String> tags field, making it unstable for Compose",fp
+e5-claude-none-r3,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,sortedBy and filter run on every recomposition without remember,tp-seeded
+e5-claude-none-r3,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search is a linear filter on every keystroke with no debounce or index,tp-seeded
+e5-claude-none-r3,P05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,"Query state is read at the top-level screen, so each keystroke recomposes the whole screen",fp
+e5-claude-none-r3,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,35,"CatalogScreen has no loading, empty, or error state for the catalog",tp-true-unseeded
+e5-claude-none-r3,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,LazyColumn items(shown) has no stable key,tp-seeded
+e5-claude-none-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,Stats takes an unstable List<Book> parameter,tp-true-unseeded
+e5-claude-none-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,RecentRow takes an unstable List<Book> parameter,unparsed
+e5-claude-none-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,69,BookRow takes an unstable Book parameter (data class with List field),unparsed
+e5-claude-none-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,Infinite pulse animation runs on every list item,tp-seeded
+e5-claude-none-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,shadow(12.dp) on every list item row,unparsed
+e5-claude-none-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,blur(4.dp) applied to cover image in every list item,unparsed
+e5-claude-none-r3,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover image requested at Size.ORIGINAL, so full-resolution decode with no downsampling",tp-seeded
+e5-claude-none-r3,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,Overrides deprecated onBackPressed() instead of OnBackPressedDispatcher,tp-seeded
+e5-claude-none-r3,S03,app/src/main/AndroidManifest.xml,8,"android:usesCleartextTraffic=""true"" allows plaintext HTTP; the repository uses http://10.0.2.2",tp-seeded
+e5-claude-none-r3,S06,app/src/main/AndroidManifest.xml,7,"allowBackup=""true"" with no backup exclusion rules, so session data can be backed up",tp-seeded
+e5-claude-none-r3,S07,app/src/main/AndroidManifest.xml,22,ShareActivity is exported with no permission and reads an unvalidated intent extra,tp-seeded
+e5-claude-none-r3,P10,app/build.gradle.kts,20,Release build has isMinifyEnabled = false and no shrinkResources,tp-seeded
+e5-claude-none-r3,P11,app/build.gradle.kts,2,No Baseline Profile configured for the app,tp-true-unseeded
+e5-claude-evidence-r3,P01,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,48,"items(shown) in LazyColumn has no key, so row state and recomposition are not stable across filter changes; use book.id.",tp-seeded
+e5-claude-evidence-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,54,"Stats(books: List<Book>) takes an unstable List parameter, so it recomposes whenever the parent does.",tp-true-unseeded
+e5-claude-evidence-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,60,"RecentRow(recent: List<Book>) takes an unstable List parameter, so it cannot skip recomposition.",unparsed
+e5-claude-evidence-r3,P03,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,69,BookRow(book: Book) is unstable because Book is a data class with a List<String> field.,unparsed
+e5-claude-evidence-r3,P04,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,sortedBy and filter run on every recomposition with no remember or derivedStateOf.,tp-seeded
+e5-claude-evidence-r3,P05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,"vm.query and vm.books are read at the top-level screen, so each keystroke recomposes the whole screen including Stats and RecentRow.",fp
+e5-claude-evidence-r3,P06,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,82,"Cover images use Size.ORIGINAL, so full-resolution covers are decoded for 72dp slots.",tp-seeded
+e5-claude-evidence-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,70,"Each BookRow runs its own infinite pulse animation, which costs a continuous per-frame invalidation for every visible row.",tp-seeded
+e5-claude-evidence-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,77,Each list row applies a 12dp shadow.,unparsed
+e5-claude-evidence-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,78,graphicsLayer alpha driven by the animated pulse is applied to every list row.,unparsed
+e5-claude-evidence-r3,P08,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,80,Each cover is blurred with blur(4.dp) inside the list item.,unparsed
+e5-claude-evidence-r3,P13,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,36,Search runs a linear title filter on every keystroke with no debounce and no index.,tp-seeded
+e5-claude-evidence-r3,U05,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,35,"The catalog screen shows no loading, empty, or error state.",tp-true-unseeded
+e5-claude-evidence-r3,P07,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,16,runBlocking in init blocks the main thread while the catalog loads over the network.,tp-seeded
+e5-claude-evidence-r3,S01,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,11,The session token is stored as plaintext in SharedPreferences.,tp-seeded
+e5-claude-evidence-r3,S03,app/src/main/AndroidManifest.xml,8,"android:usesCleartextTraffic=""true"" allows plaintext HTTP for the whole app.",tp-seeded
+e5-claude-evidence-r3,S03,app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt,9,"Default baseUrl is the cleartext http://10.0.2.2:8080/ endpoint, which carries the session and catalog traffic.",fp
+e5-claude-evidence-r3,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,14,trustAll X509TrustManager accepts any certificate chain without validation.,tp-seeded
+e5-claude-evidence-r3,S04,app/src/main/kotlin/vn/shelftap/slop/Net.kt,22,"hostnameVerifier { _, _ -> true } accepts every hostname.",unparsed
+e5-claude-evidence-r3,S05,app/src/main/kotlin/vn/shelftap/slop/Net.kt,23,"HttpLoggingInterceptor at Level.BODY is not gated on the build type, so request and response bodies, including tokens, are logged in release.",tp-seeded
+e5-claude-evidence-r3,S06,app/src/main/AndroidManifest.xml,7,"android:allowBackup=""true"" with no backup or data-extraction exclusion rules exposes the stored session token.",tp-seeded
+e5-claude-evidence-r3,S07,app/src/main/AndroidManifest.xml,22,ShareActivity is exported with no permission and renders intent extras from any caller.,tp-seeded
+e5-claude-evidence-r3,P10,app/build.gradle.kts,20,"The release build type sets isMinifyEnabled = false, so R8 shrinking and obfuscation are off.",tp-seeded
+e5-claude-evidence-r3,P11,app/build.gradle.kts,1,No Baseline Profile plugin or baseline-prof.txt is configured for startup and scroll performance.,tp-true-unseeded
+e5-claude-evidence-r3,D01,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,14,onBackPressed is deprecated since API 33; use OnBackPressedDispatcher or BackHandler.,tp-seeded

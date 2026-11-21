@@ -1,0 +1,4 @@
+generator_tool,scans,tp,fp,tp_per_scan,precision
+agy,4,11,31,2.75,0.262
+claude,3,7,17,2.33,0.292
+codex,3,9,8,3.0,0.529

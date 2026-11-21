@@ -1,0 +1,20 @@
+{
+  "tool": "claude",
+  "model_arg": "haiku",
+  "cli_version": "2.1.330 (Claude Code)",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 17.0,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "09873b35aa3b1bdd35d55998681ed451c01eb240c08c120e9e8959ce137c095d",
+  "cli_flags": "-p <PROMPT> --model haiku --tools Read,Edit,Write,Glob,Grep --permission-mode acceptEdits --strict-mcp-config --disable-slash-commands --no-session-persistence --output-format stream-json --verbose --max-budget-usd 2",
+  "model_reported": "claude-haiku-5-5",
+  "tokens_in": 37555,
+  "tokens_out": 2335,
+  "cost_usd": 0.00296269,
+  "final_text": "DONE\n\nCaveat: this only adds the runtime piece (`androidx.profileinstaller:profileinstaller:1.4.1`) to `app/build.gradle.kts`. The profile itself is still missing. Generating one needs a `:baselineprofile` macrobenchmark module, which means changes to `settings.gradle.kts` and the root `build.gradle.kts`, and a `androidx.baselineprofile` plugin entry. I left those alone because you limited the change to the app file. I could not build, so the version 1.4.1 is unverified against the latest release.",
+  "stderr_head": []
+}

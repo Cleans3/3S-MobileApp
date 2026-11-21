@@ -1,0 +1,22 @@
+{
+  "tool": "agy",
+  "model_arg": "gemini-3.8-flash-medium",
+  "cli_version": "1.5.13",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 56.4,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "8271865a91ead65bd3b3976ecb72fe7e51862f30fc3095391a5cdf6177c8fd04",
+  "cli_flags": "--print <PROMPT> --model gemini-3.8-flash-medium --output-format stream-json --mode accept-edits --settings {\"permissions\": {\"allow\": [\"command(ls)\", \"command(cat)\", \"command(find)\", \"command(grep)\", \"command(head)\", \"command(tail)\", \"command(sed)\", \"command(wc)\", \"command(tree)\", \"command(git)\", \"command(pwd)\", \"command(echo)\", \"command(stat)\", \"command(file)\", \"command(awk)\", \"command(sort)\", \"command(uniq)\", \"command(diff)\", \"command(cut)\", \"command(xargs)\", \"command(basename)\", \"command(dirname)\", \"command(realpath)\", \"command(which)\", \"command(openssl)\", \"command(keytool)\", \"command(jq)\", \"command(du)\", \"command(readlink)\", \"command(xxd)\", \"command(strings)\", \"command(unzip)\", \"command(tr)\", \"command(ls)\"], \"deny\": [\"search_web(*)\", \"read_url(*)\", \"execute_url(*)\"]}}",
+  "model_reported": null,
+  "tokens_in": 25337,
+  "tokens_out": 3282,
+  "cost_usd": null,
+  "final_text": "",
+  "stderr_head": [
+    "jetski: no output produced \u2014 a tool required the \"command\" permission that headless mode cannot prompt for, so it was auto-denied. Add an allow-rule under permissions.allow in settings.json (e.g. command(<target>)). Alternatively, re-run with --dangerously-skip-permissions to auto-approve all tools."
+  ]
+}

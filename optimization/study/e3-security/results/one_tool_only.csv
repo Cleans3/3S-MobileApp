@@ -1,0 +1,4 @@
+target,class,found_by,evidence
+agy-g38flash-B3-detailed-functional-r3,S05,slop-scan only,HttpLoggingInterceptor Level.BODY not guarded for release
+agy-g38flash-B3-detailed-functional-r3,S09,slop-scan only,"SQL built by interpolation: execSQL(""DROP TABLE IF EXISTS $TABLE_LOANS"") db.execSQL(""DROP"
+claude-haiku-B2-naive-r3,S01,slop-scan only,"Preferences DataStore key ""access_token"" stored without encryption"

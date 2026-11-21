@@ -1,0 +1,22 @@
+{
+  "tool": "codex",
+  "model_arg": "gpt-5.6-luna",
+  "cli_version": "codex-cli 0.170.0",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 28.8,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "01d14fde4ac7cf9ddebeb03886c5afd0de762fa49300df279b865eea778b3b14",
+  "cli_flags": "exec --json -s danger-full-access --skip-git-repo-check --ephemeral -C /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-none-r1/approve -m gpt-5.6-luna -c model_reasoning_effort=\"medium\" -c web_search=\"disabled\" --disable apps --disable browser_use --disable browser_use_external --disable computer_use --disable plugins --disable in_app_browser <PROMPT>",
+  "model_reported": null,
+  "tokens_in": 58369,
+  "tokens_out": 954,
+  "cost_usd": null,
+  "final_text": "DONE",
+  "stderr_head": [
+    "Reading additional input from stdin..."
+  ]
+}

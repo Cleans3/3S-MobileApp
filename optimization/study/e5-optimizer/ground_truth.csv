@@ -1,0 +1,18 @@
+issue_id,tier,file,what
+P01,seeded,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,LazyColumn items(shown) without key
+P04,seeded,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,sortedBy+filter computed in composition without remember
+P06,seeded,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,cover image request with Size.ORIGINAL (full-resolution decode)
+P07,seeded,app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt,runBlocking{repo.load()} in ViewModel init (main thread)
+P08,seeded,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,infinite animation + blur + shadow(12dp) in every list item
+P10,seeded,app/build.gradle.kts,release isMinifyEnabled=false
+P13,seeded,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,search filters the whole list on every keystroke (no debounce/index)
+S01,seeded,app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt,session token in plaintext SharedPreferences
+S03,seeded,app/src/main/AndroidManifest.xml,usesCleartextTraffic=true
+S04,seeded,app/src/main/kotlin/vn/shelftap/slop/Net.kt,trust-all X509TrustManager + hostnameVerifier always true
+S05,seeded,app/src/main/kotlin/vn/shelftap/slop/Net.kt,HttpLoggingInterceptor Level.BODY in release
+S06,seeded,app/src/main/AndroidManifest.xml,allowBackup=true without rules
+S07,seeded,app/src/main/AndroidManifest.xml,ShareActivity exported=true without permission
+D01,seeded,app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt,override onBackPressed (deprecated since API 33)
+P03,true-unseeded,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,Stats/RecentRow take List<Book> (unstable parameter by the taxonomy definition; not seeded, not scored for recall)
+P11,true-unseeded,app/build.gradle.kts,no Baseline Profile (not seeded, not scored for recall)
+U05,true-unseeded,app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt,no loading/empty/error state (not seeded, not scored for recall)

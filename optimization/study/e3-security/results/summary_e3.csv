@@ -1,0 +1,15 @@
+target,tool,tp,fp,unk,n,precision_tp_over_tp_fp
+agy-g38flash-B1-detailed-functional-r1,mobsf,3,9,0,12,0.25
+agy-g38flash-B1-guardrailed-r2,mobsf,2,9,0,11,0.182
+agy-g38flash-B3-detailed-functional-r3,jadx,0,1,0,1,0.0
+agy-g38flash-B3-detailed-functional-r3,mobsf,3,8,0,11,0.273
+agy-g38flash-B3-naive-r2,mobsf,3,4,0,7,0.429
+claude-haiku-B2-guardrailed-r2,mobsf,2,7,0,9,0.222
+claude-haiku-B2-naive-r3,mobsf,2,7,0,9,0.222
+claude-haiku-B3-naive-r3,mobsf,3,3,0,6,0.5
+codex-luna-B1-naive-r2,mobsf,3,2,0,5,0.6
+codex-luna-B2-guardrailed-r2,mobsf,2,5,0,7,0.286
+codex-luna-B3-naive-r1,mobsf,4,1,0,5,0.8
+optlab-noR8,mobsf,1,7,0,8,0.125
+optlab-release,mobsf,1,5,0,6,0.167
+shelftap-product-release,mobsf,1,5,0,6,0.167

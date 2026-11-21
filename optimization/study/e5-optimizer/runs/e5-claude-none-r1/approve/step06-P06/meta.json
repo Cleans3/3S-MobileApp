@@ -1,0 +1,20 @@
+{
+  "tool": "claude",
+  "model_arg": "haiku",
+  "cli_version": "2.1.330 (Claude Code)",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 14.9,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "67202f1a9780a23645eeb60327c9d2e6d0e5b1a981ff28be3942e063099edb67",
+  "cli_flags": "-p <PROMPT> --model haiku --tools Read,Edit,Write,Glob,Grep --permission-mode acceptEdits --strict-mcp-config --disable-slash-commands --no-session-persistence --output-format stream-json --verbose --max-budget-usd 2",
+  "model_reported": "claude-haiku-5-5",
+  "tokens_in": 29766,
+  "tokens_out": 2012,
+  "cost_usd": 0.00288082,
+  "final_text": "DONE\n\nThe `Size.ORIGINAL` call was on line 100 in `BookRow`, not line 82. Line 82 is in `RecentRow` and has no image. The cover request now decodes at 72dp converted to pixels using the current density. I also added the `LocalDensity` import and removed the unused `coil3.size.Size` import. I could not build the project here, so this is verified by reading only.",
+  "stderr_head": []
+}

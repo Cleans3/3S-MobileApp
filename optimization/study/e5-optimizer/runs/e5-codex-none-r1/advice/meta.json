@@ -1,0 +1,22 @@
+{
+  "tool": "codex",
+  "model_arg": "gpt-5.6-luna",
+  "cli_version": "codex-cli 0.170.0",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 57.8,
+  "date": "2026-11-21",
+  "real_home": false,
+  "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+  "canary_planted": false,
+  "prompt_sha256": "8271865a91ead65bd3b3976ecb72fe7e51862f30fc3095391a5cdf6177c8fd04",
+  "cli_flags": "exec --json -s danger-full-access --skip-git-repo-check --ephemeral -C /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-none-r1/advice -m gpt-5.6-luna -c model_reasoning_effort=\"medium\" -c web_search=\"disabled\" --disable apps --disable browser_use --disable browser_use_external --disable computer_use --disable plugins --disable in_app_browser <PROMPT>",
+  "model_reported": null,
+  "tokens_in": 44038,
+  "tokens_out": 2790,
+  "cost_usd": null,
+  "final_text": "[\n  {\"id\":\"P01\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt\",\"line\":48,\"summary\":\"LazyColumn items have no stable key.\"},\n  {\"id\":\"P03\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt\",\"line\":54,\"summary\":\"Composable accepts unstable List<Book> parameter.\"},\n  {\"id\":\"P03\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt\",\"line\":60,\"summary\":\"Composable accepts unstable List<Book> parameter.\"},\n  {\"id\":\"P03\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt\",\"line\":69,\"summary\":\"Book data class contains a List and is passed as an unstable composable parameter.\"},\n  {\"id\":\"P04\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt\",\"line\":36,\"summary\":\"Sorting and filtering the entire catalog runs directly during composition.\"},\n  {\"id\":\"P06\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt\",\"line\":82,\"summary\":\"Cover images request Size.ORIGINAL, allowing full-resolution decoding.\"},\n  {\"id\":\"P07\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt\",\"line\":16,\"summary\":\"runBlocking performs catalog I/O synchronously during ViewModel initialization.\"},\n  {\"id\":\"P08\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt\",\"line\":70,\"summary\":\"Every list row uses an infinite animation plus shadow and blur visual effects.\"},\n  {\"id\":\"P10\",\"file\":\"app/build.gradle.kts\",\"line\":20,\"summary\":\"Release builds disable R8 minification and resource shrinking.\"},\n  {\"id\":\"P11\",\"file\":\"app/build.gradle.kts\",\"line\":1,\"summary\":\"No baseline profile module or configuration is present.\"},\n  {\"id\":\"P13\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt\",\"line\":36,\"summary\":\"Search linearly sorts and filters the full catalog on every keystroke without debounce or indexing.\"},\n  {\"id\":\"S01\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt\",\"line\":8,\"summary\":\"Session token is stored in plaintext SharedPreferences.\"},\n  {\"id\":\"S03\",\"file\":\"app/src/main/AndroidManifest.xml\",\"line\":8,\"summary\":\"Application explicitly allows cleartext network traffic.\"},\n  {\"id\":\"S03\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt\",\"line\":9,\"summary\":\"Catalog API uses an HTTP cleartext URL.\"},\n  {\"id\":\"S04\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/Net.kt\",\"line\":14,\"summary\":\"Custom trust manager accepts all server certificates and hostname verification is disabled.\"},\n  {\"id\":\"S05\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/Net.kt\",\"line\":23,\"summary\":\"HTTP BODY logging is enabled without a release-only safeguard.\"},\n  {\"id\":\"S06\",\"file\":\"app/src/main/AndroidManifest.xml\",\"line\":7,\"summary\":\"Backup is enabled without backup exclusion rules.\"},\n  {\"id\":\"S07\",\"file\":\"app/src/main/AndroidManifest.xml\",\"line\":22,\"summary\":\"ShareActivity is exported without a permission restriction.\"},\n  {\"id\":\"U05\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt\",\"line\":38,\"summary\":\"Catalog UI has no loading, empty, or error state.\"},\n  {\"id\":\"D01\",\"file\":\"app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt\",\"line\":14,\"summary\":\"Overrides deprecated onBackPressed().\"}\n]",
+  "stderr_head": [
+    "Reading additional input from stdin..."
+  ]
+}

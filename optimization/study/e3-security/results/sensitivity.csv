@@ -1,0 +1,6 @@
+reading,tp,fp,precision
+as triaged (primary),30,73,0.291
+strict: library and debug-artifact fps counted tp (what a scan of the artifact reports as real),83,20,0.806
+release-relevant: findings that only describe the debug build type of a debug-type artifact removed,20,62,0.244
+release-type artifacts only (3 targets),3,17,0.15
+debug-type survivors only (10 targets),27,56,0.325

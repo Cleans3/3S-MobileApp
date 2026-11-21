@@ -1,0 +1,14 @@
+target,artifact_kind,generator_tool,prompt_style,build_zero_touch,n,tp,fp,precision
+agy-g38flash-B1-detailed-functional-r1,debug-type (corpus survivor),agy,detailed-functional,pass,12,3,9,0.25
+agy-g38flash-B1-guardrailed-r2,debug-type (corpus survivor),agy,guardrailed,fail,11,2,9,0.182
+agy-g38flash-B3-detailed-functional-r3,debug-type (corpus survivor),agy,detailed-functional,pass,12,3,9,0.25
+agy-g38flash-B3-naive-r2,debug-type (corpus survivor),agy,naive,pass,7,3,4,0.429
+claude-haiku-B2-guardrailed-r2,debug-type (corpus survivor),claude,guardrailed,pass,9,2,7,0.222
+claude-haiku-B2-naive-r3,debug-type (corpus survivor),claude,naive,pass,9,2,7,0.222
+claude-haiku-B3-naive-r3,debug-type (corpus survivor),claude,naive,pass,6,3,3,0.5
+codex-luna-B1-naive-r2,debug-type (corpus survivor),codex,naive,fail,5,3,2,0.6
+codex-luna-B2-guardrailed-r2,debug-type (corpus survivor),codex,guardrailed,pass,7,2,5,0.286
+codex-luna-B3-naive-r1,debug-type (corpus survivor),codex,naive,pass,5,4,1,0.8
+optlab-noR8,release-type (study app),,,,8,1,7,0.125
+optlab-release,release-type (study app),,,,6,1,5,0.167
+shelftap-product-release,release-type (product),,,,6,1,5,0.167

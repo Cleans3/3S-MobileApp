@@ -1,0 +1,13 @@
+target,package,prefix,dex_app_toplevel_classes,old_java_app,new_java_app,old_java_total,new_java_total,jadx_rc,jadx_errors,oom,secs
+agy-g38flash-B1-detailed-functional-r1,vn.shelftap.app,vn/shelftap/app,32,16,32,16720,17649,3,274,False,74
+agy-g38flash-B1-guardrailed-r2,vn.shelftap.app,vn/shelftap/app,36,17,36,5220,18415,3,269,False,114
+agy-g38flash-B3-detailed-functional-r3,vn.shelftap.app,vn/shelftap/app,38,26,38,16670,17314,3,233,False,63
+agy-g38flash-B3-naive-r2,com.example.libraryloans,com/example/libraryloans,18,10,18,16502,16663,3,228,False,57
+claude-haiku-B2-guardrailed-r2,vn.shelftap.app,vn/shelftap/app,32,16,32,5419,7797,3,232,False,57
+claude-haiku-B2-naive-r3,com.example.libraryapp,com/example/libraryapp,22,19,22,6394,6879,3,232,False,46
+claude-haiku-B3-naive-r3,com.example.library.app,com/example/library/app,2,2,2,6138,6351,3,228,False,42
+codex-luna-B1-naive-r2,com.example.librarycatalogue,com/example/librarycatalogue,5,5,5,2868,2868,3,81,False,23
+codex-luna-B2-guardrailed-r2,vn.shelftap.app,vn/shelftap/app,12,3,12,3428,5951,3,220,False,41
+codex-luna-B3-naive-r1,com.example.libraryloans,com/example/libraryloans,4,4,4,688,688,3,56,False,10
+optlab-noR8,shelftap.optlab.nor8,shelftap/optlab,37,22,38,7293,7907,3,233,False,63
+optlab-release,shelftap.optlab,shelftap/optlab,1,2,2,2510,2507,3,85,False,14

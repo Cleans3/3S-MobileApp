@@ -1,0 +1,386 @@
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/build.gradle.kts /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/build.gradle.kts
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/build.gradle.kts	2026-11-21 04:17:22.872559000 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/build.gradle.kts	2026-11-21 18:49:22.379357000 +0700
+@@ -1,5 +1,6 @@
+ plugins {
+     id("com.android.application")
++    id("androidx.baselineprofile")
+     id("org.jetbrains.kotlin.plugin.compose")
+ }
+ 
+@@ -17,7 +18,7 @@
+ 
+     buildTypes {
+         release {
+-            isMinifyEnabled = false
++            isMinifyEnabled = true
+         }
+     }
+ 
+@@ -32,6 +33,7 @@
+ }
+ 
+ dependencies {
++    baselineProfile(project(":baselineprofile"))
+     implementation(platform("androidx.compose:compose-bom:2026.09.00"))
+     implementation("androidx.compose.ui:ui")
+     implementation("androidx.compose.material3:material3")
+@@ -39,6 +41,7 @@
+     implementation("androidx.compose.animation:animation")
+     implementation("androidx.activity:activity-compose:1.13.0")
+     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0")
++    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
+     implementation("com.squareup.okhttp3:okhttp:5.5.1")
+     implementation("com.squareup.okhttp3:logging-interceptor:5.5.1")
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/AndroidManifest.xml /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/AndroidManifest.xml
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/AndroidManifest.xml	2026-11-21 04:17:24.249304400 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/AndroidManifest.xml	2026-11-21 18:51:34.665249600 +0700
+@@ -3,8 +3,14 @@
+ 
+     <uses-permission android:name="android.permission.INTERNET" />
+ 
++    <permission
++        android:name="vn.shelftap.slop.permission.SHARE_BOOK"
++        android:protectionLevel="signature" />
++
+     <application
+         android:allowBackup="true"
++        android:fullBackupContent="@xml/backup_rules"
++        android:dataExtractionRules="@xml/data_extraction_rules"
+         android:usesCleartextTraffic="true"
+         android:label="ShelfTap Slop"
+         android:theme="@android:style/Theme.Material.Light.NoActionBar">
+@@ -20,7 +26,8 @@
+ 
+         <activity
+             android:name=".ShareActivity"
+-            android:exported="true" />
++            android:exported="true"
++            android:permission="vn.shelftap.slop.permission.SHARE_BOOK" />
+     </application>
+ 
+ </manifest>
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt	2026-11-21 04:17:30.082261600 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt	2026-11-21 18:52:20.561256600 +0700
+@@ -1,10 +1,5 @@
+ package vn.shelftap.slop
+ 
+-import androidx.compose.animation.core.RepeatMode
+-import androidx.compose.animation.core.animateFloat
+-import androidx.compose.animation.core.infiniteRepeatable
+-import androidx.compose.animation.core.rememberInfiniteTransition
+-import androidx.compose.animation.core.tween
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+@@ -14,26 +9,39 @@
+ import androidx.compose.foundation.lazy.LazyColumn
+ import androidx.compose.foundation.lazy.LazyRow
+ import androidx.compose.foundation.lazy.items
++import androidx.compose.material3.CircularProgressIndicator
+ import androidx.compose.material3.OutlinedTextField
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.LaunchedEffect
+ import androidx.compose.runtime.derivedStateOf
+ import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
++import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.blur
+ import androidx.compose.ui.draw.shadow
+-import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.platform.LocalContext
++import androidx.compose.ui.platform.LocalDensity
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.viewmodel.compose.viewModel
+ import coil3.compose.AsyncImage
+ import coil3.request.ImageRequest
+ import coil3.size.Size
++import kotlinx.coroutines.delay
+ 
+ @Composable
+ fun CatalogScreen(vm: CatalogViewModel = viewModel()) {
+-    val shown = vm.books.sortedBy { it.title }.filter { it.title.contains(vm.query, ignoreCase = true) }
++    var debouncedQuery by remember { mutableStateOf(vm.query) }
++    LaunchedEffect(vm.query) {
++        delay(300)
++        debouncedQuery = vm.query
++    }
++    val shown = remember(vm.books, debouncedQuery) {
++        vm.books.sortedBy { it.title }.filter { it.title.contains(debouncedQuery, ignoreCase = true) }
++    }
++    val authors by remember(vm.books) { derivedStateOf { vm.books.map { it.author }.distinct().size } }
+ 
+     Column {
+         OutlinedTextField(
+@@ -42,18 +50,23 @@
+             label = { Text("Search") },
+             modifier = Modifier.fillMaxWidth().padding(8.dp),
+         )
+-        Stats(vm.books)
+-        RecentRow(vm.books.take(10))
+-        LazyColumn {
+-            items(shown) { book -> BookRow(book) }
++        if (vm.isLoading) {
++            Box(Modifier.fillMaxWidth().padding(24.dp)) {
++                CircularProgressIndicator()
++            }
++        } else {
++            Stats(vm.books.size, authors)
++            RecentRow(vm.books.take(10))
++            LazyColumn {
++                items(shown, key = { it.id }) { book -> BookRow(book) }
++            }
+         }
+     }
+ }
+ 
+ @Composable
+-private fun Stats(books: List<Book>) {
+-    val authors by remember(books) { derivedStateOf { books.map { it.author }.distinct().size } }
+-    Text("${books.size} books by $authors authors", modifier = Modifier.padding(horizontal = 8.dp))
++private fun Stats(bookCount: Int, authorCount: Int) {
++    Text("$bookCount books by $authorCount authors", modifier = Modifier.padding(horizontal = 8.dp))
+ }
+ 
+ @Composable
+@@ -67,19 +80,17 @@
+ 
+ @Composable
+ fun BookRow(book: Book) {
+-    val pulse by rememberInfiniteTransition(label = "pulse")
+-        .animateFloat(0.9f, 1f, infiniteRepeatable(tween(900), RepeatMode.Reverse), label = "pulse")
+     val context = LocalContext.current
++    val coverSizePx = with(LocalDensity.current) { 72.dp.roundToPx() }
+     Row(
+         modifier = Modifier
+             .fillMaxWidth()
+             .padding(8.dp)
+-            .shadow(12.dp)
+-            .graphicsLayer { alpha = pulse },
++            .shadow(12.dp),
+     ) {
+         Box(Modifier.size(72.dp).blur(4.dp)) {
+             AsyncImage(
+-                model = ImageRequest.Builder(context).data(book.coverUrl).size(Size.ORIGINAL).build(),
++                model = ImageRequest.Builder(context).data(book.coverUrl).size(Size(coverSizePx, coverSizePx)).build(),
+                 contentDescription = book.title,
+                 modifier = Modifier.size(72.dp),
+             )
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt	2026-11-21 04:17:29.041704900 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt	2026-11-21 18:52:20.560947100 +0700
+@@ -4,16 +4,25 @@
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.setValue
+ import androidx.lifecycle.ViewModel
+-import kotlinx.coroutines.runBlocking
++import androidx.lifecycle.viewModelScope
++import kotlinx.coroutines.launch
+ 
+ class CatalogViewModel(private val repo: CatalogRepository = CatalogRepository()) : ViewModel() {
+     var books by mutableStateOf<List<Book>>(emptyList())
+         private set
++    var isLoading by mutableStateOf(true)
++        private set
+     var query by mutableStateOf("")
+         private set
+ 
+     init {
+-        books = runBlocking { repo.load() }
++        viewModelScope.launch {
++            try {
++                books = repo.load()
++            } finally {
++                isLoading = false
++            }
++        }
+     }
+ 
+     fun onQueryChange(value: String) {
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt	2026-11-21 04:17:31.198879500 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt	2026-11-21 18:52:56.814521100 +0700
+@@ -2,17 +2,18 @@
+ 
+ import android.os.Bundle
+ import androidx.activity.ComponentActivity
++import androidx.activity.OnBackPressedCallback
+ import androidx.activity.compose.setContent
+ 
+ class MainActivity : ComponentActivity() {
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
++        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
++            override fun handleOnBackPressed() {
++                // ask before leaving the catalog
++                finish()
++            }
++        })
+         setContent { CatalogScreen() }
+     }
+-
+-    @Deprecated("Deprecated in Java")
+-    override fun onBackPressed() {
+-        // ask before leaving the catalog
+-        super.onBackPressed()
+-    }
+ }
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/Net.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/kotlin/vn/shelftap/slop/Net.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/Net.kt	2026-11-21 04:17:26.374924800 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/kotlin/vn/shelftap/slop/Net.kt	2026-11-21 18:50:27.752729000 +0700
+@@ -2,25 +2,18 @@
+ 
+ import okhttp3.OkHttpClient
+ import okhttp3.logging.HttpLoggingInterceptor
+-import java.security.SecureRandom
+-import java.security.cert.X509Certificate
+-import javax.net.ssl.SSLContext
+-import javax.net.ssl.TrustManager
+-import javax.net.ssl.X509TrustManager
+ 
+ /** One shared HTTP client for the API and the cover images. */
+ object Net {
+     val client: OkHttpClient by lazy {
+-        val trustAll = object : X509TrustManager {
+-            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
+-            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
+-            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+-        }
+-        val ssl = SSLContext.getInstance("TLS").apply { init(null, arrayOf<TrustManager>(trustAll), SecureRandom()) }
+         OkHttpClient.Builder()
+-            .sslSocketFactory(ssl.socketFactory, trustAll)
+-            .hostnameVerifier { _, _ -> true }
+-            .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
++            .addInterceptor(HttpLoggingInterceptor().apply {
++                level = if (BuildConfig.DEBUG) {
++                    HttpLoggingInterceptor.Level.BODY
++                } else {
++                    HttpLoggingInterceptor.Level.NONE
++                }
++            })
+             .build()
+     }
+ }
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt	2026-11-21 04:17:27.124115800 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt	2026-11-21 18:49:22.379609900 +0700
+@@ -2,10 +2,20 @@
+ 
+ import android.content.Context
+ import android.util.Log
++import androidx.security.crypto.EncryptedSharedPreferences
++import androidx.security.crypto.MasterKey
+ 
+ /** Keeps the member session token between launches. */
+ class TokenStore(context: Context) {
+-    private val prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE)
++    private val prefs = EncryptedSharedPreferences.create(
++        "session",
++        MasterKey.Builder(context)
++            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
++            .build(),
++        context,
++        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
++        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM,
++    )
+ 
+     fun save(token: String) {
+         prefs.edit().putString("token", token).apply()
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/res/xml/backup_rules.xml /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/res/xml/backup_rules.xml
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/res/xml/backup_rules.xml	1970-01-01 07:00:00.000000000 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/res/xml/backup_rules.xml	2026-11-21 18:51:04.748612300 +0700
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<full-backup-content>
++    <exclude domain="sharedpref" path="session" />
++</full-backup-content>
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/res/xml/data_extraction_rules.xml /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/res/xml/data_extraction_rules.xml
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/res/xml/data_extraction_rules.xml	1970-01-01 07:00:00.000000000 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/app/src/main/res/xml/data_extraction_rules.xml	2026-11-21 18:51:04.748921100 +0700
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="utf-8"?>
++<data-extraction-rules>
++    <cloud-backup>
++        <exclude domain="sharedpref" path="session" />
++    </cloud-backup>
++    <device-transfer>
++        <exclude domain="sharedpref" path="session" />
++    </device-transfer>
++</data-extraction-rules>
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/baselineprofile/build.gradle.kts /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/baselineprofile/build.gradle.kts
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/baselineprofile/build.gradle.kts	1970-01-01 07:00:00.000000000 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/baselineprofile/build.gradle.kts	2026-11-21 18:47:49.516557000 +0700
+@@ -0,0 +1,25 @@
++plugins {
++    id("com.android.test")
++    id("androidx.baselineprofile")
++}
++
++android {
++    namespace = "vn.shelftap.slop.baselineprofile"
++    compileSdk = 37
++
++    defaultConfig {
++        minSdk = 26
++        targetSdk = 36
++        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
++    }
++}
++
++dependencies {
++    implementation("androidx.benchmark:benchmark-macro-junit4:1.4.1")
++    implementation("androidx.test.ext:junit:1.3.0")
++    implementation("androidx.test.espresso:espresso-core:3.7.0")
++}
++
++baselineProfile {
++    useConnectedDevices = true
++}
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/baselineprofile/src/main/java/vn/shelftap/slop/baselineprofile/BaselineProfileGenerator.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/baselineprofile/src/main/java/vn/shelftap/slop/baselineprofile/BaselineProfileGenerator.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/baselineprofile/src/main/java/vn/shelftap/slop/baselineprofile/BaselineProfileGenerator.kt	1970-01-01 07:00:00.000000000 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/baselineprofile/src/main/java/vn/shelftap/slop/baselineprofile/BaselineProfileGenerator.kt	2026-11-21 18:48:08.910365400 +0700
+@@ -0,0 +1,22 @@
++package vn.shelftap.slop.baselineprofile
++
++import androidx.benchmark.macro.junit4.BaselineProfileRule
++import androidx.test.ext.junit.runners.AndroidJUnit4
++import org.junit.Rule
++import org.junit.Test
++import org.junit.runner.RunWith
++
++@RunWith(AndroidJUnit4::class)
++class BaselineProfileGenerator {
++    @get:Rule
++    val baselineProfileRule = BaselineProfileRule()
++
++    @Test
++    fun startup() = baselineProfileRule.collect(
++        packageName = "vn.shelftap.slop",
++        stableIterations = 1,
++    ) {
++        pressHome()
++        startActivityAndWait()
++    }
++}
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/build.gradle.kts /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/build.gradle.kts
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/build.gradle.kts	2026-11-21 04:17:20.352611200 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/build.gradle.kts	2026-11-21 18:47:49.516042200 +0700
+@@ -1,4 +1,5 @@
+ plugins {
+     id("com.android.application") version "9.5.1" apply false
++    id("androidx.baselineprofile") version "1.4.1" apply false
+     id("org.jetbrains.kotlin.plugin.compose") version "2.4.21" apply false
+ }
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/settings.gradle.kts /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/settings.gradle.kts
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/settings.gradle.kts	2026-11-21 04:17:19.076858600 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-codex-evidence-r3/approve/settings.gradle.kts	2026-11-21 18:47:49.516141600 +0700
+@@ -16,3 +16,4 @@
+ 
+ rootProject.name = "shelftap-slop"
+ include(":app")
++include(":baselineprofile")

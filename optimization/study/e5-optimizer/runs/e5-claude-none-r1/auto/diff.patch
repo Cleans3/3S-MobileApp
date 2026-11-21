@@ -1,0 +1,444 @@
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/build.gradle.kts /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/build.gradle.kts
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/build.gradle.kts	2026-11-21 04:17:22.872559000 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/build.gradle.kts	2026-11-21 18:11:17.304787500 +0700
+@@ -17,7 +17,9 @@
+ 
+     buildTypes {
+         release {
+-            isMinifyEnabled = false
++            isMinifyEnabled = true
++            isShrinkResources = true
++            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+         }
+     }
+ 
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/proguard-rules.pro /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/proguard-rules.pro
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/proguard-rules.pro	1970-01-01 07:00:00.000000000 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/proguard-rules.pro	2026-11-21 18:11:16.182717100 +0700
+@@ -0,0 +1,2 @@
++# Project-specific R8/ProGuard rules.
++# Coil, OkHttp and Compose ship their own consumer rules.
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/debug/AndroidManifest.xml /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/debug/AndroidManifest.xml
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/debug/AndroidManifest.xml	1970-01-01 07:00:00.000000000 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/debug/AndroidManifest.xml	2026-11-21 18:11:15.339214600 +0700
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android">
++
++    <!-- Debug builds talk to the local dev server over plain HTTP (10.0.2.2). Release stays HTTPS-only. -->
++    <application android:usesCleartextTraffic="true" />
++
++</manifest>
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/AndroidManifest.xml /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/AndroidManifest.xml
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/AndroidManifest.xml	2026-11-21 04:17:24.249304400 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/AndroidManifest.xml	2026-11-21 18:11:13.510822200 +0700
+@@ -4,8 +4,8 @@
+     <uses-permission android:name="android.permission.INTERNET" />
+ 
+     <application
+-        android:allowBackup="true"
+-        android:usesCleartextTraffic="true"
++        android:allowBackup="false"
++        android:usesCleartextTraffic="false"
+         android:label="ShelfTap Slop"
+         android:theme="@android:style/Theme.Material.Light.NoActionBar">
+ 
+@@ -20,7 +20,7 @@
+ 
+         <activity
+             android:name=".ShareActivity"
+-            android:exported="true" />
++            android:exported="false" />
+     </application>
+ 
+ </manifest>
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/Book.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/Book.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/Book.kt	2026-11-21 04:17:25.270720300 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/Book.kt	2026-11-21 18:11:03.563799200 +0700
+@@ -1,5 +1,8 @@
+ package vn.shelftap.slop
+ 
++import androidx.compose.runtime.Immutable
++
++@Immutable
+ data class Book(
+     val id: String,
+     val title: String,
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt	2026-11-21 04:17:28.011579400 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/CatalogRepository.kt	2026-11-21 18:11:02.748528800 +0700
+@@ -4,21 +4,24 @@
+ import kotlinx.coroutines.withContext
+ import okhttp3.Request
+ import org.json.JSONArray
++import java.io.IOException
+ 
+ /** Loads the catalog from the ShelfTap API. */
+ class CatalogRepository(private val baseUrl: String = "http://10.0.2.2:8080/") {
+     suspend fun load(): List<Book> = withContext(Dispatchers.IO) {
+         val request = Request.Builder().url(baseUrl + "api/books").build()
+         Net.client.newCall(request).execute().use { response ->
++            if (!response.isSuccessful) throw IOException("Catalog request failed: HTTP ${response.code}")
+             val array = JSONArray(response.body.string())
+             List(array.length()) { i ->
+                 val o = array.getJSONObject(i)
++                val tagArray = o.getJSONArray("tags")
+                 Book(
+                     id = o.getString("id"),
+                     title = o.getString("title"),
+                     author = o.getString("author"),
+                     coverUrl = o.getString("coverUrl"),
+-                    tags = List(o.getJSONArray("tags").length()) { j -> o.getJSONArray("tags").getString(j) },
++                    tags = List(tagArray.length()) { j -> tagArray.getString(j) },
+                 )
+             }
+         }
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt	2026-11-21 04:17:30.082261600 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt	2026-11-21 18:11:11.072256800 +0700
+@@ -1,10 +1,5 @@
+ package vn.shelftap.slop
+ 
+-import androidx.compose.animation.core.RepeatMode
+-import androidx.compose.animation.core.animateFloat
+-import androidx.compose.animation.core.infiniteRepeatable
+-import androidx.compose.animation.core.rememberInfiniteTransition
+-import androidx.compose.animation.core.tween
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+@@ -14,26 +9,34 @@
+ import androidx.compose.foundation.lazy.LazyColumn
+ import androidx.compose.foundation.lazy.LazyRow
+ import androidx.compose.foundation.lazy.items
++import androidx.compose.material3.Button
++import androidx.compose.material3.CircularProgressIndicator
+ import androidx.compose.material3.OutlinedTextField
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.derivedStateOf
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.remember
++import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+-import androidx.compose.ui.draw.blur
+-import androidx.compose.ui.draw.shadow
+-import androidx.compose.ui.graphics.graphicsLayer
+ import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.unit.dp
+ import androidx.lifecycle.viewmodel.compose.viewModel
+ import coil3.compose.AsyncImage
+ import coil3.request.ImageRequest
+-import coil3.size.Size
++
++/** Cover is shown at 72dp; decode at 3x density instead of full resolution. */
++private const val COVER_SIZE_PX = 216
+ 
+ @Composable
+ fun CatalogScreen(vm: CatalogViewModel = viewModel()) {
+-    val shown = vm.books.sortedBy { it.title }.filter { it.title.contains(vm.query, ignoreCase = true) }
++    val books = vm.books
++    val sorted = remember(books) { books.sortedBy { it.title } }
++    val shown by remember(sorted) {
++        derivedStateOf { sorted.filter { it.title.contains(vm.appliedQuery, ignoreCase = true) } }
++    }
++    val recent = remember(books) { books.take(10) }
++    val authorCount = remember(books) { books.map { it.author }.distinct().size }
+ 
+     Column {
+         OutlinedTextField(
+@@ -42,48 +45,57 @@
+             label = { Text("Search") },
+             modifier = Modifier.fillMaxWidth().padding(8.dp),
+         )
+-        Stats(vm.books)
+-        RecentRow(vm.books.take(10))
+-        LazyColumn {
+-            items(shown) { book -> BookRow(book) }
++        when {
++            vm.isLoading -> Box(
++                Modifier.fillMaxWidth().padding(16.dp),
++                contentAlignment = Alignment.Center,
++            ) { CircularProgressIndicator() }
++
++            vm.loadFailed -> Column(
++                Modifier.fillMaxWidth().padding(16.dp),
++                horizontalAlignment = Alignment.CenterHorizontally,
++            ) {
++                Text("Couldn't load the catalog.")
++                Button(onClick = vm::retry) { Text("Retry") }
++            }
++
++            books.isEmpty() -> Text("No books in the catalog yet.", modifier = Modifier.padding(8.dp))
++
++            else -> {
++                Stats(count = books.size, authors = authorCount)
++                LazyRow {
++                    items(recent, key = { it.id }) { book ->
++                        Text(book.title, modifier = Modifier.padding(8.dp))
++                    }
++                }
++                if (shown.isEmpty()) {
++                    Text("No books match \"${vm.appliedQuery}\".", modifier = Modifier.padding(8.dp))
++                }
++                LazyColumn(Modifier.weight(1f)) {
++                    items(shown, key = { it.id }) { book -> BookRow(book) }
++                }
++            }
+         }
+     }
+ }
+ 
+ @Composable
+-private fun Stats(books: List<Book>) {
+-    val authors by remember(books) { derivedStateOf { books.map { it.author }.distinct().size } }
+-    Text("${books.size} books by $authors authors", modifier = Modifier.padding(horizontal = 8.dp))
+-}
+-
+-@Composable
+-private fun RecentRow(recent: List<Book>) {
+-    LazyRow {
+-        items(recent, key = { it.id }) { book ->
+-            Text(book.title, modifier = Modifier.padding(8.dp))
+-        }
+-    }
++private fun Stats(count: Int, authors: Int) {
++    Text("$count books by $authors authors", modifier = Modifier.padding(horizontal = 8.dp))
+ }
+ 
+ @Composable
+ fun BookRow(book: Book) {
+-    val pulse by rememberInfiniteTransition(label = "pulse")
+-        .animateFloat(0.9f, 1f, infiniteRepeatable(tween(900), RepeatMode.Reverse), label = "pulse")
+     val context = LocalContext.current
+-    Row(
+-        modifier = Modifier
+-            .fillMaxWidth()
+-            .padding(8.dp)
+-            .shadow(12.dp)
+-            .graphicsLayer { alpha = pulse },
+-    ) {
+-        Box(Modifier.size(72.dp).blur(4.dp)) {
+-            AsyncImage(
+-                model = ImageRequest.Builder(context).data(book.coverUrl).size(Size.ORIGINAL).build(),
+-                contentDescription = book.title,
+-                modifier = Modifier.size(72.dp),
+-            )
+-        }
++    val request = remember(book.coverUrl, context) {
++        ImageRequest.Builder(context).data(book.coverUrl).size(COVER_SIZE_PX).build()
++    }
++    Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
++        AsyncImage(
++            model = request,
++            contentDescription = book.title,
++            modifier = Modifier.size(72.dp),
++        )
+         Column(Modifier.padding(start = 8.dp)) {
+             Text(book.title)
+             Text(book.author)
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt	2026-11-21 04:17:29.041704900 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/CatalogViewModel.kt	2026-11-21 18:11:06.305105900 +0700
+@@ -4,19 +4,63 @@
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.setValue
+ import androidx.lifecycle.ViewModel
+-import kotlinx.coroutines.runBlocking
++import androidx.lifecycle.viewModelScope
++import kotlinx.coroutines.flow.MutableStateFlow
++import kotlinx.coroutines.flow.debounce
++import kotlinx.coroutines.flow.distinctUntilChanged
++import kotlinx.coroutines.launch
++import org.json.JSONException
++import java.io.IOException
+ 
+ class CatalogViewModel(private val repo: CatalogRepository = CatalogRepository()) : ViewModel() {
+     var books by mutableStateOf<List<Book>>(emptyList())
+         private set
+     var query by mutableStateOf("")
+         private set
++    var isLoading by mutableStateOf(true)
++        private set
++    var loadFailed by mutableStateOf(false)
++        private set
++
++    /** The query used for filtering; trails [query] by a short debounce so typing does not refilter every keystroke. */
++    var appliedQuery by mutableStateOf("")
++        private set
++
++    private val queryInput = MutableStateFlow("")
+ 
+     init {
+-        books = runBlocking { repo.load() }
++        viewModelScope.launch {
++            queryInput.debounce(SEARCH_DEBOUNCE_MS).distinctUntilChanged().collect { appliedQuery = it }
++        }
++        load()
+     }
+ 
+     fun onQueryChange(value: String) {
+         query = value
++        queryInput.value = value
++    }
++
++    fun retry() {
++        load()
++    }
++
++    private fun load() {
++        viewModelScope.launch {
++            isLoading = true
++            loadFailed = false
++            try {
++                books = repo.load()
++            } catch (e: IOException) {
++                loadFailed = true
++            } catch (e: JSONException) {
++                loadFailed = true
++            } finally {
++                isLoading = false
++            }
++        }
++    }
++
++    private companion object {
++        const val SEARCH_DEBOUNCE_MS = 250L
+     }
+ }
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt	2026-11-21 04:17:31.198879500 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/MainActivity.kt	2026-11-21 18:11:11.952253100 +0700
+@@ -9,10 +9,4 @@
+         super.onCreate(savedInstanceState)
+         setContent { CatalogScreen() }
+     }
+-
+-    @Deprecated("Deprecated in Java")
+-    override fun onBackPressed() {
+-        // ask before leaving the catalog
+-        super.onBackPressed()
+-    }
+ }
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/Net.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/Net.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/Net.kt	2026-11-21 04:17:26.374924800 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/Net.kt	2026-11-21 18:10:56.727844000 +0700
+@@ -2,25 +2,17 @@
+ 
+ import okhttp3.OkHttpClient
+ import okhttp3.logging.HttpLoggingInterceptor
+-import java.security.SecureRandom
+-import java.security.cert.X509Certificate
+-import javax.net.ssl.SSLContext
+-import javax.net.ssl.TrustManager
+-import javax.net.ssl.X509TrustManager
+ 
+-/** One shared HTTP client for the API and the cover images. */
++/** One shared HTTP client for the API and the cover images. Uses the system TLS trust store. */
+ object Net {
+     val client: OkHttpClient by lazy {
+-        val trustAll = object : X509TrustManager {
+-            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
+-            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
+-            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+-        }
+-        val ssl = SSLContext.getInstance("TLS").apply { init(null, arrayOf<TrustManager>(trustAll), SecureRandom()) }
+         OkHttpClient.Builder()
+-            .sslSocketFactory(ssl.socketFactory, trustAll)
+-            .hostnameVerifier { _, _ -> true }
+-            .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
++            .apply {
++                // Debug builds only; never log bodies or headers in release.
++                if (BuildConfig.DEBUG) {
++                    addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
++                }
++            }
+             .build()
+     }
+ }
+diff -ruN -x build -x .gradle /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt
+--- /mnt/01DC198BE9192500/github/Schooldev/3S-MobileApp/optimization/study/e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt	2026-11-21 04:17:27.124115800 +0700
++++ /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/trials/e5/e5-claude-none-r1/auto/app/src/main/kotlin/vn/shelftap/slop/TokenStore.kt	2026-11-21 18:11:00.957962000 +0700
+@@ -1,20 +1,78 @@
+ package vn.shelftap.slop
+ 
+ import android.content.Context
++import android.security.keystore.KeyGenParameterSpec
++import android.security.keystore.KeyProperties
++import android.util.Base64
+ import android.util.Log
++import java.security.KeyStore
++import javax.crypto.Cipher
++import javax.crypto.KeyGenerator
++import javax.crypto.SecretKey
++import javax.crypto.spec.GCMParameterSpec
+ 
+-/** Keeps the member session token between launches. */
++/**
++ * Keeps the member session token between launches.
++ * The token is encrypted with an AES-GCM key held in the Android Keystore before it is written to disk.
++ */
+ class TokenStore(context: Context) {
+     private val prefs = context.getSharedPreferences("session", Context.MODE_PRIVATE)
+ 
+     fun save(token: String) {
+-        prefs.edit().putString("token", token).apply()
++        val cipher = Cipher.getInstance(TRANSFORMATION)
++        cipher.init(Cipher.ENCRYPT_MODE, secretKey())
++        val iv = cipher.iv
++        val cipherText = cipher.doFinal(token.toByteArray(Charsets.UTF_8))
++        val blob = Base64.encodeToString(iv + cipherText, Base64.NO_WRAP)
++        prefs.edit().putString(PREF_TOKEN, blob).apply()
+     }
+ 
+-    fun load(): String? = prefs.getString("token", null)
++    fun load(): String? {
++        val blob = prefs.getString(PREF_TOKEN, null) ?: return null
++        return try {
++            val bytes = Base64.decode(blob, Base64.NO_WRAP)
++            val cipher = Cipher.getInstance(TRANSFORMATION)
++            cipher.init(
++                Cipher.DECRYPT_MODE,
++                secretKey(),
++                GCMParameterSpec(GCM_TAG_BITS, bytes.copyOfRange(0, IV_BYTES)),
++            )
++            String(cipher.doFinal(bytes, IV_BYTES, bytes.size - IV_BYTES), Charsets.UTF_8)
++        } catch (e: Exception) {
++            // Unreadable or tampered value (or key lost): treat as signed out.
++            null
++        }
++    }
+ 
+     fun clear() {
+         if (BuildConfig.DEBUG) Log.d("TokenStore", "session cleared")
+-        prefs.edit().remove("token").apply()
++        prefs.edit().remove(PREF_TOKEN).remove("token").apply()
++    }
++
++    private fun secretKey(): SecretKey {
++        val keyStore = KeyStore.getInstance(ANDROID_KEYSTORE).apply { load(null) }
++        (keyStore.getEntry(KEY_ALIAS, null) as? KeyStore.SecretKeyEntry)?.let { return it.secretKey }
++
++        val generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEYSTORE)
++        generator.init(
++            KeyGenParameterSpec.Builder(
++                KEY_ALIAS,
++                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT,
++            )
++                .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
++                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
++                .setKeySize(256)
++                .build(),
++        )
++        return generator.generateKey()
++    }
++
++    private companion object {
++        const val ANDROID_KEYSTORE = "AndroidKeyStore"
++        const val KEY_ALIAS = "shelftap_session_key"
++        const val TRANSFORMATION = "AES/GCM/NoPadding"
++        const val PREF_TOKEN = "token_enc"
++        const val IV_BYTES = 12
++        const val GCM_TAG_BITS = 128
+     }
+ }
