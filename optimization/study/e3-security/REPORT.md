@@ -85,7 +85,7 @@ debuggable=true: 10 (all survivors, which are debug builds); minSdk below the su
 
 fp categories: {'library': 42, 'other': 20, 'debug-artifact': 11}; build-type rows removed in the third reading: 10 tp, 11 fp
 
-The primary rule counts `debuggable=true` on a debug build as a true positive (automatic, factual check) while the manual rules call a debug certificate or `BuildConfig.DEBUG` on a debug-type survivor a false positive ("describes the build type"). That is inconsistent. The third row removes every finding that only describes the debug build type of a debug-type artifact (10 tp, 11 fp); the second row is the opposite reading, in which a scan of the artifact counts library and debug-artifact findings as real. Precision runs from 0.24 to 0.85 depending on the reading, so the headline 0.29 describes MobSF's default output on these artifacts, not a property of the apps.
+The primary rule counts `debuggable=true` on a debug build as a true positive (automatic, factual check) while the manual rules call a debug certificate or `BuildConfig.DEBUG` on a debug-type survivor a false positive ("describes the build type"). That is inconsistent. The third row removes every finding that only describes the debug build type of a debug-type artifact (10 tp, 11 fp); the second row is the opposite reading, in which a scan of the artifact counts library and debug-artifact findings as real. Precision runs from 0.24 to 0.81 depending on the reading, so the headline 0.29 describes MobSF's default output on these artifacts, not a property of the apps.
 
 ## 5. Detector against tool: slop-scan (E1) vs MobSF
 
