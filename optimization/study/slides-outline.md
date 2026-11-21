@@ -81,6 +81,7 @@ Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao th�
 - **D4** Nghiên cứu liên quan và khoảng trống (ARTICLE.md §1.2).
 
 ## Hình cần chuẩn bị (thuộc `figures/`, làm khi có số liệu)
+Kế hoạch đầy đủ (mã F01 đến F21, cột CSV, kiểu biểu đồ, quy tắc chú thích, điều kiện chờ) nằm ở `figures/PLAN.md`; bảng dưới là tóm tắt cho slide.
 | Hình | Dùng ở | Nguồn dữ liệu |
 |---|---|---|
 | tần suất theo lớp và kiểu prompt | S5, bài §5.2.2 | `e1-corpus/results/findings.csv` ghép `runs.csv` |

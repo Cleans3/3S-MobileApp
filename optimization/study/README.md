@@ -16,6 +16,7 @@ Source outline: [De_cuong_AI_Coding_UI_UX_Hieu_nang_Bao_mat_ban_mo_rong.docx](De
 | [02-taxonomy.md](02-taxonomy.md) | the frozen problem catalogue: 13 performance, 12 security, 6 UI, 2 staleness IDs (plus the accepted addition X01, used in E4 only), each with cause (evidenced or hypothesised), known fix, source, MASVS/MASWE mapping, where it is measured; mapping of the outline's catalogue | written |
 | [references.md](references.md) | every cited source with how it was verified and every figure used; list of candidates dropped as unverifiable (97 entries) | written |
 | [ARTICLE.md](ARTICLE.md) | the final article, in Vietnamese: Chapters 1-4 (overview and related work, theory = the baseline layer, taxonomy as problem-cause-solution, method) complete; Chapters 5-6 are a skeleton whose every gap is a `TODO[code]` naming the CSV or REPORT the number must come from; no result number yet | Ch1-4 written, Ch5-6 skeleton, filled in P3 |
+| [figures/PLAN.md](figures/PLAN.md) | figure plan F01 to F21: what each shows, chart type, exact CSV columns, annotation rules, what it waits on; no images yet | plan |
 | [slides-outline.md](slides-outline.md) | slide outline for the 10-minute talk (timing per the source outline, section VII); result slides are placeholders with source paths | skeleton |
 | [presentation-script.md](presentation-script.md) | speaker script in Vietnamese with per-segment timing, Q&A preparation and a rehearsal checklist; numbers are placeholders | skeleton |
 
