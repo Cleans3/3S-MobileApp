@@ -5,3 +5,4 @@ v1.3 (A4 appended in section 15; v1.2 = commit a6b60e3) 20ae82169dde59e013cafba7
 v1.4 (A5 appended in section 15; v1.3 = 20ae8216) 0dbcd6010aa447acbce83c7b9e3ac17eda0550bda40f2a71c3744fe6a3302446
 v1.5 (A6 appended in section 15; v1.4 = commit 8cadd9a) 6e253eb611a496534602e4fc4ec771bc8299bd261f19f27b0e8a22c177f870e6
 v1.6 (A7 appended in section 15; v1.5 = commit 162e838) e575089324c375943bc0105ade1e4f3dc4e7793a604de90909dbcda80576b0b2
+v1.7 (A8 erratum to A7 appended in section 15; v1.6 = commit 7ed64bb) b0528a0123b8a339d0d3b3cd586589df69a7fdfc6f5e6e8dcda0fb17448f09d2
