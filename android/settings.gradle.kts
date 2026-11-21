@@ -16,3 +16,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "shelftap-android"
 include(":app")
+include(":optlab")
+include(":benchmark")

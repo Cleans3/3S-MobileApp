@@ -1,0 +1,7 @@
+# logcat from the emulator (lowend34), A variant of P01+P09 at n=20000 rows, reproduced by hand after the final run.
+# Command: adb shell am start -W -n shelftap.optlab/shelftap.optlab.MainActivity --es factor P01P09 --es variant A --ei n 20000
+11-21 06:50:59.617 16089 16089 W shelftap.optlab: Throwing OutOfMemoryError "Failed to allocate a 184 byte allocation with 189760 free bytes and 185KB until OOM, target footprint 201326592, growth limit 201326592; giving
+11-21 06:50:59.618 16089 16089 E ComposeInternal: java.lang.OutOfMemoryError: Failed to allocate a 184 byte allocation with 189760 free bytes and 185KB until OOM, target footprint 201326592, growth limit 201326592; givin
+11-21 06:50:59.619 16089 16089 E AndroidRuntime: FATAL EXCEPTION: main
+11-21 06:50:59.619 16089 16089 E AndroidRuntime: java.lang.OutOfMemoryError: Failed to allocate a 184 byte allocation with 189760 free bytes and 185KB until OOM, target footprint 201326592, growth limit 201326592; giving
+11-21 06:50:59.697   543  1748 I ActivityManager: Process shelftap.optlab (pid 16089) has died: fg  TOP
