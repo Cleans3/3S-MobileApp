@@ -306,7 +306,10 @@ Authors of the protocol and guardrail (beta-f2-1) do not write the detector; the
 ## 15. Amendments (append-only)
 | Date | Section | Change | Decided before seeing outcome data? | By |
 |---|---|---|---|---|
-| (none at v1.0) | | | | |
+| 2026-11-21 | §9, §3 (G3) | **A1, clarification, no change of the held-out set.** No held-out substitution was made: the reserve substitutes (U03, S09) were not used; f2-2 reported this to alpha before the campaign started at 07:13. G3 uses validated held-out rules only: a held-out rule enters the G3 contrast iff it passes the §5 gate; a held-out rule that fails the gate (U05 is the one at risk) is reported as excluded from G3, with the reason, and stays in the descriptive tables. The instructed and held-out sets of §9 are otherwise unchanged. | yes: made before any non-pilot E1 run was analysed; the guardrail text and the held-out list are unchanged since v1.0 | alpha instruction, written by beta-f2-1 |
+| 2026-11-21 | §4.2 (E2), §6.4 | **A2, E2 host-pressure exclusion rule.** An E2 iteration is dropped when host MemAvailable is below 1024 MB at the iteration start or when swap-in pages (pswpin) increase during it; the harness then runs extra rounds (at most 3 per factor and phase, the harness default) so each variant still reaches its planned number of iterations. Dropped iterations are never replaced by hand and are listed in e2-bench/results/exclusions.csv (iterations run, kept, dropped, per factor, phase and variant) and counted in the REPORT flow table. The rule keys on the state of the host only, never on a metric value. Wording taken from the harness (e2-bench/harness/run_bench.py, field exclusion_rule, written by beta-f2-3); alpha's own AMEND text was not received by the author after the session restart. | not established by the author: the rule was already in the harness when this amendment was written and a first full E2 run existed. Alpha to confirm the wording and the timing | alpha instruction, wording from run_bench.py, written by beta-f2-1 |
+
+Next amendment number: A3. Reserved for the E1 capability-sensitivity amendment from beta-f2-2 (arrives via alpha); amendments are appended as new table rows above, never edited.
 
 ## Appendix A. Power script
 The enumeration used for §6.5 (Python 3, standard library only, run with `python3 -I`):
