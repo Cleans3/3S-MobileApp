@@ -10,3 +10,4 @@ v1.8 (A9 appended in section 15, verbatim text in 15.1; v1.7 = commit e6dd562) 6
 v1.9 (A10 appended in section 15; v1.8 = commit 69e48ba) 66071159bde4e4a4b7e6a345442dc4e7d19ff8e07a752885d4a135544910d307
 v1.10 (A11 appended in section 15; v1.9 = commit 6c06385) 9cdfc1cd3fc889e7c2c4c0eebbc0a3699820ebe19197d70f848da4e11db4b146
 v1.11 (A12 erratum to A11 appended in section 15; v1.10 = commit 0f049e4) 8a8d9d5062e14c44ee1fb96eea7a33bb6a83dbae50ffcbf3f5a8d3dabf95fea5
+v1.12 (A13 appended in section 15; v1.11 = commit 13797a2) 3ee02b6094e1d1ee115a9b5b7b95e22cc7ab0d9dd6dbff84bf3305c4a833dce0
