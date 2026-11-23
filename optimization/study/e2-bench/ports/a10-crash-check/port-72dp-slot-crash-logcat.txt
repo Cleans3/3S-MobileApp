@@ -1,0 +1,293 @@
+--------- beginning of system
+11-21 17:46:21.594   524   589 I ActivityManager: Force stopping shelftap.optlab appid=10192 user=0: from pid 4512
+11-21 17:46:21.595   524   544 D DisplayManagerService: Drop pending events for gone uid 10192
+11-21 17:46:21.599   524   589 I ActivityManager: Killing 4472:shelftap.optlab/u0a192 (adj 0): stop shelftap.optlab due to from pid 4512
+11-21 17:46:21.600   524   589 W ActivityTaskManager: Force removing ActivityRecord{fd102e5 u0 shelftap.optlab/.MainActivity t637 f}}: app died, no saved state
+11-21 17:46:21.605   728   767 V WindowManagerShell: Transition requested: android.os.BinderProxy@4724788 TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=637 displayId=0 isRunning=false baseIntent=Intent { flg=0x10000000 cmp=shelftap.optlab/.MainActivity } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{shelftap.optlab/shelftap.optlab.MainActivity} numActivities=0 lastActiveTime=360254 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@1a41521} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=null launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+--------- beginning of main
+11-21 17:46:21.614   400   400 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+11-21 17:46:21.619   524  1392 W AppSearchIcing: icing-search-engine.cc:283: Error: 5, Message: Document (com.google.android.googlequicksearchbox$OneSearchZeroStateGoogleSuggestions/default, zp) not found.
+11-21 17:46:21.622  1151  1711 D OneSearchSuggestProvider: Created the binder channel successfully for end point service =com.google.android.apps.search.googleapp.search.suggest.plugins.onesearch.server.OneSearchSuggestService , mChannel=z1{delegate=s1{logId=37, target=directaddress:///AndroidComponentAddress%5BIntent%20%7B%20act=grpc.io.action.BIND%20cmp=com.google.android.googlequicksearchbox/com.google.android.apps.search.googleapp.search.suggest.plugins.onesearch.server.OneSearchSuggestService%20%7D%5D}} , mOneSearchConnection=X1.T@6de94ce
+11-21 17:46:21.624   337   337 I Zygote  : Process 4472 exited due to signal 9 (Killed)
+11-21 17:46:21.626   524  1023 I ImeTracker: shelftap.optlab:520484f8: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_REMOVE_CLIENT
+11-21 17:46:21.627   524  1023 I ImeTracker: shelftap.optlab:520484f8: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-21 17:46:21.636  1339  1620 I AiAiEcho: Predicting[0]: 
+11-21 17:46:21.636  1339  1620 I AiAiEcho: EchoTargets: 
+11-21 17:46:21.636  1339  1620 I AiAiEcho: Filtered by AiAi flag check: 
+11-21 17:46:21.636  1339  1620 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata: 
+11-21 17:46:21.637  1339  1620 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-21 17:46:21.637   524  1444 W WindowManager: Failed to deliver inset control state change to w=Window{4bc3a7d u0 shelftap.optlab/shelftap.optlab.MainActivity}
+11-21 17:46:21.637   524  1444 W WindowManager: android.os.DeadObjectException
+11-21 17:46:21.637   524  1444 W WindowManager: 	at android.os.BinderProxy.transactNative(Native Method)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at android.os.BinderProxy.transact(BinderProxy.java:584)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at android.view.IWindow$Stub$Proxy.insetsControlChanged(IWindow.java:479)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.WindowState.notifyInsetsControlChanged(WindowState.java:3802)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.InsetsStateController.lambda$notifyPendingInsetsControlChanged$3(InsetsStateController.java:343)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.InsetsStateController.$r8$lambda$8yykPRG1GyNq_J17QvL9d5xANMc(InsetsStateController.java:0)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.InsetsStateController$$ExternalSyntheticLambda2.run(R8$$SyntheticClass:0)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.WindowAnimator.executeAfterPrepareSurfacesRunnables(WindowAnimator.java:294)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.RootWindowContainer.performSurfacePlacementNoTrace(RootWindowContainer.java:811)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.RootWindowContainer.performSurfacePlacement(RootWindowContainer.java:756)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.WindowSurfacePlacer.performSurfacePlacementLoop(WindowSurfacePlacer.java:177)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.WindowSurfacePlacer.performSurfacePlacement(WindowSurfacePlacer.java:126)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.WindowManagerService.relayoutWindow(WindowManagerService.java:2410)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.Session.relayout(Session.java:249)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at android.view.IWindowSession$Stub.onTransact(IWindowSession.java:701)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at com.android.server.wm.Session.onTransact(Session.java:178)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at android.os.Binder.execTransactInternal(Binder.java:1339)
+11-21 17:46:21.637   524  1444 W WindowManager: 	at android.os.Binder.execTransact(Binder.java:1275)
+11-21 17:46:21.641   524  1676 I WindowManager: WIN DEATH: Window{4bc3a7d u0 shelftap.optlab/shelftap.optlab.MainActivity}
+11-21 17:46:21.641   524  1676 W InputManager-JNI: Input channel object '4bc3a7d shelftap.optlab/shelftap.optlab.MainActivity (client)' was disposed without first being removed with the input manager!
+11-21 17:46:21.644   524   546 V WindowManager: Unknown focus tokens, dropping reportFocusChanged
+11-21 17:46:21.645   524  3503 W ProcessStats: Tracking association SourceState{47d2369 com.google.android.apps.nexuslauncher/10169 BTop #3509} whose proc state 2 is better than process ProcessState{f581bb3 com.google.android.googlequicksearchbox:search/10132 pkg=com.google.android.googlequicksearchbox} proc state 14 (2 skipped)
+11-21 17:46:21.647   524   931 V ActivityManager: Got obituary of 4472:shelftap.optlab
+11-21 17:46:21.678   891   891 D CarrierSvcBindHelper: onHandleForceStop: [shelftap.optlab]
+11-21 17:46:21.679   891   891 D CarrierSvcBindHelper: No carrier app for: 0
+11-21 17:46:21.680   842  1031 D BtGatt.ScanManager: uid 10128 isForeground true scanMode -1
+11-21 17:46:21.689  1548  1548 I A       : Created gRPC endpoint to "search" for service class com.google.android.apps.search.googleapp.search.suggest.plugins.onesearch.server.OneSearchSuggestService
+11-21 17:46:21.703  1548  1548 W A       : Can't get WAA status for Mavatar!
+11-21 17:46:21.703  1548  1548 W A       : java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Class java.lang.Object.getClass()' on a null object reference
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.apps.tiktok.dataservice.z.b(PG:1)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.apps.tiktok.dataservice.at.a(PG:1)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.apps.tiktok.tracing.ec.a(PG:2)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.aj.a(PG:2)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.ac.apply(PG:1)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.h.e(PG:2)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.j.run(PG:9)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.bf.execute(PG:1)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.d.i(PG:1)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.d.iq(PG:5)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.j.h(PG:2)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.ax.d(PG:1)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.apps.tiktok.dataservice.au.a(PG:5)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.apps.tiktok.dataservice.dr.c(PG:5)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.apps.tiktok.dataservice.dp.run(PG:6)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.apps.tiktok.concurrent.ak.run(PG:6)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.apps.tiktok.tracing.ei.run(PG:2)
+11-21 17:46:21.703  1548  1548 W A       : 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.dy.a(PG:1)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.cv.run(PG:4)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.google.common.util.concurrent.dz.run(PG:1)
+11-21 17:46:21.703  1548  1548 W A       : 	at android.os.Handler.handleCallback(Handler.java:958)
+11-21 17:46:21.703  1548  1548 W A       : 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-21 17:46:21.703  1548  1548 W A       : 	at android.os.Looper.loopOnce(Looper.java:205)
+11-21 17:46:21.703  1548  1548 W A       : 	at android.os.Looper.loop(Looper.java:294)
+11-21 17:46:21.703  1548  1548 W A       : 	at android.app.ActivityThread.main(ActivityThread.java:8177)
+11-21 17:46:21.703  1548  1548 W A       : 	at java.lang.reflect.Method.invoke(Native Method)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:552)
+11-21 17:46:21.703  1548  1548 W A       : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:971)
+11-21 17:46:21.706   728   767 V WindowManagerShell: onTransitionReady android.os.BinderProxy@4724788: {id=19 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@c75e7d2} m=CLOSE f=NONE leash=Surface(name=Task=637)/@0x9d33d46 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@941e0a3} m=TO_FRONT f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x5c09b07 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{8512b8a token=android.os.Binder@a2f81f5})/@0xa85434 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+11-21 17:46:21.707   728   767 V WindowManagerShell: Playing animation for (#19)android.os.BinderProxy@4724788@0
+11-21 17:46:21.707   728   767 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultMixedHandler@97c8246
+11-21 17:46:21.707   728   767 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@1d8fc07
+11-21 17:46:21.707   728   767 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@a97a134
+11-21 17:46:21.707   728   767 V WindowManagerShell:  try handler com.android.wm.shell.recents.RecentsTransitionHandler@7e5ab5d
+11-21 17:46:21.707   728   767 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+11-21 17:46:21.707   728   767 V WindowManagerShell:  try handler com.android.wm.shell.pip.PipTransition@dee7cd2
+11-21 17:46:21.707   728   767 V WindowManagerShell:  try handler com.android.wm.shell.splitscreen.StageCoordinator@4ff51a3
+11-21 17:46:21.707   728   767 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@2a79ca0
+11-21 17:46:21.707   728   767 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=19 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@c75e7d2} m=CLOSE f=NONE leash=Surface(name=Task=637)/@0x9d33d46 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@941e0a3} m=TO_FRONT f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x5c09b07 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{8512b8a token=android.os.Binder@a2f81f5})/@0xa85434 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+11-21 17:46:21.707   728   767 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@bed2faf, appThread = android.app.IApplicationThread$Stub$Proxy@8decfbc, debugName = LauncherToDream }}
+11-21 17:46:21.707   728   767 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@191eb45, appThread = android.app.IApplicationThread$Stub$Proxy@d2e629a, debugName = QuickstepLaunchHome }}
+11-21 17:46:21.707   728   767 V WindowManagerShell:  Delegate animation for #19 to null
+11-21 17:46:21.707   728   767 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultTransitionHandler@6d6a059
+11-21 17:46:21.707   728   767 V WindowManagerShell: start default transition animation, info = {id=19 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@c75e7d2} m=CLOSE f=NONE leash=Surface(name=Task=637)/@0x9d33d46 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@941e0a3} m=TO_FRONT f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x5c09b07 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{8512b8a token=android.os.Binder@a2f81f5})/@0xa85434 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+11-21 17:46:21.708   524   543 V WindowManager: Sent Transition #19 createdAt=11-21 17:46:21.600 via request=TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=637 displayId=0 isRunning=false baseIntent=Intent { flg=0x10000000 cmp=shelftap.optlab/.MainActivity } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{shelftap.optlab/shelftap.optlab.MainActivity} numActivities=0 lastActiveTime=360254 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{771713f Task{b13e861 #637 type=standard A=10192:shelftap.optlab}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=null launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+11-21 17:46:21.708   728   767 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@e294759 animAttr=0x10 type=CLOSE isEntrance=true
+11-21 17:46:21.708   524   543 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+11-21 17:46:21.709   524   543 V WindowManager:     info={id=19 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{771713f Task{b13e861 #637 type=standard A=10192:shelftap.optlab}}} m=CLOSE f=NONE leash=Surface(name=Task=637)/@0xcd84299 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{RemoteToken{5744265 Task{e47b844 #1 type=home}}} m=TO_FRONT f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x711b5dc sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{8512b8a token=android.os.Binder@a2f81f5})/@0xaf9aabe sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+11-21 17:46:21.710   728   767 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@10df5cc animAttr=0x11 type=CLOSE isEntrance=false
+11-21 17:46:21.711   728   767 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@6d6a059
+11-21 17:46:21.724   524  3503 I ImeTracker: com.google.android.apps.nexuslauncher:29b04aa0: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+11-21 17:46:21.725   524  3503 I ImeTracker: com.google.android.apps.nexuslauncher:29b04aa0: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-21 17:46:21.726  1284  1284 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3227 
+11-21 17:46:21.726  1284  1284 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 0, unlocked = true
+11-21 17:46:21.727  1284  1284 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.google.android.apps.nexuslauncher fieldId=0 fieldName=null extras=null}, false)
+11-21 17:46:21.727  1284  1284 I GoogleInputMethodService: GoogleInputMethodService.shouldHideHeaderOnInitialState():4008 ShouldHideHeaderOnInitialState = false
+11-21 17:46:21.727  1284  1284 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+11-21 17:46:21.729   524   547 W WindowManager: Failed to deliver inset control state change to w=Window{4bc3a7d u0 shelftap.optlab/shelftap.optlab.MainActivity EXITING}
+11-21 17:46:21.729   524   547 W WindowManager: android.os.DeadObjectException
+11-21 17:46:21.729   524   547 W WindowManager: 	at android.os.BinderProxy.transactNative(Native Method)
+11-21 17:46:21.729   524   547 W WindowManager: 	at android.os.BinderProxy.transact(BinderProxy.java:584)
+11-21 17:46:21.729   524   547 W WindowManager: 	at android.view.IWindow$Stub$Proxy.insetsControlChanged(IWindow.java:479)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.WindowState.notifyInsetsControlChanged(WindowState.java:3802)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.InsetsStateController.lambda$notifyPendingInsetsControlChanged$3(InsetsStateController.java:343)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.InsetsStateController.$r8$lambda$8yykPRG1GyNq_J17QvL9d5xANMc(InsetsStateController.java:0)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.InsetsStateController$$ExternalSyntheticLambda2.run(R8$$SyntheticClass:0)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.WindowAnimator.executeAfterPrepareSurfacesRunnables(WindowAnimator.java:294)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.RootWindowContainer.performSurfacePlacementNoTrace(RootWindowContainer.java:811)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.RootWindowContainer.performSurfacePlacement(RootWindowContainer.java:756)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.WindowSurfacePlacer.performSurfacePlacementLoop(WindowSurfacePlacer.java:177)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.WindowSurfacePlacer.performSurfacePlacement(WindowSurfacePlacer.java:126)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.WindowSurfacePlacer.performSurfacePlacement(WindowSurfacePlacer.java:115)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.wm.WindowSurfacePlacer$Traverser.run(WindowSurfacePlacer.java:57)
+11-21 17:46:21.729   524   547 W WindowManager: 	at android.os.Handler.handleCallback(Handler.java:958)
+11-21 17:46:21.729   524   547 W WindowManager: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-21 17:46:21.729   524   547 W WindowManager: 	at android.os.Looper.loopOnce(Looper.java:205)
+11-21 17:46:21.729   524   547 W WindowManager: 	at android.os.Looper.loop(Looper.java:294)
+11-21 17:46:21.729   524   547 W WindowManager: 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-21 17:46:21.729   524   547 W WindowManager: 	at com.android.server.ServiceThread.run(ServiceThread.java:46)
+11-21 17:46:21.872   728   841 D EGL_emulation: app_time_stats: avg=26800.95ms min=33.53ms max=53568.37ms count=2
+11-21 17:46:21.941  1151  1151 D SearchTargetUtil:  query= size=5
+11-21 17:46:21.942  1151  1151 D SearchTargetUtil: layoutType=extra_tall_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{bitmap_url=data:image/jpeg;base64,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,suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=true,is_personal=false,suggest_raw_text=peter june simon,group_id=web350624,response_id=c3857f42-d2c6-46c7-ae3c-7f03cbed1855,support_query_builder=false,} searchAction=Peter June Simon searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_loggin
+11-21 17:46:21.942  1151  1151 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=riemann hypothesis,group_id=web350624,response_id=c3857f42-d2c6-46c7-ae3c-7f03cbed1855,support_query_builder=false,} searchAction=riemann hypothesis searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 7dbd58ab-fbc2-4f9f-ba7c-a9cb87cca60f
+11-21 17:46:21.942  1151  1151 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=lucia gta6,group_id=web350624,response_id=c3857f42-d2c6-46c7-ae3c-7f03cbed1855,support_query_builder=false,} searchAction=lucia gta6 searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: bc0ed17e-4a96-4048-a0b4-5e9fb1654728
+11-21 17:46:21.942  1151  1151 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=anthropic ipo price,group_id=web350624,response_id=c3857f42-d2c6-46c7-ae3c-7f03cbed1855,support_query_builder=false,} searchAction=anthropic ipo price searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 63b7b5e6-ffca-41a0-b9b9-78fbdb5c98dd
+11-21 17:46:21.943  1151  1151 D SearchTargetUtil: layoutType=short_icon_row resultType=131072 packageName=com.google.android.googlequicksearchbox extras=Bundle{suggestion_type=33,suggest_truncate_start=false,is_answer=false,is_entity=false,is_personal=false,suggest_raw_text=gta6 ending,group_id=web350624,response_id=c3857f42-d2c6-46c7-ae3c-7f03cbed1855,support_query_builder=false,} searchAction=gta6 ending searchActionExtras=Bundle{learn_more_url=https://support.google.com/websearch/answer/106230?hl=106230,suggestion_action_text=Report this,should_start_for_result=true,allow_pinning=true,skip_logging_in_target_handler=false,suggestion_action_rpc=2,}ParentID: null targetID: 62ac1e13-8702-49fa-abc1-0d265da67a4f
+11-21 17:46:21.957   728   767 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#19)android.os.BinderProxy@4724788@0
+11-21 17:46:21.958   524   543 V WindowManager: Finish Transition #19: created at 11-21 17:46:21.600 collect-started=0.037ms request-sent=0.136ms started=12.638ms ready=12.621ms sent=97.473ms finished=358.144ms
+11-21 17:46:21.964   524   833 W WindowManager: Exception thrown during dispatchAppVisibility Window{4bc3a7d u0 shelftap.optlab/shelftap.optlab.MainActivity EXITING}
+11-21 17:46:21.964   524   833 W WindowManager: android.os.DeadObjectException
+11-21 17:46:21.964   524   833 W WindowManager: 	at android.os.BinderProxy.transactNative(Native Method)
+11-21 17:46:21.964   524   833 W WindowManager: 	at android.os.BinderProxy.transact(BinderProxy.java:584)
+11-21 17:46:21.964   524   833 W WindowManager: 	at android.view.IWindow$Stub$Proxy.dispatchAppVisibility(IWindow.java:546)
+11-21 17:46:21.964   524   833 W WindowManager: 	at com.android.server.wm.WindowState.sendAppVisibilityToClients(WindowState.java:3271)
+11-21 17:46:21.964   524   833 W WindowManager: 	at com.android.server.wm.WindowContainer.sendAppVisibilityToClients(WindowContainer.java:1221)
+11-21 17:46:21.964   524   833 W WindowManager: 	at com.android.server.wm.WindowToken.setClientVisible(WindowToken.java:409)
+11-21 17:46:21.964   524   833 W WindowManager: 	at com.android.server.wm.ActivityRecord.setClientVisible(ActivityRecord.java:6946)
+11-21 17:46:21.964   524   833 W WindowManager: 	at com.android.server.wm.ActivityRecord.postApplyAnimation(ActivityRecord.java:5637)
+11-21 17:46:21.964   524   833 W WindowManager: 	at com.android.server.wm.ActivityRecord.commitVisibility(ActivityRecord.java:5580)
+11-21 17:46:21.964   524   833 W WindowManager: 	at com.android.server.wm.Transition.finishTransition(Transition.java:1151)
+11-21 17:46:21.964   524   833 W WindowManager: 	at com.android.server.wm.TransitionController.finishTransition(TransitionController.java:868)
+11-21 17:46:21.964   524   833 W WindowManager: 	at com.android.server.wm.WindowOrganizerController.finishTransition(WindowOrganizerController.java:396)
+11-21 17:46:21.964   524   833 W WindowManager: 	at android.window.IWindowOrganizerController$Stub.onTransact(IWindowOrganizerController.java:286)
+11-21 17:46:21.964   524   833 W WindowManager: 	at com.android.server.wm.WindowOrganizerController.onTransact(WindowOrganizerController.java:181)
+11-21 17:46:21.964   524   833 W WindowManager: 	at android.os.Binder.execTransactInternal(Binder.java:1339)
+11-21 17:46:21.964   524   833 W WindowManager: 	at android.os.Binder.execTransact(Binder.java:1275)
+11-21 17:46:21.964   524   833 I Process : Sending signal. PID: 4472 SIG: 9
+11-21 17:46:21.968   524   546 W ActivityManager: setHasOverlayUi called on unknown pid: 4472
+11-21 17:46:21.978   728   767 V WindowManagerShell: Track 0 became idle
+11-21 17:46:21.979   728   767 V WindowManagerShell: All active transition animations finished
+11-21 17:46:21.998   400   400 E BpTransactionCompletedListener: Failed to transact (-32)
+--------- beginning of kernel
+11-21 17:46:22.226     0     0 I logd    : logdr: UID=2000 GID=2000 PID=4520 b tail=0 logMask=99 pid=0 start=0ns deadline=0ns
+11-21 17:46:22.900   728   841 D EGL_emulation: app_time_stats: avg=21.61ms min=8.21ms max=60.98ms count=45
+11-21 17:46:24.972   524  1446 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-21 17:46:25.218   716   716 I wpa_supplicant: wlan0: CTRL-EVENT-BEACON-LOSS 
+11-21 17:46:25.435   524   833 D CompatibilityChangeReporter: Compat change id reported: 161252188; UID 10192; state: DISABLED
+11-21 17:46:25.436   524   833 W ActivityTaskManager: callingPackage for (uid=2000, pid=4525) has no WPC
+11-21 17:46:25.436   524   833 D CompatibilityChangeReporter: Compat change id reported: 265464455; UID 10192; state: DISABLED
+11-21 17:46:25.436   524   833 D CompatibilityChangeReporter: Compat change id reported: 265452344; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 266124927; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 265451093; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 265456536; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 255940284; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 236283604; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 263959004; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 264304459; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 264301586; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 254631730; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 273509367; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 263259275; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 174042980; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 174042936; UID 10192; state: DISABLED
+11-21 17:46:25.437   524   833 D CompatibilityChangeReporter: Compat change id reported: 181136395; UID 10192; state: DISABLED
+11-21 17:46:25.438   524   833 D CompatibilityChangeReporter: Compat change id reported: 194480991; UID 10192; state: ENABLED
+11-21 17:46:25.443   524   833 D CompatibilityChangeReporter: Compat change id reported: 184838306; UID 10192; state: DISABLED
+11-21 17:46:25.443   524   833 D CompatibilityChangeReporter: Compat change id reported: 185004937; UID 10192; state: DISABLED
+11-21 17:46:25.444   524   833 D CompatibilityChangeReporter: Compat change id reported: 197654537; UID 10192; state: ENABLED
+11-21 17:46:25.445   524   833 D CompatibilityChangeReporter: Compat change id reported: 205907456; UID 10192; state: ENABLED
+11-21 17:46:25.464   728   767 V WindowManagerShell: Transition requested: android.os.BinderProxy@dc83d65 TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=638 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=shelftap.optlab/.MainActivity } baseActivity=ComponentInfo{shelftap.optlab/shelftap.optlab.MainActivity} topActivity=ComponentInfo{shelftap.optlab/shelftap.optlab.MainActivity} origActivity=null realActivity=ComponentInfo{shelftap.optlab/shelftap.optlab.MainActivity} numActivities=1 lastActiveTime=420370 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@2151a3a} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{3d606eb shelftap.optlab.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+11-21 17:46:25.467   524   833 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=shelftap.optlab/.MainActivity (has extras)} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+11-21 17:46:25.470   524   546 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10192; state: DISABLED
+11-21 17:46:25.472   524   554 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10192; state: ENABLED
+11-21 17:46:25.474   728   814 D SplashScreenView: Build android.window.SplashScreenView{d844ae1 V.E...... ......ID 0,0-0,0}
+11-21 17:46:25.474   728   814 D SplashScreenView: Icon: view: android.widget.ImageView{b2aa006 V.ED..... ......I. 0,0-0,0 #10204f0 android:id/splashscreen_icon_view} drawable: com.android.wm.shell.startingsurface.SplashscreenIconDrawableFactory$ImmobileIconDrawable@88c26c7 size: 280
+11-21 17:46:25.474   728   814 D SplashScreenView: Branding: view: android.view.View{c6754f4 G.ED..... ......I. 0,0-0,0 #10204ef android:id/splashscreen_branding_view} drawable: null size w: 0 h: 0
+11-21 17:46:25.498   400   400 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+11-21 17:46:25.499   524  1676 D CompatibilityChangeReporter: Compat change id reported: 168419799; UID 10192; state: DISABLED
+11-21 17:46:25.500   524  1676 D CompatibilityChangeReporter: Compat change id reported: 273564678; UID 10192; state: DISABLED
+11-21 17:46:25.506   337   337 D Zygote  : Forked child process 4529
+11-21 17:46:25.506   524   554 I ActivityManager: Start proc 4529:shelftap.optlab/u0a192 for next-top-activity {shelftap.optlab/shelftap.optlab.MainActivity}
+11-21 17:46:25.510   524   546 D OomAdjuster: Not killing cached processes
+11-21 17:46:25.513   524  3503 D CoreBackPreview: Window{f9b6bb6 u0 Splash Screen shelftap.optlab}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@adef78d, mPriority=0, mIsAnimationCallback=false}
+11-21 17:46:25.526   524   599 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10192; state: ENABLED
+11-21 17:46:25.530  4529  4529 I shelftap.optlab: Using CollectorTypeCC GC.
+11-21 17:46:25.532  4529  4529 W shelftap.optlab: Unexpected CPU variant for x86: x86_64.
+11-21 17:46:25.532  4529  4529 W shelftap.optlab: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+11-21 17:46:25.536   728   767 V WindowManagerShell: onTransitionReady android.os.BinderProxy@dc83d65: {id=20 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@56a80db} m=OPEN f=NONE leash=Surface(name=Task=638)/@0xc144e8c sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@5fdc778} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xdc49d5 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+11-21 17:46:25.536   728   767 V WindowManagerShell: Playing animation for (#20)android.os.BinderProxy@dc83d65@0
+11-21 17:46:25.536   728   767 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultMixedHandler@97c8246
+11-21 17:46:25.536   728   767 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@1d8fc07
+11-21 17:46:25.536   728   767 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@a97a134
+11-21 17:46:25.536   728   767 V WindowManagerShell:  try handler com.android.wm.shell.recents.RecentsTransitionHandler@7e5ab5d
+11-21 17:46:25.536   728   767 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+11-21 17:46:25.536   728   767 V WindowManagerShell:  try handler com.android.wm.shell.pip.PipTransition@dee7cd2
+11-21 17:46:25.536   728   767 V WindowManagerShell:  try handler com.android.wm.shell.splitscreen.StageCoordinator@4ff51a3
+11-21 17:46:25.536   728   767 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@2a79ca0
+11-21 17:46:25.537   728   767 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=20 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@56a80db} m=OPEN f=NONE leash=Surface(name=Task=638)/@0xc144e8c sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@5fdc778} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xdc49d5 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+11-21 17:46:25.537   728   767 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@bed2faf, appThread = android.app.IApplicationThread$Stub$Proxy@8decfbc, debugName = LauncherToDream }}
+11-21 17:46:25.537   728   767 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@191eb45, appThread = android.app.IApplicationThread$Stub$Proxy@d2e629a, debugName = QuickstepLaunchHome }}
+11-21 17:46:25.537   728   767 V WindowManagerShell:  Delegate animation for #20 to null
+11-21 17:46:25.537   728   767 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultTransitionHandler@6d6a059
+11-21 17:46:25.537   728   767 V WindowManagerShell: start default transition animation, info = {id=20 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@56a80db} m=OPEN f=NONE leash=Surface(name=Task=638)/@0xc144e8c sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@5fdc778} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0xdc49d5 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+11-21 17:46:25.537   728   767 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@ce116b6 animAttr=0x13 type=OPEN isEntrance=false
+11-21 17:46:25.538   524   543 V WindowManager: Sent Transition #20 createdAt=11-21 17:46:25.438 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=638 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=shelftap.optlab/.MainActivity } baseActivity=ComponentInfo{shelftap.optlab/shelftap.optlab.MainActivity} topActivity=ComponentInfo{shelftap.optlab/shelftap.optlab.MainActivity} origActivity=null realActivity=ComponentInfo{shelftap.optlab/shelftap.optlab.MainActivity} numActivities=1 lastActiveTime=420370 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{44dba90 Task{8578aea #638 type=standard A=10192:shelftap.optlab}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{f507f89 shelftap.optlab.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+11-21 17:46:25.538   524   543 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+11-21 17:46:25.538   524   543 V WindowManager:     info={id=20 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{44dba90 Task{8578aea #638 type=standard A=10192:shelftap.optlab}}} m=OPEN f=NONE leash=Surface(name=Task=638)/@0x46a8d42 sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0},{WCT{RemoteToken{5744265 Task{e47b844 #1 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x711b5dc sb=Rect(0, 0 - 720, 1280) eb=Rect(0, 0 - 720, 1280) d=0}]}
+11-21 17:46:25.538   728   767 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@7dfe842 animAttr=0x12 type=OPEN isEntrance=true
+11-21 17:46:25.539   728   767 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@6d6a059
+11-21 17:46:25.557  1151  1500 D EGL_emulation: app_time_stats: avg=482.63ms min=11.33ms max=3697.75ms count=8
+11-21 17:46:25.561   728   841 D EGL_emulation: app_time_stats: avg=25510.34ms min=25510.34ms max=25510.34ms count=1
+11-21 17:46:25.562   410   426 I adbd    : jdwp connection from 4529
+11-21 17:46:25.613   524  1676 W ActivityTaskManager: takeTaskSnapshot: taskId=627 not found or not visible
+11-21 17:46:25.614   524  1676 W ActivityTaskManager: takeTaskSnapshot: taskId=6 not found or not visible
+11-21 17:46:25.645  4529  4529 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 10192; state: ENABLED
+11-21 17:46:25.646  4529  4529 D CompatibilityChangeReporter: Compat change id reported: 242716250; UID 10192; state: ENABLED
+11-21 17:46:25.675   524  3503 D CompatibilityChangeReporter: Compat change id reported: 170503758; UID 10192; state: ENABLED
+11-21 17:46:25.677  4529  4529 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+11-21 17:46:25.677  4529  4529 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+11-21 17:46:25.686  4529  4529 D nativeloader: Configuring clns-6 for other apk /data/app/~~Ibh3VG-PpxPjwTZr9F4PBA==/shelftap.optlab-jGiSqSu6lDpOXCRsgxmaQg==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Ibh3VG-PpxPjwTZr9F4PBA==/shelftap.optlab-jGiSqSu6lDpOXCRsgxmaQg==/lib/x86_64:/data/app/~~Ibh3VG-PpxPjwTZr9F4PBA==/shelftap.optlab-jGiSqSu6lDpOXCRsgxmaQg==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/shelftap.optlab
+11-21 17:46:25.696  4529  4529 V GraphicsEnvironment: Currently set values for:
+11-21 17:46:25.697  4529  4529 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+11-21 17:46:25.697  4529  4529 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+11-21 17:46:25.703  4529  4529 V GraphicsEnvironment: ANGLE GameManagerService for shelftap.optlab: false
+11-21 17:46:25.703  4529  4529 V GraphicsEnvironment: shelftap.optlab is not listed in per-application setting
+11-21 17:46:25.703  4529  4529 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+11-21 17:46:25.711   524  3503 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10192. pid: 4529
+11-21 17:46:25.728  4529  4548 D libEGL  : loaded /vendor/lib64/egl/libEGL_emulation.so
+11-21 17:46:25.736  4529  4529 D CompatibilityChangeReporter: Compat change id reported: 237531167; UID 10192; state: DISABLED
+11-21 17:46:25.737  4529  4529 W OpenGLRenderer: Unknown dataspace 0
+11-21 17:46:25.745  4529  4548 D libEGL  : loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+11-21 17:46:25.747  4529  4529 D CompatibilityChangeReporter: Compat change id reported: 193247900; UID 10192; state: ENABLED
+11-21 17:46:25.753  4529  4548 D libEGL  : loaded /vendor/lib64/egl/libGLESv2_emulation.so
+11-21 17:46:25.763   524  3503 D CoreBackPreview: Window{d0a43e u0 shelftap.optlab/shelftap.optlab.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@56bcfb5, mPriority=0, mIsAnimationCallback=false}
+11-21 17:46:25.797   728   841 D EGL_emulation: app_time_stats: avg=321.89ms min=32.88ms max=2330.55ms count=9
+11-21 17:46:25.840  4529  4546 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+11-21 17:46:25.845   728   767 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#20)android.os.BinderProxy@dc83d65@0
+11-21 17:46:25.847   524   543 V WindowManager: Finish Transition #20: created at 11-21 17:46:25.438 collect-started=0.186ms request-sent=23.679ms started=31.194ms ready=89.831ms sent=95.304ms finished=408.15ms
+11-21 17:46:25.854   728   767 V WindowManagerShell: Track 0 became idle
+11-21 17:46:25.854   728   767 V WindowManagerShell: All active transition animations finished
+11-21 17:46:25.859   139   139 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+11-21 17:46:25.860  4529  4546 I Gralloc4: mapper 4.x is not supported
+11-21 17:46:25.926     0     0 I servicemanager: Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+11-21 17:46:26.804   728   841 D EGL_emulation: app_time_stats: avg=3.44ms min=0.91ms max=38.57ms count=60
+11-21 17:46:26.828  4529  4549 E SurfaceSyncGroup: Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(wmsSync-VRI[MainActivity]#0) as ready
+11-21 17:46:26.830  4529  4549 E SurfaceSyncGroup: Failed to receive transaction ready in 1000ms. Marking SurfaceSyncGroup(VRI[MainActivity]#1) as ready
+11-21 17:46:26.843   524   543 I ActivityTaskManager: Displayed shelftap.optlab/.MainActivity for user 0: +1s400ms
+11-21 17:46:26.912   728   841 D EGL_emulation: app_time_stats: avg=145.53ms min=1.96ms max=1195.96ms count=9
+11-21 17:46:27.041  4529  4543 I OpenGLRenderer: Davey! duration=1320ms; Flags=1, FrameTimelineVsyncId=29348, IntendedVsync=420626341920, Vsync=420643008586, InputEventId=0, HandleInputStart=420653327159, AnimationStart=420653327852, PerformTraversalsStart=420653351021, DrawStart=420832803638, FrameDeadline=420643008586, FrameInterval=420653315852, FrameStartTime=16666666, SyncQueued=420853214618, SyncStart=420853706644, IssueDrawCommandsStart=420854964414, SwapBuffers=421786188392, FrameCompleted=421947196198, DequeueBufferDuration=8497, QueueBufferDuration=1494906, GpuCompleted=421947196198, SwapBuffersCompleted=421944378582, DisplayPresentTime=0, CommandSubmissionCompleted=421786188392, 
+11-21 17:46:27.047   524   543 I ActivityTaskManager: Fully drawn shelftap.optlab/.MainActivity: +1s611ms
+11-21 17:46:27.057  4529  4529 I Choreographer: Skipped 78 frames!  The application may be doing too much work on its main thread.
+11-21 17:46:27.068   524   833 D CompatibilityChangeReporter: Compat change id reported: 214016041; UID 10192; state: ENABLED
+11-21 17:46:27.069   524   833 I ImeTracker: shelftap.optlab:60cf93f8: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+11-21 17:46:27.069   524   833 I ImeTracker: shelftap.optlab:60cf93f8: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-21 17:46:27.090  1284  1284 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3227 
+11-21 17:46:27.093  1151  1197 I ImeTracker: com.google.android.apps.nexuslauncher:ee130f41: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+11-21 17:46:27.094  1151  1197 I ImeTracker: com.google.android.apps.nexuslauncher:ee130f41: onFailed at PHASE_CLIENT_VIEW_SERVED
+11-21 17:46:27.095  1151  1711 D OneSearchSuggestProvider: Shut down the binder channel
+11-21 17:46:27.118  1284  1284 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 0, unlocked = true
+11-21 17:46:27.118  1284  1284 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=shelftap.optlab fieldId=0 fieldName=null extras=null}, false)
+11-21 17:46:27.118  1284  1284 I GoogleInputMethodService: GoogleInputMethodService.shouldHideHeaderOnInitialState():4008 ShouldHideHeaderOnInitialState = false
+11-21 17:46:27.122  1284  1284 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+11-21 17:46:27.125  1151  1169 I IPCThreadState: oneway function results for code 2 on binder at 0x7deef7a21a40 will be dropped but finished with status UNKNOWN_TRANSACTION
+11-21 17:46:27.138   842  1031 D BtGatt.ScanManager: uid 10128 isForeground true scanMode -1
+11-21 17:46:27.151  4529  4542 I OpenGLRenderer: Davey! duration=1384ms; Flags=0, FrameTimelineVsyncId=29378, IntendedVsync=420659675252, Vsync=421959675200, InputEventId=0, HandleInputStart=421969822226, AnimationStart=421969822646, PerformTraversalsStart=421969822910, DrawStart=421969982669, FrameDeadline=421976341866, FrameInterval=421968982707, FrameStartTime=16666666, SyncQueued=421970129114, SyncStart=421975660963, IssueDrawCommandsStart=422001839412, SwapBuffers=422008000095, FrameCompleted=422049738009, DequeueBufferDuration=6170, QueueBufferDuration=6528053, GpuCompleted=422049685497, SwapBuffersCompleted=422049738009, DisplayPresentTime=0, CommandSubmissionCompleted=422008000095, 
+11-21 17:46:27.153   842  1031 D BtGatt.ScanManager: uid 10128 isForeground true scanMode -1
+11-21 17:46:27.161  1102  2408 I FontLog : Received query Noto Color Emoji Compat, URI content://com.google.android.gms.fonts [CONTEXT service_id=132 ]
+11-21 17:46:27.162  1102  2408 I FontLog : Query [emojicompat-emoji-font] resolved to {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false} [CONTEXT service_id=132 ]
+11-21 17:46:27.167  1102  2408 I FontLog : Fetch {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false} end status Status{statusCode=SUCCESS, resolution=null} [CONTEXT service_id=132 ]
+11-21 17:46:27.176  1102  2408 I FontLog : Pulling font file for id = 18, cache size = 6 [CONTEXT service_id=132 ]
+11-21 17:46:27.179  1102  2408 I FontLog : Pulling font file for id = 18, cache size = 6 [CONTEXT service_id=132 ]
+11-21 17:46:27.238   728   813 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@99a6863
+11-21 17:46:27.239   524  1444 D CoreBackPreview: Window{f9b6bb6 u0 Splash Screen shelftap.optlab EXITING}: Setting back callback null

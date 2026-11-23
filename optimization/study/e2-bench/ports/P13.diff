@@ -1,0 +1,373 @@
+# P13 TitleSearch.kt vs data/local/TitleDao.kt: only the pagingSearch SQL, likePattern and the SearchViewModel debounce chain are taken from it
+--- corpus/claude-haiku-B1-detailed-functional-r1/app/src/main/java/vn/shelftap/app/data/local/TitleDao.kt
++++ optlab/corpus/p13/TitleSearch.kt
+@@ -1,31 +1,38 @@
+-package vn.shelftap.app.data.local
++package shelftap.optlab.corpus.p13
+ 
+-import androidx.paging.PagingSource
+-import androidx.room.Dao
+-import androidx.room.Insert
+-import androidx.room.OnConflictStrategy
+-import androidx.room.Query
++import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.ExperimentalCoroutinesApi
++import kotlinx.coroutines.FlowPreview
+ import kotlinx.coroutines.flow.Flow
++import kotlinx.coroutines.flow.debounce
++import kotlinx.coroutines.flow.distinctUntilChanged
++import kotlinx.coroutines.flow.flatMapLatest
++import kotlinx.coroutines.flow.flow
++import kotlinx.coroutines.withContext
++import shelftap.optlab.data.Book
+ 
+-@Dao
+-interface TitleDao {
++// Ported from claude-haiku-B1-detailed-functional-r1 (app/src/main/java/vn/shelftap/app/...):
++//   data/local/TitleDao.kt  pagingSearch: the SQL below, unindexed LIKE '%pattern%' on searchText (the P13 finding); Room's :pattern is a ? placeholder.
++//   data/CatalogueRepository.kt  likePattern: unchanged.
++//   ui/SearchScreen.kt  SearchViewModel.results: debounce(200).distinctUntilChanged().flatMapLatest, unchanged except that the Pager/Room
++//   PagingSource is replaced by a query on Dispatchers.IO (Room runs on its query executor) returning the first page (Paging initial load = 3 x pageSize 40).
+ 
+-    @Query("SELECT * FROM titles ORDER BY title COLLATE NOCASE, id")
+-    fun pagingAll(): PagingSource<Int, TitleEntity>
++/** SQLite LIKE is case-sensitive for non-ASCII, so the pattern is lowercased; wildcard characters are escaped with '!'. */
++internal fun likePattern(query: String): String =
++    query.trim().lowercase()
++        .replace("!", "!!")
++        .replace("%", "!%")
++        .replace("_", "!_")
+ 
+-    /** [pattern] is already lowercased and escaped with '!' (see CatalogueRepository.likePattern). */
+-    @Query(
+-        "SELECT * FROM titles WHERE searchText LIKE '%' || :pattern || '%' ESCAPE '!' " +
+-            "ORDER BY title COLLATE NOCASE, id"
+-    )
+-    fun pagingSearch(pattern: String): PagingSource<Int, TitleEntity>
++const val PAGING_SEARCH_SQL =
++    "SELECT * FROM titles WHERE searchText LIKE '%' || ? || '%' ESCAPE '!' " +
++        "ORDER BY title COLLATE NOCASE, id"
+ 
+-    @Query("SELECT * FROM titles WHERE id = :id LIMIT 1")
+-    fun observeById(id: String): Flow<TitleEntity?>
++/** First page of Paging: PagingConfig(pageSize = 40) loads 3 x 40 on the first call. */
++const val FIRST_PAGE = 120
+ 
+-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+-    suspend fun upsertAll(items: List<TitleEntity>)
+-
+-    @Query("DELETE FROM titles")
+-    suspend fun deleteAll()
+-}
++@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
++fun corpusResults(query: Flow<String>, run: (pattern: String) -> List<Book>): Flow<List<Book>> = query
++    .debounce(200)
++    .distinctUntilChanged()
++    .flatMapLatest { text -> flow { emit(withContext(Dispatchers.IO) { run(likePattern(text)) }) } }
+
+# P13 TitleSearch.kt vs data/CatalogueRepository.kt: only the pagingSearch SQL, likePattern and the SearchViewModel debounce chain are taken from it
+--- corpus/claude-haiku-B1-detailed-functional-r1/app/src/main/java/vn/shelftap/app/data/CatalogueRepository.kt
++++ optlab/corpus/p13/TitleSearch.kt
+@@ -1,153 +1,38 @@
+-package vn.shelftap.app.data
++package shelftap.optlab.corpus.p13
+ 
+-import android.content.SharedPreferences
+-import androidx.paging.Pager
+-import androidx.paging.PagingConfig
+-import androidx.paging.PagingData
+-import androidx.paging.PagingSource
+-import androidx.paging.map
+-import androidx.room.withTransaction
+-import kotlinx.coroutines.CoroutineScope
+ import kotlinx.coroutines.Dispatchers
+-import kotlinx.coroutines.Job
++import kotlinx.coroutines.ExperimentalCoroutinesApi
++import kotlinx.coroutines.FlowPreview
+ import kotlinx.coroutines.flow.Flow
+-import kotlinx.coroutines.flow.MutableStateFlow
+-import kotlinx.coroutines.flow.StateFlow
+-import kotlinx.coroutines.flow.asStateFlow
+-import kotlinx.coroutines.flow.map
+-import kotlinx.coroutines.flow.update
+-import kotlinx.coroutines.launch
++import kotlinx.coroutines.flow.debounce
++import kotlinx.coroutines.flow.distinctUntilChanged
++import kotlinx.coroutines.flow.flatMapLatest
++import kotlinx.coroutines.flow.flow
+ import kotlinx.coroutines.withContext
+-import org.json.JSONException
+-import vn.shelftap.app.data.local.AppDatabase
+-import vn.shelftap.app.data.local.TitleEntity
+-import vn.shelftap.app.data.local.toDomain
+-import vn.shelftap.app.data.local.toEntity
+-import vn.shelftap.app.data.remote.TitleApi
+-import vn.shelftap.app.model.Title
+-import java.io.IOException
+-import kotlin.math.min
++import shelftap.optlab.data.Book
+ 
+-data class SyncProgress(
+-    val loaded: Int = 0,
+-    val total: Int = 0,
+-    val running: Boolean = false,
+-    val complete: Boolean = false,
+-    val error: String? = null,
+-)
++// Ported from claude-haiku-B1-detailed-functional-r1 (app/src/main/java/vn/shelftap/app/...):
++//   data/local/TitleDao.kt  pagingSearch: the SQL below, unindexed LIKE '%pattern%' on searchText (the P13 finding); Room's :pattern is a ? placeholder.
++//   data/CatalogueRepository.kt  likePattern: unchanged.
++//   ui/SearchScreen.kt  SearchViewModel.results: debounce(200).distinctUntilChanged().flatMapLatest, unchanged except that the Pager/Room
++//   PagingSource is replaced by a query on Dispatchers.IO (Room runs on its query executor) returning the first page (Paging initial load = 3 x pageSize 40).
+ 
+-/**
+- * Single source of truth for the UI. The whole catalogue is downloaded once into Room; after that,
+- * browsing and searching read only from the local database and work with no connection.
+- */
+-class CatalogueRepository(
+-    private val database: AppDatabase,
+-    private val api: TitleApi,
+-    private val prefs: SharedPreferences,
+-    private val appScope: CoroutineScope,
+-) {
+-    private val dao = database.titleDao()
+-    private var syncJob: Job? = null
++/** SQLite LIKE is case-sensitive for non-ASCII, so the pattern is lowercased; wildcard characters are escaped with '!'. */
++internal fun likePattern(query: String): String =
++    query.trim().lowercase()
++        .replace("!", "!!")
++        .replace("%", "!%")
++        .replace("_", "!_")
+ 
+-    private val _sync = MutableStateFlow(initialProgress())
+-    val sync: StateFlow<SyncProgress> = _sync.asStateFlow()
++const val PAGING_SEARCH_SQL =
++    "SELECT * FROM titles WHERE searchText LIKE '%' || ? || '%' ESCAPE '!' " +
++        "ORDER BY title COLLATE NOCASE, id"
+ 
+-    /** True once a full download has finished at least once. */
+-    val isCatalogueReady: Boolean get() = prefs.getBoolean(KEY_COMPLETE, false)
++/** First page of Paging: PagingConfig(pageSize = 40) loads 3 x 40 on the first call. */
++const val FIRST_PAGE = 120
+ 
+-    fun allTitles(): Flow<PagingData<Title>> = pager { dao.pagingAll() }
+-
+-    fun search(query: String): Flow<PagingData<Title>> {
+-        val pattern = likePattern(query)
+-        return pager { dao.pagingSearch(pattern) }
+-    }
+-
+-    fun observeTitle(id: String): Flow<Title?> = dao.observeById(id).map { it?.toDomain() }
+-
+-    /** Starts the full download in the background. Safe to call repeatedly; resumes after a failure. */
+-    fun startSync() {
+-        if (isCatalogueReady || syncJob?.isActive == true) return
+-        syncJob = appScope.launch { runSync() }
+-    }
+-
+-    /** Refreshes one title from the API when online. Offline, the cached copy is kept. */
+-    suspend fun refreshTitle(id: String) {
+-        try {
+-            val fresh = withContext(Dispatchers.IO) { api.fetchTitle(id) }
+-            dao.upsertAll(listOf(fresh.toEntity()))
+-        } catch (e: IOException) {
+-            // No connection: keep showing the cached copy.
+-        } catch (e: JSONException) {
+-            // Unexpected payload: keep the cached copy.
+-        }
+-    }
+-
+-    private fun pager(source: () -> PagingSource<Int, TitleEntity>): Flow<PagingData<Title>> =
+-        Pager(
+-            config = PagingConfig(pageSize = 40, enablePlaceholders = false),
+-            pagingSourceFactory = source,
+-        ).flow.map { data -> data.map { it.toDomain() } }
+-
+-    private fun initialProgress(): SyncProgress {
+-        val total = prefs.getInt(KEY_TOTAL, 0)
+-        val loaded = min(prefs.getInt(KEY_NEXT_PAGE, 0) * TitleApi.PAGE_SIZE, total)
+-        return SyncProgress(loaded = loaded, total = total, complete = isCatalogueReady)
+-    }
+-
+-    private suspend fun runSync() {
+-        _sync.update { it.copy(running = true, error = null) }
+-        try {
+-            var page = prefs.getInt(KEY_NEXT_PAGE, 0)
+-            var total = prefs.getInt(KEY_TOTAL, 0)
+-            if (page == 0) {
+-                // Fresh download: drop any stale rows first.
+-                database.withTransaction { dao.deleteAll() }
+-                total = 0
+-            }
+-            while (true) {
+-                val result = withContext(Dispatchers.IO) { api.fetchPage(page, TitleApi.PAGE_SIZE) }
+-                database.withTransaction { dao.upsertAll(result.items.map { it.toEntity() }) }
+-                page++
+-                total = result.total
+-                // Saved after each page so an interrupted download resumes where it stopped.
+-                prefs.edit().putInt(KEY_NEXT_PAGE, page).putInt(KEY_TOTAL, total).apply()
+-                _sync.update {
+-                    SyncProgress(
+-                        loaded = min(page * TitleApi.PAGE_SIZE, total),
+-                        total = total,
+-                        running = true,
+-                    )
+-                }
+-                if (result.items.isEmpty() || page * TitleApi.PAGE_SIZE >= total) break
+-            }
+-            prefs.edit()
+-                .putBoolean(KEY_COMPLETE, true)
+-                .remove(KEY_NEXT_PAGE)
+-                .remove(KEY_TOTAL)
+-                .apply()
+-            _sync.value = SyncProgress(loaded = total, total = total, running = false, complete = true)
+-        } catch (e: IOException) {
+-            _sync.update { it.copy(running = false, error = ERROR_MESSAGE) }
+-        } catch (e: JSONException) {
+-            _sync.update { it.copy(running = false, error = ERROR_MESSAGE) }
+-        }
+-    }
+-
+-    companion object {
+-        private const val KEY_COMPLETE = "complete"
+-        private const val KEY_NEXT_PAGE = "next_page"
+-        private const val KEY_TOTAL = "total"
+-        private const val ERROR_MESSAGE =
+-            "The download stopped because the connection failed. Tap Retry to continue."
+-
+-        /**
+-         * Turns user input into a LIKE pattern: lowercased (for Unicode text, where SQLite LIKE is
+-         * case-sensitive), trimmed, with the wildcard characters escaped using '!'.
+-         */
+-        internal fun likePattern(query: String): String =
+-            query.trim().lowercase()
+-                .replace("!", "!!")
+-                .replace("%", "!%")
+-                .replace("_", "!_")
+-    }
+-}
++@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
++fun corpusResults(query: Flow<String>, run: (pattern: String) -> List<Book>): Flow<List<Book>> = query
++    .debounce(200)
++    .distinctUntilChanged()
++    .flatMapLatest { text -> flow { emit(withContext(Dispatchers.IO) { run(likePattern(text)) }) } }
+
+# P13 TitleSearch.kt vs ui/SearchScreen.kt: only the pagingSearch SQL, likePattern and the SearchViewModel debounce chain are taken from it
+--- corpus/claude-haiku-B1-detailed-functional-r1/app/src/main/java/vn/shelftap/app/ui/SearchScreen.kt
++++ optlab/corpus/p13/TitleSearch.kt
+@@ -1,88 +1,38 @@
+-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class, FlowPreview::class)
++package shelftap.optlab.corpus.p13
+ 
+-package vn.shelftap.app.ui
+-
+-import androidx.compose.foundation.layout.Column
+-import androidx.compose.foundation.layout.fillMaxSize
+-import androidx.compose.foundation.layout.fillMaxWidth
+-import androidx.compose.foundation.layout.padding
+-import androidx.compose.material.icons.Icons
+-import androidx.compose.material.icons.filled.Search
+-import androidx.compose.material3.ExperimentalMaterial3Api
+-import androidx.compose.material3.Icon
+-import androidx.compose.material3.OutlinedTextField
+-import androidx.compose.material3.Scaffold
+-import androidx.compose.material3.Text
+-import androidx.compose.material3.TopAppBar
+-import androidx.compose.runtime.Composable
+-import androidx.compose.runtime.collectAsState
+-import androidx.compose.runtime.getValue
+-import androidx.compose.ui.Modifier
+-import androidx.compose.ui.unit.dp
+-import androidx.lifecycle.ViewModel
+-import androidx.lifecycle.viewModelScope
+-import androidx.lifecycle.viewmodel.compose.viewModel
+-import androidx.lifecycle.viewmodel.initializer
+-import androidx.lifecycle.viewmodel.viewModelFactory
+-import androidx.paging.PagingData
+-import androidx.paging.cachedIn
+-import androidx.paging.compose.collectAsLazyPagingItems
++import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.ExperimentalCoroutinesApi
+ import kotlinx.coroutines.FlowPreview
+ import kotlinx.coroutines.flow.Flow
+-import kotlinx.coroutines.flow.MutableStateFlow
+-import kotlinx.coroutines.flow.StateFlow
+-import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.flow.debounce
+ import kotlinx.coroutines.flow.distinctUntilChanged
+ import kotlinx.coroutines.flow.flatMapLatest
+-import vn.shelftap.app.data.CatalogueRepository
+-import vn.shelftap.app.model.Title
++import kotlinx.coroutines.flow.flow
++import kotlinx.coroutines.withContext
++import shelftap.optlab.data.Book
+ 
+-class SearchViewModel(repository: CatalogueRepository) : ViewModel() {
+-    private val _query = MutableStateFlow("")
+-    val query: StateFlow<String> = _query.asStateFlow()
++// Ported from claude-haiku-B1-detailed-functional-r1 (app/src/main/java/vn/shelftap/app/...):
++//   data/local/TitleDao.kt  pagingSearch: the SQL below, unindexed LIKE '%pattern%' on searchText (the P13 finding); Room's :pattern is a ? placeholder.
++//   data/CatalogueRepository.kt  likePattern: unchanged.
++//   ui/SearchScreen.kt  SearchViewModel.results: debounce(200).distinctUntilChanged().flatMapLatest, unchanged except that the Pager/Room
++//   PagingSource is replaced by a query on Dispatchers.IO (Room runs on its query executor) returning the first page (Paging initial load = 3 x pageSize 40).
+ 
+-    /** Results follow the typed text; a short debounce avoids a query for every keystroke. */
+-    val results: Flow<PagingData<Title>> = _query
+-        .debounce(200)
+-        .distinctUntilChanged()
+-        .flatMapLatest { repository.search(it) }
+-        .cachedIn(viewModelScope)
++/** SQLite LIKE is case-sensitive for non-ASCII, so the pattern is lowercased; wildcard characters are escaped with '!'. */
++internal fun likePattern(query: String): String =
++    query.trim().lowercase()
++        .replace("!", "!!")
++        .replace("%", "!%")
++        .replace("_", "!_")
+ 
+-    fun onQueryChange(text: String) {
+-        _query.value = text
+-    }
+-}
++const val PAGING_SEARCH_SQL =
++    "SELECT * FROM titles WHERE searchText LIKE '%' || ? || '%' ESCAPE '!' " +
++        "ORDER BY title COLLATE NOCASE, id"
+ 
+-@Composable
+-fun SearchScreen(repository: CatalogueRepository, onOpen: (String) -> Unit) {
+-    val viewModel: SearchViewModel = viewModel(
+-        factory = viewModelFactory { initializer { SearchViewModel(repository) } },
+-    )
+-    val query by viewModel.query.collectAsState()
+-    val paging = viewModel.results.collectAsLazyPagingItems()
++/** First page of Paging: PagingConfig(pageSize = 40) loads 3 x 40 on the first call. */
++const val FIRST_PAGE = 120
+ 
+-    Scaffold(
+-        topBar = { TopAppBar(title = { Text("Search") }) },
+-    ) { padding ->
+-        Column(
+-            modifier = Modifier.padding(padding).fillMaxSize(),
+-        ) {
+-            OutlinedTextField(
+-                value = query,
+-                onValueChange = viewModel::onQueryChange,
+-                label = { Text("Title, author, ISBN or subject") },
+-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+-                singleLine = true,
+-                modifier = Modifier.fillMaxWidth().padding(16.dp),
+-            )
+-            TitleList(
+-                paging = paging,
+-                emptyMessage = "No books found",
+-                onOpen = onOpen,
+-                modifier = Modifier.weight(1f),
+-            )
+-        }
+-    }
+-}
++@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
++fun corpusResults(query: Flow<String>, run: (pattern: String) -> List<Book>): Flow<List<Book>> = query
++    .debounce(200)
++    .distinctUntilChanged()
++    .flatMapLatest { text -> flow { emit(withContext(Dispatchers.IO) { run(likePattern(text)) }) } }
+

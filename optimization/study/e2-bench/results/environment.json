@@ -1,6 +1,6 @@
 {
-  "started": "2026-11-21T05:42:04+0700",
-  "commit": "a5969de+wip",
+  "started": "2026-11-21T21:17:00+0700",
+  "commit": "fbf919f+wip",
   "device": "lowend34",
   "serial": "emulator-5570",
   "android_sdk": "34",
@@ -24,23 +24,29 @@
   "apks": {
     "optlab-release": {
       "file": "optlab-release.apk",
-      "bytes": 2318744,
-      "sha256": "478cb846be5f54bb8716c08a39007e5286a4f2de8296460e4fba969d4d411227"
+      "bytes": 2417256,
+      "sha256": "367066eaa2d4ef2e236732414138b4920aa093994d5f46e3c7425b8ab2e12977"
     },
     "optlab-noR8": {
       "file": "optlab-noR8.apk",
-      "bytes": 24082139,
-      "sha256": "1157f22ed64991db48b55104731f6b9ecd514b7f282eb705a68995a8944c5b4a"
+      "bytes": 24737707,
+      "sha256": "4d025baec525a100e3fb52667409fa83e054590daf0fa24b86beb03afe818962"
     },
     "benchmark-release": {
       "file": "benchmark-release.apk",
       "bytes": 47020443,
-      "sha256": "31ff92fd1314454d9b79267714c6f23fbb36d477794a5b78e25ee4ae11a71ccb"
+      "sha256": "645a82301d499b26f5592620e0c48446fcff9fdef07b995f98551beda6c1e366"
     }
   },
   "blocks": 4,
   "block_iters": 3,
   "ordering": "rounds alternate A,B / B,A",
-  "host_mem_available_mb_at_start": 7044,
-  "host_swap_used_mb_at_start": 3427
+  "host_mem_available_mb_at_start": 4190,
+  "host_swap_used_mb_at_start": 4614,
+  "phases": "primary (counters, slices, memory, startup) first, frames (FrameTimingMetric) last",
+  "bench_lock": "exclusive flock per measured block (one am-instrument call)",
+  "exclusion_rule": "iteration dropped if host MemAvailable < 1024 MB at iteration start or swap-in during it (criterion 'emulator': 'system' = host pswpin > 0, 'emulator' = qemu process major faults > 0; both logged in iterlog.csv); extra rounds up to --max-extra",
+  "bootstrap_seed": 20261121,
+  "note": "regenerated 2026-11-21T22:38 by run_bench.py --blocks 0 for the APK hashes of the corpus-factor window (21:17-22:35 +07; P01 sub-factor afterwards); the P10/P11 run is in environment-p10p11.json",
+  "hold_protocol": "bench.lock (exclusive per block) + 3S-study-work/bench.hold (pid) for the whole window; 120 s yield after every factor group"
 }

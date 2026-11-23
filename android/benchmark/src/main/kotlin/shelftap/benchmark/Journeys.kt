@@ -31,15 +31,15 @@ fun swipeUp(times: Int, steps: Int = 25) {
 /** Journey for one factor, after the activity is up. */
 fun MacrobenchmarkScope.journey(factor: String) {
     when (factor) {
-        "P08", "P06", "P01P09" -> {
+        "P08", "P06", "P01P09", "P08c", "P06c", "P01c", "P09c" -> {
             swipeUp(6)
-            if (factor == "P08") Thread.sleep(3_000) // idle: A keeps animating
+            if (factor == "P08" || factor == "P08c") Thread.sleep(3_000) // idle: A of P08 keeps animating (the corpus A does not; same journey for both)
         }
-        "P03P04" -> {
+        "P03P04", "P03P04c" -> {
             swipeUp(2)
             Thread.sleep(5_000) // 50 ticks
         }
-        "P13" -> {
+        "P13", "P13c" -> {
             check(device.wait(Until.hasObject(By.textStartsWith("ready")), 120_000) == true) { "search never became ready" }
             val box = device.findObject(By.clazz("android.widget.EditText")) ?: error("no search field")
             box.click()

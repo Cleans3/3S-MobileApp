@@ -17,6 +17,8 @@ object Args {
     /** full | none | profile */
     val compilation get() = str("st.compilation", "full")
     val dump get() = str("st.dump", "0") == "1"
+    /** all | primary (counters, slices, memory, startup) | frames (FrameTimingMetric only): the harness measures primary first, frames last. */
+    val metrics get() = str("st.metrics", "all")
     /** Row count override for the list-shaped factors; empty = the app default. */
     val rows get() = raw.getString("st.n")
 }

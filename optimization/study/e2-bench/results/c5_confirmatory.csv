@@ -1,0 +1,2 @@
+factor_id,metric,unit,n_A,n_B,A_median,B_median,delta_pct_A_minus_B_over_B,ci95_lo,ci95_hi,mann_whitney_p_raw,holm_adjusted_p,criterion,ci_excludes_0,delta_ge_10pct,criteria_met_before_holm,rig_note
+P08,frameDurationCpuMs_p90,ms,12,12,62.8726,49.0694,28.13,13.38,54.31,0.000308,,Holm-adjusted p < 0.05 and delta% >= +10% and bootstrap 95% CI excludes 0,yes,yes,yes,"A14: P08 A and B both on swangle_indirect, same window and AVD; other factors on swiftshader_indirect"

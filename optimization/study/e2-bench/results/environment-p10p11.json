@@ -1,0 +1,50 @@
+{
+  "started": "2026-11-21T14:48:40+0700",
+  "commit": "6c06385+wip",
+  "device": "lowend34",
+  "serial": "emulator-5570",
+  "android_sdk": "34",
+  "model": "sdk_gphone64_x86_64",
+  "fingerprint": "google/sdk_gphone64_x86_64/emu64xa:14/UE1A.230829.050/12077443:userdebug/dev-keys",
+  "display": "Physical size: 720x1280 / Physical density: 280",
+  "guest_cores": "2",
+  "guest_mem_kb": "2021528",
+  "gpu_mode": "swiftshader_indirect (software), headless -no-window",
+  "emulator_flags": "-no-snapshot -no-boot-anim -no-audio -memory 2048 -cores 2",
+  "versions": {
+    "agp": "9.5.1",
+    "kotlin": "2.4.21",
+    "composeBom": "2026.09.00",
+    "coil": "3.6.3",
+    "benchmark": "1.5.0",
+    "uiautomator": "2.4.1",
+    "profileinstaller": "1.4.1",
+    "coroutines": "1.11.0"
+  },
+  "apks": {
+    "optlab-release": {
+      "file": "optlab-release.apk",
+      "bytes": 2384488,
+      "sha256": "e24bab09bea573b532d2ca3e4255b90e11370086de7c10be1efeef5417a6dd4c"
+    },
+    "optlab-noR8": {
+      "file": "optlab-noR8.apk",
+      "bytes": 24737707,
+      "sha256": "eee9cd7c8e5cc960d13bf16e7fcfb0997ddf9cbb681f4e8b9bf609d73739b58f"
+    },
+    "benchmark-release": {
+      "file": "benchmark-release.apk",
+      "bytes": 47020443,
+      "sha256": "645a82301d499b26f5592620e0c48446fcff9fdef07b995f98551beda6c1e366"
+    }
+  },
+  "blocks": 4,
+  "block_iters": 3,
+  "ordering": "rounds alternate A,B / B,A",
+  "host_mem_available_mb_at_start": 6027,
+  "host_swap_used_mb_at_start": 5829,
+  "phases": "primary (counters, slices, memory, startup) first, frames (FrameTimingMetric) last",
+  "bench_lock": "exclusive flock per measured block (one am-instrument call)",
+  "exclusion_rule": "iteration dropped if host MemAvailable < 1024 MB at iteration start or swap-in during it (criterion 'emulator': 'system' = host pswpin > 0, 'emulator' = qemu process major faults > 0; both logged in iterlog.csv); extra rounds up to --max-extra",
+  "bootstrap_seed": 20261121
+}

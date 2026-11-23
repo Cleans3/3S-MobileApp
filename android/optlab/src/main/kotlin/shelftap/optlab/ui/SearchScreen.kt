@@ -30,15 +30,43 @@ import shelftap.optlab.Probe
 import shelftap.optlab.data.Book
 import shelftap.optlab.data.BookDb
 import shelftap.optlab.data.BookGenerator
+import shelftap.optlab.corpus.p13.FIRST_PAGE
+import shelftap.optlab.corpus.p13.PAGING_SEARCH_SQL
+import shelftap.optlab.corpus.p13.corpusResults
 
 /**
  * P13: offline search over 100k books, one query per keystroke.
- * A filters the whole in-memory list inside composition (main thread), no debounce.
- * B queries an FTS5 index on Dispatchers.IO behind a 150 ms debounce.
- * Blank query shows nothing in both, so the initial state costs nothing.
+ * Both variants answer the same question: every query token must be a prefix of a word of title or author
+ * (lower-cased, words = runs of letters/digits), results in id order. EquivScreen checks the result sets are equal.
+ * A re-tokenises both columns of all 100k books inside composition (main thread), no debounce, returns every match.
+ * B queries an FTS4 index (token-prefix MATCH) on Dispatchers.IO behind a 150 ms debounce and returns the first 50.
+ * Blank or token-less query shows nothing in both, so the initial state costs nothing.
  */
 @Composable
 fun SearchScreen(variantA: Boolean) = if (variantA) SearchA() else SearchB()
+
+/** P13 with A taken from corpus code (claude-haiku-B1-detailed-functional-r1): see corpus/p13/TitleSearch.kt. B is the same FTS4 screen. */
+@Composable
+fun SearchCorpusScreen(variantA: Boolean) = if (variantA) SearchC() else SearchB(corpusPair = true)
+
+@Composable
+private fun SearchC() {
+    val ctx = LocalContext.current
+    val db by produceState<BookDb?>(null) { value = withContext(Dispatchers.IO) { BookDb.openWithTitles(ctx) } }
+    var q by remember { mutableStateOf("") }
+    var results by remember { mutableStateOf(emptyList<Book>()) }
+    FullyDrawn(db != null)
+    LaunchedEffect(db) {
+        val d = db ?: return@LaunchedEffect
+        corpusResults(snapshotFlow { q }) { pattern ->
+            Probe.section("search.query") {
+                Probe.count("search.queries")
+                d.rows(PAGING_SEARCH_SQL + " LIMIT " + FIRST_PAGE, pattern)
+            }
+        }.collect { results = it }
+    }
+    SearchLayout(q, { q = it }, status = if (db == null) "loading" else null) { results }
+}
 
 @Composable
 private fun SearchA() {
@@ -49,15 +77,27 @@ private fun SearchA() {
     SearchLayout(q, { q = it }, status = if (books == null) "loading" else null) { 
         val results = if (books == null || q.isBlank()) emptyList() else Probe.section("search.query") {
             Probe.count("search.queries")
-            books.filter { it.title.contains(q, ignoreCase = true) || it.author.contains(q, ignoreCase = true) }
+            naiveSearch(books, q)
         }
         results
     }
 }
 
+private val WORD = Regex("[\\p{L}\\p{N}]+")
+
+/** The slop way: tokenise every row on every call. Same match rule as BookDb.search. */
+internal fun naiveSearch(all: List<Book>, query: String): List<Book> {
+    val tokens = WORD.findAll(query).map { it.value.lowercase() }.toList()
+    if (tokens.isEmpty()) return emptyList()
+    return all.filter { b ->
+        val words = (WORD.findAll(b.title) + WORD.findAll(b.author)).map { it.value.lowercase() }.toList()
+        tokens.all { t -> words.any { it.startsWith(t) } }
+    }
+}
+
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 @Composable
-private fun SearchB() {
+private fun SearchB(corpusPair: Boolean = false) {  // corpusPair: B of P13c matches the corpus A's page size (120), order (title NOCASE, id) and debounce (200 ms)
     val ctx = LocalContext.current
     val db by produceState<BookDb?>(null) { value = withContext(Dispatchers.IO) { BookDb.open(ctx) } }
     var q by remember { mutableStateOf("") }
@@ -65,11 +105,11 @@ private fun SearchB() {
     FullyDrawn(db != null)
     LaunchedEffect(db) {
         val d = db ?: return@LaunchedEffect
-        snapshotFlow { q }.debounce(150).distinctUntilChanged().mapLatest { query ->
+        snapshotFlow { q }.debounce(if (corpusPair) 200 else 150).distinctUntilChanged().mapLatest { query ->
             withContext(Dispatchers.IO) {
                 if (query.isBlank()) emptyList() else Probe.section("search.query") {
                     Probe.count("search.queries")
-                    d.search(query)
+                    if (corpusPair) d.search(query, FIRST_PAGE, titleOrder = true) else d.search(query)
                 }
             }
         }.collect { results = it }

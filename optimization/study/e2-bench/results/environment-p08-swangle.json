@@ -1,0 +1,52 @@
+{
+  "started": "2026-11-21T16:13:07.316Z",
+  "commit": "fbf919f+wip",
+  "device": "lowend34",
+  "serial": "emulator-5570",
+  "android_sdk": "34",
+  "model": "sdk_gphone64_x86_64",
+  "fingerprint": "google/sdk_gphone64_x86_64/emu64xa:14/UE1A.230829.050/12077443:userdebug/dev-keys",
+  "display": "Physical size: 720x1280 / Physical density: 280",
+  "guest_cores": "2",
+  "guest_mem_kb": "2021528",
+  "gpu_mode": "swangle_indirect (ANGLE on SwiftShader Vulkan, software), headless -no-window; P08 only",
+  "emulator_flags": "-no-snapshot -no-boot-anim -no-audio -memory 2048 -cores 2 -gpu swangle_indirect",
+  "versions": {
+    "agp": "9.5.1",
+    "kotlin": "2.4.21",
+    "composeBom": "2026.09.00",
+    "coil": "3.6.3",
+    "benchmark": "1.5.0",
+    "uiautomator": "2.4.1",
+    "profileinstaller": "1.4.1",
+    "coroutines": "1.11.0"
+  },
+  "apks": {
+    "optlab-release": {
+      "file": "optlab-release.apk",
+      "bytes": 2417256,
+      "sha256": "367066eaa2d4ef2e236732414138b4920aa093994d5f46e3c7425b8ab2e12977"
+    },
+    "optlab-noR8": {
+      "file": "optlab-noR8.apk",
+      "bytes": 24737707,
+      "sha256": "4d025baec525a100e3fb52667409fa83e054590daf0fa24b86beb03afe818962"
+    },
+    "benchmark-release": {
+      "file": "benchmark-release.apk",
+      "bytes": 47020443,
+      "sha256": "645a82301d499b26f5592620e0c48446fcff9fdef07b995f98551beda6c1e366"
+    }
+  },
+  "blocks": 4,
+  "block_iters": 3,
+  "ordering": "rounds alternate A,B / B,A",
+  "host_mem_available_mb_at_start": 4190,
+  "host_swap_used_mb_at_start": 4614,
+  "phases": "primary (counters, slices, memory, startup) first, frames (FrameTimingMetric) last",
+  "bench_lock": "exclusive flock per measured block (one am-instrument call)",
+  "exclusion_rule": "iteration dropped if host MemAvailable < 1024 MB at iteration start or swap-in during it (criterion 'emulator': 'system' = host pswpin > 0, 'emulator' = qemu process major faults > 0; both logged in iterlog.csv); extra rounds up to --max-extra",
+  "bootstrap_seed": 20261121,
+  "note": "P08 window only. The default swiftshader_indirect makes the emulator process crash on the P08 corpus A (ports/a10-crash-check). Every other factor used swiftshader_indirect (environment.json).",
+  "hold_protocol": "bench.lock (exclusive per block) + 3S-study-work/bench.hold (pid) for the whole window; 120 s yield after every factor group"
+}

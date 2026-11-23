@@ -1,0 +1,33 @@
+# P03+P04 B (tuned): generated from the ported A text; stable LoanList parameter (@Immutable, content equality), formatter and filters under remember
+--- corpus/agy-g38flash-B3-naive-r1/app/src/main/java/com/example/libraryloans/ui/components/BookDetailSheet.kt
++++ optlab/corpus/p09/BookDetailSheetStable.kt
+@@ -27,6 +27,7 @@
+ import androidx.compose.material3.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.remember
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+@@ -38,15 +39,15 @@
+ import java.time.format.DateTimeFormatter
+ 
+ @Composable
+-fun BookDetailSheet(
++fun BookDetailSheetStable(
+     book: Book,
+-    loansForBook: List<Loan>,
++    loansForBook: LoanList,
+     onDismiss: () -> Unit,
+     onRenewLoan: (LoanWithBook) -> Unit
+ ) {
+-    val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
+-    val activeLoan = loansForBook.firstOrNull { !it.isReturned }
+-    val pastLoans = loansForBook.filter { it.isReturned }
++    val dateFormatter = remember { DateTimeFormatter.ofPattern("MMM dd, yyyy") }
++    val activeLoan = remember(loansForBook) { loansForBook.items.firstOrNull { !it.isReturned } }
++    val pastLoans = remember(loansForBook) { loansForBook.items.filter { it.isReturned } }
+ 
+     Box(modifier = Modifier.fillMaxWidth()) {  // was ModalBottomSheet(...): inline so TTID and frames see the content
+         Column(
+

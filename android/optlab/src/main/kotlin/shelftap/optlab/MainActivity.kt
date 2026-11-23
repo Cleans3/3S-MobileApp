@@ -19,6 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import shelftap.optlab.ui.EffectsScreen
+import shelftap.optlab.ui.P01CorpusScreen
+import shelftap.optlab.ui.P03P04CorpusScreen
+import shelftap.optlab.ui.P06CorpusScreen
+import shelftap.optlab.ui.P08CorpusScreen
+import shelftap.optlab.ui.P09CorpusScreen
+import shelftap.optlab.ui.SearchCorpusScreen
+import shelftap.optlab.ui.EquivScreen
 import shelftap.optlab.ui.ImagesScreen
 import shelftap.optlab.ui.ListScreen
 import shelftap.optlab.ui.SearchScreen
@@ -28,7 +35,8 @@ import shelftap.optlab.ui.TickerScreen
 
 /**
  * Intent extras pick the screen, so a benchmark (or adb) deep-links straight to a factor:
- *   factor  P08 | P06 | P01P09 | P13 | P03P04 | startup | seed   (absent = menu)
+ *   factor  P08 | P06 | P01P09 | P13 | P03P04 | startup | seed | p13eq   (absent = menu)
+ *           P08c | P06c | P01c | P09c | P13c | P03P04c   the same factors with A taken from corpus code (optlab corpus package, e2-bench/ports)
  *   variant A (slop) | B (tuned, default)
  *   n       row count, default per factor
  */
@@ -46,6 +54,13 @@ class MainActivity : ComponentActivity() {
                         "P06" -> ImagesScreen(a, n(300))
                         "P01P09" -> ListScreen(a, n(5000))
                         "P13" -> SearchScreen(a)
+                        "P08c" -> P08CorpusScreen(a, n(200))
+                        "P06c" -> P06CorpusScreen(a, n(300))
+                        "P01c" -> P01CorpusScreen(a, n(5000))
+                        "P09c" -> P09CorpusScreen(a, n(2000))
+                        "P13c" -> SearchCorpusScreen(a)
+                        "P03P04c" -> P03P04CorpusScreen(a, n(300))
+                        "p13eq" -> EquivScreen(intent.getStringExtra("query") ?: "silent river")
                         "P03P04" -> TickerScreen(a, n(3000))
                         "startup" -> StartupScreen()
                         "seed" -> SeedScreen()

@@ -1,0 +1,83 @@
+# P08 BookCover.kt: package, Coil 2 -> Coil 3 imports (+ crossfade extension import), Book and CoverPalettes come from Shims.kt in the same package
+--- corpus/agy-g38flash-B1-naive-r1/app/src/main/java/com/example/librarycatalogue/ui/components/BookCover.kt
++++ optlab/corpus/p08/BookCover.kt
+@@ -1,4 +1,4 @@
+-package com.example.librarycatalogue.ui.components
++package shelftap.optlab.corpus.p08
+ 
+ import androidx.compose.foundation.Canvas
+ import androidx.compose.foundation.background
+@@ -30,10 +30,9 @@
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+ import androidx.compose.ui.unit.sp
+-import coil.compose.AsyncImage
+-import coil.request.ImageRequest
+-import com.example.librarycatalogue.model.Book
+-import com.example.librarycatalogue.ui.theme.CoverPalettes
++import coil3.compose.AsyncImage
++import coil3.request.ImageRequest
++import coil3.request.crossfade
+ import kotlin.math.abs
+ 
+ @Composable
+
+# P08 BookCard.kt (the caller of BookCover, unchanged): package; Book and the two availability colours come from Shims.kt
+--- corpus/agy-g38flash-B1-naive-r1/app/src/main/java/com/example/librarycatalogue/ui/components/BookCard.kt
++++ optlab/corpus/p08/BookCard.kt
+@@ -1,4 +1,4 @@
+-package com.example.librarycatalogue.ui.components
++package shelftap.optlab.corpus.p08
+ 
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.clickable
+@@ -24,9 +24,6 @@
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+-import com.example.librarycatalogue.model.Book
+-import com.example.librarycatalogue.ui.theme.AvailableGreen
+-import com.example.librarycatalogue.ui.theme.UnavailableRed
+ 
+ @Composable
+ fun BookCard(
+
+# P08 B (tuned): generated from the ported BookCard text; the BookCover call becomes a flat Box of the same slot (aspectRatio 0.68, palette colour), nothing else
+--- corpus/agy-g38flash-B1-naive-r1/app/src/main/java/com/example/librarycatalogue/ui/components/BookCard.kt
++++ optlab/corpus/p08/BookCardFlat.kt
+@@ -6,6 +6,7 @@
+ import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.Row
+ import androidx.compose.foundation.layout.Spacer
++import androidx.compose.foundation.layout.aspectRatio
+ import androidx.compose.foundation.layout.fillMaxWidth
+ import androidx.compose.foundation.layout.height
+ import androidx.compose.foundation.layout.padding
+@@ -24,9 +25,10 @@
+ import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
++import kotlin.math.abs
+ 
+ @Composable
+-fun BookCard(
++fun BookCardFlat(
+     book: Book,
+     onClick: () -> Unit,
+     modifier: Modifier = Modifier
+@@ -46,9 +48,11 @@
+             modifier = Modifier.padding(10.dp)
+         ) {
+             // Book Cover
+-            BookCover(
+-                book = book,
+-                modifier = Modifier.fillMaxWidth()
++            Box(
++                modifier = Modifier
++                    .fillMaxWidth()
++                    .aspectRatio(0.68f)
++                    .background(CoverPalettes[(abs(book.coverColorSeed) % CoverPalettes.size).toInt()].first)
+             )
+ 
+             Spacer(modifier = Modifier.height(10.dp))
+

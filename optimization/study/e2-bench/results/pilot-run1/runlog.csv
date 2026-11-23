@@ -1,0 +1,77 @@
+time,factor_id,variant,round,seconds,result,host_mem_available_mb,host_swap_used_mb
+05:42:57,P08,A,0,53,ok,7026,3426
+05:43:43,P08,B,0,46,ok,7182,3425
+05:44:29,P08,B,1,45,ok,7194,3425
+05:45:21,P08,A,1,52,ok,7233,3424
+05:46:15,P08,A,2,53,ok,7064,3423
+05:47:01,P08,B,2,46,ok,7003,3413
+05:47:46,P08,B,3,46,ok,7175,3413
+05:48:39,P08,A,3,53,ok,7232,3411
+05:49:17,P06,A,0,38,ok,7164,3411
+05:49:54,P06,B,0,37,ok,7114,3410
+05:50:31,P06,B,1,36,ok,7252,3408
+05:51:09,P06,A,1,38,ok,7046,3408
+05:51:46,P06,A,2,37,ok,7095,3408
+05:52:23,P06,B,2,37,ok,7046,3408
+05:52:59,P06,B,3,37,ok,6883,3407
+05:53:37,P06,A,3,37,ok,6812,3407
+05:54:23,P01+P09,A,0,46,ok,7006,3400
+05:55:00,P01+P09,B,0,37,ok,6912,3399
+05:55:36,P01+P09,B,1,36,ok,7062,3399
+05:56:22,P01+P09,A,1,45,ok,6805,3391
+05:57:06,P01+P09,A,2,45,ok,6908,3390
+05:57:43,P01+P09,B,2,37,ok,6951,3390
+05:58:20,P01+P09,B,3,37,ok,6896,3374
+05:59:05,P01+P09,A,3,44,ok,6967,3374
+05:59:48,P13,A,0,43,ok,6812,3373
+06:00:35,P13,B,0,47,ok,6898,3372
+06:01:20,P13,B,1,44,ok,6922,3372
+06:02:10,P13,A,1,50,ok,6723,3370
+06:02:54,P13,A,2,44,ok,6861,3369
+06:03:39,P13,B,2,45,ok,6791,3369
+06:04:24,P13,B,3,45,ok,6718,3369
+06:05:11,P13,A,3,47,ok,6897,3369
+06:05:51,P03+P04,A,0,39,ok,6888,3368
+06:06:30,P03+P04,B,0,39,ok,6948,3367
+06:07:09,P03+P04,B,1,39,ok,6907,3367
+06:07:49,P03+P04,A,1,39,ok,6921,3367
+06:08:28,P03+P04,A,2,39,ok,7079,3366
+06:09:07,P03+P04,B,2,39,ok,6956,3365
+06:09:46,P03+P04,B,3,39,ok,6959,3365
+06:10:25,P03+P04,A,3,40,ok,6965,3365
+06:10:53,P10,A,0,28,ok,6948,3365
+06:11:20,P10,B,0,27,ok,6943,3365
+06:11:47,P10,B,1,27,ok,6886,3365
+06:12:15,P10,A,1,28,ok,6886,3365
+06:12:44,P10,A,2,28,ok,6735,3365
+06:13:10,P10,B,2,27,ok,6858,3365
+06:13:37,P10,B,3,27,ok,6836,3365
+06:14:06,P10,A,3,28,ok,6846,3365
+06:14:32,P11,A,0,26,ok,6866,3365
+06:14:59,P11,B,0,27,ok,6900,3365
+06:15:26,P11,B,1,26,ok,6906,3365
+06:15:53,P11,A,1,27,ok,6901,3365
+06:16:20,P11,A,2,27,ok,6648,3365
+06:16:47,P11,B,2,27,ok,6784,3364
+06:17:14,P11,B,3,27,ok,6836,3364
+06:17:41,P11,A,3,27,ok,6774,3364
+06:18:18,P01+P09/n=1000,A,0,37,ok,6783,3356
+06:18:55,P01+P09/n=1000,B,0,37,ok,6763,3355
+06:19:31,P01+P09/n=1000,B,1,36,ok,6789,3355
+06:20:09,P01+P09/n=1000,A,1,38,ok,6766,3355
+06:20:46,P01+P09/n=1000,A,2,37,ok,6648,3355
+06:21:23,P01+P09/n=1000,B,2,37,ok,6540,3355
+06:22:00,P01+P09/n=1000,B,3,37,ok,6738,3355
+06:22:38,P01+P09/n=1000,A,3,38,ok,6703,3355
+06:22:55,P01+P09/n=20000,A,0,17,"java.lang.IllegalStateException: Target package shelftap.optlab is not running, check logcat to verify the activity launched correctly",6696,3354
+06:28:20,P01+P09/n=20000,A,0,325,java.lang.IllegalStateException: Unable to confirm activity launch completion [] Please report a bug with the output of `adb shell dumpsys gfxinfo shelftap.optlab framestats`,6716,3353
+06:28:57,P01+P09/n=20000,B,0,37,ok,6828,3353
+06:29:34,P01+P09/n=20000,B,1,37,ok,6794,3352
+06:30:08,P01+P09/n=20000,A,1,34,java.lang.IllegalStateException: Unable to confirm activity launch completion [] Please report a bug with the output of `adb shell dumpsys gfxinfo shelftap.optlab framestats`,6807,3352
+06:35:30,P01+P09/n=20000,A,1,322,java.lang.IllegalStateException: Unable to confirm activity launch completion [] Please report a bug with the output of `adb shell dumpsys gfxinfo shelftap.optlab framestats`,6713,3348
+06:35:46,P01+P09/n=20000,A,2,16,"java.lang.IllegalStateException: Target package shelftap.optlab is not running, check logcat to verify the activity launched correctly",6681,3348
+06:41:08,P01+P09/n=20000,A,2,322,java.lang.IllegalStateException: Unable to confirm activity launch completion [] Please report a bug with the output of `adb shell dumpsys gfxinfo shelftap.optlab framestats`,6908,3343
+06:41:45,P01+P09/n=20000,B,2,37,ok,6778,3343
+06:42:23,P01+P09/n=20000,B,3,37,ok,6886,3343
+06:42:40,P01+P09/n=20000,A,3,17,"java.lang.IllegalStateException: Target package shelftap.optlab is not running, check logcat to verify the activity launched correctly",6762,3343
+06:48:02,P01+P09/n=20000,A,3,323,java.lang.IllegalStateException: Unable to confirm activity launch completion [] Please report a bug with the output of `adb shell dumpsys gfxinfo shelftap.optlab framestats`,6670,3342
