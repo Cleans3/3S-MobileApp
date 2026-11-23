@@ -8,3 +8,6 @@ build/
 *.keystore
 server/dev-tls/
 local.properties
+
+# Morphicons npm install for the icon build script (optimization/ui-ux-plan.md §6.3)
+node_modules/

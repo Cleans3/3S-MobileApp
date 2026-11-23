@@ -57,3 +57,12 @@
 - **AI:** Claude Code (Claude Opus 5.5). Người dùng đồng ý thêm trang danh sách và hỏi có thể thiết kế hiệu ứng động phù hợp cho mockup không. AI dựng màn `List` bằng 13 sách dev thật, thêm hiệu ứng vào 13 màn của mockup (bản 10 của artifact), rồi viết các mục kế hoạch. AI chưa xác nhận tên bộ token chuyển động của Material 3 nên kế hoạch không ghi tên API đó.
 - **Kiểm thử:** đối chiếu với `server/API.md`: `TitleSummary` có `copiesAvailable` nhưng không có kệ, `q` đã khớp chủ đề. Số bản còn lấy từ `V100__dev_catalog.sql`; trạng thái "đang được mượn" của Tắt đèn là dữ liệu mẫu. Chưa mở mockup ra xem hiệu ứng chạy thật.
 - **Ghi chú cho báo cáo:** §6.5 là nơi giải thích vì sao hiệu ứng động không làm giảm điểm hiệu năng: chỉ `graphicsLayer`, tắt ở tầng Nhẹ, và được đo ở §8.5.
+
+## 2026-11-24 03:58 · Thêm node_modules vào .gitignore
+
+- **Vấn đề:** `node_modules/` của Morphicons ở gốc repo chưa bị git ignore, dễ bị commit nhầm cả nghìn file.
+- **Thay đổi:** `.gitignore` thêm `node_modules/` (khớp ở mọi cấp thư mục). §6.3 của kế hoạch ghi việc này và việc còn lại: chuyển `package.json` và `package-lock.json` vào thư mục script build khi làm script đó.
+- **Đo trước → sau:** không áp dụng (cấu hình git).
+- **AI:** Claude Code (Claude Opus 5.5) theo yêu cầu của người dùng. AI không ignore `package.json` vì file đó cần được commit cùng script build sau này.
+- **Kiểm thử:** `git check-ignore` trên cây của commit này (xem commit message).
+- **Ghi chú cho báo cáo:** không có.

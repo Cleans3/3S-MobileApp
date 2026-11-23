@@ -188,7 +188,7 @@ Nhóm đã chốt (2026-11-23): **một app duy nhất, tự bật hiệu ứng 
 - Morphicons (`node_modules/morphicons`, giấy phép MIT) là thư viện JavaScript, **không chạy trong app Kotlin/Compose**. App chỉ dùng được dữ liệu icon và ý tưởng morph.
 - Bộ icon: lấy SVG từ một bộ có giấy phép mở (ví dụ Lucide, ISC) rồi chuyển sang `ImageVector` (nhóm chọn bộ icon, §11).
 - Morph ở tầng Đầy đủ: chạy Morphicons bằng một script Node **lúc build** để chuẩn hóa từng cặp icon (thường và đang chọn) thành path tương thích, rồi xuất ra `AnimatedVectorDrawable`. Script và các file sinh ra để trong `android/app/`, kèm lệnh chạy lại. App không mang JavaScript vào lúc chạy.
-- `package.json`, `package-lock.json` và `node_modules/` ở gốc repo hiện chưa được git theo dõi. Từ 2026-11-24 chúng chỉ được ignore trên một máy, bằng `.git/info/exclude`; repo vẫn chưa ignore. Chuyển chúng vào thư mục của script build, và thêm `node_modules/` vào `.gitignore`.
+- `node_modules/` đã có trong `.gitignore` (2026-11-24), ở mọi cấp thư mục nên vẫn đúng khi chuyển sang thư mục của script build. `package.json` và `package-lock.json` ở gốc repo chưa được git theo dõi: khi làm script build thì chuyển chúng vào thư mục của script và commit ở đó, để ai cũng cài lại được đúng phiên bản.
 - **Chỗ dùng icon morph** (chỉ ở tầng Đầy đủ; tắt khi người dùng tắt hoạt ảnh; không dùng trong hàng danh sách):
 
 | Chỗ | Morph | Khi nào |
