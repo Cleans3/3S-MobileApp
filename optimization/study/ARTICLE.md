@@ -1271,7 +1271,7 @@ Mỗi khuyến nghị gắn một kết quả; khuyến nghị không có kết 
 
 ### 6.5. Hướng phát triển
 
-Từ các mối đe dọa chưa xử lý: (i) đo trên thiết bị thật; (ii) nhóm C do người thực hiện, nghiên cứu UX (SUS, tỷ lệ hoàn thành tác vụ) và người duyệt thật thay cho người duyệt bằng mã ở E5; (iii) trợ lý có truy xuất (retrieval) và người kiểm duyệt, thay cho bản nháp đầu không trạng thái; (iv) miền ứng dụng khác và iOS; (v) hoàn tất các phần còn mở của chính nghiên cứu: C5 và các nhân tố lấy từ mã E1 ở E2, hiệu chỉnh Holm, giải S11 để kết luận H4, kiểm chứng lại P07, P05, P06, S04, S08, U05 bằng mẫu mới, tần suất theo bộ công cụ và phân bố mật độ hiệu ứng ở E1, xác thực lại agy để lấp bảy ô, và quét ứng dụng người viết ở E3; (vi) **tìm lại các truy vấn tài liệu ở Mục 1.2 trước khi nộp bài**, vì các khẳng định "chưa có nghiên cứu" dựa trên nhật ký 10 truy vấn.
+Từ các mối đe dọa chưa xử lý: (i) đo trên thiết bị thật; (ii) nhóm C do người thực hiện, nghiên cứu UX (SUS, tỷ lệ hoàn thành tác vụ) và người duyệt thật thay cho người duyệt bằng mã ở E5; (iii) trợ lý có truy xuất (retrieval) và người kiểm duyệt, thay cho bản nháp đầu không trạng thái; (iv) miền ứng dụng khác và iOS; (v) hoàn tất các phần còn mở của chính nghiên cứu: hai lần chạy khám phá của E2 (độ nhạy với biến thể A viết tay, quét số lượng khoản vay), giải S11 để kết luận H4, kiểm chứng lại P07, P05, P06, S04, S08, U05 bằng mẫu mới, tần suất theo bộ công cụ và phân bố mật độ hiệu ứng ở E1, xác thực lại agy để lấp bảy ô, và quét ứng dụng người viết ở E3; (vi) **tìm lại các truy vấn tài liệu ở Mục 1.2 trước khi nộp bài**, vì các khẳng định "chưa có nghiên cứu" dựa trên nhật ký 10 truy vấn.
 
 
 <!-- REFS-BEGIN -->

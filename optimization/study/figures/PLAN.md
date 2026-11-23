@@ -83,8 +83,8 @@ Status of each: `waits` names what must exist first. "Conf" = confirmatory (anno
 
 | Asset | Used in | Owner | Where it is named |
 |---|---|---|---|
-| ShelfTap and optlab screenshots (Catalogue, Search, Detail) | ARTICLE §5.1 (TODO[app]), S1 | beta-f2-3 | `e2-bench/REPORT.md` |
-| A and B scroll video, same script, side by side if the owner can | S4, S10 (TODO[e2-video]) | beta-f2-3 | `e2-bench/REPORT.md` |
+| ShelfTap and optlab screenshots (Catalogue, Search, Detail) | ARTICLE §5.1 (asset, not a number), S1 | beta-f2-3 | `e2-bench/REPORT.md` |
+| A and B scroll video, same script, side by side if the owner can | S4, S10 (asset `[TÀI NGUYÊN]` in the slides) | beta-f2-3 | `e2-bench/REPORT.md` |
 | MobSF capture and one code-before/after snippet | S6 | beta-f2-4 | `e3-security/REPORT.md` |
 | Profiler capture for A and for B | S4, S10 | beta-f2-3 | `e2-bench/REPORT.md` |
 | one prompt and one diff of a key optimiser change | S9 | beta-f2-4 | `e5-optimizer/REPORT.md` |
