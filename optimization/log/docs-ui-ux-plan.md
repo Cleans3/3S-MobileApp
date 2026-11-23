@@ -21,3 +21,12 @@
 - **AI:** Claude Code (Claude Opus 5.5) theo yêu cầu ghi nhật ký bắt buộc của người dùng.
 - **Kiểm thử:** không áp dụng.
 - **Ghi chú cho báo cáo:** không có.
+
+## 2026-11-23 18:39 · Sửa mục 2026-11-23 18:40
+
+- **Vấn đề:** mục trên ghi giờ ước lượng, không phải giờ commit thật.
+- **Thay đổi:** mục "18:40" thực ra là commit lúc 18:36. Nội dung mục không đổi.
+- **Đo trước → sau:** không áp dụng.
+- **AI:** Claude Code (Claude Opus 5.5) tự phát hiện khi đối chiếu với `git log`.
+- **Kiểm thử:** không áp dụng.
+- **Ghi chú cho báo cáo:** không có.
