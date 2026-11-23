@@ -75,8 +75,12 @@ function tokensOf(html) {
   return { light, dark, linkColor };
 }
 
-function audit(file, theme) {
-  const html = fs.readFileSync(path.join(dir, file), 'utf8');
+// Non-text items (WCAG 1.4.11, 3:1). `required` marks what the criterion asks for; the rest is advisory.
+const colorIn = s => { const m = (s || '').match(/#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b|rgba?\([^)]*\)/); return m ? parseColor(m[0]) : null; };
+
+function audit(file, theme, boardDir = dir) {
+  const ui = [];
+  const html = fs.readFileSync(path.join(boardDir, file), 'utf8');
   const js = html.split('data-dc-script')[1].split('>').slice(1).join('>').split('</script>')[0];
   const C = new Function('DCLogic', js + '\nreturn Component;')(class { setState(s) { this.state = Object.assign({}, this.state, s); } });
   const c = new C(); c.props = {}; c.state = { __theme: theme, loaded: true, done: true };
@@ -89,18 +93,50 @@ function audit(file, theme) {
   function walk(node, ctx) {
     if (node.text !== undefined) {
       const t = node.text.replace(/\s+/g, ' ').trim();
+      if (t && ctx.control) ctx.control.hasText = true;
       if (t && !ctx.hidden) out.push(Object.assign({ text: t }, ctx));
       return;
     }
-    const st = styleMap(resolveVars(node.attrs.style || '', tokens));
+    const rawStyle = node.attrs.style || '';
+    const st = styleMap(resolveVars(rawStyle, tokens));
     const n = Object.assign({}, ctx);
     if (node.attrs['aria-hidden'] === 'true') n.hidden = true;
-    if (node.tag === 'svg') return; // icons: non-text, checked separately if needed
+    // mockup-only chrome: the state preview bar and the light/dark button
+    if (rawStyle.includes('rgba(28,27,26,0.82)') || /bản phác ở nền/.test(node.attrs['aria-label'] || '')) n.chrome = true;
+    const parentBg = ctx.bg;
+    const where = node.attrs['aria-label'] || '';
+    if (node.tag === 'svg') {
+      const own = st.color ? parseColor(st.color) : null;
+      const pick = a => { const v = node.attrs[a]; if (!v || v === 'none') return null; return v.toLowerCase() === 'currentcolor' ? (own || n.color) : parseColor(v); };
+      const ic = pick('stroke') || pick('fill');
+      if (ic && !n.chrome) ui.push({ kind: 'icon', control: n.control || null, fg: ic[3] < 1 ? over(ic, n.bg) : ic, bg: n.bg, onGradient: !!n.onGradient, where: (n.control && n.control.label) || '' });
+      return;
+    }
     // UA defaults that do not inherit
     const bgv = st.background || st['background-color'];
     if (bgv) {
       if (/gradient|url\(/.test(bgv)) { n.onGradient = true; }
       else { const pb = parseColor(bgv); if (pb && pb[3] > 0) { n.bg = over(pb, n.bg); n.bgSrc = bgv; } }
+    }
+    const isControl = node.tag === 'button' || node.tag === 'a' || node.tag === 'input';
+    if (node.tag === 'button' || node.tag === 'a') n.control = { label: where, hasText: false };
+    const border = st.border && !/^0\b|none/.test(st.border) ? colorIn(st.border) : null;
+    const borderC = border ? over(border, parentBg) : null;
+    let fillVs = ratio(n.bg, parentBg), borderVs = borderC ? ratio(borderC, parentBg) : 0;
+    // a search field drawn by its <label> pill: the input itself is transparent and borderless
+    if (node.tag === 'label' && (bgv || border)) n.box = { fillVs, borderVs, fill: n.bg, borderC, outside: parentBg };
+    if (node.tag === 'input' && (!bgv || bgv.trim() === 'transparent') && !border && ctx.box) { fillVs = ctx.box.fillVs; borderVs = ctx.box.borderVs; }
+    if (isControl && !n.chrome && !n.hidden) {
+      const role = node.attrs.role, pressed = node.attrs['aria-pressed'];
+      let kind = 'boundary', required = false;
+      if (node.tag === 'input') { kind = 'field'; required = true; }
+      else if (role === 'switch') { kind = 'switch-track (' + (node.attrs['aria-checked'] === 'true' ? 'bật' : 'tắt') + ')'; required = true; }
+      else if (pressed === 'true') { kind = 'selected'; required = true; }
+      if (pressed !== 'false') ui.push({ kind, required, ratioOverride: Math.max(fillVs, borderVs), fg: (borderVs > fillVs ? (borderC || (ctx.box && ctx.box.borderC)) : (ctx.box && node.tag === 'input' && !borderC ? ctx.box.fill : n.bg)) || n.bg, bg: (ctx.box && node.tag === 'input' && !borderC) ? ctx.box.outside : parentBg, onGradient: !!n.onGradient, where: where || node.tag });
+      if (role === 'switch') n.switchTrack = n.bg;
+    }
+    if (ctx.switchTrack && bgv && node.tag === 'span') {
+      ui.push({ kind: 'switch-knob', required: true, fg: n.bg, bg: ctx.switchTrack, where: 'núm công tắc' });
     }
     let color = st.color;
     if (!color && node.tag === 'a') color = linkColor;
@@ -121,6 +157,11 @@ function audit(file, theme) {
   }
   const rootBg = parseColor(resolveVars('var(--bg)', tokens)) || [255, 255, 255, 1];
   walk(tree, { bg: rootBg, color: [0, 0, 0, 1], size: 16, weight: 400 });
+  audit.lastUi = ui.map(u => {
+    const required = u.kind === 'icon' ? !!(u.control && !u.control.hasText) : u.required;
+    const cr = u.ratioOverride !== undefined ? u.ratioOverride : ratio(u.fg, u.bg);
+    return { file, theme, kind: u.kind, required, where: u.where, ratio: Math.round(cr * 100) / 100, pass: cr >= 3, fg: hex(u.fg), bg: hex(u.bg), gradient: !!u.onGradient };
+  });
   return out.map(r => {
     const large = r.size >= 24 || (r.size >= 18.66 && r.weight >= 700);
     const need = large ? 3 : 4.5;
@@ -128,6 +169,9 @@ function audit(file, theme) {
     return { file, theme, text: r.text.slice(0, 48), ratio: Math.round(cr * 100) / 100, need, pass: cr >= need, fg: hex(r.color), bg: hex(r.bg), fgSrc: r.colorSrc || 'inherit', bgSrc: r.bgSrc || 'root', gradient: !!r.onGradient, size: r.size };
   });
 }
+
+module.exports = { audit, ratio, parseColor };
+if (require.main !== module) return;
 
 const files = fs.readdirSync(dir).filter(f => f.endsWith('.dc.html')).sort();
 const all = [];

@@ -103,7 +103,11 @@
 - **Chữ gợi ý trong ô nhập:** màu xám mặc định của trình duyệt (#757575) đạt 3.4:1 ở nền tối và 4.4:1 ở nền sáng. Đã đổi sang token `ink3`.
 - **Chỗ sát ngưỡng đã nâng lên:** nhãn trên bìa sách ở Danh mục khi ở nền tối (4.37:1), dòng ghi chú ở màn Khởi động (4.46:1), nút "Lưu mật khẩu" đang bị khóa (4.31:1; nút bị khóa được miễn theo WCAG, nhưng vẫn sửa).
 - **Chữ trên ảnh ở màn chào:** script không tính được nền ảnh, nên tính riêng trường hợp xấu nhất, với vùng sáng nhất của ảnh (#d9d1c6) nằm sau chữ. Trước khi sửa, tiêu đề chỉ đạt 2.49:1 (cần 3) và nút "Bắt đầu" bằng kính đạt 3.70:1 (cần 4.5). Sau khi tăng độ đậm của dải tối (0.5 ở 25% chiều cao, 0.8 ở đáy) và giảm độ trắng của nút kính từ 0.22 xuống 0.16, các giá trị là 4.80, 7.03 và 5.57.
-- **Giới hạn:** mockup là trang web. Kính thật có blur trên nền đang cuộn nên màu nền thay đổi theo nội dung; khi làm app phải đo lại bằng Accessibility Scanner trên máy. Icon và viền (ngưỡng 3:1 cho thành phần không phải chữ) chưa được đo.
+- **Icon, viền và trạng thái (SC 1.4.11, ngưỡng 3:1).** Các mục bắt buộc gồm: icon trong nút không có chữ, viền ô nhập, rãnh và núm công tắc, chip hoặc tab đang chọn. Có 37 mục bắt buộc mỗi theme. Trước khi sửa: sáng 13 không đạt, tối 12; sau khi sửa: 0 ở cả hai theme. Riêng icon thẻ trên ảnh ở màn chào được tính riêng như chữ trên ảnh và đạt 5.57.
+  - Công tắc tắt chỉ đạt 1.59 đến 1.94, và rãnh bật ở nền tối đạt 1.97. Đã đổi sang kiểu Material 3: rãnh tắt có viền và núm màu `ink3`; rãnh bật dùng token `switch-on` riêng cho từng theme.
+  - Viền ô nhập chỉ đạt 1.33 đến 1.5, còn khung ô tìm kiếm gần như không thấy (1.0 đến 1.2). Đã đổi sang viền 50% của màu chữ.
+  - 62 icon đứng cạnh chữ đều đạt. Mép các nút kính phần lớn dưới 3:1; đây là chủ ý của phong cách kính và SC 1.4.11 không bắt buộc, vì chữ hoặc icon trong nút đã nhận diện được nút. Nếu bài test UX (§8.3) cho thấy người dùng khó nhận ra nút thì tăng viền.
+- **Giới hạn:** mockup là trang web. Kính thật có blur trên nền đang cuộn nên màu nền thay đổi theo nội dung; khi làm app phải đo lại bằng Accessibility Scanner trên máy.
 
 ### 5.4 Trạng thái UI (U05)
 

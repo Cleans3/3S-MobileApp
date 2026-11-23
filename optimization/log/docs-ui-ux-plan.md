@@ -102,3 +102,12 @@
 - **AI:** Claude Code (Claude Opus 5.5). Người dùng đồng ý chép script vào repo. AI chép thêm mã nguồn mockup vì script cần nó để chạy, viết thêm script tính chữ trên ảnh (trước đó chỉ là lệnh chạy một lần), sửa để kết quả ghi cạnh các màn.
 - **Kiểm thử:** chạy cả ba script trong bố cục thư mục giống repo trước khi commit.
 - **Ghi chú cho báo cáo:** số liệu tương phản trong báo cáo có thể chạy lại bằng ba lệnh trong README.
+
+## 2026-11-24 04:32 · Đo tương phản cho icon, viền và công tắc
+
+- **Vấn đề:** phép đo trước chỉ đo chữ (SC 1.4.3). Icon, viền ô nhập, công tắc và trạng thái đang chọn (SC 1.4.11, ngưỡng 3:1) chưa được đo.
+- **Thay đổi:** thêm `optimization/ui-ux-mockup/tools/nontext-contrast.js`, dùng chung phần dựng màn của `tools/contrast.js` (giờ xuất hàm `audit` và ghi nhận thêm các mục không phải chữ). Mockup: công tắc ở Tài khoản và Thông báo làm theo kiểu Material 3 (rãnh tắt có viền `ink3`, token `switch-on` và `switch-knob-on` cho từng theme); viền ô nhập và khung ô tìm kiếm đổi sang 50% của màu chữ. `tools/hero-worst-case.js` tính thêm icon thẻ trên ảnh. Cập nhật README, §5.3 và hai file kết quả JSON.
+- **Đo trước → sau:** 37 mục bắt buộc mỗi theme; không đạt: sáng 13 → 0, tối 12 → 0 (icon thẻ trên ảnh ở màn chào tính riêng: 3.70 → 5.57). 62 icon cạnh chữ đều đạt. Mép nút kính (khuyến nghị) vẫn phần lớn dưới 3:1, giữ nguyên theo chủ ý. Phép đo chữ không đổi.
+- **AI:** Claude Code (Claude Opus 5.5). Người dùng yêu cầu đo thêm icon và viền. AI chia mục bắt buộc và mục khuyến nghị theo SC 1.4.11, tìm ra công tắc và ô nhập không đạt, sửa theo kiểu Material 3 rồi đo lại. Một lỗi của chính script (ô tìm kiếm có nền `transparent` bị tính là có nền riêng) được phát hiện và sửa trong lúc đo.
+- **Kiểm thử:** chạy lại cả bốn script; script của 20 màn không lỗi; phép đo chữ vẫn cho đúng kết quả cũ.
+- **Ghi chú cho báo cáo:** công tắc và ô nhập là loại lỗi tương phản mà nhìn bằng mắt dễ cho là "ổn" vì ta biết đó là công tắc; đo bằng số cho thấy rãnh tắt chỉ 1.6:1.

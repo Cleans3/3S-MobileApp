@@ -16,5 +16,5 @@ for (const [name, stops, glass] of versions) {
   const bg = p => over(shade, grad(stops, p), picture);
   const text = p => ratio(white, bg(p)).toFixed(2);
   const button = p => ratio(white, over(white, glass, bg(p))).toFixed(2);
-  console.log(`${name}: title first line (p=0.28, needs 3) ${text(0.28)} | description (p=0.62, needs 4.5) ${text(0.62)} | "Bắt đầu" glass button (p=0.80, needs 4.5) ${button(0.80)} | bottom link (p=0.93, needs 4.5) ${text(0.93)}`);
+  console.log(`${name}: title first line (p=0.28, needs 3) ${text(0.28)} | description (p=0.62, needs 4.5) ${text(0.62)} | "Bắt đầu" glass button (p=0.80, needs 4.5) ${button(0.80)} | bottom link (p=0.93, needs 4.5) ${text(0.93)} | card icon on the glass button (p=0.80, non-text, needs 3) ${button(0.80)}`);
 }
