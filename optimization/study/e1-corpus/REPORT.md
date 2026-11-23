@@ -264,11 +264,11 @@ Runs: 101 generated, 100 valid. Unvalidated rules excluded from the primary anal
 | (b) without claude-haiku | 64 | +0.361 (p=0.0060) | +4.680 (p=0.0000) | +0.711 (p=0.0000) |
 | (b) without codex-luna | 64 | +0.407 (p=0.0017) | +5.121 (p=0.0000) | +0.365 (p=0.0212) |
 
-### 3c. SENSITIVITY (depfix): v1 detector, dependency lookup corrected (post-hoc, section 7)
+### 3c. Post-hoc sensitivity (depfix): v1 detector, dependency lookup corrected (not confirmatory, section 7)
 
-### E1 analysis, detector track: v1c
+### E1 analysis, detector track: v1 with depfix (post-hoc sensitivity, not confirmatory)
 
-Runs: 101 generated, 100 valid. Unvalidated rules excluded from the primary analysis: ['P05', 'P06', 'P07', 'P09', 'P10', 'S03', 'S04', 'S08', 'U05'].
+Runs: 101 generated, 100 valid. Unvalidated rules excluded from the validated-rule analysis: ['P05', 'P06', 'P07', 'P09', 'P10', 'S03', 'S04', 'S08', 'U05'].
 
 #### Analysis over validated rules (20 rules)
 
@@ -339,11 +339,11 @@ Runs: 101 generated, 100 valid. Unvalidated rules excluded from the primary anal
 | (b) without claude-haiku | 64 | +0.589 (p=0.0000) | +3.857 (p=0.0000) | +0.658 (p=0.0000) |
 | (b) without codex-luna | 64 | +0.634 (p=0.0000) | +4.487 (p=0.0000) | +0.281 (p=0.0766) |
 
-### 3d. SENSITIVITY (depfix): v2 detector, dependency lookup corrected (post-hoc, section 7)
+### 3d. Post-hoc sensitivity (depfix): v2 detector, dependency lookup corrected (not confirmatory, section 7)
 
-### E1 analysis, detector track: v2c
+### E1 analysis, detector track: v2 with depfix (post-hoc sensitivity, not confirmatory)
 
-Runs: 101 generated, 100 valid. Unvalidated rules excluded from the primary analysis: ['P05', 'P06', 'P07', 'S04', 'S08', 'U05'].
+Runs: 101 generated, 100 valid. Unvalidated rules excluded from the validated-rule analysis: ['P05', 'P06', 'P07', 'S04', 'S08', 'U05'].
 
 #### Analysis over validated rules (23 rules)
 

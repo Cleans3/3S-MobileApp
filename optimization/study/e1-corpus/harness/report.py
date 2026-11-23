@@ -133,10 +133,12 @@ def main():
     w("Wilson 95% intervals. A rule that fires in nearly every human app (read the human columns) separates nothing; the analysis section applies the pre-registered prevalence-band rule. Rules marked unvalidated in the status column are shown here but are not in the primary endpoints of that track.\n")
     w("## 3. Pre-registered endpoints\n")
     for sub, title in (("primary-v1", "3a. PRIMARY (frozen v1 detector, first-scan dependency lookup)"), ("sensitivity-v2", "3b. SENSITIVITY (v2 detector, first-scan dependency lookup)"),
-                       ("primary-v1-deps-corrected", "3c. SENSITIVITY (depfix): v1 detector, dependency lookup corrected (post-hoc, section 7)"), ("sensitivity-v2-deps-corrected", "3d. SENSITIVITY (depfix): v2 detector, dependency lookup corrected (post-hoc, section 7)")):
+                       ("primary-v1-deps-corrected", "3c. Post-hoc sensitivity (depfix): v1 detector, dependency lookup corrected (not confirmatory, section 7)"), ("sensitivity-v2-deps-corrected", "3d. Post-hoc sensitivity (depfix): v2 detector, dependency lookup corrected (not confirmatory, section 7)")):
         s = RES / "analysis" / sub / "summary.md"
         w(f"### {title}\n")
-        w(re.sub(r"(?m)^(#+)", lambda m: "##" + m.group(1), s.read_text()) if s.exists() else "analysis.py has not been run.\n")
+        txt = s.read_text() if s.exists() else ""
+        if sub.endswith("deps-corrected"): txt = txt.replace("excluded from the primary analysis", "excluded from the validated-rule analysis").replace("detector track: v1c", "detector track: v1 with depfix (post-hoc sensitivity, not confirmatory)").replace("detector track: v2c", "detector track: v2 with depfix (post-hoc sensitivity, not confirmatory)")
+        w(re.sub(r"(?m)^(#+)", lambda m: "##" + m.group(1), txt) if txt else "analysis.py has not been run.\n")
     def ep(sub):
         f = RES / "analysis" / sub / "summary.md"; d = {}
         if not f.exists(): return d
