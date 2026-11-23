@@ -84,3 +84,12 @@
 - **AI:** Claude Code (Claude Opus 5.5). AI giải thích nguyên nhân chính của cảm giác thô là độ đậm 700 ở cỡ lớn, dựng bảng so bốn font (Be Vietnam Pro, Inter, Plus Jakarta Sans, Nunito) ở nền sáng và tối, và nghiêng về Plus Jakarta Sans; người dùng chọn Nunito. AI đổi font và gom mọi màu viết cứng của 20 màn mockup thành biến CSS bằng một script có xét ngữ cảnh (nền, chữ, viền, nút chính), thêm nút Sáng/Tối cho từng màn và lựa chọn giao diện trong Tài khoản. Mockup chưa lên link vì việc đăng bị chặn, đang chờ người dùng đồng ý.
 - **Kiểm thử:** chạy script của cả 20 màn bằng Node, gọi mọi handler và kiểm tra biến trong template. Chưa xem mockup ở nền tối bằng mắt.
 - **Ghi chú cho báo cáo:** đây là ví dụ cho câu hỏi nghiên cứu về vai trò của AI: AI đề xuất, con người chọn font theo cảm nhận.
+
+## 2026-11-24 04:25 · Đo tương phản của mockup ở hai theme
+
+- **Vấn đề:** sau khi thêm theme tối, cần đo xem chữ có đạt tương phản 4.5:1 (WCAG 2.2 AA, U03) ở cả hai theme không. Khung của artifact chặn chạy code bên trong màn, nên không đo trực tiếp trên trang được.
+- **Thay đổi:** §5.3 thêm cách đo, bảng kết quả, các lỗi đã sửa và giới hạn. Mockup đã sửa: link, nút và ô nhập lấy token `ink`; chữ gợi ý lấy `ink3`; nhãn trên bìa ở Danh mục, ghi chú ở Khởi động và nút bị khóa ở Đổi mật khẩu được nâng tương phản; dải tối ở màn chào đậm hơn và nút kính ở đó bớt trắng.
+- **Đo trước → sau:** 353 đoạn chữ mỗi theme. Không đạt: sáng 9 → 0, tối 9 → 0. Chữ trên ảnh ở màn chào (trường hợp xấu nhất): tiêu đề 2.49 → 4.80 (cần 3), nút Bắt đầu 3.70 → 5.57 (cần 4.5), đoạn mô tả 4.47 → 7.03.
+- **AI:** Claude Code (Claude Opus 5.5). Người dùng yêu cầu đo tương phản. AI thử chạy code trong khung của artifact (bị chặn), rồi viết script dựng từng màn từ mã nguồn với dữ liệu thật, thay token theo theme, chồng các lớp bán trong, mô phỏng màu mặc định của trình duyệt cho nút, ô nhập, placeholder và link. Script tìm ra một lỗi thật mà lúc xem bằng mắt ở lượt trước đã bỏ sót: link và nút không ghi màu bị đen trên nền tối. Bản đã sửa chưa lên link vì việc đăng bị chặn, đang chờ người dùng đồng ý.
+- **Kiểm thử:** chạy lại script sau khi sửa (0 lỗi ở cả hai theme, ngoài chữ trên ảnh được tính riêng); chạy script của cả 20 màn để chắc không hỏng màn nào.
+- **Ghi chú cho báo cáo:** đây là ví dụ đo trước/sau đúng nghĩa cho phần UI. Lỗi chữ đen trên nền tối là loại lỗi mà xem bằng mắt vài màn dễ bỏ sót, còn đo toàn bộ thì bắt được.

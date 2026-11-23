@@ -91,6 +91,20 @@
 | Không vỡ layout ở font scale 2.0 và màn hình rộng 320 dp | Ảnh chụp ở các cấu hình đó |
 | Thứ tự focus hợp lý; thông báo kết quả tự mượn bằng `liveRegion` | TalkBack |
 
+**Đo tương phản trên mockup (2026-11-24).** Một script Node dựng từng màn của mockup bằng dữ liệu thật của màn đó, thay token màu theo theme, chồng các lớp bán trong lên nền bên dưới, rồi tính tỷ lệ tương phản WCAG cho mọi đoạn chữ. Nó cũng mô phỏng màu mặc định của trình duyệt cho nút, ô nhập, chữ gợi ý (placeholder) và link. Ngưỡng 4.5:1, hoặc 3:1 cho chữ lớn (từ 24 px, hoặc từ 18.66 px và đậm).
+
+| | Sáng | Tối |
+|---|---|---|
+| Số đoạn chữ đã kiểm | 353 | 353 |
+| Không đạt, trước khi sửa | 9 | 9 |
+| Không đạt, sau khi sửa | 0 | 0 |
+
+- **Lỗi thật đã sửa:** link và nút không ghi màu bị lấy màu đen mặc định, nên ở nền tối gần như không đọc được (1.1:1). Đã sửa bằng một quy tắc chung: chữ trong nút, ô nhập và link lấy token `ink`.
+- **Chữ gợi ý trong ô nhập:** màu xám mặc định của trình duyệt (#757575) đạt 3.4:1 ở nền tối và 4.4:1 ở nền sáng. Đã đổi sang token `ink3`.
+- **Chỗ sát ngưỡng đã nâng lên:** nhãn trên bìa sách ở Danh mục khi ở nền tối (4.37:1), dòng ghi chú ở màn Khởi động (4.46:1), nút "Lưu mật khẩu" đang bị khóa (4.31:1; nút bị khóa được miễn theo WCAG, nhưng vẫn sửa).
+- **Chữ trên ảnh ở màn chào:** script không tính được nền ảnh, nên tính riêng trường hợp xấu nhất, với vùng sáng nhất của ảnh (#d9d1c6) nằm sau chữ. Trước khi sửa, tiêu đề chỉ đạt 2.49:1 (cần 3) và nút "Bắt đầu" bằng kính đạt 3.70:1 (cần 4.5). Sau khi tăng độ đậm của dải tối (0.5 ở 25% chiều cao, 0.8 ở đáy) và giảm độ trắng của nút kính từ 0.22 xuống 0.16, các giá trị là 4.80, 7.03 và 5.57.
+- **Giới hạn:** mockup là trang web. Kính thật có blur trên nền đang cuộn nên màu nền thay đổi theo nội dung; khi làm app phải đo lại bằng Accessibility Scanner trên máy. Icon và viền (ngưỡng 3:1 cho thành phần không phải chữ) chưa được đo.
+
 ### 5.4 Trạng thái UI (U05)
 
 Mỗi màn hình có đủ 5 trạng thái: **đang tải, có dữ liệu, rỗng, lỗi (kèm hướng khắc phục), offline.**
