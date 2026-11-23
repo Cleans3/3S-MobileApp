@@ -111,3 +111,12 @@
 - **AI:** Claude Code (Claude Opus 5.5). Người dùng yêu cầu đo thêm icon và viền. AI chia mục bắt buộc và mục khuyến nghị theo SC 1.4.11, tìm ra công tắc và ô nhập không đạt, sửa theo kiểu Material 3 rồi đo lại. Một lỗi của chính script (ô tìm kiếm có nền `transparent` bị tính là có nền riêng) được phát hiện và sửa trong lúc đo.
 - **Kiểm thử:** chạy lại cả bốn script; script của 20 màn không lỗi; phép đo chữ vẫn cho đúng kết quả cũ.
 - **Ghi chú cho báo cáo:** công tắc và ô nhập là loại lỗi tương phản mà nhìn bằng mắt dễ cho là "ổn" vì ta biết đó là công tắc; đo bằng số cho thấy rãnh tắt chỉ 1.6:1.
+
+## 2026-11-24 04:35 · Viền cho ô tìm kiếm ở màn Khách
+
+- **Vấn đề:** ở lượt trước, phần sửa viền cho ô tìm kiếm ở màn Khách không được áp dụng: chuỗi cần thay có hai dấu cách sau `background:` nên không khớp, và script sửa không kiểm tra lần thay đó. Ô này là link mở màn Danh sách, trông như ô nhập, nên không nằm trong nhóm bắt buộc, nhưng viền nhạt hơn các ô tìm kiếm khác (1.39 ở nền sáng).
+- **Thay đổi:** `optimization/ui-ux-mockup/Guest.dc.html` dùng viền 50% của màu chữ như các ô tìm kiếm khác và có `aria-label="Tìm sách"` (trước đó trình đọc màn hình đọc chữ gợi ý "Tên sách, tác giả, ISBN" như tên link). README cập nhật bản 16 và số mục khuyến nghị.
+- **Đo trước → sau:** mép ô ở màn Khách: sáng 1.39 → 3.15, tối 1.51 → 4.74. Mép nút và link (khuyến nghị) không đạt: sáng 79 → 78, tối 84 → 83. Mục bắt buộc và phép đo chữ không đổi.
+- **AI:** Claude Code (Claude Opus 5.5). Người dùng giao AI chọn cách làm tối ưu nhất. AI tìm ra vì sao lần sửa trước không áp dụng, sửa lại và thêm tên cho link.
+- **Kiểm thử:** chạy lại bốn script; 20 màn không lỗi.
+- **Ghi chú cho báo cáo:** lỗi "sửa mà không áp dụng" là lý do mọi phép thay trong script sửa phải kiểm tra số lần khớp.
