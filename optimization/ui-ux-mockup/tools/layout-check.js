@@ -40,6 +40,8 @@
     for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
       const a = boxes[i], b = boxes[j];
       if (a.el.contains(b.el) || b.el.contains(a.el)) continue;
+      // scrolling content passing under a floating bar is expected (the scroll area leaves room at the bottom)
+      if (!!scroller(a.el) !== !!scroller(b.el)) continue;
       const w = Math.min(a.r.right, b.r.right) - Math.max(a.r.left, b.r.left);
       const h = Math.min(a.r.bottom, b.r.bottom) - Math.max(a.r.top, b.r.top);
       if (w > 4 && h > 4) res.overlap.push(label(a.el) + ' × ' + label(b.el));

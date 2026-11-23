@@ -141,7 +141,7 @@ Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho 
 
 | Nhóm | Màn |
 |---|---|
-| Khám phá | Màn chào (mới), Danh mục (banner chủ đề, băng cuộn, ô tìm kiếm), Danh sách sách (mới, mở từ "Xem tất cả"), Chi tiết sách |
+| Khám phá | Màn chào (mới), Danh mục (banner chủ đề, băng "Gợi ý cho bạn", băng theo chủ đề, ô tìm kiếm; cuộn dọc), Danh sách sách (mới, mở từ "Xem tất cả"), Chi tiết sách |
 | Đăng nhập và bảo mật | Đăng nhập bằng mật khẩu, Đăng nhập bằng thẻ (3 bước), Đổi mật khẩu lần đầu (điều kiện hiện ngay khi gõ, tối thiểu 10 ký tự như server), Khóa sinh trắc học |
 | Trạng thái hệ thống | Khởi động (kiểm tra phiên rồi chuyển tới Khóa, Màn chào hoặc Mất kết nối), Mất kết nối (thử lại có giới hạn, tìm sách offline, đăng xuất), Đăng nhập lại kèm lý do (4 giá trị của `LogoutReason`) và cảnh báo máy không an toàn (`IntegrityBanner`: chỉ cảnh báo, không chặn) |
 | Khách và mở rộng | Chế độ khách (menu rút gọn, mời đăng nhập khi bấm Đặt trước hay Mượn), Thông báo (giải thích trước khi xin quyền, màn khóa không hiện tên sách, cài đặt từng loại), Tìm khi không có mạng, Gợi ý cho bạn (theo `optimization/search-recommend-plan.md` phần B) |
@@ -166,7 +166,7 @@ Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho 
 - **Chế độ khách:** phụ thuộc mục 2 ở §11. Không có nút tự mượn; nút nổi đổi thành "Đăng nhập để mượn sách"; đăng nhập xong quay lại đúng cuốn sách.
 - **Thông báo:** giải thích trước, rồi mới gọi hộp thoại xin quyền của hệ thống (`POST_NOTIFICATIONS`, Android 13 trở lên). Trên màn khóa dùng bản công khai không có tên sách (`VISIBILITY_PRIVATE` kèm `setPublicVersion`), vì sách đã mượn là dữ liệu nhạy cảm (`SPEC.md` §7, Nghị định 13/2023). Nhắc hạn trả tính trên máy từ `dueAt` của `Loan` (WorkManager), không cần API mới. Báo sách đặt trước đã sẵn sàng thì **`server/API.md` chưa có** cơ chế đẩy; cần sửa API trước (§11).
 - **Tìm khi không có mạng:** mở ngay, không có khung xương. Không hiện số bản còn vì bản lưu không chứa `copiesAvailable` (phần A2 của `optimization/search-recommend-plan.md`).
-- **Gợi ý cho bạn:** ba trạng thái theo phần B của kế hoạch tìm kiếm và gợi ý: đăng nhập bằng mật khẩu (theo lịch sử và sách đang mượn), đăng nhập bằng thẻ (chỉ theo sách đang mượn, kèm nút nhập mật khẩu), lịch sử tắt và không mượn gì (không có gợi ý). Mỗi gợi ý có lý do và nút "Không quan tâm". Mockup mở màn này từ menu ☰, vì màn Danh mục không còn chỗ; phần B4 của kế hoạch tìm kiếm và gợi ý vẫn đề xuất thêm một băng "Gợi ý cho bạn" trên Danh mục khi làm app. Cài đặt thông báo mở từ Tài khoản.
+- **Gợi ý cho bạn:** ba trạng thái theo phần B của kế hoạch tìm kiếm và gợi ý: đăng nhập bằng mật khẩu (theo lịch sử và sách đang mượn), đăng nhập bằng thẻ (chỉ theo sách đang mượn, kèm nút nhập mật khẩu), lịch sử tắt và không mượn gì (không có gợi ý). Mỗi gợi ý có lý do và nút "Không quan tâm". Lối vào chính là băng "Gợi ý cho bạn" trên Danh mục, ngay dưới banner chủ đề (theo phần B4 của kế hoạch tìm kiếm và gợi ý); "Xem tất cả" mở màn này, menu ☰ là lối vào thứ hai. Mỗi thẻ trong băng là bìa chữ (trang trí, cỡ cố định như ảnh bìa) và lý do ở dạng chữ bên dưới; trình đọc màn hình đọc tên sách rồi lý do. Băng không hiện với khách và khi chưa có dữ liệu để gợi ý. Vì có thêm băng, nội dung Danh mục cuộn dọc và chừa chỗ ở đáy cho nút nổi. Cài đặt thông báo mở từ Tài khoản.
 
 **Theo tầng (§6.3):** blur thật chỉ ở tầng Đầy đủ. Tầng Vừa và Nhẹ thay vùng mờ dần bằng **dải gradient phủ** (scrim) và nền bán trong suốt: trông gần giống mà rẻ hơn nhiều.
 
@@ -266,8 +266,10 @@ Bán kính blur và độ trong chọn theo hướng dẫn Material, rồi chụ
 |---|---|---|
 | Gốc: rộng 390, chữ bình thường | 0 / 20 | 0 |
 | Rộng 320 | 0 / 20 | 0 |
-| Chữ 2.0 | 13 / 20 | 41 (29 chữ đè, 11 tràn đáy, 1 tràn ngang) |
-| Rộng 320 và chữ 2.0 | 18 / 20 | 65 (41 chữ đè, 19 tràn đáy, 5 tràn ngang) |
+| Chữ 2.0 | 10 / 20 | 30 (18 chữ đè, 11 tràn đáy, 1 tràn ngang) |
+| Rộng 320 và chữ 2.0 | 16 / 20 | 55 (31 chữ đè, 19 tràn đáy, 5 tràn ngang) |
+
+Số trên là sau hai thay đổi: Danh mục cuộn được (cùng lúc thêm băng gợi ý), và script không còn tính chữ trong vùng cuộn đi qua dưới thanh nổi là "chữ đè", vì người dùng cuộn được nội dung lên trên thanh. Lượt đo đầu, trước hai thay đổi này, là 13 màn với 41 lỗi (chữ 2.0) và 18 màn với 65 lỗi (rộng 320 và chữ 2.0).
 
 Ba lỗi thật có cả ở cỡ chữ thường đã sửa trong mockup: ô nhập giữ bề rộng tối thiểu mặc định (khoảng 20 ký tự) nên tràn ra ngoài ở chữ lớn (`min-width: 0`); băng sách ở Danh mục tràn mép phải mà không cuộn ngang được; dải "Không có mạng" ở màn Tìm khi không có mạng đè lên dòng đếm.
 

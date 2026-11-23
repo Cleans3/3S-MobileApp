@@ -147,3 +147,12 @@
 - **AI:** Claude Code (Claude Opus 5.5). Người dùng yêu cầu kiểm tra cỡ chữ phóng to và màn rộng 320 dp. Khung artifact không cho chạy code bên trong, nên AI dựng màn ra HTML tĩnh, phục vụ qua web server cục bộ và đo trong trình duyệt của app. Bảng phóng chữ phi tuyến của Android 14 lấy theo trí nhớ của AI, đã ghi rõ là cần đối chiếu mã AOSP. Hai lượt đo đầu có kết quả dương tính giả từ nhãn ẩn 1 px cho trình đọc màn hình; đã sửa script để bỏ qua.
 - **Kiểm thử:** chạy lại năm script Node (20 màn không lỗi, tương phản và vùng chạm không đổi) và đo lại bốn biến thể sau khi sửa.
 - **Ghi chú cho báo cáo:** số liệu "màn vỡ bố cục ở font scale 2.0" của bảng §8.2 giờ có mốc trên mockup (13/20) để so với app sau khi làm.
+
+## 2026-11-24 04:53 · Băng "Gợi ý cho bạn" trên Danh mục
+
+- **Vấn đề:** màn Gợi ý chỉ mở được từ menu ☰, dễ bị bỏ qua; phần B4 của `optimization/search-recommend-plan.md` đặt băng gợi ý ngay trên Danh mục. Danh mục là màn cố định 844 px, không còn chỗ.
+- **Thay đổi:** `Catalog.dc.html`: nội dung cuộn dọc (chừa 150 px ở đáy cho nút nổi, khối con không bị co); băng "Gợi ý cho bạn" dưới banner chủ đề với 4 sách như màn Gợi ý, mỗi thẻ là bìa chữ (trang trí) và lý do ở dạng chữ bên dưới, tên sách đọc qua nhãn ẩn; "Xem tất cả" mở màn Gợi ý; một dòng ghi "Tính trên máy từ sách bạn đã mượn". `tools/layout-check.js`: không tính chữ trong vùng cuộn đi qua dưới thanh nổi là chữ đè. Kế hoạch §5.5 và §6.4, README lên bản 19.
+- **Đo trước → sau:** bản đầu của băng (lý do đè lên bìa) gây 8 lỗi ở chữ 2.0 trên Danh mục; bản cuối (lý do dưới bìa): 0. Toàn bộ, chữ 2.0: 13 màn và 41 lỗi → 10 màn và 30 lỗi; rộng 320 và chữ 2.0: 18 màn và 65 lỗi → 16 màn và 55 lỗi (một phần nhờ script chính xác hơn, ghi rõ trong §6.4). Gốc và rộng 320: 0 lỗi. Tương phản chữ: 367 đoạn mỗi theme, tối 0 lỗi, sáng chỉ còn chữ trên ảnh ở màn chào (tính riêng thì đạt). Vùng chạm: 140 nút, 0 dưới 48 px.
+- **AI:** Claude Code (Claude Opus 5.5). Người dùng hỏi có nên thêm phần gợi ý vào Danh mục; AI đề xuất thêm (theo B4 và rủi ro menu ☰ dễ bị bỏ qua), người dùng chọn thêm vào Danh mục. Bản đầu đặt lý do trên nhãn kính đè lên bìa như băng sách chủ đề; phép đo bố cục cho thấy lý do và tên sách dài đè nhau ở chữ 2.0, nên AI chuyển lý do xuống dưới bìa. Một lượt đo có kết quả sai ở màn Thông báo vì font chưa tải xong; đo lại thì hết.
+- **Kiểm thử:** chạy lại năm script Node và bốn biến thể bố cục trong trình duyệt.
+- **Ghi chú cho báo cáo:** ví dụ đo trước/sau ở mức một thành phần: cùng nội dung, đổi vị trí chữ lý do làm số lỗi ở chữ 2.0 từ 8 về 0.
