@@ -96,4 +96,9 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.kotlin.test.junit)
+    // UI audit (androidTest/uiaudit): real screens on a device, checked with the Accessibility Test Framework.
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.accessibility.test.framework)
+    androidTestImplementation(libs.guava) // ATF exposes Guava types in its API
 }

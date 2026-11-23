@@ -1,0 +1,14 @@
+# Nhật ký: opt/ui-ux
+
+- **Tách từ:** docs/ui-ux-plan tại bbb05e5
+- **Mục đích:** làm giao diện và UX của app thành viên Android theo `optimization/ui-ux-plan.md`, đo A/B
+- **Môn:** optimization
+
+## 2026-11-23 19:20 · Baseline UI: gắn tag `ui-baseline`, đo cột A của §8.2
+
+- **Vấn đề:** chưa có số liệu nào về UI hiện tại để so sánh. Các lỗi dự kiến: tab không có icon, chuỗi tiếng Anh viết cứng, theme mặc định (U01–U06, U04) mới chỉ là nhận định trong kế hoạch, chưa được đo.
+- **Thay đổi:** không sửa app. Gắn tag `ui-baseline` vào `bbb05e5` (code Android giống `main` tại `7763c7c`). Thêm bài đo UI dùng lại được: `androidTest/.../uiaudit/UiAuditTest.kt` (chạy app thật với dữ liệu giả `AuditData`/`AuditVault`, kiểm tra bằng Accessibility Test Framework và chụp ảnh từng màn hình), `optimization/ui-ux/audit/run_audit.ps1` (chạy bốn cấu hình: light, dark, font 2.0, rộng 320 dp), thư viện chỉ cho `androidTest` trong `app/build.gradle.kts` và `libs.versions.toml` (ATF 4.1.1, Compose ui-test, Guava; không vào APK). Kết quả thô ở `optimization/ui-ux/audit/A/`, bảng và giới hạn ở `optimization/ui-ux-metrics.md`.
+- **Đo trước → sau:** đây là phép đo A, chưa có B. Trên AVD `lowend36ui` (Android 16, 720x1280 ở 280 dpi, 2 nhân, 2 GB): ATF báo 4 phát hiện trên 7 màn hình (2 contrast, 2 trùng nhãn); 2 cặp màu dưới 4,5:1 (cả hai là nút bị vô hiệu); 0 vùng chạm dưới 48 dp; vỡ layout 5/7 màn hình ở font 2.0 (nhãn thanh dưới bị ngắt giữa chữ) và 0/7 ở rộng 320 dp (phần này do AI xem ảnh, chờ người duyệt); 51 chuỗi `Text("` viết cứng. Chưa đo: màn Tự mượn ở trạng thái chờ chạm thẻ (emulator không có NFC), ảnh bìa thật.
+- **AI:** Claude Code (Opus 5.5, sau đó Sonnet 5.5; phiên đổi model giữa chừng). Prompt: yêu cầu của người dùng. AI đề xuất đo bằng Robolectric cho nhanh; thử thì ATF chỉ thấy khung View chứ không thấy phần tử Compose (1 phần tử mỗi màn hình, 0 phát hiện), nên AI bỏ cách đó và chuyển sang androidTest trên emulator. Lần đầu ATF cũng chỉ thấy DecorView khi truy vấn trong tiến trình; sau đổi sang lấy cây accessibility từ hệ thống qua UiAutomation thì thấy 17–67 phần tử mỗi màn hình. AI tự xem ảnh để đếm màn hình vỡ layout và ghi rõ chờ người duyệt. Con người chưa duyệt gì ở bước này.
+- **Kiểm thử:** `./gradlew assembleDebug testDebugUnitTest` trên A: qua, 59 test unit. `run_audit.ps1 -Label A` chạy hai lượt đủ bốn cấu hình, số liệu giống nhau. Bài đo chạy trên một emulator riêng (`-Serial emulator-5556`) để không đụng emulator `lowend36` đang dùng cho phép đo catalog của phiên `opt/app-catalog`.
+- **Ghi chú cho báo cáo:** công cụ là ATF, không phải app Accessibility Scanner; B phải dùng cùng công cụ. ATF báo contrast trên nút bị vô hiệu dù WCAG miễn trừ; nhóm quyết có đếm hay không trước khi đo B. Hai dạng lỗi dễ thấy ngay: nhãn tab vỡ ở font 2.0 và nhãn "Renew"/"Cancel" trùng nhau (đọc lên không biết sách nào).
