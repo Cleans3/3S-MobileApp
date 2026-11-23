@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ShelfTap · Tìm khi không có mạng</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:var(--ink)}a:hover{opacity:.85}
+.st-scroll{scrollbar-width:none}
+.st-scroll::-webkit-scrollbar{display:none}
+@keyframes st-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes st-shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+@keyframes st-spin{to{transform:rotate(360deg)}}
+@keyframes st-fade{from{opacity:0}to{opacity:1}}
+.st-row{animation:st-rise 320ms cubic-bezier(.2,.8,.2,1) both}
+.st-skel{position:relative;overflow:hidden;background:rgba(28,27,26,0.07)}
+.st-skel::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.65),transparent);animation:st-shimmer 1.2s ease-in-out infinite}
+.st-spin{animation:st-spin 900ms linear infinite;transform-origin:50% 50%}
+.st-fade{animation:st-fade 220ms ease-out both}
+.st-chip{transition:background-color 180ms ease,color 180ms ease,transform 120ms ease}
+.st-chip:active{transform:scale(0.96)}
+@media (prefers-reduced-motion: reduce){
+  .st-row,.st-fade{animation:none}
+  .st-skel::after{animation:none}
+  .st-spin{animation-duration:2.4s}
+  .st-chip{transition:none}
+}
+.st-root{--bg:#ece7e1;--bg-rgb:236,231,225;--bg2:#d9d1c6;--surface:#ffffff;--glass:255,255,255;--edge:255,255,255;--ink:#1c1b1a;--ink-rgb:28,27,26;--ink2:#3d3833;--ink2b:#4a4540;--ink3:#5c554e;--primary:#1c1b1a;--on-primary:#ffffff;--ok:#2f5b3a;--danger:#7a3420;--danger2:#8a2f1b;--warn:#6b4a10;--warn2:#6b5220;--warn3:#8a6a2a;--warn-bg:#fff4dc;--danger-bg:#f6e4dc;--dialog:#f4f1ec;}
+.st-root[data-theme="dark"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}
+@media (prefers-color-scheme: dark){.st-root[data-theme="auto"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}}
+.st-root button,.st-root input{color:var(--ink)}
+.st-root ::placeholder{color:var(--ink3);opacity:1}
+</style>
+</helmet>
+<div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+
+  <div class="st-scroll" style="position: absolute; inset: 0; overflow-y: auto; padding: 300px 16px 120px; box-sizing: border-box">
+    <sc-if value="{{loading}}" hint-placeholder-val="{{ false }}">
+      <div aria-hidden="true" style="display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{skeleton}}" as="k" hint-placeholder-count="6">
+          <div style="display: flex; gap: 14px; align-items: center; padding: 12px; border-radius: 22px; background:  rgba(var(--glass),0.55)">
+            <div class="st-skel" style="width: 52px; height: 74px; border-radius: 12px; flex: none"></div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 8px">
+              <div class="st-skel" style="height: 14px; border-radius: 8px; width: {{k.w}}"></div>
+              <div class="st-skel" style="height: 12px; border-radius: 8px; width: 46%"></div>
+              <div class="st-skel" style="height: 22px; border-radius: 999px; width: 38%"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div role="status" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Đang tải danh sách sách</div>
+    </sc-if>
+
+    <sc-if value="{{ready}}" hint-placeholder-val="{{ true }}">
+      <div role="status" style="font-size: 13px; color: var(--ink3); padding: 0 4px 10px">{{countLabel}}</div>
+      <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{rows}}" as="b" hint-placeholder-count="6">
+          <li class="st-row" style="{{b.delay}}">
+            <a href="Detail.dc.html" style="display: flex; gap: 14px; align-items: center; padding: 12px; border-radius: 22px; background:  rgba(var(--glass),0.72); text-decoration: none; color: var(--ink); min-height: 48px">
+              <div aria-hidden="true" style="{{b.cover}}">{{b.mono}}</div>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
+                <div style="font-size: 15px; font-weight: 700; line-height: 1.25">{{b.title}}</div>
+                <div style="font-size: 13px; color: var(--ink2b); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{b.author}}</div>
+                <div style="display: flex; gap: 6px; align-items: center; margin-top: 4px; flex-wrap: wrap">
+                  <span style="{{b.pill}}">{{b.status}}</span>
+                  <span style="font-size: 12px; color: var(--ink3)">Kệ {{b.shelf}}</span>
+                </div>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8a8178" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="m9 6 6 6-6 6"></path></svg>
+            </a>
+          </li>
+        </sc-for>
+      </ul>
+
+      <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+        <div class="st-fade" style="margin-top: 40px; text-align: center; padding: 0 24px; display: flex; flex-direction: column; gap: 8px; align-items: center">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#8a8178" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path><path d="M8.5 11h5"></path></svg>
+          <div style="font-size: 16px; font-weight: 700">Không tìm thấy sách</div>
+          <div style="font-size: 14px; color: var(--ink3)">Thử tên tác giả, ISBN hoặc chọn "Tất cả".</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{more}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 18px 0 0; font-size: 13px; color: var(--ink3)">
+          <svg class="st-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="color: var(--ink3)"><path d="M12 3a9 9 0 1 0 9 9"></path></svg>
+          Đang tải thêm…
+        </div>
+      </sc-if>
+    </sc-if>
+  </div>
+
+  <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 316px; pointer-events: none; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); mask-image: linear-gradient(to top, transparent, #000 35%); -webkit-mask-image: linear-gradient(to top, transparent, #000 35%)"></div>
+  <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 316px; pointer-events: none; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); background:  linear-gradient(to bottom, rgba(var(--bg-rgb),0.85), rgba(var(--bg-rgb),0.35)); mask-image: linear-gradient(to top, transparent 30%, #000 70%); -webkit-mask-image: linear-gradient(to top, transparent 30%, #000 70%)"></div>
+
+  <div style="position: absolute; left: 0; right: 0; top: 0; padding: 56px 16px 0; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; gap: 12px; height: 48px">
+      <a href="Offline.dc.html" aria-label="Quay lại" style="width: 48px; height: 48px; flex: none; border-radius: 999px; border: 1px solid rgba(var(--edge),0.85); background:  rgba(var(--glass),0.62); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m15 6-6 6 6 6"></path></svg>
+      </a>
+      <h1 style="margin: 0; flex: 1; font-size: 22px; font-weight: 700; letter-spacing: -0.2px">Tất cả sách</h1>
+      <a href="Offline.dc.html" aria-label="Không có mạng. Thử kết nối lại" class="st-press" style="height: 40px; padding: 0 12px; flex: none; border-radius: 999px; background:  #7a3420; color: #ffffff; display: flex; align-items: center; gap: 6px; text-decoration: none; font-size: 12px; font-weight: 600">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 2l20 20"></path><path d="M8.5 16.5a5 5 0 0 1 7 0"></path><path d="M12 20h.01"></path></svg>
+        Offline
+      </a>
+    </div>
+
+    <label style="display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 18px; border-radius: 999px; background:  rgba(var(--glass),0.78); border: 1px solid rgba(var(--edge),0.9); box-shadow: 0 6px 20px rgba(60,45,30,0.06)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink3)"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Tìm trong danh sách</span>
+      <input type="search" value="{{q}}" onChange="{{onQ}}" placeholder="Gõ không dấu cũng được: chi pheo" style="flex: 1; min-width: 0; border: 0; background:  transparent; font: inherit; font-size: 15px; color: var(--ink); outline: none">
+    </label>
+
+    <div role="group" aria-label="Lọc theo chủ đề" class="st-scroll" style="display: flex; gap: 8px; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px">
+      <sc-for list="{{chips}}" as="c" hint-placeholder-count="5">
+        <button type="button" class="st-chip" aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="{{c.style}}">{{c.label}}</button>
+      </sc-for>
+    </div>
+
+    <div class="st-fade" role="status" style="display: flex; gap: 10px; align-items: center; padding: 10px 14px; border-radius: 18px; background:  rgba(var(--glass),0.85); border: 1px solid rgba(122,52,32,0.18); font-size: 12px; line-height: 1.4; color: var(--ink2)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--danger); flex: none"><path d="M21 12a9 9 0 1 1-9-9"></path><path d="M12 7v5l3 2"></path></svg>
+      <span>Không có mạng. Đang tìm trong bản lưu trên máy, cập nhật lúc 03:40 hôm nay. Số bản còn sẽ cập nhật khi có mạng.</span>
+    </div>
+  </div>
+  <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 12px; right: 14px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
+    <sc-if value="{{themeIsLight}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+    <sc-if value="{{themeIsDark}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+    {{themeLabel}}
+  </button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  __theme() {
+    var self = this;
+    var t = (this.state && this.state.__theme) || 'auto';
+    var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
+    var dark = t === 'dark' || (t === 'auto' && sys);
+    var opts = [['auto', 'Theo hệ thống'], ['light', 'Sáng'], ['dark', 'Tối']];
+    return {
+      themeAttr: t,
+      themeLabel: dark ? 'Sáng' : 'Tối',
+      themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
+      themeIsDark: dark,
+      themeIsLight: !dark,
+      toggleTheme: function () { self.setState({ __theme: dark ? 'light' : 'dark' }); },
+      themeOpts: opts.map(function (o) {
+        var on = o[0] === t;
+        return {
+          label: o[1], on: on,
+          pick: function () { self.setState({ __theme: o[0] }); },
+          style: 'height:40px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? 'var(--primary)' : 'transparent') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
+        };
+      })
+    };
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    if (!this.started) {
+      this.started = true;
+      this.timer = setTimeout(function () { self.setState({ loaded: true }); }, 900);
+    }
+    var loaded = true; // local index: no network round trip, no skeleton
+    var q = st.q || '';
+    var chip = st.chip || 'all';
+    var fold = function (s) {
+      return s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
+    };
+    // Dev catalog: server/src/main/resources/db/dev/V100__dev_catalog.sql (copies counted as LENDABLE).
+    // Offline: availability is not stored locally (the snapshot API leaves copiesAvailable out).
+    var books = [
+      { t: 'Truyện Kiều', a: 'Nguyễn Du', s: 'Thơ · Văn học Việt Nam', isbn: '9780990000013', n: 2, shelf: 'A01', g: 'vn', bg: '#e7dcc6', fg: '#2f4a44' },
+      { t: 'Dế Mèn phiêu lưu ký', a: 'Tô Hoài', s: 'Thiếu nhi · Văn học Việt Nam', isbn: '9780990000020', n: 3, shelf: 'A02', g: 'vn', bg: '#c9a66b', fg: '#1c1b1a' },
+      { t: 'Số đỏ', a: 'Vũ Trọng Phụng', s: 'Tiểu thuyết · Văn học Việt Nam', isbn: '9780990000037', n: 2, shelf: 'A03', g: 'vn', bg: '#b5452b', fg: '#ffffff' },
+      { t: 'Tắt đèn', a: 'Ngô Tất Tố', s: 'Tiểu thuyết · Văn học Việt Nam', isbn: '9780990000044', n: 0, shelf: 'A04', g: 'vn', bg: '#7a2e1e', fg: '#ffffff' },
+      { t: 'Lão Hạc', a: 'Nam Cao', s: 'Truyện ngắn · Văn học Việt Nam', isbn: '9780990000051', n: 1, shelf: 'A05', g: 'vn', bg: '#d8c9a8', fg: '#3e3a36' },
+      { t: 'Chí Phèo', a: 'Nam Cao', s: 'Truyện ngắn · Văn học Việt Nam', isbn: '9780990000068', n: 1, shelf: 'A06', g: 'vn', bg: '#3e3a36', fg: '#ffffff' },
+      { t: 'Clean Code', a: 'Robert C. Martin', s: 'Software engineering · Programming', isbn: '9780990000075', n: 3, shelf: 'A07', g: 'dev', bg: '#2f4a44', fg: '#ffffff' },
+      { t: 'Introduction to Algorithms', a: 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', s: 'Algorithms · Computer science', isbn: '9780990000082', n: 2, shelf: 'A08', g: 'dev', bg: '#5a6b7a', fg: '#ffffff' },
+      { t: 'The Pragmatic Programmer', a: 'Andrew Hunt, David Thomas', s: 'Software engineering · Programming', isbn: '9780990000099', n: 1, shelf: 'A09', g: 'dev', bg: '#c9a66b', fg: '#1c1b1a' },
+      { t: 'Designing Data-Intensive Applications', a: 'Martin Kleppmann', s: 'Databases · Distributed systems', isbn: '9780990000105', n: 2, shelf: 'A10', g: 'data', bg: '#e7dcc6', fg: '#3e3a36' },
+      { t: 'Java Card Technology for Smart Cards', a: 'Zhiqun Chen', s: 'Smart cards · Java', isbn: '9780990000112', n: 1, shelf: 'A11', g: 'sec', bg: '#3e3a36', fg: '#e7dcc6' },
+      { t: 'Applied Cryptography', a: 'Bruce Schneier', s: 'Cryptography · Security', isbn: '9780990000129', n: 2, shelf: 'A12', g: 'sec', bg: '#1c1b1a', fg: '#c9a66b' },
+      { t: 'Android Programming: The Big Nerd Ranch Guide', a: 'Bill Phillips, Chris Stewart, Kristin Marsicano', s: 'Android · Mobile development', isbn: '9780990000136', n: 2, shelf: 'A13', g: 'dev', bg: '#6b8f5e', fg: '#ffffff' }
+    ];
+    var groups = [
+      { id: 'all', label: 'Tất cả' },
+      { id: 'vn', label: 'Văn học Việt Nam' },
+      { id: 'dev', label: 'Lập trình' },
+      { id: 'sec', label: 'Bảo mật và thẻ' },
+      { id: 'data', label: 'Dữ liệu' }
+    ];
+    var fq = fold(q.trim());
+    var hits = books.filter(function (b) {
+      if (chip !== 'all' && b.g !== chip) return false;
+      if (!fq) return true;
+      return fold(b.t + ' ' + b.a + ' ' + b.s).indexOf(fq) >= 0 || b.isbn.indexOf(fq.replace(/-/g, '')) >= 0;
+    });
+    var mono = function (t) {
+      var w = t.split(/\s+/);
+      return (w[0][0] + (w[1] ? w[1][0] : '')).toUpperCase();
+    };
+    return Object.assign(this.__theme(), {
+      loading: !loaded,
+      ready: loaded,
+      q: q,
+      onQ: function (e) { self.setState({ q: e.target.value }); },
+      reload: function () {
+        clearTimeout(self.timer);
+        self.setState({ loaded: false });
+        self.timer = setTimeout(function () { self.setState({ loaded: true }); }, 900);
+      },
+      skeleton: [{ w: '78%' }, { w: '64%' }, { w: '86%' }, { w: '58%' }, { w: '72%' }, { w: '66%' }],
+      countLabel: hits.length + ' / ' + books.length + ' đầu sách trong bản lưu',
+      empty: hits.length === 0,
+      more: false,
+      chips: groups.map(function (g) {
+        var on = g.id === chip;
+        return {
+          label: g.label,
+          on: on,
+          pick: function () { self.setState({ chip: g.id }); },
+          style: 'flex:none;height:40px;padding:0 16px;border-radius:999px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid ' + (on ? 'var(--primary)' : 'rgba(var(--edge),0.9)') + ';background:' + (on ? 'var(--primary)' : 'rgba(var(--glass),0.7)') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink)')
+        };
+      }),
+      rows: hits.map(function (b, i) {
+        var out = b.n === 0;
+        return {
+          title: b.t,
+          author: b.a,
+          shelf: b.shelf,
+          mono: mono(b.t),
+          status: 'Số bản còn: chờ có mạng',
+          delay: 'animation-delay:' + Math.min(i, 8) * 40 + 'ms',
+          cover: 'width:52px;height:74px;flex:none;border-radius:12px;display:flex;align-items:flex-end;padding:8px;box-sizing:border-box;font-size:15px;font-weight:700;letter-spacing:0.5px;background:' + b.bg + ';color:' + b.fg + ';box-shadow:0 6px 14px rgba(0,0,0,0.14)',
+          pill: 'font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:rgba(var(--ink-rgb),0.07);color:var(--ink2b)'
+        };
+      })
+    });
+  }
+}
+</script>
+</body>
+</html>

@@ -93,3 +93,12 @@
 - **AI:** Claude Code (Claude Opus 5.5). Người dùng yêu cầu đo tương phản. AI thử chạy code trong khung của artifact (bị chặn), rồi viết script dựng từng màn từ mã nguồn với dữ liệu thật, thay token theo theme, chồng các lớp bán trong, mô phỏng màu mặc định của trình duyệt cho nút, ô nhập, placeholder và link. Script tìm ra một lỗi thật mà lúc xem bằng mắt ở lượt trước đã bỏ sót: link và nút không ghi màu bị đen trên nền tối. Bản đã sửa chưa lên link vì việc đăng bị chặn, đang chờ người dùng đồng ý.
 - **Kiểm thử:** chạy lại script sau khi sửa (0 lỗi ở cả hai theme, ngoài chữ trên ảnh được tính riêng); chạy script của cả 20 màn để chắc không hỏng màn nào.
 - **Ghi chú cho báo cáo:** đây là ví dụ đo trước/sau đúng nghĩa cho phần UI. Lỗi chữ đen trên nền tối là loại lỗi mà xem bằng mắt vài màn dễ bỏ sót, còn đo toàn bộ thì bắt được.
+
+## 2026-11-24 04:28 · Đưa mã nguồn mockup và script đo tương phản vào repo
+
+- **Vấn đề:** script đo tương phản và mã nguồn mockup chỉ nằm trong thư mục tạm của phiên làm việc, có thể bị xóa; không ai chạy lại được số đo ở §5.3 để viết báo cáo.
+- **Thay đổi:** thêm `optimization/ui-ux-mockup/`: 20 màn `.dc.html` và `canvas.json` của bản 14, `tools/contrast.js` (đo tương phản), `tools/hero-worst-case.js` (chữ trên ảnh ở màn chào), `tools/check-scripts.js` (chạy script của từng màn), `contrast-results.json` và README (cách chạy, cách đo, giới hạn, kết quả). §5.3 trỏ tới thư mục này.
+- **Đo trước → sau:** không đổi số đo; chạy lại từ thư mục mới cho đúng kết quả cũ: 353 đoạn chữ mỗi theme, sáng còn 5 (đều là chữ trên ảnh ở màn chào, tính riêng thì đạt), tối 0.
+- **AI:** Claude Code (Claude Opus 5.5). Người dùng đồng ý chép script vào repo. AI chép thêm mã nguồn mockup vì script cần nó để chạy, viết thêm script tính chữ trên ảnh (trước đó chỉ là lệnh chạy một lần), sửa để kết quả ghi cạnh các màn.
+- **Kiểm thử:** chạy cả ba script trong bố cục thư mục giống repo trước khi commit.
+- **Ghi chú cho báo cáo:** số liệu tương phản trong báo cáo có thể chạy lại bằng ba lệnh trong README.

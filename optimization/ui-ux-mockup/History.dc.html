@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ShelfTap · Lịch sử đọc</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:var(--ink)}a:hover{opacity:.85}
+@keyframes st-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes st-fade{from{opacity:0}to{opacity:1}}
+@keyframes st-pop{0%{opacity:0;scale:.6}70%{opacity:1;scale:1.06}100%{opacity:1;scale:1}}
+@keyframes st-draw{to{stroke-dashoffset:0}}
+@keyframes st-ping{0%{opacity:.55;scale:1}100%{opacity:0;scale:1.35}}
+@keyframes st-breathe{0%,100%{scale:1}50%{scale:1.04}}
+@keyframes st-sheet{from{transform:translateY(110%)}to{transform:none}}
+@keyframes st-shake{0%,100%{translate:0 0}20%,60%{translate:-6px 0}40%,80%{translate:6px 0}}
+.st-rise{animation:st-rise 420ms cubic-bezier(.2,.8,.2,1) both}
+.st-fade{animation:st-fade 260ms ease-out both}
+.st-pop{animation:st-pop 380ms cubic-bezier(.2,.8,.2,1) both}
+.st-draw{stroke-dasharray:30;stroke-dashoffset:30;animation:st-draw 420ms 180ms ease-out forwards}
+.st-ping{opacity:0;animation:st-ping 1.8s cubic-bezier(.2,.6,.3,1) infinite}
+.st-late{animation-delay:.9s}
+.st-breathe{animation:st-breathe 2.4s ease-in-out infinite}
+.st-sheet{animation:st-sheet 320ms cubic-bezier(.2,.9,.25,1) both}
+.st-shake{animation:st-shake 360ms ease both}
+.st-press{transition:scale 120ms ease}.st-press:active{scale:.96}
+.st-swap{transition:background-color 220ms ease,color 220ms ease}
+.st-knob{transition:transform 220ms cubic-bezier(.2,.8,.2,1)}
+.d1{animation-delay:80ms}.d2{animation-delay:160ms}.d3{animation-delay:240ms}
+@media (prefers-reduced-motion: reduce){
+  .st-rise,.st-fade,.st-pop,.st-ping,.st-breathe,.st-sheet,.st-shake{animation:none}
+  .st-draw{animation:none;stroke-dashoffset:0}
+  .st-press,.st-swap,.st-knob{transition:none}
+}
+.st-root{--bg:#ece7e1;--bg-rgb:236,231,225;--bg2:#d9d1c6;--surface:#ffffff;--glass:255,255,255;--edge:255,255,255;--ink:#1c1b1a;--ink-rgb:28,27,26;--ink2:#3d3833;--ink2b:#4a4540;--ink3:#5c554e;--primary:#1c1b1a;--on-primary:#ffffff;--ok:#2f5b3a;--danger:#7a3420;--danger2:#8a2f1b;--warn:#6b4a10;--warn2:#6b5220;--warn3:#8a6a2a;--warn-bg:#fff4dc;--danger-bg:#f6e4dc;--dialog:#f4f1ec;}
+.st-root[data-theme="dark"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}
+@media (prefers-color-scheme: dark){.st-root[data-theme="auto"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}}
+.st-root button,.st-root input{color:var(--ink)}
+.st-root ::placeholder{color:var(--ink3);opacity:1}
+</style>
+</helmet>
+<div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+
+  <a href="Catalog.dc.html" aria-label="Mở menu" style="position: absolute; top: 56px; left: 20px; width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.9); background:  rgba(var(--glass),0.62); display: flex; align-items: center; justify-content: center; text-decoration: none">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
+  </a>
+
+  <div class="st-rise" style="position: absolute; top: 124px; left: 20px; right: 20px; display: flex; flex-direction: column; gap: 14px">
+    <h1 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.3px">Lịch sử đọc</h1>
+
+    <sc-if value="{{isList}}" hint-placeholder-val="{{ false }}">
+      <div class="st-fade" style="display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{items}}" as="it" hint-placeholder-count="3">
+          <div style="padding: 14px 16px; border-radius: 22px; background:  rgba(var(--glass),0.8); display: flex; align-items: center; gap: 14px">
+            <div style="{{it.cover}}"></div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+              <div style="font-size: 15px; font-weight: 700">{{it.title}}</div>
+              <div style="font-size: 13px; color: var(--ink2b)">{{it.author}}</div>
+            </div>
+            <div style="font-size: 12px; color: var(--ink2b); text-align: right">{{it.date}}</div>
+          </div>
+        </sc-for>
+        <a href="Account.dc.html" style="padding: 14px 16px; border-radius: 22px; background: var(--surface); display: flex; align-items: center; justify-content: space-between; text-decoration: none; font-size: 14px; color: var(--ink)">
+          <span>Đang lưu lịch sử · tắt trong Tài khoản</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
+        </a>
+        <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink2b)">Sách đã trả quá 1 năm sẽ không còn gắn với tên bạn. [Dữ liệu mẫu cho bản phác]</p>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{isStepUp}}" hint-placeholder-val="{{ true }}">
+    <div style="position: absolute; left: 20px; right: 20px; top: 200px; padding: 24px; border-radius: 32px; background:  rgba(var(--glass),0.72); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); border: 1px solid rgba(var(--edge),0.9); display: flex; flex-direction: column; gap: 14px">
+      <span style="width: 56px; height: 56px; border-radius: 999px; background: var(--surface); display: flex; align-items: center; justify-content: center">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+      </span>
+      <h2 style="margin: 0; font-size: 20px; font-weight: 700">Cần mật khẩu để xem</h2>
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2)">Bạn đang đăng nhập bằng thẻ. Lịch sử đọc là dữ liệu cá nhân, nên cần thêm mật khẩu.</p>
+      <sc-if value="{{askPw}}" hint-placeholder-val="{{ false }}">
+        <label class="st-fade" style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--ink2)">
+          Mật khẩu
+          <input type="password" value="mật khẩu mẫu" autocomplete="current-password" style="height: 50px; padding: 0 16px; border-radius: 16px; border: 1px solid rgba(var(--ink-rgb),0.14); background: var(--surface); font: inherit; font-size: 15px; font-weight: 400">
+        </label>
+        <button type="button" onClick="{{confirm}}" class="st-press" style="height: 52px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Xác nhận</button>
+      </sc-if>
+      <sc-if value="{{noPw}}" hint-placeholder-val="{{ true }}">
+        <button type="button" onClick="{{openPw}}" style="height: 52px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Đăng nhập bằng mật khẩu</button>
+      </sc-if>
+    </div>
+  </sc-if>
+  <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 12px; right: 14px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
+    <sc-if value="{{themeIsLight}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+    <sc-if value="{{themeIsDark}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+    {{themeLabel}}
+  </button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  __theme() {
+    var self = this;
+    var t = (this.state && this.state.__theme) || 'auto';
+    var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
+    var dark = t === 'dark' || (t === 'auto' && sys);
+    var opts = [['auto', 'Theo hệ thống'], ['light', 'Sáng'], ['dark', 'Tối']];
+    return {
+      themeAttr: t,
+      themeLabel: dark ? 'Sáng' : 'Tối',
+      themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
+      themeIsDark: dark,
+      themeIsLight: !dark,
+      toggleTheme: function () { self.setState({ __theme: dark ? 'light' : 'dark' }); },
+      themeOpts: opts.map(function (o) {
+        var on = o[0] === t;
+        return {
+          label: o[1], on: on,
+          pick: function () { self.setState({ __theme: o[0] }); },
+          style: 'height:40px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? 'var(--primary)' : 'transparent') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
+        };
+      })
+    };
+  }
+  renderVals() {
+    var self = this;
+    var st = (this.state && this.state.st) || 'stepup';
+    var cover = function (bg) { return 'width:40px;height:58px;flex:none;border-radius:8px;background:' + bg; };
+    return Object.assign(this.__theme(), {
+      isStepUp: st !== 'list',
+      isList: st === 'list',
+      askPw: st === 'pw',
+      noPw: st === 'stepup',
+      openPw: function () { self.setState({ st: 'pw' }); },
+      confirm: function () { self.setState({ st: 'list' }); },
+      items: [
+        { title: 'Lão Hạc', author: 'Nam Cao', date: 'Trả 02/11/2026', cover: cover('#d8c9a8') },
+        { title: 'Tắt đèn', author: 'Ngô Tất Tố', date: 'Trả 15/10/2026', cover: cover('#b5452b') },
+        { title: 'Dế Mèn phiêu lưu ký', author: 'Tô Hoài', date: 'Trả 20/09/2026', cover: cover('#c9a66b') }
+      ]
+    });
+  }
+}
+</script>
+</body>
+</html>

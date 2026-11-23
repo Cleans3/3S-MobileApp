@@ -91,7 +91,7 @@
 | Không vỡ layout ở font scale 2.0 và màn hình rộng 320 dp | Ảnh chụp ở các cấu hình đó |
 | Thứ tự focus hợp lý; thông báo kết quả tự mượn bằng `liveRegion` | TalkBack |
 
-**Đo tương phản trên mockup (2026-11-24).** Một script Node dựng từng màn của mockup bằng dữ liệu thật của màn đó, thay token màu theo theme, chồng các lớp bán trong lên nền bên dưới, rồi tính tỷ lệ tương phản WCAG cho mọi đoạn chữ. Nó cũng mô phỏng màu mặc định của trình duyệt cho nút, ô nhập, chữ gợi ý (placeholder) và link. Ngưỡng 4.5:1, hoặc 3:1 cho chữ lớn (từ 24 px, hoặc từ 18.66 px và đậm).
+**Đo tương phản trên mockup (2026-11-24).** Mã nguồn mockup và các script đo nằm ở `optimization/ui-ux-mockup/` (xem README của thư mục đó để chạy lại). Một script Node dựng từng màn của mockup bằng dữ liệu thật của màn đó, thay token màu theo theme, chồng các lớp bán trong lên nền bên dưới, rồi tính tỷ lệ tương phản WCAG cho mọi đoạn chữ. Nó cũng mô phỏng màu mặc định của trình duyệt cho nút, ô nhập, chữ gợi ý (placeholder) và link. Ngưỡng 4.5:1, hoặc 3:1 cho chữ lớn (từ 24 px, hoặc từ 18.66 px và đậm).
 
 | | Sáng | Tối |
 |---|---|---|
