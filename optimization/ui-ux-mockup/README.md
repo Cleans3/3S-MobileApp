@@ -2,7 +2,7 @@
 
 Mã nguồn của mockup 20 màn ở `optimization/ui-ux-plan.md` §5.5, cùng các script đo dùng cho §5.3.
 
-- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 19 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý và Thông báo (bản 17), ba lỗi bố cục tìm ra khi thử rộng 320 và chữ 2.0 (bản 18), băng "Gợi ý cho bạn" trên Danh mục và Danh mục cuộn dọc (bản 19).
+- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 18 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý và Thông báo (bản 17), rồi ba lỗi bố cục tìm ra khi thử rộng 320 và chữ 2.0 cùng băng "Gợi ý cho bạn" trên Danh mục và Danh mục cuộn dọc (cả hai đăng chung trong bản 18).
 - **Mở trực tiếp không chạy:** mỗi màn cần runtime `support.js` của trình xem artifact, file đó không có trong repo. Các script dưới đây không cần runtime: chúng tự đọc template và chạy phần script của từng màn.
 
 ## Nội dung
@@ -114,10 +114,10 @@ Mép nút kính không đạt 3:1 là chủ ý của phong cách kính và khôn
 |---|---|---|
 | Gốc: rộng 390, chữ bình thường | 0 / 20 | 0 (bản 17: 3 lỗi thật, đã sửa ở bản 18) |
 | Rộng 320 | 0 / 20 | 0 |
-| Chữ 2.0 | 10 / 20 (bản 18: 13) | 30 (bản 18: 41) |
-| Rộng 320 và chữ 2.0 | 16 / 20 (bản 18: 18) | 55 (bản 18: 65) |
+| Chữ 2.0 | 10 / 20 (lượt đo đầu: 13) | 30 (lượt đo đầu: 41) |
+| Rộng 320 và chữ 2.0 | 16 / 20 (lượt đo đầu: 18) | 55 (lượt đo đầu: 65) |
 
-Từ bản 19, Danh mục cuộn được và script không tính chữ trong vùng cuộn đi qua dưới thanh nổi là chữ đè (vùng cuộn chừa chỗ ở đáy). Hai thay đổi này cùng làm số giảm; Danh mục từ 6 lỗi (chữ 2.0) còn 0.
+"Lượt đo đầu" là bản 17 cộng ba lỗi bố cục đã sửa, trước khi thêm băng gợi ý; trạng thái này không được đăng riêng. Trong bản 18, Danh mục cuộn được và script không tính chữ trong vùng cuộn đi qua dưới thanh nổi là chữ đè (vùng cuộn chừa chỗ ở đáy). Hai thay đổi này cùng làm số giảm; Danh mục từ 6 lỗi (chữ 2.0) còn 0.
 
 Lỗi ở chữ 2.0 là do mockup đặt khối ở vị trí cố định trong màn 844 px không cuộn. Mockup không sửa phần này; quy tắc cho app ở `optimization/ui-ux-plan.md` §6.4. Một vài lỗi chữ đè ở Tự mượn, Gợi ý và Đăng nhập lại là thanh xem trước trạng thái, chỉ có trong bản phác.
 

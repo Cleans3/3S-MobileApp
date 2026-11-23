@@ -156,3 +156,11 @@
 - **AI:** Claude Code (Claude Opus 5.5). Người dùng hỏi có nên thêm phần gợi ý vào Danh mục; AI đề xuất thêm (theo B4 và rủi ro menu ☰ dễ bị bỏ qua), người dùng chọn thêm vào Danh mục. Bản đầu đặt lý do trên nhãn kính đè lên bìa như băng sách chủ đề; phép đo bố cục cho thấy lý do và tên sách dài đè nhau ở chữ 2.0, nên AI chuyển lý do xuống dưới bìa. Một lượt đo có kết quả sai ở màn Thông báo vì font chưa tải xong; đo lại thì hết.
 - **Kiểm thử:** chạy lại năm script Node và bốn biến thể bố cục trong trình duyệt.
 - **Ghi chú cho báo cáo:** ví dụ đo trước/sau ở mức một thành phần: cùng nội dung, đổi vị trí chữ lý do làm số lỗi ở chữ 2.0 từ 8 về 0.
+
+## 2026-11-24 04:58 · Sửa mục 2026-11-24 04:47 và 04:53
+
+- **Vấn đề:** hai mục trên ghi "README lên bản 18" và "README lên bản 19", như thể artifact được đăng hai lần. Thực tế phần sửa bố cục ở 320 dp và chữ 2.0 không được đăng riêng; artifact đi thẳng từ bản 17 lên bản 18, và bản 18 chứa cả phần sửa bố cục lẫn băng "Gợi ý cho bạn".
+- **Thay đổi:** `optimization/ui-ux-mockup/README.md`: các file là bản 18, gồm cả hai thay đổi. Bảng 320/2.0 so với "lượt đo đầu" (bản 17 cộng ba lỗi bố cục đã sửa, trước khi thêm băng) thay vì "bản 18", và đoạn dưới bảng nói "trong bản 18" thay vì "từ bản 19". Số đo không đổi.
+- **Đo trước → sau:** không áp dụng.
+- **AI:** Claude Code (Claude Opus 5.5) tự phát hiện khi đối chiếu README với số bản mà trang artifact báo sau lần đăng.
+- **Kiểm thử:** không áp dụng.
