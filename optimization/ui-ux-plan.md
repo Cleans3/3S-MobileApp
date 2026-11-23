@@ -102,7 +102,7 @@ Mã lỗi lấy từ `web/ErrorCode.java` của server; app rẽ nhánh theo `co
 
 ### 5.5 Hướng thiết kế: giao diện kính cho toàn app
 
-Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho **cả app**, không chỉ một hiệu ứng. Bản phác 13 màn có thể bấm thử, có hiệu ứng động (§6.5): **ShelfTap glass mockup** (https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf). Mockup là trang web dùng `backdrop-filter` của trình duyệt; nó cho thấy giao diện, **không** đo được hiệu năng trên Android.
+Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho **cả app**, không chỉ một hiệu ứng. Bản phác 20 màn có thể bấm thử, có hiệu ứng động (§6.5): **ShelfTap glass mockup** (https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf). Mockup là trang web dùng `backdrop-filter` của trình duyệt; nó cho thấy giao diện, **không** đo được hiệu năng trên Android.
 
 **Các thành phần:**
 - **Ảnh lớn mờ dần** ở màn chào, banner chủ đề và chi tiết sách: nửa dưới ảnh mờ dần để chữ đặt lên vẫn đọc được.
@@ -117,6 +117,8 @@ Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho 
 |---|---|
 | Khám phá | Màn chào (mới), Danh mục (banner chủ đề, băng cuộn, ô tìm kiếm), Danh sách sách (mới, mở từ "Xem tất cả"), Chi tiết sách |
 | Đăng nhập và bảo mật | Đăng nhập bằng mật khẩu, Đăng nhập bằng thẻ (3 bước), Đổi mật khẩu lần đầu (điều kiện hiện ngay khi gõ, tối thiểu 10 ký tự như server), Khóa sinh trắc học |
+| Trạng thái hệ thống | Khởi động (kiểm tra phiên rồi chuyển tới Khóa, Màn chào hoặc Mất kết nối), Mất kết nối (thử lại có giới hạn, tìm sách offline, đăng xuất), Đăng nhập lại kèm lý do (4 giá trị của `LogoutReason`) và cảnh báo máy không an toàn (`IntegrityBanner`: chỉ cảnh báo, không chặn) |
+| Khách và mở rộng | Chế độ khách (menu rút gọn, mời đăng nhập khi bấm Đặt trước hay Mượn), Thông báo (giải thích trước khi xin quyền, màn khóa không hiện tên sách, cài đặt từng loại), Tìm khi không có mạng, Gợi ý cho bạn (theo `optimization/search-recommend-plan.md` phần B) |
 | Thành viên | Sách đang mượn (gia hạn, quá hạn, tiền phạt), Tự mượn sách (chờ chạm, đang gửi, thành công, lỗi), Đặt trước (hủy có xác nhận), Lịch sử đọc (yêu cầu mật khẩu nếu đăng nhập bằng thẻ), Tài khoản (công tắc lịch sử, vân tay, đổi mật khẩu, đăng xuất qua bảng xác nhận) |
 
 **Trang danh sách sách** (màn `List` trong mockup):
@@ -129,6 +131,16 @@ Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho 
   - `TitleSummary` và `TitleDetail` không có kệ: kệ nằm ở từng bản sách (`copy.shelf`). Mockup hiện "Kệ A0x" ở danh sách và chi tiết là **đề xuất**; muốn có thì sửa `API.md` trước (§4), nếu không thì bỏ khỏi hàng.
   - `q` đã khớp cả chủ đề, nhưng chưa có tham số lọc riêng theo chủ đề. Chip chủ đề cần một tham số mới (ví dụ `subject=`), làm cùng đợt sửa API với `optimization/search-recommend-plan.md`.
   - Mockup tìm không dấu ("chi pheo" ra "Chí Phèo") bằng cách bỏ dấu ngay trên trang với 13 sách dev. Server hiện là `ILIKE` có phân biệt dấu; cách làm thật nằm ở phần A của `optimization/search-recommend-plan.md`.
+
+**Các màn trạng thái và mở rộng** (hàng cuối của mockup). Các màn có nhiều trạng thái có một thanh "xem trước trạng thái" ở đáy; thanh này chỉ có trong bản phác.
+- **Khởi động:** dùng SplashScreen API của Android 12 trở lên, không giữ màn lâu hơn lúc kiểm tra phiên (`SessionState.Loading`).
+- **Mất kết nối:** thay `OfflineScreen` hiện tại. Không tự thử lại liên tục; thử lại khi người dùng bấm hoặc khi Android báo có mạng.
+- **Lý do đăng xuất:** một thông báo cho mỗi giá trị `SESSION_EXPIRED`, `TOKEN_REUSED`, `INACTIVITY`, `LOCK_KEY_INVALIDATED`. `TOKEN_REUSED` khuyên đổi mật khẩu.
+- **Cảnh báo máy không an toàn:** giữ đúng hành vi hiện tại: chỉ cảnh báo, server cũng nhận cờ qua `X-Device-Integrity`.
+- **Chế độ khách:** phụ thuộc mục 2 ở §11. Không có nút tự mượn; nút nổi đổi thành "Đăng nhập để mượn sách"; đăng nhập xong quay lại đúng cuốn sách.
+- **Thông báo:** giải thích trước, rồi mới gọi hộp thoại xin quyền của hệ thống (`POST_NOTIFICATIONS`, Android 13 trở lên). Trên màn khóa dùng bản công khai không có tên sách (`VISIBILITY_PRIVATE` kèm `setPublicVersion`), vì sách đã mượn là dữ liệu nhạy cảm (`SPEC.md` §7, Nghị định 13/2023). Nhắc hạn trả tính trên máy từ `dueAt` của `Loan` (WorkManager), không cần API mới. Báo sách đặt trước đã sẵn sàng thì **`server/API.md` chưa có** cơ chế đẩy; cần sửa API trước (§11).
+- **Tìm khi không có mạng:** mở ngay, không có khung xương. Không hiện số bản còn vì bản lưu không chứa `copiesAvailable` (phần A2 của `optimization/search-recommend-plan.md`).
+- **Gợi ý cho bạn:** ba trạng thái theo phần B của kế hoạch tìm kiếm và gợi ý: đăng nhập bằng mật khẩu (theo lịch sử và sách đang mượn), đăng nhập bằng thẻ (chỉ theo sách đang mượn, kèm nút nhập mật khẩu), lịch sử tắt và không mượn gì (không có gợi ý). Mỗi gợi ý có lý do và nút "Không quan tâm".
 
 **Theo tầng (§6.3):** blur thật chỉ ở tầng Đầy đủ. Tầng Vừa và Nhẹ thay vùng mờ dần bằng **dải gradient phủ** (scrim) và nền bán trong suốt: trông gần giống mà rẻ hơn nhiều.
 
@@ -345,7 +357,7 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 | 0. Chốt | Nhóm duyệt kế hoạch này và chốt các mục ở §11 | Kế hoạch v1 | 0,5 ngày |
 | 1. Baseline | Tag `ui-baseline`, lưu APK A, đo chỉ số UI (§8.2) | Bảng A của UI | 0,5 ngày |
 | 2. Test UX lần A | 5 người làm T1–T3 trên A | Bảng A của UX | 1 ngày |
-| 3. Thiết kế | Nhóm góp ý trên mockup 13 màn (§5.5) và các hiệu ứng động (§6.5) bằng bình luận; chốt design system, bảng màu, font; viết `ux-test.md` | Nhóm duyệt mockup | 1 ngày |
+| 3. Thiết kế | Nhóm góp ý trên mockup 20 màn (§5.5) và các hiệu ứng động (§6.5) bằng bình luận; chốt design system, bảng màu, font; viết `ux-test.md` | Nhóm duyệt mockup | 1 ngày |
 | 4. Làm UI | §5.1 đến §5.4, mỗi issue một commit, có log AI | Nhánh `ui-ux` | 2–3 ngày |
 | 5. Làm UX | §6.2, mỗi thay đổi một commit | Nhánh `ui-ux` | 1–2 ngày |
 | 5b. Tầng hiệu ứng và màn hình đặc biệt | §6.3 (tầng, thanh kính, icon, script morph lúc build) và §6.4 (bố cục thích ứng) | Nhánh `ui-ux` | 2–3 ngày |
@@ -383,6 +395,7 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 11. Nguồn ảnh thư viện có giấy phép cho màn chào và banner.
 12. Duyệt bộ hiệu ứng động ở §6.5 trên mockup: giữ, bỏ hay đổi thời lượng hiệu ứng nào.
 13. Có sửa `server/API.md` để thêm kệ vào `TitleSummary` và tham số lọc theo chủ đề cho trang danh sách không (cùng đợt với `optimization/search-recommend-plan.md`).
+14. Báo sách đặt trước đã sẵn sàng: thêm cơ chế đẩy vào `server/API.md` (ví dụ FCM, cần thêm dịch vụ của Google) hay app tự hỏi server định kỳ (tốn pin hơn, chậm hơn), hay tạm chỉ hiện trong app.
 
 ## 12. Sản phẩm đầu ra
 

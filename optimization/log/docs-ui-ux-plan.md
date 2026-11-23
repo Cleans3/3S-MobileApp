@@ -66,3 +66,12 @@
 - **AI:** Claude Code (Claude Opus 5.5) theo yêu cầu của người dùng. AI không ignore `package.json` vì file đó cần được commit cùng script build sau này.
 - **Kiểm thử:** `git check-ignore` trên cây của commit này (xem commit message).
 - **Ghi chú cho báo cáo:** không có.
+
+## 2026-11-24 04:09 · Bảy màn trạng thái, khách và mở rộng
+
+- **Vấn đề:** so với `SPEC.md` §5 và code Android, mockup còn thiếu: màn mất kết nối (`OfflineScreen`), lý do đăng xuất (`LogoutReason`), cảnh báo máy không an toàn (`IntegrityBanner`), màn khởi động, chế độ khách, thông báo, tìm khi không có mạng và gợi ý sách.
+- **Thay đổi:** §5.5 thêm hai nhóm màn vào bảng và mô tả từng màn, kèm quy tắc: màn khóa không hiện tên sách, giải thích trước khi xin quyền thông báo, không tự thử lại mạng liên tục, tìm offline không hiện số bản còn. §9 đổi sang mockup 20 màn. §11 thêm mục 14 (cơ chế báo sách đặt trước đã sẵn sàng, vì `server/API.md` chưa có).
+- **Đo trước → sau:** chưa đo: đây là kế hoạch.
+- **AI:** Claude Code (Claude Opus 5.5). Người dùng hỏi mockup còn thiếu màn nào so với kế hoạch ban đầu, rồi yêu cầu thêm tất cả. AI dựng 7 màn mới (Splash, Offline, SignedOut, Guest, Notifications, OfflineSearch, Recommend) và đổi link "Xem sách mà không cần đăng nhập" ở màn chào sang màn khách. Đăng lên link mockup bị chặn vì link công khai, đang chờ người dùng đồng ý.
+- **Kiểm thử:** chạy script của cả 20 màn bằng Node, gọi mọi handler một lần và kiểm tra mọi biến trong template đều có giá trị. Lý do đăng xuất lấy từ `session/SessionState.kt`, hành vi cảnh báo máy lấy từ `ui/Common.kt`, việc API chưa có thông báo đẩy kiểm tra trong `server/API.md`. Chưa mở mockup ra xem.
+- **Ghi chú cho báo cáo:** thông báo trên màn khóa là một điểm giao giữa UX và bảo mật: hữu ích nhưng không được lộ sách đã mượn.
