@@ -177,7 +177,7 @@ Không điền số dự kiến vào các bảng trên như thể đó là kết
 
 ### 8.4 Vai trò của AI (gắn với câu hỏi nghiên cứu)
 
-Mỗi issue UI/UX giao cho Claude Code được ghi vào `optimization/ui-ux-log.md`:
+Mỗi issue UI/UX giao cho Claude Code được ghi thành một mục trong nhật ký của nhánh, `optimization/log/<tên-nhánh>.md` (mẫu và quy tắc ở `optimization/log/README.md`), trong cùng commit với thay đổi:
 - prompt đã dùng
 - AI đề xuất gì
 - con người sửa gì
@@ -222,5 +222,5 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 
 - Nhánh `ui-ux` với design system, chuỗi tiếng Việt và tiếng Anh, accessibility, trạng thái UI và các thay đổi UX.
 - `optimization/ux-test.md`: kịch bản, phiếu ghi và kết quả A/B.
-- `optimization/ui-ux-log.md`: log AI.
+- `optimization/log/<tên-nhánh>.md`: nhật ký từng thay đổi, gồm cả phần AI đề xuất và phần con người sửa.
 - Bảng chỉ số UI và UX trước/sau, ảnh chụp trước/sau, và một đoạn cho báo cáo và slide.
