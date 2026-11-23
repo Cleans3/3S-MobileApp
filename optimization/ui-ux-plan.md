@@ -102,7 +102,7 @@ Mã lỗi lấy từ `web/ErrorCode.java` của server; app rẽ nhánh theo `co
 
 ### 5.5 Hướng thiết kế: giao diện kính cho toàn app
 
-Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho **cả app**, không chỉ một hiệu ứng. Bản phác 12 màn có thể bấm thử: **ShelfTap glass mockup** (https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf). Mockup là trang web dùng `backdrop-filter` của trình duyệt; nó cho thấy giao diện, **không** đo được hiệu năng trên Android.
+Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho **cả app**, không chỉ một hiệu ứng. Bản phác 13 màn có thể bấm thử, có hiệu ứng động (§6.5): **ShelfTap glass mockup** (https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf). Mockup là trang web dùng `backdrop-filter` của trình duyệt; nó cho thấy giao diện, **không** đo được hiệu năng trên Android.
 
 **Các thành phần:**
 - **Ảnh lớn mờ dần** ở màn chào, banner chủ đề và chi tiết sách: nửa dưới ảnh mờ dần để chữ đặt lên vẫn đọc được.
@@ -115,9 +115,20 @@ Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho 
 
 | Nhóm | Màn |
 |---|---|
-| Khám phá | Màn chào (mới), Danh mục (banner chủ đề, băng cuộn, ô tìm kiếm), Chi tiết sách |
+| Khám phá | Màn chào (mới), Danh mục (banner chủ đề, băng cuộn, ô tìm kiếm), Danh sách sách (mới, mở từ "Xem tất cả"), Chi tiết sách |
 | Đăng nhập và bảo mật | Đăng nhập bằng mật khẩu, Đăng nhập bằng thẻ (3 bước), Đổi mật khẩu lần đầu (điều kiện hiện ngay khi gõ, tối thiểu 10 ký tự như server), Khóa sinh trắc học |
 | Thành viên | Sách đang mượn (gia hạn, quá hạn, tiền phạt), Tự mượn sách (chờ chạm, đang gửi, thành công, lỗi), Đặt trước (hủy có xác nhận), Lịch sử đọc (yêu cầu mật khẩu nếu đăng nhập bằng thẻ), Tài khoản (công tắc lịch sử, vân tay, đổi mật khẩu, đăng xuất qua bảng xác nhận) |
+
+**Trang danh sách sách** (màn `List` trong mockup):
+- Mở từ "Xem tất cả" ở Danh mục. Kết quả tìm kiếm dùng chung màn này, để chỉ có một danh sách dài cần tối ưu.
+- Thanh trên bằng kính (nút quay lại, tiêu đề, ô tìm, hàng chip chủ đề) mờ dần phủ lên danh sách đang cuộn. **Hàng sách nền đặc, không blur** (§7). Bìa chữ 52×74 dp cho sách thiếu ảnh.
+- Mỗi hàng: tên sách, tác giả, trạng thái ("Còn N bản" từ `copiesAvailable` của `TitleSummary`; bằng 0 thì "Đang được mượn · đặt trước"), cả hàng là một vùng bấm cao ít nhất 48 dp, TalkBack đọc một câu gộp.
+- Trạng thái (§5.4): khung xương (skeleton) khi tải lần đầu, "Không tìm thấy sách" kèm gợi ý, lỗi mạng có nút thử lại, "Đang tải thêm…" ở cuối khi còn trang (`Page.total`).
+- Đây chính là màn cuộn 100k sách mà `opt/app-catalog` đo, nên mọi thứ thêm vào hàng phải qua §7 và §8.5.
+- **Giới hạn so với API hiện tại** (`server/API.md`):
+  - `TitleSummary` và `TitleDetail` không có kệ: kệ nằm ở từng bản sách (`copy.shelf`). Mockup hiện "Kệ A0x" ở danh sách và chi tiết là **đề xuất**; muốn có thì sửa `API.md` trước (§4), nếu không thì bỏ khỏi hàng.
+  - `q` đã khớp cả chủ đề, nhưng chưa có tham số lọc riêng theo chủ đề. Chip chủ đề cần một tham số mới (ví dụ `subject=`), làm cùng đợt sửa API với `optimization/search-recommend-plan.md`.
+  - Mockup tìm không dấu ("chi pheo" ra "Chí Phèo") bằng cách bỏ dấu ngay trên trang với 13 sách dev. Server hiện là `ILIKE` có phân biệt dấu; cách làm thật nằm ở phần A của `optimization/search-recommend-plan.md`.
 
 **Theo tầng (§6.3):** blur thật chỉ ở tầng Đầy đủ. Tầng Vừa và Nhẹ thay vùng mờ dần bằng **dải gradient phủ** (scrim) và nền bán trong suốt: trông gần giống mà rẻ hơn nhiều.
 
@@ -177,7 +188,7 @@ Nhóm đã chốt (2026-11-23): **một app duy nhất, tự bật hiệu ứng 
 - Morphicons (`node_modules/morphicons`, giấy phép MIT) là thư viện JavaScript, **không chạy trong app Kotlin/Compose**. App chỉ dùng được dữ liệu icon và ý tưởng morph.
 - Bộ icon: lấy SVG từ một bộ có giấy phép mở (ví dụ Lucide, ISC) rồi chuyển sang `ImageVector` (nhóm chọn bộ icon, §11).
 - Morph ở tầng Đầy đủ: chạy Morphicons bằng một script Node **lúc build** để chuẩn hóa từng cặp icon (thường và đang chọn) thành path tương thích, rồi xuất ra `AnimatedVectorDrawable`. Script và các file sinh ra để trong `android/app/`, kèm lệnh chạy lại. App không mang JavaScript vào lúc chạy.
-- `package.json`, `package-lock.json` và `node_modules/` ở gốc repo hiện chưa được git theo dõi và cũng không bị ignore. Chuyển chúng vào thư mục của script build, và thêm `node_modules/` vào `.gitignore`.
+- `package.json`, `package-lock.json` và `node_modules/` ở gốc repo hiện chưa được git theo dõi. Từ 2026-11-24 chúng chỉ được ignore trên một máy, bằng `.git/info/exclude`; repo vẫn chưa ignore. Chuyển chúng vào thư mục của script build, và thêm `node_modules/` vào `.gitignore`.
 - **Chỗ dùng icon morph** (chỉ ở tầng Đầy đủ; tắt khi người dùng tắt hoạt ảnh; không dùng trong hàng danh sách):
 
 | Chỗ | Morph | Khi nào |
@@ -210,6 +221,39 @@ Bán kính blur và độ trong chọn theo hướng dẫn Material, rồi chụ
 - **Tràn viền:** app nhắm `targetSdk` 36 nên Android bắt buộc tràn viền. Thanh kính nổi trên nội dung; nội dung chừa đúng vùng an toàn và phần khuyết camera bằng `WindowInsets`.
 - **Màn lớn:** từ Android 16, app nhắm `targetSdk` 36 không còn khóa được hướng xoay và tỷ lệ trên màn rộng từ 600dp, nên ShelfTap phải hiển thị đúng khi xoay và khi mở máy gập. Danh mục trên màn rộng có thể chia hai cột (danh sách, chi tiết).
 - **Kiểm tra:** ảnh chụp ở các cấu hình: điện thoại thường, 21:9, máy gập lúc gập và lúc mở, tablet, xoay ngang, font scale 2.0.
+
+### 6.5 Hiệu ứng động (motion)
+
+Hiệu ứng động giúp người dùng biết chuyện gì vừa xảy ra (menu mở ra từ đâu, server đã nhận yêu cầu chưa), không để trang trí. Mockup (§5.5) đã có các hiệu ứng dưới đây để nhóm bấm thử.
+
+**Quy tắc:**
+- **Chỉ đổi transform và opacity** (dịch, co giãn, xoay, độ trong). Trong Compose làm bằng `Modifier.graphicsLayer` để không phải đo và bố cục lại. Không tạo hiệu ứng cho kích thước, padding hay bán kính blur.
+- **Hiệu ứng "thành công" chỉ chạy sau khi server trả lời** (đặt trước, gia hạn, tự mượn), đúng nguyên tắc không báo thành công giả ở §4. Lúc chờ chỉ có trạng thái "đang gửi".
+- **Không có hiệu ứng trong hàng danh sách lúc cuộn.** Hàng chỉ trồi lên một lần khi tải trang đầu, tối đa 8 hàng đầu.
+- **Hiệu ứng lặp** (vòng NFC lan ra, khung xương lấp lánh) chỉ có ở màn chờ chạm và lúc đang tải, và phải dừng khi màn rời khỏi màn hình hoặc app xuống nền.
+- **Tôn trọng cài đặt của máy:** hệ số thời lượng hoạt ảnh bằng 0, hoặc bật "Xóa ảnh động" trong Hỗ trợ tiếp cận, thì tắt hết hiệu ứng và đổi trạng thái ngay. Thời lượng nhân theo hệ số hoạt ảnh của hệ thống. TalkBack đọc trạng thái mới, không phụ thuộc hiệu ứng.
+- Mockup dùng `@media (prefers-reduced-motion: reduce)` để mô phỏng việc tắt hiệu ứng.
+
+**Danh sách hiệu ứng:**
+
+| Chỗ | Hiệu ứng | Thời lượng | Tầng Nhẹ |
+|---|---|---|---|
+| Vào màn | Các khối trồi lên 16 dp và hiện dần, khối sau chậm hơn 80 ms | 420 ms | Hiện ngay |
+| Nút menu | ☰ chuyển thành ✕: hai gạch xoay ±45°, gạch giữa mờ đi | 260 ms | Đổi icon ngay |
+| Menu ☰ | Khung kính phóng từ góc nút (co giãn 0.92 → 1 và hiện dần), các mục chậm dần 35 ms, nền phía sau tối dần | 260 ms, nền 200 ms | Hiện ngay, không blur |
+| Danh sách sách | Hàng trồi lên chậm dần 40 ms (chỉ lần tải đầu); khung xương lấp lánh khi tải; vòng quay "đang tải thêm" | 320 ms; lấp lánh lặp 1.2 s | Khung xương đứng yên |
+| Chip, nút, thanh chọn trạng thái | Đổi màu nền mượt; co 0.96 khi nhấn | 120–220 ms | Đổi màu ngay |
+| Chờ chạm NFC (tự mượn, đăng nhập bằng thẻ) | Hai vòng lan ra lệch nhau; thẻ hoặc vòng giữa "thở" nhẹ | Lặp 1.8 s và 2.4 s | Vòng đứng yên |
+| Kết quả từ server | Dấu tích được vẽ ra; vòng tròn bật lên (co giãn 0.6 → 1); lỗi thì thẻ lỗi rung ngang | 380–420 ms; rung 360 ms | Hiện ngay |
+| Công tắc trong Tài khoản | Núm trượt ngang, nền đổi màu | 220 ms | Đổi ngay |
+| Bảng xác nhận đăng xuất | Trượt lên từ đáy, nền tối dần | 320 ms | Hiện ngay |
+| Khóa sinh trắc học | Icon ổ khóa mở bật lên | 380 ms | Đổi icon ngay |
+
+Tầng Vừa có đủ các hiệu ứng trên, chỉ khác là không blur (§6.3). Icon morph thật (bằng `AnimatedVectorDrawable`) vẫn chỉ ở tầng Đầy đủ; tầng Vừa dùng cách đổi icon bằng xoay và mờ dần như mockup.
+
+**Đường cong:** vào màn và mở bảng dùng đường cong giảm tốc (gần `cubic-bezier(0.2, 0.8, 0.2, 1)` trong mockup). Nếu bản Material 3 nhóm dùng có sẵn bộ token chuyển động thì dùng token đó thay cho số tự đặt.
+
+**Đo:** thêm vào §8.5 các hành trình mở và đóng menu ☰, chuyển màn Danh mục → Danh sách → Chi tiết, và tải trang đầu của danh sách.
 
 ## 7. Ràng buộc hiệu năng cho mọi thay đổi UI
 
@@ -279,7 +323,7 @@ Từ log này trả lời được: AI làm tốt phần UI nào (dự kiến: a
 
 Câu hỏi cho báo cáo: **hiệu ứng kính tốn bao nhiêu khung hình, và chia tầng có giữ được máy yếu ở mục tiêu 60 fps không?**
 
-- **Cách đo:** cùng một APK release, dùng công tắc ép tầng của bản debug-benchmark, cuộn danh mục 100k sách với nút nổi "Chạm sách để mượn" và vùng mờ dần ở đáy màn đè lên; đo thêm lúc mở và đóng menu ☰. Dùng chung kịch bản và bộ dữ liệu của `opt/app-catalog` (Macrobenchmark, `FrameTimingMetric`), chạy theo thứ tự ABAB, nhiều vòng, báo trung vị và khoảng.
+- **Cách đo:** cùng một APK release, dùng công tắc ép tầng của bản debug-benchmark, cuộn danh mục 100k sách với nút nổi "Chạm sách để mượn" và vùng mờ dần ở đáy màn đè lên; đo thêm lúc mở và đóng menu ☰, lúc chuyển màn Danh mục → Danh sách → Chi tiết và lúc tải trang đầu của danh sách (hiệu ứng động ở §6.5). Ở màn đứng yên (không có hiệu ứng lặp), kiểm tra app không vẽ thêm frame nào (`dumpsys gfxinfo`), để chắc hiệu ứng lặp đã dừng. Dùng chung kịch bản và bộ dữ liệu của `opt/app-catalog` (Macrobenchmark, `FrameTimingMetric`), chạy theo thứ tự ABAB, nhiều vòng, báo trung vị và khoảng.
 - **Chỉ số:** tỷ lệ frame trễ hạn, `frameDurationCpuMs` p50 và p90, `frameOverrunMs` nếu có, bộ nhớ RSS.
 - **Ma trận:**
 
@@ -301,7 +345,7 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 | 0. Chốt | Nhóm duyệt kế hoạch này và chốt các mục ở §11 | Kế hoạch v1 | 0,5 ngày |
 | 1. Baseline | Tag `ui-baseline`, lưu APK A, đo chỉ số UI (§8.2) | Bảng A của UI | 0,5 ngày |
 | 2. Test UX lần A | 5 người làm T1–T3 trên A | Bảng A của UX | 1 ngày |
-| 3. Thiết kế | Nhóm góp ý trên mockup 12 màn (§5.5) bằng bình luận; chốt design system, bảng màu, font; viết `ux-test.md` | Nhóm duyệt mockup | 1 ngày |
+| 3. Thiết kế | Nhóm góp ý trên mockup 13 màn (§5.5) và các hiệu ứng động (§6.5) bằng bình luận; chốt design system, bảng màu, font; viết `ux-test.md` | Nhóm duyệt mockup | 1 ngày |
 | 4. Làm UI | §5.1 đến §5.4, mỗi issue một commit, có log AI | Nhánh `ui-ux` | 2–3 ngày |
 | 5. Làm UX | §6.2, mỗi thay đổi một commit | Nhánh `ui-ux` | 1–2 ngày |
 | 5b. Tầng hiệu ứng và màn hình đặc biệt | §6.3 (tầng, thanh kính, icon, script morph lúc build) và §6.4 (bố cục thích ứng) | Nhánh `ui-ux` | 2–3 ngày |
@@ -337,6 +381,8 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 9. Đã chốt: phong cách kính cho toàn app (§5.5) và menu ☰ dạng khung kính dọc, cộng nút nổi tự mượn (§6.2).
 10. Màu theo hình nền (Material You) hay màu thương hiệu cố định, hay kết hợp (kính và nền theo hệ thống, nút chính và logo theo thương hiệu).
 11. Nguồn ảnh thư viện có giấy phép cho màn chào và banner.
+12. Duyệt bộ hiệu ứng động ở §6.5 trên mockup: giữ, bỏ hay đổi thời lượng hiệu ứng nào.
+13. Có sửa `server/API.md` để thêm kệ vào `TitleSummary` và tham số lọc theo chủ đề cho trang danh sách không (cùng đợt với `optimization/search-recommend-plan.md`).
 
 ## 12. Sản phẩm đầu ra
 
