@@ -260,6 +260,24 @@ Bán kính blur và độ trong chọn theo hướng dẫn Material, rồi chụ
 - **Màn lớn:** từ Android 16, app nhắm `targetSdk` 36 không còn khóa được hướng xoay và tỷ lệ trên màn rộng từ 600dp, nên ShelfTap phải hiển thị đúng khi xoay và khi mở máy gập. Danh mục trên màn rộng có thể chia hai cột (danh sách, chi tiết).
 - **Kiểm tra:** ảnh chụp ở các cấu hình: điện thoại thường, 21:9, máy gập lúc gập và lúc mở, tablet, xoay ngang, font scale 2.0.
 
+**Thử trên mockup: rộng 320 dp và cỡ chữ 2.0 (2026-11-24).** `optimization/ui-ux-mockup/tools/render-static.js` dựng 20 màn thành HTML tĩnh ở bốn biến thể. `tools/layout-check.js` chạy trong trình duyệt và đếm bốn loại lỗi: chữ hoặc nút tràn ra mép trái hay phải, nằm dưới đáy màn mà không cuộn được, chữ đè lên chữ, chữ bị cắt mà không có dấu "…". Cỡ chữ 2.0 dùng kiểu phóng phi tuyến của Android 14 trở lên (chữ nhỏ gấp đôi, chữ lớn tăng ít hơn), lấy theo bảng của AOSP như tôi nhớ; cần đối chiếu mã AOSP trước khi đưa con số vào báo cáo.
+
+| Biến thể | Màn có lỗi | Số lỗi |
+|---|---|---|
+| Gốc: rộng 390, chữ bình thường | 0 / 20 | 0 |
+| Rộng 320 | 0 / 20 | 0 |
+| Chữ 2.0 | 13 / 20 | 41 (29 chữ đè, 11 tràn đáy, 1 tràn ngang) |
+| Rộng 320 và chữ 2.0 | 18 / 20 | 65 (41 chữ đè, 19 tràn đáy, 5 tràn ngang) |
+
+Ba lỗi thật có cả ở cỡ chữ thường đã sửa trong mockup: ô nhập giữ bề rộng tối thiểu mặc định (khoảng 20 ký tự) nên tràn ra ngoài ở chữ lớn (`min-width: 0`); băng sách ở Danh mục tràn mép phải mà không cuộn ngang được; dải "Không có mạng" ở màn Tìm khi không có mạng đè lên dòng đếm.
+
+Lỗi ở chữ 2.0 đến từ cách mockup đặt mọi khối ở vị trí cố định trong một màn cao 844 px, không cuộn. Đây là quy tắc cho app, không sửa trên mockup:
+- **Mọi màn cuộn dọc được** (`verticalScroll` hoặc `LazyColumn`), không đặt khối ở toạ độ `y` cố định. Tài khoản, Chi tiết, Sách đang mượn, Đổi mật khẩu và Mất kết nối là các màn tràn đáy nhiều nhất.
+- **Thanh nổi chừa chỗ:** nội dung có `contentPadding` ở đáy bằng chiều cao thực của thanh nổi ("Chạm sách để mượn", thanh Đặt trước), đo lúc chạy chứ không viết cứng, vì thanh cao lên khi chữ lớn.
+- **Chữ trong nút dạng viên thuốc được xuống dòng** (tối đa 2 dòng), không ép một dòng; "Chạm sách để mượn" và "Đăng nhập để mượn sách" tràn mép ở rộng 320 và chữ 2.0.
+- **Ghi chú ở đáy màn** (Đăng nhập, Khóa, Mất kết nối, Đăng nhập lại) nằm trong luồng cuộn, không ghim ở đáy.
+- Đo lại bằng ảnh chụp ở font scale 2.0 trên máy, theo bảng ở §8.2.
+
 ### 6.5 Hiệu ứng động (motion)
 
 Hiệu ứng động giúp người dùng biết chuyện gì vừa xảy ra (menu mở ra từ đâu, server đã nhận yêu cầu chưa), không để trang trí. Mockup (§5.5) đã có các hiệu ứng dưới đây để nhóm bấm thử.

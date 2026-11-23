@@ -2,7 +2,7 @@
 
 Mã nguồn của mockup 20 màn ở `optimization/ui-ux-plan.md` §5.5, cùng các script đo dùng cho §5.3.
 
-- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 17 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý (menu ☰) và cài đặt Thông báo (Tài khoản) (bản 17).
+- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 18 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý và Thông báo (bản 17), ba lỗi bố cục tìm ra khi thử rộng 320 và chữ 2.0 (bản 18).
 - **Mở trực tiếp không chạy:** mỗi màn cần runtime `support.js` của trình xem artifact, file đó không có trong repo. Các script dưới đây không cần runtime: chúng tự đọc template và chạy phần script của từng màn.
 
 ## Nội dung
@@ -14,6 +14,8 @@ Mã nguồn của mockup 20 màn ở `optimization/ui-ux-plan.md` §5.5, cùng c
 | `tools/contrast.js` | Đo tương phản WCAG cho mọi đoạn chữ, ở theme sáng và tối (SC 1.4.3) |
 | `tools/nontext-contrast.js` | Đo tương phản cho icon, viền ô nhập, công tắc và trạng thái đang chọn (SC 1.4.11) |
 | `tools/target-size.js` | Đọc kích thước vẽ và vùng chạm của mọi nút, link và công tắc |
+| `tools/render-static.js` | Dựng 20 màn thành HTML tĩnh ở bốn biến thể: gốc, rộng 320, chữ 2.0, cả hai |
+| `tools/layout-check.js` | Chạy trong trình duyệt trên trang của `render-static.js`: đếm chữ tràn mép, tràn đáy, chữ đè chữ, chữ bị cắt |
 | `tools/hero-worst-case.js` | Tính riêng chữ trắng trên ảnh ở màn chào, ở trường hợp xấu nhất |
 | `tools/check-scripts.js` | Chạy script của từng màn, gọi mọi handler, kiểm tra mọi biến trong template đều có giá trị |
 | `contrast-results.json` | Kết quả của `tools/contrast.js` |
@@ -28,6 +30,7 @@ node tools/check-scripts.js .
 node tools/contrast.js .
 node tools/nontext-contrast.js .
 node tools/target-size.js .
+node tools/render-static.js . rendered   # rồi mở rendered/*.html qua một web server cục bộ và chạy tools/layout-check.js trong trang
 node tools/hero-worst-case.js
 ```
 
@@ -102,5 +105,18 @@ Mép nút kính không đạt 3:1 là chủ ý của phong cách kính và khôn
 | Nút, link, công tắc | 133 | 135 (thêm 2 lối vào) |
 | Vẽ nhỏ hơn 48 px | 32 | 32 (giữ nguyên hình) |
 | Vùng chạm nhỏ hơn 48 px | 32, cộng 4 link chữ không rõ kích thước | 0 |
+
+## Rộng 320 dp và cỡ chữ 2.0
+
+`tools/render-static.js` dựng các màn ở theme sáng, trạng thái mặc định (menu và bảng đóng). Cỡ chữ 2.0 phóng phi tuyến theo kiểu Android 14 trở lên; bảng số trong script lấy theo AOSP như tôi nhớ, cần đối chiếu trước khi trích. `tools/layout-check.js` bỏ qua lớp trang trí (`aria-hidden`), phần nằm trong vùng cuộn, và nhãn ẩn 1 px cho trình đọc màn hình.
+
+| Biến thể | Màn có lỗi | Số lỗi |
+|---|---|---|
+| Gốc: rộng 390, chữ bình thường | 0 / 20 | 0 (bản 17: 3 lỗi thật, đã sửa ở bản 18) |
+| Rộng 320 | 0 / 20 | 0 |
+| Chữ 2.0 | 13 / 20 | 41 |
+| Rộng 320 và chữ 2.0 | 18 / 20 | 65 |
+
+Lỗi ở chữ 2.0 là do mockup đặt khối ở vị trí cố định trong màn 844 px không cuộn. Mockup không sửa phần này; quy tắc cho app ở `optimization/ui-ux-plan.md` §6.4. Một vài lỗi chữ đè ở Tự mượn, Gợi ý và Đăng nhập lại là thanh xem trước trạng thái, chỉ có trong bản phác.
 
 Chi tiết từng lỗi và cách sửa: `optimization/ui-ux-plan.md` §5.3 và `optimization/log/docs-ui-ux-plan.md`.

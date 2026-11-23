@@ -138,3 +138,12 @@
 - **AI:** Claude Code (Claude Opus 5.5). AI viết các kiểm tra tự động (bản đồ liên kết giữa các màn, kích thước vùng chạm) rồi đọc lại kế hoạch tìm chỗ cũ. Chọn mở rộng vùng chạm thay vì phóng to hình để giữ thiết kế, theo đúng cách Compose làm.
 - **Kiểm thử:** chạy lại năm script; 20 màn không lỗi.
 - **Ghi chú cho báo cáo:** vùng chạm là ví dụ tốt cho việc kiểm bằng script trên toàn bộ màn: mắt người thường không thấy nút 40 px là "nhỏ".
+
+## 2026-11-24 04:47 · Thử bố cục ở rộng 320 dp và cỡ chữ 2.0
+
+- **Vấn đề:** §5.3 và §6.4 yêu cầu không vỡ bố cục ở màn rộng 320 dp và font scale 2.0, nhưng mockup chưa được thử.
+- **Thay đổi:** thêm `tools/render-static.js` (dựng 20 màn thành HTML tĩnh ở bốn biến thể) và `tools/layout-check.js` (đếm chữ tràn mép, tràn đáy, chữ đè chữ, chữ bị cắt). Mockup sửa ba lỗi có cả ở cỡ chữ thường: ô nhập có `min-width: 0`, băng sách ở Danh mục cuộn ngang được, dải "Không có mạng" không còn đè dòng đếm. Kế hoạch §6.4 thêm bảng kết quả và bốn quy tắc bố cục cho app (màn cuộn được, thanh nổi chừa chỗ, chữ trong nút viên thuốc xuống dòng, ghi chú đáy nằm trong luồng cuộn). README lên bản 18.
+- **Đo trước → sau:** gốc 3 lỗi (3 màn) → 0. Rộng 320: 0 → 0. Chữ 2.0: 13/20 màn, 41 lỗi; rộng 320 và chữ 2.0: 18/20 màn, 65 lỗi (không sửa trên mockup, chuyển thành quy tắc cho app).
+- **AI:** Claude Code (Claude Opus 5.5). Người dùng yêu cầu kiểm tra cỡ chữ phóng to và màn rộng 320 dp. Khung artifact không cho chạy code bên trong, nên AI dựng màn ra HTML tĩnh, phục vụ qua web server cục bộ và đo trong trình duyệt của app. Bảng phóng chữ phi tuyến của Android 14 lấy theo trí nhớ của AI, đã ghi rõ là cần đối chiếu mã AOSP. Hai lượt đo đầu có kết quả dương tính giả từ nhãn ẩn 1 px cho trình đọc màn hình; đã sửa script để bỏ qua.
+- **Kiểm thử:** chạy lại năm script Node (20 màn không lỗi, tương phản và vùng chạm không đổi) và đo lại bốn biến thể sau khi sửa.
+- **Ghi chú cho báo cáo:** số liệu "màn vỡ bố cục ở font scale 2.0" của bảng §8.2 giờ có mốc trên mockup (13/20) để so với app sau khi làm.

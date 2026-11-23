@@ -35,6 +35,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-root ::placeholder{color:var(--ink3);opacity:1}
 .st-root :is(button,a,[role="switch"]){position:relative}
 .st-root :is(button,a,[role="switch"])::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,48px);height:max(100%,48px);transform:translate(-50%,-50%)}
+.st-root input{min-width:0}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
@@ -86,7 +87,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
       <a href="List.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
     </div>
 
-    <div style="display: flex; gap: 12px; margin-right: -20px">
+    <div style="display: flex; gap: 12px; margin-right: -20px; padding-right: 20px; overflow-x: auto; scrollbar-width: none">
       <sc-for list="{{row}}" as="c" hint-placeholder-count="4">
         <a href="Detail.dc.html" class="st-rise" style="{{c.cardStyle}}">
           <div style="font-size: 15px; font-weight: 700; line-height: 1.2; padding: 14px 12px 0">{{c.title}}</div>
