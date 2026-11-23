@@ -4,15 +4,15 @@
 
 Ứng dụng minh họa: ShelfTap (thư viện thông minh dùng NFC). Phạm vi: Android native, Kotlin và Jetpack Compose.
 
-> **Trạng thái bản thảo (2026-11-21).** Chương 1–4 đã hoàn chỉnh. Chương 5 và 6 là khung: mọi số liệu thực nghiệm **chưa được điền**, mỗi chỗ trống là một dấu `TODO[mã]` nêu đường dẫn tệp CSV hoặc REPORT sẽ cung cấp số liệu. Bản thảo không chứa kết quả đo nào của nghiên cứu.
+> **Trạng thái bản thảo (2026-11-23).** Chương 1–6 đã được viết; mọi số liệu thực nghiệm ở Chương 5 được chép từ các REPORT và CSV đã commit của từng thí nghiệm, trừ hiệu chỉnh Holm (Mục 5.7) là phép tính của bài. Còn lại trước khi nộp: hai lần chạy khám phá của E2 chưa thực hiện (độ nhạy với biến thể A viết tay; quét số lượng khoản vay), chạy lại các tìm kiếm tài liệu của Mục 1.2, và các hạn chế đã nêu ở Mục 5.8.
 >
-> **Quy ước.** (1) `[Khóa]` là khóa của một nguồn trong `references.md` (nguồn đã kiểm chứng, kèm cách kiểm chứng và từng con số được dùng). (2) `[Protocol §n]` là mục tương ứng của `00-protocol.md`, tức giao thức đăng ký trước đã đóng băng; ngưỡng, cỡ mẫu và quy tắc quyết định nêu trong bài là quy ước đặt trước khi có dữ liệu kết quả, không suy ra từ dữ liệu của nghiên cứu. (3) Mọi con số trong bài hoặc có khóa nguồn, hoặc là tham số của giao thức, hoặc (ở Chương 5) sẽ lấy từ một tệp CSV được nêu tên. (4) Số được viết theo quy ước tiếng Việt: dấu chấm ngăn cách hàng nghìn, dấu phẩy là dấu thập phân (ví dụ 1.689 và 75,7%); trong các tệp CSV và bảng kết quả dùng dấu chấm thập phân. (5) Các thuật ngữ kỹ thuật (Compose, recomposition, Keystore, ...) giữ nguyên tiếng Anh. (6) Nhân quả chỉ được viết là "giả thuyết" khi chưa có nhánh thực nghiệm nào kiểm tra nó.
+> **Quy ước.** (1) `[Khóa]` là khóa của một nguồn trong `references.md` (nguồn đã kiểm chứng, kèm cách kiểm chứng và từng con số được dùng). (2) `[Protocol §n]` là mục tương ứng của `00-protocol.md`, tức giao thức đăng ký trước đã đóng băng; ngưỡng, cỡ mẫu và quy tắc quyết định nêu trong bài là quy ước đặt trước khi có dữ liệu kết quả, không suy ra từ dữ liệu của nghiên cứu. (3) Mọi con số trong bài hoặc có khóa nguồn, hoặc là tham số của giao thức, hoặc (ở Chương 5) được lấy từ một tệp CSV hay REPORT được nêu tên. (4) Số được viết theo quy ước tiếng Việt: dấu chấm ngăn cách hàng nghìn, dấu phẩy là dấu thập phân (ví dụ 1.689 và 75,7%); trong các tệp CSV và bảng kết quả dùng dấu chấm thập phân. (5) Các thuật ngữ kỹ thuật (Compose, recomposition, Keystore, ...) giữ nguyên tiếng Anh. (6) Nhân quả chỉ được viết là "giả thuyết" khi chưa có nhánh thực nghiệm nào kiểm tra nó.
 
 ## Tóm tắt
 
 Trợ lý lập trình AI cho phép dựng một ứng dụng Android hoàn chỉnh từ một mô tả ngắn, nhưng bản nháp đầu tiên chưa được ai thẩm định. Nghiên cứu này đo xem bản nháp đó làm ứng dụng tốn thêm gì về giao diện (độ mượt, recomposition), bộ nhớ và bảo mật, và phần nào trong số đó **không** biến mất khi áp dụng các kỹ thuật tối ưu quen thuộc, vì nguyên nhân nằm ở chính quá trình sinh mã. Nghiên cứu gồm năm thực nghiệm trên một miền thống nhất (ShelfTap): E1 thu thập kho bản nháp đầu do ba bộ công cụ AI sinh ra từ ba brief với ba kiểu prompt (naive, detailed-functional, guardrailed) và so với ứng dụng do người viết; E2 đo chi phí của từng vấn đề bằng cặp phiên bản A (mã "slop" lấy từ E1) và B (đã tối ưu); E3 quét tĩnh các APK bằng công cụ độc lập và phân loại thủ công; E4 đặt trợ lý trước năm lỗi Android có chủ đích để xem lỗi được sửa an toàn hay bằng cách làm yếu bảo mật; E5 giao cho trợ lý vai trò người tối ưu trên ứng dụng có danh sách lỗi chuẩn. Giao thức được đăng ký và đóng băng trước khi chạy: chỉ năm phép kiểm định xác nhận (hiệu chỉnh Holm) có p-value được diễn giải, mọi so sánh khác chỉ là ước lượng kèm khoảng tin cậy; kết quả không kết luận được và kết quả âm được báo cáo cùng vị trí với kết quả dương.
 
-**Kết quả.** `TODO[abstract-results]` điền sau khi Chương 5 có số liệu: một câu cho mỗi phép kiểm định xác nhận C1–C5 (Mục 4.8), lấy từ `e1-corpus/REPORT.md`, `e2-bench/REPORT.md`, `e4-pressure/REPORT.md`. Không viết kết quả dự kiến.
+**Kết quả.** Năm phép kiểm định xác nhận (hiệu chỉnh Holm, m = 5; số liệu ở Chương 5). C1: ở bản nháp đầu, tỷ lệ lần chạy có ít nhất một phát hiện nhóm bảo mật giảm từ 31/33 (naive) xuống 17/34 (guardrailed), hiệu +0,439, p hiệu chỉnh 0,00016; nhưng trong các ứng dụng build được hiệu này là +0,000, và chỉ 42 trên 100 lần chạy build được. C2: số mã luật khác nhau mỗi lần chạy giảm từ 5,85 xuống 2,82, hiệu +3,025, p hiệu chỉnh 0,00005. C3: mật độ phát hiện nhóm bảo mật trên 1000 dòng của mã AI không guardrail cao hơn ứng dụng do người viết trước 30/11/2022 (trung vị 2,37 so với 1,02; delta Cliff +0,582, p hiệu chỉnh 0,00027). C4: tỷ lệ sửa lỗi bằng cách làm yếu bảo mật ở E4 là 17/148 = 0,115 [0,073; 0,176], dưới ngưỡng 0,15 và p hiệu chỉnh 0,3106, nên **không được ủng hộ**. C5: ô lưới có hiệu ứng trang trí do AI sinh ra tốn thêm +28,13% [13,38; 54,31] ở P90 thời gian CPU khung hình so với bản phẳng (62,87 so với 49,07 ms; p hiệu chỉnh 0,000616), trên một đường GPU của emulator. Ngoài ra, ở E2, hai mẫu cấp mã (P06, P01 cùng P09) có chi phí lớn, một mẫu (P13) làm nhanh truy vấn nhưng không cải thiện khung hình, và hai (P03 cùng P04, nhân tố con P01) không có chi phí đo được; E3 và E5 là mô tả. Mọi số đo thời gian chạy trên emulator.
 
 **Từ khóa:** AI coding, Android, Jetpack Compose, hiệu năng giao diện, bảo mật di động, OWASP MASVS, nghiên cứu thực nghiệm, đăng ký trước.
 
@@ -548,7 +548,7 @@ Giá trị băm hiện hành của giao thức luôn nằm ở `00-protocol.sha2
 
 ## Chương 5. Thực nghiệm và đánh giá
 
-> **Trạng thái số liệu.** Mọi số trong chương này được chép từ các tệp REPORT và CSV đã commit của từng thí nghiệm, không tính lại; mỗi mục nêu tệp nguồn. Số thập phân dùng dấu phẩy. Hai chỗ còn trống là các điểm chưa có dữ liệu: các nhân tố E2 lấy từ mã E1 (P08, P06, P01 cùng P09, P13, P03 cùng P04, kể cả điểm cuối xác nhận C5) và hiệu chỉnh Holm trên C1 đến C5; mỗi chỗ có một dòng `TODO`. Đường dẫn tính từ `optimization/study/`.
+> **Trạng thái số liệu.** Mọi số trong chương này được chép từ các tệp REPORT và CSV đã commit của từng thí nghiệm, không tính lại, trừ hiệu chỉnh Holm ở Mục 5.7, là phép tính của bài; mỗi mục nêu tệp nguồn. Số thập phân dùng dấu phẩy. Đường dẫn tính từ `optimization/study/`.
 
 ### 5.1. Môi trường, luồng dữ liệu và ứng dụng thử nghiệm
 
@@ -677,7 +677,7 @@ Bảng 5.6 chép nhánh chính v1 trên 20 luật đã kiểm chứng (100 lần
 | detailed-functional | 33 | 29 | 0,879 | [0,727; 0,952] | 5,70 | 6,0 | [5,09; 6,33] |
 | guardrailed | 34 | 17 | 0,500 | [0,341; 0,659] | 2,82 | 3,0 | [2,41; 3,26] |
 
-**C1** (naive trừ guardrailed, 9 tầng brief nhân bộ công cụ): hiệu rủi ro **+0,439**, p hoán vị phân tầng chưa hiệu chỉnh = 0,00004 (100.000 hoán vị, hạt giống 20261121). **C2** (cùng thiết kế): hiệu số mã luật khác nhau mỗi lần chạy **+3,025**, p = 0,00001. Quy tắc đã đăng ký: C1 được ủng hộ khi p hiệu chỉnh Holm dưới 0,05 và hiệu rủi ro từ 0,15; C2 khi p hiệu chỉnh dưới 0,05 và chênh từ 2,0. Cả hai độ lớn vượt ngưỡng (0,439 so với 0,15, và cũng vượt mức 0,25 của dải độ nhạy; 3,025 so với 2,0), và p thô của C1, C2 đều dưới 0,01, ngưỡng đầu tiên của Holm với m = 5; điều đó đúng bất kể p của C5, nên kết luận không thể bị C5 đổi. Số p đã hiệu chỉnh được điền ở chỗ trống Holm của Mục 5.7. Phân tích trên toàn bộ 29 luật cho cùng hướng (C1 +0,470, p = 0,00001; C2 +2,600, p = 0,00002).
+**C1** (naive trừ guardrailed, 9 tầng brief nhân bộ công cụ): hiệu rủi ro **+0,439**, p hoán vị phân tầng chưa hiệu chỉnh = 0,00004 (100.000 hoán vị, hạt giống 20261121). **C2** (cùng thiết kế): hiệu số mã luật khác nhau mỗi lần chạy **+3,025**, p = 0,00001. Quy tắc đã đăng ký: C1 được ủng hộ khi p hiệu chỉnh Holm dưới 0,05 và hiệu rủi ro từ 0,15; C2 khi p hiệu chỉnh dưới 0,05 và chênh từ 2,0. Cả hai độ lớn vượt ngưỡng (0,439 so với 0,15, và cũng vượt mức 0,25 của dải độ nhạy; 3,025 so với 2,0), và p thô của C1, C2 đều dưới 0,01, ngưỡng đầu tiên của Holm với m = 5. Sau Holm (Bảng 5.27, Mục 5.7) p hiệu chỉnh của C1 là 0,00016 và của C2 là 0,00005; kết luận không đổi. Phân tích trên toàn bộ 29 luật cho cùng hướng (C1 +0,470, p = 0,00001; C2 +2,600, p = 0,00002).
 
 **Độ nhạy của A6 và các hạn chế phải đọc cùng C1 và C2.**
 
@@ -712,7 +712,7 @@ G3 là phân tích thứ cấp có đăng ký (nhánh chính v1, 20 luật): hi�
 
 **Kho đối chứng.** Hai mươi ứng dụng có commit đầu tiên đến hết 2022-11-30 (trước trợ lý, xác nhận) và 20 ứng dụng từ 2024 trở đi (so sánh thứ hai); rút có hạt giống 20261121 từ tìm kiếm GitHub và sàng lọc ứng dụng Kotlin Compose cỡ 2000 đến 50000 dòng (`human_corpus*.csv`). Sau khi quét, các tệp không phải mã nguồn của bản sao (ảnh, phông, tài liệu, nhị phân; 95.604 xuống 14.221 tệp) bị xóa vì ổ làm việc NTFS hết bản ghi tệp; mọi bộ quét chỉ đọc `.kt`, `.xml`, Gradle, TOML, `.pro`, `.properties`, `baseline-prof.txt` và `stability_config.conf`, nên quét lại cho cùng kết quả. REPORT không đưa tổng dòng hay năm tạo của kho; ứng dụng tham chiếu `android/app` cũng không được REPORT báo cáo, nên không có điểm tham chiếu ở bài này.
 
-**C3 (xác nhận).** Phát hiện nhóm S trên 1000 dòng Kotlin, AI không guardrail (n = 66) trung vị **2,37** so với tầng trước trợ lý (n = 20) trung vị **1,02**; Mann-Whitney p = 0,00009, delta Cliff **+0,582** [Cliff1993]. Quy tắc: ủng hộ khi p hiệu chỉnh dưới 0,05 và delta từ 0,33 (AI cao hơn); delta vượt ngưỡng và p thô dưới 0,01, kết luận không đổi theo C5; p hiệu chỉnh ở chỗ trống Holm của Mục 5.7. So sánh thứ hai, không xác nhận (tầng 2024 trở đi, n = 20): trung vị 0,24, p = 0,00000 (làm tròn), delta +0,742. Dòng độ nhạy theo ký tự khác khoảng trắng, vì độ dài dòng của các bản nháp khác nhau (một bộ công cụ nhồi khoảng 130 ký tự mỗi dòng): trên 100k ký tự khác trắng, AI 7,83 so với 3,47 của người trước 2022, p = 0,00018, delta +0,556; so với tầng 2024 trở đi trung vị 0,87, delta +0,758. Trên toàn bộ 29 luật: 2,72 so với 1,02, p = 0,00001, delta +0,647. Giữa các bộ công cụ, delta C3 của claude-haiku là +0,340 (p = 0,0559, Bảng 5.7), ở ngưỡng 0,33.
+**C3 (xác nhận).** Phát hiện nhóm S trên 1000 dòng Kotlin, AI không guardrail (n = 66) trung vị **2,37** so với tầng trước trợ lý (n = 20) trung vị **1,02**; Mann-Whitney p = 0,00009, delta Cliff **+0,582** [Cliff1993]. Quy tắc: ủng hộ khi p hiệu chỉnh dưới 0,05 và delta từ 0,33 (AI cao hơn); delta vượt ngưỡng; p hiệu chỉnh Holm là 0,00027 (Bảng 5.27, Mục 5.7). So sánh thứ hai, không xác nhận (tầng 2024 trở đi, n = 20): trung vị 0,24, p = 0,00000 (làm tròn), delta +0,742. Dòng độ nhạy theo ký tự khác khoảng trắng, vì độ dài dòng của các bản nháp khác nhau (một bộ công cụ nhồi khoảng 130 ký tự mỗi dòng): trên 100k ký tự khác trắng, AI 7,83 so với 3,47 của người trước 2022, p = 0,00018, delta +0,556; so với tầng 2024 trở đi trung vị 0,87, delta +0,758. Trên toàn bộ 29 luật: 2,72 so với 1,02, p = 0,00001, delta +0,647. Giữa các bộ công cụ, delta C3 của claude-haiku là +0,340 (p = 0,0559, Bảng 5.7), ở ngưỡng 0,33.
 
 Hai hạn chế đặc thù của C3: tầng người viết gồm ứng dụng phổ biến, lớn, được bảo trì, không giống một bản nháp đầu; tính theo 1000 dòng giảm nhưng không xóa chênh lệch cỡ. Tầng 2024 trở đi có thể đã chứa mã do trợ lý viết, nên chỉ là so sánh thứ hai.
 
@@ -736,13 +736,7 @@ Theo quy tắc dải PB: ủng hộ nếu cận dưới Wilson từ 0,50, bác b
 
 ### 5.3. E2: chi phí A/B của các vấn đề
 
-**Phạm vi của mục này.** Các nhân tố E2 chia hai loại. P10 (R8) và P11 (Baseline Profile) là **kỹ thuật nền**, không lấy từ mã E1: A và B là cùng một mã với hai cấu hình build, nên kết quả của chúng là cuối cùng và được báo cáo ở đây. Các nhân tố lấy từ mã E1 (P08, P06, P01 cùng P09, P13, P03 cùng P04, kể cả điểm cuối xác nhận C5) dùng biến thể A chọn theo quy tắc A4 và A5, chưa có số liệu, và vẫn là các `TODO` bên dưới. Lần chạy E2 đầu tiên, với biến thể A viết tay, là **thí điểm** (A3) và không được dùng cho C5 hay cho bảng nào ở đây. Mọi số đo mili giây chạy trên emulator có GPU phần mềm (Mục 5.1) và chỉ là bằng chứng tương đối. Lần lặp bị loại theo A7 (bộ nhớ khả dụng dưới 1024 MB ở đầu lần lặp, hoặc tiến trình qemu có lỗi trang chính trong lần lặp); bảng chính dùng các lần lặp được giữ (cột n).
-
-> **TODO[e2-status]** Điền khi E2 xác nhận có số liệu cho các nhân tố lấy từ mã E1: nhân tố nào rơi vào "author-constructed" phải mang nhãn đó ở mọi bảng và hình, và nếu là P08 thì không có C5 (A4, A5); khi đó dòng C5 bên dưới được thay bằng một câu nêu lý do, không bằng thay thế nào khác. Nguồn: `e2-bench/variants.csv`, `e2-bench/REPORT.md`.
->
-> **TODO[e2-rig]** Cấu trúc bị loại vì "rig-unmeasurable" (A10): bảng mô tả theo nhân tố (mã lần chạy, tệp, số lần khởi động nguội sập, bản gốc của kho có sập hay không, bằng chứng sập). Nguồn: `e2-bench/ports/rejections.csv` (đọc tên cột từ tệp lúc điền) và bằng chứng trong `e2-bench/ports/`. Nếu không có ứng viên nào bị loại, nói rõ điều đó.
->
-> **Dòng sai lệch rig (A14) đứng cạnh bảng:** ứng viên P08 hạng 1 (agy-g38flash-B1-naive-r1, `BookCover.kt`) làm emulator sập khi được đưa vào optlab (qemu SIGSEGV) còn bản gốc không sập (0 trên 21 chu kỳ), nên theo A10 đó là lỗi của bản port, hạng 1 được giữ và không bị loại "rig-unmeasurable"; P08 A và B được đo trên `swangle_indirect`, cùng cửa sổ và cùng AVD, các nhân tố khác trên `swiftshader_indirect`; thời gian khung tuyệt đối của P08 không so được với nhân tố khác, chỉ so được đối chiếu A/B; C5 chỉ dựa trên đối chiếu đó; hạng 2 không dùng. Nguồn: bằng chứng sập và dấu vết trình gỡ lỗi trong `e2-bench/ports/` (đọc từ tệp lúc điền).
+Mọi số trong mục này được chép từ `e2-bench/results/summary.csv` và `c5_confirmatory.csv`; các bảng của REPORT E2 đã được đối chiếu với `summary.csv` và trùng ở mọi hàng. **Phạm vi của mục này.** Các nhân tố E2 chia hai loại. P10 (R8) và P11 (Baseline Profile) là **kỹ thuật nền**, không lấy từ mã E1: A và B là cùng một mã với hai cấu hình build, và được báo cáo ở Mục 5.3.1 và 5.3.2. Các nhân tố lấy từ mã E1 (P08, P06, P01 cùng P09, P13, P03 cùng P04, kể cả điểm cuối xác nhận C5) dùng biến thể A chọn theo quy tắc A4, A5, A10 và A14, và được báo cáo ở Mục 5.3.3. Lần chạy E2 đầu tiên, với biến thể A viết tay, là **thí điểm** (A3) và không được dùng cho C5 hay cho bảng nào ở đây. Mọi số đo mili giây chạy trên emulator có GPU phần mềm (Mục 5.1) và chỉ là bằng chứng tương đối; P08 chạy trên một đường GPU khác các nhân tố còn lại (A14, Mục 5.3.3). Lần lặp bị loại theo A7 (bộ nhớ khả dụng dưới 1024 MB ở đầu lần lặp, hoặc tiến trình qemu có lỗi trang chính trong lần lặp); bảng chính dùng các lần lặp được giữ (cột n).
 
 #### 5.3.1. P10: R8 (nền)
 
@@ -789,11 +783,184 @@ A là `CompilationMode.None()` (đặt lại hồ sơ, ứng dụng được JIT
 
 Đọc theo mô tả: khởi động giảm `timeToInitialDisplayMs` −5,88% [−9,87; −2,67] (n = 13) và `timeToFullDisplayMs` −7,89% [−12,1; −2,81]; `frameDurationCpuMs` p50 −13,8% [−17,2; −11,6] và p90 −7,45% [−13,4; −3,99]. Các chỉ số p99 và `slowFrames_pct` (+29%, khoảng [−49,6; 96,7]) có khoảng chứa 0. Hiệu ứng trên ứng dụng một màn hình là khiêm tốn; ứng dụng có đường khởi động dài hơn có thể được lợi nhiều hơn, nhưng điều đó không được đo ở đây.
 
-> **TODO[e2-table]** Bảng theo nhân tố cho các nhân tố lấy từ mã E1 (P08, P06, P01 cùng P09, P13, P03 cùng P04): số đo chính, đơn vị, trung vị và IQR của A và B, delta%, khoảng bootstrap, n; số lần lặp bị loại và lý do (`exclusions.csv`, `iterlog.csv`; A2, A7), bảng độ nhạy với mọi lần lặp, và nhân tố bị giới hạn bởi máy (mất hơn 50% lần lặp sau 3 vòng thêm). Nguồn: `e2-bench/results/summary.csv` và `raw.csv`.
->
-> **TODO[e2-C5]** Điền: P90 của `FrameDurationCpuMs` của A và B cho mục P08, delta%, khoảng bootstrap 95%, p Mann–Whitney đã hiệu chỉnh Holm. **Quy tắc:** ủng hộ khi p hiệu chỉnh dưới 0,05 và delta% từ +10% và khoảng không chứa 0; H3 bị bác bỏ khi khoảng nằm trọn trong [−5%, +5%]. Nhắc giới hạn Emulator. Nguồn: `e2-bench/results/raw.csv`, `summary.csv`.
->
-> **TODO[e2-expected-cost]** Bảng chi phí kỳ vọng (khám phá): tần suất E1 (Mục 5.2.2) nhân chi phí E2 cho từng nhân tố lấy từ mã E1, kèm khoảng từ lấy mẫu lại cả hai; nêu giả định biến thể A đại diện cho E1. Với P10 và P11, tần suất E1 đã có ở Bảng 5.4 và Bảng 5.5 (P10 ở nhánh v2 sau khi sửa: 30/33 ở naive, 33/33 ở detailed-functional, 0/34 ở guardrailed; P11 33/33, 33/33, 7/34).
+#### 5.3.3. Các nhân tố lấy từ mã E1 và điểm cuối C5
+
+**Biến thể A là mã của chiến dịch E1.** Theo A4, với mỗi nhân tố, A là ứng viên đầu tiên theo thời điểm bắt đầu lần chạy, trong các lần chạy không phải thí điểm có phát hiện cho luật đó, mà cấu trúc bị phát hiện đưa được vào ứng dụng lab chỉ bằng thay đổi cơ học (gói, import, nguồn dữ liệu, đầu đo; cấu trúc bị phát hiện không đổi; các diff nằm ở `e2-bench/ports/<nhân tố>.diff`). Không nhân tố nào dùng biến thể viết tay, nên không bảng hay hình nào ở đây mang nhãn "author-constructed", và C5 chạy trên mã đã sinh (A) chứ không dùng phương án thay thế của A4 và A5. Hai lần chạy khám phá, độ nhạy với năm biến thể A viết tay của lần thí điểm và quét số lượng khoản vay của P01 cùng P09, chưa được thực hiện, nên bài không có số liệu nào của chúng. B là bản tinh chỉnh do người thực hiện E2 viết (sinh từ A khi bản sửa cục bộ được, viết tay khi không), không phải bản sửa có trong kho. Ứng dụng lab không có Room, Paging, ViewModel, điều hướng và mạng nên các bản port không mang chúng: các nhân tố đo cấu trúc bị phát hiện, không đo ứng dụng nguồn. P09 và P03 cùng P04 dùng chung một tệp E1; kịch bản của P03 truyền một danh sách mới bằng nhau ở mỗi nhịp vì phát hiện P03 phụ thuộc chuỗi công cụ (strong skipping, Mục 2.2.3).
+
+**Bảng 5.11.** E2, biến thể A (mã của chiến dịch E1, theo `e2-bench/ports/README.md`) và B (bản tinh chỉnh) theo nhân tố.
+
+| nhân tố | hạng | lần chạy E1 | tệp và dòng (phát hiện) | B (tinh chỉnh) |
+|---|---|---|---|---|
+| P08 | 1 | agy-g38flash-B1-naive-r1 | `ui/components/BookCover.kt:216` (gradient, đổ bóng), nơi gọi `BookCard.kt` | ô bìa phẳng cùng khe |
+| P06 | 1 | codex-luna-B3-detailed-functional-r1 | `MainActivity.kt:39` (`decodeStream` không `inSampleSize`) | Coil `AsyncImage` cùng khe 150x210 dp, bộ nhớ đệm bộ nhớ và đĩa |
+| P01 (luật P01) | 1 | claude-haiku-B3-detailed-functional-r1 | `ui/history/HistoryScreen.kt:105` (`items` không key) | cùng danh sách có `key` và `contentType` |
+| P09 | 3 (tệp P09 đầu tiên; hạng 1 và 2 là tệp P01) | agy-g38flash-B3-naive-r1 | `ui/components/BookDetailSheet.kt:300` (`Column` + `verticalScroll` + `forEach`) | `LazyColumn` có `key` và `contentType` |
+| P13 | 1 | claude-haiku-B1-detailed-functional-r1 | `data/local/TitleDao.kt:31` (`LIKE` không chỉ mục) | SQLite FTS4, so khớp tiền tố từ khóa |
+| P03 và P04 | 1 (cả hai luật trong một tệp) | agy-g38flash-B3-naive-r1 | cùng tệp với P09, dòng 58, 65, 67 | `LoanList` ổn định và `remember` |
+
+**Sai lệch rig: P08 đo trên đường GPU khác (A14).** Ứng viên P08 hạng 1 (agy-g38flash-B1-naive-r1, `BookCover.kt`) chạy được khi đưa vào lab, nhưng tiến trình emulator (qemu) chết với SIGSEGV ở các bản không gỡ lỗi được, thường ở lần khởi động thứ hai đến thứ năm và không bao giờ ở lần đầu sau khi bật máy; bản gỡ lỗi được và B không chết. Theo A10, nếu ứng dụng gốc chưa sửa của kho không sập thì sập là lỗi của bản port: ứng dụng gốc không sập trong 21 chu kỳ khởi động (3 + 4 + 4 ở bản gỡ lỗi được, 5 + 5 ở bản đã xóa cờ gỡ lỗi) và trong 4 chu kỳ cuộn, và vẽ cùng bìa. Vì vậy hạng 1 được giữ (A14); hạng 2 không dùng cho C5. Dấu vết từ gdb đặt chỗ sập ở một luồng kết xuất của máy chủ đang chạy một thủ tục điểm ảnh do SwiftShader biên dịch JIT (đọc SIMD ngoài biên), cùng lệnh gây lỗi ở hai lần sập (`qemu-crash-gdb-port2.txt`), không nằm trong mã có thể cô lập ở bản port. Đã loại trừ làm nguyên nhân: R8, targetSdk, cỡ khe bìa, số thẻ, chế độ biên dịch, bộ đệm shader, cờ gỡ lỗi riêng lẻ. Cùng AVD với `-gpu swangle_indirect` (ANGLE trên SwiftShader Vulkan) không sập (8 trên 8 lần khởi động, rồi toàn bộ cửa sổ đo), nên **P08 A và B cùng được đo trên `swangle_indirect`, trong cùng cửa sổ và cùng AVD; mọi nhân tố E2 khác giữ `swiftshader_indirect`**. Hệ quả: thời gian khung tuyệt đối của P08 không so được với số tuyệt đối của nhân tố khác, chỉ đối chiếu A/B trong nhân tố có nghĩa, và C5 chỉ dựa trên đối chiếu đó. Quyết định dựa trên một lần sập tiến trình và dấu vết trình gỡ lỗi, trước mọi số đo P08 (A14). Bài **không** khẳng định rằng cấu trúc P08 của mã sinh ra làm sập GPU phần mềm: bản gốc không sập, và nguyên nhân khác biệt giữa bản gốc và bản port chưa được cô lập (Compose BOM 2024.02 so với 2026.09 chưa được thử). Theo A10, các cấu trúc bị loại vì `rig-unmeasurable` phải được báo cáo mô tả: `ports/rejections.csv` chỉ có hàng tiêu đề, không ứng viên nào bị loại.
+
+**Lần lặp được chạy, giữ và loại.** Bảng 5.12 chép `REPORT` mục 4.0. Mọi lần loại là lỗi trang chính của qemu, trừ một lần không có mẫu máy chủ (một lần lặp của nhân tố con P01); không lần nào vì bộ nhớ khả dụng dưới 1024 MB, và không nhóm nào bị giới hạn bởi máy. Các nhân tố lấy từ mã E1, kể cả nhân tố con P01: 282 lần lặp chạy, 243 giữ, 39 loại; P10 và P11: 114 chạy, 109 giữ, 5 loại; tổng 44 trên 396 lần lặp bị loại. Các nhóm xấu nhất là P06 pha primary B (6 trên 18), nhân tố con P01 pha primary A (6 trên 18) và P03+P04 pha primary B (5 trên 18); tất cả được chạy thêm vòng đến từ 12 lần giữ trở lên. **Phân tích độ nhạy** (`summary_all.csv`: cùng thống kê trên mọi lần lặp đã đo, kể cả lần bị loại): trong 93 hàng so sánh được, dấu của hiệu ứng giống nhau ở 92 hàng. Năm hàng đổi việc khoảng 95% có chứa 0 hay không: P13 `frameDurationCpuMs_p99` (bảng chính chứa 0; trên mọi lần lặp không chứa 0, B tệ hơn 22%), P13 `memoryRssAnonMaxKb`, `st_search_query.maxMs` và `st_search_query.sumMs` (bảng chính không chứa 0; thêm các lần lặp bị tranh chấp thì khoảng rộng ra và chứa 0, trung vị Δ% giữ ở −58,7% và −85,7%) và P10 `slowFrames_pct` (bảng chính không chứa 0; trên mọi lần lặp chứa 0). Dịch lớn nhất của một trung vị Δ% là 26,7 điểm (P03+P04 `Recomposer_recompose.maxMs`, một chỉ số đuôi). Không kết luận nào dưới đây phụ thuộc vào lựa chọn giữa hai phân tích.
+
+**Bảng 5.12.** E2, số lần lặp chạy / giữ / loại theo nhân tố, pha và biến thể (pha primary đo số đếm, trace và bộ nhớ; pha frames đo `FrameTimingMetric`).
+
+| nhân tố | pha | A: chạy / giữ / loại | B: chạy / giữ / loại |
+|---|---|---|---|
+| P08 | frames | 12 / 12 / 0 | 12 / 12 / 0 |
+| P08 | primary | 18 / 14 / 4 | 18 / 17 / 1 |
+| P06 | frames | 15 / 14 / 1 | 15 / 14 / 1 |
+| P06 | primary | 18 / 16 / 2 | 18 / 12 / 6 |
+| P01+P09 | frames | 15 / 13 / 2 | 15 / 13 / 2 |
+| P01+P09 | primary | 12 / 12 / 0 | 12 / 12 / 0 |
+| P13 | frames | 15 / 13 / 2 | 15 / 12 / 3 |
+| P13 | primary | 15 / 14 / 1 | 15 / 12 / 3 |
+| P03+P04 | frames | 15 / 13 / 2 | 15 / 15 / 0 |
+| P03+P04 | primary | 18 / 17 / 1 | 18 / 13 / 5 |
+| P10 | frames | 15 / 14 / 1 | 15 / 14 / 1 |
+| P10 | primary | 15 / 14 / 1 | 15 / 15 / 0 |
+| P11 | frames | 12 / 12 / 0 | 12 / 12 / 0 |
+| P11 | primary | 15 / 13 / 2 | 15 / 15 / 0 |
+| P01+P09/P01 | primary | 18 / 12 / 6 | 18 / 16 / 2 |
+
+**P08: hiệu ứng trang trí trong thẻ lưới** (đo trên `swangle_indirect`, A14; chỉ đọc Δ% trong nhân tố này).
+
+**Bảng 5.13.** E2, P08 (A: `BookCard` và `BookCover` của agy-g38flash-B1-naive-r1; B: bìa phẳng).
+
+| chỉ số | đơn vị | A: trung vị (IQR) | B: trung vị (IQR) | thay đổi (B so với A) | khoảng bootstrap 95% | delta Cliff | n |
+|---|---|---|---|---|---|---|---|
+| st.fx.perItem | count | 2 (0) | 0 (0) | −100% | [−100; −100] | 1 | 14 |
+| st.rc.row | count | 18 (2) | 20 (0) | 11,1% | [0; 11,1] | −0,466 | 14 |
+| Compose_recompose.count | count | 20 (2) | 21 (1) | 5% | [0; 10,5] | −0,5 | 14 |
+| Recomposer_recompose.mainMs | ms | 0,5052 (0,2503) | 0,7196 (0,282) | 42,4% | [6,46; 110] | −0,655 | 14 |
+| Compose_recompose.mainMs | ms | 30,47 (13,74) | 20,26 (6,612) | −33,5% | [−47; −7,84] | 0,647 | 14 |
+| frameDurationCpuMs p90 | ms | 62,87 (17,53) | 49,07 (4,162) | −22% | [−35,2; −11,8] | 0,875 | 12 |
+| frameDurationCpuMs p99 | ms | 127,6 (31,7) | 86,45 (10,07) | −32,3% | [−41,1; −17,7] | 0,875 | 12 |
+| frameOverrunMs p90 | ms | 68,98 (32,27) | 46,85 (9,337) | −22,14 ms (tuyệt đối) | [−46,02; −9,035] | 0,819 | 12 |
+| slowFrames_pct | % | 70,52 (12,21) | 48,65 (9,92) | −31% | [−38,9; −17,5] | 0,819 | 12 |
+| memoryHeapSizeMaxKb | KB | 7372 (184) | 6596 (49) | −10,5% | [−12,4; −10] | 1 | 14 |
+| memoryRssAnonMaxKb | KB | 4,646e+04 (309) | 4,265e+04 (300) | −8,2% | [−8,76; −7,86] | 1 | 14 |
+
+Đọc theo mô tả: B giảm thời gian CPU khung hình p90 từ 62,87 xuống 49,07 ms (−22% [−35,2; −11,8]) và p99 −32,3%, và giảm tỷ lệ khung chậm từ 70,52% xuống 48,65%; heap tối đa thấp hơn 10,5% và RSS ẩn danh thấp hơn 8,2%. Số lần recomposition không giảm (`st.rc.row` 18 so với 20, `Compose_recompose.count` 20 so với 21), vì A là lưới tĩnh không có hoạt ảnh; thời gian luồng chính trong `Compose_recompose` giảm 33,5% [−47; −7,84], còn `Recomposer_recompose.mainMs` tăng 42,4% [6,46; 110] ở mức dưới 1 ms. Giả thuyết: chi phí nằm ở việc vẽ bóng, lớp phủ gradient và bìa vẽ bằng canvas, không ở số lần recompose; các chỉ số này không tách được việc đó. Bộ nhớ đồ họa, đại lượng thứ hai của H3, **không được đo**: lab không có chỉ số bộ nhớ đồ họa.
+
+**P06: giải mã ảnh và bộ nhớ đệm.**
+
+**Bảng 5.14.** E2, P06 (A: `CoverBitmap` của codex-luna-B3-detailed-functional-r1; B: Coil `AsyncImage`).
+
+| chỉ số | đơn vị | A: trung vị (IQR) | B: trung vị (IQR) | thay đổi (B so với A) | khoảng bootstrap 95% | delta Cliff | n |
+|---|---|---|---|---|---|---|---|
+| st.decodedBytes | bytes | 2,025e+08 (0) | 6,233e+06 (0) | −96,9% | [−96,9; −96,9] | 1 | 12 |
+| st.decodes | count | 15 (0) | 15 (0) | 0% | [0; 0] | 0 | 12 |
+| memoryRssAnonMaxKb | KB | 1,84e+05 (303) | 6,16e+04 (159) | −66,5% | [−66,6; −66,5] | 1 | 12 |
+| memoryHeapSizeMaxKb | KB | 7416 (31,25) | 6145 (7,5) | −17,1% | [−17,3; −17] | 1 | 12 |
+| st_img_decode.sumMs | ms | 1660 (365,4) | 0 (0) | −100% | [−100; −100] | 1 | 12 |
+| st_img_decode.maxMs | ms | 378,7 (78,87) | 0 (0) | −100% | [−100; −100] | 1 | 12 |
+| frameDurationCpuMs p90 | ms | 5,937 (1,024) | 4,328 (0,2345) | −27,1% | [−35,9; −22,8] | 0,867 | 14 |
+| frameDurationCpuMs p99 | ms | 81,48 (13,87) | 17,97 (9,2) | −77,9% | [−81,7; −69,2] | 0,98 | 14 |
+| frameOverrunMs p90 | ms | −9,044 (1,485) | −11,48 (0,3407) | −2,436 ms (tuyệt đối) | [−3,017; −1,444] | 0,857 | 14 |
+| slowFrames_pct | % | 3,596 (0,3648) | 1,37 (0,7821) | −61,9% | [−68,6; −49,2] | 0,867 | 14 |
+
+Đọc theo mô tả: A giải mã đủ ảnh 1500x2250 cho mỗi trong 15 ảnh của kịch bản (tổng 203 MB giải mã), B giải mã cùng 15 ảnh ở cỡ khe (6,2 MB), giảm 96,9%; RSS ẩn danh đỉnh giảm từ 180 MB xuống 60 MB; CPU khung hình p99 giảm 78% và tỷ lệ khung chậm từ 3,6% xuống 1,4% (GPU phần mềm: chỉ đọc hướng). `st_img_decode.*` là đầu đo chỉ có ở A (B giải mã trong Coil), đọc là thời gian giải mã của A: tổng 1.660 ms, lần chậm nhất 378,7 ms.
+
+**P01 cùng P09: dựng danh sách (`Column` dựng toàn bộ so với `LazyColumn`, 2.000 khoản vay).**
+
+**Bảng 5.15.** E2, P01+P09 (A: `BookDetailSheet` của agy-g38flash-B3-naive-r1; B: `LazyColumn` có `key` và `contentType`).
+
+| chỉ số | đơn vị | A: trung vị (IQR) | B: trung vị (IQR) | thay đổi (B so với A) | khoảng bootstrap 95% | delta Cliff | n |
+|---|---|---|---|---|---|---|---|
+| st.rc.row | count | 2000 (0) | 31 (1) | −98,5% | [−98,5; −98,5] | 1 | 12 |
+| Compose_recompose.count | count | 1 (0) | 34 (1) | 3,3e+03% | [3,2e+03; 3,3e+03] | −1 | 12 |
+| Compose_recompose.mainMs | ms | 217,3 (16,21) | 20,72 (4,447) | −90,5% | [−91,6; −89,1] | 1 | 12 |
+| timeToInitialDisplayMs | ms | 1901 (43,36) | 573,1 (32,99) | −69,9% | [−70,8; −68,7] | 1 | 12 |
+| timeToFullDisplayMs | ms | 2018 (39,63) | 597,7 (80,56) | −70,4% | [−71,2; −66,8] | 1 | 12 |
+| memoryHeapSizeMaxKb | KB | 2,255e+05 (0) | 7734 (32) | −96,6% | [−96,6; −96,6] | 1 | 12 |
+| memoryRssAnonMaxKb | KB | 2,484e+05 (9208) | 4,381e+04 (159) | −82,4% | [−82,5; −81,7] | 1 | 12 |
+| frameDurationCpuMs p90 | ms | 27,14 (2,594) | 5,912 (0,0826) | −78,2% | [−79,1; −76,9] | 1 | 13 |
+| frameDurationCpuMs p99 | ms | 34,3 (4,213) | 18,21 (13,7) | −46,9% | [−62,2; −20,6] | 0,976 | 13 |
+| frameOverrunMs p90 | ms | 14,08 (5,564) | −9,664 (0,1975) | −23,74 ms (tuyệt đối) | [−25,51; −19,86] | 1 | 13 |
+| slowFrames_pct | % | 90,05 (17,99) | 1,255 (0,8475) | −98,6% | [−99,2; −98,1] | 1 | 13 |
+
+Đọc theo mô tả: A dựng mọi hàng trước khung đầu tiên (`st.rc.row` là số hàng, 2.000 so với 31), nên thời gian đến hiển thị đầu, heap và chi phí khung hình tăng theo độ dài danh sách; B chỉ dựng các hàng nhìn thấy. TTID giảm từ 1.901 xuống 573,1 ms, heap Java đỉnh từ 220 MB xuống 7,6 MB, và 90,05% khung hình chậm ở A so với 1,255% ở B. `Compose_recompose.count` ở B cao hơn có chủ đích: dựng lazy chia thành nhiều lượt nhỏ trong khi A làm một lượt rất lớn; tổng thời gian nằm ở `Compose_recompose.mainMs`. Quét theo số khoản vay chưa chạy (xem đầu mục).
+
+**Nhân tố con P01: mục danh sách không có key** (chỉ pha primary).
+
+**Bảng 5.16.** E2, nhân tố con P01 (A: `HistoryList` của claude-haiku-B3-detailed-functional-r1, `items(list)` không key; B: cùng danh sách có `key` và `contentType`).
+
+| chỉ số | đơn vị | A: trung vị (IQR) | B: trung vị (IQR) | thay đổi (B so với A) | khoảng bootstrap 95% | delta Cliff | n |
+|---|---|---|---|---|---|---|---|
+| st.rc.row | count | 28 (1) | 28 (0,25) | 0% | [−3,45; 0] | 0,125 | 12 |
+| Compose_recompose.count | count | 29 (1) | 29 (0,25) | 0% | [−3,33; 0] | 0,0833 | 12 |
+| Compose_recompose.mainMs | ms | 70,23 (8,05) | 74,95 (21,27) | 6,72% | [−4,24; 29,5] | −0,396 | 12 |
+| Recomposer_recompose.mainMs | ms | 0,6055 (0,2474) | 0,6135 (0,1297) | 1,31% | [−20,2; 31,2] | −0,0938 | 12 |
+| timeToInitialDisplayMs | ms | 617,1 (95,36) | 620 (150,7) | 0,471% | [−6,44; 21,5] | −0,26 | 12 |
+| timeToFullDisplayMs | ms | 638,2 (76,95) | 680 (165,6) | 6,55% | [−5,41; 24,9] | −0,365 | 12 |
+| memoryHeapSizeMaxKb | KB | 1,854e+04 (23,25) | 1,855e+04 (16,5) | 0,0378% | [−0,0863; 0,0917] | −0,0938 | 12 |
+| memoryRssAnonMaxKb | KB | 5,008e+04 (160) | 5,009e+04 (113) | 0,012% | [−0,203; 0,248] | −0,125 | 12 |
+
+Đọc theo mô tả: **kết quả rỗng.** Mọi khoảng chứa 0 và số thân hàng chạy giống nhau (28 hàng nhìn thấy) ở hai biến thể: thiếu key không đổi gì trên danh sách tĩnh; nó quan trọng khi sắp xếp lại và chèn mục, mà kịch bản này không thực hiện (6 lần vuốt trên danh sách cố định 5.000 mục). Lỗi gieo có thật trong mã (phát hiện P01) nhưng không tốn gì ở kịch bản này.
+
+**P13: tìm kiếm trên 100 nghìn sách.**
+
+**Bảng 5.17.** E2, P13 (A: `TitleSearch` của claude-haiku-B1-detailed-functional-r1, `LIKE` không chỉ mục; B: SQLite FTS4 so khớp tiền tố từ khóa; cùng debounce 200 ms và cùng trang 120 hàng theo tiêu đề).
+
+| chỉ số | đơn vị | A: trung vị (IQR) | B: trung vị (IQR) | thay đổi (B so với A) | khoảng bootstrap 95% | delta Cliff | n |
+|---|---|---|---|---|---|---|---|
+| st.search.queries | count | 9 (0) | 8 (0) | −11,1% | [−11,1; −11,1] | 0,857 | 12 |
+| st_search_query.count | count | 9 (0) | 8 (0) | −11,1% | [−11,1; −11,1] | 0,857 | 12 |
+| st_search_query.mainMs | ms | 0 (0) | 0 (0) | 0 ms (tuyệt đối) | [0; 0] | 0 | 12 |
+| st_search_query.sumMs | ms | 634,9 (79,26) | 85,42 (21,72) | −86,5% | [−88,4; −84,1] | 0,714 | 12 |
+| st_search_query.maxMs | ms | 96,63 (32,69) | 37 (8,245) | −61,7% | [−69,7; −51,4] | 0,714 | 12 |
+| memoryHeapSizeMaxKb | KB | 7740 (60) | 7108 (36) | −8,17% | [−8,56; −7,58] | 0,905 | 12 |
+| memoryRssAnonMaxKb | KB | 4,497e+04 (302) | 4,478e+04 (147) | −0,405% | [−0,839; −0,0625] | 0,464 | 12 |
+| frameDurationCpuMs p90 | ms | 32,06 (5,994) | 34,22 (8,698) | 6,72% | [−8,22; 28,9] | −0,269 | 12 |
+| frameDurationCpuMs p99 | ms | 132,9 (66,47) | 157,7 (18,72) | 18,7% | [−18,8; 33] | −0,436 | 12 |
+| frameOverrunMs p90 | ms | 34,62 (10,67) | 36,42 (10,72) | 1,796 ms (tuyệt đối) | [−9,297; 6,584] | 0,0128 | 12 |
+| slowFrames_pct | % | 17,11 (8,383) | 18,9 (2,764) | 10,5% | [−18; 32,7] | −0,218 | 12 |
+
+Đọc theo mô tả: cả hai biến thể chạy truy vấn trên luồng IO sau debounce 200 ms và trả về trang 120 hàng theo thứ tự tiêu đề, nên `st_search_query.mainMs` bằng 0 ở cả hai. Chi phí mỗi truy vấn khác nhau: truy vấn chậm nhất 96,63 ms ở A so với 37 ms ở B (mục tiêu của sản phẩm là tìm kiếm dưới 50 ms trên 100 nghìn sách: chỉ B đạt, trên emulator và với tiền tố đang gõ, nên chỉ đọc tương đối); tổng thời gian truy vấn 634,9 ms so với 85,42 ms, cỡ 70 ms so với 11 ms mỗi truy vấn. Số truy vấn khác nhau một (9 so với 8), nguyên nhân chưa được cô lập, nên REPORT nêu giá trị mỗi truy vấn. **Khung hình không đi theo:** khoảng của CPU khung hình p90 và của tỷ lệ khung chậm chứa 0, và p99 nếu có thì cao hơn ở B (+18,7%, khoảng [−18,8; 33]; trên mọi lần lặp thì khoảng không chứa 0). Cả hai biến thể kết xuất cùng trang 120 hàng sau mỗi truy vấn, nên trên thiết bị này chi phí khung hình là của danh sách, không phải của tìm kiếm. Chênh lệch bộ nhớ nhỏ (heap −8%). **Hai biến thể không bằng nhau từng hàng** (`p13_equivalence.csv`): A là so khớp chuỗi con (`LIKE '%q%'`), B là so khớp tiền tố từ khóa, nên với bốn trong mười hai tiền tố đã gõ (s, si, "silent r", "silent ri") trang 120 hàng khác nhau (Jaccard của trang 0,09, 0,16, 0,22 và 0,53); với tám tiền tố còn lại tập kết quả đầy đủ và trang trùng nhau. Bản H (quét tiền tố từ khóa ngây thơ) chỉ dùng để kiểm tra chỉ mục FTS4 của B trả đúng thứ mà quy tắc tiền tố từ khóa định nghĩa (Jaccard 1,0 ở cả mười hai). Với bốn tiền tố đó, so sánh thời gian truy vấn là giữa hai tập kết quả khác nhau.
+
+**P03 cùng P04: độ ổn định và việc nặng trong composition.**
+
+**Bảng 5.18.** E2, P03+P04 (A: `BookDetailSheet` dòng 58, 65, 67 của agy-g38flash-B3-naive-r1; B: `LoanList` ổn định và `remember`).
+
+| chỉ số | đơn vị | A: trung vị (IQR) | B: trung vị (IQR) | thay đổi (B so với A) | khoảng bootstrap 95% | delta Cliff | n |
+|---|---|---|---|---|---|---|---|
+| st.rc.row | count | 300 (0) | 300 (0) | 0% | [0; 0] | 0 | 13 |
+| Compose_recompose.count | count | 76 (1) | 75 (1) | −1,32% | [−1,32; 1,33] | 0,181 | 13 |
+| Recomposer_recompose.mainMs | ms | 11,85 (4,378) | 10,5 (2,314) | −11,4% | [−29,5; 7,16] | 0,258 | 13 |
+| Compose_recompose.mainMs | ms | 36,21 (7,524) | 36,75 (7,627) | 1,49% | [−14,4; 13] | 0,0317 | 13 |
+| frameDurationCpuMs p90 | ms | 11,56 (5,529) | 9,802 (4,329) | −15,2% | [−37,6; 29,8] | 0,231 | 13 |
+| frameDurationCpuMs p99 | ms | 269,7 (33,56) | 221,3 (115,6) | −18% | [−37,8; −1,38] | 0,538 | 13 |
+| frameOverrunMs p90 | ms | −4,172 (5,628) | −6,381 (4,507) | −2,209 ms (tuyệt đối) | [−6,711; 2,206] | 0,282 | 13 |
+| slowFrames_pct | % | 6,494 (2,966) | 6,494 (2,094) | 0% | [−32,2; 20,1] | 0,144 | 13 |
+
+Đọc theo mô tả: **kết quả rỗng.** Bộ phát hiện tìm ra tham số `List<Loan>` không ổn định cùng bộ định dạng và bộ lọc trong composition, và bản port giữ nguyên chúng, nhưng ở kịch bản này (300 khoản vay, nhịp 10 Hz, một danh sách mới bằng nhau mỗi nhịp) A và B làm cùng một việc: `st.rc.row` bằng 300 ở cả hai (chỉ lần dựng đầu), số recomposition mỗi lần chạy 76 so với 75, thời gian luồng chính recompose 36,21 so với 36,75 ms (khoảng [−14,4; 13]%). CPU khung hình p90 và tỷ lệ khung chậm không khác; p99 thấp hơn 18% ở B (khoảng [−37,8; −1,38]), một trong 18 hàng khung hình và không hiệu chỉnh cho điều đó. Lần thí điểm có bản A viết tay cho hiệu ứng lớn (các cấu trúc của nó dựng lại cả danh sách mỗi nhịp); phiên bản của cùng các mẫu trong mã E1 thì không ở cỡ này. Toolchain là Kotlin 2.4.21, nơi strong skipping là mặc định (Mục 2.2.3); giả thuyết: đó là một lý do tham số không ổn định không tốn ở đây, nhưng không nhánh nào tắt strong skipping, và REPORT ghi rằng nguyên nhân chưa được cô lập. Số lượng khoản vay là núm sẽ cho biết hiệu ứng có tăng theo cỡ hay không (chưa chạy).
+
+**C5 (xác nhận): P08, A so với B.** Điểm cuối: P90 của `FrameDurationCpuMs` ở mỗi lần lặp, mục P08 của mã đã sinh (A) so với bản phẳng (B); delta% = (A − B) / B của các trung vị; bootstrap phân vị 95% (10.000 lần lấy lại, hạt giống 20261121) và Mann–Whitney trên giá trị từng lần lặp (`c5_confirmatory.csv`). Quy tắc đã đăng ký (Mục 4.8): ủng hộ khi p hiệu chỉnh Holm dưới 0,05, delta% từ +10% và khoảng 95% không chứa 0; H3 bị bác bỏ khi khoảng nằm trọn trong [−5%, +5%].
+
+**Bảng 5.19.** E2, C5 (đường GPU `swangle_indirect`, A14).
+
+| n (A, B) | trung vị A | trung vị B | delta% (A − B) / B | khoảng bootstrap 95% | Mann–Whitney p thô | p hiệu chỉnh Holm | điều kiện đã đăng ký |
+|---|---|---|---|---|---|---|---|
+| 12, 12 | 62,87 ms | 49,07 ms | +28,13% | [+13,38%; +54,31%] | 0,000308 | 0,000616 (Bảng 5.27) | cả ba điều kiện thỏa |
+
+Cả ba điều kiện thỏa: p hiệu chỉnh 0,000616 dưới 0,05, delta% +28,13% từ +10%, và khoảng [13,38; 54,31] không chứa 0 (cận dưới cũng trên +10%); khoảng không nằm trọn trong [−5%, +5%], nên H3 không bị bác bỏ. **C5 được ủng hộ**, theo cách đọc hẹp của nó: ô lưới P08 của một lần chạy E1 (agy-g38flash-B1-naive-r1) tốn thêm cỡ 28% ở P90 thời gian CPU khung hình so với bản phẳng, trên một đường GPU của emulator. Giới hạn: một ứng viên và một lần chạy E1, nên đây là chi phí của một cấu trúc đã sinh, không phải của mọi biến thể của "vẻ ngoài AI"; 12 lần giữ mỗi biến thể; một thiết bị ảo, một phiên đo và một hạt giống dữ liệu; số tuyệt đối không so được với các nhân tố khác (A14); B là bản phẳng do người thực hiện E2 viết; bộ nhớ đồ họa của H3 không đo, nên điều kiện ủng hộ của H3 ở giao thức (C5) thỏa trên khung hình và đại lượng bộ nhớ đồ họa vẫn chưa có.
+
+**Chi phí kỳ vọng (khám phá).** Chi phí kỳ vọng của một mẫu trong tập ứng dụng sinh ra là (tỷ lệ ứng dụng chứa mẫu, E1) × (chi phí khi có mẫu, E2). Tần suất E1 là tỷ lệ lần chạy hợp lệ có ít nhất một phát hiện của luật ở hai nhánh không guardrail (naive 33 và detailed-functional 33, tức 66 lần chạy; bộ phát hiện v1 đã đóng băng); nhánh guardrailed là một xử lý khác và bị bỏ ra. Cột chi phí là A − B (trung vị của các lần lặp được giữ); cột cuối nhân nó với tần suất. Số đo kích thước không phụ thuộc thiết bị, các số ms là tương đối với emulator. Giả định: biến thể A (một ứng viên mỗi nhân tố) đại diện cho cấu trúc của E1; REPORT không đưa khoảng cho tích này và bài không tính thêm.
+
+**Bảng 5.20.** Chi phí kỳ vọng = tần suất E1 × chi phí E2 (`e2-bench/REPORT.md` mục 7).
+
+| luật | nhân tố E2 | chỉ số chi phí | chi phí khi có (A − B) | tần suất E1 (trên 66 lần chạy không guardrail) | tần suất × chi phí | ghi chú |
+|---|---|---|---|---|---|---|
+| P08 | P08 | frameDurationCpuMs_p90 | 13,8 ms | P08 0,12 | 1,67 ms | đường GPU swangle_indirect (A14) |
+| P06 | P06 | st.decodedBytes | 196 MB | P06 0,08 | 14,9 MB | luật chưa kiểm chứng ở E1 (Bảng 5.3) |
+| P09 | P01+P09 | timeToInitialDisplayMs | 1328 ms | P09 0,03 | 40,2 ms | luật chưa kiểm chứng ở E1 (Bảng 5.3); luật P01 ở hàng sau |
+| P01 | P01+P09/P01 | timeToInitialDisplayMs | không có khác biệt đo được | P01 0,21 | 0 | khoảng chứa 0 (kết quả rỗng) |
+| P13 | P13 | st_search_query.sumMs | 550 ms | P13 0,23 | 125 ms | khung hình không cải thiện |
+| P03, P04 | P03+P04 | Compose_recompose.mainMs | không có khác biệt đo được | P03 0,09; P04 0,08 | 0 | khoảng chứa 0 (kết quả rỗng) |
+| P10 | P10 | apk_bytes | 22,4 MB | P10 1,00 | 22,4 MB | luật chưa kiểm chứng ở E1, bộ v1 có lỗi dương tính giả (A13); ở nhánh v2 30/33 và 33/33 ở hai kiểu không guardrail (Bảng 5.4) |
+| P11 | P11 | timeToInitialDisplayMs | 27,2 ms | P11 1,00 | 27,2 ms |  |
+
+Đọc theo mô tả: P10 và P11 có ở mọi ứng dụng, nên chi phí kỳ vọng bằng chính chi phí (lớn với kích thước APK, nhỏ với khởi động). Trong các mẫu cấp mã, P13 và P01 xuất hiện ở khoảng một phần năm số lần chạy không guardrail, P08 ở một phần tám, P06, P03 và P04 ở dưới một phần mười, P09 ở 3%. Tích số chỉ để xếp hạng mô tả: nó nhân hai số ước lượng từ một ứng viên, không kèm khoảng, và ba luật (P06, P09, P10) chưa qua cổng kiểm chứng của E1.
 
 ### 5.4. E3: công cụ tĩnh độc lập
 
@@ -801,7 +968,7 @@ E3 là mô tả, không có điểm cuối xác nhận. Phạm vi: 13 APK: bản
 
 **Kết quả chung.** 103 phát hiện trên 13 mục tiêu: tp 30, fp 73, độ chính xác **0,291** (Wilson 95% [0,212; 0,385]).
 
-**Bảng 5.11.** E3, theo công cụ và nhóm MASVS.
+**Bảng 5.21.** E3, theo công cụ và nhóm MASVS.
 
 | công cụ | nhóm MASVS | n | tp | fp | độ chính xác | cận dưới | cận trên |
 |---|---|---|---|---|---|---|---|
@@ -815,7 +982,7 @@ E3 là mô tả, không có điểm cuối xác nhận. Phạm vi: 13 APK: bản
 
 **Ba mươi tp là gì.** debuggable=true: 10 (mọi ứng dụng sống sót, vốn là bản debug); minSdk dưới mức khuyến nghị: 11; allowBackup đặt true hoặc vắng không có quy tắc: 6; chứng chỉ debug trên sản phẩm kiểu release: 2 (cặp optlab); Janus (chữ ký v1 với minSdk 23): 1. **Không tp nào là điểm yếu ở mức mã:** MobSF không tìm thấy bỏ qua TLS, thông tin xác thực cứng, lưu trữ không mã hóa hay lưu lượng cleartext ở mục tiêu nào. Cả 22 phát hiện MASVS-PLATFORM (thành phần exported) và các phát hiện MASVS-NETWORK, MASVS-CRYPTO đều là fp (receiver của thư viện được bảo vệ bằng quyền hệ thống, thành phần cố ý exported, trust anchor mặc định, mã thư viện).
 
-**Bảng 5.12.** E3, theo bộ công cụ sinh (chỉ các ứng dụng sống sót; mô tả, 3 hoặc 4 quét mỗi bộ).
+**Bảng 5.22.** E3, theo bộ công cụ sinh (chỉ các ứng dụng sống sót; mô tả, 3 hoặc 4 quét mỗi bộ).
 
 | bộ công cụ | quét | tp | fp | tp mỗi quét | độ chính xác |
 |---|---|---|---|---|---|
@@ -825,7 +992,7 @@ E3 là mô tả, không có điểm cuối xác nhận. Phạm vi: 13 APK: bản
 
 **Độ chính xác phụ thuộc cách đọc nhãn.** Chính tiêu đề 0,291 là đầu ra mặc định của MobSF trên các bản dựng này, không phải thuộc tính của ứng dụng.
 
-**Bảng 5.13.** E3, độ nhạy với quy tắc nhãn.
+**Bảng 5.23.** E3, độ nhạy với quy tắc nhãn.
 
 | cách đọc | tp | fp | độ chính xác |
 |---|---|---|---|
@@ -835,7 +1002,7 @@ E3 là mô tả, không có điểm cuối xác nhận. Phạm vi: 13 APK: bản
 | chỉ sản phẩm kiểu release (3 mục tiêu) | 3 | 17 | 0,15 |
 | chỉ ứng dụng sống sót kiểu debug (10 mục tiêu) | 27 | 56 | 0,325 |
 
-Quy tắc nhãn chính có một mâu thuẫn nội bộ: `debuggable=true` trên bản debug được tính tp (kiểm tra tự động), trong khi các quy tắc thủ công coi chứng chỉ debug hay `BuildConfig.DEBUG` trên sản phẩm kiểu debug là fp ("mô tả kiểu build"); hàng thứ ba của Bảng 5.13 bỏ mọi phát hiện chỉ mô tả kiểu build (10 tp, 11 fp) và hàng thứ hai là cách đọc ngược lại.
+Quy tắc nhãn chính có một mâu thuẫn nội bộ: `debuggable=true` trên bản debug được tính tp (kiểm tra tự động), trong khi các quy tắc thủ công coi chứng chỉ debug hay `BuildConfig.DEBUG` trên sản phẩm kiểu debug là fp ("mô tả kiểu build"); hàng thứ ba của Bảng 5.23 bỏ mọi phát hiện chỉ mô tả kiểu build (10 tp, 11 fp) và hàng thứ hai là cách đọc ngược lại.
 
 **Bộ phát hiện E1 so với công cụ.** Trên 80 cặp (ứng dụng sống sót nhân 8 lớp S mà cả hai có luật: S01 đến S06, S08, S09): so với mọi phát hiện của MobSF, cả hai cùng thấy 7, chỉ bộ phát hiện 2, chỉ MobSF 6, không bên nào 65 (kappa 0,581, PABAK 0,8, đồng thuận 0,9); so với các tp đã phân loại của MobSF, 6, 3, 0 và 71 (kappa 0,78, PABAK 0,925, đồng thuận 0,963). Bộ phát hiện đồng ý với tp của MobSF hầu như chỉ ở S06 (allowBackup, 6/6). Ba phát hiện chỉ một công cụ thấy, đều từ bộ phát hiện E1 và đối chiếu với sản phẩm: token `access_token` lưu dưới khóa Preferences DataStore ở claude-haiku-B2-naive-r3 là lưu token không mã hóa **thật** mà MobSF không có luật; `HttpLoggingInterceptor` ở `Level.BODY` không chặn khi phát hành ở agy-g38flash-B3-detailed-functional-r3 là thật; bốn dòng `DROP TABLE IF EXISTS $TABLE_*` nội suy hằng số biên dịch nên **không** chèn được (S09 ở đó là phát hiện đúng về mẫu nhưng không khai thác được). Nói gọn: hai công cụ thấy hai tầng khác nhau; MobSF thấy manifest và cấu hình build, bộ phát hiện thấy mã.
 
@@ -885,7 +1052,7 @@ E5 là mô tả, không có điểm cuối xác nhận. **Thiết kế.** Mục 
 
 **Ai phán.** Chất lượng bản sửa do `oracle/oracle.py` phán, một bộ kiểm tra tĩnh độc lập với bên sửa; **không bao giờ do lời tự khai của bên sửa**: với mỗi vấn đề gieo còn hiện diện, đã sửa hoặc sửa bằng chất liệu yếu hơn; các lan can hồi quy (G1 nguồn cân bằng, G7 "cleartext tắt kéo theo base URL https", và các lan can khác); sự làm yếu thêm; mồi bị đụng. Mọi cây đã sửa còn được biên dịch (`:app:compileDebugKotlin`); build chưa bắt đầu được tính là hạ tầng, không phải lỗi biên dịch. Báo cáo được chấm với danh sách chuẩn theo khóa (id, tên tệp).
 
-**Bảng 5.14.** E5, theo ô (độ chính xác và độ phủ theo vấn đề gieo, ba lần lặp mỗi ô; "cây biên dịch" là số lần lặp có cây sửa biên dịch được; Wilson 95% trong ngoặc).
+**Bảng 5.24.** E5, theo ô (độ chính xác và độ phủ theo vấn đề gieo, ba lần lặp mỗi ô; "cây biên dịch" là số lần lặp có cây sửa biên dịch được; Wilson 95% trong ngoặc).
 
 | bên sửa | nhánh bằng chứng | mức | vấn đề gieo tìm hoặc sửa (trên 14 mỗi lần lặp) | độ chính xác của báo cáo (tp/đã báo) | độ chính xác của khẳng định đã sửa | lần lặp có hồi quy | cây biên dịch |
 |---|---|---|---|---|---|---|---|
@@ -914,7 +1081,7 @@ E5 là mô tả, không có điểm cuối xác nhận. **Thiết kế.** Mục 
 
 Người duyệt ở mức approve là một đoạn mã (các lan can của oracle), không phải người; nhóm C của người nằm ngoài phạm vi; nên chi phí của người được đo bằng số can thiệp (advice 1 mỗi lần chạy, approve 17 quyết định mỗi lần chạy, autonomous 0) và lan can là đại diện cho một người duyệt cẩn thận.
 
-**Bảng 5.15.** E5, ba mức kiểm soát (gộp hai bên sửa).
+**Bảng 5.25.** E5, ba mức kiểm soát (gộp hai bên sửa).
 
 | mức | vấn đề gieo đã sửa, codex / claude | cây cuối có lan can hồi quy | cây biên dịch, codex / claude | lần chạy đụng mồi |
 |---|---|---|---|---|
@@ -935,24 +1102,36 @@ Hai bên sửa chính là codex và claude (12 chuỗi đầy đủ, 36 hàng đ
 
 ### 5.7. Tổng hợp theo giả thuyết
 
-**Bảng 5.16.** Kết luận theo quy tắc đã đăng ký (nhánh chính v1 của E1; p đã hiệu chỉnh ở chỗ trống Holm bên dưới).
+**Bảng 5.26.** Kết luận theo quy tắc đã đăng ký (nhánh chính v1 của E1; p hiệu chỉnh Holm ở Bảng 5.27).
 
 | giả thuyết | điểm cuối | kết quả | độ lớn và khoảng | kết luận theo quy tắc | xác nhận? |
 |---|---|---|---|---|---|
 | H1 | D01 hoặc D02 | 66/66 lần chạy không guardrail | 1,000 [0,945; 1,000] | ủng hộ (dải PB); không đặc trưng cho AI: người viết cũng có D02 ở 17/20 và 18/20 | không |
 | H2 (C4) | insecure-workaround, E4 | 17/148 | 0,115 [0,073; 0,176]; p thô 0,311 | **không được ủng hộ** tại SESOI 0,15; không đủ bác bỏ (cận trên 0,176 không dưới 0,10) | có |
-| H3 (C5) | P90 `FrameDurationCpuMs`, P08 | chờ E2 (Mục 5.3) | | chưa có | có |
+| H3 (C5) | P90 `FrameDurationCpuMs`, P08, A so với B | 62,87 so với 49,07 ms (n = 12 và 12) | delta% +28,13% [13,38; 54,31]; p thô 0,000308 | **ủng hộ** (ba điều kiện thỏa, đường GPU swangle_indirect, A14); bộ nhớ đồ họa không đo | có |
 | H4 | tọa độ Gradle không tồn tại | S11 "pending", không có số `hallucinated-artifact` | | không kết luận được | không |
 | H5 | U01 hoặc U05 | 1/66 (chỉ U01; U05 chưa kiểm chứng) | 0,015 [0,003; 0,081] | bác bỏ cho U01 (dải PB) | không |
 | H6 | S05 | 10/66 | 0,152 [0,084; 0,257] | không kết luận được | không |
-| G1 (C1) | ít nhất một phát hiện S, naive trừ guardrailed | 31/33 so với 17/34 | hiệu +0,439, p thô 0,00004; ở các ứng dụng build được +0,000 | **ủng hộ** theo p thô và độ lớn (hiệu chỉnh Holm chờ); không đúng ở ứng dụng build được | có |
-| G2 (C2) | số mã luật khác nhau mỗi lần | 5,85 so với 2,82 | hiệu +3,025, p thô 0,00001 | **ủng hộ** (độ lớn từ 2,0); giữ ở ứng dụng build được (+3,829) | có |
+| G1 (C1) | ít nhất một phát hiện S, naive trừ guardrailed | 31/33 so với 17/34 | hiệu +0,439, p thô 0,00004; ở các ứng dụng build được +0,000 | **ủng hộ** (p hiệu chỉnh 0,00016; độ lớn từ 0,15); không đúng ở ứng dụng build được | có |
+| G2 (C2) | số mã luật khác nhau mỗi lần | 5,85 so với 2,82 | hiệu +3,025, p thô 0,00001 | **ủng hộ** (p hiệu chỉnh 0,00005; độ lớn từ 2,0); giữ ở ứng dụng build được (+3,829) | có |
 | G3 | tập được chỉ dẫn so với tập bị giữ lại | chênh +0,63 và +1,30 | [0,15; 1,14] và [0,75; 1,84] | ủng hộ theo quy tắc; luật bị giữ lại cũng giảm: "khái quát hóa hoặc ngẫu nhiên" | không (thứ cấp có đăng ký) |
-| B1 (C3) | nhóm S trên 1000 dòng, AI không guardrail so với trước 30/11/2022 | 2,37 so với 1,02 | delta Cliff +0,582, p thô 0,00009 | **ủng hộ** (delta từ 0,33); delta của claude-haiku đơn lẻ +0,340 | có |
+| B1 (C3) | nhóm S trên 1000 dòng, AI không guardrail so với trước 30/11/2022 | 2,37 so với 1,02 | delta Cliff +0,582, p thô 0,00009 | **ủng hộ** (p hiệu chỉnh 0,00027; delta từ 0,33); delta của claude-haiku đơn lẻ +0,340 | có |
 
-> **TODO[holm]** Điền p đã hiệu chỉnh Holm trên C1 đến C5 (m = 5, ngưỡng đầu 0,01) khi C5 có. Với p thô đã có (C1 0,00004; C2 0,00001; C3 0,00009; C4 0,311), kết luận của C1 đến C3 không thể bị C5 đổi, và C4 chỉ có thể bị p tăng.
+**Hiệu chỉnh Holm trên C1 đến C5.** Holm–Bonferroni bước xuống trên năm phép kiểm định xác nhận (m = 5, ngưỡng của bậc đầu 0,01; Mục 4.8). Phép tính này là của bài, không lấy từ REPORT: p hiệu chỉnh của bậc k là p thô nhân (5 − k + 1), rồi lấy cực đại lũy tiến theo thứ tự tăng của p thô, từ các p thô đã in ở REPORT của từng thí nghiệm (C4 lấy ở `c4_confirmatory.csv`, 0,3106); vì vậy p hiệu chỉnh cũng chỉ chính xác ở độ làm tròn đã in.
 
-**Các lớp của Mục 2.6.** *Lớp nền (vấn đề có tần suất và chi phí).* Đã đo chi phí chỉ cho P10 và P11: R8 giảm APK 90,4% và khởi động nhỏ nhưng thấy được (−8,7% `timeToInitialDisplayMs`), Baseline Profile giảm khởi động 5,88% (Bảng 5.9, 5.10); các nhân tố của kho E1 chờ Mục 5.3. Về tần suất, hai vấn đề này là P10 và P11: P11 phổ quát ở hai kiểu không guardrail (33/33) và gần như vắng ở guardrailed (7/34), P10 ở nhánh v2 là 30/33, 33/33 và 0/34. *Lớp quá trình sinh (H1 đến H4).* H1 đúng cho mọi lần chạy nhưng không đặc trưng; H2 không đạt SESOI; H4 không kết luận được. Cái khác với lớp nền là phần "tại sao": E1 cho thấy một tệp guardrail làm giảm độ rộng và độ phổ biến của S ở mức mã nguồn (G1, G2), nhưng ở các ứng dụng build được tác động tới "có hay không" biến mất. Chỉ viết những gì CSV cho phép: chưa có chi phí đo được cho các nhân tố của kho E1.
+**Bảng 5.27.** Hiệu chỉnh Holm và kết luận theo điều kiện đầy đủ của từng điểm cuối (Mục 4.8).
+
+| điểm cuối | p thô | bậc | ngưỡng của bậc | p hiệu chỉnh | độ lớn so với ngưỡng đã đăng ký | kết luận |
+|---|---|---|---|---|---|---|
+| C2 | 0,00001 | 1 | 0,01 | 0,00005 | +3,025 ≥ 2,0 (đạt) | ủng hộ |
+| C1 | 0,00004 | 2 | 0,0125 | 0,00016 | +0,439 ≥ 0,15 (đạt) | ủng hộ |
+| C3 | 0,00009 | 3 | 0,0167 | 0,00027 | delta Cliff +0,582 ≥ 0,33 (đạt) | ủng hộ |
+| C5 | 0,000308 | 4 | 0,025 | 0,000616 | delta% +28,13% ≥ +10% (đạt); khoảng [13,38; 54,31] không chứa 0 (đạt) | ủng hộ |
+| C4 | 0,3106 | 5 | 0,05 | 0,3106 | tỷ lệ 0,115 < 0,15 (không đạt) | không được ủng hộ |
+
+Mỗi kết luận theo đủ điều kiện đã đăng ký: C1, C2, C3 và C5 có p hiệu chỉnh dưới 0,05 và độ lớn vượt ngưỡng (C5 còn thêm khoảng không chứa 0); C4 không đạt cả hai điều kiện (p hiệu chỉnh 0,3106 không dưới 0,05, tỷ lệ 0,115 dưới 0,15). Hiệu chỉnh Holm không đổi kết luận nào: p thô của C1, C2, C3 và C5 đều đã dưới ngưỡng của bậc của chúng, và p hiệu chỉnh không thể nhỏ hơn p thô. Đọc cùng các hạn chế của từng mục: C1 +0,439 không còn ở các ứng dụng build được (+0,000, Mục 5.2.3), C3 so với tầng người viết gồm ứng dụng phổ biến và lớn (Mục 5.2.5), sự làm yếu ở C4 tập trung ở hai lỗi và hai bộ công cụ (Mục 5.5), và C5 là một cấu trúc trên một đường GPU của emulator (Mục 5.3.3). "Được ủng hộ" ở đây nghĩa là điều kiện thống kê đã đăng ký thỏa; nguyên nhân (quá trình sinh mã) vẫn chỉ là giả thuyết khi không có nhánh thực nghiệm nào kiểm tra nó.
+
+**Các lớp của Mục 2.6.** *Lớp nền (vấn đề có tần suất và chi phí).* Chi phí đo được cho hai kỹ thuật nền và cho năm nhân tố lấy từ mã E1, và có ba nhóm: (1) hiệu ứng lớn, độc lập thiết bị, bị loại bởi bản sửa theo sách giáo khoa: P06 (byte giải mã −96,9%) và P01 cùng P09 (TTID −69,9%, khung chậm từ 90,05% xuống 1,255%); (2) hiệu ứng lên chính thao tác nhưng không tới khung hình: P13 (tổng thời gian truy vấn 634,9 ms còn 85,42 ms, khung hình không cải thiện); (3) không đo được chi phí: P03 cùng P04 và nhân tố con P01, ở kịch bản này. P08 (C5) là chi phí khung hình thấy được: +28,13% ở P90, trên một đường GPU của emulator. Hai kỹ thuật nền: R8 giảm APK 90,4% và khởi động nhỏ nhưng thấy được (−8,7% `timeToInitialDisplayMs`), Baseline Profile giảm khởi động 5,88% (Bảng 5.9, 5.10). Về tần suất ở E1: P11 phổ quát ở hai kiểu không guardrail (33/33) và gần như vắng ở guardrailed (7/34), P10 ở nhánh v2 là 30/33, 33/33 và 0/34; các mẫu cấp mã nằm từ cỡ một phần năm (P13, P01) đến dưới một phần mười (P06, P03, P04, P09), P08 cỡ một phần tám. Bảng 5.20 chỉ xếp hạng mô tả. *Lớp quá trình sinh (H1 đến H4).* H1 đúng cho mọi lần chạy nhưng không đặc trưng; H2 không đạt SESOI; H4 không kết luận được. Cái khác với lớp nền là phần "tại sao": E1 cho thấy một tệp guardrail làm giảm độ rộng và độ phổ biến của S ở mức mã nguồn (G1, G2), nhưng ở các ứng dụng build được tác động tới "có hay không" biến mất. Điều E2 không nói được là chi phí của mọi biến thể: mỗi nhân tố đo một ứng viên của E1, trên emulator.
 
 ### 5.8. Hạn chế thực tế phát sinh trong lúc chạy
 
@@ -967,7 +1146,7 @@ Cập nhật Mục 4.10, lấy từ mục "mối đe dọa" và "khai báo" củ
 - **Bộ phát hiện và luật bị loại.** Chỉ có 20 trong 29 luật vào phân tích chính; 9 luật bị loại (Bảng 5.3); độ nhạy theo đột biến là cận trên vì tác giả bộ phát hiện viết các đột biến; luật tĩnh không thấy hành vi lúc chạy; U05 không thể phán bằng cửa sổ 6 dòng; P07 vẫn không đạt cả hai nhánh.
 - **Độc lập của người chấm.** Người chấm 1 là tác giả bộ phát hiện và các đột biến, và cũng là người thứ ba phân xử 26 bất đồng, nên phân xử không độc lập với bộ phát hiện; sau khi người chấm 1 xong mỗi bảng, thông báo thay đổi tệp của harness làm người chấm 1 thấy một số dòng của người chấm 2 (41 dòng của bảng v1; bảng v2 hiện đủ: tiêu đề và cả 31 dòng); nhãn của người chấm 1 đã được viết trước và không sửa sau đó. Người chấm 2 không thấy dữ liệu E1, nhưng cũng là tác giả của danh mục và guardrail, nên biết ý đồ luật ngoài cửa sổ mã; nhãn chỉ dựa vào định nghĩa luật và cửa sổ mã.
 - **Nhìn sớm.** Một lần chạy phân tích thử trên 13 lần chạy hợp lệ (A6) và số đếm mẫu nổi lên theo bộ công cụ được thấy trước khi open coding xong; điều kiện đăng ký "không thấy số theo nhánh trước khi sửa bộ phát hiện" không đạt, vì thế bộ v1 là chính (A13).
-- **E2.** Emulator có GPU phần mềm làm nhiều chi phí kết xuất chỉ mang tính tương đối; hồ sơ Baseline Profile của lab chỉ phủ ứng dụng lab; các lần lặp sau lần đầu có cache trang ấm.
+- **E2.** Emulator có GPU phần mềm làm nhiều chi phí kết xuất chỉ mang tính tương đối; hồ sơ Baseline Profile của lab chỉ phủ ứng dụng lab; các lần lặp sau lần đầu có cache trang ấm; P08 đo trên đường GPU `swangle_indirect` còn các nhân tố khác trên `swiftshader_indirect` (A14), nên số tuyệt đối không so được; mỗi nhân tố lấy một ứng viên của E1 và một kịch bản do người thực hiện chọn, nên cỡ hiệu ứng phụ thuộc kịch bản (P03 cùng P04 không có chi phí ở 300 khoản vay).
 - **E3 và E4.** Xem các mục 5.4 và 5.5: một người phân loại, jadx lần đầu thiếu, hồ sơ phân loại có mâu thuẫn nội bộ; lỗi được soạn thay vì bắt từ thiết bị, phép "giải quyết lỗi" là đọc diff chứ không build, khả năng khác nhau giữa các bộ công cụ không tách được khỏi mô hình.
 - **E5.** Một mục tiêu nhỏ với 14 vấn đề gieo mà danh mục trong prompt gọi tên; mức advice cho thấy việc dễ khi danh mục đã được đưa, không cho thấy công cụ tìm được cái chưa gieo; hai bên sửa, ba lần lặp; oracle theo mẫu; bản sửa không được phán bằng bộ kiểm thử hay số đo; người duyệt ở approve là mã; hàng claude ở lần lặp 2 và 3 từng bị chấm như "không sửa được gì" khi giới hạn tốc độ của tài khoản bị từ chối; 12 hàng đó đã bị loại, ghi ở `infra_failed_rows.csv` và chạy lại.
 
@@ -976,13 +1155,13 @@ Cập nhật Mục 4.10, lấy từ mục "mối đe dọa" và "khai báo" củ
 
 ## Chương 6. Kết luận và hướng phát triển
 
-> **Phạm vi của chương.** Chương này trả lời từ Bảng 5.16 và các bảng của Chương 5; mỗi câu gắn một kết quả. Điểm cuối xác nhận C5 (chi phí khung hình của hiệu ứng trang trí P08) và hiệu chỉnh Holm chưa có (Mục 5.3 và 5.7); chương không diễn giải chúng. Mọi lời khuyên không có kết quả đỡ được ghi là ý kiến.
+> **Phạm vi của chương.** Chương này trả lời từ Bảng 5.26 và các bảng của Chương 5; mỗi câu gắn một kết quả. Điểm cuối xác nhận C5 (chi phí khung hình của hiệu ứng trang trí P08) và hiệu chỉnh Holm nằm ở Mục 5.3.3 và 5.7. Mọi lời khuyên không có kết quả đỡ được ghi là ý kiến.
 
 ### 6.1. Tổng kết hiệu quả của AI Coding
 
 **AI tạo ra vấn đề gì, với tần suất nào, so với người viết (RQ1, C3).** Trong bản nháp đầu không có guardrail, vấn đề nhóm bảo mật gần như luôn hiện diện: ít nhất một phát hiện nhóm S ở 31/33 lần chạy naive (0,939) và 29/33 lần detailed-functional (0,879); phổ biến nhất là allowBackup (S06: 0,88 và 0,73), tiếp theo là lưu token hoặc dữ liệu cá nhân không mã hóa (S01: 8/33 và 11/33), màu và cỡ chữ cứng (U04: 9/33 và 13/33) và nhật ký nhạy cảm (S05: 4/33 và 6/33). Phụ thuộc cũ hoặc API phản đối có ở mọi lần chạy không guardrail (H1, 66/66), nhưng người viết cũng có. Trên mỗi 1000 dòng, mật độ phát hiện nhóm S của AI không guardrail cao hơn tầng ứng dụng trước trợ lý (trung vị 2,37 so với 1,02; delta Cliff +0,582, vượt ngưỡng 0,33 theo C3). Phải đọc cùng: chỉ 42 trên 100 bản nháp build được; ứng dụng người viết lớn hơn và là ứng dụng phổ biến được bảo trì; và với nhiều luật hiệu năng, tỷ lệ "có ít nhất một" của AI **thấp hơn** người viết (ví dụ P01 0,18 so với 0,70), có thể do bản nháp AI ngắn hơn và ít cấu trúc danh sách hơn (giả thuyết, chưa kiểm tra).
 
-**Chi phí đo được (RQ2).** Với hai kỹ thuật nền đã đo, chi phí của việc thiếu cấu hình phát hành là có thật và nhìn thấy trên emulator: bật R8 giảm kích thước APK 90,4% (2,474e+07 byte còn 2,384e+06 byte trong `summary.csv`) và giảm `timeToInitialDisplayMs` 8,7%; bật Baseline Profile giảm `timeToInitialDisplayMs` 5,88%. Chi phí của các vấn đề lấy từ mã E1, kể cả điểm cuối xác nhận C5 (hiệu ứng trang trí), **chưa có** và không được suy ra ở đây.
+**Chi phí đo được (RQ2).** Chi phí của các vấn đề có thật cho ba trong năm nhân tố lấy từ mã E1, và ba nhóm tách rõ. (1) Hiệu ứng trang trí P08 (C5, được ủng hộ): ô lưới của một lần chạy E1 tốn thêm +28,13% [13,38; 54,31] ở P90 thời gian CPU khung hình so với bản phẳng (62,87 so với 49,07 ms, p hiệu chỉnh 0,000616), trên một đường GPU của emulator; bộ nhớ đồ họa không được đo. (2) P06 và P01 cùng P09 có hiệu ứng lớn, độc lập thiết bị, khi áp dụng bản sửa theo sách giáo khoa: byte bitmap giải mã −96,9%, `timeToInitialDisplayMs` −69,9% và khung chậm từ 90,05% xuống 1,255%. (3) P13 làm nhanh truy vấn (tổng thời gian 634,9 ms còn 85,42 ms) nhưng không cải thiện khung hình; P03 cùng P04 và nhân tố con P01 không có chi phí đo được ở kịch bản này. Với hai kỹ thuật nền, chi phí của việc thiếu cấu hình phát hành là có thật: bật R8 giảm kích thước APK 90,4% (2,474e+07 byte còn 2,384e+06 byte trong `summary.csv`) và giảm `timeToInitialDisplayMs` 8,7%; bật Baseline Profile giảm `timeToInitialDisplayMs` 5,88%. Phải đọc cùng: mọi số đo ms chạy trên emulator có GPU phần mềm; mỗi nhân tố đo một ứng viên của E1 trong một kịch bản do người thực hiện chọn; P08 chạy trên đường GPU khác (A14).
 
 **Phát hiện và khắc phục (RQ3, RQ5).** Công cụ độc lập trả lời một nửa câu hỏi: MobSF cho độ chính xác 0,291 sau phân loại thủ công (từ 0,244 đến 0,806 tùy cách đọc nhãn), và cả 30 phát hiện đúng là sự kiện về manifest, cấu hình build hoặc chữ ký, không phải điểm yếu ở mã; bộ phát hiện E1 thấy cái MobSF không thấy (lưu token plaintext, ghi nhật ký BODY) nhưng ở mức luật của nó. Trợ lý ở vai trò người tối ưu, khi được gợi ý danh mục, tìm đủ 14 vấn đề gieo ở mọi lần chạy advice (168/168; trần), sửa đủ 84/84 ở codex và 76/84 ở claude khi tự trị, nhưng 9 trên 12 cây codex đã sửa không biên dịch được, và mồi bị đổi ở 21 trên 24 lần chạy sửa.
 
@@ -1003,7 +1182,7 @@ Mỗi khuyến nghị gắn một kết quả; khuyến nghị không có kết 
 1. **Đặt tệp guardrail về chất lượng trong ngữ cảnh gốc của công cụ** (C1, C2, G3). Bằng chứng: guardrail giảm tỷ lệ bản nháp có phát hiện S từ 0,939 xuống 0,500 và số mã luật khác nhau từ 5,85 xuống 2,82; nó cũng làm giảm các luật không được nêu (G3: +1,10 và +0,71 phát hiện mỗi lần chạy, "khái quát hóa hoặc ngẫu nhiên"). Nội dung chức năng chi tiết thôi thì không đủ (0,879 so với 0,939). **Giới hạn:** ở ứng dụng build được, guardrail không giảm việc có hay không có phát hiện S (C1 +0,000), nên nó không thay cho kiểm tra.
 2. **Có cổng kiểm tra độc lập ở khâu nhận mã do trợ lý sửa:** một bước biên dịch và một bước phân loại thủ công kết quả công cụ tĩnh (E5: 9/12 cây codex không biên dịch được dù khẳng định đúng; E3: 0,291 độ chính xác mặc định). Đây là kết quả của E3 và E5, trên một mục tiêu và 13 sản phẩm.
 3. **Xem xét kỹ mọi diff chạm cấu hình mạng hoặc khóa Keystore khi nhờ trợ lý sửa lỗi** (E4): sự làm yếu tập trung ở hai lỗi đó (cleartext 5/30, Keystore 12/30). Đây là kết quả mô tả từ năm lỗi và ba bộ công cụ, **không** phải quy tắc chung "cấm làm yếu cấu hình": C4 gộp không được ủng hộ, và claude không làm yếu lần nào trong 50 lượt thử.
-4. **Dùng Kotlin từ 2.0.20 trở lên để P03 (tham số không ổn định) không còn tốn khi bật strong skipping mặc định** (Mục 2.2.3, [Compose-StrongSkipping]). Đây là ý kiến dựa trên tài liệu, không dựa trên kết quả của nghiên cứu này (chi phí P03 chưa đo ở E2).
+4. **Dùng Kotlin từ 2.0.20 trở lên để P03 (tham số không ổn định) không còn tốn khi bật strong skipping mặc định** (Mục 2.2.3, [Compose-StrongSkipping]). Đây là ý kiến dựa trên tài liệu, không dựa trên kết quả của nghiên cứu này (ở E2, P03 cùng P04 không có chi phí đo được với Kotlin 2.4.21, Mục 5.3.3).
 5. **Ý kiến, không có kết quả đỡ:** chạy cả bước tối ưu hóa phát hành (R8, Baseline Profile) ngay từ bản nháp đầu: P10 và P11 gần như phổ quát ở bản nháp không guardrail, và hai kỹ thuật này có lợi đo được (Bảng 5.9, 5.10), nhưng nghiên cứu không so sánh quy trình có và không có bước đó.
 
 ### 6.5. Hướng phát triển
