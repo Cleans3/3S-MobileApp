@@ -474,10 +474,12 @@ def f11():
 
 # ---------------- F12 H1 and H4 ----------------
 def f12():
-    coords = [c for c in rd(os.path.join(E1, 'coordinates.csv')) if c['run_id'] in {r['run_id'] for r in RUNS}]
+    VR = {r['run_id'] for r in RUNS}
+    coords = [c for c in rd(os.path.join(E1, 'depfix', 'coordinates_fixed.csv')) if c['run_id'] in VR]
+    first = [c for c in rd(os.path.join(E1, 'coordinates.csv')) if c['run_id'] in VR]
     sty = {r['run_id']: r['prompt_style'] for r in RUNS}
-    cls = sorted({c['class'] for c in coords}); CC = {'ok': '#9FB8D0', 'hallucinated-version': '#D55E00', 'hallucinated-artifact': '#000000'}
-    f = Fig(1000, 450, 'F12. H1 và H4: phụ thuộc cũ và tọa độ Gradle', 'A: tỷ lệ lần chạy có D01 hoặc D02 (Wilson 95%). B: lớp của từng thể hiện tọa độ trong coordinates.csv; lớp đọc từ tệp'); rows = []
+    cls = sorted({c['class'] for c in coords} | {'hallucinated-artifact'}); CC = {'ok': '#9FB8D0', 'hallucinated-version': '#D55E00', 'hallucinated-artifact': '#000000'}
+    f = Fig(1000, 450, 'F12. H1 và H4: phụ thuộc cũ và tọa độ Gradle', 'A: tỷ lệ lần chạy có D01 hoặc D02 (Wilson 95%). B: lớp của từng thể hiện tọa độ sau khi sửa tra cứu (depfix/coordinates_fixed.csv); lớp đọc từ tệp'); rows = []
     a = Ax(f, 190, 80, 250, 200, (0, 1), (0, 1)); a.xaxis([0, .25, .5, .75, 1], 'tỷ lệ'); f.text(a.x + 125, 70, 'A. D01 hoặc D02', 11, 'middle', weight='bold')
     for i, s in enumerate(STYLES):
         k = sum(1 for r in BYSTY[s] if RBR[r['run_id']] & {'D01', 'D02'}); n = len(BYSTY[s]); lo, hi = wilson(k, n); yy = a.y + 30 + i * 60
@@ -492,9 +494,12 @@ def f12():
         f.text(b.X(x0) + 6, yy + 4, str(x0), 10, fill=MUTE)
     legend(f, 620, 340, [(c, CC.get(c, '#777'), 'square') for c in cls], 16)
     allt = sum(sum(t.values()) for t in tot.values())
-    f.text(14, 392, 'Tệp có %d thể hiện tọa độ ở các lần chạy hợp lệ; các lớp có trong tệp: %s (không có lớp hallucinated-artifact).' % (allt, ', '.join(cls)), 11)
-    f.text(14, 412, 'Quy tắc bác bỏ H4 của giao thức cần 0 tọa độ hallucinated-artifact trong ít nhất 300 thể hiện; REPORT E1 không đưa kết luận H4, nên hình không đưa.', 10, fill=MUTE)
-    MANI['f12_note'] = {'instances': allt, 'classes': cls}
+    nart = sum(1 for c in coords if c['class'] == 'hallucinated-artifact'); nv1 = sum(1 for c in first if c['class'] == 'hallucinated-version'); nv2 = sum(1 for c in coords if c['class'] == 'hallucinated-version')
+    check('H4 hallucinated-artifact and instances', [nart, allt], [0, 2105]); check('H4 hallucinated-version first scan and corrected', [nv1, nv2], [22, 1])
+    f.text(14, 388, 'Quy tắc đã đăng ký: H4 bị bác bỏ khi 0 tọa độ hallucinated-artifact trong ít nhất 300 thể hiện. Kết quả: %d trong %d thể hiện, nên H4 bị bác bỏ.' % (nart, allt), 11, weight='bold')
+    f.text(14, 406, 'Cận trên 95%% theo quy tắc ba: %s%%. Lần quét đầu có %d hallucinated-version, sau sửa tra cứu còn %d (%d phát hiện sai do dấu plugin KSP của google() đã cũ).' % (vi(300 / allt, 2), nv1, nv2, nv1 - nv2), 10, fill=MUTE)
+    rows.append(['first_scan_class', 'all', 'hallucinated-version', nv1, '', '']); rows.append(['corrected_class', 'all', 'hallucinated-version', nv2, '', ''])
+    MANI['f12_note'] = {'instances': allt, 'classes': cls, 'h4_artifact': nart, 'h4_version_first_scan': nv1, 'h4_version_corrected': nv2}
     f.save('F12-h1-h4', 'H1 and H4'); emit('F12-h1-h4', ['kind', 'group', 'a', 'b', 'c', 'd'], rows)
 
 # ---------------- E2 ----------------

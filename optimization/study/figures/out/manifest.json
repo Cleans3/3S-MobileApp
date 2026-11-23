@@ -69,9 +69,10 @@
   },
   "F12-h1-h4": {
    "sources": [
-    "e1-corpus/results/coordinates.csv"
+    "e1-corpus/results/coordinates.csv",
+    "e1-corpus/results/depfix/coordinates_fixed.csv"
    ],
-   "rows": 9
+   "rows": 14
   },
   "F13-e2-effects": {
    "sources": [
@@ -296,6 +297,30 @@
    "ok": true
   },
   {
+   "check": "H4 hallucinated-artifact and instances",
+   "got": [
+    0,
+    2105
+   ],
+   "want": [
+    0,
+    2105
+   ],
+   "ok": true
+  },
+  {
+   "check": "H4 hallucinated-version first scan and corrected",
+   "got": [
+    22,
+    1
+   ],
+   "want": [
+    22,
+    1
+   ],
+   "ok": true
+  },
+  {
    "check": "C5 delta",
    "got": 28.13,
    "want": 28.13,
@@ -359,13 +384,18 @@
  "f12_note": {
   "instances": 2105,
   "classes": [
+   "hallucinated-artifact",
    "hallucinated-version",
    "ok"
-  ]
+  ],
+  "h4_artifact": 0,
+  "h4_version_first_scan": 22,
+  "h4_version_corrected": 1
  },
  "source_sha256": {
   "e1-corpus/results/analysis/primary-v1/summary.md": "e61f401933525e7ed734c84b255d9ac067c1d00180922dd137011e75cce7bdd1",
   "e1-corpus/results/coordinates.csv": "d78949606d14afdc303b4acaa08718169d900524fd07919ee93eed3b5bc9a52d",
+  "e1-corpus/results/depfix/coordinates_fixed.csv": "2102591233d088e67b37192da50bc5e1bebdf30ca40b74becc34eb2a0773175d",
   "e1-corpus/results/runs.csv": "8c134f4148fbe8a247def9af870c40907e273dec25265e329ece7ca48b76f4fb",
   "e1-corpus/results/validation/coverage_matrix.csv": "964952d7d7ad5d331b00e91f49b7a130d5c0e8eb0724eda3bdcdbdc0d3eccdd2",
   "e1-corpus/results/validation/kappa.json": "edac8bf49fdd404fad692094f19e6fe62a5edd99df4bd004d6ec8425d518e6cb",
@@ -377,8 +407,8 @@
   "e1-corpus/results/validation/v1/pre_fix_human_metrics.csv": "7132fc38e7ea8700b0b40ca888d4004e3b4488918fd2574d74f22d2d6a18464b",
   "e1-corpus/results/validation/v1/pre_fix_metrics.csv": "3d0ee33ce00f592c8c2e730a25820006ba4486f505dc8e8550f226e22dc4637f",
   "e2-bench/results/c5_confirmatory.csv": "cf8593161d7e1ab7f763354601536b6dc83f17cce3c38904e37f266a5faa37cf",
-  "e2-bench/results/raw.csv": "4f50d326ff04f5ee4a1eb547b533b01711b35ed216e8bc6790ef8f1cc3ef1273",
-  "e2-bench/results/summary.csv": "5aef5522ee27829c1919f9006bffea5d770b770ce2da6b60b3e1e44e18d1b7f6",
+  "e2-bench/results/raw.csv": "f5c354c02076e86fac7c533a605c43dc7065bf3b3f4ad29f94be34ffefa29499",
+  "e2-bench/results/summary.csv": "807c4ae23e69b6c975a6bef3aa14fc59fa5bbbd8e35a0dca4593dfccf5aa0a3a",
   "e3-security/results/agreement.csv": "ff673d60caf0253f97e07b3d113225e400ae8fa66b1198b34cb49bd7df1f9b24",
   "e3-security/results/by_area.csv": "9b4cc3acb619e94c2c293ec542166886921d13ee8827f49f7317117261439bc1",
   "e3-security/results/one_tool_only.csv": "58e6d78bf993affde88c358d37ed1f840968c4773506b647765858dc88967222",
@@ -390,5 +420,5 @@
   "e5-optimizer/results/runs.csv": "8ce3ba84eff20795138075ad149c029f70fafed238e0d140626c06e6b0983287",
   "e5-optimizer/results/summary.csv": "970739087312dd7f798f5c265b0531944de9b76e80257dc86b89e6190667a131"
  },
- "git_commit": "a256f71"
+ "git_commit": "15a6d43"
 }

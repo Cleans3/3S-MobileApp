@@ -9,7 +9,7 @@ Theo kịch bản của đề cương (mục VII). Slide: `slides-outline.md`; h
 | 3. Bảo mật | 2 phút | S5, S6 | 260 | 280 |
 | 4. AI phân tích và tối ưu | 2 phút | S7, S8, S9 | 260 | 277 |
 | 5. Demo phiên bản B | 2 phút | S10 | 260 (kèm thời gian phát video) | 224 |
-| 6. Kết luận | 1 phút | S11 | 130 | 133 |
+| 6. Kết luận | 1 phút | S11 | 130 | 139 |
 
 ---
 
@@ -58,7 +58,7 @@ Theo kịch bản của đề cương (mục VII). Slide: `slides-outline.md`; h
 
 ## 6. Kết luận (9:00 đến 10:00) — S11
 
-**Lời nói.** "Tóm lại, ba điều. Một, trong năm phép kiểm định xác nhận, bốn được ủng hộ sau hiệu chỉnh Holm là C1, C2, C3 và C5, còn C4 không được ủng hộ; giả thuyết về tọa độ Gradle không tồn tại chưa kết luận được. Hai, giới hạn: chỉ máy ảo, một miền ứng dụng, chỉ 42 trên 100 bản nháp build được, và cỡ mẫu dưới mục tiêu 36 mỗi nhánh. Ba, vai trò người kiểm duyệt: guardrail không thay cho kiểm tra, cần cổng biên dịch và phân loại thủ công độc lập, và xem kỹ mọi diff chạm cấu hình mạng hoặc khóa Keystore. Nguyên tắc chúng tôi giữ suốt nghiên cứu cũng là lời kết: không để trợ lý tự xác nhận mã của chính nó. Xin cảm ơn."
+**Lời nói.** "Tóm lại, ba điều. Một, trong năm phép kiểm định xác nhận, bốn được ủng hộ sau hiệu chỉnh Holm là C1, C2, C3 và C5, còn C4 không được ủng hộ; giả thuyết về tọa độ Gradle không tồn tại bị bác bỏ, 0 artifact ảo trong 2105 tọa độ. Hai, giới hạn: chỉ máy ảo, một miền ứng dụng, chỉ 42 trên 100 bản nháp build được, và cỡ mẫu dưới mục tiêu 36 mỗi nhánh. Ba, vai trò người kiểm duyệt: guardrail không thay cho kiểm tra, cần cổng biên dịch và phân loại thủ công độc lập, và xem kỹ mọi diff chạm cấu hình mạng hoặc khóa Keystore. Nguyên tắc chúng tôi giữ suốt nghiên cứu cũng là lời kết: không để trợ lý tự xác nhận mã của chính nó. Xin cảm ơn."
 
 **Thao tác.** S11 hiện F21, một slide ba ý. Dừng còn 30 giây để nhận câu hỏi.
 
@@ -80,7 +80,8 @@ Theo kịch bản của đề cương (mục VII). Slide: `slides-outline.md`; h
 | Tại sao bỏ bảy luật khỏi guardrail? | Để tách làm theo chỉ dẫn khỏi khái quát hóa (G3); chọn trước khi viết guardrail; sau kiểm chứng còn năm luật (§4.3, §5.2.4). |
 | Công cụ nào tốt nhất? | Không xếp hạng: bộ công cụ gồm harness cộng mô hình, hai thứ bị lẫn (§4.10, mối đe dọa 5). |
 | Kết quả có đúng với Compose phiên bản mới không? | Chi phí P03 phụ thuộc phiên bản: từ Kotlin 2.0.20 strong skipping bật mặc định, và ở E2 P03 cùng P04 không có chi phí đo được (§2.2.3, §5.3.3). |
-| H4 (tọa độ Gradle không tồn tại) thì sao? | Chưa kết luận: S11 còn "pending"; tệp tọa độ không có lớp hallucinated-artifact nhưng REPORT E1 chưa xác nhận (§5.2.6). |
+| H4 (tọa độ Gradle không tồn tại) thì sao? | Bị bác bỏ theo quy tắc đã đăng ký: 0 tọa độ `hallucinated-artifact` trong 2105 thể hiện, cận trên theo quy tắc ba 0,14%; chỉ có 1 phiên bản không tồn tại (plugin Compose 1.9.24), không có artifact ảo (§5.2.6). |
+| Lỗi tra cứu phụ thuộc có làm đổi kết luận không? | Không: bộ tra cứu dừng ở kho đầu tiên trả lời nên 21 phiên bản KSP có thật bị coi là không tồn tại; sửa lại (post hoc, không xác nhận) thì C1 +0,645, C2 +3,259, C3 delta +0,513 (p thô 0,00055), không kết luận nào đổi; nhánh chính giữ nguyên như đã chạy (§5.2.5). |
 | Sao dùng ShelfTap, không phải SmartTask như đề cương? | Để tình huống bảo mật là thật (token, lịch sử mượn); lý do ở §1.6. |
 | Có nhóm lập trình viên tự tối ưu để so không? | Không: nằm ngoài phạm vi vì không có người tham gia (§4.7, §4.10). |
 

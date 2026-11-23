@@ -15,7 +15,7 @@ Bài trình bày 10 phút theo kịch bản của đề cương (mục VII): 1 p
 | 5. Demo phiên bản B | 2 phút | S10 | cùng thao tác, bản đã tối ưu, số đo trước và sau |
 | 6. Kết luận | 1 phút | S11 | kết quả, hạn chế, vai trò người kiểm duyệt |
 
-Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao thức đăng ký trước, Holm và công suất; D2 catalogue vấn đề; D3 mối đe dọa; D4 so sánh với nghiên cứu liên quan; D5 câu hỏi mở của E1 (H4, S11).
+Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao thức đăng ký trước, Holm và công suất; D2 catalogue vấn đề; D3 mối đe dọa; D4 so sánh với nghiên cứu liên quan; D5 H4 bị bác bỏ và sửa tra cứu phụ thuộc (E1).
 
 ## Danh sách slide
 
@@ -72,7 +72,7 @@ Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao th�
 - Nhắc lại: Emulator, tương đối; khoảng 30% của Baseline Profile là con số của Google [Baseline-Overview], số đo của chúng ta là số đo khác.
 
 ### S11. Kết luận (60 giây)
-- Ba ý: (1) C1, C2, C3, C5 được ủng hộ sau Holm, C4 không được ủng hộ (F21, Bảng 5.27); H5 bác bỏ cho U01 (1/66), H4 chưa kết luận được; (2) hạn chế: Emulator, một miền, 42/100 build được, n dưới 36; (3) vai trò người kiểm duyệt: guardrail không thay cho kiểm tra, cổng biên dịch và phân loại thủ công, xem kỹ diff chạm cấu hình mạng và khóa Keystore (ARTICLE.md §6.4).
+- Ba ý: (1) C1, C2, C3, C5 được ủng hộ sau Holm, C4 không được ủng hộ (F21, Bảng 5.27); H5 bác bỏ cho U01 (1/66), H4 bác bỏ (0 artifact ảo trong 2105 thể hiện); (2) hạn chế: Emulator, một miền, 42/100 build được, n dưới 36; (3) vai trò người kiểm duyệt: guardrail không thay cho kiểm tra, cổng biên dịch và phân loại thủ công, xem kỹ diff chạm cấu hình mạng và khóa Keystore (ARTICLE.md §6.4).
 - Câu chốt: "Không để trợ lý tự xác nhận mã của chính nó."
 
 ## Slide dự phòng
@@ -80,7 +80,7 @@ Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao th�
 - **D2** Catalogue vấn đề: bảng P, S, U, D rút gọn (ARTICLE.md Chương 3); F04, F05 (kiểm chứng và độ phủ của bộ phát hiện).
 - **D3** Mối đe dọa tới tính hợp lệ (ARTICLE.md §4.10, §5.8).
 - **D4** Nghiên cứu liên quan và khoảng trống (ARTICLE.md §1.2).
-- **D5** Câu hỏi mở của E1: `coordinates.csv` có 2105 thể hiện tọa độ, 22 `hallucinated-version`, không có `hallucinated-artifact`; S11 còn "pending" nên H4 chưa kết luận (F12).
+- **D5** H4 bị bác bỏ: 0 `hallucinated-artifact` trong 2105 thể hiện tọa độ (cận trên theo quy tắc ba 0,14%); `hallucinated-version` 22 ở lần quét đầu, 1 sau sửa tra cứu (21 sai do dấu plugin KSP của `google()` đã cũ). Sửa tra cứu là độ nhạy post hoc: C1 +0,645 (guardrailed 10/34), C2 +3,259, C3 2,33 so với 0,83 trên 1000 dòng, delta +0,513, p thô 0,00055; không kết luận nào đổi (F12, ARTICLE.md §5.2.5 và §5.2.6).
 - **D6** Hỏi: bộ dựng hình có đổi kết quả không? Kiểm soát thăm dò P01+P09 trên swangle_indirect: p90 khung hình −32,3% [−46,8; −11,4] so với −78,2% [−79,1; −76,9] trên swiftshader_indirect, số hàng dựng giống nhau (2.000 → 30 và 31); C5 được đo trên đường cho đối chiếu nhỏ hơn, nên +28,13% không suy ra được cho đường khác (ARTICLE.md §5.3.3).
 
 ## Video (12 clip, `3S-study-work/video/`; A = mã E1, B = bản tối ưu, 14 giây)
