@@ -63,7 +63,13 @@
 
 - File `ui/theme/` gồm `Color.kt`, `Type.kt`, `Spacing.kt`, `Theme.kt`, thay `ShelfTapTheme` hiện tại.
 - **Màu:** một bảng màu Material 3 sáng và tối do nhóm chọn. Màu ngữ nghĩa cho "còn sách", "hết sách", "quá hạn" và "lỗi" không chỉ dựa vào màu mà kèm chữ hoặc icon (Đề cương: Color semantics).
-- **Chữ:** dùng thang typography của Material 3, kiểm tra hiển thị dấu tiếng Việt.
+- **Chữ:** font Nunito (giấy phép SIL OFL, có đủ dấu tiếng Việt), nhóm chọn ngày 2026-11-24 sau khi so bốn font trên cùng một đoạn chữ. Dùng thang typography của Material 3 với các độ đậm 400, 600 và 700; kiểm tra dấu chồng (ỷ, ữ, ặ, ộ) ở cỡ nhỏ và ở font scale 2.0.
+- **Sáng và tối:** mỗi màu là một token có hai giá trị (`Color.kt`), không màn nào viết màu cứng. Mặc định theo cài đặt sáng hoặc tối của máy; Tài khoản có lựa chọn "Giao diện: Theo hệ thống / Sáng / Tối", lưu trên máy. Ở nền tối:
+  - nút chính đổi thành nền sáng chữ tối (đảo vai trò, không giữ nút đen trên nền đen);
+  - kính là lớp tối bán trong với viền sáng mảnh, không phải lớp trắng mờ;
+  - màu trạng thái (còn sách, quá hạn, cảnh báo) dùng tông sáng hơn để giữ tương phản 4.5:1;
+  - bìa chữ giữ màu riêng của sách; bìa màu sáng luôn dùng chữ tối, ở cả hai theme.
+- Mockup (§5.5) dùng đúng bộ token này dưới dạng biến CSS; mỗi màn có nút Sáng/Tối để xem cả hai theme.
 - **Khoảng cách và hình khối:** token 4, 8, 12, 16, 24 dp; không dùng giá trị `dp` hay `Color(...)` viết cứng trong màn hình.
 - **Component dùng chung:** `BookRow`, `CoverImage` (có placeholder và kích thước cố định), `StatusChip`, `EmptyState`, `ErrorState`, `PrimaryButton`.
 - **Kiểm tra:** grep không còn `Color(0x` hay `.dp` lẻ ngoài `ui/theme/` (U04 là quy tắc có thể dò tự động).
@@ -109,7 +115,7 @@ Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho 
 - **Nút kính tròn và nút kính dạng viên thuốc** nổi trên nội dung (quay lại, chia sẻ, menu); **một hành động chính nổi ở đáy** mỗi màn (đặt trước, gia hạn, chạm sách để mượn).
 - **Thẻ bo góc lớn** (22–32 dp), băng cuộn ngang có nhãn kính, chữ đậm cỡ lớn, tông trung tính ấm.
 - **Bìa chữ**: sách không có ảnh bìa (`cover_url` rỗng, như toàn bộ dữ liệu dev) hiện nền màu và tên sách thay vì ô trống.
-- **Font:** Be Vietnam Pro (thiết kế cho tiếng Việt, giấy phép SIL OFL), đóng gói trong app; không tải font qua mạng lúc chạy.
+- **Font:** Nunito (§5.1; thay cho Be Vietnam Pro của bản phác đầu, vì Be Vietnam Pro ở độ đậm 700 trông thô ở cỡ lớn), đóng gói trong app; không tải font qua mạng lúc chạy.
 
 **Các màn (khớp với mockup):**
 
@@ -219,7 +225,7 @@ Nhóm đã chốt (2026-11-23): **một app duy nhất, tự bật hiệu ứng 
 |---|---|---|
 | Hệ thống đang cho phép blur | `WindowManager.isCrossWindowBlurEnabled()` và listener (API 31+) | Hệ thống tắt blur (tiết kiệm pin, máy yếu, cài đặt người dùng) thì app hạ xuống tầng Nhẹ |
 | Màu theo hình nền (Material You) | `dynamicLightColorScheme` / `dynamicDarkColorScheme` (API 31+) | Lớp kính và nền lấy màu hệ thống; màu thương hiệu giữ cho nút chính và logo (nhóm chốt, §11) |
-| Sáng hoặc tối | Theme hệ thống | Đổi độ đậm của lớp kính |
+| Sáng hoặc tối | Theme hệ thống, trừ khi người dùng chọn cố định trong Tài khoản | Đổi toàn bộ token màu (§5.1), kể cả độ đậm và màu của lớp kính |
 | Độ tương phản | `UiModeManager.getContrast()` (API 34+) | Tương phản cao thì giảm độ trong, tăng độ đặc của lớp kính |
 | Hoạt ảnh | Hệ số thời lượng hoạt ảnh của hệ thống | Bằng 0 thì không morph, không chuyển cảnh |
 
@@ -251,6 +257,7 @@ Hiệu ứng động giúp người dùng biết chuyện gì vừa xảy ra (me
 | Chỗ | Hiệu ứng | Thời lượng | Tầng Nhẹ |
 |---|---|---|---|
 | Vào màn | Các khối trồi lên 16 dp và hiện dần, khối sau chậm hơn 80 ms | 420 ms | Hiện ngay |
+| Băng sách ở Danh mục | Bìa ở banner và thẻ trong băng cuộn trồi lên lần lượt, chậm dần 70–90 ms | 420 ms | Hiện ngay |
 | Nút menu | ☰ chuyển thành ✕: hai gạch xoay ±45°, gạch giữa mờ đi | 260 ms | Đổi icon ngay |
 | Menu ☰ | Khung kính phóng từ góc nút (co giãn 0.92 → 1 và hiện dần), các mục chậm dần 35 ms, nền phía sau tối dần | 260 ms, nền 200 ms | Hiện ngay, không blur |
 | Danh sách sách | Hàng trồi lên chậm dần 40 ms (chỉ lần tải đầu); khung xương lấp lánh khi tải; vòng quay "đang tải thêm" | 320 ms; lấp lánh lặp 1.2 s | Khung xương đứng yên |

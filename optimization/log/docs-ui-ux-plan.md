@@ -75,3 +75,12 @@
 - **AI:** Claude Code (Claude Opus 5.5). Người dùng hỏi mockup còn thiếu màn nào so với kế hoạch ban đầu, rồi yêu cầu thêm tất cả. AI dựng 7 màn mới (Splash, Offline, SignedOut, Guest, Notifications, OfflineSearch, Recommend) và đổi link "Xem sách mà không cần đăng nhập" ở màn chào sang màn khách. Đăng lên link mockup bị chặn vì link công khai, đang chờ người dùng đồng ý.
 - **Kiểm thử:** chạy script của cả 20 màn bằng Node, gọi mọi handler một lần và kiểm tra mọi biến trong template đều có giá trị. Lý do đăng xuất lấy từ `session/SessionState.kt`, hành vi cảnh báo máy lấy từ `ui/Common.kt`, việc API chưa có thông báo đẩy kiểm tra trong `server/API.md`. Chưa mở mockup ra xem.
 - **Ghi chú cho báo cáo:** thông báo trên màn khóa là một điểm giao giữa UX và bảo mật: hữu ích nhưng không được lộ sách đã mượn.
+
+## 2026-11-24 04:18 · Font Nunito, theme sáng và tối, thẻ hiện lần lượt
+
+- **Vấn đề:** người dùng thấy font Be Vietnam Pro trong mockup chưa ưng ý, và mockup chưa có theme tối. Hiệu ứng vào màn chỉ áp cho cả khối, nên thẻ trong băng sách không hiện lần lượt.
+- **Thay đổi:** §5.1 chốt font Nunito và thêm quy tắc sáng/tối (token hai giá trị, theo máy hoặc chọn trong Tài khoản, nút chính đảo màu ở nền tối, kính tối bán trong, màu trạng thái sáng hơn, bìa sáng giữ chữ tối). §5.5 đổi dòng font. §6.3 bảng đồng bộ hệ thống ghi rằng người dùng có thể chọn cố định. §6.5 thêm dòng băng sách ở Danh mục.
+- **Đo trước → sau:** chưa đo: đây là kế hoạch. Tương phản ở nền tối chưa kiểm bằng công cụ.
+- **AI:** Claude Code (Claude Opus 5.5). AI giải thích nguyên nhân chính của cảm giác thô là độ đậm 700 ở cỡ lớn, dựng bảng so bốn font (Be Vietnam Pro, Inter, Plus Jakarta Sans, Nunito) ở nền sáng và tối, và nghiêng về Plus Jakarta Sans; người dùng chọn Nunito. AI đổi font và gom mọi màu viết cứng của 20 màn mockup thành biến CSS bằng một script có xét ngữ cảnh (nền, chữ, viền, nút chính), thêm nút Sáng/Tối cho từng màn và lựa chọn giao diện trong Tài khoản. Mockup chưa lên link vì việc đăng bị chặn, đang chờ người dùng đồng ý.
+- **Kiểm thử:** chạy script của cả 20 màn bằng Node, gọi mọi handler và kiểm tra biến trong template. Chưa xem mockup ở nền tối bằng mắt.
+- **Ghi chú cho báo cáo:** đây là ví dụ cho câu hỏi nghiên cứu về vai trò của AI: AI đề xuất, con người chọn font theo cảm nhận.
