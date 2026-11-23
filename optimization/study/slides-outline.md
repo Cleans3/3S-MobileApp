@@ -2,7 +2,7 @@
 
 Bài trình bày 10 phút theo kịch bản của đề cương (mục VII): 1 phút vấn đề, 2 phút demo UI phiên bản A, 2 phút bảo mật, 2 phút AI phân tích và tối ưu, 2 phút demo phiên bản B, 1 phút kết luận. Nguồn nội dung là `ARTICLE.md` (Chương 5 và 6); kịch bản lời nói ở `presentation-script.md`; hình ở `figures/out/` (SVG, số liệu vẽ trong `.data.csv` cạnh từng hình; kế hoạch và các sai khác ở `figures/PLAN.md` mục 6).
 
-**Quy tắc.** (1) Mọi con số trên slide có trong ARTICLE.md và chép từ một REPORT hoặc CSV đã commit; không tính lại, trừ hiệu chỉnh Holm (Bảng 5.27). Người điều phối đối chiếu trước buổi trình bày. (2) Chỗ còn trống chỉ là **tài nguyên** (video, ảnh chụp), ghi `[TÀI NGUYÊN: ...]`, không phải số liệu. (3) Quay trước video thao tác và chụp sẵn Profiler, MobSF; video A/B do chủ E2 quay, và cần quay lại cho biến thể A lấy từ mã E1 (`e2-bench/REPORT.md` mục 10). (4) Chữ trên slide ngắn, một ý một slide. (5) Nhân quả luôn viết là "giả thuyết"; không viết "AI gây ra". (6) Slide kết quả ghi rõ xác nhận hay mô tả, và nêu một giới hạn chính.
+**Quy tắc.** (1) Mọi con số trên slide có trong ARTICLE.md và chép từ một REPORT hoặc CSV đã commit; không tính lại, trừ hiệu chỉnh Holm (Bảng 5.27). Người điều phối đối chiếu trước buổi trình bày. (2) Chỗ còn trống chỉ là **tài nguyên** (ảnh chụp, đoạn mã, prompt), ghi `[TÀI NGUYÊN: ...]`, không phải số liệu. (3) Chụp sẵn Profiler, MobSF; video A/B đã có: 12 clip quay cho biến thể A lấy từ mã E1, 14 giây, 720x1280, cùng thao tác ngón tay, trong `3S-study-work/video/` (tên ở mục Video bên dưới; `e2-bench/REPORT.md` mục 9). Không dùng các clip thí điểm `P08-*`, `P06-*`, `P01P09-*`, `P13-*`. (4) Chữ trên slide ngắn, một ý một slide. (5) Nhân quả luôn viết là "giả thuyết"; không viết "AI gây ra". (6) Slide kết quả ghi rõ xác nhận hay mô tả, và nêu một giới hạn chính.
 
 ## Phân bổ thời gian (tổng 10 phút)
 
@@ -36,7 +36,7 @@ Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao th�
 
 ### S4. Demo UI, phiên bản A (75 giây)
 - Thông điệp: cuộn danh sách bản A; những gì công cụ đo cho thấy.
-- Video: cuộn danh sách bản A. [TÀI NGUYÊN: video A cho mã E1, chủ E2.]
+- Video: `P09c-A-scroll.mp4` (danh sách P01+P09) rồi `P08c-A-scroll.mp4` (thẻ lưới P08, quay trên swangle_indirect); thay thế: `P06c-A-scroll.mp4`, `P13c-A-search.mp4`.
 - Bảng nhỏ (Bảng 5.13 và 5.15, trung vị các lần lặp được giữ): thẻ lưới P08, CPU khung hình p90 là 62,87 ms và 70,52% khung chậm (đường GPU swangle_indirect); danh sách P01+P09 dựng 2.000 khoản vay, TTID 1.901 ms và 90,05% khung chậm.
 
 ### S5. Bản nháp của AI chứa gì (60 giây)
@@ -66,7 +66,7 @@ Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao th�
 
 ### S10. Demo phiên bản B (2 phút)
 - Thông điệp: lặp lại đúng thao tác cũ trên bản B; so sánh trước và sau.
-- Video: bản B cạnh bản A. [TÀI NGUYÊN: video A/B cho mã E1, chủ E2.]
+- Video: bản B cạnh bản A, cùng thao tác: `P08c-{A,B}-scroll.mp4` (C5), `P09c-{A,B}-scroll.mp4`, `P06c-{A,B}-scroll.mp4`, `P13c-{A,B}-search.mp4`. Hai cặp `P01c-{A,B}-scroll.mp4` và `P03P04c-{A,B}-scroll.mp4` không có khác biệt nhìn thấy, đúng như số đo (dùng khi được hỏi).
 - C5 (xác nhận): P08 p90 62,87 so với 49,07 ms, delta% +28,13% [13,38; 54,31], p hiệu chỉnh 0,000616: ủng hộ, trên một đường GPU của emulator, bộ nhớ đồ họa không đo (F14).
 - Mô tả (F13, F15): P06 byte giải mã −96,9%; P01+P09 TTID 1.901 xuống 573,1 ms, khung chậm 90,05% xuống 1,255%; P13 tổng thời gian truy vấn 634,9 xuống 85,42 ms nhưng khung hình không cải thiện; P03+P04 và nhân tố con P01: không có chi phí đo được; R8: APK −90,4%; Baseline Profile: TTID −5,88%.
 - Nhắc lại: Emulator, tương đối; khoảng 30% của Baseline Profile là con số của Google [Baseline-Overview], số đo của chúng ta là số đo khác.
@@ -81,6 +81,10 @@ Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao th�
 - **D3** Mối đe dọa tới tính hợp lệ (ARTICLE.md §4.10, §5.8).
 - **D4** Nghiên cứu liên quan và khoảng trống (ARTICLE.md §1.2).
 - **D5** Câu hỏi mở của E1: `coordinates.csv` có 2105 thể hiện tọa độ, 22 `hallucinated-version`, không có `hallucinated-artifact`; S11 còn "pending" nên H4 chưa kết luận (F12).
+- **D6** Hỏi: bộ dựng hình có đổi kết quả không? Kiểm soát thăm dò P01+P09 trên swangle_indirect: p90 khung hình −32,3% [−46,8; −11,4] so với −78,2% [−79,1; −76,9] trên swiftshader_indirect, số hàng dựng giống nhau (2.000 → 30 và 31); C5 được đo trên đường cho đối chiếu nhỏ hơn, nên +28,13% không suy ra được cho đường khác (ARTICLE.md §5.3.3).
+
+## Video (12 clip, `3S-study-work/video/`; A = mã E1, B = bản tối ưu, 14 giây)
+`P08c-{A,B}-scroll.mp4` (thẻ lưới, quay trên swangle_indirect), `P06c-{A,B}-scroll.mp4`, `P09c-{A,B}-scroll.mp4` (danh sách P01+P09), `P01c-{A,B}-scroll.mp4`, `P03P04c-{A,B}-scroll.mp4`, `P13c-{A,B}-search.mp4`.
 
 ## Hình (đã dựng, `figures/out/`)
 | Hình | Dùng ở | Tệp |

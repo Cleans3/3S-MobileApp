@@ -1,6 +1,6 @@
 # presentation-script.md — kịch bản trình bày 10 phút (số liệu cuối, khớp ARTICLE.md)
 
-Theo kịch bản của đề cương (mục VII). Slide: `slides-outline.md`; hình ở `figures/out/`. Mọi con số dưới đây có trong `ARTICLE.md` và chép từ REPORT hoặc CSV đã commit (hiệu chỉnh Holm là phép tính của bài, Bảng 5.27); người điều phối đối chiếu lại trước buổi trình bày. Khi kết quả là "không kết luận được" hoặc "không được ủng hộ", nói đúng như vậy ở vị trí ngang bằng với kết quả khác. Chỗ ghi `[TÀI NGUYÊN: ...]` là video hoặc ảnh chụp chưa có, không phải số liệu. Lời ở ngôi "chúng tôi"; số từ mỗi đoạn đếm theo khoảng trắng (kiểm bằng máy), mục tiêu khoảng 130 từ mỗi phút.
+Theo kịch bản của đề cương (mục VII). Slide: `slides-outline.md`; hình ở `figures/out/`. Mọi con số dưới đây có trong `ARTICLE.md` và chép từ REPORT hoặc CSV đã commit (hiệu chỉnh Holm là phép tính của bài, Bảng 5.27); người điều phối đối chiếu lại trước buổi trình bày. Khi kết quả là "không kết luận được" hoặc "không được ủng hộ", nói đúng như vậy ở vị trí ngang bằng với kết quả khác. Chỗ ghi `[TÀI NGUYÊN: ...]` là ảnh chụp, đoạn mã hoặc prompt chưa có, không phải số liệu; video đã có (12 clip, tên ở mục Video của `slides-outline.md`). Lời ở ngôi "chúng tôi"; số từ mỗi đoạn đếm theo khoảng trắng (kiểm bằng máy), mục tiêu khoảng 130 từ mỗi phút.
 
 | Đoạn | Thời lượng | Slide | Từ mục tiêu | Từ thực tế |
 |---|---|---|---|---|
@@ -26,7 +26,7 @@ Theo kịch bản của đề cương (mục VII). Slide: `slides-outline.md`; h
 
 **Lời nói (S4, 75 giây).** "Đây là bản A. Chúng tôi cuộn danh sách. Với thẻ lưới có đổ bóng, lớp phủ gradient và bìa vẽ bằng canvas, thời gian CPU khung hình ở phân vị 90 là 62,87 mili giây, và 70,52 phần trăm khung hình chậm. Với màn chi tiết dựng cùng lúc 2.000 khoản vay, thời gian đến hiển thị đầu là 1.901 mili giây và 90,05 phần trăm khung hình chậm. Đây là trung vị của ít nhất 12 lần lặp xen kẽ A và B, không phải một lần đo. Riêng thẻ lưới phải đo trên một đường kết xuất GPU khác của máy ảo, vì bản port làm sập đường mặc định; số tuyệt đối của nó không so được với các nhân tố khác."
 
-**Thao tác.** S4 phát video cuộn bản A, tạm dừng ở thời điểm đáng chú ý; hiện bảng nhỏ (Bảng 5.13, 5.15). [TÀI NGUYÊN: video A cho mã E1 chưa quay lại, chủ E2.] Nếu video lỗi: ảnh chụp Profiler chụp sẵn.
+**Thao tác.** S4 phát video cuộn bản A (`P09c-A-scroll.mp4`, rồi `P08c-A-scroll.mp4`), tạm dừng ở thời điểm đáng chú ý; hiện bảng nhỏ (Bảng 5.13, 5.15). Nếu video lỗi: ảnh chụp Profiler chụp sẵn.
 **Lưu ý.** Chỉ nói "cao hơn" khi nêu đúng số; số của thẻ lưới là trên đường GPU khác (A14), không so với số của nhân tố khác.
 
 ## 3. Bảo mật (3:00 đến 5:00) — S5, S6
@@ -53,7 +53,7 @@ Theo kịch bản của đề cương (mục VII). Slide: `slides-outline.md`; h
 
 **Lời nói.** "Bây giờ lặp lại đúng thao tác cũ trên bản B, cùng dữ liệu, cùng kịch bản cuộn. Với hiệu ứng trang trí, phép kiểm định đã đăng ký trước cho kết quả: thời gian CPU khung hình phân vị 90 giảm từ 62,87 xuống 49,07 mili giây, tức A cao hơn B cộng 28,13 phần trăm, khoảng tin cậy từ 13,38 đến 54,31, p hiệu chỉnh 0,000616: được ủng hộ, trên một đường GPU của máy ảo; bộ nhớ đồ họa chúng tôi không đo. Với ảnh, số byte bitmap giải mã giảm 96,9 phần trăm. Với danh sách lazy, thời gian đến hiển thị đầu giảm từ 1.901 xuống 573,1 mili giây, và khung hình chậm từ 90,05 xuống 1,255 phần trăm. Với tìm kiếm, tổng thời gian truy vấn giảm từ 634,9 xuống 85,42 mili giây, nhưng khung hình không cải thiện. Hai nhân tố cho kết quả rỗng: danh sách không key, và tham số không ổn định với Kotlin 2.4.21, nơi strong skipping là mặc định. R8 giảm APK 90,4 phần trăm; Baseline Profile giảm khởi động 5,88 phần trăm, trong khi con số khoảng 30 phần trăm là của Google, còn số đo của chúng tôi là số đo khác, trên ứng dụng một màn hình. Tất cả là máy ảo: chúng tôi chỉ khẳng định chiều hướng."
 
-**Thao tác.** S10 phát video A và B cạnh nhau; hiện F14 (C5) rồi F13. [TÀI NGUYÊN: video A/B cho mã E1, chủ E2.] Nếu video lỗi: ảnh chụp sẵn.
+**Thao tác.** S10 phát video A và B cạnh nhau (`P08c-{A,B}-scroll.mp4`, rồi `P09c-{A,B}-scroll.mp4`); hiện F14 (C5) rồi F13. Nếu video lỗi: ảnh chụp sẵn.
 **Lưu ý.** Không nêu delta% nào ngoài bảng; nhân tố có khoảng chứa 0 thì nói "không có khác biệt đo được trong thiết kế này".
 
 ## 6. Kết luận (9:00 đến 10:00) — S11
@@ -69,6 +69,7 @@ Theo kịch bản của đề cương (mục VII). Slide: `slides-outline.md`; h
 | Câu hỏi có thể gặp | Hướng trả lời (nguồn trong bài) |
 |---|---|
 | Sao không đo trên điện thoại thật? | Chỉ có Emulator; mọi số đo E2 là bằng chứng tương đối; đã nêu là mối đe dọa (§4.10, §5.8). |
+| Bộ dựng hình (renderer) có đổi kết quả không? | Có, ở khung hình: kiểm soát thăm dò P01+P09 trên swangle_indirect cho p90 −32,3% [−46,8; −11,4] thay vì −78,2% trên swiftshader_indirect; số hàng dựng (2.000 → 30 và 31) giống nhau. C5 được đo trên đường cho đối chiếu nhỏ hơn, nên +28,13% không suy ra cho đường khác (§5.3.3). |
 | Sao thẻ lưới đo trên đường GPU khác? | Bản port của ứng viên P08 làm sập đường mặc định, bản gốc thì không; theo A10 là lỗi của bản port nên giữ ứng viên và đo trên swangle_indirect (A14); chỉ đọc đối chiếu A/B (§5.3.3). |
 | C5 có nghĩa là hiệu ứng trang trí của AI luôn tốn 28%? | Không: một ứng viên, một lần chạy E1, một đường GPU của emulator, 12 lần giữ mỗi biến thể; bộ nhớ đồ họa không đo (§5.3.3). |
 | Có chứng minh AI gây ra lỗi không? | Không: so với tỷ lệ nền của người, dữ liệu quan sát; nhân quả chỉ là giả thuyết khi chưa có nhánh kiểm tra (§1.3). |
@@ -85,7 +86,7 @@ Theo kịch bản của đề cương (mục VII). Slide: `slides-outline.md`; h
 
 ## Chuẩn bị trước buổi trình bày
 - [ ] Mọi số trên slide đã đối chiếu với ARTICLE.md, CSV hoặc khóa của `references.md` (người điều phối).
-- [ ] [TÀI NGUYÊN] Video A và B (quay lại cho mã E1), ảnh chụp Profiler và MobSF đã tải sẵn, mở được không cần mạng.
+- [ ] 12 clip trong `3S-study-work/video/` đã chép vào thư mục slide, ảnh chụp Profiler và MobSF [TÀI NGUYÊN: chưa có] đã tải sẵn, mở được không cần mạng.
 - [ ] Đã chạy thử bằng đồng hồ: mỗi đoạn không vượt thời lượng ở bảng đầu.
 - [ ] Phương án khi video lỗi: ảnh chụp chụp sẵn ở cùng thư mục với slide.
-- [ ] Slide dự phòng D1 đến D5 sẵn sàng cho câu hỏi.
+- [ ] Slide dự phòng D1 đến D6 sẵn sàng cho câu hỏi.
