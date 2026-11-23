@@ -44,6 +44,8 @@ a{color:#ffffff}a:hover{opacity:.85}
 @media (prefers-color-scheme: dark){.st-root[data-theme="auto"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}}
 .st-root button,.st-root input{color:var(--ink)}
 .st-root ::placeholder{color:var(--ink3);opacity:1}
+.st-root :is(button,a,[role="switch"]){position:relative}
+.st-root :is(button,a,[role="switch"])::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,48px);height:max(100%,48px);transform:translate(-50%,-50%)}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg2); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">

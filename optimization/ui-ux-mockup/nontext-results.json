@@ -62,6 +62,30 @@
  {
   "file": "Account.dc.html",
   "theme": "light",
+  "kind": "boundary",
+  "required": false,
+  "where": "a",
+  "ratio": 1,
+  "pass": false,
+  "fg": "#fbfaf9",
+  "bg": "#fbfaf9",
+  "gradient": false
+ },
+ {
+  "file": "Account.dc.html",
+  "theme": "light",
+  "kind": "icon",
+  "required": false,
+  "where": "",
+  "ratio": 7.04,
+  "pass": true,
+  "fg": "#5c554e",
+  "bg": "#fbfaf9",
+  "gradient": false
+ },
+ {
+  "file": "Account.dc.html",
+  "theme": "light",
   "kind": "switch-track (tắt)",
   "required": true,
   "where": "Khóa bằng vân tay",
@@ -189,6 +213,30 @@
   "pass": true,
   "fg": "#1c1b1a",
   "bg": "#9fd3ac",
+  "gradient": false
+ },
+ {
+  "file": "Account.dc.html",
+  "theme": "dark",
+  "kind": "boundary",
+  "required": false,
+  "where": "a",
+  "ratio": 1,
+  "pass": false,
+  "fg": "#272420",
+  "bg": "#272420",
+  "gradient": false
+ },
+ {
+  "file": "Account.dc.html",
+  "theme": "dark",
+  "kind": "icon",
+  "required": false,
+  "where": "",
+  "ratio": 5.93,
+  "pass": true,
+  "fg": "#a99f94",
+  "bg": "#272420",
   "gradient": false
  },
  {
@@ -616,6 +664,30 @@
   "theme": "light",
   "kind": "boundary",
   "required": false,
+  "where": "a",
+  "ratio": 1,
+  "pass": false,
+  "fg": "#f8f6f4",
+  "bg": "#f8f6f4",
+  "gradient": false
+ },
+ {
+  "file": "Catalog.dc.html",
+  "theme": "light",
+  "kind": "icon",
+  "required": false,
+  "where": "",
+  "ratio": 16.56,
+  "pass": true,
+  "fg": "#1c1b1a",
+  "bg": "#fbfaf9",
+  "gradient": false
+ },
+ {
+  "file": "Catalog.dc.html",
+  "theme": "light",
+  "kind": "boundary",
+  "required": false,
   "where": "Đóng menu",
   "ratio": 1.19,
   "pass": false,
@@ -813,6 +885,30 @@
   "pass": true,
   "fg": "#f2eee9",
   "bg": "#2a2723",
+  "gradient": false
+ },
+ {
+  "file": "Catalog.dc.html",
+  "theme": "dark",
+  "kind": "boundary",
+  "required": false,
+  "where": "a",
+  "ratio": 1,
+  "pass": false,
+  "fg": "#23201d",
+  "bg": "#23201d",
+  "gradient": false
+ },
+ {
+  "file": "Catalog.dc.html",
+  "theme": "dark",
+  "kind": "icon",
+  "required": false,
+  "where": "",
+  "ratio": 13.32,
+  "pass": true,
+  "fg": "#f2eee9",
+  "bg": "#282421",
   "gradient": false
  },
  {

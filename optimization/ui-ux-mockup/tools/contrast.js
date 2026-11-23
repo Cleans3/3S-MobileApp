@@ -170,7 +170,7 @@ function audit(file, theme, boardDir = dir) {
   });
 }
 
-module.exports = { audit, ratio, parseColor };
+module.exports = { audit, ratio, parseColor, parse, expand, styleMap, resolveVars, tokensOf };
 if (require.main !== module) return;
 
 const files = fs.readdirSync(dir).filter(f => f.endsWith('.dc.html')).sort();

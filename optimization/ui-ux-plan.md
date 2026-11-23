@@ -84,7 +84,7 @@
 
 | Việc | Cách kiểm tra |
 |---|---|
-| Thêm icon cho 5 tab và `contentDescription` lấy từ string resource | Accessibility Scanner, TalkBack |
+| Icon cho các mục của menu ☰ (thay cho 5 tab, §6.2); mọi nút chỉ có icon có `contentDescription` lấy từ string resource | Accessibility Scanner, TalkBack |
 | Ảnh bìa: mô tả là tên sách, hoặc để trang trí nếu tên sách đã đọc ngay bên cạnh | TalkBack đọc mỗi hàng một lần, không lặp |
 | Vùng chạm tối thiểu 48 dp (`minimumInteractiveComponentSize`) | Accessibility Scanner |
 | Contrast chữ đạt 4.5:1 (WCAG 2.2 AA) ở cả theme sáng và tối | Accessibility Scanner, UI Check Mode của Android Studio |
@@ -107,6 +107,8 @@
   - Công tắc tắt chỉ đạt 1.59 đến 1.94, và rãnh bật ở nền tối đạt 1.97. Đã đổi sang kiểu Material 3: rãnh tắt có viền và núm màu `ink3`; rãnh bật dùng token `switch-on` riêng cho từng theme.
   - Viền ô nhập chỉ đạt 1.33 đến 1.5, còn khung ô tìm kiếm gần như không thấy (1.0 đến 1.2). Đã đổi sang viền 50% của màu chữ.
   - 62 icon đứng cạnh chữ đều đạt. Mép các nút kính phần lớn dưới 3:1; đây là chủ ý của phong cách kính và SC 1.4.11 không bắt buộc, vì chữ hoặc icon trong nút đã nhận diện được nút. Nếu bài test UX (§8.3) cho thấy người dùng khó nhận ra nút thì tăng viền.
+**Vùng chạm trên mockup (2026-11-24).** `optimization/ui-ux-mockup/tools/target-size.js` đọc kích thước của 135 nút, link và công tắc trên 20 màn. 32 cái vẽ nhỏ hơn 48 px: công tắc (52×32), chip và tab (40), nút "Không quan tâm" (36), vài nút 44, và 4 link chữ không có padding. Mockup giữ nguyên kích thước vẽ nhưng mở rộng vùng chạm lên ít nhất 48 × 48 px bằng một lớp trong suốt (`::after`), cùng ý với `minimumInteractiveComponentSize` của Compose; hàng chip cuộn ngang được thêm padding để không cắt mất vùng chạm. Kết quả: 0 vùng chạm dưới 48 px. Khi làm app, đo lại bằng Accessibility Scanner.
+
 - **Giới hạn:** mockup là trang web. Kính thật có blur trên nền đang cuộn nên màu nền thay đổi theo nội dung; khi làm app phải đo lại bằng Accessibility Scanner trên máy.
 
 ### 5.4 Trạng thái UI (U05)
@@ -164,7 +166,7 @@ Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho 
 - **Chế độ khách:** phụ thuộc mục 2 ở §11. Không có nút tự mượn; nút nổi đổi thành "Đăng nhập để mượn sách"; đăng nhập xong quay lại đúng cuốn sách.
 - **Thông báo:** giải thích trước, rồi mới gọi hộp thoại xin quyền của hệ thống (`POST_NOTIFICATIONS`, Android 13 trở lên). Trên màn khóa dùng bản công khai không có tên sách (`VISIBILITY_PRIVATE` kèm `setPublicVersion`), vì sách đã mượn là dữ liệu nhạy cảm (`SPEC.md` §7, Nghị định 13/2023). Nhắc hạn trả tính trên máy từ `dueAt` của `Loan` (WorkManager), không cần API mới. Báo sách đặt trước đã sẵn sàng thì **`server/API.md` chưa có** cơ chế đẩy; cần sửa API trước (§11).
 - **Tìm khi không có mạng:** mở ngay, không có khung xương. Không hiện số bản còn vì bản lưu không chứa `copiesAvailable` (phần A2 của `optimization/search-recommend-plan.md`).
-- **Gợi ý cho bạn:** ba trạng thái theo phần B của kế hoạch tìm kiếm và gợi ý: đăng nhập bằng mật khẩu (theo lịch sử và sách đang mượn), đăng nhập bằng thẻ (chỉ theo sách đang mượn, kèm nút nhập mật khẩu), lịch sử tắt và không mượn gì (không có gợi ý). Mỗi gợi ý có lý do và nút "Không quan tâm".
+- **Gợi ý cho bạn:** ba trạng thái theo phần B của kế hoạch tìm kiếm và gợi ý: đăng nhập bằng mật khẩu (theo lịch sử và sách đang mượn), đăng nhập bằng thẻ (chỉ theo sách đang mượn, kèm nút nhập mật khẩu), lịch sử tắt và không mượn gì (không có gợi ý). Mỗi gợi ý có lý do và nút "Không quan tâm". Mockup mở màn này từ menu ☰, vì màn Danh mục không còn chỗ; phần B4 của kế hoạch tìm kiếm và gợi ý vẫn đề xuất thêm một băng "Gợi ý cho bạn" trên Danh mục khi làm app. Cài đặt thông báo mở từ Tài khoản.
 
 **Theo tầng (§6.3):** blur thật chỉ ở tầng Đầy đủ. Tầng Vừa và Nhẹ thay vùng mờ dần bằng **dải gradient phủ** (scrim) và nền bán trong suốt: trông gần giống mà rẻ hơn nhiều.
 
@@ -196,7 +198,7 @@ Tác vụ phụ (nếu còn thời gian): đặt trước một sách đã hết
 | Task flow, perceived performance: phải bấm nút mới tìm | Tìm khi đang gõ, có debounce, hủy truy vấn cũ (guardrail quy tắc 17) | Ít request hơn, mỗi lần gõ không bắn một request |
 | Feedback: tự mượn chỉ có spinner | Rung nhẹ khi đọc được thẻ, rồi trạng thái "đang gửi", rồi kết quả | Giúp đạt cảm nhận "dưới 1 s" |
 | Error recovery | Mỗi lỗi có một hành động tiếp theo (thử lại, xem tiền phạt, liên hệ thủ thư) | – |
-| Navigation, iconography | Bỏ thanh 5 tab. Nút kính ☰ ở góc trên trái mở một **khung kính bo góc xếp dọc** (Danh mục, Sách đang mượn, Đặt trước, Lịch sử đọc, Tài khoản); icon ☰ morph thành ✕ khi mở; đóng bằng bấm ra ngoài, cử chỉ quay lại hoặc chọn mục. **Tự mượn sách** không nằm trong menu mà là nút nổi "Chạm sách để mượn" luôn hiện ở đáy các màn chính | Blur của menu chỉ chạy khi menu mở, lúc nội dung phía sau đứng yên |
+| Navigation, iconography | Bỏ thanh 5 tab. Nút kính ☰ ở góc trên trái mở một **khung kính bo góc xếp dọc** (Danh mục, Gợi ý cho bạn, Sách đang mượn, Đặt trước, Lịch sử đọc, Tài khoản; khách chỉ thấy Danh mục, Tất cả sách và Đăng nhập); icon ☰ morph thành ✕ khi mở; đóng bằng bấm ra ngoài, cử chỉ quay lại hoặc chọn mục. **Tự mượn sách** không nằm trong menu mà là nút nổi "Chạm sách để mượn" luôn hiện ở đáy các màn chính | Blur của menu chỉ chạy khi menu mở, lúc nội dung phía sau đứng yên |
 | Navigation: rủi ro của menu ☰ | Menu ☰ giấu điều hướng, nên có thể làm chậm người dùng. Đo trực tiếp trong bài test UX: A (app hiện tại, thanh tab) với B (menu ☰ cộng nút nổi), trên T2 và T3 (§8.3) | – |
 | Cognitive load | Hàng sách chỉ hiện tên, tác giả, tình trạng; chi tiết để ở trang riêng | Hàng nhẹ hơn, cuộn mượt hơn |
 
@@ -428,4 +430,5 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 - Bảng chi phí hiệu ứng theo tầng (§8.5) và ngưỡng đã chốt cho từng tầng.
 - `optimization/ux-test.md`: kịch bản, phiếu ghi và kết quả A/B.
 - `optimization/log/<tên-nhánh>.md`: nhật ký từng thay đổi, gồm cả phần AI đề xuất và phần con người sửa.
+- `optimization/ui-ux-mockup/`: mã nguồn mockup 20 màn và các script đo (tương phản chữ, tương phản icon và viền, vùng chạm), chạy lại được để lấy số cho báo cáo.
 - Bảng chỉ số UI và UX trước/sau, ảnh chụp trước/sau, và một đoạn cho báo cáo và slide.

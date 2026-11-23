@@ -2,7 +2,7 @@
 
 Mã nguồn của mockup 20 màn ở `optimization/ui-ux-plan.md` §5.5, cùng các script đo dùng cho §5.3.
 
-- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 16 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập sau khi đo tương phản cho icon và viền (bản 15), và viền của ô tìm kiếm ở màn Khách (bản 16).
+- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 17 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý (menu ☰) và cài đặt Thông báo (Tài khoản) (bản 17).
 - **Mở trực tiếp không chạy:** mỗi màn cần runtime `support.js` của trình xem artifact, file đó không có trong repo. Các script dưới đây không cần runtime: chúng tự đọc template và chạy phần script của từng màn.
 
 ## Nội dung
@@ -13,6 +13,7 @@ Mã nguồn của mockup 20 màn ở `optimization/ui-ux-plan.md` §5.5, cùng c
 | `canvas.json` | Vị trí và tên các màn trên canvas |
 | `tools/contrast.js` | Đo tương phản WCAG cho mọi đoạn chữ, ở theme sáng và tối (SC 1.4.3) |
 | `tools/nontext-contrast.js` | Đo tương phản cho icon, viền ô nhập, công tắc và trạng thái đang chọn (SC 1.4.11) |
+| `tools/target-size.js` | Đọc kích thước vẽ và vùng chạm của mọi nút, link và công tắc |
 | `tools/hero-worst-case.js` | Tính riêng chữ trắng trên ảnh ở màn chào, ở trường hợp xấu nhất |
 | `tools/check-scripts.js` | Chạy script của từng màn, gọi mọi handler, kiểm tra mọi biến trong template đều có giá trị |
 | `contrast-results.json` | Kết quả của `tools/contrast.js` |
@@ -26,6 +27,7 @@ Cần Node 18 trở lên. Chạy trong thư mục này:
 node tools/check-scripts.js .
 node tools/contrast.js .
 node tools/nontext-contrast.js .
+node tools/target-size.js .
 node tools/hero-worst-case.js
 ```
 
@@ -90,5 +92,15 @@ Lỗi ở bản 14 và cách sửa ở bản 15:
 - **Ô tìm kiếm ở màn Khách:** đây là link mở màn Danh sách nhưng trông như ô nhập, nên không nằm trong nhóm bắt buộc. Bản 16 vẫn cho nó cùng viền với các ô tìm kiếm khác (3.15 ở nền sáng, 4.74 ở nền tối) để giao diện nhất quán, và đặt tên "Tìm sách" cho trình đọc màn hình.
 
 Mép nút kính không đạt 3:1 là chủ ý của phong cách kính và không bắt buộc. Khi làm app, nếu kiểm tra với người dùng cho thấy khó nhận ra nút thì tăng viền.
+
+## Vùng chạm (kế hoạch: 48 dp; WCAG 2.2 SC 2.5.8 AA: 24 px)
+
+`tools/target-size.js` đọc `width`, `height` và `min-height` của từng nút, link và công tắc sau khi dựng màn. Màn nào có quy tắc `::after` (lớp trong suốt rộng ít nhất 48 × 48 px quanh mỗi nút) thì vùng chạm tính là ít nhất 48 px. Script không biết phần tử cha có cắt mất lớp đó hay không, nên các hàng cuộn ngang được kiểm bằng mắt.
+
+| | Bản 16 | Bản 17 |
+|---|---|---|
+| Nút, link, công tắc | 133 | 135 (thêm 2 lối vào) |
+| Vẽ nhỏ hơn 48 px | 32 | 32 (giữ nguyên hình) |
+| Vùng chạm nhỏ hơn 48 px | 32, cộng 4 link chữ không rõ kích thước | 0 |
 
 Chi tiết từng lỗi và cách sửa: `optimization/ui-ux-plan.md` §5.3 và `optimization/log/docs-ui-ux-plan.md`.

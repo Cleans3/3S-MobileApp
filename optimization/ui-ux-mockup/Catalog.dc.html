@@ -33,6 +33,8 @@ a{color:var(--ink)}a:hover{opacity:.85}
 @media (prefers-color-scheme: dark){.st-root[data-theme="auto"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}}
 .st-root button,.st-root input{color:var(--ink)}
 .st-root ::placeholder{color:var(--ink3);opacity:1}
+.st-root :is(button,a,[role="switch"]){position:relative}
+.st-root :is(button,a,[role="switch"])::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,48px);height:max(100%,48px);transform:translate(-50%,-50%)}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
@@ -200,6 +202,7 @@ class Component extends DCLogic {
       ],
       menu: [
         menuItem('Danh mục', 'Catalog.dc.html', 'M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z', 'M8 7h7', true),
+        menuItem('Gợi ý cho bạn', 'Recommend.dc.html', 'M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z', '', false),
         menuItem('Sách đang mượn', 'Loans.dc.html', 'M12 7v5l3 2', 'M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z', false),
         menuItem('Đặt trước', 'Reservations.dc.html', 'M6 3h12v18l-6-4-6 4z', 'M9 9h6', false),
         menuItem('Lịch sử đọc', 'History.dc.html', 'M3 12a9 9 0 1 0 3-6.7L3 8', 'M3 3v5h5', false),

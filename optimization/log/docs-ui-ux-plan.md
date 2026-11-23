@@ -129,3 +129,12 @@
 - **AI:** Claude Code (Claude Opus 5.5) tự phát hiện khi đối chiếu lại số đo với commit trước.
 - **Kiểm thử:** không áp dụng.
 - **Ghi chú cho báo cáo:** không có.
+
+## 2026-11-24 04:40 · Rà lại mockup: lối vào còn thiếu và vùng chạm
+
+- **Vấn đề:** người dùng yêu cầu kiểm tra xem còn thiếu gì. Rà bằng script cho thấy: màn Gợi ý cho bạn và cài đặt Thông báo không có màn nào dẫn tới; 32 trong 133 nút, link và công tắc có vùng chạm dưới 48 px (công tắc 52×32, chip và tab 40, "Không quan tâm" 36, vài nút 44), và 4 link chữ không có padding. Kế hoạch còn câu "thêm icon cho 5 tab" dù thanh 5 tab đã bỏ, danh sách menu chưa có Gợi ý, và §12 chưa liệt kê thư mục mockup.
+- **Thay đổi:** mockup: mọi nút, link và công tắc có vùng chạm ít nhất 48 × 48 px bằng lớp `::after` trong suốt (hình giữ nguyên), hàng chip cuộn ngang thêm padding để không cắt vùng chạm; menu ☰ thêm "Gợi ý cho bạn"; Tài khoản thêm dòng "Thông báo". Thêm `tools/target-size.js`; `tools/contrast.js` xuất thêm các hàm dựng màn. Kế hoạch: sửa §5.3 (icon menu thay 5 tab, thêm kết quả vùng chạm), §5.5 (lối vào Gợi ý và Thông báo), §6.2 (danh sách menu, menu của khách), §12 (thư mục mockup). README lên bản 17.
+- **Đo trước → sau:** vùng chạm dưới 48 px: 32 (+4 không rõ) → 0. Liên kết hỏng: 0 → 0. Màn không có lối vào ngoài các màn hệ thống tự mở (Khởi động, Đăng nhập lại): 2 → 0. Tương phản chữ và tương phản bắt buộc của icon và viền không đổi (thêm 3 đoạn chữ mới, đều đạt).
+- **AI:** Claude Code (Claude Opus 5.5). AI viết các kiểm tra tự động (bản đồ liên kết giữa các màn, kích thước vùng chạm) rồi đọc lại kế hoạch tìm chỗ cũ. Chọn mở rộng vùng chạm thay vì phóng to hình để giữ thiết kế, theo đúng cách Compose làm.
+- **Kiểm thử:** chạy lại năm script; 20 màn không lỗi.
+- **Ghi chú cho báo cáo:** vùng chạm là ví dụ tốt cho việc kiểm bằng script trên toàn bộ màn: mắt người thường không thấy nút 40 px là "nhỏ".
