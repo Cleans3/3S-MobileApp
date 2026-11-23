@@ -71,7 +71,7 @@ The corpus factors run on one APK build (`optlab-release.apk` `367066ea…`); P1
 | host | 16 cores, 15 GB RAM, other agents' processes running; MemAvailable at the end of a block ranged 1454 to 5985 MB, swap in use up to 8673 MB across the measured blocks in `runlog.csv`, which is why the exclusion rule exists |
 | toolchain | AGP 9.5.1, Kotlin 2.4.21, Compose BOM 2026.09.00, Coil 3.6.3, coroutines 1.11.0, Macrobenchmark 1.5.0, UiAutomator 2.4.1, profileinstaller 1.4.1, JDK 21 |
 | APKs (sha256) | corpus factors: optlab-release `367066eaa2d4ef2e…`, optlab-noR8 `4d025baec525a100…`, benchmark-release `645a82301d499b26…` (`environment.json`). P10/P11 run: optlab-release `e24bab09bea573b5…`, optlab-noR8 `eee9cd7c8e5cc960…`, benchmark-release `645a82301d499b26…` (`environment-p10p11.json`) |
-| runs | P10 and P11: 114 iterations, `environment-p10p11.json` (commit `6c06385+wip`). Corpus factors: `runlog.csv` rows from 21:19 to 22:35 +07, 2026-11-21, with `bench.hold`; P01 sub-factor afterwards. |
+| runs | P10 and P11: 114 iterations, `environment-p10p11.json` (commit `6c06385+wip`). Corpus factors: `runlog.csv` rows from 21:19 to 22:35 +07, 2026-11-21, with `bench.hold`; P01 sub-factor, then P08 (swangle_indirect, `environment-p08-swangle.json`) and the exploratory control `P01+P09@swangle` afterwards. |
 
 Docs consulted instead of context7 (not available in this pane; alpha accepted this in RE#q1). All accessed 2026-11-21:
 
@@ -123,6 +123,10 @@ Dropped = the pre-declared exclusion (§2). Every drop in this run was a qemu ma
 | P11 | primary | B | 15 | 15 | 0 | 0 | 0 | 0 |
 | P01+P09/P01 | primary | A | 18 | 12 | 6 | 0 | 5 | 1 |
 | P01+P09/P01 | primary | B | 18 | 16 | 2 | 0 | 2 | 0 |
+| P01+P09@swangle | frames | A | 15 | 15 | 0 | 0 | 0 | 0 |
+| P01+P09@swangle | frames | B | 15 | 14 | 1 | 0 | 1 | 0 |
+| P01+P09@swangle | primary | A | 15 | 14 | 1 | 0 | 1 | 0 |
+| P01+P09@swangle | primary | B | 15 | 13 | 2 | 0 | 2 | 0 |
 
 **Sensitivity analysis** (`summary_all.csv`: the same statistics over every measured iteration, dropped ones included). Of 93 comparable rows for the six measured factors the sign of the effect is the same in 92. Five rows change whether the 95% interval spans 0: P13 `frameDurationCpuMs_p99` (primary spans 0, all excludes 0, B worse by 22%), P13 `memoryRssAnonMaxKb`, `st_search_query.maxMs` and `st_search_query.sumMs` (primary excludes 0; with the contended iterations the interval widens to include 0, the median Δ% stays at −58.7% and −85.7%), and P10 `slowFrames_pct` (primary excludes 0, all spans 0). The largest shift of a Δ% median is 26.7 points (P03+P04 `Recomposer_recompose.maxMs`, a tail metric). No conclusion below depends on the choice.
 
@@ -279,7 +283,7 @@ The novel claim (how often assistants emit each pattern) comes from E1; §7 join
 
 ## 6. Scaling of P01+P09
 
-_Exploratory, not yet run in this version._ The sweep (`P01+P09/n=500`, `P01+P09/n=8000` next to the main n = 2000, primary phase only) runs separately and is labelled exploratory (not C5). The pilot's author-written A at 1000, 5000 and 20000 rows (`results/pilot-run1/`, a different A) is not comparable and is not repeated here.
+_Not run (dropped for budget, alpha 2026-11-23)._ The sweep (`P01+P09/n=500`, `P01+P09/n=8000` next to the main n = 2000, primary phase only) would have run separately, labelled exploratory (not C5). The pilot's author-written A at 1000, 5000 and 20000 rows (`results/pilot-run1/`, a different A) is not comparable and is not repeated here.
 
 ## 7. From cost to expected cost (prevalence x cost)
 
@@ -320,7 +324,19 @@ Reading: P10 and P11 are in every generated app, so their expected cost equals t
 - **Lock protocol.** The shared `bench.lock` has no writer priority; generators that re-take it per generation starved the benchmark for 44 minutes in the first run, then deadlocked with the turnstile file of the second. Resolution (alpha RE#dl-1, REQ#dl-fix): the harness writes `bench.hold` (pid) for its measured window and polls the lock every 0.2 s; peers' generators wait on the hold file (`gen_launch.py` fixed by its owner); `--turnstile` restores the old behaviour.
 - **Exclusion rule history.** The first A2 rule keyed on host swap-in (system pswpin); the host swaps all the time, so it dropped nearly everything. Protocol A7 (alpha RE#fair-3) keys on the emulator process's major faults instead, and the emulator runs without swap (`MemorySwapMax=0`). A8 is an erratum to A7's observed range (249 to 3268 faults).
 - **Disk.** Builds hit ENOSPC on /mnt (NTFS file-record exhaustion) three times; each time I pruned my own build trees and retried once, then reported it. APKs are copied to `3S-study-work/apk/` after every build and `optlab/build`, `benchmark/build` are deleted.
-- **Exploratory runs not yet done:** the author-A sensitivity pair for all five corpus factors (`<id>/author` factor ids) and the n sweep (§6). They run separately, labelled exploratory.
+- **Exploratory sets not run:** the author-A sensitivity pair (`<id>/author` factor ids are in the harness) and the n sweep (§6) were dropped for budget (alpha, 2026-11-23); the harness entries remain.
+**Exploratory control (renderer effect behind A14; not C5).** The P01+P09 pair re-run on `-gpu swangle_indirect` (factor id `P01+P09@swangle`, primary and frames, 12 or more kept iterations per variant, `exclusions.csv`) next to the main run on `swiftshader_indirect`:
+
+| metric | swiftshader_indirect A → B (Δ%) | swangle_indirect A → B (Δ% [95% CI]) |
+|---|---|---|
+| `st.rc.row` | 2000 → 31 (−98.5%) | 2000 → 30 (−98.5%) |
+| `timeToInitialDisplayMs` | 1901 → 573 ms (−69.9%) | 3426 → 579 ms (−83.1% [−84.2, −78.2]) |
+| `frameDurationCpuMs_p90` | 27.1 → 5.9 ms (−78.2%) | 45.1 → 30.5 ms (−32.3% [−46.8, −11.4]) |
+| `frameDurationCpuMs_p99` | 34.3 → 18.2 ms (−46.9%) | 68.4 → 55.9 ms (−18.3% [−34.4, +7.9]) |
+| `slowFrames_pct` | 90.1 → 1.3% (−98.6%) | 100 → 46.7% (−53.3% [−66.7, −48.8]) |
+
+Reading: the direction and the count rows are the same on both paths; the frame figures are not. On the ANGLE path every frame is slower, B's too (p90 30.5 ms against 5.9 ms), so the A/B frame contrast shrinks (−32% against −78% at p90). The P08 contrast (+28% in A − B over B terms, §4) was measured on the slower path and the renderer is part of what it measures; this is why A14 limits comparison to within-factor contrasts.
+- **Demo clips** (`3S-study-work/video/`, A = corpus code, B = tuned, same finger input, 14 s, 720x1280): `P08c-A-scroll.mp4`, `P08c-B-scroll.mp4` (recorded on swangle_indirect), `P06c-{A,B}-scroll.mp4`, `P09c-{A,B}-scroll.mp4`, `P01c-{A,B}-scroll.mp4`, `P03P04c-{A,B}-scroll.mp4`, `P13c-{A,B}-search.mp4` (12 files). The P03+P04 and P01 pairs show no visible difference, as the numbers say. The older author-A clips in the same folder (`P08-*`, `P06-*`, `P01P09-*`, `P13-*`) are from the pilot.
 - Unmeasured by design (contract R14): P12, S10, S12, U06 and the security factors. E3/E4/E5 consume the APKs in `3S-study-work/apk/` (`README.txt` there).
 
 ## 10. Reproduce
@@ -342,4 +358,4 @@ python3 optimization/study/e2-bench/harness/report_tables.py   # markdown tables
 python3 optimization/study/e2-bench/harness/record_demo.py     # demo clips
 ```
 
-Demo clips (A vs B, same finger input): `/mnt/01DC198BE9192500/github/Schooldev/3S-study-work/video/` (to be re-recorded for the corpus A; the P13 clip needs the new B).
+Demo clips: see §9 (12 corpus clips in `/mnt/01DC198BE9192500/github/Schooldev/3S-study-work/video/`).

@@ -29,3 +29,7 @@ P11,primary,A,15,13,2,0,2,0,no
 P11,primary,B,15,15,0,0,0,0,no
 P01+P09/P01,primary,A,18,12,6,0,5,1,no
 P01+P09/P01,primary,B,18,16,2,0,2,0,no
+P01+P09@swangle,frames,A,15,15,0,0,0,0,no
+P01+P09@swangle,frames,B,15,14,1,0,1,0,no
+P01+P09@swangle,primary,A,15,14,1,0,1,0,no
+P01+P09@swangle,primary,B,15,13,2,0,2,0,no

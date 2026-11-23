@@ -51,6 +51,7 @@ FACTORS = {
     "P03+P04": {v: ("P03P04c", REL, "full", "release") for v in "AB"},
     "P10": {"A": ("startup", NOR8, "none", "noR8"), "B": ("startup", REL, "none", "release")},
     "P11": {"A": ("startup", REL, "none", "release"), "B": ("startup", REL, "profile", "release")},
+    "P01+P09@swangle": {v: ("P09c", REL, "full", "release") for v in "AB"},  # exploratory control (alpha 2026-11-23): the P01+P09 pair on -gpu swangle_indirect, shows the renderer effect behind A14
     "P01+P09/P01": {v: ("P01c", REL, "full", "release") for v in "AB"},   # P01 part of the corpus pair: list items without key vs with key
     "P08/author": {v: ("P08", REL, "full", "release") for v in "AB"},
     "P06/author": {v: ("P06", REL, "full", "release") for v in "AB"},

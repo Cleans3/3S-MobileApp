@@ -2,7 +2,7 @@
 """Demo clips for the class video: adb screenrecord of the A (slop) and B (tuned) screens, same finger input for both.
 
 Needs the emulator up and nothing else measuring (recording perturbs timing, so never run it during run_bench.py).
-Output: <out>/<factor>-<variant>-<action>.mp4, 720x1280, ~14 s each. Usage: python3 record_demo.py [--out DIR] [--factors P08,P13]
+Factors are the corpus ids (A = corpus code, B = tuned). Output: <out>/<factor>-<variant>-<action>.mp4, 720x1280, ~14 s each. Usage: python3 record_demo.py [--out DIR] [--factors P08,P13]
 """
 import argparse, os, subprocess, time
 from pathlib import Path
@@ -13,10 +13,12 @@ PKG = "shelftap.optlab"
 SWIPES = "; ".join(["input swipe 360 1000 360 350 250; sleep 0.8"] * 8)
 # one on-device shell line per action, so adb round-trips do not add jitter between keystrokes
 ACTIONS = {
-    "P08": ("scroll", SWIPES),
-    "P06": ("scroll", SWIPES),
-    "P01P09": ("scroll", SWIPES),
-    "P13": ("search", "input tap 360 190; sleep 1; for c in s i l e n t %s r i v e r; do input text $c; sleep 0.15; done; sleep 3"),
+    "P08c": ("scroll", SWIPES),  # record on the swangle_indirect emulator: the corpus A crashes swiftshader_indirect (A14)
+    "P06c": ("scroll", SWIPES),
+    "P09c": ("scroll", SWIPES),
+    "P01c": ("scroll", SWIPES),
+    "P03P04c": ("scroll", "; ".join(["input swipe 360 1000 360 350 250; sleep 0.8"] * 2) + "; sleep 8"),
+    "P13c": ("search", "input tap 360 190; sleep 1; for c in s i l e n t %s r i v e r; do input text $c; sleep 0.15; done; sleep 3"),
 }
 
 

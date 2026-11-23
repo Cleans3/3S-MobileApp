@@ -11,7 +11,7 @@ seed_fts_index_bytes,7979008,bytes,logcat STLAB on lowend34 (db growth caused by
 device_sqlite_version,3.39.2,version,adb shell sqlite3 -version on lowend34 (API 34)
 device_fts5,absent,n/a,first FactorBenchmark#seed attempt: SQLiteException: no such module: fts5 (code 1 SQLITE_ERROR); FTS4 used instead
 device_java_heap_growth_limit,201326592,bytes,logcat OutOfMemoryError message in results/p01p09-n20000-A-oom.txt (growth limit)
-harness_blocks_total,132,am-instrument calls,results/runlog.csv (P10/P11 run, corpus window, P01 sub-factor; result != yield)
+harness_blocks_total,172,am-instrument calls,"results/runlog.csv (P10/P11 run, corpus window, P01 sub-factor, P08, control; result != yield)"
 harness_blocks_failed,0,am-instrument calls,results/runlog.csv (result != ok)
 host_mem_available_min,1454,MB,results/runlog.csv (lowest MemAvailable at the end of a block; the exclusion rule drops iterations below 1024 MB at their start)
 host_swap_used_max,8673,MB,results/runlog.csv (highest swap in use at the end of a block)
