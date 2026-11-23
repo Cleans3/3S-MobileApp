@@ -258,7 +258,7 @@ Bán kính blur và độ trong chọn theo hướng dẫn Material, rồi chụ
 - **Kích thước cửa sổ:** dùng `WindowSizeClass` (Material 3 Adaptive). Cửa sổ hẹp (điện thoại thường, máy dài 20:9 hoặc 21:9) dùng menu ☰ dạng khung kính (§6.2). Cửa sổ rộng (máy gập khi mở, tablet, chia đôi màn hình) hiện khung menu cố định ở cạnh trái, không cần bấm ☰. Hiệu ứng tầng ở §6.3 áp dụng cho cả hai.
 - **Tràn viền:** app nhắm `targetSdk` 36 nên Android bắt buộc tràn viền. Thanh kính nổi trên nội dung; nội dung chừa đúng vùng an toàn và phần khuyết camera bằng `WindowInsets`.
 - **Màn lớn:** từ Android 16, app nhắm `targetSdk` 36 không còn khóa được hướng xoay và tỷ lệ trên màn rộng từ 600dp, nên ShelfTap phải hiển thị đúng khi xoay và khi mở máy gập. Danh mục trên màn rộng có thể chia hai cột (danh sách, chi tiết).
-- **Kiểm tra:** ảnh chụp ở các cấu hình: điện thoại thường, 21:9, máy gập lúc gập và lúc mở, tablet, xoay ngang, font scale 2.0.
+- **Kiểm tra:** ảnh chụp ở các cấu hình: điện thoại thường, 21:9, máy gập lúc gập và lúc mở, màn phụ của máy gập dọc, chia đôi màn hình, tablet, xoay ngang, font scale 2.0.
 
 **Thử trên mockup: rộng 320 dp và cỡ chữ 2.0 (2026-11-24).** `optimization/ui-ux-mockup/tools/render-static.js` dựng 20 màn thành HTML tĩnh ở bốn biến thể. `tools/layout-check.js` chạy trong trình duyệt và đếm bốn loại lỗi: chữ hoặc nút tràn ra mép trái hay phải, nằm dưới đáy màn mà không cuộn được, chữ đè lên chữ, chữ bị cắt mà không có dấu "…". Cỡ chữ 2.0 dùng kiểu phóng phi tuyến của Android 14 trở lên (chữ nhỏ gấp đôi, chữ lớn tăng ít hơn), lấy theo bảng của AOSP như tôi nhớ; cần đối chiếu mã AOSP trước khi đưa con số vào báo cáo.
 
@@ -279,6 +279,29 @@ Lỗi ở chữ 2.0 đến từ cách mockup đặt mọi khối ở vị trí c
 - **Chữ trong nút dạng viên thuốc được xuống dòng** (tối đa 2 dòng), không ép một dòng; "Chạm sách để mượn" và "Đăng nhập để mượn sách" tràn mép ở rộng 320 và chữ 2.0.
 - **Ghi chú ở đáy màn** (Đăng nhập, Khóa, Mất kết nối, Đăng nhập lại) nằm trong luồng cuộn, không ghim ở đáy.
 - Đo lại bằng ảnh chụp ở font scale 2.0 trên máy, theo bảng ở §8.2.
+
+**Thử trên mockup: các màn tỷ lệ đặc biệt (2026-11-24).** Cùng hai script, thêm bảy cỡ màn (đơn vị dp). Đây là nhóm kích thước, không phải số đo của từng mẫu máy: thông số các máy gập ra năm 2026 ở các nguồn không khớp nhau (ví dụ dòng Galaxy Z Fold8 có một màn 4:3 và một màn 10:16, nhưng [trang của Samsung ở SoftBank](https://www.softbank.jp/en/mobile/products/samsung-galaxy/samsung-galaxy-z-fold8/) và [tin của Samsung Canada](https://news.samsung.com/ca/galaxy-z-fold8-is-designed-for-your-favorite-content-heres-why) ghi ngược nhau màn nào là màn ngoài). Cần đối chiếu bằng ảnh chụp trên máy thật. Cho màn rộng, `tools/layout-check.js` đếm thêm hai loại: dòng chữ trung bình quá 80 ký tự, và thẻ, hàng hay nút rộng quá 85% màn khi màn rộng hơn 600 dp (bố cục điện thoại bị kéo giãn).
+
+| Cỡ màn | dp | Màn vỡ bố cục | Lỗi vỡ | Màn bị kéo giãn |
+|---|---|---|---|---|
+| Điện thoại dài 21:9 | 412 × 960 | 0 / 20 | 0 | không áp dụng |
+| Màn ngoài rộng 10:16 của máy gập ngang | 480 × 768 | 1 / 20 | 1 (nút Đăng xuất ở Tài khoản nằm dưới đáy) | không áp dụng |
+| Màn phụ của máy gập dọc | 360 × 400 | 15 / 20 | 84 (74 tràn đáy, 10 chữ đè) | không áp dụng |
+| Chia đôi màn hình | 390 × 420 | 15 / 20 | 85 (70 tràn đáy, 15 chữ đè) | không áp dụng |
+| Điện thoại xoay ngang | 844 × 390 | 14 / 20 | 78 (74 tràn đáy, 4 chữ đè) | 18 / 20 |
+| Máy gập mở, gần vuông | 720 × 840 | 0 / 20 | 0 | 17 / 20 |
+| Máy gập mở, cầm ngang (4:3) | 960 × 720 | 4 / 20 | 7 | 18 / 20 |
+
+"Lỗi vỡ" là bốn loại ở bảng trên (tràn mép, tràn đáy, chữ đè, chữ bị cắt). Bốn biến thể cũ đo lại cho đúng số cũ.
+
+Đọc kết quả:
+- **Màn cao hơn 844 dp, hoặc rộng hơn một chút** (21:9, màn ngoài 10:16) gần như không sao.
+- **Màn thấp** (màn phụ máy gập dọc, chia đôi màn hình, xoay ngang) vỡ ở 14 đến 15 màn. Chỉ các màn có vùng cuộn giữ nguyên: Danh mục, Danh sách, Thông báo, Tìm khi không có mạng, Gợi ý (khi xoay ngang thêm Màn chính). Cùng nguyên nhân với lỗi ở chữ 2.0, nên quy tắc "mọi màn cuộn dọc được" ở trên sửa cả hai.
+- **Màn rộng hơn 600 dp** không vỡ nhưng bị kéo giãn: 17 đến 18 trên 20 màn có thẻ hoặc nút rộng gần hết màn, dòng chữ dài tới khoảng 150 ký tự (Gợi ý, ở 960 dp). Mockup chưa có màn nào cho cửa sổ rộng (menu cố định cạnh trái, Danh mục hai cột).
+
+Quy tắc thêm cho app:
+- **Cửa sổ rộng không kéo giãn bố cục điện thoại:** từ 600 dp dùng menu cố định cạnh trái và hai khung (danh sách, chi tiết) như ở trên. Cột chữ giới hạn khoảng 600 dp hoặc 80 ký tự mỗi dòng.
+- **Màn thấp:** ngoài quy tắc cuộn dọc, khi chiều cao dưới khoảng 480 dp thì nút nổi tự mượn thu thành nút tròn chỉ có icon, để không che phần lớn màn. Đây là đề xuất, cần thử trên máy.
 
 ### 6.5 Hiệu ứng động (motion)
 
@@ -443,6 +466,7 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 12. Duyệt bộ hiệu ứng động ở §6.5 trên mockup: giữ, bỏ hay đổi thời lượng hiệu ứng nào.
 13. Có sửa `server/API.md` để thêm kệ vào `TitleSummary` và tham số lọc theo chủ đề cho trang danh sách không (cùng đợt với `optimization/search-recommend-plan.md`).
 14. Báo sách đặt trước đã sẵn sàng: thêm cơ chế đẩy vào `server/API.md` (ví dụ FCM, cần thêm dịch vụ của Google) hay app tự hỏi server định kỳ (tốn pin hơn, chậm hơn), hay tạm chỉ hiện trong app.
+15. Có vẽ thêm màn mockup cho cửa sổ rộng (máy gập khi mở, tablet: menu cạnh trái, Danh mục hai cột) trước khi làm app không (§6.4).
 
 ## 12. Sản phẩm đầu ra
 

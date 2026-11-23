@@ -14,8 +14,8 @@ Mã nguồn của mockup 20 màn ở `optimization/ui-ux-plan.md` §5.5, cùng c
 | `tools/contrast.js` | Đo tương phản WCAG cho mọi đoạn chữ, ở theme sáng và tối (SC 1.4.3) |
 | `tools/nontext-contrast.js` | Đo tương phản cho icon, viền ô nhập, công tắc và trạng thái đang chọn (SC 1.4.11) |
 | `tools/target-size.js` | Đọc kích thước vẽ và vùng chạm của mọi nút, link và công tắc |
-| `tools/render-static.js` | Dựng 20 màn thành HTML tĩnh ở bốn biến thể: gốc, rộng 320, chữ 2.0, cả hai |
-| `tools/layout-check.js` | Chạy trong trình duyệt trên trang của `render-static.js`: đếm chữ tràn mép, tràn đáy, chữ đè chữ, chữ bị cắt |
+| `tools/render-static.js` | Dựng 20 màn thành HTML tĩnh ở 11 biến thể: gốc, rộng 320, chữ 2.0, cả hai, và bảy cỡ màn tỷ lệ đặc biệt |
+| `tools/layout-check.js` | Chạy trong trình duyệt trên trang của `render-static.js`, sau khi tắt hiệu ứng động: đếm chữ tràn mép, tràn đáy, chữ đè chữ, chữ bị cắt; trên màn rộng hơn 600 dp đếm thêm dòng quá 80 ký tự và khối bị kéo giãn |
 | `tools/hero-worst-case.js` | Tính riêng chữ trắng trên ảnh ở màn chào, ở trường hợp xấu nhất |
 | `tools/check-scripts.js` | Chạy script của từng màn, gọi mọi handler, kiểm tra mọi biến trong template đều có giá trị |
 | `contrast-results.json` | Kết quả của `tools/contrast.js` |
@@ -120,5 +120,25 @@ Mép nút kính không đạt 3:1 là chủ ý của phong cách kính và khôn
 "Lượt đo đầu" là bản 17 cộng ba lỗi bố cục đã sửa, trước khi thêm băng gợi ý; trạng thái này không được đăng riêng. Trong bản 18, Danh mục cuộn được và script không tính chữ trong vùng cuộn đi qua dưới thanh nổi là chữ đè (vùng cuộn chừa chỗ ở đáy). Hai thay đổi này cùng làm số giảm; Danh mục từ 6 lỗi (chữ 2.0) còn 0.
 
 Lỗi ở chữ 2.0 là do mockup đặt khối ở vị trí cố định trong màn 844 px không cuộn. Mockup không sửa phần này; quy tắc cho app ở `optimization/ui-ux-plan.md` §6.4. Một vài lỗi chữ đè ở Tự mượn, Gợi ý và Đăng nhập lại là thanh xem trước trạng thái, chỉ có trong bản phác.
+
+## Màn tỷ lệ đặc biệt
+
+Bảy cỡ màn thêm vào `tools/render-static.js`, chữ bình thường, đơn vị dp. Đây là nhóm kích thước chứ không phải số đo của từng mẫu máy, vì thông số các máy gập năm 2026 ở các nguồn không khớp nhau (xem kế hoạch §6.4).
+
+| Cỡ màn | dp | Màn vỡ bố cục | Lỗi vỡ | Màn bị kéo giãn |
+|---|---|---|---|---|
+| Điện thoại dài 21:9 (`tall`) | 412 × 960 | 0 / 20 | 0 | không áp dụng |
+| Màn ngoài rộng 10:16 của máy gập ngang (`wide`) | 480 × 768 | 1 / 20 | 1 | không áp dụng |
+| Màn phụ của máy gập dọc (`flipcover`) | 360 × 400 | 15 / 20 | 84 | không áp dụng |
+| Chia đôi màn hình (`split`) | 390 × 420 | 15 / 20 | 85 | không áp dụng |
+| Điện thoại xoay ngang (`land`) | 844 × 390 | 14 / 20 | 78 | 18 / 20 |
+| Máy gập mở, gần vuông (`unfold`) | 720 × 840 | 0 / 20 | 0 | 17 / 20 |
+| Máy gập mở, cầm ngang 4:3 (`unfoldl`) | 960 × 720 | 4 / 20 | 7 | 18 / 20 |
+
+"Lỗi vỡ" là tràn mép, tràn đáy, chữ đè và chữ bị cắt. "Màn bị kéo giãn" là màn có dòng quá 80 ký tự hoặc có thẻ, hàng hay nút rộng quá 85% màn; chỉ tính khi màn rộng hơn 600 dp.
+
+Màn thấp vỡ vì cùng lý do với chữ 2.0: chỉ năm màn có vùng cuộn (Danh mục, Danh sách, Thông báo, Tìm khi không có mạng, Gợi ý) giữ nguyên. Màn rộng không vỡ nhưng là bố cục điện thoại bị kéo giãn, vì mockup chưa có màn nào cho cửa sổ rộng.
+
+Lượt đo đầu có 4 lỗi "tràn đáy" giả ở màn Thông báo: bảng hỏi quyền còn đang trượt lên khi đo. Từ lượt này, `tools/layout-check.js` tắt hiệu ứng động trước khi đo.
 
 Chi tiết từng lỗi và cách sửa: `optimization/ui-ux-plan.md` §5.3 và `optimization/log/docs-ui-ux-plan.md`.

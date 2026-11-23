@@ -164,3 +164,16 @@
 - **Đo trước → sau:** không áp dụng.
 - **AI:** Claude Code (Claude Opus 5.5) tự phát hiện khi đối chiếu README với số bản mà trang artifact báo sau lần đăng.
 - **Kiểm thử:** không áp dụng.
+
+## 2026-11-24 05:07 · Thử mockup ở các màn tỷ lệ đặc biệt
+
+- **Vấn đề:** người dùng hỏi mockup đã tối ưu cho các điện thoại có tỷ lệ màn đặc biệt ra mắt năm nay chưa. Kế hoạch §6.4 đã có quy tắc (WindowSizeClass, tràn viền, màn rộng từ 600 dp), nhưng mockup chỉ mới đo ở 390 và 320 dp, chiều cao cố định 844.
+- **Thay đổi:**
+  - `tools/render-static.js`: thêm chiều cao và bảy cỡ màn: 21:9 (412 × 960), màn ngoài 10:16 của máy gập ngang (480 × 768), màn phụ máy gập dọc (360 × 400), chia đôi màn hình (390 × 420), xoay ngang (844 × 390), máy gập mở (720 × 840 và 960 × 720). Script báo lỗi nếu không tìm thấy kích thước gốc của màn.
+  - `tools/layout-check.js`: tắt hiệu ứng động trước khi đo; thêm hai loại cho màn rộng: dòng chữ trung bình quá 80 ký tự, và khối rộng quá 85% màn khi màn rộng hơn 600 dp.
+  - Kế hoạch §6.4: bảng kết quả, hai quy tắc mới cho app (cửa sổ rộng dùng menu cạnh trái và hai khung, giới hạn cột chữ; nút nổi thu nhỏ ở màn thấp, là đề xuất), thêm màn phụ máy gập dọc và chia đôi màn hình vào danh sách cấu hình kiểm tra. §11 thêm mục 15. README thêm mục "Màn tỷ lệ đặc biệt".
+  - Không sửa file `.dc.html` nào; artifact không đổi.
+- **Đo trước → sau:** đây là phép đo mới, chưa có số trước. Màn vỡ bố cục: 21:9 0/20; màn ngoài 10:16 1/20; màn phụ máy gập dọc 15/20 (84 lỗi); chia đôi 15/20 (85); xoay ngang 14/20 (78); máy gập mở 0/20 và 4/20 (7). Màn bị kéo giãn ở màn rộng: 17 đến 18 trên 20. Bốn biến thể cũ đo lại vẫn ra 0, 0, 30 và 55 lỗi.
+- **AI:** Claude Code (Claude Opus 5.5). Người dùng chọn đo thêm. AI tra web về máy gập năm 2026; các nguồn (trang Samsung, HotHardware, Android Authority) không khớp nhau về độ phân giải và màn nào là 4:3, nên AI đo theo nhóm kích thước và ghi rõ là cần đối chiếu trên máy thật. Lượt đo đầu báo 4 lỗi giả ở màn Thông báo do bảng hỏi quyền đang trượt lên; AI tắt hiệu ứng trong script. Kiểm tra "dòng quá dài" ban đầu chỉ tính đoạn từ hai dòng nên bỏ sót dòng đơn dài 150 ký tự trên màn rộng; AI sửa điều kiện và thêm phép đếm khối bị kéo giãn.
+- **Kiểm thử:** `node tools/check-scripts.js .` (20 màn không lỗi); dựng 11 biến thể, phục vụ qua web server cục bộ và chạy `tools/layout-check.js` trong trình duyệt của app.
+- **Ghi chú cho báo cáo:** màn thấp và chữ 2.0 vỡ cùng một nguyên nhân (khối đặt ở vị trí cố định, màn không cuộn), nên một quy tắc sửa cả hai; số đo này là mốc để so với app khi làm.

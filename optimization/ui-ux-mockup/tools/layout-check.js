@@ -4,14 +4,20 @@
 //   cut       : text or a control below the bottom of the screen, outside any scrolling area
 //   overlap   : two pieces of text drawn on top of each other
 //   clipped   : text cut off inside a box that hides overflow, without an ellipsis
+//   long      : text averaging over 80 characters per line, hard to read (WCAG 1.4.8 AAA asks for
+//               at most 80); shows up when a phone layout is stretched wide
+//   stretched : on a screen wider than 600 dp, a card, row, button or section over 85% of the screen
+//               width: the phone layout is stretched instead of using columns or a side menu
 // Decorative layers (aria-hidden) and anything inside a scrolling area are ignored for offscreen/cut.
-// Returns { board: { offscreen: [...], cut: [...], overlap: [...], clipped: [...] } }.
+// Returns { board: { offscreen, cut, overlap, clipped, long, stretched } }, each a list.
 (() => {
   const out = {};
   for (const fig of document.querySelectorAll('figure[data-board]')) {
     const doc = fig.querySelector('iframe').contentDocument;
     const root = doc.querySelector('.st-root');
     if (!root) continue;
+    // measure the final layout, not a frame of an entrance animation (a sheet still sliding up reads as cut)
+    if (!doc.getElementById('lc-still')) { const s = doc.createElement('style'); s.id = 'lc-still'; s.textContent = '*,*::before,*::after{animation:none!important;transition:none!important}'; doc.head.appendChild(s); }
     const R = root.getBoundingClientRect();
     const hidden = el => el.closest('[aria-hidden="true"]');
     const scroller = el => {
@@ -27,7 +33,12 @@
     const controls = [...root.querySelectorAll('button, a, input, [role="switch"]')].filter(el => !hidden(el));
     // 1 px boxes are visually hidden labels for screen readers, not visible text
     const visible = el => { const r = el.getBoundingClientRect(); const cs = doc.defaultView.getComputedStyle(el); return r.width > 1 && r.height > 1 && cs.visibility !== 'hidden' && cs.display !== 'none'; };
-    const res = { offscreen: [], cut: [], overlap: [], clipped: [] };
+    const res = { offscreen: [], cut: [], overlap: [], clipped: [], long: [], stretched: [] };
+    if (R.width > 600) for (const el of root.querySelectorAll('a, button, section, li')) {
+      if (hidden(el)) continue;
+      const r = el.getBoundingClientRect();
+      if (r.height > 30 && r.width > R.width * 0.85) res.stretched.push(label(el) + ` (${Math.round(r.width)} px)`);
+    }
     for (const el of new Set([...texts, ...controls])) {
       if (!visible(el) || scroller(el)) continue;
       const r = el.getBoundingClientRect();
@@ -45,6 +56,12 @@
       const w = Math.min(a.r.right, b.r.right) - Math.max(a.r.left, b.r.left);
       const h = Math.min(a.r.bottom, b.r.bottom) - Math.max(a.r.top, b.r.top);
       if (w > 4 && h > 4) res.overlap.push(label(a.el) + ' × ' + label(b.el));
+    }
+    for (const { el } of boxes) {
+      const rg = doc.createRange(); rg.selectNodeContents(el);
+      const lines = new Set([...rg.getClientRects()].filter(r => r.width > 1).map(r => Math.round(r.top))).size;
+      const chars = el.textContent.replace(/\s+/g, ' ').trim().length;
+      if (lines >= 1 && chars / lines > 80) res.long.push(label(el) + ` (${lines} dòng, ~${Math.round(chars / lines)} ký tự/dòng)`);
     }
     for (const { el } of boxes) {
       const cs = doc.defaultView.getComputedStyle(el);
