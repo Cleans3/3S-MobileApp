@@ -1,12 +1,14 @@
 # E1: AI-generated Android apps, prevalence of taxonomy problems
 
-Generated 2026-11-21 from results/*.csv by harness/report.py. Frozen inputs: protocol sha256 3ee02b6094e1, guardrail sha256 ae5639033f70. Scope: first-draft, no-retrieval (protocol section 1): one brief in, one project out, no network, no reviewer, no detector feedback.
+Generated 2026-11-23 from results/*.csv by harness/report.py. Frozen inputs: protocol sha256 4bbbb97ef311, guardrail sha256 ae5639033f70. Scope: first-draft, no-retrieval (protocol section 1): one brief in, one project out, no network, no reviewer, no detector feedback.
 
 ## Read this first
 
 1. Only 42 of 100 valid runs build (pass after at most 3 logged table repairs; 34 pass zero-touch). Per bundle: claude-haiku 13/36; codex-luna 10/36; agy-g38flash 19/28. Every prevalence number below is source-level and covers all valid runs, including apps that do not compile.
 
 2. Among the 42 apps that build (compile-excluded sensitivity, protocol A6, not a confirmatory endpoint), C1 (share of runs with at least one S-class finding, naive minus guardrailed) is +0.000 (p=1.0000) on the primary track and +0.000 (p=1.0000) on the v2 track: the guardrail effect on S-class presence does not hold among apps that build. The count and density effects persist among builders (C2 +3.829 (p=0.0028) primary, +4.757 (p=0.0010) v2; C3 Cliff's delta +0.678 (p=0.0000) primary, +0.659 (p=0.0001) v2), so the guardrail reduces how many distinct S-class problems appear, not whether any appear in a working app.
+
+3. Dependency lookup defect, found by the H4 check: 21 of the 22 hallucinated-version instances in coordinates.csv were false (a stale google() KSP plugin marker was checked first). H4 itself is unaffected (0 hallucinated artifacts in 2105 instances: refuted). The defect cuts both ways (it inflated the guardrailed S-class share and the S-class density of AI and human apps alike); the depfix tracks (3c, 3d, side by side in 3e) are a post-hoc sensitivity analysis disclosed in section 7; the primary analysis stays as pre-registered and run.
 
 ## 1. Corpus actually generated
 
@@ -112,7 +114,7 @@ Wilson 95% intervals. A rule that fires in nearly every human app (read the huma
 
 ## 3. Pre-registered endpoints
 
-### 3a. PRIMARY (frozen v1 detector)
+### 3a. PRIMARY (frozen v1 detector, first-scan dependency lookup)
 
 ### E1 analysis, detector track: v1
 
@@ -187,7 +189,7 @@ Runs: 101 generated, 100 valid. Unvalidated rules excluded from the primary anal
 | (b) without claude-haiku | 64 | +0.361 (p=0.0060) | +3.632 (p=0.0000) | +0.720 (p=0.0000) |
 | (b) without codex-luna | 64 | +0.407 (p=0.0017) | +4.216 (p=0.0000) | +0.389 (p=0.0141) |
 
-### 3b. SENSITIVITY (v2 detector)
+### 3b. SENSITIVITY (v2 detector, first-scan dependency lookup)
 
 ### E1 analysis, detector track: v2
 
@@ -261,6 +263,174 @@ Runs: 101 generated, 100 valid. Unvalidated rules excluded from the primary anal
 | (b) without agy-g38flash | 72 | +0.542 (p=0.0001) | +2.333 (p=0.0000) | +0.617 (p=0.0001) |
 | (b) without claude-haiku | 64 | +0.361 (p=0.0060) | +4.680 (p=0.0000) | +0.711 (p=0.0000) |
 | (b) without codex-luna | 64 | +0.407 (p=0.0017) | +5.121 (p=0.0000) | +0.365 (p=0.0212) |
+
+### 3c. SENSITIVITY (depfix): v1 detector, dependency lookup corrected (post-hoc, section 7)
+
+### E1 analysis, detector track: v1c
+
+Runs: 101 generated, 100 valid. Unvalidated rules excluded from the primary analysis: ['P05', 'P06', 'P07', 'P09', 'P10', 'S03', 'S04', 'S08', 'U05'].
+
+#### Analysis over validated rules (20 rules)
+
+| style | n valid | runs with >=1 S-class | share | Wilson 95% | distinct rule IDs/run mean | median | bootstrap 95% (mean) |
+|---|---|---|---|---|---|---|---|
+| naive | 33 | 31 | 0.939 | [0.804, 0.983] | 5.82 | 4.0 | [4.88, 6.82] |
+| detailed-functional | 33 | 28 | 0.848 | [0.691, 0.933] | 5.36 | 5.0 | [4.79, 5.94] |
+| guardrailed | 34 | 10 | 0.294 | [0.168, 0.462] | 2.56 | 2.0 | [2.21, 2.94] |
+
+**C1** (naive - guardrailed, 9 strata brief x bundle): difference +0.645, stratified permutation p = 0.00001 (100,000 perms, seed 20261121).
+
+**C2** (naive - guardrailed, 9 strata brief x bundle): difference +3.259, stratified permutation p = 0.00001 (100,000 perms, seed 20261121).
+
+**C3**: AI unguardrailed n=66 median 2.33 S-class findings/kLOC vs human pre n=20 median 0.83; Mann-Whitney p = 0.00055, Cliff's delta = +0.513.
+
+**C3 (second comparator, not confirmatory)**: AI unguardrailed n=66 median 2.33 S-class findings/kLOC vs human post n=20 median 0.19; Mann-Whitney p = 0.00000, Cliff's delta = +0.712.
+
+**C3-size-sensitivity**: AI unguardrailed n=66 median 7.29 S-class findings/100k non-whitespace chars (sensitivity) vs human pre n=20 median 3.04; Mann-Whitney p = 0.00083, Cliff's delta = +0.496.
+
+**C3-size-sensitivity (second comparator, not confirmatory)**: AI unguardrailed n=66 median 7.29 S-class findings/100k non-whitespace chars (sensitivity) vs human post n=20 median 0.68; Mann-Whitney p = 0.00000, Cliff's delta = +0.725.
+
+**G3** (naive - guardrailed): Delta_instructed +1.97, Delta_heldout +1.10, contrast +0.87, bootstrap 95% [0.44, 1.32] (secondary, pre-registered contrast).
+
+**G3** (detailed-functional - guardrailed): Delta_instructed +1.94, Delta_heldout +0.71, contrast +1.23, bootstrap 95% [0.75, 1.71] (secondary, pre-registered contrast).
+
+#### Analysis over all rules (29 rules)
+
+| style | n valid | runs with >=1 S-class | share | Wilson 95% | distinct rule IDs/run mean | median | bootstrap 95% (mean) |
+|---|---|---|---|---|---|---|---|
+| naive | 33 | 32 | 0.970 | [0.847, 0.995] | 7.36 | 6.0 | [6.27, 8.52] |
+| detailed-functional | 33 | 29 | 0.879 | [0.727, 0.952] | 7.12 | 7.0 | [6.45, 7.82] |
+| guardrailed | 34 | 11 | 0.324 | [0.191, 0.492] | 4.53 | 4.5 | [4.03, 5.03] |
+
+**C1** (naive - guardrailed, 9 strata brief x bundle): difference +0.646, stratified permutation p = 0.00001 (100,000 perms, seed 20261121).
+
+**C2** (naive - guardrailed, 9 strata brief x bundle): difference +2.834, stratified permutation p = 0.00001 (100,000 perms, seed 20261121).
+
+**C3**: AI unguardrailed n=66 median 2.72 S-class findings/kLOC vs human pre n=20 median 0.83; Mann-Whitney p = 0.00013, Cliff's delta = +0.569.
+
+**C3 (second comparator, not confirmatory)**: AI unguardrailed n=66 median 2.72 S-class findings/kLOC vs human post n=20 median 0.33; Mann-Whitney p = 0.00000, Cliff's delta = +0.724.
+
+**C3-size-sensitivity**: AI unguardrailed n=66 median 8.85 S-class findings/100k non-whitespace chars (sensitivity) vs human pre n=20 median 3.04; Mann-Whitney p = 0.00018, Cliff's delta = +0.555.
+
+**C3-size-sensitivity (second comparator, not confirmatory)**: AI unguardrailed n=66 median 8.85 S-class findings/100k non-whitespace chars (sensitivity) vs human post n=20 median 1.22; Mann-Whitney p = 0.00000, Cliff's delta = +0.730.
+
+**G3** (naive - guardrailed): Delta_instructed +1.80, Delta_heldout +0.85, contrast +0.96, bootstrap 95% [0.33, 1.62] (secondary, pre-registered contrast).
+
+**G3** (detailed-functional - guardrailed): Delta_instructed +1.96, Delta_heldout +0.48, contrast +1.47, bootstrap 95% [0.93, 2.04] (secondary, pre-registered contrast).
+
+#### Prevalence over unguardrailed runs (PB rule: supported if Wilson lower >= 0.50, refuted if upper < 0.20)
+
+| hypothesis | k/n | share | Wilson 95% | PB decision |
+|---|---|---|---|---|
+| H1 (D01 or D02) | 66/66 | 1.000 | [0.945, 1.000] | supported |
+| H5 (U01 or U05) | 1/66 | 0.015 | [0.003, 0.081] | refuted |
+| H6 (S05) | 10/66 | 0.152 | [0.084, 0.257] | inconclusive |
+
+#### Sensitivity analyses (protocol A6; none replaces a confirmatory endpoint)
+
+| variant | n valid | C1 diff (p) | C2 diff (p) | C3 Cliff's delta (p) |
+|---|---|---|---|---|
+| (a) no web-tool attempt | 100 | +0.645 (p=0.0000) | +3.259 (p=0.0000) | +0.513 (p=0.0005) |
+| (c) compile-excluded (build pass) | 42 | +0.000 (p=1.0000) | +3.957 (p=0.0012) | +0.613 (p=0.0002) |
+| (b) only agy-g38flash | 28 | +0.500 (p=0.0288) | +7.533 (p=0.0001) | +0.311 (p=0.1047) |
+| (b) only claude-haiku | 36 | +0.750 (p=0.0010) | +2.250 (p=0.0001) | +0.258 (p=0.1464) |
+| (b) only codex-luna | 36 | +0.667 (p=0.0009) | +1.083 (p=0.0098) | +0.919 (p=0.0000) |
+| (b) without agy-g38flash | 72 | +0.708 (p=0.0000) | +1.667 (p=0.0000) | +0.589 (p=0.0001) |
+| (b) without claude-haiku | 64 | +0.589 (p=0.0000) | +3.857 (p=0.0000) | +0.658 (p=0.0000) |
+| (b) without codex-luna | 64 | +0.634 (p=0.0000) | +4.487 (p=0.0000) | +0.281 (p=0.0766) |
+
+### 3d. SENSITIVITY (depfix): v2 detector, dependency lookup corrected (post-hoc, section 7)
+
+### E1 analysis, detector track: v2c
+
+Runs: 101 generated, 100 valid. Unvalidated rules excluded from the primary analysis: ['P05', 'P06', 'P07', 'S04', 'S08', 'U05'].
+
+#### Analysis over validated rules (23 rules)
+
+| style | n valid | runs with >=1 S-class | share | Wilson 95% | distinct rule IDs/run mean | median | bootstrap 95% (mean) |
+|---|---|---|---|---|---|---|---|
+| naive | 33 | 31 | 0.939 | [0.804, 0.983] | 6.76 | 5.0 | [5.79, 7.79] |
+| detailed-functional | 33 | 28 | 0.848 | [0.691, 0.933] | 6.39 | 6.0 | [5.82, 6.97] |
+| guardrailed | 34 | 10 | 0.294 | [0.168, 0.462] | 2.56 | 2.0 | [2.21, 2.94] |
+
+**C1** (naive - guardrailed, 9 strata brief x bundle): difference +0.645, stratified permutation p = 0.00001 (100,000 perms, seed 20261121).
+
+**C2** (naive - guardrailed, 9 strata brief x bundle): difference +4.199, stratified permutation p = 0.00001 (100,000 perms, seed 20261121).
+
+**C3**: AI unguardrailed n=66 median 2.33 S-class findings/kLOC vs human pre n=20 median 0.83; Mann-Whitney p = 0.00086, Cliff's delta = +0.495.
+
+**C3 (second comparator, not confirmatory)**: AI unguardrailed n=66 median 2.33 S-class findings/kLOC vs human post n=20 median 0.28; Mann-Whitney p = 0.00001, Cliff's delta = +0.655.
+
+**C3-size-sensitivity**: AI unguardrailed n=66 median 7.29 S-class findings/100k non-whitespace chars (sensitivity) vs human pre n=20 median 3.04; Mann-Whitney p = 0.00111, Cliff's delta = +0.484.
+
+**C3-size-sensitivity (second comparator, not confirmatory)**: AI unguardrailed n=66 median 7.29 S-class findings/100k non-whitespace chars (sensitivity) vs human post n=20 median 1.04; Mann-Whitney p = 0.00001, Cliff's delta = +0.664.
+
+**G3** (naive - guardrailed): Delta_instructed +2.91, Delta_heldout +1.10, contrast +1.81, bootstrap 95% [1.35, 2.28] (secondary, pre-registered contrast).
+
+**G3** (detailed-functional - guardrailed): Delta_instructed +2.97, Delta_heldout +0.71, contrast +2.26, bootstrap 95% [1.78, 2.72] (secondary, pre-registered contrast).
+
+#### Analysis over all rules (29 rules)
+
+| style | n valid | runs with >=1 S-class | share | Wilson 95% | distinct rule IDs/run mean | median | bootstrap 95% (mean) |
+|---|---|---|---|---|---|---|---|
+| naive | 33 | 32 | 0.970 | [0.847, 0.995] | 7.21 | 5.0 | [6.12, 8.39] |
+| detailed-functional | 33 | 29 | 0.879 | [0.727, 0.952] | 7.09 | 7.0 | [6.39, 7.79] |
+| guardrailed | 34 | 11 | 0.324 | [0.191, 0.492] | 3.41 | 3.0 | [2.94, 3.94] |
+
+**C1** (naive - guardrailed, 9 strata brief x bundle): difference +0.646, stratified permutation p = 0.00001 (100,000 perms, seed 20261121).
+
+**C2** (naive - guardrailed, 9 strata brief x bundle): difference +3.800, stratified permutation p = 0.00001 (100,000 perms, seed 20261121).
+
+**C3**: AI unguardrailed n=66 median 2.72 S-class findings/kLOC vs human pre n=20 median 0.83; Mann-Whitney p = 0.00013, Cliff's delta = +0.569.
+
+**C3 (second comparator, not confirmatory)**: AI unguardrailed n=66 median 2.72 S-class findings/kLOC vs human post n=20 median 0.33; Mann-Whitney p = 0.00000, Cliff's delta = +0.724.
+
+**C3-size-sensitivity**: AI unguardrailed n=66 median 8.85 S-class findings/100k non-whitespace chars (sensitivity) vs human pre n=20 median 3.04; Mann-Whitney p = 0.00018, Cliff's delta = +0.555.
+
+**C3-size-sensitivity (second comparator, not confirmatory)**: AI unguardrailed n=66 median 8.85 S-class findings/100k non-whitespace chars (sensitivity) vs human post n=20 median 1.22; Mann-Whitney p = 0.00000, Cliff's delta = +0.730.
+
+**G3** (naive - guardrailed): Delta_instructed +2.77, Delta_heldout +0.85, contrast +1.93, bootstrap 95% [1.33, 2.53] (secondary, pre-registered contrast).
+
+**G3** (detailed-functional - guardrailed): Delta_instructed +3.04, Delta_heldout +0.48, contrast +2.56, bootstrap 95% [2.03, 3.11] (secondary, pre-registered contrast).
+
+#### Prevalence over unguardrailed runs (PB rule: supported if Wilson lower >= 0.50, refuted if upper < 0.20)
+
+| hypothesis | k/n | share | Wilson 95% | PB decision |
+|---|---|---|---|---|
+| H1 (D01 or D02) | 66/66 | 1.000 | [0.945, 1.000] | supported |
+| H5 (U01 or U05) | 1/66 | 0.015 | [0.003, 0.081] | refuted |
+| H6 (S05) | 10/66 | 0.152 | [0.084, 0.257] | inconclusive |
+
+#### Sensitivity analyses (protocol A6; none replaces a confirmatory endpoint)
+
+| variant | n valid | C1 diff (p) | C2 diff (p) | C3 Cliff's delta (p) |
+|---|---|---|---|---|
+| (a) no web-tool attempt | 100 | +0.645 (p=0.0000) | +4.199 (p=0.0000) | +0.495 (p=0.0009) |
+| (c) compile-excluded (build pass) | 42 | +0.000 (p=1.0000) | +4.886 (p=0.0004) | +0.584 (p=0.0005) |
+| (b) only agy-g38flash | 28 | +0.500 (p=0.0288) | +8.644 (p=0.0001) | +0.278 (p=0.1479) |
+| (b) only claude-haiku | 36 | +0.750 (p=0.0010) | +3.000 (p=0.0000) | +0.233 (p=0.1899) |
+| (b) only codex-luna | 36 | +0.667 (p=0.0009) | +2.083 (p=0.0001) | +0.919 (p=0.0000) |
+| (b) without agy-g38flash | 72 | +0.708 (p=0.0000) | +2.542 (p=0.0000) | +0.576 (p=0.0002) |
+| (b) without claude-haiku | 64 | +0.589 (p=0.0000) | +4.905 (p=0.0000) | +0.644 (p=0.0000) |
+| (b) without codex-luna | 64 | +0.634 (p=0.0000) | +5.392 (p=0.0000) | +0.252 (p=0.1119) |
+
+### 3e. Primary and depfix side by side (validated rules; C1 = share of runs with at least one S-class finding, naive minus guardrailed; C2 = distinct S rule IDs per run, naive minus guardrailed; C3 = S-class findings per kLOC, unguardrailed AI vs human pre-2022)
+
+| endpoint | 3a primary (v1, first scan) | 3c depfix (v1) | 3b sensitivity (v2, first scan) | 3d depfix (v2) |
+|---|---|---|---|---|
+| C1 | +0.439, p=0.00004 | +0.645, p=0.00001 | +0.439, p=0.00004 | +0.645, p=0.00001 |
+| C2 | +3.025, p=0.00001 | +3.259, p=0.00001 | +3.964, p=0.00001 | +4.199, p=0.00001 |
+| C3 | AI 2.37 vs human 1.02 per kLOC, delta +0.582, p=0.00009 | AI 2.33 vs human 0.83 per kLOC, delta +0.513, p=0.00055 | AI 2.37 vs human 1.02 per kLOC, delta +0.567, p=0.00013 | AI 2.33 vs human 0.83 per kLOC, delta +0.495, p=0.00086 |
+
+No C1 to C3 verdict changes under depfix: every endpoint keeps its sign and stays below p = 0.01 (the Holm bound for the weakest of five at alpha 0.05) in all four columns. The first-scan lookup bug cuts both ways: it inflated the guardrailed S-class share (against C1) and the S-class density of AI and human apps alike (C3), so the C3 depfix column is the one to read for the human comparison. The primary analysis stays as run (pre-registered pipeline); depfix is a sensitivity track.
+
+### H4: hallucinated dependencies (descriptive, not confirmatory)
+
+Decision rule (protocol section 3): supported if at least one coordinate instance is classed hallucinated-artifact (group:artifact absent from every repository the project declares, on the generation date); refuted if 0 hallucinated artifacts in at least 300 instances; a real artifact with a non-existent version is hallucinated-version and counted separately. **Verdict: H4 REFUTED by the pre-registered rule (0 hallucinated artifacts in 2105 >= 300 instances; rule of three upper 95% bound 0.14%).** Instances: 2105 coordinates in 100 valid runs (bom 27, lib 1532, plugin 546); resolved against the metadata of the declared repositories (default pluginManagement repositories for plugins); no lookup errors; lookup date 2026-11-23.
+
+hallucinated-artifact: 0 first scan, 0 corrected. hallucinated-version: 22 in the first scan (21 KSP plugin, 1 other), 1 after the lookup correction. The first-scan lookup stopped at the first declared repository that answered; for plugins that was google(), whose KSP plugin marker is stale (25 versions, last 1.5.30-1.0.0, 2021), so five real KSP versions (1.9.22-1.0.17, 1.9.23-1.0.20, 1.9.24-1.0.20, 2.0.20-1.0.25, 2.0.21-1.0.28) that exist on Maven Central and the Gradle Plugin Portal were called nonexistent. Gradle falls through to the next repository, so the corrected lookup takes the union over the declared repositories. The one confirmed hallucinated version: codex-luna org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:1.9.24 (the Compose compiler plugin starts at 2.0.0; absent from Central and the Plugin Portal).
+
+S11 status: S11 (nonexistent, hallucinated or known-vulnerable dependency) is a registry lookup, so it has no seeded mutants and no blind precision sample; its check is the resolution itself. The first-scan lookup had the defect above (21 false hallucinated-version findings in 21 runs, 16 more in the human apps), so S11 is not validated in tracks 3a and 3b; in tracks 3c and 3d the lookup is corrected and S11 is validated by resolution (one remaining hallucinated-version, plus known-vulnerable findings from OSV at the lookup date).
 
 ## 4. Detector validation
 
@@ -424,6 +594,7 @@ Human control (R3): GitHub search, seeded draw (seed 20261121), screened to Kotl
 - Detector fixes were driven by the rule-level pass of the first rater without an arm split (five rules, validation/fixes-v2.md); no rule was retuned for prevalence.
 - Rater independence: rater 1 is the author of the detector and of the seeded mutants; rater 2 never saw E1 data and rated from the pack alone. After rater 1 had finished each sheet the file-change notices of the work harness displayed some of rater 2's rows to rater 1 (41 rows of the v1 sheet; the v2 sheet in full: the notice listed 32 lines, the header plus all 31 rows); the labels in rater 1's sheets were written before and were not edited afterwards.
 - Resource incidents: the campaign aborted once on the root-volume free-space guard and was resumed; the NTFS work volume ran out of file records three times (ENOSPC despite free bytes); redundant corpus copies and Gradle caches were deleted, one build was rerun (codex-luna-B3-naive-r4, final result compile failure), and the scan was regenerated. No generated source was modified.
+- Dependency lookup correction (post-hoc): after the first analysis, the H4 check by another pane found that depcheck stopped at the first declared repository that answered, so a stale google() KSP plugin marker made 21 real KSP versions look nonexistent (S11 false findings in 21 runs, 16 in human apps) and left their latest-stable version empty (D02 missing for them). The lookup now falls through the declared repositories (slop-scan/depcheck.py check(), harness/depfix_apply.py, results/depfix/). Only those rows changed (runs: 21 class changes, 21 latest-stable values filled, no OSV change; human: 16 class changes); the first-scan files stay as they were and every number is reported both ways (sections 3a/3b first scan, 3c/3d corrected). The correction was made after arm-level results were seen, so it is a researcher degree of freedom; it moves the guardrailed share from 17/34 to 10/34 and the human S-class density down as well, and it changes no C1 to C3 verdict (section 3e). The primary analysis was not changed: altering the pre-registered pipeline after the results are known would be a forking path, so depfix is a sensitivity track.
 - Containment: results/containment_notes.md triages the four runs that reference a path outside their own directory; no write escaped the run directory.
 - Adjudication: 26 rater disagreements (22 in pack v1, 4 in pack v2) were settled by a third reading with the whole source open, written to results/validation/adjudication*.csv with a reason per item. The third reader is rater 1, the detector's author, so it is not independent of the detector. Agreement was lowest where rater 2 could not see callers or colour constants in the window (results/validation/kappa_by_rule.csv: P08 0/6, U03 2/6, P02 3/6, S01 3/6, P09 7/12 agree). Rater-2 sheet sha256 prefixes: v1 cb310a27, v2 f630c4c1.
 - G3 held-out rules (P03, P05, P08, S06, D02, U04, U05) were frozen before any data (A1, no substitution). P05 and U05 fail the section 5 precision gate, so the held-out side of G3 rests on P03, P08, S06, D02, U04 in both tracks.

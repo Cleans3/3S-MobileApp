@@ -164,17 +164,20 @@ def osv(g, a, v):
 def check(c, declared, snapdir, today):
     g, a, v = c["group"], c["artifact"], c["version"]
     urls = repo_urls(c["kind"], declared)
-    found, versions, latest, errors = None, [], None, 0
+    found, versions, latest, errors, found_hit, snapped = None, [], None, 0, False, False
     for name, url in urls:
         st, blob, _ = metadata(url, g, a)
         if st == 200:
             vs, rel = parse_meta(blob)
-            if name != "jitpack" or True: found, versions, latest = (name, url), vs, rel
-            if snapdir:
+            hit = bool(not v or v in vs)
+            # Gradle falls through to the next declared repo when one lacks the module version (a stale marker in google() must not hide it on Central or the Plugin Portal)
+            if found is None or (hit and not found_hit): found, latest, found_hit = (name, url), rel, hit
+            versions = versions + [x for x in vs if x not in versions]
+            if snapdir and (not snapped or hit):
                 snapdir.mkdir(parents=True, exist_ok=True)
-                (snapdir / f"{g}__{a}.xml").write_bytes(blob)
-            break
-        if st not in (404, 410): errors += 1
+                (snapdir / f"{g}__{a}.xml").write_bytes(blob); snapped = True
+            if hit: break
+        elif st not in (404, 410): errors += 1
     c["repos"] = ",".join(n for n, _ in urls)
     if not found:
         if any(n == "jitpack" or "jitpack" in u for n, u in urls) and g.startswith(("com.github.", "io.github.", "com.gitlab.")):

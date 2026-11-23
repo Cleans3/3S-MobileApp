@@ -62,12 +62,15 @@ def main():
     nb = [r for r in valid if r["build"] == "pass"]; nz = [r for r in valid if r["build_zero_touch"] == "pass"]
     perb = "; ".join(f"{b} {sum(1 for r in nb if r['bundle'] == b)}/{sum(1 for r in valid if r['bundle'] == b)}" for b in BUNDLES)
     c1, c2 = comp_row("primary-v1"), comp_row("sensitivity-v2")
+    cf, cx = read("coordinates.csv"), read("depfix/coordinates_fixed.csv")
     w("## Read this first\n")
     w(f"1. Only {len(nb)} of {len(valid)} valid runs build (pass after at most 3 logged table repairs; {len(nz)} pass zero-touch). Per bundle: {perb}. Every prevalence number below is source-level and covers all valid runs, including apps that do not compile.\n")
     if c1 and c2:
         w(f"2. Among the {c1[1]} apps that build (compile-excluded sensitivity, protocol A6, not a confirmatory endpoint), C1 (share of runs with at least one S-class finding, naive minus guardrailed) is {c1[2]} on the primary track and {c2[2]} on the v2 track: the guardrail effect on S-class presence does not hold among apps that build. The count and density effects persist among builders (C2 {c1[3]} primary, {c2[3]} v2; C3 Cliff's delta {c1[4]} primary, {c2[4]} v2), so the guardrail reduces how many distinct S-class problems appear, not whether any appear in a working app.\n")
     else:
         w("2. The compile-excluded sensitivity has not been computed (analysis.py not run).\n")
+    if cf:
+        w(f"3. Dependency lookup defect, found by the H4 check: 21 of the 22 hallucinated-version instances in coordinates.csv were false (a stale google() KSP plugin marker was checked first). H4 itself is unaffected (0 hallucinated artifacts in {len(cf)} instances: refuted). The defect cuts both ways (it inflated the guardrailed S-class share and the S-class density of AI and human apps alike); the depfix tracks (3c, 3d, side by side in 3e) are a post-hoc sensitivity analysis disclosed in section 7; the primary analysis stays as pre-registered and run.\n")
     w("## 1. Corpus actually generated\n")
     rows = []
     for b in BUNDLES:
@@ -129,10 +132,45 @@ def main():
     AN.SRC.clear()
     w("Wilson 95% intervals. A rule that fires in nearly every human app (read the human columns) separates nothing; the analysis section applies the pre-registered prevalence-band rule. Rules marked unvalidated in the status column are shown here but are not in the primary endpoints of that track.\n")
     w("## 3. Pre-registered endpoints\n")
-    for sub, title in (("primary-v1", "3a. PRIMARY (frozen v1 detector)"), ("sensitivity-v2", "3b. SENSITIVITY (v2 detector)")):
+    for sub, title in (("primary-v1", "3a. PRIMARY (frozen v1 detector, first-scan dependency lookup)"), ("sensitivity-v2", "3b. SENSITIVITY (v2 detector, first-scan dependency lookup)"),
+                       ("primary-v1-deps-corrected", "3c. SENSITIVITY (depfix): v1 detector, dependency lookup corrected (post-hoc, section 7)"), ("sensitivity-v2-deps-corrected", "3d. SENSITIVITY (depfix): v2 detector, dependency lookup corrected (post-hoc, section 7)")):
         s = RES / "analysis" / sub / "summary.md"
         w(f"### {title}\n")
         w(re.sub(r"(?m)^(#+)", lambda m: "##" + m.group(1), s.read_text()) if s.exists() else "analysis.py has not been run.\n")
+    def ep(sub):
+        f = RES / "analysis" / sub / "summary.md"; d = {}
+        if not f.exists(): return d
+        for ln in f.read_text().splitlines():
+            for key in ("C1", "C2", "C3"):
+                if key not in d and ln.startswith(f"**{key}**"): d[key] = ln
+        return d
+    cols = [("3a primary (v1, first scan)", "primary-v1"), ("3c depfix (v1)", "primary-v1-deps-corrected"), ("3b sensitivity (v2, first scan)", "sensitivity-v2"), ("3d depfix (v2)", "sensitivity-v2-deps-corrected")]
+    eps = {c: ep(s) for c, s in cols}; side, signs, ps = [], [], []
+    for key in ("C1", "C2", "C3"):
+        row = [key]
+        for c, _ in cols:
+            ln = eps[c].get(key, "")
+            m = re.search(r"difference ([+-]\d+\.\d+), stratified permutation p = ([\d.]+)", ln) if key != "C3" else re.search(r"median ([\d.]+) S-class findings/kLOC vs human pre n=\d+ median ([\d.]+); Mann-Whitney p = ([\d.]+), Cliff's delta = ([+-]\d+\.\d+)", ln)
+            if not m: row.append("n/a"); continue
+            if key != "C3": row.append(f"{m.group(1)}, p={m.group(2)}"); signs.append((key, m.group(1)[0])); ps.append(float(m.group(2)))
+            else: row.append(f"AI {m.group(1)} vs human {m.group(2)} per kLOC, delta {m.group(4)}, p={m.group(3)}"); signs.append((key, m.group(4)[0])); ps.append(float(m.group(3)))
+        side.append(row)
+    if all(eps[c] for c, _ in cols):
+        w("### 3e. Primary and depfix side by side (validated rules; C1 = share of runs with at least one S-class finding, naive minus guardrailed; C2 = distinct S rule IDs per run, naive minus guardrailed; C3 = S-class findings per kLOC, unguardrailed AI vs human pre-2022)\n")
+        w(table(["endpoint"] + [c for c, _ in cols], side))
+        same = all(len({s for k, s in signs if k == key}) == 1 for key in ("C1", "C2", "C3")) and max(ps) < 0.01
+        w(("No C1 to C3 verdict changes under depfix: every endpoint keeps its sign and stays below p = 0.01 (the Holm bound for the weakest of five at alpha 0.05) in all four columns. " if same else "At least one C1 to C3 verdict changes under depfix; compare the columns above. ") + "The first-scan lookup bug cuts both ways: it inflated the guardrailed S-class share (against C1) and the S-class density of AI and human apps alike (C3), so the C3 depfix column is the one to read for the human comparison. The primary analysis stays as run (pre-registered pipeline); depfix is a sensitivity track.\n")
+    cf, cx = read("coordinates.csv"), read("depfix/coordinates_fixed.csv")
+    if cf:
+        bund = {r["run_id"]: r["bundle"] for r in runs}
+        cnt1, cnt2 = collections.Counter(r["class"] for r in cf), collections.Counter(r["class"] for r in cx)
+        ha1, ha2 = cnt1.get("hallucinated-artifact", 0), cnt2.get("hallucinated-artifact", 0)
+        verdict = "supported (at least one hallucinated-artifact instance)" if ha2 else (f"REFUTED by the pre-registered rule (0 hallucinated artifacts in {len(cx)} >= 300 instances; rule of three upper 95% bound {300 / len(cx) / 100:.2%})" if len(cx) >= 300 else "undecided (fewer than 300 instances)")
+        w("### H4: hallucinated dependencies (descriptive, not confirmatory)\n")
+        w(f"Decision rule (protocol section 3): supported if at least one coordinate instance is classed hallucinated-artifact (group:artifact absent from every repository the project declares, on the generation date); refuted if 0 hallucinated artifacts in at least 300 instances; a real artifact with a non-existent version is hallucinated-version and counted separately. **Verdict: H4 {verdict}.** Instances: {len(cx)} coordinates in {len({r['run_id'] for r in cx})} valid runs ({', '.join(f'{k} {v}' for k, v in sorted(collections.Counter(r['kind'] for r in cx).items()))}); resolved against the metadata of the declared repositories (default pluginManagement repositories for plugins); no lookup errors; lookup date {cx[0]['dep_date'] if cx else '-'}.\n")
+        vh = [r for r in cf if r["class"] == "hallucinated-version"]
+        w(f"hallucinated-artifact: {ha1} first scan, {ha2} corrected. hallucinated-version: {cnt1.get('hallucinated-version', 0)} in the first scan ({sum(1 for r in vh if r['group'] == 'com.google.devtools.ksp')} KSP plugin, {sum(1 for r in vh if r['group'] != 'com.google.devtools.ksp')} other), {cnt2.get('hallucinated-version', 0)} after the lookup correction. The first-scan lookup stopped at the first declared repository that answered; for plugins that was google(), whose KSP plugin marker is stale (25 versions, last 1.5.30-1.0.0, 2021), so five real KSP versions (1.9.22-1.0.17, 1.9.23-1.0.20, 1.9.24-1.0.20, 2.0.20-1.0.25, 2.0.21-1.0.28) that exist on Maven Central and the Gradle Plugin Portal were called nonexistent. Gradle falls through to the next repository, so the corrected lookup takes the union over the declared repositories. The one confirmed hallucinated version: " + "; ".join(f"{bund.get(r['run_id'], '?')} {r['group']}:{r['artifact']}:{r['version']}" for r in cx if r["class"] == "hallucinated-version") + " (the Compose compiler plugin starts at 2.0.0; absent from Central and the Plugin Portal).\n")
+        w("S11 status: S11 (nonexistent, hallucinated or known-vulnerable dependency) is a registry lookup, so it has no seeded mutants and no blind precision sample; its check is the resolution itself. The first-scan lookup had the defect above (21 false hallucinated-version findings in 21 runs, 16 more in the human apps), so S11 is not validated in tracks 3a and 3b; in tracks 3c and 3d the lookup is corrected and S11 is validated by resolution (one remaining hallucinated-version, plus known-vulnerable findings from OSV at the lookup date).\n")
     w("## 4. Detector validation\n")
     mut = read("validation/mutation.csv")
     if mut:
@@ -182,6 +220,7 @@ def main():
         "Detector fixes were driven by the rule-level pass of the first rater without an arm split (five rules, validation/fixes-v2.md); no rule was retuned for prevalence.",
         "Rater independence: rater 1 is the author of the detector and of the seeded mutants; rater 2 never saw E1 data and rated from the pack alone. After rater 1 had finished each sheet the file-change notices of the work harness displayed some of rater 2's rows to rater 1 (41 rows of the v1 sheet; the v2 sheet in full: the notice listed 32 lines, the header plus all 31 rows); the labels in rater 1's sheets were written before and were not edited afterwards.",
         "Resource incidents: the campaign aborted once on the root-volume free-space guard and was resumed; the NTFS work volume ran out of file records three times (ENOSPC despite free bytes); redundant corpus copies and Gradle caches were deleted, one build was rerun (codex-luna-B3-naive-r4, final result compile failure), and the scan was regenerated. No generated source was modified.",
+        "Dependency lookup correction (post-hoc): after the first analysis, the H4 check by another pane found that depcheck stopped at the first declared repository that answered, so a stale google() KSP plugin marker made 21 real KSP versions look nonexistent (S11 false findings in 21 runs, 16 in human apps) and left their latest-stable version empty (D02 missing for them). The lookup now falls through the declared repositories (slop-scan/depcheck.py check(), harness/depfix_apply.py, results/depfix/). Only those rows changed (runs: 21 class changes, 21 latest-stable values filled, no OSV change; human: 16 class changes); the first-scan files stay as they were and every number is reported both ways (sections 3a/3b first scan, 3c/3d corrected). The correction was made after arm-level results were seen, so it is a researcher degree of freedom; it moves the guardrailed share from 17/34 to 10/34 and the human S-class density down as well, and it changes no C1 to C3 verdict (section 3e). The primary analysis was not changed: altering the pre-registered pipeline after the results are known would be a forking path, so depfix is a sensitivity track.",
         "Containment: results/containment_notes.md triages the four runs that reference a path outside their own directory; no write escaped the run directory.",
         "Adjudication: 26 rater disagreements (22 in pack v1, 4 in pack v2) were settled by a third reading with the whole source open, written to results/validation/adjudication*.csv with a reason per item. The third reader is rater 1, the detector's author, so it is not independent of the detector. Agreement was lowest where rater 2 could not see callers or colour constants in the window (results/validation/kappa_by_rule.csv: P08 0/6, U03 2/6, P02 3/6, S01 3/6, P09 7/12 agree). Rater-2 sheet sha256 prefixes: v1 cb310a27, v2 f630c4c1.",
         "G3 held-out rules (P03, P05, P08, S06, D02, U04, U05) were frozen before any data (A1, no substitution). P05 and U05 fail the section 5 precision gate, so the held-out side of G3 rests on P03, P08, S06, D02, U04 in both tracks.",

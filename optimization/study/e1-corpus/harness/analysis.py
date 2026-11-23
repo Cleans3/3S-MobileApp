@@ -79,8 +79,12 @@ TRACKS = {
     "v1": {"findings.csv": "validation/v1/pre_fix_findings.csv", "metrics.csv": "validation/v1/pre_fix_metrics.csv", "human_findings.csv": "validation/v1/pre_fix_human_findings.csv",
            "human_metrics.csv": "validation/v1/pre_fix_human_metrics.csv", "validation/rules_status.csv": "validation/rules_status_v1.csv"},
     "v2": {"validation/rules_status.csv": "validation/rules_status_v2.csv"},
+    # dependency lookup corrected (alpha Q#dep-fix): the same detector rows with the depcheck rows re-resolved over the union of declared repos
+    "v1c": {"findings.csv": "depfix/findings_v1_corrected.csv", "metrics.csv": "validation/v1/pre_fix_metrics.csv", "human_findings.csv": "depfix/human_findings_v1_corrected.csv",
+            "human_metrics.csv": "validation/v1/pre_fix_human_metrics.csv", "validation/rules_status.csv": "validation/rules_status_v1.csv"},
+    "v2c": {"findings.csv": "depfix/findings_v2_corrected.csv", "human_findings.csv": "depfix/human_findings_v2_corrected.csv", "validation/rules_status.csv": "validation/rules_status_v2.csv"},
 }
-OUTDIR = {"v1": "primary-v1", "v2": "sensitivity-v2"}
+OUTDIR = {"v1": "primary-v1", "v2": "sensitivity-v2", "v1c": "primary-v1-deps-corrected", "v2c": "sensitivity-v2-deps-corrected"}
 
 def read(name):
     f = RES / SRC.get(name, name)
@@ -205,7 +209,7 @@ def sensitivity(allowed, runs, findings, metrics, human, hmet, hc):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--selftest", action="store_true")
-    ap.add_argument("--track", default="both", choices=["both", "v1", "v2", "legacy"], help="v1 = frozen pre-fix detector (PRIMARY, alpha A13), v2 = fixed detector (sensitivity), legacy = old single run on the current files")
+    ap.add_argument("--track", default="both", choices=["both", "v1", "v2", "v1c", "v2c", "corrected", "legacy"], help="v1 = frozen pre-fix detector (PRIMARY, alpha A13), v2 = fixed detector (sensitivity), legacy = old single run on the current files")
     a = ap.parse_args()
     if a.selftest:
         assert abs(wilson(10, 20)[1] - 0.299) < 0.002 and abs(wilson(10, 20)[2] - 0.701) < 0.002
@@ -214,8 +218,8 @@ def main():
         obs, p = perm_test([(["A"] * 8 + ["B"] * 8, [1] * 8 + [0] * 8)], lambda x, y: statistics.fmean(x) - statistics.fmean(y), perms=5000)
         assert obs == 1.0 and p < 0.01
         print("selftest ok"); return
-    if a.track in ("both", "v1", "v2"):
-        for tr in (["v1", "v2"] if a.track == "both" else [a.track]):
+    if a.track in ("both", "v1", "v2", "v1c", "v2c", "corrected"):
+        for tr in ({"both": ["v1", "v2"], "corrected": ["v1c", "v2c"]}.get(a.track) or [a.track]):
             SRC.clear(); SRC.update(TRACKS[tr]); run_track(OUTDIR[tr], tr)
         SRC.clear(); return
     run_track("", "legacy")
