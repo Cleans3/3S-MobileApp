@@ -1,0 +1,9 @@
+factor,metric,unit,delta_pct_B_vs_A,ci_lo,ci_hi,cliffs_delta,n
+P08,frameDurationCpuMs_p90,ms,-22.0,-35.2,-11.8,0.875,12
+P06,st.decodedBytes,bytes,-96.9,-96.9,-96.9,1,12
+P01+P09,timeToInitialDisplayMs,ms,-69.9,-70.8,-68.7,1,12
+P01+P09/P01,timeToInitialDisplayMs,ms,0.471,-6.44,21.5,-0.26,12
+P13,st_search_query.sumMs,ms,-86.5,-88.4,-84.1,0.714,12
+P03+P04,Compose_recompose.mainMs,ms,1.49,-14.4,13.0,0.0317,13
+P10,apk_bytes,bytes,-90.4,,,,1
+P11,timeToInitialDisplayMs,ms,-5.88,-9.87,-2.67,0.692,13

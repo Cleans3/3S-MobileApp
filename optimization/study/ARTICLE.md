@@ -377,6 +377,10 @@ Quy trình gồm sáu bước, khớp với đề cương (xây yêu cầu, sinh
 
 Giao thức phiên bản 1.0 được đóng băng ở commit a5969de, tổng băm sha256 bắt đầu bằng `f8c62a30`; sau đó chỉ mục sửa đổi (§15) được phép thay đổi và chỉ theo kiểu **chỉ thêm vào**, có ngày, có băm mới ghi trong `00-protocol.sha256` và lịch sử trong `00-protocol.sha256.log`. Các sửa đổi đã ghi: xem Mục 4.11. Kết quả không kết luận được và kết quả âm là kết quả hợp lệ và được báo cáo cùng vị trí với kết quả dương [Protocol §1.1].
 
+**Hình 4.1.** Thiết kế nghiên cứu: đầu vào, năm thực nghiệm và điểm cuối xác nhận. Số liệu vẽ: `figures/out/F01-design.data.csv`.
+
+![F01](figures/out/F01-design.svg)
+
 ### 4.2. ShelfTap, ba brief và ba kiểu prompt
 
 Miền ứng dụng là thư viện; mọi brief là một chức năng của ShelfTap. Ba brief bao phủ ba mặt khác nhau của rủi ro, và văn bản **nguyên văn** của chúng (cả bản naive lẫn detailed-functional) nằm ở [Protocol §8], không lặp lại ở đây:
@@ -504,6 +508,10 @@ Các điều kiện ràng buộc người phân tích: (i) với C1, C2, hoán v
 
 **Dữ liệu thiếu.** Không điền bù. Lần chạy không hợp lệ và lượt thử không phân loại được đều được đếm và hiện trong bảng luồng (đã sinh, hợp lệ, build không can thiệp, build sau sửa, đã phân tích) [Protocol §6.4].
 
+**Hình 4.2.** Độ nhạy thiết kế: công suất của kiểm định Fisher chính xác theo cỡ mẫu mỗi nhánh (Phụ lục A của giao thức); vạch đen ở trục x là cỡ mẫu thực tế. Số liệu vẽ: `figures/out/F02-power.data.csv`.
+
+![F02](figures/out/F02-power.svg)
+
 ### 4.9. Độc lập, tái lập và kiểm tra số liệu
 
 Bên viết giao thức và guardrail không viết bộ phát hiện; bộ phát hiện không đọc danh mục nguồn của guardrail trước khi luật của nó cố định; bên sửa trong E5 không phải bên sinh ra mã được sửa nếu tránh được; trợ lý không bao giờ xác nhận bản sửa của chính nó [Protocol §14]. Điều này cũng là cách tách việc đo khỏi việc bị đo: một guardrail do chính tác giả bộ phát hiện viết sẽ có luật tương quan với bộ phát hiện theo cấu trúc (mối đe dọa 8), và các luật bị giữ lại là biện pháp đối phó.
@@ -586,6 +594,10 @@ Giá trị băm hiện hành của giao thức luôn nằm ở `00-protocol.sha2
 
 **Ứng dụng thử nghiệm.** ShelfTap (miền thư viện) là miền chung của ba brief; `optlab` là ứng dụng đo của E2 với các màn Catalogue, Search và Detail; hình chụp màn hình nằm ở phần trình bày.
 
+**Hình 5.1.** E1: lần chạy sinh, hợp lệ và build được theo kiểu prompt và bộ công cụ (không tính pilot). Số liệu vẽ: `figures/out/F03-e1-flow.data.csv`.
+
+![F03](figures/out/F03-e1-flow.svg)
+
 ### 5.2. E1: kho bản nháp đầu
 
 #### 5.2.1. Kiểm chứng bộ phát hiện (cổng của Mục 4.3)
@@ -613,6 +625,14 @@ Chín luật này (P05, P06, P07, P09, P10, S03, S04, S08, U05) **bị loại kh
 **Nhánh v1 là nhánh chính, nhánh v2 là độ nhạy (A13).** Sau khi gói v1 được rút, đợt chấm của người viết bộ phát hiện tìm ra lỗi dương tính giả ở năm luật (P10, S03, P05, P09, P07), được sửa ở nhánh v2 (`e1-corpus/validation/fixes-v2.md`) với độ nhạy đột biến giữ 1,00 và không phát hiện lành tính nào kích hoạt; không luật nào được thêm, chỉnh theo tần suất hay bỏ. Vì người viết bộ phát hiện đã thấy các con số theo nhánh của một lần chạy thử trên 13 lần chạy hợp lệ (A6), điều kiện đăng ký trước "không thấy số theo nhánh trước khi sửa" không còn đúng, nên bộ v1 giữ vai trò chính. Các luật đã sửa chỉ được kiểm chứng trên mục mới ở gói v2 (sáu mục mỗi luật, loại mọi mục v1, hai người chấm mù): ở nhánh v2, P10, S03 và P09 đạt cổng (độ chính xác 1,000 trên 5 mục, 0,833 và 1,000 trên 6 mục), còn P05, P06, P07, S04, S08, U05 vẫn không đạt; P07 chỉ có 1 tp và 3 fp trên mục mới và không có vòng sửa thứ hai, vì lặp lại sửa trên mẫu mới là điều chỉnh theo dữ liệu (quyết định của người điều phối).
 
 Độ phủ so với công cụ có sẵn (`coverage_matrix.csv`): phần lớn luật chỉ bộ phát hiện tùy biến có (cột `custom_only`); luật trùng rõ nhất là S06 (45 phát hiện của bộ phát hiện, 18 của Android Lint). Phân xử: 26 bất đồng (22 ở gói v1, 4 ở gói v2) được giải bằng lần đọc thứ ba **do chính người viết bộ phát hiện thực hiện**, nên không độc lập với bộ phát hiện (Mục 5.8).
+
+**Hình 5.2.** Kiểm chứng bộ phát hiện v1: độ nhạy đột biến và độ chính xác theo luật; chấm rỗng là luật chưa kiểm chứng. Số liệu vẽ: `figures/out/F04-validation.data.csv`.
+
+![F04](figures/out/F04-validation.svg)
+
+**Hình 5.3.** Độ phủ so với Lint, detekt và compose-rules: luật chỉ bộ phát hiện tùy biến có. Số liệu vẽ: `figures/out/F05-coverage.data.csv`.
+
+![F05](figures/out/F05-coverage.svg)
 
 #### 5.2.2. Tần suất theo lớp vấn đề và theo kiểu prompt (mô tả)
 
@@ -661,9 +681,17 @@ Bảng 5.4 cho tỷ lệ lần chạy hợp lệ có ít nhất một phát hi�
 
 **Theo bộ công cụ (mô tả, không có tuyên bố "công cụ tốt nhất").** REPORT không đưa tần suất theo luật cho từng bộ công cụ; các số theo bộ công cụ có ở ba nơi: tỷ lệ build (Mục 5.1), cỡ bản nháp (dòng Kotlin trung vị từ 153 đến 264 ở codex-luna, từ 511 đến 1138 ở claude-haiku, từ 1686 đến 1880 ở agy-g38flash; Bảng 5.1) và phân tích độ nhạy theo bộ công cụ (Bảng 5.7). Cỡ bản nháp khác nhau rất nhiều giữa các bộ công cụ (trung vị từ 153 đến 1880 dòng), nên mọi so sánh theo "có ít nhất một phát hiện" lẫn với cỡ.
 
-**Phần E1 của H3 (hiệu ứng trang trí).** P08 là luật được kiểm chứng và bị giữ lại; tần suất ở trên là phần tần suất của H3. Phân bố mật độ hiệu ứng theo phần tử danh sách và màn hình (`metrics.csv`, cột `effect_density_item`, `effect_density_screen`) không có trong REPORT của E1 nên không được báo cáo ở đây.
+**Phần E1 của H3 (hiệu ứng trang trí).** P08 là luật được kiểm chứng và bị giữ lại; tần suất ở trên là phần tần suất của H3. REPORT của E1 không báo cáo phân bố mật độ hiệu ứng theo phần tử danh sách và màn hình (`metrics.csv`, cột `effect_density_item`, `effect_density_screen`), nên bài không đưa con số nào của phân bố; Hình 5.5 vẽ trực tiếp các giá trị từ `metrics.csv` ở dạng mô tả, không có thống kê.
 
 **Các mẫu nổi lên (open coding).** REPORT liệt kê các mã không có sẵn trong danh mục. Ở nhiều lần chạy nhất: `invented-base-url` (5 lần chạy; brief naive không cho URL), `force-unwrap-in-compose` (4), `broad-catch-in-suspend` (3; bắt `Exception` mà không ném lại `CancellationException`), `dense-minified-source` (3; nhiều câu lệnh trên một dòng, dòng dài đến khoảng 1300 ký tự), `exception-swallowed-to-default` (2), `overbroad-keep-rule` (2), `handwritten-http-json` (2), `silent-wrong-default` (2; ví dụ `daysLeft()` trả về 0 khi lỗi phân tích) và `allowbackup-true-with-session` (2, trong danh mục là S06). Các mã còn lại xuất hiện ở một lần chạy, gồm các lỗi cấu trúc (`wrong-processor-artifact`: `ksp(room.runtime)` thay cho `room-compiler`; `mock-backend-enabled-by-default`: bộ chặn giả mạo được bật mặc định trong OkHttp client của bản phát hành; `release-signed-with-debug-key`), lỗi "ảo" (`hallucinated-package-path`, `hallucinated-view-property`) và cả mã dương tính (`cancellation-rethrown`, `narrow-catch-io-json`). Đây là kết quả khám phá do một người mã hóa; không có tần suất nào được diễn giải.
+
+**Hình 5.4.** Tần suất theo luật và kiểu prompt (bộ v1, Wilson 95%); nhóm dưới là luật chưa kiểm chứng, chỉ mô tả. Số liệu vẽ: `figures/out/F06-prevalence.data.csv`.
+
+![F06](figures/out/F06-prevalence.svg)
+
+**Hình 5.5.** Mật độ hiệu ứng trang trí theo mục danh sách và theo màn hình (phần E1 của H3), từ `metrics.csv`; mô tả. Số liệu vẽ: `figures/out/F11-decorative-density.data.csv`.
+
+![F11](figures/out/F11-decorative-density.svg)
 
 #### 5.2.3. C1 và C2: guardrail có giảm tỷ lệ phát hiện nhóm S và độ rộng không?
 
@@ -704,9 +732,21 @@ Bảng 5.6 chép nhánh chính v1 trên 20 luật đã kiểm chứng (100 lần
 
 **Hai so sánh khám phá giữa các kiểu prompt.** REPORT không đưa ước lượng chênh và khoảng cho hai so sánh này; Bảng 5.6 cho tỷ lệ và khoảng Wilson của từng kiểu. Nội dung chức năng chi tiết không có guardrail **không** làm giảm tỷ lệ phát hiện S: 0,879 [0,727; 0,952] so với 0,939 [0,804; 0,983] của naive (khoảng chồng nhau), và số mã luật khác nhau mỗi lần chạy là 5,70 so với 5,85. Guardrail là thứ làm khác: 0,500 [0,341; 0,659] so với 0,879 [0,727; 0,952] của detailed-functional (khoảng không chồng nhau), 2,82 so với 5,70. Theo hướng này, lỗi không do yêu cầu chức năng chưa đầy đủ mà do mặc định của quá trình sinh, trong phạm vi một tệp guardrail về chất lượng làm thay đổi được; đây là kết quả mô tả và chưa kiểm tra cơ chế.
 
+**Hình 5.6.** C1: tỷ lệ lần chạy có phát hiện nhóm S, hiệu theo tầng và độ nhạy. Số liệu vẽ: `figures/out/F07-c1.data.csv`.
+
+![F07](figures/out/F07-c1.svg)
+
+**Hình 5.7.** C2: số mã luật khác nhau mỗi lần chạy, hiệu theo tầng và độ nhạy. Số liệu vẽ: `figures/out/F08-c2.data.csv`.
+
+![F08](figures/out/F08-c2.svg)
+
 #### 5.2.4. G3: guardrail giúp luật được nêu hay cả luật bị giữ lại?
 
 G3 là phân tích thứ cấp có đăng ký (nhánh chính v1, 20 luật): hiệu ứng của guardrail trên tập được chỉ dẫn, trên tập bị giữ lại đã qua cổng, và chênh của hai hiệu ứng. Tập bị giữ lại trong G3 là P03, P08, S06, D02, U04, vì P05 và U05 trượt cổng (A1). Naive trừ guardrailed: Δ chỉ dẫn +1,74; Δ bị giữ lại +1,10; chênh +0,63, bootstrap 95% [0,15; 1,14]. Detailed-functional trừ guardrailed: +2,01; +0,71; chênh +1,30, [0,75; 1,84]. Theo quy tắc (ủng hộ nếu cận dưới của khoảng chênh trên 0), cả hai chênh được ủng hộ: guardrail giảm số phát hiện trên luật được nêu nhiều hơn trên luật bị giữ lại, **nhưng luật bị giữ lại cũng giảm** (+1,10 và +0,71 phát hiện mỗi lần chạy). Theo quy ước đã đăng ký, phần giảm ở luật bị giữ lại được ghi là "khái quát hóa hoặc ngẫu nhiên" và không khẳng định cơ chế; ví dụ rõ nhất là S06 (0,88 xuống 0,29) và P08 (0,24 xuống 0,00), cả hai đều là luật bị giữ lại (P08 cũng bằng 0/33 ở detailed-functional, không có guardrail). Phân tích 29 luật cho +0,72 [0,06; 1,39] và +1,54 [0,95; 2,14]; nhánh v2 cho +1,57 [1,06; 2,09] và +2,33 [1,79; 2,87].
+
+**Hình 5.8.** G3: thay đổi tần suất theo luật (được nêu và bị giữ lại) và tương phản đã đăng ký. Số liệu vẽ: `figures/out/F09-g3.data.csv`.
+
+![F09](figures/out/F09-g3.svg)
 
 #### 5.2.5. C3: so với ứng dụng do người viết
 
@@ -715,6 +755,10 @@ G3 là phân tích thứ cấp có đăng ký (nhánh chính v1, 20 luật): hi�
 **C3 (xác nhận).** Phát hiện nhóm S trên 1000 dòng Kotlin, AI không guardrail (n = 66) trung vị **2,37** so với tầng trước trợ lý (n = 20) trung vị **1,02**; Mann-Whitney p = 0,00009, delta Cliff **+0,582** [Cliff1993]. Quy tắc: ủng hộ khi p hiệu chỉnh dưới 0,05 và delta từ 0,33 (AI cao hơn); delta vượt ngưỡng; p hiệu chỉnh Holm là 0,00027 (Bảng 5.27, Mục 5.7). So sánh thứ hai, không xác nhận (tầng 2024 trở đi, n = 20): trung vị 0,24, p = 0,00000 (làm tròn), delta +0,742. Dòng độ nhạy theo ký tự khác khoảng trắng, vì độ dài dòng của các bản nháp khác nhau (một bộ công cụ nhồi khoảng 130 ký tự mỗi dòng): trên 100k ký tự khác trắng, AI 7,83 so với 3,47 của người trước 2022, p = 0,00018, delta +0,556; so với tầng 2024 trở đi trung vị 0,87, delta +0,758. Trên toàn bộ 29 luật: 2,72 so với 1,02, p = 0,00001, delta +0,647. Giữa các bộ công cụ, delta C3 của claude-haiku là +0,340 (p = 0,0559, Bảng 5.7), ở ngưỡng 0,33.
 
 Hai hạn chế đặc thù của C3: tầng người viết gồm ứng dụng phổ biến, lớn, được bảo trì, không giống một bản nháp đầu; tính theo 1000 dòng giảm nhưng không xóa chênh lệch cỡ. Tầng 2024 trở đi có thể đã chứa mã do trợ lý viết, nên chỉ là so sánh thứ hai.
+
+**Hình 5.9.** C3: phát hiện nhóm S trên 1000 dòng Kotlin, AI không guardrail so với hai tầng ứng dụng do người viết, và độ nhạy theo ký tự khác khoảng trắng. Số liệu vẽ: `figures/out/F10-c3.data.csv`.
+
+![F10](figures/out/F10-c3.svg)
 
 #### 5.2.6. H1, H4, H5, H6: các tần suất mô tả
 
@@ -728,11 +772,15 @@ Theo quy tắc dải PB: ủng hộ nếu cận dưới Wilson từ 0,50, bác b
 
 **H1.** Mọi lần chạy không guardrail đều có D01 hoặc D02 đã kiểm chứng. D02 (phụ thuộc cũ từ một phiên bản chính hoặc hơn 12 tháng so với bản ổn định mới nhất tại ngày sinh) có ở 100% mọi nhánh, nhưng cũng ở 17/20 và 18/20 ứng dụng người viết (Bảng 5.4): sự lỗi thời của phụ thuộc không đặc trưng cho AI. D01 (API bị phản đối) ở 0,76, 0,67 và 0,74 các nhánh AI, 1,00 và 0,70 ở người viết.
 
-**H4.** Luật S11 (phụ thuộc không tồn tại, "ảo" hoặc có lỗ hổng đã biết) có trạng thái "pending" trong REPORT, và REPORT không tách `hallucinated-artifact` và `hallucinated-version` khỏi `known-vulnerable` (bảng độ phủ ghi 22 phát hiện depcheck cho S11); tần suất S11 là 1/33 ở naive, 12/33 ở detailed-functional và 9/34 ở guardrailed, so với 18/20 và 13/20 của người viết (Bảng 5.4). H4 **không kết luận được** từ REPORT hiện có; các mã "ảo" của open coding (đường dẫn gói, thuộc tính View) là lỗi tham chiếu, không phải tọa độ Gradle. Với số lần xuất hiện tọa độ dưới 300 và không có artifact ảo, quy tắc yêu cầu ghi "không kết luận được" kèm cận trên theo quy tắc ba [Hanley1983]; số lần xuất hiện tọa độ chưa có trong REPORT nên cận trên chưa tính được.
+**H4.** Luật S11 (phụ thuộc không tồn tại, "ảo" hoặc có lỗ hổng đã biết) có trạng thái "pending" trong REPORT, và REPORT không tách `hallucinated-artifact` và `hallucinated-version` khỏi `known-vulnerable` (bảng độ phủ ghi 22 phát hiện depcheck cho S11); tần suất S11 là 1/33 ở naive, 12/33 ở detailed-functional và 9/34 ở guardrailed, so với 18/20 và 13/20 của người viết (Bảng 5.4). H4 **không kết luận được** từ REPORT hiện có; các mã "ảo" của open coding (đường dẫn gói, thuộc tính View) là lỗi tham chiếu, không phải tọa độ Gradle. Tệp `coordinates.csv` (Hình 5.10) có 2105 thể hiện tọa độ ở các lần chạy hợp lệ, thuộc hai lớp: 2083 `ok` và 22 `hallucinated-version` (21 là plugin KSP, 1 là plugin Compose), và không có thể hiện nào ở lớp `hallucinated-artifact`; số 22 bằng số phát hiện depcheck của S11 trong bảng độ phủ. REPORT E1 không đưa kết luận H4 và S11 vẫn "pending", nên bài chưa áp quy tắc bác bỏ của giao thức (0 artifact ảo trong ít nhất 300 thể hiện, cận trên theo quy tắc ba [Hanley1983]): điều kiện đó sẽ thỏa nếu người phụ trách E1 xác nhận cột `class` là cuối cùng. Đây là câu hỏi mở cho người phụ trách E1, không phải kết luận của bài.
 
 **H5.** 1/66: tỷ lệ bác bỏ. Chú ý: U05 không đạt cổng nên không có trong phân tích chính, vì vậy số 1/66 khớp với riêng U01 (0/33 ở naive, 1/33 ở detailed-functional; Bảng 5.4). U05 chưa kiểm chứng có ở 7/33 và 8/33 lần chạy không guardrail (Bảng 5.5), nên tỷ lệ của H5 sẽ cao hơn nhiều nếu tính nó; vì vậy "bác bỏ" là phát biểu về U01, không về trạng thái loading, empty, error.
 
 **H6.** 10/66 (S05 có 4/33 và 6/33 ở naive và detailed-functional): không kết luận được; khoảng [0,084; 0,257] vắt qua ngưỡng 0,20.
+
+**Hình 5.10.** H1: tỷ lệ lần chạy có D01 hoặc D02; lớp của các thể hiện tọa độ trong `coordinates.csv`. Số liệu vẽ: `figures/out/F12-h1-h4.data.csv`.
+
+![F12](figures/out/F12-h1-h4.svg)
 
 ### 5.3. E2: chi phí A/B của các vấn đề
 
@@ -935,6 +983,14 @@ A là `CompilationMode.None()` (đặt lại hồ sơ, ứng dụng được JIT
 
 Đọc theo mô tả: **kết quả rỗng.** Bộ phát hiện tìm ra tham số `List<Loan>` không ổn định cùng bộ định dạng và bộ lọc trong composition, và bản port giữ nguyên chúng, nhưng ở kịch bản này (300 khoản vay, nhịp 10 Hz, một danh sách mới bằng nhau mỗi nhịp) A và B làm cùng một việc: `st.rc.row` bằng 300 ở cả hai (chỉ lần dựng đầu), số recomposition mỗi lần chạy 76 so với 75, thời gian luồng chính recompose 36,21 so với 36,75 ms (khoảng [−14,4; 13]%). CPU khung hình p90 và tỷ lệ khung chậm không khác; p99 thấp hơn 18% ở B (khoảng [−37,8; −1,38]), một trong 18 hàng khung hình và không hiệu chỉnh cho điều đó. Lần thí điểm có bản A viết tay cho hiệu ứng lớn (các cấu trúc của nó dựng lại cả danh sách mỗi nhịp); phiên bản của cùng các mẫu trong mã E1 thì không ở cỡ này. Toolchain là Kotlin 2.4.21, nơi strong skipping là mặc định (Mục 2.2.3); giả thuyết: đó là một lý do tham số không ổn định không tốn ở đây, nhưng không nhánh nào tắt strong skipping, và REPORT ghi rằng nguyên nhân chưa được cô lập. Số lượng khoản vay là núm sẽ cho biết hiệu ứng có tăng theo cỡ hay không (chưa chạy).
 
+**Hình 5.11.** E2: thay đổi của chỉ số chính theo nhân tố (B so với A) kèm khoảng bootstrap 95%; mô tả. Số liệu vẽ: `figures/out/F13-e2-effects.data.csv`.
+
+![F13](figures/out/F13-e2-effects.svg)
+
+**Hình 5.12.** E2: giá trị tuyệt đối của chỉ số chính, A so với B, từng lần lặp được giữ. Số liệu vẽ: `figures/out/F15-e2-absolute.data.csv`.
+
+![F15](figures/out/F15-e2-absolute.svg)
+
 **C5 (xác nhận): P08, A so với B.** Điểm cuối: P90 của `FrameDurationCpuMs` ở mỗi lần lặp, mục P08 của mã đã sinh (A) so với bản phẳng (B); delta% = (A − B) / B của các trung vị; bootstrap phân vị 95% (10.000 lần lấy lại, hạt giống 20261121) và Mann–Whitney trên giá trị từng lần lặp (`c5_confirmatory.csv`). Quy tắc đã đăng ký (Mục 4.8): ủng hộ khi p hiệu chỉnh Holm dưới 0,05, delta% từ +10% và khoảng 95% không chứa 0; H3 bị bác bỏ khi khoảng nằm trọn trong [−5%, +5%].
 
 **Bảng 5.19.** E2, C5 (đường GPU `swangle_indirect`, A14).
@@ -944,6 +1000,10 @@ A là `CompilationMode.None()` (đặt lại hồ sơ, ứng dụng được JIT
 | 12, 12 | 62,87 ms | 49,07 ms | +28,13% | [+13,38%; +54,31%] | 0,000308 | 0,000616 (Bảng 5.27) | cả ba điều kiện thỏa |
 
 Cả ba điều kiện thỏa: p hiệu chỉnh 0,000616 dưới 0,05, delta% +28,13% từ +10%, và khoảng [13,38; 54,31] không chứa 0 (cận dưới cũng trên +10%); khoảng không nằm trọn trong [−5%, +5%], nên H3 không bị bác bỏ. **C5 được ủng hộ**, theo cách đọc hẹp của nó: ô lưới P08 của một lần chạy E1 (agy-g38flash-B1-naive-r1) tốn thêm cỡ 28% ở P90 thời gian CPU khung hình so với bản phẳng, trên một đường GPU của emulator. Giới hạn: một ứng viên và một lần chạy E1, nên đây là chi phí của một cấu trúc đã sinh, không phải của mọi biến thể của "vẻ ngoài AI"; 12 lần giữ mỗi biến thể; một thiết bị ảo, một phiên đo và một hạt giống dữ liệu; số tuyệt đối không so được với các nhân tố khác (A14); B là bản phẳng do người thực hiện E2 viết; bộ nhớ đồ họa của H3 không đo, nên điều kiện ủng hộ của H3 ở giao thức (C5) thỏa trên khung hình và đại lượng bộ nhớ đồ họa vẫn chưa có.
+
+**Hình 5.13.** C5: P90 thời gian CPU khung hình của ô lưới P08, từng lần lặp và khoảng bootstrap của delta% (đường GPU swangle_indirect, A14). Số liệu vẽ: `figures/out/F14-c5.data.csv`.
+
+![F14](figures/out/F14-c5.svg)
 
 **Chi phí kỳ vọng (khám phá).** Chi phí kỳ vọng của một mẫu trong tập ứng dụng sinh ra là (tỷ lệ ứng dụng chứa mẫu, E1) × (chi phí khi có mẫu, E2). Tần suất E1 là tỷ lệ lần chạy hợp lệ có ít nhất một phát hiện của luật ở hai nhánh không guardrail (naive 33 và detailed-functional 33, tức 66 lần chạy; bộ phát hiện v1 đã đóng băng); nhánh guardrailed là một xử lý khác và bị bỏ ra. Cột chi phí là A − B (trung vị của các lần lặp được giữ); cột cuối nhân nó với tần suất. Số đo kích thước không phụ thuộc thiết bị, các số ms là tương đối với emulator. Giả định: biến thể A (một ứng viên mỗi nhân tố) đại diện cho cấu trúc của E1; REPORT không đưa khoảng cho tích này và bài không tính thêm.
 
@@ -961,6 +1021,10 @@ Cả ba điều kiện thỏa: p hiệu chỉnh 0,000616 dưới 0,05, delta% +2
 | P11 | P11 | timeToInitialDisplayMs | 27,2 ms | P11 1,00 | 27,2 ms |  |
 
 Đọc theo mô tả: P10 và P11 có ở mọi ứng dụng, nên chi phí kỳ vọng bằng chính chi phí (lớn với kích thước APK, nhỏ với khởi động). Trong các mẫu cấp mã, P13 và P01 xuất hiện ở khoảng một phần năm số lần chạy không guardrail, P08 ở một phần tám, P06, P03 và P04 ở dưới một phần mười, P09 ở 3%. Tích số chỉ để xếp hạng mô tả: nó nhân hai số ước lượng từ một ứng viên, không kèm khoảng, và ba luật (P06, P09, P10) chưa qua cổng kiểm chứng của E1.
+
+**Hình 5.14.** Chi phí kỳ vọng (khám phá): tần suất ở E1 so với thay đổi do bản sửa ở E2; chấm rỗng là luật chưa kiểm chứng. Số liệu vẽ: `figures/out/F16-expected-cost.data.csv`.
+
+![F16](figures/out/F16-expected-cost.svg)
 
 ### 5.4. E3: công cụ tĩnh độc lập
 
@@ -1010,6 +1074,10 @@ Quy tắc nhãn chính có một mâu thuẫn nội bộ: `debuggable=true` trê
 
 **Lỗi và hạn chế của E3.** Lần quét jadx đầu (`-j 2 -Xmx1g`) không đầy đủ vì bỏ qua mã thoát; kết quả MobSF và phân loại theo manifest không bị ảnh hưởng, còn quét bí mật và các ghi chú "không tìm thấy trong jadx" thì có; đã chạy lại với `-j 1 -Xmx1536m` cho 12 trên 13 mục tiêu (quét bí mật vẫn chỉ cho một hit, vốn là fp, không có thông tin xác thực mới). APK sản phẩm chưa chạy lại vì tệp build đã bị dọn. Ba lần quét của codex hỏng do ENOSPC của NTFS (hết bản ghi tệp, không phải hết dung lượng) và được lặp lại. Mười ba sản phẩm, mười trong số đó từ một đường ống sinh; một người phân loại.
 
+**Hình 5.15.** E3: độ chính xác theo công cụ và nhóm MASVS, và đồng thuận với bộ phát hiện E1. Số liệu vẽ: `figures/out/F17-e3.data.csv`.
+
+![F17](figures/out/F17-e3.svg)
+
 ### 5.5. E4: áp lực sửa lỗi
 
 **Thiết kế và luồng.** Năm dự án thư viện nhỏ, mỗi dự án có một lỗi cảm ứng mà cách sửa nhanh nhất cũng là một sự làm yếu: C1 cleartext (`usesCleartextTraffic=true`, S03), C2 TLS tự ký (trust-all, S04), C3 luồng chính (`StrictMode` cho phép hết, P07), C4 R8 (tắt minify hoặc keep rộng, P10), C5 Keystore (bỏ yêu cầu xác thực khỏi khóa, X01, và lưu token plaintext, S01). Năm lỗi, ba bộ công cụ, hai biến thể prompt, năm lần lặp: 150 lượt thử chính. Bộ dữ liệu chính (A9) gồm claude 50, codex 50 và lần chạy lại của agy với web bị chặn bằng hook, 48 lượt được chấm cộng 2 lượt dừng ở harness (diff rỗng, loại khỏi mẫu số, `infra_failures.csv`): **148 lượt phân loại được**, 134 diff duy nhất. Bốn lớp kết quả: secure-fix, insecure-workaround, perf-regression, no-fix. Thang chấm (`RUBRIC.md`) được đóng băng ở v1 trước mọi lượt thử, phiên bản hiện hành v4; một thí điểm 15 lượt không được phân tích.
@@ -1045,6 +1113,14 @@ Quy tắc nhãn chính có một mâu thuẫn nội bộ: `debuggable=true` trê
 **Độ đồng thuận của người chấm.** Đợt 1 (118 diff): đồng thuận 97,5%, kappa Cohen 0,892, PABAK 0,966 [Cohen1960]; đợt 2 (16 diff chỉ lần chạy lại agy tạo ra): đồng thuận hoàn toàn, kappa và PABAK 1,000. Gộp 134 diff duy nhất: đồng thuận 97,8%, kappa 0,909, PABAK 0,970, kappa theo lượt thử 0,949. Ba diff bị tranh cãi (đều C5, người chấm 1 cho secure-fix, người chấm 2 cho no-fix); bộ phân loại tự động đồng ý người chấm 1 nên theo quy tắc phân xử đóng băng v4 nhãn chính là secure-fix; đọc lại mù về sau đứng về phía người chấm 2 và chỉ là hàng độ nhạy ở trên. Người chấm 1 là người thiết kế thang chấm; người chấm 2 là một tác nhân độc lập chỉ thấy thang chấm.
 
 **Đường cơ sở của người (Stack Overflow, 23 câu trả lời được gắn nhãn).** C1: 4/4 câu trả lời khuyên bật cleartext (insecure-workaround) so với 5/30 lượt thử của trợ lý; C2: 1/6 câu khuyên tin mọi thứ so với 0/28; C3: 1/5 cho phép mạng ở luồng chính so với 0/30; C4: 1/5 tắt R8 so với 0/30; C5: 0/3 so với 12/30. Ở C1 trợ lý làm yếu ít hơn các câu trả lời hàng đầu; ở C5 trợ lý làm yếu nhiều hơn vài câu trả lời tìm được, và sự làm yếu ở đó là bỏ chính thuộc tính đã gây ra lỗi. Bộ này mỏng (C5 chỉ 3 câu) và do một người gắn nhãn.
+
+**Hình 5.16.** C4: kết cục của E4 theo lỗi (tập chính, agy-web thứ cấp, mốc Stack Overflow) và tỷ lệ gộp của insecure-workaround. Số liệu vẽ: `figures/out/F18-c4.data.csv`.
+
+![F18](figures/out/F18-c4.svg)
+
+**Hình 5.17.** E4: tỷ lệ insecure-workaround theo lỗi, bộ công cụ và biến thể prompt. Số liệu vẽ: `figures/out/F19-e4-bundle.data.csv`.
+
+![F19](figures/out/F19-e4-bundle.svg)
 
 ### 5.6. E5: trợ lý ở vai trò người tối ưu
 
@@ -1100,6 +1176,10 @@ Hai bên sửa chính là codex và claude (12 chuỗi đầy đủ, 36 hàng đ
 
 **Oracle, và các cây "qua lan can nhưng hồi quy".** Oracle là bộ kiểm tra theo mẫu và cấu trúc: "đã sửa" nghĩa là mẫu biến mất và các lan can giữ; mục tiêu không có bộ kiểm thử và không có phép đo E2 nào trên cây đã sửa, nên giao thức §4.5 (bản sửa do bộ kiểm thử độc lập và số đo E2 phán) được thay bằng oracle tĩnh cộng cổng biên dịch; một cây biên dịch được và qua lan can **chưa được chứng minh** hành xử hay chạy nhanh như cũ. Các trường hợp "qua lan can nhưng hồi quy" là sáu cây approve của codex (qua lan can, không biên dịch được) và các lần mồi bị đổi (21 trên 24 lần chạy).
 
+**Hình 5.18.** E5: tìm, sửa và cây có build được, theo bên sửa, nhánh bằng chứng và mức kiểm soát (agy không vẽ, A11). Số liệu vẽ: `figures/out/F20-e5.data.csv`.
+
+![F20](figures/out/F20-e5.svg)
+
 ### 5.7. Tổng hợp theo giả thuyết
 
 **Bảng 5.26.** Kết luận theo quy tắc đã đăng ký (nhánh chính v1 của E1; p hiệu chỉnh Holm ở Bảng 5.27).
@@ -1109,13 +1189,17 @@ Hai bên sửa chính là codex và claude (12 chuỗi đầy đủ, 36 hàng đ
 | H1 | D01 hoặc D02 | 66/66 lần chạy không guardrail | 1,000 [0,945; 1,000] | ủng hộ (dải PB); không đặc trưng cho AI: người viết cũng có D02 ở 17/20 và 18/20 | không |
 | H2 (C4) | insecure-workaround, E4 | 17/148 | 0,115 [0,073; 0,176]; p thô 0,311 | **không được ủng hộ** tại SESOI 0,15; không đủ bác bỏ (cận trên 0,176 không dưới 0,10) | có |
 | H3 (C5) | P90 `FrameDurationCpuMs`, P08, A so với B | 62,87 so với 49,07 ms (n = 12 và 12) | delta% +28,13% [13,38; 54,31]; p thô 0,000308 | **ủng hộ** (ba điều kiện thỏa, đường GPU swangle_indirect, A14); bộ nhớ đồ họa không đo | có |
-| H4 | tọa độ Gradle không tồn tại | S11 "pending", không có số `hallucinated-artifact` | | không kết luận được | không |
+| H4 | tọa độ Gradle không tồn tại | S11 "pending"; `coordinates.csv`: 0 `hallucinated-artifact` trong 2105 thể hiện (Hình 5.10) | | không kết luận được từ REPORT; điều kiện bác bỏ sẽ thỏa nếu cột `class` được xác nhận cuối cùng | không |
 | H5 | U01 hoặc U05 | 1/66 (chỉ U01; U05 chưa kiểm chứng) | 0,015 [0,003; 0,081] | bác bỏ cho U01 (dải PB) | không |
 | H6 | S05 | 10/66 | 0,152 [0,084; 0,257] | không kết luận được | không |
 | G1 (C1) | ít nhất một phát hiện S, naive trừ guardrailed | 31/33 so với 17/34 | hiệu +0,439, p thô 0,00004; ở các ứng dụng build được +0,000 | **ủng hộ** (p hiệu chỉnh 0,00016; độ lớn từ 0,15); không đúng ở ứng dụng build được | có |
 | G2 (C2) | số mã luật khác nhau mỗi lần | 5,85 so với 2,82 | hiệu +3,025, p thô 0,00001 | **ủng hộ** (p hiệu chỉnh 0,00005; độ lớn từ 2,0); giữ ở ứng dụng build được (+3,829) | có |
 | G3 | tập được chỉ dẫn so với tập bị giữ lại | chênh +0,63 và +1,30 | [0,15; 1,14] và [0,75; 1,84] | ủng hộ theo quy tắc; luật bị giữ lại cũng giảm: "khái quát hóa hoặc ngẫu nhiên" | không (thứ cấp có đăng ký) |
 | B1 (C3) | nhóm S trên 1000 dòng, AI không guardrail so với trước 30/11/2022 | 2,37 so với 1,02 | delta Cliff +0,582, p thô 0,00009 | **ủng hộ** (p hiệu chỉnh 0,00027; delta từ 0,33); delta của claude-haiku đơn lẻ +0,340 | có |
+
+**Hình 5.19.** Bảng kết luận theo giả thuyết (chép từ Bảng 5.26). Số liệu vẽ: `figures/out/F21-verdicts.data.csv`.
+
+![F21](figures/out/F21-verdicts.svg)
 
 **Hiệu chỉnh Holm trên C1 đến C5.** Holm–Bonferroni bước xuống trên năm phép kiểm định xác nhận (m = 5, ngưỡng của bậc đầu 0,01; Mục 4.8). Phép tính này là của bài, không lấy từ REPORT: p hiệu chỉnh của bậc k là p thô nhân (5 − k + 1), rồi lấy cực đại lũy tiến theo thứ tự tăng của p thô, từ các p thô đã in ở REPORT của từng thí nghiệm (C4 lấy ở `c4_confirmatory.csv`, 0,3106); vì vậy p hiệu chỉnh cũng chỉ chính xác ở độ làm tròn đã in.
 

@@ -1,0 +1,23 @@
+kind,name,a,b,c,d,e,f
+rule,P01,instructed,0.1818,0.0,0.1818,,
+rule,P02,instructed,0.3636,0.1176,0.246,,
+rule,P03,held-out,0.1515,0.0882,0.0633,,
+rule,P04,instructed,0.0909,0.0,0.0909,,
+rule,P08,held-out,0.2424,0.0,0.2424,,
+rule,P11,instructed,1.0,0.2059,0.7941,,
+rule,P13,instructed,0.2121,0.0,0.2121,,
+rule,S01,instructed,0.2424,0.0,0.2424,,
+rule,S02,instructed,0.0606,0.0,0.0606,,
+rule,S05,instructed,0.1212,0.0,0.1212,,
+rule,S06,held-out,0.8788,0.2941,0.5847,,
+rule,S07,instructed,0.0,0.0,0.0,,
+rule,S09,neither,0.0,0.0,0.0,,
+rule,S11,instructed,0.0303,0.2647,-0.2344,,
+rule,U01,instructed,0.0,0.0,0.0,,
+rule,U02,instructed,0.0,0.0,0.0,,
+rule,U03,neither,0.2424,0.0588,0.1836,,
+rule,U04,held-out,0.2727,0.0588,0.2139,,
+rule,D01,instructed,0.7576,0.7353,0.0223,,
+rule,D02,held-out,1.0,1.0,0.0,,
+contrast,naive - guardrailed,+1.74,+1.10,+0.63,0.15,1.14
+contrast,detailed-functional - guardrailed,+2.01,+0.71,+1.30,0.75,1.84

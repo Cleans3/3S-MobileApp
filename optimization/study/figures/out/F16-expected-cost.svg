@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="F16. Chi phí kỳ vọng (khám phá): tần suất của luật ở E1 so với thay đổi do bản sửa ở E2"><title>F16. Chi phí kỳ vọng (khám phá): tần suất của luật ở E1 so với thay đổi do bản sửa ở E2</title><desc>Expected cost</desc><rect x="0.0" y="0.0" width="1000.0" height="470.0" fill="#fff" stroke="none" stroke-width="1" opacity="1"/>
+<text x="14.0" y="22.0" font-size="15" text-anchor="start" font-weight="bold" fill="#222222">F16. Chi phí kỳ vọng (khám phá): tần suất của luật ở E1 so với thay đổi do bản sửa ở E2</text>
+<text x="14.0" y="40.0" font-size="11" text-anchor="start" font-weight="normal" fill="#666666">Tần suất trên 66 lần chạy không guardrail (Wilson 95%); trục y là thay đổi (B so với A) của chỉ số chính; chấm rỗng = luật chưa kiểm chứng ở E1; không có p</text>
+<line x1="90.0" y1="390.0" x2="830.0" y2="390.0" stroke="#555" stroke-width="1"/>
+<line x1="90.0" y1="70.0" x2="90.0" y2="390.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="90.0" y1="390.0" x2="90.0" y2="394.0" stroke="#555" stroke-width="1"/>
+<text x="90.0" y="407.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,0</text>
+<line x1="238.0" y1="70.0" x2="238.0" y2="390.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="238.0" y1="390.0" x2="238.0" y2="394.0" stroke="#555" stroke-width="1"/>
+<text x="238.0" y="407.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,2</text>
+<line x1="386.0" y1="70.0" x2="386.0" y2="390.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="386.0" y1="390.0" x2="386.0" y2="394.0" stroke="#555" stroke-width="1"/>
+<text x="386.0" y="407.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,4</text>
+<line x1="534.0" y1="70.0" x2="534.0" y2="390.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="534.0" y1="390.0" x2="534.0" y2="394.0" stroke="#555" stroke-width="1"/>
+<text x="534.0" y="407.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,6</text>
+<line x1="682.0" y1="70.0" x2="682.0" y2="390.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="682.0" y1="390.0" x2="682.0" y2="394.0" stroke="#555" stroke-width="1"/>
+<text x="682.0" y="407.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,8</text>
+<line x1="830.0" y1="70.0" x2="830.0" y2="390.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="830.0" y1="390.0" x2="830.0" y2="394.0" stroke="#555" stroke-width="1"/>
+<text x="830.0" y="407.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">1,0</text>
+<text x="460.0" y="423.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222222">tần suất ở E1</text>
+<line x1="90.0" y1="70.0" x2="90.0" y2="390.0" stroke="#555" stroke-width="1"/>
+<line x1="90.0" y1="377.2" x2="830.0" y2="377.2" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="86.0" y1="377.2" x2="90.0" y2="377.2" stroke="#555" stroke-width="1"/>
+<text x="82.0" y="380.2" font-size="10" text-anchor="end" font-weight="normal" fill="#666666">−100</text>
+<line x1="90.0" y1="313.2" x2="830.0" y2="313.2" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="86.0" y1="313.2" x2="90.0" y2="313.2" stroke="#555" stroke-width="1"/>
+<text x="82.0" y="316.2" font-size="10" text-anchor="end" font-weight="normal" fill="#666666">−75</text>
+<line x1="90.0" y1="249.2" x2="830.0" y2="249.2" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="86.0" y1="249.2" x2="90.0" y2="249.2" stroke="#555" stroke-width="1"/>
+<text x="82.0" y="252.2" font-size="10" text-anchor="end" font-weight="normal" fill="#666666">−50</text>
+<line x1="90.0" y1="185.2" x2="830.0" y2="185.2" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="86.0" y1="185.2" x2="90.0" y2="185.2" stroke="#555" stroke-width="1"/>
+<text x="82.0" y="188.2" font-size="10" text-anchor="end" font-weight="normal" fill="#666666">−25</text>
+<line x1="90.0" y1="121.2" x2="830.0" y2="121.2" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="86.0" y1="121.2" x2="90.0" y2="121.2" stroke="#555" stroke-width="1"/>
+<text x="82.0" y="124.2" font-size="10" text-anchor="end" font-weight="normal" fill="#666666">0</text>
+<text x="46.0" y="230.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222222" transform="rotate(-90 46.0 230.0)">thay đổi chỉ số chính (B so với A), %</text>
+<line x1="90.0" y1="121.2" x2="830.0" y2="121.2" stroke="#333" stroke-width="1"/>
+<line x1="136.4" y1="177.5" x2="253.8" y2="177.5" stroke="#999" stroke-width="1.5"/>
+<line x1="179.7" y1="211.3" x2="179.7" y2="151.4" stroke="#999" stroke-width="1.5"/>
+<circle cx="179.7" cy="177.5" r="5" fill="#0072B2" stroke="#0072B2" stroke-width="1.6" opacity="1"/>
+<text x="187.7" y="170.5" font-size="10" text-anchor="start" font-weight="normal" fill="#222222">P08 (P08)</text>
+<line x1="114.3" y1="369.3" x2="212.4" y2="369.3" stroke="#999" stroke-width="1.5"/>
+<line x1="146.1" y1="369.3" x2="146.1" y2="369.3" stroke="#999" stroke-width="1.5"/>
+<circle cx="146.1" cy="369.3" r="5" fill="none" stroke="#0072B2" stroke-width="1.6" opacity="1"/>
+<text x="154.1" y="362.3" font-size="10" text-anchor="start" font-weight="normal" fill="#222222">P06 (P06)</text>
+<line x1="96.2" y1="300.1" x2="166.9" y2="300.1" stroke="#999" stroke-width="1.5"/>
+<line x1="112.4" y1="302.4" x2="112.4" y2="297.1" stroke="#999" stroke-width="1.5"/>
+<circle cx="112.4" cy="300.1" r="5" fill="none" stroke="#0072B2" stroke-width="1.6" opacity="1"/>
+<text x="120.4" y="293.1" font-size="10" text-anchor="start" font-weight="normal" fill="#222222">P09 (P01+P09)</text>
+<line x1="186.8" y1="120.0" x2="330.6" y2="120.0" stroke="#999" stroke-width="1.5"/>
+<line x1="247.0" y1="137.7" x2="247.0" y2="66.2" stroke="#999" stroke-width="1.5"/>
+<circle cx="247.0" cy="120.0" r="5" fill="#0072B2" stroke="#0072B2" stroke-width="1.6" opacity="1"/>
+<text x="255.0" y="113.0" font-size="10" text-anchor="start" font-weight="normal" fill="#222222">P01 (P01+P09/P01)</text>
+<line x1="195.7" y1="342.6" x2="342.9" y2="342.6" stroke="#999" stroke-width="1.5"/>
+<line x1="258.2" y1="347.5" x2="258.2" y2="336.5" stroke="#999" stroke-width="1.5"/>
+<circle cx="258.2" cy="342.6" r="5" fill="#0072B2" stroke="#0072B2" stroke-width="1.6" opacity="1"/>
+<text x="266.2" y="335.6" font-size="10" text-anchor="start" font-weight="normal" fill="#222222">P13 (P13)</text>
+<line x1="121.3" y1="117.4" x2="226.5" y2="117.4" stroke="#999" stroke-width="1.5"/>
+<line x1="157.3" y1="158.1" x2="157.3" y2="87.9" stroke="#999" stroke-width="1.5"/>
+<circle cx="157.3" cy="117.4" r="5" fill="#0072B2" stroke="#0072B2" stroke-width="1.6" opacity="1"/>
+<text x="165.3" y="110.4" font-size="10" text-anchor="start" font-weight="normal" fill="#222222">P03 (P03+P04)</text>
+<line x1="114.3" y1="117.4" x2="212.4" y2="117.4" stroke="#999" stroke-width="1.5"/>
+<line x1="146.1" y1="158.1" x2="146.1" y2="87.9" stroke="#999" stroke-width="1.5"/>
+<circle cx="146.1" cy="117.4" r="5" fill="#0072B2" stroke="#0072B2" stroke-width="1.6" opacity="1"/>
+<text x="154.1" y="123.4" font-size="10" text-anchor="start" font-weight="normal" fill="#222222">P04 (P03+P04)</text>
+<line x1="789.3" y1="352.6" x2="830.0" y2="352.6" stroke="#999" stroke-width="1.5"/>
+<circle cx="830.0" cy="352.6" r="5" fill="none" stroke="#0072B2" stroke-width="1.6" opacity="1"/>
+<text x="838.0" y="345.6" font-size="10" text-anchor="start" font-weight="normal" fill="#222222">P10 (P10)</text>
+<line x1="789.3" y1="136.3" x2="830.0" y2="136.3" stroke="#999" stroke-width="1.5"/>
+<line x1="830.0" y1="146.5" x2="830.0" y2="128.0" stroke="#999" stroke-width="1.5"/>
+<circle cx="830.0" cy="136.3" r="5" fill="#0072B2" stroke="#0072B2" stroke-width="1.6" opacity="1"/>
+<text x="838.0" y="129.3" font-size="10" text-anchor="start" font-weight="normal" fill="#222222">P11 (P11)</text>
+<text x="14.0" y="440.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">P10 trên bộ v1 là 66/66 nhưng luật có lỗi dương tính giả (A13); mỗi nhân tố chỉ đo một ứng viên của E1, khoảng của tích không được tính.</text></svg>

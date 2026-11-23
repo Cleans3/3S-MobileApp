@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="F01. Thiết kế nghiên cứu: đầu vào, năm thực nghiệm, ai chấm gì"><title>F01. Thiết kế nghiên cứu: đầu vào, năm thực nghiệm, ai chấm gì</title><desc>Study design diagram</desc><rect x="0.0" y="0.0" width="1000.0" height="520.0" fill="#fff" stroke="none" stroke-width="1" opacity="1"/>
+<text x="14.0" y="22.0" font-size="15" text-anchor="start" font-weight="bold" fill="#222222">F01. Thiết kế nghiên cứu: đầu vào, năm thực nghiệm, ai chấm gì</text>
+<text x="14.0" y="40.0" font-size="11" text-anchor="start" font-weight="normal" fill="#666666">Số liệu nêu trong sơ đồ lấy từ REPORT của từng thí nghiệm; không có kết quả ở hình này</text>
+<rect x="14.0" y="60.0" width="200.0" height="118.0" fill="#fff" stroke="#999" stroke-width="2" opacity="1"/>
+<text x="22.0" y="78.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">Đầu vào của E1</text>
+<text x="22.0" y="96.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">3 brief (B1, B2, B3)</text>
+<text x="22.0" y="111.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">3 kiểu prompt: naive,</text>
+<text x="22.0" y="126.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">detailed-functional, guardrailed</text>
+<text x="22.0" y="141.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">3 bộ công cụ: claude-haiku,</text>
+<text x="22.0" y="156.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">codex-luna, agy-g38flash</text>
+<rect x="14.0" y="196.0" width="200.0" height="78.0" fill="#fff" stroke="#999" stroke-width="2" opacity="1"/>
+<text x="22.0" y="214.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">Guardrail</text>
+<text x="22.0" y="232.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">một tệp ngữ cảnh viết từ nguồn</text>
+<text x="22.0" y="247.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">độc lập, sha256 ghi trước</text>
+<text x="22.0" y="262.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">lần chạy guardrailed đầu tiên</text>
+<rect x="250.0" y="60.0" width="230.0" height="118.0" fill="#fff" stroke="#0072B2" stroke-width="2" opacity="1"/>
+<text x="258.0" y="78.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">E1: kho bản nháp đầu</text>
+<text x="258.0" y="96.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">101 lần chạy sinh, 100 hợp lệ</text>
+<text x="258.0" y="111.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">bộ phát hiện v1 (A13): 20 luật chính</text>
+<text x="258.0" y="126.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">ứng dụng người viết: 20 trước 2022,</text>
+<text x="258.0" y="141.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">20 từ 2024 (đối chứng C3)</text>
+<rect x="250.0" y="196.0" width="230.0" height="78.0" fill="#fff" stroke="#0072B2" stroke-width="2" opacity="1"/>
+<text x="258.0" y="214.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">Kiểm chứng bộ phát hiện</text>
+<text x="258.0" y="232.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">độ nhạy đột biến; hai người chấm</text>
+<text x="258.0" y="247.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">mù trên mẫu phát hiện (kappa gộp 0,687)</text>
+<rect x="520.0" y="60.0" width="230.0" height="78.0" fill="#fff" stroke="#D55E00" stroke-width="2" opacity="1"/>
+<text x="528.0" y="78.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">E2: đo A/B</text>
+<text x="528.0" y="96.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">A: mã lấy từ E1, B: bản tinh chỉnh</text>
+<text x="528.0" y="111.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">cùng ứng dụng lab, emulator</text>
+<text x="528.0" y="126.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">điểm cuối xác nhận C5</text>
+<rect x="520.0" y="156.0" width="230.0" height="66.0" fill="#fff" stroke="#009E73" stroke-width="2" opacity="1"/>
+<text x="528.0" y="174.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">E3: công cụ độc lập</text>
+<text x="528.0" y="192.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">quét tĩnh APK (MobSF, jadx),</text>
+<text x="528.0" y="207.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">phân loại thủ công từng phát hiện</text>
+<rect x="520.0" y="240.0" width="230.0" height="78.0" fill="#fff" stroke="#CC79A7" stroke-width="2" opacity="1"/>
+<text x="528.0" y="258.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">E4: áp lực sửa lỗi</text>
+<text x="528.0" y="276.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">5 lỗi x 3 bộ công cụ x 2 biến thể;</text>
+<text x="528.0" y="291.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">148 lượt thử phân tích được</text>
+<text x="528.0" y="306.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">điểm cuối xác nhận C4</text>
+<rect x="520.0" y="336.0" width="230.0" height="78.0" fill="#fff" stroke="#E69F00" stroke-width="2" opacity="1"/>
+<text x="528.0" y="354.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">E5: trợ lý là người tối ưu</text>
+<text x="528.0" y="372.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">ứng dụng đích có danh sách lỗi</text>
+<text x="528.0" y="387.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">chuẩn cố định trước; mô tả,</text>
+<text x="528.0" y="402.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">không có điểm cuối xác nhận</text>
+<rect x="790.0" y="60.0" width="196.0" height="130.0" fill="#fff" stroke="#333" stroke-width="2" opacity="1"/>
+<text x="798.0" y="78.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">Điểm cuối xác nhận</text>
+<text x="798.0" y="96.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">C1, C2, C3 (E1)</text>
+<text x="798.0" y="111.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">C4 (E4)</text>
+<text x="798.0" y="126.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">C5 (E2)</text>
+<text x="798.0" y="141.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">Holm trên năm phép (m = 5)</text>
+<text x="798.0" y="156.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">chỉ năm p-value được diễn giải</text>
+<rect x="790.0" y="210.0" width="196.0" height="120.0" fill="#fff" stroke="#333" stroke-width="2" opacity="1"/>
+<text x="798.0" y="228.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">Ai chấm gì</text>
+<text x="798.0" y="246.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">người viết bộ phát hiện và</text>
+<text x="798.0" y="261.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">người viết guardrail khác nhau</text>
+<text x="798.0" y="276.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">E5: oracle độc lập với bên sửa</text>
+<text x="798.0" y="291.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">E4: gán nhãn có đọc lại mù</text>
+<line x1="214.0" y1="100.0" x2="250.0" y2="100.0" stroke="#555" stroke-width="1.5"/>
+<polygon points="250.0,100.0 241.7,103.5 241.7,96.5" fill="#555"/>
+<line x1="214.0" y1="235.0" x2="250.0" y2="150.0" stroke="#555" stroke-width="1.5"/>
+<polygon points="250.0,150.0 250.0,159.0 243.5,156.3" fill="#555"/>
+<line x1="365.0" y1="178.0" x2="365.0" y2="196.0" stroke="#555" stroke-width="1.5"/>
+<polygon points="365.0,196.0 361.5,187.7 368.5,187.7" fill="#555"/>
+<line x1="480.0" y1="100.0" x2="520.0" y2="100.0" stroke="#555" stroke-width="1.5"/>
+<polygon points="520.0,100.0 511.7,103.5 511.7,96.5" fill="#555"/>
+<line x1="480.0" y1="120.0" x2="520.0" y2="190.0" stroke="#555" stroke-width="1.5"/>
+<polygon points="520.0,190.0 512.8,184.5 518.9,181.1" fill="#555"/>
+<line x1="750.0" y1="100.0" x2="790.0" y2="100.0" stroke="#555" stroke-width="1.5"/>
+<polygon points="790.0,100.0 781.7,103.5 781.7,96.5" fill="#555"/>
+<line x1="750.0" y1="270.0" x2="790.0" y2="150.0" stroke="#555" stroke-width="1.5"/>
+<polygon points="790.0,150.0 790.7,159.0 784.1,156.8" fill="#555"/>
+<text x="14.0" y="470.0" font-size="11" text-anchor="start" font-weight="normal" fill="#666666">Trục chung: tần suất (E1) nhân chi phí (E2), cộng với phát hiện và khắc phục (E3, E4, E5). Mọi số đo thời gian chạy trên emulator.</text>
+<text x="14.0" y="490.0" font-size="11" text-anchor="start" font-weight="normal" fill="#666666">Giao thức đăng ký trước và đóng băng ở v1.0; chỉ Mục 15 (sửa đổi A1 đến A14) được thêm, không sửa dòng cũ.</text></svg>

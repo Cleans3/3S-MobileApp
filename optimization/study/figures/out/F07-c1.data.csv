@@ -1,0 +1,22 @@
+kind,label,value,k_or_n,n,lo,hi
+arm,naive,31,33,0.9394,0.8039,0.9832
+arm,detailed-functional,29,33,0.8788,0.7267,0.9518
+arm,guardrailed,17,34,0.5,0.3407,0.6593
+stratum,B1 x claude-haiku,0.25,,,,
+stratum,B1 x codex-luna,0.25,,,,
+stratum,B1 x agy-g38flash,0.0,,,,
+stratum,B2 x claude-haiku,0.5,,,,
+stratum,B2 x codex-luna,0.25,,,,
+stratum,B2 x agy-g38flash,0.6667,,,,
+stratum,B3 x claude-haiku,1.0,,,,
+stratum,B3 x codex-luna,1.0,,,,
+stratum,B3 x agy-g38flash,0.0,,,,
+overall,naive-guardrailed,0.439,,,,
+sensitivity,(a) no web-tool attempt,0.439,100,,,
+sensitivity,(c) compile-excluded (build pass),0.0,42,,,
+sensitivity,(b) only agy-g38flash,0.2,28,,,
+sensitivity,(b) only claude-haiku,0.583,36,,,
+sensitivity,(b) only codex-luna,0.5,36,,,
+sensitivity,(b) without agy-g38flash,0.542,72,,,
+sensitivity,(b) without claude-haiku,0.361,64,,,
+sensitivity,(b) without codex-luna,0.407,64,,,

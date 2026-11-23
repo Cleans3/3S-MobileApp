@@ -1,0 +1,10 @@
+kind,a,b,c,d,e,f
+by_area,jadx,MASVS-STORAGE,1,0,1,0.0
+by_area,mobsf,MASVS-CODE,14,11,3,0.786
+by_area,mobsf,MASVS-CRYPTO,2,0,2,0.0
+by_area,mobsf,MASVS-NETWORK,2,0,2,0.0
+by_area,mobsf,MASVS-PLATFORM,22,0,22,0.0
+by_area,mobsf,MASVS-RESILIENCE,25,13,12,0.52
+by_area,mobsf,MASVS-STORAGE,37,6,31,0.162
+agreement,MobSF raw (any finding of the class),80,7,2,6,65
+agreement,MobSF triaged tp,80,6,3,0,71

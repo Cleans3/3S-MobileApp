@@ -1,0 +1,10 @@
+rule,factor,metric,k,n,wilson_lo,wilson_hi,delta_pct_B_vs_A,delta_ci_lo,delta_ci_hi
+P08,P08,frameDurationCpuMs_p90,8,66,0.0627,0.2214,-22.0,-35.2,-11.8
+P06,P06,st.decodedBytes,5,66,0.0328,0.1654,-96.9,-96.9,-96.9
+P09,P01+P09,timeToInitialDisplayMs,2,66,0.0083,0.1039,-69.9,-70.8,-68.7
+P01,P01+P09/P01,timeToInitialDisplayMs,14,66,0.1308,0.3251,0.471,-6.44,21.5
+P13,P13,st_search_query.sumMs,15,66,0.1429,0.3417,-86.5,-88.4,-84.1
+P03,P03+P04,Compose_recompose.mainMs,6,66,0.0423,0.1845,1.49,-14.4,13.0
+P04,P03+P04,Compose_recompose.mainMs,5,66,0.0328,0.1654,1.49,-14.4,13.0
+P10,P10,apk_bytes,66,66,0.945,1.0,-90.4,,
+P11,P11,timeToInitialDisplayMs,66,66,0.945,1.0,-5.88,-9.87,-2.67

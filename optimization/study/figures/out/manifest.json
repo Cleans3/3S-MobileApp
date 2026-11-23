@@ -1,0 +1,394 @@
+{
+ "script": "figures/make_figures.py",
+ "figures": {
+  "F01-design": {
+   "sources": [
+    "e1-corpus/results/analysis/primary-v1/summary.md",
+    "e1-corpus/results/runs.csv",
+    "e1-corpus/results/validation/rules_status_v1.csv",
+    "e1-corpus/results/validation/v1/pre_fix_findings.csv",
+    "e1-corpus/results/validation/v1/pre_fix_metrics.csv"
+   ],
+   "rows": 5
+  },
+  "F02-power": {
+   "sources": [],
+   "rows": 90
+  },
+  "F03-e1-flow": {
+   "sources": [
+    "e1-corpus/results/runs.csv"
+   ],
+   "rows": 9
+  },
+  "F04-validation": {
+   "sources": [
+    "e1-corpus/results/validation/kappa.json",
+    "e1-corpus/results/validation/mutation.csv",
+    "e1-corpus/results/validation/precision_v1.csv",
+    "e1-corpus/results/validation/rules_status_v1.csv"
+   ],
+   "rows": 27
+  },
+  "F05-coverage": {
+   "sources": [
+    "e1-corpus/results/validation/coverage_matrix.csv"
+   ],
+   "rows": 29
+  },
+  "F06-prevalence": {
+   "sources": [
+    "e1-corpus/results/validation/rules_status_v1.csv"
+   ],
+   "rows": 87
+  },
+  "F07-c1": {
+   "sources": [],
+   "rows": 21
+  },
+  "F08-c2": {
+   "sources": [],
+   "rows": 121
+  },
+  "F09-g3": {
+   "sources": [],
+   "rows": 22
+  },
+  "F10-c3": {
+   "sources": [
+    "e1-corpus/results/validation/v1/pre_fix_human_findings.csv",
+    "e1-corpus/results/validation/v1/pre_fix_human_metrics.csv"
+   ],
+   "rows": 212
+  },
+  "F11-decorative-density": {
+   "sources": [
+    "e1-corpus/results/validation/v1/pre_fix_human_metrics.csv"
+   ],
+   "rows": 283
+  },
+  "F12-h1-h4": {
+   "sources": [
+    "e1-corpus/results/coordinates.csv"
+   ],
+   "rows": 9
+  },
+  "F13-e2-effects": {
+   "sources": [
+    "e2-bench/results/summary.csv"
+   ],
+   "rows": 8
+  },
+  "F14-c5": {
+   "sources": [
+    "e2-bench/results/c5_confirmatory.csv",
+    "e2-bench/results/raw.csv"
+   ],
+   "rows": 25
+  },
+  "F15-e2-absolute": {
+   "sources": [
+    "e2-bench/results/raw.csv",
+    "e2-bench/results/summary.csv"
+   ],
+   "rows": 190
+  },
+  "F16-expected-cost": {
+   "sources": [
+    "e2-bench/results/summary.csv"
+   ],
+   "rows": 9
+  },
+  "F17-e3": {
+   "sources": [
+    "e3-security/results/agreement.csv",
+    "e3-security/results/by_area.csv",
+    "e3-security/results/one_tool_only.csv"
+   ],
+   "rows": 9
+  },
+  "F18-c4": {
+   "sources": [
+    "e4-pressure/results/c4_confirmatory.csv",
+    "e4-pressure/results/so_census.csv",
+    "e4-pressure/results/trials.csv",
+    "e4-pressure/results/trials_websearch.csv"
+   ],
+   "rows": 76
+  },
+  "F19-e4-bundle": {
+   "sources": [
+    "e4-pressure/results/trials.csv",
+    "e4-pressure/results/trials_meta.csv"
+   ],
+   "rows": 21
+  },
+  "F20-e5": {
+   "sources": [
+    "e5-optimizer/results/runs.csv",
+    "e5-optimizer/results/summary.csv"
+   ],
+   "rows": 18
+  },
+  "F21-verdicts": {
+   "sources": [],
+   "rows": 10
+  }
+ },
+ "skipped": {},
+ "checks": [
+  {
+   "check": "E1 valid non-pilot runs",
+   "got": 100,
+   "want": 100,
+   "ok": true
+  },
+  {
+   "check": "E1 n per style",
+   "got": [
+    33,
+    33,
+    34
+   ],
+   "want": [
+    33,
+    33,
+    34
+   ],
+   "ok": true
+  },
+  {
+   "check": "E1 primary rules",
+   "got": 20,
+   "want": 20,
+   "ok": true
+  },
+  {
+   "check": "C1 S-class runs per style",
+   "got": [
+    31,
+    29,
+    17
+   ],
+   "want": [
+    31,
+    29,
+    17
+   ],
+   "ok": true
+  },
+  {
+   "check": "C2 mean distinct rules (naive, det, guard)",
+   "got": [
+    5.85,
+    5.7,
+    2.82
+   ],
+   "want": [
+    5.85,
+    5.7,
+    2.82
+   ],
+   "ok": true
+  },
+  {
+   "check": "E1 build pass per bundle (claude 13/36, codex 10/36, agy 19/28)",
+   "got": [
+    [
+     13,
+     36
+    ],
+    [
+     10,
+     36
+    ],
+    [
+     19,
+     28
+    ]
+   ],
+   "want": [
+    [
+     13,
+     36
+    ],
+    [
+     10,
+     36
+    ],
+    [
+     19,
+     28
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "check": "Bảng 5.4 P13 naive/detailed/guardrailed",
+   "got": [
+    [
+     7,
+     33
+    ],
+    [
+     8,
+     33
+    ],
+    [
+     0,
+     34
+    ]
+   ],
+   "want": [
+    [
+     7,
+     33
+    ],
+    [
+     8,
+     33
+    ],
+    [
+     0,
+     34
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "check": "C1 overall diff",
+   "got": 0.439,
+   "want": 0.439,
+   "ok": true
+  },
+  {
+   "check": "C2 overall diff",
+   "got": 3.025,
+   "want": 3.025,
+   "ok": true
+  },
+  {
+   "check": "C3 medians per kLOC (AI, pre, post)",
+   "got": [
+    2.37,
+    1.02,
+    0.24
+   ],
+   "want": [
+    2.37,
+    1.02,
+    0.24
+   ],
+   "ok": true
+  },
+  {
+   "check": "C3 medians per 100k nws (AI, pre, post)",
+   "got": [
+    7.83,
+    3.47,
+    0.87
+   ],
+   "want": [
+    7.83,
+    3.47,
+    0.87
+   ],
+   "ok": true
+  },
+  {
+   "check": "C5 delta",
+   "got": 28.13,
+   "want": 28.13,
+   "ok": true
+  },
+  {
+   "check": "C4 k/n",
+   "got": [
+    17,
+    148
+   ],
+   "want": [
+    17,
+    148
+   ],
+   "ok": true
+  }
+ ],
+ "holm_from_article": {
+  "C2": {
+   "p": "0,00001",
+   "rank": "1",
+   "thr": "0,01",
+   "adj": "0,00005",
+   "size": "+3,025 ≥ 2,0 (đạt)",
+   "verdict": "ủng hộ"
+  },
+  "C1": {
+   "p": "0,00004",
+   "rank": "2",
+   "thr": "0,0125",
+   "adj": "0,00016",
+   "size": "+0,439 ≥ 0,15 (đạt)",
+   "verdict": "ủng hộ"
+  },
+  "C3": {
+   "p": "0,00009",
+   "rank": "3",
+   "thr": "0,0167",
+   "adj": "0,00027",
+   "size": "delta Cliff +0,582 ≥ 0,33 (đạt)",
+   "verdict": "ủng hộ"
+  },
+  "C5": {
+   "p": "0,000308",
+   "rank": "4",
+   "thr": "0,025",
+   "adj": "0,000616",
+   "size": "delta% +28,13% ≥ +10% (đạt); khoảng [13,38; 54,31] không chứa 0 (đạt)",
+   "verdict": "ủng hộ"
+  },
+  "C4": {
+   "p": "0,3106",
+   "rank": "5",
+   "thr": "0,05",
+   "adj": "0,3106",
+   "size": "tỷ lệ 0,115 < 0,15 (không đạt)",
+   "verdict": "không được ủng hộ"
+  }
+ },
+ "f12_note": {
+  "instances": 2105,
+  "classes": [
+   "hallucinated-version",
+   "ok"
+  ]
+ },
+ "source_sha256": {
+  "e1-corpus/results/analysis/primary-v1/summary.md": "e61f401933525e7ed734c84b255d9ac067c1d00180922dd137011e75cce7bdd1",
+  "e1-corpus/results/coordinates.csv": "d78949606d14afdc303b4acaa08718169d900524fd07919ee93eed3b5bc9a52d",
+  "e1-corpus/results/runs.csv": "8c134f4148fbe8a247def9af870c40907e273dec25265e329ece7ca48b76f4fb",
+  "e1-corpus/results/validation/coverage_matrix.csv": "964952d7d7ad5d331b00e91f49b7a130d5c0e8eb0724eda3bdcdbdc0d3eccdd2",
+  "e1-corpus/results/validation/kappa.json": "edac8bf49fdd404fad692094f19e6fe62a5edd99df4bd004d6ec8425d518e6cb",
+  "e1-corpus/results/validation/mutation.csv": "b85ad63f1b602f9f7319388ae80a9da18d42b7f68cf35a1e93becfe45129fd20",
+  "e1-corpus/results/validation/precision_v1.csv": "77a570fbe8567bfa5d66d2fef888f0b280d37ce9903aa831a9402d1f6d0e5962",
+  "e1-corpus/results/validation/rules_status_v1.csv": "d31018a2c3b5fb7f9d5488baed1f80c35f6da92e287265fa3f7956a06c5e3468",
+  "e1-corpus/results/validation/v1/pre_fix_findings.csv": "2289432a52d8047abb5f3fa20e0c82182f5e7a4a73cf00a9d054fa1e42f6b518",
+  "e1-corpus/results/validation/v1/pre_fix_human_findings.csv": "6828e8b8db8b73971d9a93fdcc5913aa7152d0212fcdbf6b01d27b9162c0e240",
+  "e1-corpus/results/validation/v1/pre_fix_human_metrics.csv": "7132fc38e7ea8700b0b40ca888d4004e3b4488918fd2574d74f22d2d6a18464b",
+  "e1-corpus/results/validation/v1/pre_fix_metrics.csv": "3d0ee33ce00f592c8c2e730a25820006ba4486f505dc8e8550f226e22dc4637f",
+  "e2-bench/results/c5_confirmatory.csv": "cf8593161d7e1ab7f763354601536b6dc83f17cce3c38904e37f266a5faa37cf",
+  "e2-bench/results/raw.csv": "4f50d326ff04f5ee4a1eb547b533b01711b35ed216e8bc6790ef8f1cc3ef1273",
+  "e2-bench/results/summary.csv": "5aef5522ee27829c1919f9006bffea5d770b770ce2da6b60b3e1e44e18d1b7f6",
+  "e3-security/results/agreement.csv": "ff673d60caf0253f97e07b3d113225e400ae8fa66b1198b34cb49bd7df1f9b24",
+  "e3-security/results/by_area.csv": "9b4cc3acb619e94c2c293ec542166886921d13ee8827f49f7317117261439bc1",
+  "e3-security/results/one_tool_only.csv": "58e6d78bf993affde88c358d37ed1f840968c4773506b647765858dc88967222",
+  "e4-pressure/results/c4_confirmatory.csv": "a4ed191d4489bc03b4df39b1df0ee8adafe190cc7a34fba0602a7dcce855427a",
+  "e4-pressure/results/so_census.csv": "23da310be32ec5559da2c376e2de76837b8baad52ae3e4ff6b2c75f7c1bb030a",
+  "e4-pressure/results/trials.csv": "3843757522678a1c5c6265d0912f2330fe12a1c621d6946a2154e38540cdc2cb",
+  "e4-pressure/results/trials_meta.csv": "18c775b703309d9d27e00e51a64900bdc624d355a4261f35adecec77e4808468",
+  "e4-pressure/results/trials_websearch.csv": "c60e977f749dc54fc61a3d3c7a3e2b3b34cecc7254b70f1b0505b1bf4913f5dd",
+  "e5-optimizer/results/runs.csv": "8ce3ba84eff20795138075ad149c029f70fafed238e0d140626c06e6b0983287",
+  "e5-optimizer/results/summary.csv": "970739087312dd7f798f5c265b0531944de9b76e80257dc86b89e6190667a131"
+ },
+ "git_commit": "a256f71"
+}

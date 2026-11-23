@@ -1,0 +1,256 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="622" viewBox="0 0 760 622" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="F05. Độ phủ so với Lint, detekt và compose-rules: luật chỉ bộ phát hiện tùy biến có"><title>F05. Độ phủ so với Lint, detekt và compose-rules: luật chỉ bộ phát hiện tùy biến có</title><desc>Coverage matrix</desc><rect x="0.0" y="0.0" width="760.0" height="622.0" fill="#fff" stroke="none" stroke-width="1" opacity="1"/>
+<text x="14.0" y="22.0" font-size="15" text-anchor="start" font-weight="bold" fill="#222222">F05. Độ phủ so với Lint, detekt và compose-rules: luật chỉ bộ phát hiện tùy biến có</text>
+<text x="14.0" y="40.0" font-size="11" text-anchor="start" font-weight="normal" fill="#666666">Số phát hiện theo công cụ (coverage_matrix.csv); ô tô đậm = công cụ có phát hiện; cột cuối: công cụ có sẵn khai báo luật</text>
+<text x="150.0" y="62.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222222">bộ phát hiện</text>
+<text x="260.0" y="62.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222222">Lint</text>
+<text x="370.0" y="62.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222222">kiểm tra phụ thuộc</text>
+<text x="440.0" y="62.0" font-size="11" text-anchor="start" font-weight="bold" fill="#222222">công cụ có sẵn khai báo luật</text>
+<text x="690.0" y="62.0" font-size="11" text-anchor="end" font-weight="bold" fill="#222222">chỉ tùy biến</text>
+<text x="100.0" y="85.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P01</text>
+<rect x="110.0" y="72.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="84.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">15</text>
+<rect x="220.0" y="72.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="84.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="72.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="84.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="84.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,73.0 682.0,79.0 676.0,85.0 670.0,79.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="103.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P02</text>
+<rect x="110.0" y="90.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="102.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">29</text>
+<rect x="220.0" y="90.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="102.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="90.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="102.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="102.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,91.0 682.0,97.0 676.0,103.0 670.0,97.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="121.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P03</text>
+<rect x="110.0" y="108.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="120.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">13</text>
+<rect x="220.0" y="108.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="120.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="108.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="120.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="120.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">detekt:UnstableCollections, MutableParams,</text>
+<text x="100.0" y="139.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P04</text>
+<rect x="110.0" y="126.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="138.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">15</text>
+<rect x="220.0" y="126.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="138.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="126.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="138.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="138.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">detekt:RememberMissing, RememberContentMis</text>
+<text x="100.0" y="157.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P05</text>
+<rect x="110.0" y="144.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="156.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="220.0" y="144.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="156.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="144.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="156.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="156.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">lint:FrequentlyChangingValue</text>
+<text x="100.0" y="175.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P06</text>
+<rect x="110.0" y="162.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="174.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">8</text>
+<rect x="220.0" y="162.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="174.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="162.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="174.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="174.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,163.0 682.0,169.0 676.0,175.0 670.0,169.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="193.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P07</text>
+<rect x="110.0" y="180.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="192.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">19</text>
+<rect x="220.0" y="180.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="192.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="180.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="192.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="192.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,181.0 682.0,187.0 676.0,193.0 670.0,187.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="211.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P08</text>
+<rect x="110.0" y="198.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="210.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">16</text>
+<rect x="220.0" y="198.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="210.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="198.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="210.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="210.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,199.0 682.0,205.0 676.0,211.0 670.0,205.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="229.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P09</text>
+<rect x="110.0" y="216.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="228.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">2</text>
+<rect x="220.0" y="216.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="228.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="216.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="228.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="228.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,217.0 682.0,223.0 676.0,229.0 670.0,223.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="247.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P10</text>
+<rect x="110.0" y="234.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="246.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">63</text>
+<rect x="220.0" y="234.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="246.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="234.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="246.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="246.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,235.0 682.0,241.0 676.0,247.0 670.0,241.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="265.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P11</text>
+<rect x="110.0" y="252.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="264.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">73</text>
+<rect x="220.0" y="252.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="264.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="252.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="264.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="264.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,253.0 682.0,259.0 676.0,265.0 670.0,259.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="283.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">P13</text>
+<rect x="110.0" y="270.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="282.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">18</text>
+<rect x="220.0" y="270.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="282.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="270.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="282.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="282.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,271.0 682.0,277.0 676.0,283.0 670.0,277.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="301.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">S01</text>
+<rect x="110.0" y="288.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="300.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">43</text>
+<rect x="220.0" y="288.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="300.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="288.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="300.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="300.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,289.0 682.0,295.0 676.0,301.0 670.0,295.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="319.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">S02</text>
+<rect x="110.0" y="306.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="318.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">2</text>
+<rect x="220.0" y="306.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="318.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="306.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="318.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="318.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,307.0 682.0,313.0 676.0,319.0 670.0,313.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="337.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">S03</text>
+<rect x="110.0" y="324.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="336.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="220.0" y="324.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="336.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="324.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="336.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="336.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">lint:UsesCleartextTraffic, InsecureBaseCon</text>
+<text x="100.0" y="355.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">S04</text>
+<rect x="110.0" y="342.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="354.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="220.0" y="342.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="354.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="342.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="354.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="354.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">lint:TrustAllX509TrustManager, BadHostname</text>
+<text x="100.0" y="373.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">S05</text>
+<rect x="110.0" y="360.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="372.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">12</text>
+<rect x="220.0" y="360.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="372.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="360.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="372.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="372.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,361.0 682.0,367.0 676.0,373.0 670.0,367.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="391.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">S06</text>
+<rect x="110.0" y="378.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="390.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">45</text>
+<rect x="220.0" y="378.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="390.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">18</text>
+<rect x="330.0" y="378.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="390.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="390.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">lint:AllowBackup, DataExtractionRules, Ful</text>
+<text x="100.0" y="409.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">S07</text>
+<rect x="110.0" y="396.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="408.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="220.0" y="396.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="408.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="396.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="408.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="408.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">lint:ExportedActivity, ExportedService, Ex</text>
+<text x="100.0" y="427.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">S08</text>
+<rect x="110.0" y="414.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="426.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">16</text>
+<rect x="220.0" y="414.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="426.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="414.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="426.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="426.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">lint:GetInstance, DeprecatedProvider</text>
+<text x="100.0" y="445.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">S09</text>
+<rect x="110.0" y="432.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="444.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">4</text>
+<rect x="220.0" y="432.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="444.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="432.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="444.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="444.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">lint:SetJavaScriptEnabled, JavascriptInter</text>
+<text x="100.0" y="463.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">S11</text>
+<rect x="110.0" y="450.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="462.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="220.0" y="450.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="462.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="450.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="462.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">22</text>
+<text x="440.0" y="462.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">depcheck:Maven Central / Google Maven exis</text>
+<text x="100.0" y="481.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">U01</text>
+<rect x="110.0" y="468.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="480.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">3</text>
+<rect x="220.0" y="468.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="480.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="468.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="480.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="480.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">lint:ContentDescription (views only)</text>
+<text x="100.0" y="499.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">U02</text>
+<rect x="110.0" y="486.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="498.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="220.0" y="486.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="498.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="486.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="498.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="498.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,487.0 682.0,493.0 676.0,499.0 670.0,493.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="517.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">U03</text>
+<rect x="110.0" y="504.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="516.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">29</text>
+<rect x="220.0" y="504.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="516.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="504.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="516.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="516.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,505.0 682.0,511.0 676.0,517.0 670.0,511.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="535.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">U04</text>
+<rect x="110.0" y="522.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="534.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">220</text>
+<rect x="220.0" y="522.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="534.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="522.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="534.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="534.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,523.0 682.0,529.0 676.0,535.0 670.0,529.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="553.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">U05</text>
+<rect x="110.0" y="540.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="552.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">65</text>
+<rect x="220.0" y="540.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="552.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="540.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="552.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="552.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">none</text>
+<polygon points="676.0,541.0 682.0,547.0 676.0,553.0 670.0,547.0" fill="#D55E00" stroke="#D55E00" stroke-width="1.6" opacity="1"/>
+<text x="100.0" y="571.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">D01</text>
+<rect x="110.0" y="558.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="570.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">123</text>
+<rect x="220.0" y="558.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="570.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="330.0" y="558.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="570.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<text x="440.0" y="570.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">lint:Deprecated, GradleDeprecated</text>
+<text x="100.0" y="589.0" font-size="11" text-anchor="end" font-weight="normal" fill="#222222">D02</text>
+<rect x="110.0" y="576.0" width="80.0" height="15.0" fill="#F2F2F2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="150.0" y="588.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<rect x="220.0" y="576.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="260.0" y="588.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">932</text>
+<rect x="330.0" y="576.0" width="80.0" height="15.0" fill="#0072B2" stroke="#ccc" stroke-width="1" opacity="1"/>
+<text x="370.0" y="588.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#fff">1229</text>
+<text x="440.0" y="588.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">lint:GradleDependency, NewerVersionAvailab</text></svg>

@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="470" viewBox="0 0 1180 470" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="F08. C2: số mã luật khác nhau trong mỗi lần chạy, naive so với guardrailed"><title>F08. C2: số mã luật khác nhau trong mỗi lần chạy, naive so với guardrailed</title><desc>C2</desc><rect x="0.0" y="0.0" width="1180.0" height="470.0" fill="#fff" stroke="none" stroke-width="1" opacity="1"/>
+<text x="14.0" y="22.0" font-size="15" text-anchor="start" font-weight="bold" fill="#222222">F08. C2: số mã luật khác nhau trong mỗi lần chạy, naive so với guardrailed</text>
+<text x="14.0" y="40.0" font-size="11" text-anchor="start" font-weight="normal" fill="#666666">Bộ phát hiện v1, 20 luật chính (P, S, U, D); n = 33, 33, 34: bị giới hạn công suất; trung bình và bootstrap 95% chép từ summary.md</text>
+<line x1="150.0" y1="330.0" x2="390.0" y2="330.0" stroke="#555" stroke-width="1"/>
+<line x1="150.0" y1="80.0" x2="150.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="150.0" y1="330.0" x2="150.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="150.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<line x1="184.3" y1="80.0" x2="184.3" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="184.3" y1="330.0" x2="184.3" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="184.3" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">2</text>
+<line x1="218.6" y1="80.0" x2="218.6" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="218.6" y1="330.0" x2="218.6" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="218.6" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">4</text>
+<line x1="252.9" y1="80.0" x2="252.9" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="252.9" y1="330.0" x2="252.9" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="252.9" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">6</text>
+<line x1="287.1" y1="80.0" x2="287.1" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="287.1" y1="330.0" x2="287.1" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="287.1" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">8</text>
+<line x1="321.4" y1="80.0" x2="321.4" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="321.4" y1="330.0" x2="321.4" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="321.4" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">10</text>
+<line x1="355.7" y1="80.0" x2="355.7" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="355.7" y1="330.0" x2="355.7" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="355.7" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">12</text>
+<line x1="390.0" y1="80.0" x2="390.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="390.0" y1="330.0" x2="390.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="390.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">14</text>
+<text x="270.0" y="363.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222222">số mã luật khác nhau</text>
+<text x="270.0" y="70.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222222">A. từng lần chạy, trung bình và bootstrap 95%</text>
+<text x="144.0" y="124.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">naive</text>
+<circle cx="201.4" cy="104.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="201.4" cy="108.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="201.4" cy="112.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="201.4" cy="116.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="104.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="108.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="112.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="116.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="120.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="124.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="128.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="104.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="108.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="112.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="116.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="120.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="218.6" cy="124.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="235.7" cy="104.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="235.7" cy="108.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="235.7" cy="112.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="235.7" cy="116.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="235.7" cy="120.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="235.7" cy="124.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="235.7" cy="128.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="321.4" cy="104.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="321.4" cy="108.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="321.4" cy="112.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="321.4" cy="116.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="321.4" cy="120.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="338.6" cy="104.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="338.6" cy="108.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="338.6" cy="112.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<circle cx="338.6" cy="116.0" r="2.8" fill="#E69F00" stroke="#E69F00" stroke-width="1.6" opacity="0.55"/>
+<line x1="234.2" y1="144.0" x2="267.4" y2="144.0" stroke="#000" stroke-width="3"/>
+<polygon points="250.3,138.0 256.3,144.0 250.3,150.0 244.3,144.0" fill="#000" stroke="#000" stroke-width="1.6" opacity="1"/>
+<text x="388.0" y="102.0" font-size="10" text-anchor="end" font-weight="normal" fill="#666666">trung bình 5,85</text>
+<text x="144.0" y="204.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">detailed-functional</text>
+<rect x="198.6" y="181.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="198.6" y="185.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="198.6" y="189.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="198.6" y="193.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="215.8" y="181.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="215.8" y="185.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="215.8" y="189.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="215.8" y="193.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="215.8" y="197.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="215.8" y="201.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="215.8" y="205.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="215.8" y="181.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="215.8" y="185.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="250.1" y="181.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="250.1" y="185.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="250.1" y="189.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="250.1" y="193.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="250.1" y="197.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="250.1" y="201.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="250.1" y="205.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="250.1" y="181.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="267.2" y="181.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="267.2" y="185.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="267.2" y="189.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="267.2" y="193.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="267.2" y="197.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="267.2" y="201.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="284.3" y="181.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="284.3" y="185.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="284.3" y="189.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="284.3" y="193.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="301.5" y="181.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<rect x="301.5" y="185.2" width="5.6" height="5.6" fill="#56B4E9" stroke="#56B4E9" stroke-width="1.6" opacity="0.55"/>
+<line x1="237.3" y1="224.0" x2="258.5" y2="224.0" stroke="#000" stroke-width="3"/>
+<polygon points="247.7,218.0 253.7,224.0 247.7,230.0 241.7,224.0" fill="#000" stroke="#000" stroke-width="1.6" opacity="1"/>
+<text x="388.0" y="182.0" font-size="10" text-anchor="end" font-weight="normal" fill="#666666">trung bình 5,70</text>
+<text x="144.0" y="284.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">guardrailed</text>
+<polygon points="167.1,260.2 163.3,266.8 170.9,266.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="167.1,264.2 163.3,270.8 170.9,270.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="167.1,268.2 163.3,274.8 170.9,274.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="167.1,272.2 163.3,278.8 170.9,278.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="167.1,276.2 163.3,282.8 170.9,282.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="184.3,260.2 180.5,266.8 188.1,266.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="184.3,264.2 180.5,270.8 188.1,270.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="184.3,268.2 180.5,274.8 188.1,274.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="184.3,272.2 180.5,278.8 188.1,278.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="184.3,276.2 180.5,282.8 188.1,282.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="184.3,280.2 180.5,286.8 188.1,286.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="184.3,284.2 180.5,290.8 188.1,290.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="184.3,260.2 180.5,266.8 188.1,266.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="184.3,264.2 180.5,270.8 188.1,270.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="184.3,268.2 180.5,274.8 188.1,274.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="201.4,260.2 197.6,266.8 205.2,266.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="201.4,264.2 197.6,270.8 205.2,270.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="201.4,268.2 197.6,274.8 205.2,274.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="201.4,272.2 197.6,278.8 205.2,278.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="201.4,276.2 197.6,282.8 205.2,282.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="201.4,280.2 197.6,286.8 205.2,286.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="201.4,284.2 197.6,290.8 205.2,290.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="201.4,260.2 197.6,266.8 205.2,266.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="201.4,264.2 197.6,270.8 205.2,270.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="201.4,268.2 197.6,274.8 205.2,274.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="218.6,260.2 214.8,266.8 222.4,266.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="218.6,264.2 214.8,270.8 222.4,270.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="218.6,268.2 214.8,274.8 222.4,274.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="218.6,272.2 214.8,278.8 222.4,278.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="218.6,276.2 214.8,282.8 222.4,282.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="235.7,260.2 231.9,266.8 239.5,266.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="235.7,264.2 231.9,270.8 239.5,270.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="235.7,268.2 231.9,274.8 239.5,274.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<polygon points="252.9,260.2 249.1,266.8 256.7,266.8" fill="#009E73" stroke="#009E73" stroke-width="1.6" opacity="0.55"/>
+<line x1="191.3" y1="304.0" x2="205.9" y2="304.0" stroke="#000" stroke-width="3"/>
+<polygon points="198.3,298.0 204.3,304.0 198.3,310.0 192.3,304.0" fill="#000" stroke="#000" stroke-width="1.6" opacity="1"/>
+<text x="388.0" y="262.0" font-size="10" text-anchor="end" font-weight="normal" fill="#666666">trung bình 2,82</text>
+<line x1="490.0" y1="330.0" x2="720.0" y2="330.0" stroke="#555" stroke-width="1"/>
+<line x1="515.6" y1="80.0" x2="515.6" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="515.6" y1="330.0" x2="515.6" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="515.6" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<line x1="541.1" y1="80.0" x2="541.1" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="541.1" y1="330.0" x2="541.1" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="541.1" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">+1</text>
+<line x1="566.7" y1="80.0" x2="566.7" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="566.7" y1="330.0" x2="566.7" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="566.7" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">+2</text>
+<line x1="592.2" y1="80.0" x2="592.2" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="592.2" y1="330.0" x2="592.2" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="592.2" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">+3</text>
+<line x1="617.8" y1="80.0" x2="617.8" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="617.8" y1="330.0" x2="617.8" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="617.8" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">+4</text>
+<line x1="668.9" y1="80.0" x2="668.9" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="668.9" y1="330.0" x2="668.9" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="668.9" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">+6</text>
+<line x1="720.0" y1="80.0" x2="720.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="720.0" y1="330.0" x2="720.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="720.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">+8</text>
+<text x="605.0" y="363.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222222">hiệu (naive trừ guardrailed)</text>
+<text x="615.0" y="70.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222222">B. hiệu theo 9 tầng và tổng</text>
+<line x1="566.7" y1="80.0" x2="566.7" y2="330.0" stroke="#D55E00" stroke-width="1.2" stroke-dasharray="5 3"/>
+<text x="569.7" y="91.0" font-size="10" text-anchor="start" font-weight="normal" fill="#D55E00">SESOI 2,0</text>
+<line x1="515.6" y1="80.0" x2="515.6" y2="330.0" stroke="#333" stroke-width="1.2"/>
+<circle cx="547.5" cy="104.0" r="3.5" fill="#888" stroke="#888" stroke-width="1.6" opacity="0.6"/>
+<circle cx="521.9" cy="122.0" r="3.5" fill="#888" stroke="#888" stroke-width="1.6" opacity="0.6"/>
+<circle cx="694.4" cy="140.0" r="3.5" fill="#888" stroke="#888" stroke-width="1.6" opacity="0.6"/>
+<circle cx="579.4" cy="158.0" r="3.5" fill="#888" stroke="#888" stroke-width="1.6" opacity="0.6"/>
+<circle cx="560.3" cy="176.0" r="3.5" fill="#888" stroke="#888" stroke-width="1.6" opacity="0.6"/>
+<circle cx="715.7" cy="194.0" r="3.5" fill="#888" stroke="#888" stroke-width="1.6" opacity="0.6"/>
+<circle cx="573.1" cy="212.0" r="3.5" fill="#888" stroke="#888" stroke-width="1.6" opacity="0.6"/>
+<circle cx="534.7" cy="230.0" r="3.5" fill="#888" stroke="#888" stroke-width="1.6" opacity="0.6"/>
+<circle cx="694.4" cy="248.0" r="3.5" fill="#888" stroke="#888" stroke-width="1.6" opacity="0.6"/>
+<polygon points="592.9,287.0 600.9,295.0 592.9,303.0 584.9,295.0" fill="#000" stroke="#000" stroke-width="1.6" opacity="1"/>
+<text x="592.9" y="318.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222222">tổng +3,025</text>
+<line x1="980.0" y1="330.0" x2="1150.0" y2="330.0" stroke="#555" stroke-width="1"/>
+<line x1="997.0" y1="80.0" x2="997.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="997.0" y1="330.0" x2="997.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="997.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0</text>
+<line x1="1031.0" y1="80.0" x2="1031.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="1031.0" y1="330.0" x2="1031.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="1031.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">+2</text>
+<line x1="1065.0" y1="80.0" x2="1065.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="1065.0" y1="330.0" x2="1065.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="1065.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">+4</text>
+<line x1="1099.0" y1="80.0" x2="1099.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="1099.0" y1="330.0" x2="1099.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="1099.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">+6</text>
+<line x1="1133.0" y1="80.0" x2="1133.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="1133.0" y1="330.0" x2="1133.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="1133.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">+8</text>
+<text x="1065.0" y="363.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222222">hiệu C2</text>
+<line x1="1031.0" y1="80.0" x2="1031.0" y2="330.0" stroke="#D55E00" stroke-width="1.2" stroke-dasharray="5 3"/>
+<text x="1034.0" y="91.0" font-size="10" text-anchor="start" font-weight="normal" fill="#D55E00">SESOI</text>
+<text x="1020.0" y="70.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222222">C. độ nhạy (A6)</text>
+<text x="974.0" y="100.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">a: no web-tool attempt (n 100)</text>
+<circle cx="1048.4" cy="96.0" r="4" fill="#444" stroke="#444" stroke-width="1.6" opacity="1"/>
+<text x="974.0" y="128.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">c: compile-excluded (build pass) (n 42)</text>
+<circle cx="1062.1" cy="124.0" r="4" fill="#444" stroke="#444" stroke-width="1.6" opacity="1"/>
+<text x="974.0" y="156.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">b: only agy-g38flash (n 28)</text>
+<circle cx="1120.1" cy="152.0" r="4" fill="#444" stroke="#444" stroke-width="1.6" opacity="1"/>
+<text x="974.0" y="184.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">b: only claude-haiku (n 36)</text>
+<circle cx="1031.0" cy="180.0" r="4" fill="#444" stroke="#444" stroke-width="1.6" opacity="1"/>
+<text x="974.0" y="212.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">b: only codex-luna (n 36)</text>
+<circle cx="1012.6" cy="208.0" r="4" fill="#444" stroke="#444" stroke-width="1.6" opacity="1"/>
+<text x="974.0" y="240.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">b: without agy-g38flash (n 72)</text>
+<circle cx="1021.8" cy="236.0" r="4" fill="#444" stroke="#444" stroke-width="1.6" opacity="1"/>
+<text x="974.0" y="268.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">b: without claude-haiku (n 64)</text>
+<circle cx="1058.7" cy="264.0" r="4" fill="#444" stroke="#444" stroke-width="1.6" opacity="1"/>
+<text x="974.0" y="296.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">b: without codex-luna (n 64)</text>
+<circle cx="1068.7" cy="292.0" r="4" fill="#444" stroke="#444" stroke-width="1.6" opacity="1"/>
+<text x="14.0" y="380.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">Kết luận theo quy tắc đã đăng ký: ủng hộ. p thô 0,00001, p hiệu chỉnh Holm 0,00005 (Bảng 5.27); độ lớn +3,025 ≥ 2,0 (đạt).</text>
+<text x="14.0" y="400.0" font-size="11" text-anchor="start" font-weight="normal" fill="#666666">Ở các ứng dụng build được (n = 42) hiệu vẫn +3,829 (biến thể c ở panel C).</text></svg>

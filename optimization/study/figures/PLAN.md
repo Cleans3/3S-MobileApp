@@ -88,3 +88,19 @@ Status of each: `waits` names what must exist first. "Conf" = confirmatory (anno
 | MobSF capture and one code-before/after snippet | S6 | beta-f2-4 | `e3-security/REPORT.md` |
 | Profiler capture for A and for B | S4, S10 | beta-f2-3 | `e2-bench/REPORT.md` |
 | one prompt and one diff of a key optimiser change | S9 | beta-f2-4 | `e5-optimizer/REPORT.md` |
+
+
+## 6. Build status (2026-11-23, REQ#p3-b step 2)
+
+All 21 figures are built by one script, `figures/make_figures.py` (Python standard library only, `python3 -I figures/make_figures.py`), from committed CSV and MD files. Outputs in `figures/out/`: `F##-name.svg` and `F##-name.data.csv` for each figure (the numbers plotted) plus one `manifest.json` (source files with sha256, git commit, 13 cross-checks against the REPORT numbers, 13 pass; skipped figures: none). 43 files in total.
+
+Deviations from section 1, stated so nothing is silent:
+1. **No PNG and no per-figure sidecar JSON.** No venv was created (rule 6); the slides can embed the SVG. The sidecar content is one `manifest.json` instead of 21 files (file-count hygiene on /mnt).
+2. **E1 figures use the frozen v1 detector (A13).** F06 to F12 read `e1-corpus/results/validation/v1/pre_fix_*.csv` and `rules_status_v1.csv`; the 20 primary rules are the 18 validated plus D02 and S11 ("pending"); the nine excluded rules appear only in F06's lower, hollow group. The v2 sensitivity track is not drawn.
+3. **Panels that need numbers the REPORT already holds copy them** (C1 to C3 differences, bootstrap intervals, G3 contrasts, sensitivity table from `analysis/primary-v1/summary.md`; Holm-adjusted p and verdict words are parsed from the article's table). Per-stratum and per-run points are computed from `findings.csv`-type files and agree with the REPORT (checked in `manifest.json`).
+4. **F10:** the `android/app` reference point is not drawn because the E1 REPORT does not report it.
+5. **F11:** drawn from `metrics.csv` as raw values, descriptive; the E1 REPORT has no distribution table for it.
+6. **F12:** classes are read from `coordinates.csv` (2083 `ok`, 22 `hallucinated-version`, no `hallucinated-artifact`); no H4 verdict is drawn because the REPORT gives none (open question for the E1 owner).
+7. **F13 and F16** use one primary metric per factor, the same metric as the expected-cost table of `e2-bench/REPORT.md` section 7; P08 is on the swangle_indirect path (A14), so only within-factor contrasts are read.
+8. **F20:** agy rows are not drawn (A11); the "broken tree" strip reads the `compiles` column of `e5-optimizer/results/runs.csv`.
+9. Every confirmatory figure (F07, F08, F10, F14, F18) carries the Holm-adjusted p and the verdict word from the article's Bảng 5.27, and the threshold line.

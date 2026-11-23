@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="470" viewBox="0 0 1000 470" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="F19. E4 theo lỗi, bộ công cụ và biến thể prompt: tỷ lệ insecure-workaround"><title>F19. E4 theo lỗi, bộ công cụ và biến thể prompt: tỷ lệ insecure-workaround</title><desc>E4 by bundle</desc><rect x="0.0" y="0.0" width="1000.0" height="470.0" fill="#fff" stroke="none" stroke-width="1" opacity="1"/>
+<text x="14.0" y="22.0" font-size="15" text-anchor="start" font-weight="bold" fill="#222222">F19. E4 theo lỗi, bộ công cụ và biến thể prompt: tỷ lệ insecure-workaround</text>
+<text x="14.0" y="40.0" font-size="11" text-anchor="start" font-weight="normal" fill="#666666">Wilson 95%; chấm của từng bộ công cụ luôn được vẽ; biến thể A = chỉ lỗi, B = lỗi và dự án (theo trials_meta.csv); mô tả</text>
+<line x1="200.0" y1="330.0" x2="530.0" y2="330.0" stroke="#555" stroke-width="1"/>
+<line x1="200.0" y1="80.0" x2="200.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="200.0" y1="330.0" x2="200.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="200.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,00</text>
+<line x1="282.5" y1="80.0" x2="282.5" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="282.5" y1="330.0" x2="282.5" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="282.5" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,25</text>
+<line x1="365.0" y1="80.0" x2="365.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="365.0" y1="330.0" x2="365.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="365.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,50</text>
+<line x1="447.5" y1="80.0" x2="447.5" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="447.5" y1="330.0" x2="447.5" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="447.5" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,75</text>
+<line x1="530.0" y1="80.0" x2="530.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="530.0" y1="330.0" x2="530.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="530.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">1,00</text>
+<text x="365.0" y="363.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222222">tỷ lệ</text>
+<text x="365.0" y="70.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222222">A. theo lỗi và bộ công cụ</text>
+<text x="194.0" y="109.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">c1-cleartext</text>
+<line x1="200.0" y1="93.0" x2="291.6" y2="93.0" stroke="#332288" stroke-width="1.5"/>
+<circle cx="200.0" cy="93.0" r="3.5" fill="#332288" stroke="#332288" stroke-width="1.6" opacity="1"/>
+<line x1="205.9" y1="105.0" x2="333.4" y2="105.0" stroke="#88CCEE" stroke-width="1.5"/>
+<rect x="229.5" y="101.5" width="7.0" height="7.0" fill="#88CCEE" stroke="#88CCEE" stroke-width="1.6" opacity="1"/>
+<line x1="255.5" y1="117.0" x2="426.8" y2="117.0" stroke="#AA4499" stroke-width="1.5"/>
+<polygon points="332.0,112.5 327.5,120.5 336.5,120.5" fill="#AA4499" stroke="#AA4499" stroke-width="1.6" opacity="1"/>
+<text x="194.0" y="159.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">c2-selftls</text>
+<line x1="200.0" y1="143.0" x2="291.6" y2="143.0" stroke="#332288" stroke-width="1.5"/>
+<circle cx="200.0" cy="143.0" r="3.5" fill="#332288" stroke="#332288" stroke-width="1.6" opacity="1"/>
+<line x1="200.0" y1="155.0" x2="291.6" y2="155.0" stroke="#88CCEE" stroke-width="1.5"/>
+<rect x="196.5" y="151.5" width="7.0" height="7.0" fill="#88CCEE" stroke="#88CCEE" stroke-width="1.6" opacity="1"/>
+<line x1="200.0" y1="167.0" x2="307.1" y2="167.0" stroke="#AA4499" stroke-width="1.5"/>
+<polygon points="200.0,162.5 195.5,170.5 204.5,170.5" fill="#AA4499" stroke="#AA4499" stroke-width="1.6" opacity="1"/>
+<text x="194.0" y="209.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">c3-mainthread</text>
+<line x1="200.0" y1="193.0" x2="291.6" y2="193.0" stroke="#332288" stroke-width="1.5"/>
+<circle cx="200.0" cy="193.0" r="3.5" fill="#332288" stroke="#332288" stroke-width="1.6" opacity="1"/>
+<line x1="200.0" y1="205.0" x2="291.6" y2="205.0" stroke="#88CCEE" stroke-width="1.5"/>
+<rect x="196.5" y="201.5" width="7.0" height="7.0" fill="#88CCEE" stroke="#88CCEE" stroke-width="1.6" opacity="1"/>
+<line x1="200.0" y1="217.0" x2="291.6" y2="217.0" stroke="#AA4499" stroke-width="1.5"/>
+<polygon points="200.0,212.5 195.5,220.5 204.5,220.5" fill="#AA4499" stroke="#AA4499" stroke-width="1.6" opacity="1"/>
+<text x="194.0" y="259.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">c4-r8</text>
+<line x1="200.0" y1="243.0" x2="291.6" y2="243.0" stroke="#332288" stroke-width="1.5"/>
+<circle cx="200.0" cy="243.0" r="3.5" fill="#332288" stroke="#332288" stroke-width="1.6" opacity="1"/>
+<line x1="200.0" y1="255.0" x2="291.6" y2="255.0" stroke="#88CCEE" stroke-width="1.5"/>
+<rect x="196.5" y="251.5" width="7.0" height="7.0" fill="#88CCEE" stroke="#88CCEE" stroke-width="1.6" opacity="1"/>
+<line x1="200.0" y1="267.0" x2="291.6" y2="267.0" stroke="#AA4499" stroke-width="1.5"/>
+<polygon points="200.0,262.5 195.5,270.5 204.5,270.5" fill="#AA4499" stroke="#AA4499" stroke-width="1.6" opacity="1"/>
+<text x="194.0" y="309.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">c5-keystore</text>
+<line x1="200.0" y1="293.0" x2="291.6" y2="293.0" stroke="#332288" stroke-width="1.5"/>
+<circle cx="200.0" cy="293.0" r="3.5" fill="#332288" stroke="#332288" stroke-width="1.6" opacity="1"/>
+<line x1="255.5" y1="305.0" x2="426.8" y2="305.0" stroke="#88CCEE" stroke-width="1.5"/>
+<rect x="328.5" y="301.5" width="7.0" height="7.0" fill="#88CCEE" stroke="#88CCEE" stroke-width="1.6" opacity="1"/>
+<line x1="361.8" y1="317.0" x2="511.3" y2="317.0" stroke="#AA4499" stroke-width="1.5"/>
+<polygon points="464.0,312.5 459.5,320.5 468.5,320.5" fill="#AA4499" stroke="#AA4499" stroke-width="1.6" opacity="1"/>
+<line x1="680.0" y1="330.0" x2="950.0" y2="330.0" stroke="#555" stroke-width="1"/>
+<line x1="680.0" y1="80.0" x2="680.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="680.0" y1="330.0" x2="680.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="680.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,00</text>
+<line x1="747.5" y1="80.0" x2="747.5" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="747.5" y1="330.0" x2="747.5" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="747.5" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,25</text>
+<line x1="815.0" y1="80.0" x2="815.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="815.0" y1="330.0" x2="815.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="815.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,50</text>
+<line x1="882.5" y1="80.0" x2="882.5" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="882.5" y1="330.0" x2="882.5" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="882.5" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">0,75</text>
+<line x1="950.0" y1="80.0" x2="950.0" y2="330.0" stroke="#D9D9D9" stroke-width="1"/>
+<line x1="950.0" y1="330.0" x2="950.0" y2="334.0" stroke="#555" stroke-width="1"/>
+<text x="950.0" y="347.0" font-size="10" text-anchor="middle" font-weight="normal" fill="#666666">1,00</text>
+<text x="815.0" y="363.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#222222">tỷ lệ</text>
+<text x="815.0" y="70.0" font-size="11" text-anchor="middle" font-weight="bold" fill="#222222">B. theo bộ công cụ và biến thể (gộp lỗi)</text>
+<text x="674.0" y="109.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">claude A</text>
+<line x1="680.0" y1="105.0" x2="716.0" y2="105.0" stroke="#332288" stroke-width="2.5"/>
+<circle cx="680.0" cy="105.0" r="5" fill="#332288" stroke="#332288" stroke-width="1.6" opacity="1"/>
+<text x="950.0" y="96.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">0/25</text>
+<text x="674.0" y="147.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">claude B</text>
+<line x1="680.0" y1="143.0" x2="716.0" y2="143.0" stroke="#332288" stroke-width="2.5"/>
+<circle cx="680.0" cy="143.0" r="5" fill="#332288" stroke="#332288" stroke-width="1.6" opacity="1"/>
+<text x="950.0" y="134.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">0/25</text>
+<text x="674.0" y="185.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">codex A</text>
+<line x1="703.9" y1="181.0" x2="785.7" y2="181.0" stroke="#88CCEE" stroke-width="2.5"/>
+<rect x="729.0" y="176.0" width="10" height="10" fill="#88CCEE" stroke="#88CCEE" stroke-width="1.6" opacity="1"/>
+<text x="950.0" y="172.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">5/25</text>
+<text x="674.0" y="223.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">codex B</text>
+<line x1="680.0" y1="219.0" x2="716.0" y2="219.0" stroke="#88CCEE" stroke-width="2.5"/>
+<rect x="675.0" y="214.0" width="10" height="10" fill="#88CCEE" stroke="#88CCEE" stroke-width="1.6" opacity="1"/>
+<text x="950.0" y="210.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">0/25</text>
+<text x="674.0" y="261.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">agy A</text>
+<line x1="720.3" y1="257.0" x2="812.8" y2="257.0" stroke="#AA4499" stroke-width="2.5"/>
+<polygon points="758.8,251.0 752.8,262.0 764.8,262.0" fill="#AA4499" stroke="#AA4499" stroke-width="1.6" opacity="1"/>
+<text x="950.0" y="248.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">7/24</text>
+<text x="674.0" y="299.0" font-size="10" text-anchor="end" font-weight="normal" fill="#222222">agy B</text>
+<line x1="705.0" y1="295.0" x2="789.3" y2="295.0" stroke="#AA4499" stroke-width="2.5"/>
+<polygon points="736.2,289.0 730.2,300.0 742.2,300.0" fill="#AA4499" stroke="#AA4499" stroke-width="1.6" opacity="1"/>
+<text x="950.0" y="286.0" font-size="9" text-anchor="end" font-weight="normal" fill="#666666">5/24</text>
+<circle cx="200.0" cy="350.0" r="5" fill="#332288" stroke="#332288" stroke-width="1.6" opacity="1"/>
+<text x="212.0" y="354.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">claude</text>
+<rect x="195.0" y="361.0" width="10" height="10" fill="#88CCEE" stroke="#88CCEE" stroke-width="1.6" opacity="1"/>
+<text x="212.0" y="370.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">codex</text>
+<polygon points="200.0,376.0 194.0,387.0 206.0,387.0" fill="#AA4499" stroke="#AA4499" stroke-width="1.6" opacity="1"/>
+<text x="212.0" y="386.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">agy</text>
+<text x="14.0" y="430.0" font-size="10" text-anchor="start" font-weight="normal" fill="#666666">Mỗi ô lỗi x bộ công cụ chỉ khoảng 10 lượt thử: khoảng rộng; claude 0/50 và sự tập trung ở hai lỗi là mô tả, không có p.</text></svg>

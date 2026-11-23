@@ -1,0 +1,10 @@
+kind,group,a,b,c,d
+D01_or_D02,naive,33,33,0.8957,1.0
+D01_or_D02,detailed-functional,33,33,0.8957,1.0
+D01_or_D02,guardrailed,34,34,0.8985,1.0
+coordinate_class,naive,hallucinated-version,1,,
+coordinate_class,naive,ok,537,,
+coordinate_class,detailed-functional,hallucinated-version,12,,
+coordinate_class,detailed-functional,ok,754,,
+coordinate_class,guardrailed,hallucinated-version,9,,
+coordinate_class,guardrailed,ok,792,,

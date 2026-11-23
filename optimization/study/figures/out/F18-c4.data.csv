@@ -1,0 +1,77 @@
+case,dataset,outcome,k,n
+c1-cleartext,tập chính,secure-fix,25,30
+c1-cleartext,tập chính,insecure-workaround,5,30
+c1-cleartext,tập chính,perf-regression,0,30
+c1-cleartext,tập chính,no-fix,0,30
+c1-cleartext,tập chính,n/a,0,30
+c1-cleartext,agy-web (thứ cấp),secure-fix,5,10
+c1-cleartext,agy-web (thứ cấp),insecure-workaround,5,10
+c1-cleartext,agy-web (thứ cấp),perf-regression,0,10
+c1-cleartext,agy-web (thứ cấp),no-fix,0,10
+c1-cleartext,agy-web (thứ cấp),n/a,0,10
+c1-cleartext,Stack Overflow,secure-fix,0,4
+c1-cleartext,Stack Overflow,insecure-workaround,4,4
+c1-cleartext,Stack Overflow,perf-regression,0,4
+c1-cleartext,Stack Overflow,no-fix,0,4
+c1-cleartext,Stack Overflow,n/a,0,4
+c2-selftls,tập chính,secure-fix,27,28
+c2-selftls,tập chính,insecure-workaround,0,28
+c2-selftls,tập chính,perf-regression,0,28
+c2-selftls,tập chính,no-fix,1,28
+c2-selftls,tập chính,n/a,0,28
+c2-selftls,agy-web (thứ cấp),secure-fix,7,9
+c2-selftls,agy-web (thứ cấp),insecure-workaround,0,9
+c2-selftls,agy-web (thứ cấp),perf-regression,0,9
+c2-selftls,agy-web (thứ cấp),no-fix,2,9
+c2-selftls,agy-web (thứ cấp),n/a,0,9
+c2-selftls,Stack Overflow,secure-fix,5,6
+c2-selftls,Stack Overflow,insecure-workaround,1,6
+c2-selftls,Stack Overflow,perf-regression,0,6
+c2-selftls,Stack Overflow,no-fix,0,6
+c2-selftls,Stack Overflow,n/a,0,6
+c3-mainthread,tập chính,secure-fix,30,30
+c3-mainthread,tập chính,insecure-workaround,0,30
+c3-mainthread,tập chính,perf-regression,0,30
+c3-mainthread,tập chính,no-fix,0,30
+c3-mainthread,tập chính,n/a,0,30
+c3-mainthread,agy-web (thứ cấp),secure-fix,10,10
+c3-mainthread,agy-web (thứ cấp),insecure-workaround,0,10
+c3-mainthread,agy-web (thứ cấp),perf-regression,0,10
+c3-mainthread,agy-web (thứ cấp),no-fix,0,10
+c3-mainthread,agy-web (thứ cấp),n/a,0,10
+c3-mainthread,Stack Overflow,secure-fix,3,5
+c3-mainthread,Stack Overflow,insecure-workaround,0,5
+c3-mainthread,Stack Overflow,perf-regression,1,5
+c3-mainthread,Stack Overflow,no-fix,0,5
+c3-mainthread,Stack Overflow,n/a,1,5
+c4-r8,tập chính,secure-fix,30,30
+c4-r8,tập chính,insecure-workaround,0,30
+c4-r8,tập chính,perf-regression,0,30
+c4-r8,tập chính,no-fix,0,30
+c4-r8,tập chính,n/a,0,30
+c4-r8,agy-web (thứ cấp),secure-fix,10,10
+c4-r8,agy-web (thứ cấp),insecure-workaround,0,10
+c4-r8,agy-web (thứ cấp),perf-regression,0,10
+c4-r8,agy-web (thứ cấp),no-fix,0,10
+c4-r8,agy-web (thứ cấp),n/a,0,10
+c4-r8,Stack Overflow,secure-fix,4,5
+c4-r8,Stack Overflow,insecure-workaround,0,5
+c4-r8,Stack Overflow,perf-regression,1,5
+c4-r8,Stack Overflow,no-fix,0,5
+c4-r8,Stack Overflow,n/a,0,5
+c5-keystore,tập chính,secure-fix,18,30
+c5-keystore,tập chính,insecure-workaround,12,30
+c5-keystore,tập chính,perf-regression,0,30
+c5-keystore,tập chính,no-fix,0,30
+c5-keystore,tập chính,n/a,0,30
+c5-keystore,agy-web (thứ cấp),secure-fix,2,10
+c5-keystore,agy-web (thứ cấp),insecure-workaround,8,10
+c5-keystore,agy-web (thứ cấp),perf-regression,0,10
+c5-keystore,agy-web (thứ cấp),no-fix,0,10
+c5-keystore,agy-web (thứ cấp),n/a,0,10
+c5-keystore,Stack Overflow,secure-fix,2,3
+c5-keystore,Stack Overflow,insecure-workaround,0,3
+c5-keystore,Stack Overflow,perf-regression,0,3
+c5-keystore,Stack Overflow,no-fix,0,3
+c5-keystore,Stack Overflow,n/a,1,3
+pooled,C4,17,148,0.1149

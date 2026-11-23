@@ -1,0 +1,30 @@
+rule_id,slop-scan_findings,lint_findings,depcheck_findings,existing_tool_declares,custom_only
+P01,15,0,0,none,1
+P02,29,0,0,none,1
+P03,13,0,0,detekt:UnstableCollections|MutableParams|MutableStateParam|StateParam,0
+P04,15,0,0,detekt:RememberMissing|RememberContentMissing,0
+P05,0,0,0,lint:FrequentlyChangingValue,0
+P06,8,0,0,none,1
+P07,19,0,0,none,1
+P08,16,0,0,none,1
+P09,2,0,0,none,1
+P10,63,0,0,none,1
+P11,73,0,0,none,1
+P13,18,0,0,none,1
+S01,43,0,0,none,1
+S02,2,0,0,none,1
+S03,0,0,0,lint:UsesCleartextTraffic|InsecureBaseConfiguration,0
+S04,0,0,0,lint:TrustAllX509TrustManager|BadHostnameVerifier|AllowAllHostnameVerifier|CustomX509TrustManager,0
+S05,12,0,0,none,1
+S06,45,18,0,lint:AllowBackup|DataExtractionRules|FullBackupContent,0
+S07,0,0,0,lint:ExportedActivity|ExportedService|ExportedReceiver|ExportedContentProvider,0
+S08,16,0,0,lint:GetInstance|DeprecatedProvider,0
+S09,4,0,0,lint:SetJavaScriptEnabled|JavascriptInterface,0
+S11,0,0,22,depcheck:Maven Central / Google Maven existence + OSV,0
+U01,3,0,0,lint:ContentDescription (views only),0
+U02,0,0,0,none,1
+U03,29,0,0,none,1
+U04,220,0,0,none,1
+U05,65,0,0,none,1
+D01,123,0,0,lint:Deprecated|GradleDeprecated,0
+D02,0,932,1229,lint:GradleDependency|NewerVersionAvailable;depcheck:latest-stable,0

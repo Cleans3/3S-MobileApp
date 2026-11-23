@@ -1,0 +1,11 @@
+hypothesis,endpoint,result,size_and_interval,verdict,confirmatory
+H1,D01 hoặc D02,66/66 lần chạy không guardrail,"1,000 [0,945; 1,000]",ủng hộ (dải PB); không đặc trưng cho AI: người viết cũng có D02 ở 17/20 và 18/20,không
+H2 (C4),"insecure-workaround, E4",17/148,"0,115 [0,073; 0,176]; p thô 0,311","không được ủng hộ tại SESOI 0,15; không đủ bác bỏ (cận trên 0,176 không dưới 0,10)",có
+H3 (C5),"P90 FrameDurationCpuMs, P08, A so với B","62,87 so với 49,07 ms (n = 12 và 12)","delta% +28,13% [13,38; 54,31]; p thô 0,000308","ủng hộ (ba điều kiện thỏa, đường GPU swangle_indirect, A14); bộ nhớ đồ họa không đo",có
+H4,tọa độ Gradle không tồn tại,"S11 ""pending""; coordinates.csv: 0 hallucinated-artifact trong 2105 thể hiện (Hình 5.10)",,không kết luận được từ REPORT; điều kiện bác bỏ sẽ thỏa nếu cột class được xác nhận cuối cùng,không
+H5,U01 hoặc U05,1/66 (chỉ U01; U05 chưa kiểm chứng),"0,015 [0,003; 0,081]",bác bỏ cho U01 (dải PB),không
+H6,S05,10/66,"0,152 [0,084; 0,257]",không kết luận được,không
+G1 (C1),"ít nhất một phát hiện S, naive trừ guardrailed",31/33 so với 17/34,"hiệu +0,439, p thô 0,00004; ở các ứng dụng build được +0,000","ủng hộ (p hiệu chỉnh 0,00016; độ lớn từ 0,15); không đúng ở ứng dụng build được",có
+G2 (C2),số mã luật khác nhau mỗi lần,"5,85 so với 2,82","hiệu +3,025, p thô 0,00001","ủng hộ (p hiệu chỉnh 0,00005; độ lớn từ 2,0); giữ ở ứng dụng build được (+3,829)",có
+G3,tập được chỉ dẫn so với tập bị giữ lại,"chênh +0,63 và +1,30","[0,15; 1,14] và [0,75; 1,84]","ủng hộ theo quy tắc; luật bị giữ lại cũng giảm: ""khái quát hóa hoặc ngẫu nhiên""",không (thứ cấp có đăng ký)
+B1 (C3),"nhóm S trên 1000 dòng, AI không guardrail so với trước 30/11/2022","2,37 so với 1,02","delta Cliff +0,582, p thô 0,00009","ủng hộ (p hiệu chỉnh 0,00027; delta từ 0,33); delta của claude-haiku đơn lẻ +0,340",có
