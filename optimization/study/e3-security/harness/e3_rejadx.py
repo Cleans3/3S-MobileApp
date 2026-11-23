@@ -12,7 +12,7 @@ import e3_run, gen_launch as gl
 WORK = gl.WORK
 R = E3 / "results"
 DEXDUMP = pathlib.Path.home() / "Android/Sdk/build-tools/37.0.0/dexdump"
-PRODUCT = E3.parent.parent.parent / "android" / "app" / "build" / "outputs" / "apk" / "release" / "app-release-unsigned.apk"
+PRODUCT = WORK / "apk" / "shelftap-app-release-unsigned.apk"  # rebuilt 2026-11-23 from HEAD e0781e0 by beta-f2-3; the MobSF rows of this target come from the build of 2026-11-21
 
 def sh(c): return subprocess.run(c, shell=True, capture_output=True, text=True).stdout
 def apk_of(t):
