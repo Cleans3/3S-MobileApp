@@ -120,3 +120,12 @@
 - **AI:** Claude Code (Claude Opus 5.5). Người dùng giao AI chọn cách làm tối ưu nhất. AI tìm ra vì sao lần sửa trước không áp dụng, sửa lại và thêm tên cho link.
 - **Kiểm thử:** chạy lại bốn script; 20 màn không lỗi.
 - **Ghi chú cho báo cáo:** lỗi "sửa mà không áp dụng" là lý do mọi phép thay trong script sửa phải kiểm tra số lần khớp.
+
+## 2026-11-24 04:36 · Sửa mục 2026-11-24 04:35
+
+- **Vấn đề:** mục trên ghi sai số đo trước khi sửa của ô tìm kiếm ở màn Khách. Các số 1.39 (sáng) và 1.51 (tối) là của nút "Chi tiết" và nút "Đăng nhập bằng thẻ" trên cùng màn, không phải của ô tìm kiếm.
+- **Thay đổi:** số đúng của mép ô tìm kiếm ở màn Khách: sáng 1.2 → 3.15, tối 2.37 → 4.74. Các nội dung khác của mục trên không đổi.
+- **Đo trước → sau:** lấy bằng cách chạy `tools/nontext-contrast.js` trên commit `044dca8` (trước khi sửa) và `cc5918c` (sau khi sửa).
+- **AI:** Claude Code (Claude Opus 5.5) tự phát hiện khi đối chiếu lại số đo với commit trước.
+- **Kiểm thử:** không áp dụng.
+- **Ghi chú cho báo cáo:** không có.
