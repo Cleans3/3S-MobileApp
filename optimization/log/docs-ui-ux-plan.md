@@ -239,3 +239,11 @@
 - **Đo trước → sau:** trước: cỡ 600–840 dp có 1 màn, trạng thái menu thu gọn và khung chi tiết cỡ vừa không được đo. Sau, lượt đầu: 1 lỗi (ghi chú ở Sách đang mượn khoảng 86 ký tự một dòng, gặp ở `navmini` và `middetail`). Sau khi sửa: 23 màn rộng và vừa 0 lỗi ở cả 7 biến thể có màn lớn, đo hai lượt cùng kết quả. Tương phản chữ 1212 đoạn mỗi theme (trước 862), chỉ còn 5 lỗi cũ ở màn chào; icon và viền bắt buộc 67 (trước 51), 1 lỗi cũ; 455 nút (trước 310), 0 có vùng chạm dưới 48 px. 20 màn điện thoại không đổi.
 - **AI:** Claude Code (Claude Opus 5.5). AI chọn một khung mỗi lúc và nút quay lại cho cỡ vừa theo cách Material 3 chia cỡ cửa sổ, và giới hạn 528 dp để giữ khoảng 80 ký tự một dòng. AI thêm các biến thể đo mới sau khi nhận ra bản dựng tĩnh chỉ có trạng thái đầu (menu mở, khung danh sách), nên hai trạng thái mới sẽ không được đo nếu không thêm.
 - **Kiểm thử:** `node tools/wide-boards/gen.js .`, `node tools/check-scripts.js .` (43 màn không lỗi), `tools/contrast.js`, `tools/nontext-contrast.js`, `tools/target-size.js`; dựng 15 biến thể, chạy `tools/layout-check.js` hai lượt trong trình duyệt của app; xem bằng mắt `WideAccount` với menu thu gọn và `MidAccount` ở khung chi tiết 600 dp. So với nhánh: 20 màn điện thoại không đổi.
+
+## 2026-11-24 09:29 · Đăng nút thu gọn menu và màn cỡ vừa
+
+- **Vấn đề:** nút thu gọn menu ở 11 màn rộng và 11 màn cỡ vừa `Mid*` đã có trong repo nhưng chưa có trên link mockup. Người dùng yêu cầu đăng lên link mockup.
+- **Thay đổi:** đăng `canvas.json`, 11 màn `Wide*`, `RailCatalog` và 11 màn `Mid*` lên artifact (bản 25). `optimization/ui-ux-mockup/README.md` ghi các file là bản 25.
+- **Đo trước → sau:** không áp dụng. Sau khi đăng, tải về cả 44 file đang đăng và so với `docs/ui-ux-plan`: trùng từng byte.
+- **AI:** Claude Code (Claude Opus 5.5). Trang artifact báo bản 25 dù trước đó là bản 23 và chỉ đăng một lần, giống hai lần đăng trước; AI ghi lại và kiểm bằng cách so file.
+- **Kiểm thử:** so hash của 44 file tải về với blob trên nhánh.
