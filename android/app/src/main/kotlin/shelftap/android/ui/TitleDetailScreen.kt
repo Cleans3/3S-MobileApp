@@ -83,7 +83,7 @@ fun TitleDetailScreen(
         Box(Modifier.fillMaxSize()) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                 Hero(t)
-                Info(t, state.message?.asString(), state.error)
+                Info(t, state.message?.asString(), state.error, partial = state.partial)
                 Spacer(Modifier.height(HeroSize.barClearance))
             }
             if (onBack != null) {
@@ -140,7 +140,7 @@ private fun Jacket(t: TitleDetail, cover: Color, ink: Color, modifier: Modifier)
 /** Subjects, title, author, availability and ISBN. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun Info(t: TitleDetail, message: String?, error: UiText?) {
+private fun Info(t: TitleDetail, message: String?, error: UiText?, partial: Boolean) {
     val c = MaterialTheme.shelfTap
     Column(
         Modifier.fillMaxWidth().padding(horizontal = HeroSize.contentInset).offset(y = -HeroSize.overlap),
@@ -162,7 +162,7 @@ private fun Info(t: TitleDetail, message: String?, error: UiText?) {
         }
         Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
             InfoTile(
-                stringResource(R.string.title_status), stringResource(R.string.title_copies, t.copiesAvailable, t.copiesTotal),
+                stringResource(R.string.title_status), if (partial) stringResource(R.string.catalog_available, t.copiesAvailable) else stringResource(R.string.title_copies, t.copiesAvailable, t.copiesTotal),
                 valueColor = if (t.copiesAvailable > 0) c.ok else c.ink, modifier = Modifier.weight(1f),
             )
             InfoTile("ISBN", t.isbn, valueColor = c.ink, modifier = Modifier.weight(1f))

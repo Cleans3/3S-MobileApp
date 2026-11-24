@@ -416,22 +416,38 @@ internal fun Cover(coverUrl: String?, title: String, modifier: Modifier, shape: 
 class TitleViewModel(private val repo: Repository, private val titleId: String) : ViewModel() {
     data class UiState(
         val title: Load<TitleDetail> = Load.Loading, val busy: Boolean = false, val message: UiText? = null, val error: UiText? = null,
+        /** The page is drawn from what the list knew, and the server's answer (the total number of copies) has not arrived yet. */
+        val partial: Boolean = false,
         /** Reserved now, or the server said ALREADY_RESERVED: the button stays off and says why. */
         val reserved: Boolean = false,
     )
 
-    private val _state = MutableStateFlow(UiState())
+    // A book the list showed opens at once from what the list knew (everything but the total number of copies); the server's answer replaces it.
+    private val _state = MutableStateFlow(
+        repo.seenTitle(titleId)?.let { s ->
+            UiState(title = Load.Ready(TitleDetail(s.titleId, s.isbn, s.title, s.authors, s.subjects, s.coverUrl, s.copiesAvailable, copiesTotal = 0)), partial = true)
+        } ?: UiState(),
+    )
     val state: StateFlow<UiState> = _state.asStateFlow()
 
     init {
-        load()
+        fetch()
     }
 
     fun load() {
-        _state.update { it.copy(title = Load.Loading) }
+        _state.update { it.copy(title = Load.Loading, partial = false, error = null) }
+        fetch()
+    }
+
+    private fun fetch() {
         viewModelScope.launch {
-            val result = try { Load.Ready(repo.title(titleId)) } catch (e: ApiException) { e.toFailed() }
-            _state.update { it.copy(title = result) }
+            try {
+                val detail = repo.title(titleId)
+                _state.update { it.copy(title = Load.Ready(detail), partial = false) }
+            } catch (e: ApiException) {
+                // With the page already on screen from the list, a failed answer is said under the title, not instead of the page.
+                _state.update { if (it.partial) it.copy(error = e.userMessage()) else it.copy(title = e.toFailed()) }
+            }
         }
     }
 
