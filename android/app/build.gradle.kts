@@ -101,4 +101,6 @@ dependencies {
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.accessibility.test.framework)
     androidTestImplementation(libs.guava) // ATF exposes Guava types in its API
+    // Compose ui-test pulls Espresso 3.5.0, which calls InputManager.getInstance by reflection; that method is gone on Android 17 (API 37).
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }
