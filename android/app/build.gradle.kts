@@ -54,6 +54,16 @@ android {
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+        // For timing only, never shipped: release without the debug flag (R8, Baseline Profile) signed with the debug key, against the dev
+        // server (src/measure/ trusts its user-installed CA). Build with `assembleMeasure -Pshelftap.apiBaseUrl=https://<host>:8443/`.
+        create("measure") {
+            initWith(getByName("release"))
+            matchingFallbacks += "release"
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = false
+            buildConfigField("String", "API_BASE_URL", "\"$debugApiBaseUrl\"")
+            buildConfigField("String", "API_PINS", "\"\"")
+        }
     }
 
     buildFeatures {
