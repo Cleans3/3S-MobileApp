@@ -450,3 +450,11 @@
 - **Đo trước → sau:** ảnh GPU (emulator, cửa sổ rộng 960×720 dp): `nav-folded` (thanh dọc 96 dp, nút mũi tên phải, khung sách mở rộng ra), `pane-closed` (danh sách chiếm toàn bộ chiều rộng, banner kéo dài, nút tròn ở góc dưới), `detail` (nút ✕ ở khung sách); ATF 0. **Chưa đo/kiểm:** hình giữa chừng của hiệu ứng đóng/mở khung (mỗi khung thay đổi chiều rộng nên bố cục chạy lại, chưa đo chi phí); cử chỉ back thật; TalkBack (trạng thái mở/đóng của nút mới đọc bằng tên thay vì `aria-expanded`); chế độ tối; mở lại cùng cuốn sách sau khi đóng.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn nút ✕ cùng chỗ với nút quay lại, chiều rộng khung chạy mượt thay vì bật tắt; con người chưa duyệt.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Configs expanded -Locale vi`: qua.
+
+## 2026-11-25 14:40 · Nút thu gọn/mở rộng menu: cùng kiểu nút tròn kính với các nút khác, icon "panel" (nguồn: yêu cầu của người dùng)
+
+- **Vấn đề:** nút thu gọn menu (commit trước) là ô vuông bo 14 dp, nền trắng, viền mực 50% và mũi tên trần: theo mockup nhưng lệch với nút tròn kính của thanh trên và nút ✕ cùng đợt; nhìn cũ.
+- **Thay đổi:** `AppMenu.kt` (`SideNav`): dùng `GlassCircleButton` (tròn 48 dp, kính, viền sáng, hiệu ứng nhấn chung) thay ô vuông; `LucideIcons.kt`: thêm `PanelLeftClose` và `PanelLeftOpen` (Lucide `panel-left-close` và `panel-left-open`: khung có thanh bên và mũi tên chỉ hướng thanh sẽ đi), icon "đóng" khi menu đang mở, "mở" khi đã thu. Bỏ hằng viền `TOGGLE_EDGE`. Lệch khỏi mockup: board dùng ô vuông viền đen; mình theo ý người dùng, không theo board.
+- **Đo trước → sau:** ảnh GPU (emulator, cửa sổ rộng): nút tròn kính với icon panel ở cả hai trạng thái (menu mở, thanh dọc), cùng kiểu với nút ✕ ở khung sách; ATF 0. **Chưa đo/kiểm:** chế độ tối; mình chưa so với các icon ở bản máy thật. Viền kính của nút trên nền menu trắng khá nhạt (cùng độ tương phản với các nút kính khác, vốn không bị ATF báo).
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn nút tròn kính và icon panel của Lucide; con người chưa duyệt lại.
+- **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Configs expanded -Locale vi`: qua.
