@@ -2,6 +2,9 @@ package shelftap.android.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -203,6 +206,7 @@ private fun NavHostController.goTo(route: String) = navigate(route) {
 @Composable
 private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     val nav = rememberNavController()
+    var navFolded by rememberSaveable { mutableStateOf(false) } // the wide menu folded into the rail by the member
     val reserveBar = remember { mutableStateOf<ReserveAction?>(null) } // what the book page's reserve button says, drawn by the dock
     val subjectSearch = LocalContainer.current.subjectSearch
     val route = nav.currentBackStackEntryAsState().value?.destination?.route
@@ -233,8 +237,9 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     Row(Modifier.fillMaxSize()) {
         if (!compact) {
             SideNav(
-                items, current = route, width = if (layout == NavLayout.RAIL) AdaptiveSize.railWidth else AdaptiveSize.sideWidth,
-                centred = layout == NavLayout.RAIL, showPill = false, onPill = { nav.goTo(CHECKOUT) }, onSelect = { nav.goTo(it) },
+                items, current = route, width = if (layout == NavLayout.RAIL || navFolded) AdaptiveSize.railWidth else AdaptiveSize.sideWidth,
+                centred = layout == NavLayout.RAIL || navFolded, showPill = false, onPill = { nav.goTo(CHECKOUT) }, onSelect = { nav.goTo(it) },
+                onToggle = if (layout == NavLayout.SIDE) ({ navFolded = !navFolded }) else null,
             )
         }
         Box(Modifier.weight(1f).fillMaxHeight()) {
@@ -390,19 +395,35 @@ private const val FADE_SOLID = 0.6f
 private const val FADE_HOLD = 0.25f
 
 /** The share of the two-pane window that the book's pane takes (the weights 1 and 1.3 of [CatalogTwoPane]). */
-private const val SIDE_PANE_SHARE = 1.3f / 2.3f
+private const val SIDE_PANE_SHARE = 1.3f / 2.3f // the weights 1 and 1.3 (PANE_WEIGHT) of the two panes
 
 /** A wide window shows the catalog and the chosen book side by side, so picking a book does not leave the list. */
 @Composable
 private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
     val subjectSearch = LocalContainer.current.subjectSearch
+    val tier = LocalEffectTier.current
     var selected by rememberSaveable { mutableStateOf<String?>(null) }
+    // The back gesture closes the pane first. The book's pane takes its room only while a book is open and gives it back to the list
+    // when it is closed (the cross on the page): its share of the width eases between 0 and 1.3.
+    BackHandler(enabled = selected != null) { selected = null }
+    val share by animateFloatAsState(if (selected != null) PANE_WEIGHT else 0f, Motion.spec(tier, Motion.SCREEN_MS), label = "pane")
+    var shown by remember { mutableStateOf(selected) } // the last book, kept on screen while the pane closes
+    if (selected != null) shown = selected
     Row(Modifier.fillMaxSize()) {
         Box(Modifier.weight(1f).fillMaxHeight()) { CatalogScreen(onOpen = { selected = it }) }
-        VerticalDivider()
-        Box(Modifier.weight(1.3f).fillMaxHeight()) {
-            val id = selected
-            if (id == null) EmptyState(R.string.catalog_pick_hint) else Box(Modifier.padding(top = LocalPageInsets.current.top)) { TitleDetailScreen(id, onLogin = onLogin, onCheckout = onCheckout, onSubject = { subjectSearch.value = it }, barInDock = onLogin == null) }
+        val id = shown
+        if (id != null && share > 0.01f) {
+            VerticalDivider()
+            Box(Modifier.weight(share).fillMaxHeight().clipToBounds()) {
+                Box(Modifier.padding(top = LocalPageInsets.current.top)) {
+                    TitleDetailScreen(
+                        id, onLogin = onLogin, onCheckout = onCheckout, onSubject = { subjectSearch.value = it }, barInDock = onLogin == null,
+                        onClose = { selected = null },
+                    )
+                }
+            }
         }
     }
 }
+
+private const val PANE_WEIGHT = 1.3f

@@ -235,6 +235,9 @@
     <string name="logout_confirm_body">Phiên đăng nhập trên máy này sẽ bị xóa. Lần sau bạn cần đăng nhập lại bằng mật khẩu hoặc thẻ.</string>
     <string name="logout_stay">Ở lại</string>
     <string name="title_subject_search">Tìm sách thuộc chủ đề %1$s</string>
+    <string name="nav_collapse">Thu gọn menu</string>
+    <string name="nav_expand">Mở rộng menu</string>
+    <string name="title_close_pane">Đóng trang sách</string>
     <string name="back_to_catalog">Quay lại danh mục</string>
     <string name="title_status">Tình trạng</string>
     <string name="title_reserve_confirmed">Đã đặt trước · thư viện xác nhận</string>

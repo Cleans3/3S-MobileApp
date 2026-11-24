@@ -177,6 +177,9 @@ fun AppTopBar(
 /** The glyphs turn a quarter of a turn as they swap. */
 private const val QUARTER_TURN = 90f
 
+/** The edge of the menu's fold button: the ink at 50%, enough to see it (3:1), as in the board. */
+private const val TOGGLE_EDGE = 0.5f
+
 /** ☰ when closed, ✕ when open: the Lucide "menu" and "x" icons morphing with the baked spring (full tier), cross-fading (medium) or switching (light). */
 @Composable
 private fun MenuGlyph(open: Boolean) {
@@ -257,7 +260,10 @@ fun AppTitleBar(@StringRes title: Int) {
  * (216 dp) on a wide one. Members get the "Tap a book to borrow" button at the top. Scrolls, so large text never cuts it.
  */
 @Composable
-fun SideNav(items: List<MenuItem>, current: String?, width: androidx.compose.ui.unit.Dp, centred: Boolean, showPill: Boolean, onPill: () -> Unit, onSelect: (String) -> Unit) {
+fun SideNav(
+    items: List<MenuItem>, current: String?, width: androidx.compose.ui.unit.Dp, centred: Boolean, showPill: Boolean, onPill: () -> Unit, onSelect: (String) -> Unit,
+    onToggle: (() -> Unit)? = null,
+) {
     val c = MaterialTheme.shelfTap
     val edge = c.edge.copy(alpha = MENU_EDGE)
     val hairline = with(LocalDensity.current) { Radius.hairline.toPx() }
@@ -277,6 +283,19 @@ fun SideNav(items: List<MenuItem>, current: String?, width: androidx.compose.ui.
         glassModifier.verticalScroll(rememberScrollState()).padding(Spacing.s).selectableGroup(),
         verticalArrangement = Arrangement.spacedBy(Spacing.xs),
     ) {
+        if (onToggle != null) {
+            // The board's button at the head of the wide menu: it folds the menu into the rail (labels under icons) and opens it again.
+            val label = stringResource(if (centred) R.string.nav_expand else R.string.nav_collapse)
+            Box(
+                Modifier.align(if (centred) Alignment.CenterHorizontally else Alignment.Start).size(Spacing.touch).clip(RoundedCornerShape(Radius.tile))
+                    .background(c.surface).border(BorderStroke(Radius.hairline, c.ink.copy(alpha = TOGGLE_EDGE)), RoundedCornerShape(Radius.tile))
+                    .semantics { contentDescription = label }.pressable(RoundedCornerShape(Radius.tile), onToggle, shrink = false),
+                contentAlignment = Alignment.Center,
+            ) {
+                // The chevron points where the menu will go: left to fold it, right to open it.
+                LucideIcon(LucideIcons.ChevronRight, tint = c.ink, size = GlassSize.menuIcon, modifier = Modifier.graphicsLayer { rotationZ = if (centred) 0f else 180f })
+            }
+        }
         if (showPill) {
             // The rail is too narrow for the full sentence: it shows one word, and TalkBack hears the name of the screen it opens.
             // (Not the sentence: it starts with "tap", which Accessibility Test Framework rejects in a description.)

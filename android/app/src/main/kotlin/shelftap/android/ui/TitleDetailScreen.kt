@@ -80,7 +80,7 @@ private const val CHIP_FILL = 0.8f
 @Composable
 fun TitleDetailScreen(
     titleId: String, onLogin: (() -> Unit)? = null, onCheckout: (() -> Unit)? = null, onBack: (() -> Unit)? = null, barInDock: Boolean = false,
-    onSubject: ((String) -> Unit)? = null,
+    onSubject: ((String) -> Unit)? = null, onClose: (() -> Unit)? = null,
 ) {
     val vm = appViewModel(key = "title-$titleId") { TitleViewModel(it.repository, titleId) }
     val state by vm.state.collectAsStateWithLifecycle()
@@ -91,7 +91,12 @@ fun TitleDetailScreen(
                 Info(t, state.message?.asString(), state.error, partial = state.partial, onSubject = onSubject)
                 Spacer(Modifier.height(HeroSize.barClearance))
             }
-            if (onBack != null) {
+            if (onClose != null) {
+                // In a pane beside the list: a cross that closes the pane, so the list gets its room back.
+                GlassCircleButton(onClick = onClose, description = stringResource(R.string.title_close_pane), modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(start = GlassSize.page, top = Spacing.s)) {
+                    LucideIcon(LucideIcons.X, tint = MaterialTheme.shelfTap.ink, size = GlassSize.menuIcon)
+                }
+            } else if (onBack != null) {
                 GlassCircleButton(onClick = onBack, description = stringResource(R.string.back_to_catalog), modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(start = GlassSize.page, top = Spacing.s)) {
                     LucideIcon(LucideIcons.ArrowLeft, tint = MaterialTheme.shelfTap.ink, size = GlassSize.menuIcon)
                 }

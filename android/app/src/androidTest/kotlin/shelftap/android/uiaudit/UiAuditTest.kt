@@ -146,7 +146,16 @@ class UiAuditTest {
             waitFor(AuditData.titles.first().isbn) // the ISBN tile of the book page
             audit("detail", activity)
             // On a wide window the detail is a pane beside the list, not a screen to go back from.
-            if (config != "expanded") scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+            if (config == "expanded") {
+                // The wide menu folds into the rail and opens again; the book's pane closes and gives its room back to the list.
+                compose.onNodeWithContentDescription(str(R.string.nav_collapse)).performClick(); compose.waitForIdle()
+                audit("nav-folded", activity)
+                compose.onNodeWithContentDescription(str(R.string.nav_expand)).performClick(); compose.waitForIdle()
+                compose.onNodeWithContentDescription(str(R.string.title_close_pane)).performClick(); compose.waitForIdle()
+                audit("pane-closed", activity)
+            } else {
+                scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+            }
 
             tab(R.string.tab_loans); waitFor(AuditData.loans.first().title)
             audit("loans", activity)
