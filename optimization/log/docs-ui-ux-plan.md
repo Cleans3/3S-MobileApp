@@ -301,3 +301,11 @@
 - **Đo trước → sau:** lỗi vỡ của 20 màn điện thoại: chữ 2.0 30 → 0, rộng 320 và chữ 2.0 55 → 0, `flipcover` 84 → 0, `split` 85 → 0, `land` 78 → 0, `unfoldl` 7 → 0, `wide` 1 → 0; gốc, rộng 320, `tall`, `unfold` vẫn 0. Màn kéo giãn trên cửa sổ rộng: `land` 18 → 16, `unfoldl` 18 → 17, `unfold` 17. 23 màn rộng và vừa vẫn 0. Hai lượt đo đủ 15 biến thể cho cùng kết quả đến từng mục. Tương phản chữ 1212 → 1207 đoạn mỗi theme (do bỏ chú thích), vẫn chỉ 5 lỗi cũ; icon và viền bắt buộc 67, 1 lỗi cũ; 455 nút, 0 có vùng chạm dưới 48 px; script của 43 màn chạy không lỗi.
 - **AI:** Claude Code (Claude Opus 5.5). AI làm hai bước: bọc trang cuộn cho mọi màn (sửa hết lỗi ở màn thấp), rồi chỉ đổi sang cột tự xếp ở 9 màn còn đè nhau khi chữ to, để giữ nguyên bản vẽ ở 390 × 844. AI so vị trí từng đoạn chữ ở 390 × 844 trước và sau: lệch tối đa 0,4 px (làm tròn); ở màn 412 × 960, Đăng nhập bằng thẻ dịch lên khoảng 21 px vì tiêu đề xuống dòng ít hơn, đây là hành vi đúng của cột tự xếp. Lúc đầu AI chèn một dòng chú thích HTML vào mỗi màn và thấy nó hiện thành chữ trong trang dựng; AI bỏ chú thích đó và sửa luôn bộ đọc template.
 - **Kiểm thử:** `tools/check-scripts.js`, `tools/contrast.js`, `tools/nontext-contrast.js`, `tools/target-size.js`; dựng 15 biến thể với font cố định, chạy `tools/layout-check.js` hai lượt; kiểm trang cuộn tới đủ 844 px ở 360 × 400; so vị trí chữ và nút với commit trước ở 390 × 844 và 412 × 960; xem bằng mắt nút nổi thu tròn ở 360 × 400 và Đăng nhập bằng thẻ ở chữ 2.0.
+
+## 2026-11-24 10:09 · Đăng màn điện thoại cuộn dọc
+
+- **Vấn đề:** 17 màn điện thoại đã sửa (trang cuộn, cột tự xếp, nút nổi thu gọn) có trong repo nhưng chưa có trên link mockup. Người dùng yêu cầu đăng lên link mockup.
+- **Thay đổi:** đăng 17 màn điện thoại lên artifact (bản 27; `canvas.json` không đổi). `optimization/ui-ux-mockup/README.md` ghi các file là bản 27.
+- **Đo trước → sau:** không áp dụng. Sau khi đăng, tải về 20 file (17 màn vừa đăng, `canvas.json`, `List` và `WideLoans` để kiểm thêm) và so với `docs/ui-ux-plan`: trùng từng byte.
+- **AI:** Claude Code (Claude Opus 5.5). Số bản tăng đúng một (26 lên 27).
+- **Kiểm thử:** so hash của các file tải về với blob trên nhánh.
