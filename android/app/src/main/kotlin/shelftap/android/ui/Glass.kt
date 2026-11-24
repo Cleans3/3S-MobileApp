@@ -77,10 +77,13 @@ fun GlassSurface(
 /** A round glass button (menu, account), 48 dp: the smallest touch target. [description] is what TalkBack says. */
 @Composable
 fun GlassCircleButton(onClick: () -> Unit, description: String, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-    GlassSurface(
-        modifier.size(GlassSize.round).semantics { contentDescription = description }.clickable(role = Role.Button, onClick = onClick),
-        shape = CircleShape,
-    ) { Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { content() } }
+    // The press ripple goes inside the clip: put on the surface's own modifier (before its clip) it flashed as a square around the circle.
+    GlassSurface(modifier.size(GlassSize.round), shape = CircleShape) {
+        Box(
+            Modifier.fillMaxSize().semantics { contentDescription = description }.clickable(role = Role.Button, onClick = onClick),
+            contentAlignment = Alignment.Center,
+        ) { content() }
+    }
 }
 
 /**

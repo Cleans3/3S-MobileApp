@@ -238,3 +238,11 @@
 - **Khác mockup có chủ ý:** panel 0,70 thay 0,62; lớp ghi chỉ gồm vùng trang bên dưới thanh trên, nên phần panel chạm thanh trên blur ít hơn; tầng LIGHT panel đặc; blur "progressive" phía sau các thanh nổi khác (§11 mục 6) chưa làm, tầng FULL vẫn vẽ như MEDIUM.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn cách ghi lớp bằng `GraphicsLayer` (tự làm) thay vì thư viện Haze (§11 mục 6 chưa quyết, không thêm phụ thuộc). Con người chưa duyệt kính mới.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Locale vi`: qua.
+
+## 2026-11-24 19:35 · Nút tròn kính: ripple khi bấm không còn hiện vuông
+
+- **Vấn đề:** nút ☰ và nút tài khoản (`GlassCircleButton`) nhận `clickable` qua tham số `modifier` của `GlassSurface`, tức là đứng trước phép cắt hình tròn; ripple lúc bấm vì vậy không bị cắt và hiện thành ô vuông quanh vòng tròn. Thấy trong ảnh chụp GPU của menu mở (góc ô vuông tối hơn nền 189 so với 203). Loại: lỗi hoàn thiện giao diện (phản hồi khi chạm), chưa có mã phân loại trong §3.
+- **Thay đổi:** `Glass.kt`: `clickable` và ngữ nghĩa chuyển vào `Box` bên trong `GlassSurface` (sau phép cắt); kích thước 48 dp và phần đệm của chỗ gọi (nút quay lại ở trang sách) vẫn ở ngoài.
+- **Đo trước → sau:** ảnh chụp GPU của menu mở trên emulator, điểm ảnh ở góc ô vuông (20, 48): (189, 184, 178) → (203, 198, 192), bằng nền xung quanh; ATF vẫn 2 phát hiện (hai nút bị vô hiệu). **Chưa kiểm:** cảm nhận khi bấm bằng tay trên Xiaomi; các nút có `clickable` khác ngoài `GlassCircleButton` (không có theo grep).
+- **AI:** Claude Code (Sonnet 5.5). Lỗi tìm thấy khi xem ảnh chụp GPU; người dùng không yêu cầu riêng. Con người chưa duyệt.
+- **Kiểm thử:** `assembleDebug compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Locale vi` (sáng, tối): qua.
