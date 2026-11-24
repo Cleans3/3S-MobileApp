@@ -49,6 +49,9 @@ object AdaptiveSize {
 
     /** On a wide window, screens other than the catalog are not stretched past this. */
     val contentMaxWide = 720.dp
+
+    /** The reserve bar that the round borrow icon grows into, on a wide window: as wide as a book pane, not the whole window. */
+    val dockBarMax = 360.dp
 }
 
 /** How far past the visible part a lazy list prepares its items, so composing a card happens before it scrolls into view and not in the frame that needs it. */

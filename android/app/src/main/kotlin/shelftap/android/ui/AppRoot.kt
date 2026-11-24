@@ -25,6 +25,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
@@ -213,8 +218,10 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     val overlayOpen = menuOpen && compact // a window that grew past the compact size has no ☰ menu to keep open
     // Self-checkout is not in the menu: a button that is always in reach on the main screens (members only).
     val pillHere = !guest && title != null && route != CHECKOUT
-    val showPill = pillHere && !overlayOpen && compact // the room for it stays while the menu is open, so the page does not jump
-    val pillOnBook = !guest && compact && route?.startsWith("title/") == true
+    // A book is open: its page (a route), or on a wide window its pane (the page has published its reserve button).
+    val bookOpen = route?.startsWith("title/") == true || (layout == NavLayout.SIDE && reserveBar.value != null)
+    val dockOnBar = !guest && bookOpen
+    val showDock = !guest && (pillHere || dockOnBar) && !overlayOpen
     val contentMax = when (layout) {
         NavLayout.COMPACT -> Dp.Unspecified
         NavLayout.RAIL -> AdaptiveSize.contentMax
@@ -227,7 +234,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
         if (!compact) {
             SideNav(
                 items, current = route, width = if (layout == NavLayout.RAIL) AdaptiveSize.railWidth else AdaptiveSize.sideWidth,
-                centred = layout == NavLayout.RAIL, showPill = pillHere, onPill = { nav.goTo(CHECKOUT) }, onSelect = { nav.goTo(it) },
+                centred = layout == NavLayout.RAIL, showPill = false, onPill = { nav.goTo(CHECKOUT) }, onSelect = { nav.goTo(it) },
             )
         }
         Box(Modifier.weight(1f).fillMaxHeight()) {
@@ -251,7 +258,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                 },
                 floatingActionButton = {
                     // On a book's page the same button stays, folded to its icon, in the place of the reserve bar's round "borrow" button.
-                    if (showPill || pillOnBook) ActionDock(onBar = pillOnBook, reserve = reserveBar.value, onCheckout = { nav.goTo(CHECKOUT) })
+                    if (compact && showDock) ActionDock(onBar = dockOnBar, reserve = reserveBar.value, onCheckout = { nav.goTo(CHECKOUT) })
                 },
                 floatingActionButtonPosition = FabPosition.Center,
             ) { padding ->
@@ -261,7 +268,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                 val titleRoute = route?.startsWith("title/") == true
                 val insets = if (titleRoute) PageInsets() else PageInsets(
                     top = padding.calculateTopPadding(),
-                    bottom = padding.calculateBottomPadding() + (if (pillHere && compact) Spacing.pillClearance else Spacing.none),
+                    bottom = padding.calculateBottomPadding() + (if (pillHere) Spacing.pillClearance else Spacing.none),
                 )
                 Box(
                     Modifier.fillMaxSize()
@@ -304,7 +311,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                                         it.arguments?.getString("id").orEmpty(), onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null,
                                         onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }),
                                         // On a compact window the top bar's own button is the back button; the page draws one only without that bar.
-                                        onBack = if (compact) null else ({ nav.popBackStack() }), barInDock = compact && !guest,
+                                        onBack = if (compact) null else ({ nav.popBackStack() }), barInDock = !guest,
                                         // A subject on the page becomes the catalog's search: back to the catalog, which takes it.
                                         onSubject = { subject ->
                                             subjectSearch.value = subject
@@ -320,6 +327,17 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                             composable("account") { Screen { AccountScreen(onHistory = { nav.navigate("history") }, onChangePassword = { nav.navigate("password") }) } }
                             composable("history") { Screen { HistoryScreen(onAccount = { nav.goTo("account") }) } }
                             composable("password") { Screen(rounded = true) { ChangePasswordScreen(forced = false, onDone = { nav.popBackStack() }) } }
+                        }
+                        // On a wide window the dock is a round icon in the page's lower right corner and grows into the reserve bar when a book
+                        // is open. It lives in this box, which is as wide as the page, so the bar never runs past the page's edge.
+                        if (!compact && showDock) {
+                            ActionDock(
+                                onBar = dockOnBar, reserve = reserveBar.value, onCheckout = { nav.goTo(CHECKOUT) },
+                                modifier = Modifier.align(Alignment.BottomEnd)
+                                    .padding(end = Spacing.xl, bottom = Spacing.xl + (if (titleRoute) Spacing.none else padding.calculateBottomPadding())),
+                                restIcon = true, lift = false, sideMargin = Spacing.none, maxBarWidth = AdaptiveSize.dockBarMax,
+                                maxBarFraction = if (layout == NavLayout.SIDE) SIDE_PANE_SHARE else 1f, // two panes: the bar stays in the book's pane
+                            )
                         }
                     }
                     }
@@ -371,6 +389,9 @@ internal fun FadeBand(height: Dp, fromTop: Boolean, modifier: Modifier = Modifie
 private const val FADE_SOLID = 0.6f
 private const val FADE_HOLD = 0.25f
 
+/** The share of the two-pane window that the book's pane takes (the weights 1 and 1.3 of [CatalogTwoPane]). */
+private const val SIDE_PANE_SHARE = 1.3f / 2.3f
+
 /** A wide window shows the catalog and the chosen book side by side, so picking a book does not leave the list. */
 @Composable
 private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
@@ -381,7 +402,7 @@ private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
         VerticalDivider()
         Box(Modifier.weight(1.3f).fillMaxHeight()) {
             val id = selected
-            if (id == null) EmptyState(R.string.catalog_pick_hint) else Box(Modifier.padding(top = LocalPageInsets.current.top)) { TitleDetailScreen(id, onLogin = onLogin, onCheckout = onCheckout, onSubject = { subjectSearch.value = it }) }
+            if (id == null) EmptyState(R.string.catalog_pick_hint) else Box(Modifier.padding(top = LocalPageInsets.current.top)) { TitleDetailScreen(id, onLogin = onLogin, onCheckout = onCheckout, onSubject = { subjectSearch.value = it }, barInDock = onLogin == null) }
         }
     }
 }

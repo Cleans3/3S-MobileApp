@@ -35,7 +35,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.isSpecified
 import shelftap.android.R
 import shelftap.android.ui.icons.LucideIcon
 import shelftap.android.ui.icons.LucideIcons
@@ -93,10 +95,14 @@ private const val LABEL_FADE_OUT_AT = 0.5f
  * The control at the foot of the main screens, one thing that changes shape. On a list it is the "Tap a book to borrow" pill. On a
  * book's page ([onBar]) it grows into the glass bar: the tag circle stays at its left and the reserve button takes the rest, with the
  * same words as the page's own. It does not travel with the page: the page slides over the screen, the dock stays and changes form.
+ * On a wide window ([restIcon]) the pill rests as its round icon, at the foot's right corner, and grows leftwards into a bar of at most [maxBarWidth].
  * Size, colours and the two labels are animated for [Motion.SCREEN_MS] (the page's slide), read when measuring and drawing.
  */
 @Composable
-fun ActionDock(onBar: Boolean, reserve: ReserveAction?, onCheckout: () -> Unit, modifier: Modifier = Modifier) {
+fun ActionDock(
+    onBar: Boolean, reserve: ReserveAction?, onCheckout: () -> Unit, modifier: Modifier = Modifier,
+    restIcon: Boolean = false, lift: Boolean = true, sideMargin: Dp = Spacing.l, maxBarWidth: Dp = Dp.Unspecified, maxBarFraction: Float = 1f,
+) {
     val tier = LocalEffectTier.current
     val c = MaterialTheme.shelfTap
     val density = LocalDensity.current
@@ -107,9 +113,7 @@ fun ActionDock(onBar: Boolean, reserve: ReserveAction?, onCheckout: () -> Unit, 
     val source = remember { MutableInteractionSource() }
 
     val textWidth = rememberTextMeasurer().measure(label, MaterialTheme.typography.labelLarge, maxLines = 1).size.width
-    val windowWidth = LocalWindowInfo.current.containerSize.width
     val pillWidth = with(density) { (DOCK_PAD * 2 + PILL_TEXT_START + PILL_TEXT_END + GlassSize.pillCircle + Spacing.s).roundToPx() } + textWidth
-    val barWidth = windowWidth - with(density) { (Spacing.l * 2).roundToPx() }
     val primary = c.primary
     val glass = c.glass.copy(alpha = BAR_FILL)
     val edge = c.edge.copy(alpha = 0.8f)
@@ -119,14 +123,17 @@ fun ActionDock(onBar: Boolean, reserve: ReserveAction?, onCheckout: () -> Unit, 
         modifier
             .layout { measurable, constraints ->
                 val p = toBar.value
-                val w = (pillWidth + (barWidth - pillWidth) * p).toInt().coerceAtLeast(0)
+                // The bar is as wide as the room allows (less the side margins), up to [maxBarWidth]; at rest it is the pill, or only its round icon.
+                val bar = minOf(constraints.maxWidth - sideMargin.roundToPx() * 2, (constraints.maxWidth * maxBarFraction).toInt(), if (maxBarWidth.isSpecified) maxBarWidth.roundToPx() else Int.MAX_VALUE)
+                val rest = if (restIcon) PILL_HEIGHT.roundToPx() else pillWidth
+                val w = (rest + (bar - rest) * p).toInt().coerceAtLeast(0)
                 val h = (PILL_HEIGHT + (BAR_HEIGHT - PILL_HEIGHT) * p).roundToPx()
                 val placeable = measurable.measure(Constraints.fixed(w, h))
                 layout(w, h) { placeable.place(0, 0) }
             }
             .graphicsLayer {
                 val p = toBar.value
-                translationY = -BAR_LIFT.toPx() * p
+                if (lift) translationY = -BAR_LIFT.toPx() * p
                 shadowElevation = PILL_SHADOW_DP * density.density * (1f - p)
                 shape = CircleShape
                 clip = true
@@ -163,7 +170,7 @@ fun ActionDock(onBar: Boolean, reserve: ReserveAction?, onCheckout: () -> Unit, 
                 // The pill's words fade out before the bar is half open; the reserve button fades in after.
                 Text(
                     label, style = MaterialTheme.typography.labelLarge, color = c.onPrimary, maxLines = 1, softWrap = false,
-                    modifier = Modifier.padding(start = PILL_TEXT_START, end = PILL_TEXT_END).graphicsLayer { alpha = (1f - toBar.value / LABEL_FADE_OUT_AT).coerceIn(0f, 1f) }
+                    modifier = Modifier.padding(start = PILL_TEXT_START, end = PILL_TEXT_END).graphicsLayer { alpha = if (restIcon) 0f else (1f - toBar.value / LABEL_FADE_OUT_AT).coerceIn(0f, 1f) }
                         .then(if (onBar) Modifier.clearAndSetSemantics {} else Modifier), // read once: the dock itself is the pill's button
                 )
                 if (reserve != null) {
