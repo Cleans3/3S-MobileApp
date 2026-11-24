@@ -21,6 +21,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import shelftap.android.R
 import shelftap.android.api.ApiException
 import shelftap.android.api.ErrorCode
 import shelftap.android.api.HistoryItem
@@ -40,7 +42,7 @@ import shelftap.android.data.Repository
 import shelftap.android.nfc.TagReader
 
 /** A list screen's state: the loaded list plus the outcome of the last row action. */
-data class ListState<T>(val list: Load<List<T>> = Load.Loading, val busyId: String? = null, val error: String? = null)
+data class ListState<T>(val list: Load<List<T>> = Load.Loading, val busyId: String? = null, val error: UiText? = null)
 
 class LoansViewModel(private val repo: Repository) : ViewModel() {
     private val _state = MutableStateFlow(ListState<Loan>())
@@ -81,16 +83,16 @@ fun LoansScreen() {
     LoadView(state.list, onRetry = vm::load) { loans ->
         Column(Modifier.fillMaxSize()) {
             ErrorText(state.error, Modifier.padding(16.dp))
-            if (loans.isEmpty()) Text("No books on loan.", Modifier.padding(16.dp))
+            if (loans.isEmpty()) Text(stringResource(R.string.loans_empty), Modifier.padding(16.dp))
             LazyColumn {
                 items(loans, key = { it.loanId }) { loan ->
                     Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(loan.title, style = MaterialTheme.typography.titleMedium)
-                            Text("Due ${formatDate(loan.dueAt)} · renewed ${loan.renewals}×", style = MaterialTheme.typography.bodyMedium)
+                            Text(stringResource(R.string.loans_due, formatDate(loan.dueAt), loan.renewals), style = MaterialTheme.typography.bodyMedium)
                         }
                         OutlinedButton(onClick = { vm.renew(loan) }, enabled = loan.renewable && state.busyId == null) {
-                            Text(if (state.busyId == loan.loanId) "..." else "Renew")
+                            Text(stringResource(if (state.busyId == loan.loanId) R.string.busy_dots else R.string.loans_renew))
                         }
                     }
                     HorizontalDivider()
@@ -105,7 +107,7 @@ class CheckoutViewModel(private val repo: Repository) : ViewModel() {
         data object Idle : UiState
         data object Working : UiState
         data class Done(val loan: Loan) : UiState
-        data class Failed(val message: String) : UiState
+        data class Failed(val message: UiText) : UiState
     }
 
     private val _state = MutableStateFlow<UiState>(UiState.Idle)
@@ -116,7 +118,7 @@ class CheckoutViewModel(private val repo: Repository) : ViewModel() {
         if (_state.value == UiState.Working) return
         val tagId = TagReader.bookTagId(tag)
         if (tagId == null) {
-            _state.value = UiState.Failed("That is not a library book tag.")
+            _state.value = UiState.Failed(uiText(R.string.err_not_book_tag))
             return
         }
         _state.value = UiState.Working
@@ -145,18 +147,18 @@ fun CheckoutScreen() {
             verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("Self-checkout", style = MaterialTheme.typography.headlineSmall)
+            Text(stringResource(R.string.checkout_title), style = MaterialTheme.typography.headlineSmall)
             when (val s = state) {
-                CheckoutViewModel.UiState.Idle -> Text("Hold the phone against the tag inside the book.")
+                CheckoutViewModel.UiState.Idle -> Text(stringResource(R.string.checkout_hold))
                 CheckoutViewModel.UiState.Working -> Spinner()
                 is CheckoutViewModel.UiState.Done -> {
-                    Text("Borrowed: ${s.loan.title}", style = MaterialTheme.typography.titleMedium)
-                    Text("Due ${formatDate(s.loan.dueAt)}")
-                    Button(onClick = vm::reset) { Text("Scan another book") }
+                    Text(stringResource(R.string.checkout_borrowed, s.loan.title), style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.checkout_due, formatDate(s.loan.dueAt)))
+                    Button(onClick = vm::reset) { Text(stringResource(R.string.checkout_again)) }
                 }
                 is CheckoutViewModel.UiState.Failed -> {
                     ErrorText(s.message)
-                    Button(onClick = vm::reset) { Text("Try again") }
+                    Button(onClick = vm::reset) { Text(stringResource(R.string.action_retry)) }
                 }
             }
         }
@@ -204,7 +206,7 @@ fun ReservationsScreen() {
     LoadView(state.list, onRetry = vm::load) { reservations ->
         Column(Modifier.fillMaxSize()) {
             ErrorText(state.error, Modifier.padding(16.dp))
-            if (reservations.isEmpty()) Text("No reservations.", Modifier.padding(16.dp))
+            if (reservations.isEmpty()) Text(stringResource(R.string.reservations_empty), Modifier.padding(16.dp))
             LazyColumn {
                 items(reservations, key = { it.reservationId }) { r ->
                     Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -212,18 +214,19 @@ fun ReservationsScreen() {
                             Text(r.title, style = MaterialTheme.typography.titleMedium)
                             Text(
                                 when (r.status) {
-                                    ReservationStatus.WAITING -> "Waiting since ${formatDate(r.placedAt)}"
-                                    ReservationStatus.READY -> "Ready to collect" + (r.readyAt?.let { " since ${formatDate(it)}" } ?: "")
-                                    ReservationStatus.FULFILLED -> "Collected"
-                                    ReservationStatus.CANCELLED -> "Cancelled"
-                                    ReservationStatus.EXPIRED -> "Expired"
+                                    ReservationStatus.WAITING -> stringResource(R.string.res_waiting, formatDate(r.placedAt))
+                                    ReservationStatus.READY ->
+                                        r.readyAt?.let { stringResource(R.string.res_ready_since, formatDate(it)) } ?: stringResource(R.string.res_ready)
+                                    ReservationStatus.FULFILLED -> stringResource(R.string.res_fulfilled)
+                                    ReservationStatus.CANCELLED -> stringResource(R.string.res_cancelled)
+                                    ReservationStatus.EXPIRED -> stringResource(R.string.res_expired)
                                 },
                                 style = MaterialTheme.typography.bodyMedium,
                             )
                         }
                         if (r.status == ReservationStatus.WAITING || r.status == ReservationStatus.READY) {
                             OutlinedButton(onClick = { vm.cancel(r) }, enabled = state.busyId == null) {
-                                Text(if (state.busyId == r.reservationId) "..." else "Cancel")
+                                Text(stringResource(if (state.busyId == r.reservationId) R.string.busy_dots else R.string.action_cancel))
                             }
                         }
                     }
@@ -267,21 +270,22 @@ fun HistoryScreen() {
     if (state.needsPassword) {
         Centered {
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Reading history needs your password. You logged in with your card.")
-                Button(onClick = { askPassword = true }) { Text("Log in with password") }
+                Text(stringResource(R.string.history_needs_password))
+                Button(onClick = { askPassword = true }) { Text(stringResource(R.string.history_login_password)) }
             }
         }
     } else {
         LoadView(state.items, onRetry = vm::load) { items ->
             if (items.isEmpty()) {
-                Centered { Text("Nothing here. Reading history is empty, or switched off in Account.") }
+                Centered { Text(stringResource(R.string.history_empty)) }
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
                     items(items) { h ->
                         Column(Modifier.fillMaxWidth().padding(16.dp)) {
                             Text(h.title, style = MaterialTheme.typography.titleMedium)
                             Text(
-                                "Out ${formatDate(h.outAt)}" + (h.returnedAt?.let { " · returned ${formatDate(it)}" } ?: " · not returned"),
+                                h.returnedAt?.let { stringResource(R.string.history_returned, formatDate(h.outAt), formatDate(it)) }
+                                    ?: stringResource(R.string.history_not_returned, formatDate(h.outAt)),
                                 style = MaterialTheme.typography.bodyMedium,
                             )
                         }

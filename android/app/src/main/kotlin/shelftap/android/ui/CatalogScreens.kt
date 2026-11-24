@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
@@ -38,6 +39,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import shelftap.android.R
 import shelftap.android.api.ApiException
 import shelftap.android.api.TitleDetail
 import shelftap.android.api.TitleSummary
@@ -50,7 +52,7 @@ class CatalogViewModel(private val repo: Repository) : ViewModel() {
         val page: Int = -1,
         val total: Long = 0,
         val loading: Boolean = false,
-        val error: String? = null,
+        val error: UiText? = null,
     ) {
         val canLoadMore get() = !loading && error == null && items.size < total
     }
@@ -102,12 +104,12 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(
-                value = input, onValueChange = { input = it }, label = { Text("Title, author, ISBN, subject") }, singleLine = true,
+                value = input, onValueChange = { input = it }, label = { Text(stringResource(R.string.catalog_search_label)) }, singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { vm.search(input) }),
                 modifier = Modifier.weight(1f),
             )
-            Button(onClick = { vm.search(input) }) { Text("Search") }
+            Button(onClick = { vm.search(input) }) { Text(stringResource(R.string.catalog_search)) }
         }
         LazyColumn(Modifier.fillMaxSize()) {
             itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
@@ -120,9 +122,9 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
                     state.loading -> Spinner()
                     state.error != null -> Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         ErrorText(state.error)
-                        Button(onClick = vm::retry) { Text("Retry") }
+                        Button(onClick = vm::retry) { Text(stringResource(R.string.action_retry)) }
                     }
-                    state.items.isEmpty() -> Text("No titles found.", Modifier.padding(16.dp))
+                    state.items.isEmpty() -> Text(stringResource(R.string.catalog_empty), Modifier.padding(16.dp))
                 }
             }
         }
@@ -137,7 +139,7 @@ private fun TitleRow(item: TitleSummary, onClick: () -> Unit) {
             Text(item.title, style = MaterialTheme.typography.titleMedium)
             Text(item.authors.joinToString(", "), style = MaterialTheme.typography.bodyMedium)
             Text(
-                if (item.copiesAvailable > 0) "${item.copiesAvailable} available" else "All copies on loan",
+                if (item.copiesAvailable > 0) stringResource(R.string.catalog_available, item.copiesAvailable) else stringResource(R.string.catalog_all_on_loan),
                 style = MaterialTheme.typography.bodySmall,
             )
         }
@@ -152,7 +154,7 @@ private fun Cover(coverUrl: String?, modifier: Modifier) {
 }
 
 class TitleViewModel(private val repo: Repository, private val titleId: String) : ViewModel() {
-    data class UiState(val title: Load<TitleDetail> = Load.Loading, val busy: Boolean = false, val message: String? = null, val error: String? = null)
+    data class UiState(val title: Load<TitleDetail> = Load.Loading, val busy: Boolean = false, val message: UiText? = null, val error: UiText? = null)
 
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
@@ -175,7 +177,7 @@ class TitleViewModel(private val repo: Repository, private val titleId: String) 
         viewModelScope.launch {
             try {
                 repo.reserve(titleId)
-                _state.update { it.copy(busy = false, message = "Reserved. You will see it under Reserved when it is ready.") }
+                _state.update { it.copy(busy = false, message = uiText(R.string.title_reserved)) }
             } catch (e: ApiException) {
                 _state.update { it.copy(busy = false, error = e.userMessage()) }
             }
@@ -192,12 +194,12 @@ fun TitleDetailScreen(titleId: String) {
             Cover(t.coverUrl, Modifier.size(width = 120.dp, height = 180.dp))
             Text(t.title, style = MaterialTheme.typography.headlineSmall)
             Text(t.authors.joinToString(", "))
-            Text("ISBN ${t.isbn}")
+            Text(stringResource(R.string.title_isbn, t.isbn))
             if (t.subjects.isNotEmpty()) Text(t.subjects.joinToString(", "))
-            Text("${t.copiesAvailable} of ${t.copiesTotal} copies available")
-            state.message?.let { Text(it) }
+            Text(stringResource(R.string.title_copies, t.copiesAvailable, t.copiesTotal))
+            state.message?.let { Text(it.asString()) }
             ErrorText(state.error)
-            Button(onClick = vm::reserve, enabled = !state.busy) { Text(if (state.busy) "Reserving..." else "Reserve this title") }
+            Button(onClick = vm::reserve, enabled = !state.busy) { Text(stringResource(if (state.busy) R.string.title_reserving else R.string.title_reserve)) }
         }
     }
 }

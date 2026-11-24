@@ -1,5 +1,6 @@
 package shelftap.android.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -21,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import shelftap.android.R
 import shelftap.android.session.LogoutReason
 import shelftap.android.session.SessionState
 
@@ -45,11 +48,11 @@ private fun LoggedOutHost(reason: LogoutReason?) {
     if (card) CardLoginScreen(onBack = { card = false }) else LoginScreen(reason, onCard = { card = true })
 }
 
-private data class Tab(val route: String, val label: String)
+private data class Tab(val route: String, @StringRes val label: Int)
 
 private val tabs = listOf(
-    Tab("catalog", "Catalog"), Tab("loans", "Loans"), Tab("checkout", "Checkout"),
-    Tab("reservations", "Reserved"), Tab("account", "Account"),
+    Tab("catalog", R.string.tab_catalog), Tab("loans", R.string.tab_loans), Tab("checkout", R.string.tab_checkout),
+    Tab("reservations", R.string.tab_reservations), Tab("account", R.string.tab_account),
 )
 
 @Composable
@@ -71,7 +74,7 @@ private fun MainNav() {
                                 }
                             },
                             icon = {},
-                            label = { Text(tab.label) },
+                            label = { Text(stringResource(tab.label)) },
                             alwaysShowLabel = true,
                         )
                     }

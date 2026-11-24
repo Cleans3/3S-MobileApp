@@ -30,6 +30,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import shelftap.android.AppContainer
 import shelftap.android.MainActivity
+import shelftap.android.R
 import shelftap.android.ShelfTapApp
 import shelftap.android.data.Repository
 import shelftap.android.session.SessionManager
@@ -76,7 +77,7 @@ class UiAuditTest {
             lateinit var activity: MainActivity
             scenario.onActivity { activity = it }
 
-            waitFor("Log in with library card")
+            waitFor(str(R.string.login_with_card))
             audit("login", activity)
 
             runBlocking { session.login(AuditData.EMAIL, "audit-only") }
@@ -84,27 +85,30 @@ class UiAuditTest {
             audit("catalog", activity)
 
             compose.onAllNodesWithText(AuditData.titles.first().title).onFirst().performClick()
-            waitFor("ISBN ${AuditData.titles.first().isbn}")
+            waitFor(str(R.string.title_isbn, AuditData.titles.first().isbn))
             audit("detail", activity)
             scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
 
-            tab("Loans"); waitFor(AuditData.loans.first().title)
+            tab(R.string.tab_loans); waitFor(AuditData.loans.first().title)
             audit("loans", activity)
 
             // The emulator has no NFC, so Checkout shows its "This phone has no NFC." state; a phone with NFC shows "Self-checkout".
-            tab("Checkout"); waitFor("Self-checkout", "NFC")
+            tab(R.string.tab_checkout); waitFor(str(R.string.checkout_title), str(R.string.nfc_missing))
             audit("checkout", activity)
 
-            tab("Reserved"); waitFor(AuditData.reservations.first().title)
+            tab(R.string.tab_reservations); waitFor(AuditData.reservations.first().title)
             audit("reservations", activity)
 
-            tab("Account"); waitFor(AuditData.me.fullName)
+            tab(R.string.tab_account); waitFor(AuditData.me.fullName)
             audit("account", activity)
         }
     }
 
-    private fun tab(name: String) {
-        compose.onNodeWithText(name).performClick()
+    /** Text as the app shows it in the device's current language, so the tour works in Vietnamese and in English. */
+    private fun str(id: Int, vararg args: Any) = instrumentation.targetContext.getString(id, *args)
+
+    private fun tab(id: Int) {
+        compose.onNodeWithText(str(id)).performClick()
         compose.waitForIdle()
     }
 

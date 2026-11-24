@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- English. Same keys as values/strings.xml (Vietnamese, the default). -->
+<resources>
+    <string name="app_name">ShelfTap</string>
+
+    <!-- Navigation -->
+    <string name="tab_catalog">Catalog</string>
+    <string name="tab_loans">Loans</string>
+    <string name="tab_checkout">Checkout</string>
+    <string name="tab_reservations">Reserved</string>
+    <string name="tab_account">Account</string>
+
+    <!-- Shared actions -->
+    <string name="action_retry">Retry</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_logout">Log out</string>
+    <string name="busy_dots">...</string>
+
+    <!-- Errors (branch on the server error code, never on its text) -->
+    <string name="err_validation">Check the details you entered.</string>
+    <string name="err_invalid_credentials">Wrong email or password.</string>
+    <string name="err_account_locked">Too many failed logins. Try again later.</string>
+    <string name="err_token_invalid">Your session expired. Try again.</string>
+    <string name="err_token_reused">This session was revoked. Log in again.</string>
+    <string name="err_password_change_required">You must change your password first.</string>
+    <string name="err_forbidden">You are not allowed to do that.</string>
+    <string name="err_not_found">Not found.</string>
+    <string name="err_card_not_active">This card is blocked, lost or revoked. See a librarian.</string>
+    <string name="err_card_auth_failed">The card could not be verified.</string>
+    <string name="err_challenge_expired">Took too long. Hold the card on the phone and try again.</string>
+    <string name="err_copy_not_available">This copy is already on loan or cannot be lent.</string>
+    <string name="err_loan_limit">You have reached the maximum number of loans.</string>
+    <string name="err_unpaid_fine">You have an unpaid fine. Pay it at the desk first.</string>
+    <string name="err_renewal_not_allowed">This loan cannot be renewed (already renewed, overdue or reserved).</string>
+    <string name="err_reserved_by_other">This copy is held for another member.</string>
+    <string name="err_already_reserved">You already have a reservation or loan for this title.</string>
+    <string name="err_rate_limited">Too many requests.</string>
+    <string name="err_rate_limited_retry">Too many requests. Try again in %1$d s.</string>
+    <string name="err_step_up">This needs your password. Log in with it first.</string>
+    <string name="err_server">The server could not do that (HTTP %1$d).</string>
+    <string name="err_network">Can\'t reach the server. Check your connection.</string>
+    <string name="err_card_lost">Lost the card. Hold it still against the back of the phone.</string>
+    <string name="err_card_refused">This card refuses that over NFC.</string>
+    <string name="err_card_status">The card answered with an error (%1$04X).</string>
+    <string name="err_card_protocol">That is not a ShelfTap library card, or it has not been issued.</string>
+    <string name="err_generic">Something went wrong.</string>
+    <string name="err_op_failed">That did not work.</string>
+    <string name="err_not_book_tag">That is not a library book tag.</string>
+    <string name="err_not_library_card">That is not a library card.</string>
+
+    <!-- Shared -->
+    <string name="integrity_warning">Device warning: %1$s. ShelfTap still works, and the library is told.</string>
+    <string name="nfc_missing">This phone has no NFC.</string>
+    <string name="nfc_off">NFC is switched off.</string>
+    <string name="nfc_open_settings">Open NFC settings</string>
+
+    <!-- Login -->
+    <string name="logout_session_expired">Your session expired. Log in again.</string>
+    <string name="logout_token_reused">This session was revoked because the account was used elsewhere. Log in again.</string>
+    <string name="logout_inactivity">Logged out after a period of inactivity.</string>
+    <string name="logout_lock_key_invalidated">Biometrics changed on this phone, so the biometric lock was reset. Log in again.</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Password</string>
+    <string name="login_action">Log in</string>
+    <string name="login_busy">Logging in...</string>
+    <string name="login_with_card">Log in with library card</string>
+    <string name="card_hold">Hold your library card against the back of the phone.</string>
+    <string name="card_explain">The card proves it is yours with a signature. You do not type a PIN, and nothing on the card is read.</string>
+    <string name="card_use_password">Use email and password instead</string>
+    <string name="offline_message">Can\'t reach the server.</string>
+    <string name="lock_title">Unlock ShelfTap</string>
+    <string name="lock_locked">ShelfTap is locked.</string>
+    <string name="lock_unlock">Unlock</string>
+
+    <!-- Change password and password re-entry -->
+    <string name="pw_title">Change password</string>
+    <string name="pw_forced">Your account needs a new password before you can use the library.</string>
+    <string name="pw_current">Current password</string>
+    <string name="pw_new">New password</string>
+    <string name="pw_again">New password again</string>
+    <string name="pw_mismatch">The new passwords do not match.</string>
+    <string name="pw_saving">Saving...</string>
+    <string name="stepup_title">Password needed</string>
+    <string name="stepup_text">You logged in with your card. Your reading history is personal data, so this needs your password.</string>
+
+    <!-- Loans, checkout, reservations, history -->
+    <string name="loans_empty">No books on loan.</string>
+    <string name="loans_due">Due %1$s · renewed %2$d×</string>
+    <string name="loans_renew">Renew</string>
+    <string name="checkout_title">Self-checkout</string>
+    <string name="checkout_hold">Hold the phone against the tag inside the book.</string>
+    <string name="checkout_borrowed">Borrowed: %1$s</string>
+    <string name="checkout_due">Due %1$s</string>
+    <string name="checkout_again">Scan another book</string>
+    <string name="reservations_empty">No reservations.</string>
+    <string name="res_waiting">Waiting since %1$s</string>
+    <string name="res_ready">Ready to collect</string>
+    <string name="res_ready_since">Ready to collect since %1$s</string>
+    <string name="res_fulfilled">Collected</string>
+    <string name="res_cancelled">Cancelled</string>
+    <string name="res_expired">Expired</string>
+    <string name="history_needs_password">Reading history needs your password. You logged in with your card.</string>
+    <string name="history_login_password">Log in with password</string>
+    <string name="history_empty">Nothing here. Reading history is empty, or switched off in Account.</string>
+    <string name="history_returned">Out %1$s · returned %2$s</string>
+    <string name="history_not_returned">Out %1$s · not returned</string>
+
+    <!-- Account -->
+    <string name="account_line">%1$s · %2$s · %3$s</string>
+    <string name="account_privacy">Privacy</string>
+    <string name="account_history_keep">Keep my reading history</string>
+    <string name="account_history_keep_caption">Off: finished loans are not recorded in your history (Decree 13/2023).</string>
+    <string name="account_history">Reading history</string>
+    <string name="account_security">Security</string>
+    <string name="account_bio">Biometric lock</string>
+    <string name="account_bio_caption">Fingerprint or face is needed to open the app after it was in the background.</string>
+    <string name="account_bio_none">No strong biometric is enrolled on this phone.</string>
+    <string name="account_bio_turn_on">Turn on biometric lock</string>
+    <string name="account_bio_confirm">Confirm</string>
+    <string name="account_session_key">Session key: %1$s</string>
+    <string name="account_auto_logout">Auto-logout after %1$d min idle</string>
+    <string name="account_change_password">Change password</string>
+
+    <!-- Catalog and title detail -->
+    <string name="catalog_search_label">Title, author, ISBN, subject</string>
+    <string name="catalog_search">Search</string>
+    <string name="catalog_empty">No titles found.</string>
+    <string name="catalog_available">%1$d available</string>
+    <string name="catalog_all_on_loan">All copies on loan</string>
+    <string name="title_isbn">ISBN %1$s</string>
+    <string name="title_copies">%1$d of %2$d copies available</string>
+    <string name="title_reserved">Reserved. You will see it under Reserved when it is ready.</string>
+    <string name="title_reserving">Reserving...</string>
+    <string name="title_reserve">Reserve this title</string>
+</resources>

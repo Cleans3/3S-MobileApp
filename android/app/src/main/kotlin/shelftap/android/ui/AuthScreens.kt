@@ -1,6 +1,7 @@
 package shelftap.android.ui
 
 import android.nfc.Tag
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -45,6 +47,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import shelftap.android.R
 import shelftap.android.api.ApiException
 import shelftap.android.data.Repository
 import shelftap.android.nfc.CardException
@@ -54,7 +57,7 @@ import shelftap.android.session.LogoutReason
 import shelftap.android.session.SessionManager
 
 class AuthViewModel(private val session: SessionManager) : ViewModel() {
-    data class UiState(val busy: Boolean = false, val error: String? = null)
+    data class UiState(val busy: Boolean = false, val error: UiText? = null)
 
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
@@ -64,7 +67,7 @@ class AuthViewModel(private val session: SessionManager) : ViewModel() {
     /** Reader-mode callback: one card exchange at a time. */
     fun cardTapped(tag: Tag) {
         if (_state.value.busy) return
-        val iso = TagReader.isoDep(tag) ?: return fail("That is not a library card.")
+        val iso = TagReader.isoDep(tag) ?: return fail(uiText(R.string.err_not_library_card))
         launchOp {
             try {
                 withContext(Dispatchers.IO) { iso.connect() }
@@ -77,7 +80,7 @@ class AuthViewModel(private val session: SessionManager) : ViewModel() {
         }
     }
 
-    private fun fail(message: String) {
+    private fun fail(message: UiText) {
         _state.value = UiState(error = message)
     }
 
@@ -96,11 +99,12 @@ class AuthViewModel(private val session: SessionManager) : ViewModel() {
     }
 }
 
+@StringRes
 private fun LogoutReason.message() = when (this) {
-    LogoutReason.SESSION_EXPIRED -> "Your session expired. Log in again."
-    LogoutReason.TOKEN_REUSED -> "This session was revoked because the account was used elsewhere. Log in again."
-    LogoutReason.INACTIVITY -> "Logged out after a period of inactivity."
-    LogoutReason.LOCK_KEY_INVALIDATED -> "Biometrics changed on this phone, so the biometric lock was reset. Log in again."
+    LogoutReason.SESSION_EXPIRED -> R.string.logout_session_expired
+    LogoutReason.TOKEN_REUSED -> R.string.logout_token_reused
+    LogoutReason.INACTIVITY -> R.string.logout_inactivity
+    LogoutReason.LOCK_KEY_INVALIDATED -> R.string.logout_lock_key_invalidated
 }
 
 @Composable
@@ -114,15 +118,15 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
     ) {
-        Text("ShelfTap", style = MaterialTheme.typography.headlineMedium)
+        Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium)
         IntegrityBanner()
-        reason?.let { Text(it.message()) }
+        reason?.let { Text(stringResource(it.message())) }
         OutlinedTextField(
-            value = email, onValueChange = { email = it }, label = { Text("Email") }, singleLine = true,
+            value = email, onValueChange = { email = it }, label = { Text(stringResource(R.string.login_email)) }, singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), modifier = Modifier.fillMaxWidth(),
         )
         OutlinedTextField(
-            value = password, onValueChange = { password = it }, label = { Text("Password") }, singleLine = true,
+            value = password, onValueChange = { password = it }, label = { Text(stringResource(R.string.login_password)) }, singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), modifier = Modifier.fillMaxWidth(),
         )
@@ -131,8 +135,8 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
             onClick = { vm.login(email, password) },
             enabled = !state.busy && email.isNotBlank() && password.isNotEmpty(),
             modifier = Modifier.fillMaxWidth(),
-        ) { Text(if (state.busy) "Logging in..." else "Log in") }
-        OutlinedButton(onClick = onCard, enabled = !state.busy, modifier = Modifier.fillMaxWidth()) { Text("Log in with library card") }
+        ) { Text(stringResource(if (state.busy) R.string.login_busy else R.string.login_action)) }
+        OutlinedButton(onClick = onCard, enabled = !state.busy, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.login_with_card)) }
     }
 }
 
@@ -147,11 +151,11 @@ fun CardLoginScreen(onBack: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("Hold your library card against the back of the phone.", style = MaterialTheme.typography.titleMedium)
-            Text("The card proves it is yours with a signature. You do not type a PIN, and nothing on the card is read.")
+            Text(stringResource(R.string.card_hold), style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.card_explain))
             if (state.busy) Spinner()
             ErrorText(state.error)
-            TextButton(onClick = onBack, enabled = !state.busy) { Text("Use email and password instead") }
+            TextButton(onClick = onBack, enabled = !state.busy) { Text(stringResource(R.string.card_use_password)) }
         }
     }
 }
@@ -162,9 +166,9 @@ fun OfflineScreen() {
     val scope = rememberCoroutineScope()
     Centered {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text("Can't reach the server.")
-            Button(onClick = { scope.launch { session.restore() } }) { Text("Retry") }
-            TextButton(onClick = { scope.launch { session.logout() } }) { Text("Log out") }
+            Text(stringResource(R.string.offline_message))
+            Button(onClick = { scope.launch { session.restore() } }) { Text(stringResource(R.string.action_retry)) }
+            TextButton(onClick = { scope.launch { session.logout() } }) { Text(stringResource(R.string.action_logout)) }
         }
     }
 }
@@ -174,25 +178,27 @@ fun LockScreen() {
     val session = LocalContainer.current.session
     val activity = LocalActivity.current as FragmentActivity
     val scope = rememberCoroutineScope()
+    val title = stringResource(R.string.lock_title)
+    val cancelLabel = stringResource(R.string.action_cancel)
     val unlock: () -> Unit = {
         scope.launch {
             session.unlock { cipher ->
-                BiometricLock.authenticate(activity, cipher, title = "Unlock ShelfTap", cancelLabel = "Cancel")
+                BiometricLock.authenticate(activity, cipher, title = title, cancelLabel = cancelLabel)
             }
         }
     }
     LaunchedEffect(Unit) { unlock() }
     Centered {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text("ShelfTap is locked.", style = MaterialTheme.typography.titleMedium)
-            Button(onClick = unlock) { Text("Unlock") }
-            TextButton(onClick = { scope.launch { session.logout() } }) { Text("Log out") }
+            Text(stringResource(R.string.lock_locked), style = MaterialTheme.typography.titleMedium)
+            Button(onClick = unlock) { Text(stringResource(R.string.lock_unlock)) }
+            TextButton(onClick = { scope.launch { session.logout() } }) { Text(stringResource(R.string.action_logout)) }
         }
     }
 }
 
 class PasswordViewModel(private val repo: Repository) : ViewModel() {
-    data class UiState(val busy: Boolean = false, val error: String? = null, val done: Boolean = false)
+    data class UiState(val busy: Boolean = false, val error: UiText? = null, val done: Boolean = false)
 
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
@@ -226,29 +232,29 @@ fun ChangePasswordScreen(forced: Boolean, onDone: () -> Unit) {
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
     ) {
-        Text("Change password", style = MaterialTheme.typography.headlineSmall)
-        if (forced) Text("Your account needs a new password before you can use the library.")
+        Text(stringResource(R.string.pw_title), style = MaterialTheme.typography.headlineSmall)
+        if (forced) Text(stringResource(R.string.pw_forced))
         listOf(
-            Triple("Current password", current) { v: String -> current = v },
-            Triple("New password", new) { v: String -> new = v },
-            Triple("New password again", again) { v: String -> again = v },
+            Triple(R.string.pw_current, current) { v: String -> current = v },
+            Triple(R.string.pw_new, new) { v: String -> new = v },
+            Triple(R.string.pw_again, again) { v: String -> again = v },
         ).forEach { (label, value, set) ->
             OutlinedTextField(
-                value = value, onValueChange = set, label = { Text(label) }, singleLine = true,
+                value = value, onValueChange = set, label = { Text(stringResource(label)) }, singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), modifier = Modifier.fillMaxWidth(),
             )
         }
-        if (new.isNotEmpty() && again.isNotEmpty() && new != again) Text("The new passwords do not match.", color = MaterialTheme.colorScheme.error)
+        if (new.isNotEmpty() && again.isNotEmpty() && new != again) Text(stringResource(R.string.pw_mismatch), color = MaterialTheme.colorScheme.error)
         ErrorText(state.error)
         Spacer(Modifier.height(4.dp))
         Button(
             onClick = { vm.change(current, new) },
             enabled = !state.busy && current.isNotEmpty() && new.isNotEmpty() && new == again,
             modifier = Modifier.fillMaxWidth(),
-        ) { Text(if (state.busy) "Saving..." else "Change password") }
+        ) { Text(stringResource(if (state.busy) R.string.pw_saving else R.string.pw_title)) }
         if (forced) {
-            TextButton(onClick = { scope.launch { session.logout() } }) { Text("Log out") }
+            TextButton(onClick = { scope.launch { session.logout() } }) { Text(stringResource(R.string.action_logout)) }
         }
     }
 }
@@ -265,21 +271,21 @@ fun StepUpDialog(defaultEmail: String = "", onDismiss: () -> Unit, onDone: () ->
     var email by rememberSaveable { mutableStateOf(defaultEmail) }
     var password by remember { mutableStateOf("") }
     var busy by remember { mutableStateOf(false) }
-    var error by remember { mutableStateOf<String?>(null) }
+    var error by remember { mutableStateOf<UiText?>(null) }
 
     AlertDialog(
         onDismissRequest = { if (!busy) onDismiss() },
         properties = DialogProperties(securePolicy = SecureFlagPolicy.SecureOn),
-        title = { Text("Password needed") },
+        title = { Text(stringResource(R.string.stepup_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("You logged in with your card. Your reading history is personal data, so this needs your password.")
+                Text(stringResource(R.string.stepup_text))
                 OutlinedTextField(
-                    value = email, onValueChange = { email = it }, label = { Text("Email") }, singleLine = true,
+                    value = email, onValueChange = { email = it }, label = { Text(stringResource(R.string.login_email)) }, singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), modifier = Modifier.fillMaxWidth(),
                 )
                 OutlinedTextField(
-                    value = password, onValueChange = { password = it }, label = { Text("Password") }, singleLine = true,
+                    value = password, onValueChange = { password = it }, label = { Text(stringResource(R.string.login_password)) }, singleLine = true,
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), modifier = Modifier.fillMaxWidth(),
                 )
@@ -303,8 +309,8 @@ fun StepUpDialog(defaultEmail: String = "", onDismiss: () -> Unit, onDone: () ->
                         }
                     }
                 },
-            ) { Text(if (busy) "Logging in..." else "Log in") }
+            ) { Text(stringResource(if (busy) R.string.login_busy else R.string.login_action)) }
         },
-        dismissButton = { TextButton(onClick = onDismiss, enabled = !busy) { Text("Cancel") } },
+        dismissButton = { TextButton(onClick = onDismiss, enabled = !busy) { Text(stringResource(R.string.action_cancel)) } },
     )
 }

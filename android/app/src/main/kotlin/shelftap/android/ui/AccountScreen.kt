@@ -20,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import shelftap.android.BuildConfig
+import shelftap.android.R
 import shelftap.android.api.ApiException
 import shelftap.android.api.ErrorCode
 import shelftap.android.api.Me
@@ -51,7 +53,7 @@ class AccountViewModel(
         val lockEnabled: Boolean = false,
         val keyProtection: String = "",
         val busy: Boolean = false,
-        val error: String? = null,
+        val error: UiText? = null,
         /** The history setting the member asked for while on a card session; applied after the password login. */
         val stepUpFor: Boolean? = null,
     )
@@ -114,7 +116,7 @@ class AccountViewModel(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                _state.update { it.copy(busy = false, error = if (e is ApiException) e.userMessage() else "That did not work.") }
+                _state.update { it.copy(busy = false, error = if (e is ApiException) e.userMessage() else uiText(R.string.err_op_failed)) }
                 refreshSecurity()
             }
         }
@@ -129,11 +131,14 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
     val activity = LocalActivity.current as FragmentActivity
     val scope = rememberCoroutineScope()
     val biometricAvailable = BiometricLock.available(context)
+    val bioTurnOn = stringResource(R.string.account_bio_turn_on)
+    val bioConfirm = stringResource(R.string.account_bio_confirm)
+    val cancelLabel = stringResource(R.string.action_cancel)
 
     LoadView(state.me, onRetry = vm::load) { me ->
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(me.fullName, style = MaterialTheme.typography.headlineSmall)
-            Text("${me.email} · ${me.memberType.lowercase()} · ${me.status.lowercase()}")
+            Text(stringResource(R.string.account_line, me.email, me.memberType.lowercase(), me.status.lowercase()))
             IntegrityBanner()
             ErrorText(state.error)
             if (state.stepUpFor != null) {
@@ -141,38 +146,37 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
             }
             HorizontalDivider()
 
-            Text("Privacy", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.account_privacy), style = MaterialTheme.typography.titleMedium)
             SwitchRow(
-                "Keep my reading history",
-                "Off: finished loans are not recorded in your history (Decree 13/2023).",
+                stringResource(R.string.account_history_keep),
+                stringResource(R.string.account_history_keep_caption),
                 checked = me.historyEnabled, enabled = !state.busy, onChange = vm::setHistoryEnabled,
             )
-            OutlinedButton(onClick = onHistory, modifier = Modifier.fillMaxWidth()) { Text("Reading history") }
+            OutlinedButton(onClick = onHistory, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.account_history)) }
             HorizontalDivider()
 
-            Text("Security", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.account_security), style = MaterialTheme.typography.titleMedium)
             SwitchRow(
-                "Biometric lock",
-                if (biometricAvailable) "Fingerprint or face is needed to open the app after it was in the background."
-                else "No strong biometric is enrolled on this phone.",
+                stringResource(R.string.account_bio),
+                stringResource(if (biometricAvailable) R.string.account_bio_caption else R.string.account_bio_none),
                 checked = state.lockEnabled, enabled = !state.busy && (biometricAvailable || state.lockEnabled),
                 onChange = { enable ->
                     vm.setBiometricLock(enable) { cipher ->
                         BiometricLock.authenticate(
                             activity, cipher,
-                            title = if (enable) "Turn on biometric lock" else "Confirm",
-                            cancelLabel = "Cancel",
+                            title = if (enable) bioTurnOn else bioConfirm,
+                            cancelLabel = cancelLabel,
                         )
                     }
                 },
             )
-            Text("Session key: ${state.keyProtection}", style = MaterialTheme.typography.bodySmall)
+            Text(stringResource(R.string.account_session_key, state.keyProtection), style = MaterialTheme.typography.bodySmall)
             Text(
-                "Auto-logout after ${BuildConfig.INACTIVITY_LIMIT_MS / 60_000} min idle",
+                stringResource(R.string.account_auto_logout, BuildConfig.INACTIVITY_LIMIT_MS / 60_000),
                 style = MaterialTheme.typography.bodySmall,
             )
-            OutlinedButton(onClick = onChangePassword, modifier = Modifier.fillMaxWidth()) { Text("Change password") }
-            OutlinedButton(onClick = { scope.launch { vm.logout() } }, modifier = Modifier.fillMaxWidth()) { Text("Log out") }
+            OutlinedButton(onClick = onChangePassword, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.account_change_password)) }
+            OutlinedButton(onClick = { scope.launch { vm.logout() } }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.action_logout)) }
         }
     }
 }
