@@ -264,3 +264,11 @@
 - **Khác mockup có chủ ý:** dải đáy và dải trên là màu nền đặc 96% mờ dần, không phải blur (blur là việc kế tiếp, theo tầng: FULL blur, MEDIUM mờ dần như hiện tại, LIGHT đặc); thanh trên không có nền, chỉ có nút kính và dải.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chấp nhận 7 phát hiện ATF mới vì hệ quả thiết kế; không sửa bằng cách che đi. Con người chưa duyệt.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Locale vi`: qua.
+
+## 2026-11-24 20:05 · Dải mờ trong hơn và thấp hơn (phản hồi của người dùng)
+
+- **Vấn đề:** dải mờ của commit trang tràn mép (044d950) đặc 96% trong 70% chiều cao và cao bằng cả thanh cộng 16 dp, nên đầu và cuối trang trông lại như thanh đặc.
+- **Thay đổi:** `AppRoot.kt`: độ đặc 0,96 → 0,6 (`FADE_SOLID`), giữ nguyên độ đặc 0,7 → 0,25 chiều cao (`FADE_HOLD`, mờ gần như ngay); độ cao dải trên: thanh trạng thái + cả thanh + 16 dp → thanh trạng thái + nửa thanh (`insets.top - Spacing.touch / 2`); dải dưới: vùng hệ thống + cả nút nổi + 16 dp → vùng hệ thống + nửa dưới nút nổi (`insets.bottom - Spacing.pillClearance / 2`). Phần đệm của nội dung (`pagePadding`) giữ nguyên nên mục đầu và cuối vẫn không bị che khi chưa cuộn. `UiAuditTest` chụp thêm `catalog-scrolled-hw.png` (cuộn lên giữa chừng).
+- **Đo trước → sau:** emulator (tiếng Việt, sáng, tối, font 2.0), ảnh GPU ở đầu trang và giữa chừng: thẻ sách dưới nút nổi đọc được rõ hơn, thanh trên và đáy không còn thành khối đặc; ATF (điện thoại): sáng 9 → 6, tối 7 → 5, font 2.0 4 → 4; phần dư so với trước thay đổi vẫn là chữ nằm dưới dải đáy ở trạng thái nghỉ. **Chưa đo/kiểm:** cảm nhận trên Xiaomi (bản đã cài); tiêu đề "Thư viện ShelfTap" khi chữ cuộn qua nó: giữa chừng thấy ô tìm trượt qua sát dưới tiêu đề mà không đè lên, nhưng chỉ xem một vị trí cuộn; ảnh ở nền tối giữa chừng; hiệu năng.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. Các con số là điểm xuất phát chưa đo (đề xuất của phiên bên lề), chỉnh được ở một chỗ (ba hằng số). Con người chưa duyệt.
+- **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Locale vi`: qua.

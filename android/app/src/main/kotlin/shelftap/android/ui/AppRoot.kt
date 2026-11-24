@@ -280,8 +280,9 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                     // Soft fades of the page colour where the page runs under the bars, so a title or the floating button always sits on
                     // something calm. (Where the tier allows, the blur of the mockup goes here too.)
                     if (!titleRoute) {
-                        FadeBand(insets.top + Spacing.l, fromTop = true, modifier = Modifier.align(Alignment.TopCenter))
-                        if (pillHere && compact) FadeBand(insets.bottom + Spacing.l, fromTop = false, modifier = Modifier.align(Alignment.BottomCenter))
+                        FadeBand(insets.top - Spacing.touch / 2, fromTop = true, modifier = Modifier.align(Alignment.TopCenter)) // status bar and half the top bar
+                        // the system inset and the lower half of the floating button and its margin
+                        if (pillHere && compact) FadeBand(insets.bottom - Spacing.pillClearance / 2, fromTop = false, modifier = Modifier.align(Alignment.BottomCenter))
                     }
                 }
             }
@@ -321,8 +322,8 @@ private fun FadeBand(height: Dp, fromTop: Boolean, modifier: Modifier = Modifier
 }
 
 /** How opaque the fade is where it meets the edge, and how much of its height stays that way before it fades. */
-private const val FADE_SOLID = 0.96f
-private const val FADE_HOLD = 0.7f
+private const val FADE_SOLID = 0.6f
+private const val FADE_HOLD = 0.25f
 
 /** A wide window shows the catalog and the chosen book side by side, so picking a book does not leave the list. */
 @Composable

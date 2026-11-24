@@ -18,6 +18,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
+import androidx.compose.ui.test.swipeDown
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
@@ -102,6 +103,12 @@ class UiAuditTest {
             runBlocking { session.login(AuditData.EMAIL, "audit-only") }
             waitFor(str(R.string.catalog_theme)) // the banner: always on screen, unlike the strips below it at a large font
             audit("catalog", activity)
+            // Mid-scroll: the page passes under the top bar and the floating button.
+            compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() }
+            compose.waitForIdle()
+            captureHardware(activity.window.decorView)?.let { bmp -> File(outDir, "$config/catalog-scrolled-hw.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) } }
+            compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeDown() }
+            compose.waitForIdle()
             holdShot("press-burger", compose.onAllNodesWithContentDescription(str(R.string.menu_open)), activity)
             holdShot("press-card", compose.onAllNodes(hasContentDescription(AuditData.titles.first().title, substring = true)), activity, scroll = true)
 
