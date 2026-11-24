@@ -1,20 +1,20 @@
 # Mockup giao diện kính ShelfTap và phép đo tương phản
 
-Mã nguồn của mockup 20 màn ở `optimization/ui-ux-plan.md` §5.5, cùng các script đo dùng cho §5.3.
+Mã nguồn của mockup 22 màn (20 màn điện thoại và 2 màn cửa sổ rộng) ở `optimization/ui-ux-plan.md` §5.5, cùng các script đo dùng cho §5.3.
 
-- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 18 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý và Thông báo (bản 17), rồi ba lỗi bố cục tìm ra khi thử rộng 320 và chữ 2.0 cùng băng "Gợi ý cho bạn" trên Danh mục và Danh mục cuộn dọc (cả hai đăng chung trong bản 18).
+- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 18 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý và Thông báo (bản 17), rồi ba lỗi bố cục tìm ra khi thử rộng 320 và chữ 2.0 cùng băng "Gợi ý cho bạn" trên Danh mục và Danh mục cuộn dọc (cả hai đăng chung trong bản 18). Hai màn cửa sổ rộng (`WideCatalog`, `RailCatalog`) có trong repo nhưng chưa đăng lên link.
 - **Mở trực tiếp không chạy:** mỗi màn cần runtime `support.js` của trình xem artifact, file đó không có trong repo. Các script dưới đây không cần runtime: chúng tự đọc template và chạy phần script của từng màn.
 
 ## Nội dung
 
 | File | Là gì |
 |---|---|
-| `*.dc.html` | 20 màn. Màu viết bằng biến CSS (token) có giá trị sáng và tối, font Nunito |
+| `*.dc.html` | 22 màn: 20 màn điện thoại 390 × 844, `WideCatalog` 960 × 720 và `RailCatalog` 720 × 840. Màu viết bằng biến CSS (token) có giá trị sáng và tối, font Nunito |
 | `canvas.json` | Vị trí và tên các màn trên canvas |
 | `tools/contrast.js` | Đo tương phản WCAG cho mọi đoạn chữ, ở theme sáng và tối (SC 1.4.3) |
 | `tools/nontext-contrast.js` | Đo tương phản cho icon, viền ô nhập, công tắc và trạng thái đang chọn (SC 1.4.11) |
 | `tools/target-size.js` | Đọc kích thước vẽ và vùng chạm của mọi nút, link và công tắc |
-| `tools/render-static.js` | Dựng 20 màn thành HTML tĩnh ở 11 biến thể: gốc, rộng 320, chữ 2.0, cả hai, và bảy cỡ màn tỷ lệ đặc biệt |
+| `tools/render-static.js` | Dựng các màn thành HTML tĩnh ở 11 biến thể: gốc, rộng 320, chữ 2.0, cả hai, và bảy cỡ màn tỷ lệ đặc biệt. Màn cửa sổ rộng giữ kích thước vẽ và chỉ có ở biến thể gốc và chữ 2.0 |
 | `tools/layout-check.js` | Chạy trong trình duyệt trên trang của `render-static.js`, sau khi tắt hiệu ứng động: đếm chữ tràn mép, tràn đáy, chữ đè chữ, chữ bị cắt; trên màn rộng hơn 600 dp đếm thêm dòng quá 80 ký tự và khối bị kéo giãn |
 | `tools/hero-worst-case.js` | Tính riêng chữ trắng trên ảnh ở màn chào, ở trường hợp xấu nhất |
 | `tools/check-scripts.js` | Chạy script của từng màn, gọi mọi handler, kiểm tra mọi biến trong template đều có giá trị |
@@ -140,5 +140,18 @@ Bảy cỡ màn thêm vào `tools/render-static.js`, chữ bình thường, đơ
 Màn thấp vỡ vì cùng lý do với chữ 2.0: chỉ năm màn có vùng cuộn (Danh mục, Danh sách, Thông báo, Tìm khi không có mạng, Gợi ý) giữ nguyên. Màn rộng không vỡ nhưng là bố cục điện thoại bị kéo giãn, vì mockup chưa có màn nào cho cửa sổ rộng.
 
 Lượt đo đầu có 4 lỗi "tràn đáy" giả ở màn Thông báo: bảng hỏi quyền còn đang trượt lên khi đo. Từ lượt này, `tools/layout-check.js` tắt hiệu ứng động trước khi đo.
+
+## Cửa sổ rộng
+
+Hai màn Danh mục theo cách chia cỡ cửa sổ của Material 3 (kế hoạch §6.4):
+
+| Màn | Cỡ | Bố cục |
+|---|---|---|
+| `WideCatalog` | 960 × 720, cửa sổ từ 840 dp | Menu cố định bên trái (nút mượn ở đáy menu), danh sách ở giữa, chi tiết sách bên phải; bấm sách thì khung phải đổi theo |
+| `RailCatalog` | 720 × 840, cửa sổ 600–840 dp | Thanh điều hướng dọc 96 dp, một khung nội dung rộng tối đa 560 dp |
+
+Đo ở chữ thường và chữ 2.0: cả hai màn 0 lỗi vỡ, 0 dòng quá 80 ký tự, 0 khối bị kéo giãn. Tương phản chữ không thêm lỗi (505 đoạn mỗi theme); 5 mục bắt buộc mới về icon và viền đều đạt; 189 nút, không nút nào có vùng chạm dưới 48 px. Lượt đo đầu có 3 mục menu đè nhau ở chữ 2.0 vì khung menu không cuộn, đã sửa.
+
+Cùng lượt này `tools/layout-check.js` chỉ so phần chữ thật sự hiện ra (cắt theo khung cuộn hoặc khung ẩn phần tràn của phần tử cha), vì chip trong hàng cuộn ngang bị báo nhầm là đè lên khung bên cạnh. Số của các biến thể điện thoại đo lại không đổi.
 
 Chi tiết từng lỗi và cách sửa: `optimization/ui-ux-plan.md` §5.3 và `optimization/log/docs-ui-ux-plan.md`.

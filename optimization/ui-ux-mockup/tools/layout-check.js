@@ -47,7 +47,18 @@
     }
     // text measured with a Range so the box is the text itself, not the whole block
     const textRect = el => { const rg = doc.createRange(); rg.selectNodeContents(el); return rg.getBoundingClientRect(); };
-    const boxes = texts.filter(visible).map(el => ({ el, r: textRect(el) })).filter(b => b.r.width > 1);
+    // the part of the text actually drawn: cut to every ancestor that hides or scrolls its overflow
+    const shown = el => {
+      let r = textRect(el), x0 = r.left, y0 = r.top, x1 = r.right, y1 = r.bottom;
+      for (let p = el.parentElement; p && p !== root; p = p.parentElement) {
+        const cs = doc.defaultView.getComputedStyle(p);
+        if (cs.overflowX === 'visible' && cs.overflowY === 'visible') continue;
+        const pr = p.getBoundingClientRect();
+        x0 = Math.max(x0, pr.left); y0 = Math.max(y0, pr.top); x1 = Math.min(x1, pr.right); y1 = Math.min(y1, pr.bottom);
+      }
+      return { left: x0, top: y0, right: x1, bottom: y1, width: x1 - x0, height: y1 - y0 };
+    };
+    const boxes = texts.filter(visible).map(el => ({ el, r: shown(el) })).filter(b => b.r.width > 1 && b.r.height > 1);
     for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
       const a = boxes[i], b = boxes[j];
       if (a.el.contains(b.el) || b.el.contains(a.el)) continue;

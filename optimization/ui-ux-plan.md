@@ -128,7 +128,7 @@ Mã lỗi lấy từ `web/ErrorCode.java` của server; app rẽ nhánh theo `co
 
 ### 5.5 Hướng thiết kế: giao diện kính cho toàn app
 
-Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho **cả app**, không chỉ một hiệu ứng. Bản phác 20 màn có thể bấm thử, có hiệu ứng động (§6.5): **ShelfTap glass mockup** (https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf). Mockup là trang web dùng `backdrop-filter` của trình duyệt; nó cho thấy giao diện, **không** đo được hiệu năng trên Android.
+Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho **cả app**, không chỉ một hiệu ứng. Bản phác 22 màn (20 màn điện thoại và 2 màn cửa sổ rộng) có thể bấm thử, có hiệu ứng động (§6.5): **ShelfTap glass mockup** (https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf). Mockup là trang web dùng `backdrop-filter` của trình duyệt; nó cho thấy giao diện, **không** đo được hiệu năng trên Android.
 
 **Các thành phần:**
 - **Ảnh lớn mờ dần** ở màn chào, banner chủ đề và chi tiết sách: nửa dưới ảnh mờ dần để chữ đặt lên vẫn đọc được.
@@ -145,6 +145,7 @@ Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho 
 | Đăng nhập và bảo mật | Đăng nhập bằng mật khẩu, Đăng nhập bằng thẻ (3 bước), Đổi mật khẩu lần đầu (điều kiện hiện ngay khi gõ, tối thiểu 10 ký tự như server), Khóa sinh trắc học |
 | Trạng thái hệ thống | Khởi động (kiểm tra phiên rồi chuyển tới Khóa, Màn chào hoặc Mất kết nối), Mất kết nối (thử lại có giới hạn, tìm sách offline, đăng xuất), Đăng nhập lại kèm lý do (4 giá trị của `LogoutReason`) và cảnh báo máy không an toàn (`IntegrityBanner`: chỉ cảnh báo, không chặn) |
 | Khách và mở rộng | Chế độ khách (menu rút gọn, mời đăng nhập khi bấm Đặt trước hay Mượn), Thông báo (giải thích trước khi xin quyền, màn khóa không hiện tên sách, cài đặt từng loại), Tìm khi không có mạng, Gợi ý cho bạn (theo `optimization/search-recommend-plan.md` phần B) |
+| Cửa sổ rộng (§6.4) | Danh mục ở cửa sổ từ 840 dp (menu cố định bên trái, danh sách và chi tiết cạnh nhau), Danh mục ở cửa sổ 600–840 dp (thanh điều hướng dọc, một khung nội dung) |
 | Thành viên | Sách đang mượn (gia hạn, quá hạn, tiền phạt), Tự mượn sách (chờ chạm, đang gửi, thành công, lỗi), Đặt trước (hủy có xác nhận), Lịch sử đọc (yêu cầu mật khẩu nếu đăng nhập bằng thẻ), Tài khoản (công tắc lịch sử, vân tay, đổi mật khẩu, đăng xuất qua bảng xác nhận) |
 
 **Trang danh sách sách** (màn `List` trong mockup):
@@ -255,7 +256,7 @@ Bán kính blur và độ trong chọn theo hướng dẫn Material, rồi chụ
 
 Áp dụng cho mọi tầng, không cần bản riêng.
 
-- **Kích thước cửa sổ:** dùng `WindowSizeClass` (Material 3 Adaptive). Cửa sổ hẹp (điện thoại thường, máy dài 20:9 hoặc 21:9) dùng menu ☰ dạng khung kính (§6.2). Cửa sổ rộng (máy gập khi mở, tablet, chia đôi màn hình) hiện khung menu cố định ở cạnh trái, không cần bấm ☰. Hiệu ứng tầng ở §6.3 áp dụng cho cả hai.
+- **Kích thước cửa sổ:** dùng `WindowSizeClass` (Material 3 Adaptive). Cửa sổ hẹp (điện thoại thường, máy dài 20:9 hoặc 21:9) dùng menu ☰ dạng khung kính (§6.2). Cửa sổ vừa (600–840 dp, ví dụ máy gập mở gần vuông) dùng thanh điều hướng dọc bên trái với một khung nội dung. Cửa sổ rộng (từ 840 dp: máy gập cầm ngang, tablet) hiện khung menu cố định ở cạnh trái và Danh mục chia hai khung. Cả hai không cần bấm ☰. Hiệu ứng tầng ở §6.3 áp dụng cho cả hai.
 - **Tràn viền:** app nhắm `targetSdk` 36 nên Android bắt buộc tràn viền. Thanh kính nổi trên nội dung; nội dung chừa đúng vùng an toàn và phần khuyết camera bằng `WindowInsets`.
 - **Màn lớn:** từ Android 16, app nhắm `targetSdk` 36 không còn khóa được hướng xoay và tỷ lệ trên màn rộng từ 600dp, nên ShelfTap phải hiển thị đúng khi xoay và khi mở máy gập. Danh mục trên màn rộng có thể chia hai cột (danh sách, chi tiết).
 - **Kiểm tra:** ảnh chụp ở các cấu hình: điện thoại thường, 21:9, máy gập lúc gập và lúc mở, màn phụ của máy gập dọc, chia đôi màn hình, tablet, xoay ngang, font scale 2.0.
@@ -300,8 +301,14 @@ Lỗi ở chữ 2.0 đến từ cách mockup đặt mọi khối ở vị trí c
 - **Màn rộng hơn 600 dp** không vỡ nhưng bị kéo giãn: 17 đến 18 trên 20 màn có thẻ hoặc nút rộng gần hết màn, dòng chữ dài tới khoảng 150 ký tự (Gợi ý, ở 960 dp). Mockup chưa có màn nào cho cửa sổ rộng (menu cố định cạnh trái, Danh mục hai cột).
 
 Quy tắc thêm cho app:
-- **Cửa sổ rộng không kéo giãn bố cục điện thoại:** từ 600 dp dùng menu cố định cạnh trái và hai khung (danh sách, chi tiết) như ở trên. Cột chữ giới hạn khoảng 600 dp hoặc 80 ký tự mỗi dòng.
+- **Cửa sổ rộng không kéo giãn bố cục điện thoại:** từ 600 dp dùng thanh điều hướng dọc, từ 840 dp dùng menu cố định cạnh trái và hai khung (danh sách, chi tiết), như ở trên. Cột chữ giới hạn khoảng 600 dp hoặc 80 ký tự mỗi dòng.
 - **Màn thấp:** ngoài quy tắc cuộn dọc, khi chiều cao dưới khoảng 480 dp thì nút nổi tự mượn thu thành nút tròn chỉ có icon, để không che phần lớn màn. Đây là đề xuất, cần thử trên máy.
+
+**Mockup cho cửa sổ rộng (2026-11-24).** Hai màn mới ở hàng cuối của mockup, theo cách chia cỡ cửa sổ của Material 3:
+- **Danh mục ở cửa sổ từ 840 dp** (`WideCatalog`, 960 × 720): menu cố định bên trái, nút "Chạm sách để mượn" ở đáy menu thay cho nút nổi. Khung giữa là danh sách (ô tìm, chip chủ đề, tìm không dấu như màn Danh sách). Khung phải là chi tiết của sách đang chọn: bấm sách khác thì khung phải đổi theo, không chuyển trang; nút "Đặt trước" đi qua các trạng thái như màn Chi tiết. Hàng đang chọn có nền đặc và viền.
+- **Danh mục ở cửa sổ 600–840 dp** (`RailCatalog`, 720 × 840): thanh điều hướng dọc 96 dp, trên cùng là nút "Chạm để mượn". Một khung nội dung rộng tối đa 560 dp: 4 thẻ gợi ý, lưới sách 2 cột. Bấm sách thì mở trang Chi tiết như trên điện thoại.
+- **Đo:** cả hai màn không vỡ bố cục ở chữ thường và chữ 2.0, không có dòng quá 80 ký tự, không có khối bị kéo giãn. Không thêm lỗi tương phản chữ; 5 mục bắt buộc mới về icon và viền đều đạt; mọi nút có vùng chạm ít nhất 48 px. Lượt đo đầu tìm ra một lỗi thật: ở chữ 2.0 các mục menu cố định đè nhau vì khung menu không cuộn; đã sửa bằng vùng cuộn cho danh sách mục, nút mượn giữ ở đáy.
+- **Chưa vẽ:** các màn khác ở cửa sổ rộng (Sách đang mượn, Tài khoản…). Theo cùng quy tắc: thanh dọc hoặc menu cố định, nội dung giới hạn bề rộng; màn danh sách và chi tiết nào cũng dùng hai khung từ 840 dp.
 
 ### 6.5 Hiệu ứng động (motion)
 
@@ -427,7 +434,7 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 | 0. Chốt | Nhóm duyệt kế hoạch này và chốt các mục ở §11 | Kế hoạch v1 | 0,5 ngày |
 | 1. Baseline | Tag `ui-baseline`, lưu APK A, đo chỉ số UI (§8.2) | Bảng A của UI | 0,5 ngày |
 | 2. Test UX lần A | 5 người làm T1–T3 trên A | Bảng A của UX | 1 ngày |
-| 3. Thiết kế | Nhóm góp ý trên mockup 20 màn (§5.5) và các hiệu ứng động (§6.5) bằng bình luận; chốt design system, bảng màu, font; viết `ux-test.md` | Nhóm duyệt mockup | 1 ngày |
+| 3. Thiết kế | Nhóm góp ý trên mockup 22 màn (§5.5) và các hiệu ứng động (§6.5) bằng bình luận; chốt design system, bảng màu, font; viết `ux-test.md` | Nhóm duyệt mockup | 1 ngày |
 | 4. Làm UI | §5.1 đến §5.4, mỗi issue một commit, có log AI | Nhánh `ui-ux` | 2–3 ngày |
 | 5. Làm UX | §6.2, mỗi thay đổi một commit | Nhánh `ui-ux` | 1–2 ngày |
 | 5b. Tầng hiệu ứng và màn hình đặc biệt | §6.3 (tầng, thanh kính, icon, script morph lúc build) và §6.4 (bố cục thích ứng) | Nhánh `ui-ux` | 2–3 ngày |
@@ -466,7 +473,7 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 12. Duyệt bộ hiệu ứng động ở §6.5 trên mockup: giữ, bỏ hay đổi thời lượng hiệu ứng nào.
 13. Có sửa `server/API.md` để thêm kệ vào `TitleSummary` và tham số lọc theo chủ đề cho trang danh sách không (cùng đợt với `optimization/search-recommend-plan.md`).
 14. Báo sách đặt trước đã sẵn sàng: thêm cơ chế đẩy vào `server/API.md` (ví dụ FCM, cần thêm dịch vụ của Google) hay app tự hỏi server định kỳ (tốn pin hơn, chậm hơn), hay tạm chỉ hiện trong app.
-15. Có vẽ thêm màn mockup cho cửa sổ rộng (máy gập khi mở, tablet: menu cạnh trái, Danh mục hai cột) trước khi làm app không (§6.4).
+15. Đã vẽ (2026-11-24): hai màn Danh mục cho cửa sổ rộng (§6.4). Nhóm duyệt cách chia: thanh dọc ở 600–840 dp, menu cố định và hai khung từ 840 dp.
 
 ## 12. Sản phẩm đầu ra
 
@@ -474,5 +481,5 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 - Bảng chi phí hiệu ứng theo tầng (§8.5) và ngưỡng đã chốt cho từng tầng.
 - `optimization/ux-test.md`: kịch bản, phiếu ghi và kết quả A/B.
 - `optimization/log/<tên-nhánh>.md`: nhật ký từng thay đổi, gồm cả phần AI đề xuất và phần con người sửa.
-- `optimization/ui-ux-mockup/`: mã nguồn mockup 20 màn và các script đo (tương phản chữ, tương phản icon và viền, vùng chạm), chạy lại được để lấy số cho báo cáo.
+- `optimization/ui-ux-mockup/`: mã nguồn mockup 22 màn và các script đo (tương phản chữ, tương phản icon và viền, vùng chạm), chạy lại được để lấy số cho báo cáo.
 - Bảng chỉ số UI và UX trước/sau, ảnh chụp trước/sau, và một đoạn cho báo cáo và slide.

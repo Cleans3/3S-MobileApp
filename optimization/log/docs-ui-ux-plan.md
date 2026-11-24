@@ -177,3 +177,18 @@
 - **AI:** Claude Code (Claude Opus 5.5). Người dùng chọn đo thêm. AI tra web về máy gập năm 2026; các nguồn (trang Samsung, HotHardware, Android Authority) không khớp nhau về độ phân giải và màn nào là 4:3, nên AI đo theo nhóm kích thước và ghi rõ là cần đối chiếu trên máy thật. Lượt đo đầu báo 4 lỗi giả ở màn Thông báo do bảng hỏi quyền đang trượt lên; AI tắt hiệu ứng trong script. Kiểm tra "dòng quá dài" ban đầu chỉ tính đoạn từ hai dòng nên bỏ sót dòng đơn dài 150 ký tự trên màn rộng; AI sửa điều kiện và thêm phép đếm khối bị kéo giãn.
 - **Kiểm thử:** `node tools/check-scripts.js .` (20 màn không lỗi); dựng 11 biến thể, phục vụ qua web server cục bộ và chạy `tools/layout-check.js` trong trình duyệt của app.
 - **Ghi chú cho báo cáo:** màn thấp và chữ 2.0 vỡ cùng một nguyên nhân (khối đặt ở vị trí cố định, màn không cuộn), nên một quy tắc sửa cả hai; số đo này là mốc để so với app khi làm.
+
+## 2026-11-24 08:32 · Mockup Danh mục cho cửa sổ rộng
+
+- **Vấn đề:** phép đo ở các màn tỷ lệ đặc biệt cho thấy 17 đến 18 trên 20 màn bị kéo giãn khi cửa sổ rộng hơn 600 dp, và mockup chưa có màn nào cho cửa sổ rộng (mục 15 ở §11). Người dùng chọn vẽ màn rộng.
+- **Thay đổi:**
+  - Thêm `WideCatalog.dc.html` (960 × 720, cửa sổ từ 840 dp): menu cố định bên trái với nút "Chạm sách để mượn" ở đáy; danh sách ở giữa (ô tìm, chip chủ đề, tìm không dấu, cùng 13 sách dev như màn Danh sách); chi tiết sách bên phải, bấm sách thì khung phải đổi theo, nút "Đặt trước" có đủ trạng thái như màn Chi tiết.
+  - Thêm `RailCatalog.dc.html` (720 × 840, cửa sổ 600–840 dp): thanh điều hướng dọc 96 dp với nút "Chạm để mượn", một khung nội dung rộng tối đa 560 dp (4 thẻ gợi ý, lưới sách 2 cột).
+  - `canvas.json`: hàng mới "Cửa sổ rộng".
+  - `tools/render-static.js`: màn không phải 390 × 844 giữ kích thước vẽ, chỉ dựng ở biến thể gốc và chữ 2.0.
+  - `tools/layout-check.js`: so chữ đè trên phần chữ thật sự hiện ra (cắt theo khung cuộn hoặc khung ẩn phần tràn).
+  - Kế hoạch: §5.5 thêm nhóm màn "Cửa sổ rộng"; §6.4 tách cửa sổ vừa (600–840 dp, thanh dọc) và rộng (từ 840 dp, menu cố định và hai khung), thêm phần mô tả hai màn và kết quả đo; §11 mục 15 ghi đã vẽ; §9 và §12 đổi số màn thành 22. README thêm mục "Cửa sổ rộng". Kết quả `contrast-results.json` và `nontext-results.json` chạy lại, có thêm hai màn.
+- **Đo trước → sau:** hai màn mới, ở chữ thường và chữ 2.0: 0 lỗi vỡ, 0 dòng quá 80 ký tự, 0 khối bị kéo giãn (bố cục điện thoại kéo ra 960 dp: 18 trên 20 màn bị kéo giãn). Lượt đầu của `WideCatalog` ở chữ 2.0 có 3 mục menu đè nhau; sau khi cho danh sách mục trong menu cuộn được: 0. Tương phản chữ 505 đoạn mỗi theme, tối 0 lỗi, sáng chỉ còn 5 đoạn chữ trên ảnh ở màn chào như trước. Mục bắt buộc về icon và viền: 42, chỉ còn icon trên ảnh ở màn chào (tính riêng thì đạt). Vùng chạm: 189 nút, 0 dưới 48 px. Các biến thể điện thoại đo lại không đổi.
+- **AI:** Claude Code (Claude Opus 5.5). AI chọn cách chia theo nhóm cỡ cửa sổ của Material 3 (thanh dọc ở cỡ vừa, menu cố định và hai khung ở cỡ rộng) thay cho quy tắc cũ "từ 600 dp dùng menu cố định", vì ở 720 dp ba cột menu, danh sách và chi tiết quá chật. Lượt đo đầu báo 2 lỗi chữ đè giả (chip trong hàng cuộn ngang bị tính là đè lên khung chi tiết dù phần tràn đã bị cắt); AI sửa script thay vì sửa màn. Phiên bị ngắt giữa chừng do hết lượt dùng; phần tài liệu và commit làm ở lượt sau.
+- **Kiểm thử:** `node tools/check-scripts.js .` (22 màn không lỗi), `tools/contrast.js`, `tools/nontext-contrast.js`, `tools/target-size.js`; dựng 11 biến thể và chạy `tools/layout-check.js` trong trình duyệt của app.
+- **Ghi chú cho báo cáo:** cùng nội dung, đổi từ bố cục điện thoại kéo giãn sang bố cục theo cỡ cửa sổ làm số màn bị kéo giãn ở 960 dp từ 18/20 về 0 trên màn Danh mục.
