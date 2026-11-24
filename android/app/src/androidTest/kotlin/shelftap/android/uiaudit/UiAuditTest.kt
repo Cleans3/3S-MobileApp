@@ -9,6 +9,8 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onLast
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ActivityScenario
@@ -77,6 +79,10 @@ class UiAuditTest {
             lateinit var activity: MainActivity
             scenario.onActivity { activity = it }
 
+            // Logged out is a guest: the catalog first, and the login one step away in the menu.
+            waitFor(AuditData.titles.first().title)
+            audit("guest", activity)
+            openMenu(); compose.onAllNodesWithText(str(R.string.login_action)).onLast().performClick()
             waitFor(str(R.string.login_with_card))
             audit("login", activity)
 
@@ -93,7 +99,7 @@ class UiAuditTest {
             audit("loans", activity)
 
             // The emulator has no NFC, so Checkout shows its "This phone has no NFC." state; a phone with NFC shows "Self-checkout".
-            tab(R.string.tab_checkout); waitFor(str(R.string.checkout_title), str(R.string.nfc_missing))
+            compose.onNodeWithText(str(R.string.checkout_pill)).performClick(); waitFor(str(R.string.checkout_title), str(R.string.nfc_missing))
             audit("checkout", activity)
 
             tab(R.string.tab_reservations); waitFor(AuditData.reservations.first().title)
@@ -101,14 +107,24 @@ class UiAuditTest {
 
             tab(R.string.tab_account); waitFor(AuditData.me.fullName)
             audit("account", activity)
+
+            openMenu()
+            audit("menu", activity)
         }
     }
 
     /** Text as the app shows it in the device's current language, so the tour works in Vietnamese and in English. */
     private fun str(id: Int, vararg args: Any) = instrumentation.targetContext.getString(id, *args)
 
+    private fun openMenu() {
+        compose.onNodeWithContentDescription(str(R.string.menu_open)).performClick()
+        compose.waitForIdle()
+    }
+
+    /** Opens the menu and picks the entry; the title bar shows the current screen's name too, so the menu entry is the last match. */
     private fun tab(id: Int) {
-        compose.onNodeWithText(str(id)).performClick()
+        openMenu()
+        compose.onAllNodesWithText(str(id)).onLast().performClick()
         compose.waitForIdle()
     }
 

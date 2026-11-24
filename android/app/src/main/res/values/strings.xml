@@ -129,7 +129,6 @@
 
     <!-- Danh mục và chi tiết sách -->
     <string name="catalog_search_label">Tên sách, tác giả, ISBN, chủ đề</string>
-    <string name="catalog_search">Tìm</string>
     <string name="catalog_empty">Không tìm thấy đầu sách nào.</string>
     <string name="catalog_available">Còn %1$d bản</string>
     <string name="catalog_all_on_loan">Đã cho mượn hết</string>
@@ -147,4 +146,10 @@
     <string name="title_reserve_done">Đã đặt trước hoặc đang mượn</string>
     <string name="checkout_sending">Đang gửi yêu cầu mượn…</string>
     <string name="catalog_empty_hint">Thử tìm bằng tên khác, hoặc bỏ bớt từ khóa.</string>
+    <!-- Menu ☰ -->
+    <string name="menu_open">Mở menu</string>
+    <string name="menu_close">Đóng menu</string>
+    <string name="checkout_pill">Chạm sách để mượn</string>
+    <string name="title_reserve_login">Đăng nhập để đặt trước</string>
+    <string name="login_title">Đăng nhập vào ShelfTap</string>
 </resources>

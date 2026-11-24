@@ -21,3 +21,9 @@ object CoverSize {
     val detailWidth = 120.dp
     val detailHeight = 180.dp
 }
+
+/** The ☰ menu panel and its glyph. */
+object MenuSize {
+    val width = 240.dp
+    val icon = 24.dp
+}

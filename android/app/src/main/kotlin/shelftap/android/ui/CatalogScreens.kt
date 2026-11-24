@@ -33,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -98,11 +99,20 @@ class CatalogViewModel(private val repo: Repository) : ViewModel() {
     }
 }
 
+private const val SEARCH_DEBOUNCE_MS = 300L
+
 @Composable
 fun CatalogScreen(onOpen: (String) -> Unit) {
     val vm = appViewModel { CatalogViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
     var input by rememberSaveable { mutableStateOf("") }
+    // Search while typing, after a pause, so a burst of keystrokes is one request; the older query is cancelled in the ViewModel.
+    LaunchedEffect(input) {
+        if (input.trim() != state.query) {
+            delay(SEARCH_DEBOUNCE_MS)
+            vm.search(input)
+        }
+    }
 
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
@@ -112,7 +122,6 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
                 keyboardActions = KeyboardActions(onSearch = { vm.search(input) }),
                 modifier = Modifier.weight(1f),
             )
-            Button(onClick = { vm.search(input) }) { Text(stringResource(R.string.catalog_search)) }
         }
         LazyColumn(Modifier.fillMaxSize()) {
             itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
@@ -191,8 +200,9 @@ class TitleViewModel(private val repo: Repository, private val titleId: String) 
     }
 }
 
+/** [onLogin] is set for a guest: reserving then asks for a login instead of calling the server. */
 @Composable
-fun TitleDetailScreen(titleId: String) {
+fun TitleDetailScreen(titleId: String, onLogin: (() -> Unit)? = null) {
     val vm = appViewModel(key = "title-$titleId") { TitleViewModel(it.repository, titleId) }
     val state by vm.state.collectAsStateWithLifecycle()
     LoadView(state.title, onRetry = vm::load, loading = { SkeletonList(rows = 1, modifier = Modifier.fillMaxSize()) }) { t ->
@@ -205,8 +215,17 @@ fun TitleDetailScreen(titleId: String) {
             Text(stringResource(R.string.title_copies, t.copiesAvailable, t.copiesTotal))
             state.message?.let { Text(it.asString()) }
             ErrorText(state.error)
-            Button(onClick = vm::reserve, enabled = !state.busy && !state.reserved) {
-                Text(stringResource(when { state.busy -> R.string.title_reserving; state.reserved -> R.string.title_reserve_done; else -> R.string.title_reserve }))
+            Button(onClick = onLogin ?: vm::reserve, enabled = onLogin != null || (!state.busy && !state.reserved)) {
+                Text(
+                    stringResource(
+                        when {
+                            onLogin != null -> R.string.title_reserve_login
+                            state.busy -> R.string.title_reserving
+                            state.reserved -> R.string.title_reserve_done
+                            else -> R.string.title_reserve
+                        },
+                    ),
+                )
             }
         }
     }
