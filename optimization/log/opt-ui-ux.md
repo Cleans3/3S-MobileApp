@@ -142,3 +142,12 @@
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn 5 trong 7 chỗ morph của §6.3 để làm trước: ☰/✕, tìm kiếm, mật khẩu, đặt trước, tự mượn. Con người chưa duyệt.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1` trên emulator: qua.
 - **Chưa làm:** morph "gia hạn" (đồng hồ → lịch có dấu tích: cần trạng thái "vừa gia hạn" sau khi server xác nhận) và "khóa sinh trắc học" (ổ khóa → mở); icon cho thanh dọc và menu cố định (mục menu vẫn chỉ có chữ); morph chiều ngược là phát ngược khung hình; chưa có cặp NFC → cảnh báo; chưa kiểm tra tầng Vừa (mờ chéo) và Nhẹ bằng công tắc ép tầng.
+
+## 2026-11-24 17:20 · Xác nhận bằng mắt trên Xiaomi Android 17: morph ☰ → ✕ và blur sau menu
+
+- **Vấn đề:** các mục "chưa nhìn thấy" ở entry §6.3, §6.5 và icon: blur sau menu và chuyển động morph (ảnh chụp của bài đo không có, vì `FLAG_SECURE`).
+- **Thay đổi:** không sửa code. Dựng server dev thật trên máy tính (`https://192.168.100.156:8443`, dữ liệu dev, chứng chỉ dev tự ký đánh dấu CA, chỉ dùng cho lần xem này; không đưa vào repo), cài bản debug trỏ tới server đó lên Xiaomi 25053RT47C (Android 17, tầng Đầy đủ). Lần đầu app không kết nối được vì chứng chỉ dev không được tin cậy (chứng chỉ lá không đánh dấu CA); sau khi tạo chứng chỉ mới có `CA:TRUE` và người dùng cài vào mục "Chứng chỉ CA" thì kết nối được.
+- **Đo trước → sau:** người dùng xem trực tiếp và nhận xét tích cực về cảm nhận cho morph ☰ → ✕ (lò xo "smooth", khoảng 0,6 s) và blur trang phía sau menu ở tầng Đầy đủ. Đây là nhận xét định tính của một người, trên một máy; không có số khung hình. **Chưa kiểm:** tầng Vừa và Nhẹ (công tắc ép tầng ở Tài khoản bản debug), các morph khác (tìm kiếm, mắt, bookmark, tự mượn), blur trên máy Android 12–16 thật (chỉ có emulator, không thấy blur), hiệu năng.
+- **AI:** Claude Code (Sonnet 5.5). AI dựng server, chẩn đoán lỗi TLS từ bảng TCP của điện thoại và log server, tạo lại chứng chỉ. Con người cài chứng chỉ, đăng nhập và đánh giá.
+- **Kiểm thử:** server dev trả 200 trên đăng nhập thử bằng tài khoản dev (trên máy tính). Chưa có test tự động cho phần này.
+- **Ghi chú cho báo cáo:** `FLAG_SECURE` làm ảnh chụp và quay màn hình đều đen, nên chuyển động chỉ đánh giá được bằng mắt hoặc camera ngoài (đúng như `ux-test.md` đã ghi). Máy chạy server dev ở phiên này dùng cơ sở dữ liệu `shelftap_bench` có sẵn của phiên đo `opt/app-catalog` (hơn 100 nghìn đầu sách).
