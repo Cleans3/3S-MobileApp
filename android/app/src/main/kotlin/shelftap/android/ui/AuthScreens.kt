@@ -125,11 +125,7 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
             value = email, onValueChange = { email = it }, label = { Text(stringResource(R.string.login_email)) }, singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), modifier = Modifier.fillMaxWidth(),
         )
-        OutlinedTextField(
-            value = password, onValueChange = { password = it }, label = { Text(stringResource(R.string.login_password)) }, singleLine = true,
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), modifier = Modifier.fillMaxWidth(),
-        )
+        PasswordField(password, { password = it }, stringResource(R.string.login_password), Modifier.fillMaxWidth())
         ErrorText(state.error)
         Button(
             onClick = { vm.login(email, password) },
@@ -239,11 +235,7 @@ fun ChangePasswordScreen(forced: Boolean, onDone: () -> Unit) {
             Triple(R.string.pw_new, new) { v: String -> new = v },
             Triple(R.string.pw_again, again) { v: String -> again = v },
         ).forEach { (label, value, set) ->
-            OutlinedTextField(
-                value = value, onValueChange = set, label = { Text(stringResource(label)) }, singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), modifier = Modifier.fillMaxWidth(),
-            )
+            PasswordField(value, set, stringResource(label), Modifier.fillMaxWidth())
         }
         if (new.isNotEmpty() && again.isNotEmpty() && new != again) Text(stringResource(R.string.pw_mismatch), color = MaterialTheme.colorScheme.error)
         ErrorText(state.error)
@@ -284,11 +276,7 @@ fun StepUpDialog(defaultEmail: String = "", onDismiss: () -> Unit, onDone: () ->
                     value = email, onValueChange = { email = it }, label = { Text(stringResource(R.string.login_email)) }, singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), modifier = Modifier.fillMaxWidth(),
                 )
-                OutlinedTextField(
-                    value = password, onValueChange = { password = it }, label = { Text(stringResource(R.string.login_password)) }, singleLine = true,
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), modifier = Modifier.fillMaxWidth(),
-                )
+                PasswordField(password, { password = it }, stringResource(R.string.login_password), Modifier.fillMaxWidth())
                 ErrorText(error)
             }
         },

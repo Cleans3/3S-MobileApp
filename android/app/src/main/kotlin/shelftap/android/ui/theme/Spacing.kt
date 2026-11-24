@@ -43,3 +43,9 @@ object AdaptiveSize {
     /** On a wide window, screens other than the catalog are not stretched past this. */
     val contentMaxWide = 720.dp
 }
+
+/** Icon sizes: next to text, and the large one that shows a result. */
+object IconSize {
+    val small = 24.dp
+    val hero = 72.dp
+}

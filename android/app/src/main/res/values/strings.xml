@@ -160,4 +160,7 @@
     <string name="catalog_pick_hint">Chọn một cuốn sách ở danh sách bên trái.</string>
     <string name="nav_go_to">Chuyển đến %1$s</string>
     <string name="checkout_pill_short">Mượn</string>
+    <string name="password_show">Hiện mật khẩu</string>
+    <string name="password_hide">Ẩn mật khẩu</string>
+    <string name="search_clear">Xóa nội dung tìm kiếm</string>
 </resources>

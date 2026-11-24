@@ -2,6 +2,8 @@ package shelftap.android.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,19 +14,31 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import shelftap.android.R
+import shelftap.android.ui.icons.LucideMorphs
+import shelftap.android.ui.icons.MorphIcon
 import shelftap.android.ui.theme.CoverSize
 import shelftap.android.ui.theme.Spacing
 
@@ -85,4 +99,33 @@ fun SkeletonList(rows: Int = 6, modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+/** A password field with a show/hide eye. The eye morphs to the crossed eye; the shown state is never saved. */
+@Composable
+fun PasswordField(value: String, onValueChange: (String) -> Unit, label: String, modifier: Modifier = Modifier) {
+    var shown by remember { mutableStateOf(false) }
+    val description = stringResource(if (shown) R.string.password_hide else R.string.password_show)
+    OutlinedTextField(
+        value = value, onValueChange = onValueChange, label = { Text(label) }, singleLine = true,
+        visualTransformation = if (shown) VisualTransformation.None else PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), modifier = modifier,
+        trailingIcon = {
+            IconButton(onClick = { shown = !shown }, modifier = Modifier.semantics { contentDescription = description }) {
+                MorphIcon(LucideMorphs.EyeToEyeOff, toEnd = shown)
+            }
+        },
+    )
+}
+
+/** The magnifier in a search field; once there is text it morphs to a cross that clears the field. */
+@Composable
+fun SearchTrailingIcon(hasText: Boolean, onClear: () -> Unit) {
+    val description = stringResource(R.string.search_clear)
+    Box(
+        Modifier.size(Spacing.touch).then(
+            if (hasText) Modifier.semantics { contentDescription = description }.clickable(role = Role.Button, onClick = onClear) else Modifier.clearAndSetSemantics {},
+        ),
+        contentAlignment = Alignment.Center,
+    ) { MorphIcon(LucideMorphs.SearchToX, toEnd = hasText) }
 }

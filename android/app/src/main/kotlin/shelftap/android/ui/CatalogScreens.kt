@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
@@ -32,6 +34,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import coil3.compose.AsyncImage
+import shelftap.android.ui.icons.LucideMorphs
+import shelftap.android.ui.icons.MorphIcon
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -120,6 +124,7 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
                 value = input, onValueChange = { input = it }, label = { Text(stringResource(R.string.catalog_search_label)) }, singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { vm.search(input) }),
+                trailingIcon = { SearchTrailingIcon(hasText = input.isNotEmpty(), onClear = { input = "" }) },
                 modifier = Modifier.weight(1f),
             )
         }
@@ -216,6 +221,9 @@ fun TitleDetailScreen(titleId: String, onLogin: (() -> Unit)? = null) {
             state.message?.let { Text(it.asString()) }
             ErrorText(state.error)
             Button(onClick = onLogin ?: vm::reserve, enabled = onLogin != null || (!state.busy && !state.reserved)) {
+                // The bookmark gets its tick only after the server confirmed (or said it was already reserved).
+                MorphIcon(LucideMorphs.BookmarkToCheck, toEnd = onLogin == null && state.reserved)
+                Spacer(Modifier.width(Spacing.s))
                 Text(
                     stringResource(
                         when {

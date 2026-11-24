@@ -57,6 +57,8 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import shelftap.android.R
+import shelftap.android.ui.icons.LucideMorphs
+import shelftap.android.ui.icons.MorphIcon
 import shelftap.android.ui.theme.EffectTier
 import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.MenuSize
@@ -90,26 +92,10 @@ fun AppTopBar(@StringRes title: Int, menuOpen: Boolean, onMenu: () -> Unit) {
     }
 }
 
-/** ☰ when closed, ✕ when open. Drawn from lines, so it needs no icon library and takes the text colour. */
+/** ☰ when closed, ✕ when open: the Lucide "menu" and "x" icons morphing with the baked spring (full tier), cross-fading (medium) or switching (light). */
 @Composable
 private fun MenuGlyph(open: Boolean) {
-    val color = LocalContentColor.current
-    val tier = LocalEffectTier.current
-    val progress by animateFloatAsState(if (open) 1f else 0f, Motion.spec(tier, Motion.GLYPH_MS), label = "menuGlyph")
-    Canvas(Modifier.size(MenuSize.icon)) {
-        val p = progress // read here, in the draw phase: the glyph redraws each frame without recomposing
-        val stroke = size.minDimension / 12f
-        val a = size.width * 0.15f
-        val b = size.width * 0.85f
-        val top = size.height * 0.25f
-        val mid = size.height * 0.5f
-        val bottom = size.height * 0.75f
-        fun line(from: Offset, to: Offset, alpha: Float = 1f) = drawLine(color, from, to, strokeWidth = stroke, cap = StrokeCap.Round, alpha = alpha)
-        // top bar becomes the "\" stroke, bottom bar the "/" stroke, the middle bar fades out
-        line(lerp(Offset(a, top), Offset(a, a), p), lerp(Offset(b, top), Offset(b, b), p))
-        line(lerp(Offset(a, bottom), Offset(a, b), p), lerp(Offset(b, bottom), Offset(b, a), p))
-        line(Offset(a, mid), Offset(b, mid), alpha = 1f - p)
-    }
+    MorphIcon(LucideMorphs.MenuToX, toEnd = open)
 }
 
 /**

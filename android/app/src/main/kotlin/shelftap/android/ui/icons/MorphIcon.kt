@@ -19,9 +19,10 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.unit.Dp
 import shelftap.android.ui.theme.EffectTier
 import shelftap.android.ui.theme.LocalEffectTier
-import shelftap.android.ui.theme.MenuSize
+import shelftap.android.ui.theme.IconSize
 import shelftap.android.ui.theme.Motion
 
 /**
@@ -54,10 +55,10 @@ private const val STROKE = 2f
 
 /** A static Lucide icon from its path data (24 x 24 grid, 2-unit round stroke). Decorative: it carries no description. */
 @Composable
-fun LucideIcon(pathData: String, modifier: Modifier = Modifier, tint: Color = LocalContentColor.current) {
+fun LucideIcon(pathData: String, modifier: Modifier = Modifier, tint: Color = LocalContentColor.current, size: Dp = IconSize.small) {
     val path = remember(pathData) { PathParser().parsePathString(pathData).toPath() }
-    Canvas(modifier.size(MenuSize.icon).clearAndSetSemantics {}) {
-        scale(size.width / GRID, size.width / GRID, pivot = Offset.Zero) {
+    Canvas(modifier.size(size).clearAndSetSemantics {}) {
+        scale(this.size.width / GRID, this.size.width / GRID, pivot = Offset.Zero) {
             drawPath(path, tint, style = Stroke(STROKE, cap = StrokeCap.Round, join = StrokeJoin.Round))
         }
     }
@@ -71,7 +72,7 @@ fun LucideIcon(pathData: String, modifier: Modifier = Modifier, tint: Color = Lo
  * The icon shows the right shape at once when it first appears; only a later change animates. Decorative: callers describe the button.
  */
 @Composable
-fun MorphIcon(spec: MorphSpec, toEnd: Boolean, modifier: Modifier = Modifier, tint: Color = LocalContentColor.current) {
+fun MorphIcon(spec: MorphSpec, toEnd: Boolean, modifier: Modifier = Modifier, tint: Color = LocalContentColor.current, size: Dp = IconSize.small) {
     val tier = LocalEffectTier.current
     val progress = remember(spec) { Animatable(if (toEnd) 1f else 0f) }
     LaunchedEffect(spec, toEnd, tier) {
@@ -85,9 +86,9 @@ fun MorphIcon(spec: MorphSpec, toEnd: Boolean, modifier: Modifier = Modifier, ti
     val frames = spec.parsed
     val buffer = remember(spec) { FloatArray(frames[0].size) }
     val path = remember { Path() }
-    Canvas(modifier.size(MenuSize.icon).clearAndSetSemantics {}) {
+    Canvas(modifier.size(size).clearAndSetSemantics {}) {
         val p = progress.value // read here, in the draw phase
-        scale(size.width / GRID, size.width / GRID, pivot = Offset.Zero) {
+        scale(this.size.width / GRID, this.size.width / GRID, pivot = Offset.Zero) {
             val stroke = Stroke(STROKE, cap = StrokeCap.Round, join = StrokeJoin.Round)
             if (tier == EffectTier.MEDIUM) {
                 drawShape(spec, frames.first(), path, tint.copy(alpha = tint.alpha * (1f - p)), stroke)

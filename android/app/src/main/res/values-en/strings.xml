@@ -160,4 +160,7 @@
     <string name="catalog_pick_hint">Pick a book from the list on the left.</string>
     <string name="nav_go_to">Go to %1$s</string>
     <string name="checkout_pill_short">Borrow</string>
+    <string name="password_show">Show password</string>
+    <string name="password_hide">Hide password</string>
+    <string name="search_clear">Clear search</string>
 </resources>

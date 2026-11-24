@@ -47,6 +47,11 @@ import shelftap.android.api.Reservation
 import shelftap.android.api.ReservationStatus
 import shelftap.android.data.Repository
 import shelftap.android.nfc.TagReader
+import shelftap.android.ui.icons.LucideIcon
+import shelftap.android.ui.icons.LucideIcons
+import shelftap.android.ui.icons.LucideMorphs
+import shelftap.android.ui.icons.MorphIcon
+import shelftap.android.ui.theme.IconSize
 import shelftap.android.ui.theme.Spacing
 import shelftap.android.ui.theme.shelfTap
 import java.time.Instant
@@ -176,6 +181,11 @@ fun CheckoutScreen() {
             verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            // The tag icon becomes a tick only after the server confirmed the loan; a refusal shows the alert icon.
+            when (state) {
+                is CheckoutViewModel.UiState.Failed -> LucideIcon(LucideIcons.CircleAlert, tint = MaterialTheme.colorScheme.error, size = IconSize.hero)
+                else -> MorphIcon(LucideMorphs.NfcToCheck, toEnd = state is CheckoutViewModel.UiState.Done, size = IconSize.hero)
+            }
             Text(stringResource(R.string.checkout_title), style = MaterialTheme.typography.headlineSmall)
             when (val s = state) {
                 CheckoutViewModel.UiState.Idle -> Text(stringResource(R.string.checkout_hold))
