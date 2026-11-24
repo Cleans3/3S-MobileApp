@@ -249,9 +249,9 @@ private fun RenewButton(title: String, renewing: Boolean, renewed: Boolean, enab
     }
     val description = stringResource(if (renewed) R.string.loans_renewed_for else R.string.loans_renew_for, title)
     Row(
-        Modifier.height(GlassSize.renewButton).pressScale(source).clip(CircleShape).background(fill)
+        Modifier.heightIn(min = GlassSize.renewButton).pressScale(source).clip(CircleShape).background(fill)
             .clickable(interactionSource = source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
-            .padding(horizontal = Spacing.l + Spacing.xs / 2)
+            .padding(horizontal = Spacing.l + Spacing.xs / 2, vertical = Spacing.s)
             // Two "Renew" buttons read the same otherwise; the outcome is announced when it changes.
             .semantics { contentDescription = description; liveRegion = LiveRegionMode.Polite },
         horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically,

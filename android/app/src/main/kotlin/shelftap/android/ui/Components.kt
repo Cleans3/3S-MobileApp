@@ -217,11 +217,11 @@ internal fun PillAction(label: String, onClick: () -> Unit, container: Color, in
     val source = remember { MutableInteractionSource() }
     val c = MaterialTheme.shelfTap
     Box(
-        Modifier.fillMaxWidth().height(height).pressScale(source).clip(CircleShape).background(if (enabled) container else c.ink.copy(alpha = OFF_FILL))
+        Modifier.fillMaxWidth().heightIn(min = height).pressScale(source).clip(CircleShape).background(if (enabled) container else c.ink.copy(alpha = OFF_FILL))
             .clickable(interactionSource = source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
             .then(if (description != null) Modifier.semantics { contentDescription = description } else Modifier),
         contentAlignment = Alignment.Center,
-    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = if (enabled) ink else c.ink2) }
+    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = if (enabled) ink else c.ink2, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s)) }
 }
 
 private const val OFF_FILL = 0.12f
@@ -242,15 +242,15 @@ fun LabeledField(
     val shape = RoundedCornerShape(Spacing.l)
     Column(modifier, verticalArrangement = Arrangement.spacedBy(Spacing.xs + Spacing.xs / 2)) {
         Text(label, style = MaterialTheme.typography.labelLarge, color = c.ink2, modifier = Modifier.clearAndSetSemantics {})
-        Box(Modifier.fillMaxWidth().height(LoginSize.field).clip(shape).background(c.surface).border(BorderStroke(Radius.hairline, c.ink.copy(alpha = FIELD_EDGE)), shape)) {
+        Box(Modifier.fillMaxWidth().heightIn(min = LoginSize.field).clip(shape).background(c.surface).border(BorderStroke(Radius.hairline, c.ink.copy(alpha = FIELD_EDGE)), shape)) {
             BasicTextField(
                 value = value, onValueChange = onValueChange, enabled = enabled, singleLine = true,
                 textStyle = MaterialTheme.typography.bodyLarge.copy(color = c.ink), cursorBrush = SolidColor(c.ink),
                 visualTransformation = if (password && !shown) PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-                modifier = Modifier.fillMaxSize().semantics { contentDescription = label },
+                modifier = Modifier.fillMaxWidth().semantics { contentDescription = label },
                 decorationBox = { inner ->
-                    Box(Modifier.fillMaxSize().padding(start = Spacing.l, end = if (password) Spacing.xl * 2 + Spacing.xs else Spacing.l), contentAlignment = Alignment.CenterStart) {
+                    Box(Modifier.fillMaxWidth().heightIn(min = LoginSize.field).padding(start = Spacing.l, end = if (password) Spacing.xl * 2 + Spacing.xs else Spacing.l), contentAlignment = Alignment.CenterStart) {
                         inner()
                         if (value.isEmpty() && placeholder != null) Text(placeholder, style = MaterialTheme.typography.bodyLarge, color = c.ink3, modifier = Modifier.clearAndSetSemantics {})
                     }

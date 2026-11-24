@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -233,12 +235,12 @@ private fun OutlinePill(
 ) {
     val source = remember { MutableInteractionSource() }
     Row(
-        modifier.height(GlassSize.renewButton).pressScale(source).clip(CircleShape).background(container)
+        modifier.heightIn(min = GlassSize.renewButton).pressScale(source).clip(CircleShape).background(container)
             .border(BorderStroke(Radius.hairline, edge), CircleShape)
             .clickable(interactionSource = source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
-            .padding(horizontal = Spacing.l),
+            .padding(horizontal = Spacing.l, vertical = Spacing.s),
         horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically,
-    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = ink) }
+    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = ink, textAlign = TextAlign.Center) }
 }
 
 /** A solid red pill (44 dp tall) for the step that cannot be taken back. */
@@ -246,9 +248,9 @@ private fun OutlinePill(
 private fun SolidPill(label: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
     val source = remember { MutableInteractionSource() }
     Row(
-        modifier.height(GlassSize.renewButton).pressScale(source).clip(CircleShape).background(dangerSolid)
+        modifier.heightIn(min = GlassSize.renewButton).pressScale(source).clip(CircleShape).background(dangerSolid)
             .clickable(interactionSource = source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
-            .padding(horizontal = Spacing.l),
+            .padding(horizontal = Spacing.l, vertical = Spacing.s),
         horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically,
-    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = Color.White) }
+    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = Color.White, textAlign = TextAlign.Center) }
 }

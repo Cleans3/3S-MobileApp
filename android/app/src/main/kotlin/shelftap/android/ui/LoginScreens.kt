@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -184,9 +185,10 @@ private fun CardButton(onClick: () -> Unit, enabled: Boolean) {
     val c = MaterialTheme.shelfTap
     val source = remember { MutableInteractionSource() }
     Row(
-        Modifier.fillMaxWidth().height(LoginSize.button).pressScale(source).clip(CircleShape).background(c.glass.copy(alpha = CARD_BUTTON_FILL))
+        Modifier.fillMaxWidth().heightIn(min = LoginSize.button).pressScale(source).clip(CircleShape).background(c.glass.copy(alpha = CARD_BUTTON_FILL))
             .border(BorderStroke(Radius.hairline, c.ink.copy(alpha = OR_RULE_ALPHA)), CircleShape)
-            .clickable(interactionSource = source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick),
+            .clickable(interactionSource = source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
+            .padding(horizontal = Spacing.l, vertical = Spacing.s),
         horizontalArrangement = Arrangement.spacedBy(Spacing.m - Spacing.xs / 2, Alignment.CenterHorizontally), verticalAlignment = Alignment.CenterVertically,
     ) {
         LucideIcon(LucideIcons.CreditCard, tint = c.ink, size = Spacing.l + Spacing.xs)

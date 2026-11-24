@@ -12,7 +12,7 @@ param(
     [Parameter(Mandatory)] [string] $Label,
     [Parameter(Mandatory)] [string] $Serial,
     # Which device configurations to run. On a physical phone use 'light','dark': font2 and w320 change the phone's font and display size.
-    [string[]] $Configs = @('light', 'dark', 'font2', 'w320', 'medium', 'expanded'),
+    [string[]] $Configs = @('light', 'dark', 'font2', 'w320', 'tall', 'land', 'medium', 'expanded'),
     # App language for the run (per-app locale, Android 13+), for example 'vi' to compare with the Vietnamese mockup. Default: leave as the device has it.
     [string] $Locale = ''
 )
@@ -52,6 +52,8 @@ foreach ($config in $Configs) {
         'font2' { Sh 'settings put system font_scale 2.0' }
         'w320'  { Sh 'wm size 560x1120' } # 320 dp x 640 dp at 280 dpi
         'medium'   { Sh 'wm size 1260x1470' } # 720 dp x 840 dp at 280 dpi: a folded-open phone, nearly square
+        'tall'  { Sh 'wm size 720x1600' } # 411 dp x 914 dp at 280 dpi: a tall 20:9 phone
+        'land'  { Sh 'wm size 1280x720' } # 731 dp x 411 dp at 280 dpi: a phone held sideways
         'expanded' { Sh 'wm size 1680x1260' } # 960 dp x 720 dp at 280 dpi: a tablet or an unfolded phone held sideways
     }
     if ($Locale) { Sh "cmd locale set-app-locales shelftap.android --locales $Locale" }
