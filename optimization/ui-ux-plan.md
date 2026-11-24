@@ -137,7 +137,7 @@ Nhóm chọn (2026-11-23) phong cách "kính mờ dần" (progressive blur) cho 
 - **Bìa chữ**: sách không có ảnh bìa (`cover_url` rỗng, như toàn bộ dữ liệu dev) hiện nền màu và tên sách thay vì ô trống.
 - **Font:** Nunito (§5.1; thay cho Be Vietnam Pro của bản phác đầu, vì Be Vietnam Pro ở độ đậm 700 trông thô ở cỡ lớn), đóng gói trong app; không tải font qua mạng lúc chạy.
 
-**Các màn (khớp với mockup):**
+**Các màn (khớp với mockup):** làm ở giai đoạn 5c (§9).
 
 | Nhóm | Màn |
 |---|---|
@@ -485,6 +485,7 @@ Thời lượng là ước lượng; nhóm chốt ngày thật.
 | 4. Làm UI | §5.1 đến §5.4, mỗi issue một commit, có log AI | Nhánh `ui-ux` | 2–3 ngày |
 | 5. Làm UX | §6.2, mỗi thay đổi một commit | Nhánh `ui-ux` | 1–2 ngày |
 | 5b. Tầng hiệu ứng và màn hình đặc biệt | §6.3 (tầng, thanh kính, icon, script morph lúc build) và §6.4 (bố cục thích ứng) | Nhánh `ui-ux` | 2–3 ngày |
+| 5c. Làm màn theo mockup | §5.5: (1) thành phần dùng chung: nền ấm chuyển màu, thẻ kính bo 22–32 dp, nút kính tròn và dạng viên thuốc, ô tìm kiếm và hàng chip như mockup, bìa chữ cho sách thiếu ảnh; (2) vẽ lại từng màn đã có theo board cùng tên, cả bản `Wide*` và `Mid*`: Danh mục (banner chủ đề, băng theo chủ đề, "Xem tất cả"), Chi tiết, Sách đang mượn, Tự mượn, Đặt trước, Lịch sử, Tài khoản, Đăng nhập, Đăng nhập bằng thẻ, Đổi mật khẩu, Khóa, Mất kết nối, Chế độ khách; (3) thêm Màn chào, Danh sách, Khởi động, Đăng nhập lại kèm lý do. Gợi ý (cả băng "Gợi ý cho bạn"), Thông báo và Tìm khi không có mạng làm khi phần phụ thuộc xong (API gợi ý, mục push ở §11, chỉ mục offline); kệ và chip chủ đề theo giới hạn API ở §5.5. Mỗi màn một commit, kèm ảnh chụp trên máy đặt cạnh board; Danh mục và Danh sách đo lại theo §7 và §8.5 trước khi sang màn khác | Các màn giống mockup, có ảnh so sánh | 3–4 ngày |
 | 6. Kiểm tra hiệu năng | Chạy lại các phép đo của `opt/app-catalog` trên Android 16 và 17 (§7); đo ma trận tầng (§8.5) và chốt ngưỡng | Không có chỉ số nào xấu đi; bảng §8.5 | 1 ngày |
 | 7. Test UX lần B | 5 người khác làm T1–T3 trên B; đo lại chỉ số UI | Bảng B | 1 ngày |
 | 8. Báo cáo | Thêm phần UI/UX vào báo cáo và slide: bảng A/B, ảnh trước/sau, log AI | Mục báo cáo | 1 ngày |

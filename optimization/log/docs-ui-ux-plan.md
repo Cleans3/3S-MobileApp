@@ -309,3 +309,11 @@
 - **Đo trước → sau:** không áp dụng. Sau khi đăng, tải về 20 file (17 màn vừa đăng, `canvas.json`, `List` và `WideLoans` để kiểm thêm) và so với `docs/ui-ux-plan`: trùng từng byte.
 - **AI:** Claude Code (Claude Opus 5.5). Số bản tăng đúng một (26 lên 27).
 - **Kiểm thử:** so hash của các file tải về với blob trên nhánh.
+
+## 2026-11-24 17:37 · Kế hoạch: thêm giai đoạn làm màn theo mockup
+
+- **Vấn đề:** người dùng thấy app trên `opt/ui-ux` chưa khớp mockup. Đọc code ở `opt/ui-ux` (`91b62c0`): màu, font Nunito, menu ☰, tầng hiệu ứng, chuyển động, bố cục theo cỡ cửa sổ và icon Lucide đã có, nhưng các màn vẫn dùng thành phần Material mặc định (ô tìm `OutlinedTextField`, Danh mục là danh sách có đường kẻ, sách thiếu ảnh để ô trống), gần như không có thẻ kính ngoài menu, và 7 màn của mockup chưa có. Nguyên nhân nằm ở kế hoạch: giai đoạn 4 ở §9 chỉ ghi §5.1–5.4, còn §5.5 (giao diện kính và các màn khớp mockup) không thuộc giai đoạn nào, nên phiên làm UI theo đúng kế hoạch vẫn bỏ qua phần này.
+- **Thay đổi:** `optimization/ui-ux-plan.md`: §9 thêm giai đoạn 5c "Làm màn theo mockup" (thành phần dùng chung, vẽ lại từng màn theo board, thêm 4 màn làm được ngay, 3 màn chờ phần phụ thuộc, ảnh so sánh và đo lại Danh mục, Danh sách); §5.5 ghi các màn làm ở giai đoạn 5c.
+- **Đo trước → sau:** không áp dụng (sửa tài liệu). So sánh code với mockup là đọc code, chưa chụp màn hình trên máy.
+- **AI:** Claude Code (Claude Opus 5.5). AI tìm ra chỗ thiếu khi so bảng giai đoạn với §5.5, đề xuất đặt sau 5b và trước 6 để giai đoạn kiểm tra hiệu năng đo trên các màn đã làm lại; người dùng đồng ý thêm và báo cho phiên làm UI.
+- **Kiểm thử:** kiểm hai chỗ sửa khớp đúng một lần trong file; xem lại bảng §9 sau khi sửa.
