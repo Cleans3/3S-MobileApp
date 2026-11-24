@@ -62,89 +62,12 @@ import shelftap.android.ui.theme.riseIn
 import shelftap.android.ui.theme.shelfTap
 import java.time.Instant
 
-/** True when the due date (ISO instant from the server) is in the past. An unreadable date is not overdue. */
-private fun isOverdue(dueAt: String): Boolean =
-    try { Instant.parse(dueAt).isBefore(Instant.now()) } catch (_: java.time.format.DateTimeParseException) { false }
-
 /** A list screen's state: the loaded list plus the outcome of the last row action. */
 data class ListState<T>(
     val list: Load<List<T>> = Load.Loading, val busyId: String? = null, val error: UiText? = null,
     /** Ids whose action the server confirmed (a loan renewed): shown with the confirmed icon. */
     val confirmed: Set<String> = emptySet(),
 )
-
-class LoansViewModel(private val repo: Repository) : ViewModel() {
-    private val _state = MutableStateFlow(ListState<Loan>())
-    val state: StateFlow<ListState<Loan>> = _state.asStateFlow()
-
-    init {
-        load()
-    }
-
-    fun load() {
-        _state.value = ListState()
-        viewModelScope.launch {
-            val list = try { Load.Ready(repo.loans()) } catch (e: ApiException) { e.toFailed() }
-            _state.update { it.copy(list = list) }
-        }
-    }
-
-    fun renew(loan: Loan) {
-        _state.update { it.copy(busyId = loan.loanId, error = null) }
-        viewModelScope.launch {
-            try {
-                val renewed = repo.renew(loan.loanId)
-                _state.update { s ->
-                    val list = (s.list as? Load.Ready)?.value?.map { if (it.loanId == renewed.loanId) renewed else it }
-                    s.copy(list = list?.let { Load.Ready(it) } ?: s.list, busyId = null, confirmed = s.confirmed + renewed.loanId)
-                }
-            } catch (e: ApiException) {
-                _state.update { it.copy(busyId = null, error = e.userMessage()) }
-            }
-        }
-    }
-}
-
-@Composable
-fun LoansScreen() {
-    val vm = appViewModel { LoansViewModel(it.repository) }
-    val state by vm.state.collectAsStateWithLifecycle()
-    LoadView(state.list, onRetry = vm::load, loading = { SkeletonList(modifier = Modifier.fillMaxSize()) }) { loans ->
-        val rise = rememberRiseIn()
-        Column(Modifier.fillMaxSize()) {
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = pagePadding()) {
-                item { ErrorText(state.error, Modifier.padding(Spacing.l)) }
-                if (loans.isEmpty()) item { EmptyState(R.string.loans_empty, R.string.loans_empty_hint, Modifier.fillParentMaxSize()) }
-                itemsIndexed(loans, key = { _, it -> it.loanId }) { index, loan ->
-                    val renewFor = stringResource(R.string.loans_renew_for, loan.title)
-                    Row(Modifier.then(itemMotion()).riseIn(index, rise).fillMaxWidth().padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
-                        Column(Modifier.weight(1f)) {
-                            Text(loan.title, style = MaterialTheme.typography.titleMedium)
-                            Text(stringResource(R.string.loans_due, formatDate(loan.dueAt), loan.renewals), style = MaterialTheme.typography.bodyMedium)
-                            // Overdue is said in words, not only by colour.
-                            if (isOverdue(loan.dueAt)) {
-                                Text(stringResource(R.string.loans_overdue), color = MaterialTheme.shelfTap.danger, style = MaterialTheme.typography.labelLarge)
-                            }
-                            if (!loan.renewable) {
-                                Text(stringResource(R.string.err_renewal_not_allowed), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
-                            }
-                        }
-                        SecondaryButton(
-                            onClick = { vm.renew(loan) }, enabled = loan.renewable && state.busyId == null,
-                            modifier = Modifier.semantics { contentDescription = renewFor }, // two "Renew" buttons read the same otherwise
-                        ) {
-                            // The clock becomes a calendar with a tick only after the server confirmed the renewal.
-                            MorphIcon(LucideMorphs.ClockToCalendarCheck, toEnd = loan.loanId in state.confirmed)
-                            Spacer(Modifier.width(Spacing.s))
-                            Text(stringResource(if (state.busyId == loan.loanId) R.string.busy_dots else R.string.loans_renew))
-                        }
-                    }
-                    HorizontalDivider()
-                }
-            }
-        }
-    }
-}
 
 class CheckoutViewModel(private val repo: Repository) : ViewModel() {
     sealed interface UiState {

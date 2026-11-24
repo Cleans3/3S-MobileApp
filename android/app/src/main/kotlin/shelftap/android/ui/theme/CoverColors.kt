@@ -26,6 +26,9 @@ val dangerSolid = Color(0xFF7A3420)
 val busyFill = Color(0xFF5C554E)
 val okFill = Color(0xFF2F5B3A)
 
+/** The edge of an overdue loan's card (a fixed orange-red in the mockup): the card also says it in words and with an icon. */
+val overdueEdge = Color(0xFFC4572E)
+
 /** The warm brown that dims the page behind the open menu (0.16 in the mockup) and the tint of the panel's shadow. */
 val menuScrim = Color(0xFF1C1610)
 val menuShadow = Color(0xFF281C12)

@@ -100,6 +100,10 @@ data class Loan(
     val renewable: Boolean,
 )
 
+/** A fine for an overdue loan; `paidAt` is null while it is unpaid. Read-only for the member (fines are settled at the desk). */
+@Serializable
+data class Fine(val fineId: String, val loanId: String, val amountVnd: Long, val paidAt: String? = null)
+
 @Serializable
 data class HistoryItem(val titleId: String, val title: String, val outAt: String, val returnedAt: String? = null)
 

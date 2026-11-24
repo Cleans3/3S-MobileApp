@@ -3,6 +3,7 @@ package shelftap.android.data
 import shelftap.android.api.ApiException
 import shelftap.android.api.ChangePasswordRequest
 import shelftap.android.api.ErrorCode
+import shelftap.android.api.Fine
 import shelftap.android.api.HistoryItem
 import shelftap.android.api.Loan
 import shelftap.android.api.LoanRequest
@@ -51,6 +52,8 @@ class Repository(private val api: ShelfTapApi, private val session: SessionManag
     suspend fun setHistoryEnabled(enabled: Boolean): Me = call { api.setPrivacy(PrivacyRequest(enabled)) }
 
     suspend fun loans(): List<Loan> = call { api.loans() }
+
+    suspend fun fines(): List<Fine> = call { api.fines() }
 
     suspend fun history(): List<HistoryItem> = call { api.history() }
 

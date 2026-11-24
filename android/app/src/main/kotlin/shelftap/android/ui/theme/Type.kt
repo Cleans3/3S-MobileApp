@@ -50,6 +50,10 @@ object ShelfTapText {
     /** The title on the book page: 28, bold. */
     val detailTitle = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 28.sp, lineHeight = 32.sp, letterSpacing = (-0.3).sp)
 
+    /** A figure on a tile: 20, bold; its label above it: 12. */
+    val statValue = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+    val statLabel = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.Medium, fontSize = 12.sp)
+
     /** The title in the middle of the catalog's top bar: 15, semibold. */
     val barTitle = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
 }

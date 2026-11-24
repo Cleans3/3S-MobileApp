@@ -68,6 +68,9 @@ object Radius {
     val tile = 14.dp
     val cover = 16.dp
     val card = 22.dp
+    /** A loan's or reservation's card (26 in the board) and a figure tile above them (20). */
+    val panel = 26.dp
+    val stat = 20.dp
     val banner = 28.dp
     val menu = 30.dp
     val hairline = 1.dp
@@ -99,6 +102,10 @@ object GlassSize {
     /** The circle that carries the NFC glyph in the floating button, and the glyph. */
     val pillCircle = 40.dp
     val pillGlyph = 20.dp
+    /** The cover on a loan's card. */
+    val loanCoverWidth = 72.dp
+    val loanCoverHeight = 104.dp
+    val renewButton = 44.dp
 }
 
 /** Sizes on the account screen, from the board. */

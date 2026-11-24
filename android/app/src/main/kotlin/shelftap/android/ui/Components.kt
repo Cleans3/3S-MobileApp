@@ -8,6 +8,12 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import shelftap.android.ui.theme.Radius
+import shelftap.android.ui.theme.ShelfTapText
+import shelftap.android.ui.theme.shelfTap
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.PaddingValues
@@ -156,6 +162,18 @@ fun SearchTrailingIcon(hasText: Boolean, onClear: () -> Unit) {
         ),
         contentAlignment = Alignment.Center,
     ) { MorphIcon(LucideMorphs.SearchToX, toEnd = hasText) }
+}
+
+/** A figure with its label above it, on a tile (the two above the loans in the board). */
+@Composable
+fun StatTile(
+    label: String, value: String, modifier: Modifier = Modifier,
+    container: Color = MaterialTheme.shelfTap.surface, labelColor: Color = MaterialTheme.shelfTap.ink3, valueColor: Color = MaterialTheme.shelfTap.ink,
+) {
+    Column(modifier.clip(RoundedCornerShape(Radius.stat)).background(container).padding(Spacing.m + Spacing.xs / 2), verticalArrangement = Arrangement.spacedBy(Spacing.xs / 2)) {
+        Text(label, style = ShelfTapText.statLabel, color = labelColor)
+        Text(value, style = ShelfTapText.statValue, color = valueColor)
+    }
 }
 
 /** The filled button of the app: shrinks a little while pressed (plan section 6.5). */

@@ -143,6 +143,20 @@
     <string name="loans_empty_hint">Borrow with Self-checkout: hold the phone against the tag inside the book.</string>
     <string name="reservations_empty_hint">Find a book in Catalog and tap Reserve.</string>
     <string name="loans_overdue">Overdue</string>
+    <string name="loans_count_label">On loan</string>
+    <string name="loans_fines_label">Unpaid fines</string>
+    <string name="loans_due_left">Due %1$s · %2$d days left</string>
+    <string name="loans_due_today">Due %1$s · due today</string>
+    <string name="loans_due_plain">Due %1$s</string>
+    <string name="loans_due_new">New due date: %1$s</string>
+    <string name="loans_overdue_fine">%1$s · fine %2$s</string>
+    <string name="loans_overdue_note">It cannot be renewed because it is overdue. Please return it and pay the fine at the desk.</string>
+    <string name="loans_renewed">Renewed</string>
+    <string name="loans_renewed_for">Renewed %1$s</string>
+    <plurals name="loans_overdue_days">
+        <item quantity="one">%1$d day overdue</item>
+        <item quantity="other">%1$d days overdue</item>
+    </plurals>
     <string name="title_reserve_done">Already reserved or on loan</string>
     <string name="checkout_sending">Sending the loan request…</string>
     <string name="catalog_empty_hint">Try another title, or fewer words.</string>
