@@ -92,10 +92,13 @@ private const val ACTIVE_PILL = 0.85f
  * The ☰ panel's glass: 0.62 in the mockup; 0.70 here, so the worst case behind it (a white page under the dark theme's smoky glass,
  * a black one under the white glass) still gives the text 4.5:1 once the page is blurred. The light tier has no blur and a solid panel.
  */
-private const val MENU_FILL = 0.97f
+private const val MENU_FILL = 0.72f
 
 /** The rail and the side menu have nothing scrolling behind them, so no blur is needed: the mockup's 0.62. */
 private const val NAV_FILL = 0.62f
+
+/** The chosen entry of the panel is the ink at this strength: the panel is nearly solid, so a lighter pill would not show on it (light or dark). */
+private const val SELECTED_TINT = 0.10f
 
 /** The edge of the glass: 0.85 in the mockup. */
 private const val MENU_EDGE = 0.85f
@@ -192,11 +195,11 @@ private fun MenuGlyph(open: Boolean) {
  * The menu panel under the ☰ button, over a page that is blurred and dimmed as a whole. Closes on a tap outside, the back gesture, or a choice.
  * Everything comes in at once and by the same amount: [open] runs from 0 (shut) to 1 (open) and is driven by [MenuLayer], which also drives
  * it back to 0 for the exit. The dimming fades over the whole screen (the page's blur, in [MainNav], runs with it), and the panel fades in
- * where it stands with a small rise; no rectangle grows from a corner and nothing is scaled. With [glass] (the blur tiers) the panel is
- * translucent glass over the blurred page, else solid. [interactive] is false while the menu is closing.
+ * where it stands with a small rise; no rectangle grows from a corner and nothing is scaled. With [backdrop] (the blur tiers) the panel is
+ * translucent glass with a blur of its own over the blurred page, else solid. [interactive] is false while the menu is closing.
  */
 @Composable
-fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, open: () -> Float, panel: () -> Float, interactive: Boolean, onSelect: (String) -> Unit, onDismiss: () -> Unit) {
+fun MenuOverlay(items: List<MenuItem>, current: String?, backdrop: BackdropState?, open: () -> Float, panel: () -> Float, interactive: Boolean, onSelect: (String) -> Unit, onDismiss: () -> Unit) {
     BackHandler(enabled = interactive, onBack = onDismiss)
     Box(Modifier.fillMaxSize()) {
         Box(
@@ -208,6 +211,7 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, open: (
         val shape = RoundedCornerShape(Radius.menu)
         val c = MaterialTheme.shelfTap
         val risePx = with(LocalDensity.current) { MenuSize.rise.toPx() }
+        val blurPx = with(LocalDensity.current) { MenuSize.backdropBlur.toPx() }
         Box(
             modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(start = Spacing.l, top = Spacing.touch + Spacing.s)
                 .graphicsLayer {
@@ -223,7 +227,10 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, open: (
                 .width(MenuSize.width)
                 .shadow(MenuSize.shadow, shape, ambientColor = menuShadow, spotColor = menuShadow)
                 .clip(shape)
-                .background(if (glass) c.glass.copy(alpha = MENU_FILL) else MaterialTheme.colorScheme.surfaceContainerHigh)
+                // The glass: the page right behind the panel, blurred hard and made more vivid, so what lies under it is only colour that melts
+                // into the next (a book's cover is not a shape you can make out). The panel stays where it is: it is not scaled.
+                .then(if (backdrop != null) Modifier.backdropBlur(backdrop, blurPx, BACKDROP_SATURATION, menuScrim.copy(alpha = SCRIM_ALPHA)) else Modifier)
+                .background(if (backdrop != null) c.glass.copy(alpha = MENU_FILL) else MaterialTheme.colorScheme.surfaceContainerHigh)
                 .border(BorderStroke(Radius.hairline, c.edge.copy(alpha = MENU_EDGE)), shape),
         ) {
             Column(Modifier.selectableGroup().padding(Spacing.s)) {
@@ -232,7 +239,7 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, open: (
                     val shape = RoundedCornerShape(Spacing.m)
                     Row(
                         Modifier.fillMaxWidth().heightIn(min = Spacing.touch).clip(shape)
-                            .background(if (selected) MaterialTheme.shelfTap.glass.copy(alpha = ACTIVE_PILL) else Color.Transparent)
+                            .background(if (selected) MaterialTheme.shelfTap.ink.copy(alpha = SELECTED_TINT) else Color.Transparent)
                             .selectable(selected = selected, role = Role.Tab, onClick = { onSelect(item.route) })
                             .padding(horizontal = Spacing.s),
                         verticalAlignment = Alignment.CenterVertically,

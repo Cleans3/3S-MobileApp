@@ -220,6 +220,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     val tier = LocalEffectTier.current
     val glass = tier != EffectTier.LIGHT
     val blurPx = with(LocalDensity.current) { MenuSize.pageBlur.toPx() }
+    val backdrop = rememberBackdrop()
     val overlayOpen = menuOpen && compact // a window that grew past the compact size has no ☰ menu to keep open
     // The whole page blurs and clears with the menu, all at once and by one value (the panel has no blur of its own).
     val pageBlur by animateFloatAsState(if (glass && overlayOpen) 1f else 0f, Motion.spec(tier, Motion.MENU_MS), label = "page blur")
@@ -235,6 +236,8 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
         NavLayout.SIDE -> if (route == CATALOG) Dp.Unspecified else AdaptiveSize.contentMaxWide
     }
 
+    // The page is recorded for the panel's own blur only while the menu is open.
+    backdrop.enabled = glass && overlayOpen
     Row(Modifier.fillMaxSize()) {
         if (!compact) {
             SideNav(
@@ -285,6 +288,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                         // The page is blurred lightly (the mockup's 3 px) and records itself for the strong blur right behind the panel.
                         // Both read their flag in the draw phase and cost nothing while the menu is shut.
                         .graphicsLayer { if (pageBlur > 0.01f) renderEffect = BlurEffect(blurPx * pageBlur, blurPx * pageBlur, TileMode.Clamp) }
+                        .then(if (glass) Modifier.recordBackdrop(backdrop) else Modifier)
                         .then(if (overlayOpen) Modifier.clearAndSetSemantics {} else Modifier),
                     contentAlignment = Alignment.TopCenter,
                 ) {
@@ -356,7 +360,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                 }
             }
             MenuLayer(
-                visible = overlayOpen, tier = tier, items = items, current = route, glass = glass,
+                visible = overlayOpen, tier = tier, items = items, current = route, backdrop = if (glass) backdrop else null,
                 onSelect = { menuOpen = false; nav.goTo(it) }, onDismiss = { menuOpen = false },
             )
         }
@@ -369,7 +373,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
  */
 @Composable
 private fun MenuLayer(
-    visible: Boolean, tier: EffectTier, items: List<MenuItem>, current: String?, glass: Boolean, onSelect: (String) -> Unit, onDismiss: () -> Unit,
+    visible: Boolean, tier: EffectTier, items: List<MenuItem>, current: String?, backdrop: BackdropState?, onSelect: (String) -> Unit, onDismiss: () -> Unit,
 ) {
     // One value runs the panel and the dimming: up to 1 when the menu opens, back to 0 when it closes (at once on the
     // light tier). The overlay stays composed while it runs down, so the exit is the opening played backwards, with nothing scaled.
@@ -378,7 +382,7 @@ private fun MenuLayer(
     LaunchedEffect(visible, tier) { open.animateTo(if (visible) 1f else 0f, Motion.spec(tier, if (visible) Motion.MENU_MS else Motion.MENU_EXIT_MS)) }
     LaunchedEffect(visible, tier) { panel.animateTo(if (visible) 1f else 0f, Motion.spec(tier, if (visible) Motion.PANEL_IN_MS else Motion.PANEL_OUT_MS)) }
     if (visible || open.value > 0f || panel.value > 0f) {
-        MenuOverlay(items, current = current, glass = glass, open = { open.value }, panel = { panel.value }, interactive = visible, onSelect = onSelect, onDismiss = onDismiss)
+        MenuOverlay(items, current = current, backdrop = backdrop, open = { open.value }, panel = { panel.value }, interactive = visible, onSelect = onSelect, onDismiss = onDismiss)
     }
 }
 
