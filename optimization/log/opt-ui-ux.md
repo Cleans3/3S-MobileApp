@@ -514,3 +514,11 @@
 - **Đo trước → sau:** chưa có ảnh trước/sau cho lỗi này (ảnh khung của emulator, vốn có đủ thời gian để lộ lỗi, chỉ chụp ở các mốc 30, 80, 130 ms và lỗi nằm trong 90 ms đầu; ảnh 80 ms sau thay đổi trước đã không thấy bảng). Build `measure` mới đã cài lên Xiaomi để người dùng xem. **Chưa đo/kiểm:** xác nhận trên máy thật; ảnh khung đóng ở các mốc dày hơn (10, 20, 40, 60 ms) để thấy đúng lỗi này; chi phí khung của việc ghi trang trong lúc đóng (vài chục ms thêm, không đo).
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI tìm ra nguyên nhân bằng cách đọc `BackdropBlur.kt` sau khi người dùng nói lỗi còn lúc đóng; con người chưa xác nhận lỗi đã hết.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin assembleMeasure`: qua.
+
+## 2026-11-25 20:05 · Script đo không để máy mất hiệu ứng (nguồn: yêu cầu của người dùng)
+
+- **Vấn đề:** phép đo `-Tier light` đặt `animator_duration_scale`, `transition_animation_scale`, `window_animation_scale` về 0 trên máy Xiaomi (app chọn tầng nhẹ khi tắt hoạt ảnh); mình dừng phép đo giữa chừng nên bước khôi phục không chạy, máy ở nguyên trạng thái đó, nên app mất mọi chuyển động. Lỗi của mình: dừng một phép đo đang đổi cài đặt hệ thống mà không kiểm trả lại.
+- **Thay đổi:** đã khôi phục ba giá trị về 1,0 trên máy (xác nhận bằng `settings get`) và mở lại app; `measure.ps1` lưu giá trị gốc của máy và khôi phục đúng giá trị đó trong `finally`; README ghi cách khôi phục bằng tay nếu bị dừng từ bên ngoài.
+- **Đo trước → sau:** ba thang 0 → 1,0 trên Xiaomi. **Chưa đo/kiểm:** người dùng chưa xác nhận chuyển động đã trở lại; máy chưa có giá trị gốc khác 1,0 nên chưa thử nhánh khôi phục giá trị khác 1; không thể tự khôi phục nếu tiến trình bị giết từ ngoài (đã ghi vào README).
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI tự tìm ra nguyên nhân khi kiểm cài đặt trên máy.
+- **Kiểm thử:** đọc lại cài đặt trên máy sau khi khôi phục.

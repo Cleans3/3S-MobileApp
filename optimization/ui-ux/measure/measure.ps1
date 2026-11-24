@@ -128,7 +128,15 @@ $tsv = Join-Path $Out 'results.tsv'
 $device = (Sh 'getprop ro.product.model').Trim() + ' / Android ' + (Sh 'getprop ro.build.version.release').Trim()
 Write-Host "device: $device; tier: $Tier; rounds: $Rounds; builds: $($builds.Label -join ', ')"
 
-if ($Tier -eq 'light') { foreach ($k in 'animator_duration_scale', 'transition_animation_scale', 'window_animation_scale') { Sh "settings put global $k 0" | Out-Null } }
+# -Tier light turns the system animations off; the phone's own values are kept and put back afterwards (also if the script fails). If the
+# script is killed from outside, nothing can put them back: run `adb shell settings put global animator_duration_scale 1.0` (and
+# transition_animation_scale, window_animation_scale) by hand, or the app will stay in its light tier with no motion.
+$animKeys = 'animator_duration_scale', 'transition_animation_scale', 'window_animation_scale'
+$animOriginal = @{}
+if ($Tier -eq 'light') {
+    foreach ($k in $animKeys) { $v = (Sh "settings get global $k").Trim(); $animOriginal[$k] = if ($v -and $v -ne 'null') { $v } else { '1.0' } }
+    foreach ($k in $animKeys) { Sh "settings put global $k 0" | Out-Null }
+}
 try {
     for ($round = 1; $round -le $Rounds; $round++) {
         # The order swaps each round, so no build always runs first (cold) or last (warm).
@@ -155,7 +163,7 @@ try {
         }
     }
 } finally {
-    if ($Tier -eq 'light') { foreach ($k in 'animator_duration_scale', 'transition_animation_scale', 'window_animation_scale') { Sh "settings put global $k 1" | Out-Null } }
+    if ($Tier -eq 'light') { foreach ($k in $animKeys) { Sh "settings put global $k $($animOriginal[$k])" | Out-Null } }
 }
 
 # Summary: the median and the range of each build, and whether two builds' ranges overlap.

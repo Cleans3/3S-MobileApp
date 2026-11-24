@@ -43,6 +43,16 @@
 - Nêu số lượt (`runs`) bên cạnh số: 5 lượt vẫn là mẫu nhỏ.
 - Số trên emulator chỉ để so sánh giữa các bản, vì emulator vẽ GPU bằng phần mềm (§8.5).
 
+## Nếu script bị dừng giữa chừng ở `-Tier light`
+
+`-Tier light` đặt ba thang hoạt ảnh hệ thống về 0 và khôi phục khi kết thúc (cả khi lỗi). Nếu bị dừng từ bên ngoài thì không khôi phục được, và app sẽ ở tầng nhẹ, không có chuyển động. Khôi phục bằng tay:
+
+```
+adb shell settings put global animator_duration_scale 1.0
+adb shell settings put global transition_animation_scale 1.0
+adb shell settings put global window_animation_scale 1.0
+```
+
 ## Giới hạn
 
 - Script chỉ chạy kịch bản bằng cách chạm và vuốt từ `adb`; cử chỉ back, chuyển cảnh nhiều bước và ảnh bìa thật chưa có kịch bản.
