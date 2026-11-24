@@ -4,6 +4,8 @@ import android.nfc.Tag
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -65,7 +67,11 @@ private fun isOverdue(dueAt: String): Boolean =
     try { Instant.parse(dueAt).isBefore(Instant.now()) } catch (_: java.time.format.DateTimeParseException) { false }
 
 /** A list screen's state: the loaded list plus the outcome of the last row action. */
-data class ListState<T>(val list: Load<List<T>> = Load.Loading, val busyId: String? = null, val error: UiText? = null)
+data class ListState<T>(
+    val list: Load<List<T>> = Load.Loading, val busyId: String? = null, val error: UiText? = null,
+    /** Ids whose action the server confirmed (a loan renewed): shown with the confirmed icon. */
+    val confirmed: Set<String> = emptySet(),
+)
 
 class LoansViewModel(private val repo: Repository) : ViewModel() {
     private val _state = MutableStateFlow(ListState<Loan>())
@@ -90,7 +96,7 @@ class LoansViewModel(private val repo: Repository) : ViewModel() {
                 val renewed = repo.renew(loan.loanId)
                 _state.update { s ->
                     val list = (s.list as? Load.Ready)?.value?.map { if (it.loanId == renewed.loanId) renewed else it }
-                    s.copy(list = list?.let { Load.Ready(it) } ?: s.list, busyId = null)
+                    s.copy(list = list?.let { Load.Ready(it) } ?: s.list, busyId = null, confirmed = s.confirmed + renewed.loanId)
                 }
             } catch (e: ApiException) {
                 _state.update { it.copy(busyId = null, error = e.userMessage()) }
@@ -127,6 +133,9 @@ fun LoansScreen() {
                             onClick = { vm.renew(loan) }, enabled = loan.renewable && state.busyId == null,
                             modifier = Modifier.semantics { contentDescription = renewFor }, // two "Renew" buttons read the same otherwise
                         ) {
+                            // The clock becomes a calendar with a tick only after the server confirmed the renewal.
+                            MorphIcon(LucideMorphs.ClockToCalendarCheck, toEnd = loan.loanId in state.confirmed)
+                            Spacer(Modifier.width(Spacing.s))
                             Text(stringResource(if (state.busyId == loan.loanId) R.string.busy_dots else R.string.loans_renew))
                         }
                     }
@@ -187,10 +196,11 @@ fun CheckoutScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // The tag icon becomes a tick only after the server confirmed the loan; a refusal shows the alert icon.
-            when (state) {
-                is CheckoutViewModel.UiState.Failed -> LucideIcon(LucideIcons.CircleAlert, tint = MaterialTheme.colorScheme.error, size = IconSize.hero)
-                else -> MorphIcon(LucideMorphs.NfcToCheck, toEnd = state is CheckoutViewModel.UiState.Done, size = IconSize.hero)
-            }
+            NfcStage(
+                waiting = state is CheckoutViewModel.UiState.Idle,
+                done = state is CheckoutViewModel.UiState.Done,
+                failed = state is CheckoutViewModel.UiState.Failed,
+            )
             Text(stringResource(R.string.checkout_title), style = MaterialTheme.typography.headlineSmall)
             when (val s = state) {
                 CheckoutViewModel.UiState.Idle -> Text(stringResource(R.string.checkout_hold))
