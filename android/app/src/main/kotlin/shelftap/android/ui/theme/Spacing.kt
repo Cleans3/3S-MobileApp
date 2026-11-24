@@ -31,7 +31,7 @@ object MenuSize {
     val width = 240.dp
     val icon = 24.dp
     /** The soft shadow under the panel (the mockup: 0 24px 60px). */
-    val shadow = 24.dp
+    val shadow = 16.dp
     /** The blur of the page right behind the panel, and of the whole page behind the scrim (CSS blur(26px) and blur(3px)). */
     val backdropBlur = 26.dp
     val pageBlur = 3.dp

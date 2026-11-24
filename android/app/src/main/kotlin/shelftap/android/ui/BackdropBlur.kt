@@ -70,14 +70,15 @@ private fun glassEffect(blurPx: Float, saturation: Float): androidx.compose.ui.g
 @Composable
 fun Modifier.backdropBlur(state: BackdropState, blurPx: Float, saturation: Float, scrim: Color): Modifier {
     val layer = rememberGraphicsLayer()
-    var panelOrigin by remember { mutableStateOf(Offset.Zero) }
+    var panelOrigin by remember { mutableStateOf<Offset?>(null) } // unknown until the panel is placed: nothing is drawn before that
     return this
         .onGloballyPositioned { panelOrigin = it.positionInWindow() }
         .drawBehind {
-            if (android.os.Build.VERSION.SDK_INT >= 31) {
+            val origin = panelOrigin
+            if (android.os.Build.VERSION.SDK_INT >= 31 && origin != null) {
                 layer.renderEffect = glassEffect(blurPx, saturation)
                 layer.record(size = IntSize(size.width.toInt(), size.height.toInt())) {
-                    val shift = state.pageOrigin - panelOrigin
+                    val shift = state.pageOrigin - origin
                     translate(shift.x, shift.y) { drawLayer(state.pageLayer) }
                     drawRect(scrim)
                 }

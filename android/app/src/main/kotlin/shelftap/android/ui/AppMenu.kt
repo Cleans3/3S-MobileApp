@@ -53,6 +53,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.lerp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
@@ -180,6 +181,9 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, backdrop: BackdropState
                 .graphicsLayer {
                     val p = enter.value
                     alpha = p
+                    // Alpha is applied to each thing drawn, not to an off-screen copy of the panel: that copy ended at the panel's rectangle and
+                    // cut the shadow there, which showed as a dark square around the panel while it faded in.
+                    compositingStrategy = CompositingStrategy.ModulateAlpha
                     scaleX = MENU_START_SCALE + (1f - MENU_START_SCALE) * p
                     scaleY = scaleX
                     transformOrigin = TransformOrigin(0f, 0f) // grows from the ☰ corner
