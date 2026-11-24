@@ -18,6 +18,8 @@ a{color:var(--ink)}a:hover{opacity:.85}
 @keyframes st-swapin{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
 @keyframes st-pop{0%{opacity:0;scale:.6}70%{opacity:1;scale:1.06}100%{opacity:1;scale:1}}
 @keyframes st-draw{to{stroke-dashoffset:0}}
+@keyframes st-xa{from{opacity:0}to{opacity:1}}
+@keyframes st-xb{from{opacity:0}to{opacity:1}}
 .st-row{animation:st-rise 320ms cubic-bezier(.2,.8,.2,1) both}
 .st-item{animation:st-item 240ms cubic-bezier(.2,.8,.2,1) both}
 .st-detail{animation:st-swapin 260ms cubic-bezier(.2,.8,.2,1) both}
@@ -27,9 +29,10 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-swap{transition:background-color 220ms ease,color 220ms ease}
 .st-chip{transition:background-color 180ms ease,color 180ms ease,transform 120ms ease}
 .st-chip:active{transform:scale(0.96)}
-.st-pick{transition:background-color 180ms ease}
+.st-pick{transition:background-color 180ms ease,scale 120ms ease}.st-pick:active{scale:.98}
 @media (prefers-reduced-motion: reduce){
   .st-row,.st-item,.st-detail,.st-pop{animation:none}
+  .st-detail{animation:none !important}
   .st-draw{animation:none;stroke-dashoffset:0}
   .st-press,.st-swap,.st-chip,.st-pick{transition:none}
 }
@@ -132,7 +135,7 @@ div.st-root{container-type:size}
   <!-- 3. Detail pane: shows the book picked in the list, no page change -->
   <section aria-label="Chi tiết sách" class="st-pane" style="position: absolute; left: 584px; right: 16px; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
     <sc-if value="{{hasSel}}" hint-placeholder-val="{{ true }}">
-      <div class="st-scroll st-detail" style="position: absolute; inset: 0; padding: 12px 20px 96px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 16px">
+      <div class="st-scroll st-detail" style="animation: {{detailAnim}}; position: absolute; inset: 0; padding: 12px 20px 96px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 16px">
         <div style="display: flex; align-items: center; gap: 8px; height: 48px">
           <div style="flex: 1; font-size: 13px; font-weight: 600; color: var(--ink3)">Chi tiết sách</div>
           <button type="button" aria-label="Chia sẻ" style="width: 48px; height: 48px; flex: none; border-radius: 999px; border: 1px solid rgba(var(--edge),0.8); background:  rgba(var(--glass),0.6); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
@@ -217,7 +220,9 @@ class Component extends DCLogic {
       navMode: mini ? 'mini' : 'full',
       navOpen: !mini,
       navToggleLabel: mini ? 'Mở rộng menu' : 'Thu gọn menu',
-      toggleNav: function () { self.setState({ navMini: !mini }); }
+      toggleNav: function () { self.setState({ navMini: !mini }); },
+      // picking another book fades the detail in again: the animation name alternates so it replays
+      detailAnim: ((this.state && this.state.swapN) % 2 ? 'st-xb' : 'st-xa') + ' 150ms ease-out both'
     };
   }
   renderVals() {
@@ -297,7 +302,7 @@ class Component extends DCLogic {
         return {
           title: b.t, author: b.a, shelf: b.shelf, mono: mono(b.t),
           current: on ? 'true' : 'false',
-          pick: function () { self.setState({ sel: b.isbn, phase: 'idle' }); },
+          pick: function () { self.setState({ sel: b.isbn, phase: 'idle', swapN: (st.swapN || 0) + 1 }); },
           status: lent ? 'Đang được mượn · đặt trước' : 'Còn ' + b.n + ' bản',
           delay: 'animation-delay:' + Math.min(i, 8) * 40 + 'ms',
           style: 'width:100%;display:flex;gap:12px;align-items:center;padding:10px;border-radius:20px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;min-height:48px;border:1px solid ' + (on ? 'rgba(var(--ink-rgb),0.5)' : 'transparent') + ';background:' + (on ? 'var(--surface)' : 'rgba(var(--glass),0.72)'),

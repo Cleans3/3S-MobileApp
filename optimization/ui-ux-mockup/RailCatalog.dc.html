@@ -19,9 +19,11 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-item{animation:st-item 240ms cubic-bezier(.2,.8,.2,1) both}
 .st-press{transition:transform 120ms ease}
 .st-press:active{transform:scale(0.96)}
+/* book cards shrink a little while pressed; scale is its own property, so it does not fight the rise animation */
+.st-card{transition:scale 120ms ease}.st-card:active{scale:.96}
 @media (prefers-reduced-motion: reduce){
   .st-rise,.st-item{animation:none}
-  .st-press{transition:none}
+  .st-press,.st-card{transition:none}
 }
 .st-root{--bg:#ece7e1;--bg-rgb:236,231,225;--bg2:#d9d1c6;--surface:#ffffff;--glass:255,255,255;--edge:255,255,255;--ink:#1c1b1a;--ink-rgb:28,27,26;--ink2:#3d3833;--ink2b:#4a4540;--ink3:#5c554e;--primary:#1c1b1a;--on-primary:#ffffff;--ok:#2f5b3a;--danger:#7a3420;--danger2:#8a2f1b;--warn:#6b4a10;--warn2:#6b5220;--warn3:#8a6a2a;--warn-bg:#fff4dc;--danger-bg:#f6e4dc;--dialog:#f4f1ec;}
 .st-root[data-theme="dark"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}
@@ -57,7 +59,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
       </div>
       <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
         <sc-for list="{{recs}}" as="r" hint-placeholder-count="4">
-          <a href="MidCatalog.dc.html" class="st-rise" style="{{r.wrapStyle}}">
+          <a href="MidCatalog.dc.html" class="st-rise st-card" style="{{r.wrapStyle}}">
             <div aria-hidden="true" style="{{r.coverStyle}}">{{r.title}}</div>
             <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{r.title}}.</span>
             <div style="font-size: 12px; font-weight: 700; line-height: 1.35; color: var(--warn2)">{{r.reason}}</div>
@@ -75,7 +77,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
       <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
         <sc-for list="{{rows}}" as="b" hint-placeholder-count="6">
           <li class="st-rise" style="{{b.delay}}">
-            <a href="MidCatalog.dc.html" style="display: flex; gap: 12px; align-items: center; padding: 10px; border-radius: 20px; background:  rgba(var(--glass),0.72); text-decoration: none; color: var(--ink); min-height: 48px; height: 100%; box-sizing: border-box">
+            <a href="MidCatalog.dc.html" class="st-card" style="display: flex; gap: 12px; align-items: center; padding: 10px; border-radius: 20px; background:  rgba(var(--glass),0.72); text-decoration: none; color: var(--ink); min-height: 48px; height: 100%; box-sizing: border-box">
               <div aria-hidden="true" style="{{b.cover}}">{{b.mono}}</div>
               <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
                 <div style="font-size: 15px; font-weight: 700; line-height: 1.25">{{b.title}}</div>

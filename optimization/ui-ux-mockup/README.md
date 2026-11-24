@@ -179,6 +179,8 @@ Máy gập mở gần vuông và tablet nhỏ cầm dọc. Theo Material 3, cỡ
 - **Rộng tối đa 528 dp, canh giữa**, để dòng chữ không quá khoảng 80 ký tự khi cửa sổ gần 840 dp.
 - **Màn không có danh sách** (Tự mượn, Đăng nhập, Khởi động và các trạng thái) xếp hai cột của màn rộng thành trên dưới.
 
+**Chuyển khung (kế hoạch §6.5, "Thẻ và chuyển trang").** Ở cửa sổ vừa, chọn một mục thì khung chi tiết trượt vào từ phải 30 dp và hiện dần (300 ms); bấm "Quay lại danh sách" thì danh sách trượt vào từ trái, các hàng không trồi lên lại. Ở cửa sổ rộng, chọn mục khác thì nội dung khung chi tiết hiện dần lại (150 ms). Mockup chỉ làm phần khung mới đi vào, không làm phần khung cũ đi ra. Hiệu ứng chỉ đổi `transform` và `opacity`, đặt bằng `animation` trong style; tên keyframe đổi luân phiên (`st-xa`, `st-xb`) để hiệu ứng chạy lại mà không phải dựng lại khung. Nhấn hàng trong danh sách thì hàng co 0.98; thẻ sách ở `RailCatalog` co 0.96. Máy bật giảm chuyển động thì không có các hiệu ứng này. Chuyển giữa các màn (ví dụ Danh mục sang Chi tiết trên điện thoại) không vẽ được vì mỗi màn là một bảng riêng.
+
 `MidCatalog` là bản cỡ vừa của danh sách và chi tiết sách; `RailCatalog` vẫn là trang đầu danh mục, nay trỏ sang các màn `Mid*`.
 
 | Biến thể | Màn rộng | Lỗi vỡ | Dòng quá 80 ký tự hoặc khối kéo giãn |

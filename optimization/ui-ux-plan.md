@@ -359,7 +359,7 @@ Tầng Vừa có đủ các hiệu ứng trên, chỉ khác là không blur (§6
 
 **Đường cong:** vào màn và mở bảng dùng đường cong giảm tốc (gần `cubic-bezier(0.2, 0.8, 0.2, 1)` trong mockup). Nếu bản Material 3 nhóm dùng có sẵn bộ token chuyển động thì dùng token đó thay cho số tự đặt.
 
-**Thẻ và chuyển trang.** App hiện dùng chuyển cảnh mặc định của `NavHost` (`ui/AppRoot.kt`). Mockup chưa có chuyển trang vì mỗi màn là một bảng riêng. Cách chuyển theo kiểu của Material motion:
+**Thẻ và chuyển trang.** App hiện dùng chuyển cảnh mặc định của `NavHost` (`ui/AppRoot.kt`). Mockup có chuyển khung trong cùng một bảng (danh sách ↔ chi tiết ở cửa sổ vừa, đổi sách ở cửa sổ rộng) và hiệu ứng nhấn thẻ; chuyển giữa các màn thì không vẽ được vì mỗi màn là một bảng riêng. Cách chuyển theo kiểu của Material motion:
 
 | Chuyển | Hiệu ứng | Thời lượng | Tầng Nhẹ |
 |---|---|---|---|
@@ -368,7 +368,7 @@ Tầng Vừa có đủ các hiệu ứng trên, chỉ khác là không blur (§6
 | Thẻ sách → Chi tiết | Bìa và tên sách bay từ thẻ sang chỗ của chúng ở Chi tiết (shared element); phần còn lại hiện dần | khoảng 300–350 ms | Mờ dần 150 ms |
 | Cửa sổ vừa: danh sách ↔ chi tiết | Trượt ngang 30 dp kèm mờ dần trong khung nội dung; thanh dọc đứng yên | khoảng 300 ms | Đổi ngay |
 | Cửa sổ rộng: chọn sách khác | Chỉ nội dung khung chi tiết mờ chéo (crossfade); danh sách và khung đứng yên | 150 ms | Đổi ngay |
-| Nhấn thẻ | Co 0.96 (như nút) | 120 ms | Không co |
+| Nhấn thẻ | Thẻ co 0.96 (như nút); hàng rộng hết khung co 0.98 cho đỡ giật | 120 ms | Không co |
 
 Hệ số hoạt ảnh của máy bằng 0 thì mọi chuyển cảnh đổi ngay. "Quay lại dự đoán" là cử chỉ của hệ thống, nên ở mọi tầng màn vẫn đi theo tay người dùng.
 

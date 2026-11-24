@@ -255,3 +255,14 @@
 - **Đo trước → sau:** chưa đo; đây là kế hoạch. Phép đo nằm ở §8.5.
 - **AI:** Claude Code (Claude Opus 5.5). AI đọc §6.3, §6.5, §7, §8.5 và `ui/AppRoot.kt`, rồi đề xuất các quy tắc trên. Tên API lấy theo trí nhớ, đã ghi trong kế hoạch là cần đối chiếu tài liệu. "Tắt blur trong lúc chuyển" là giả thuyết, chỉ giữ nếu số đo cho thấy có lợi.
 - **Kiểm thử:** không áp dụng (chỉ sửa tài liệu); kiểm diff chỉ chạm §6.5 và §8.5.
+
+## 2026-11-24 09:41 · Chuyển khung và nhấn thẻ trong mockup
+
+- **Vấn đề:** người dùng chọn vẽ vào mockup cho phần chuyển trang ở §6.5. Trước đó, màn rộng chỉ cho khung chi tiết hiện dần một lần lúc mở màn, chọn mục khác thì không có hiệu ứng; màn cỡ vừa quay lại danh sách thì danh sách chỉ hiện dần và các hàng trồi lên lại.
+- **Thay đổi:**
+  - `tools/wide-boards/shell.js`: ở cửa sổ vừa, khung chi tiết trượt vào từ phải 30 dp và hiện dần (300 ms); quay lại thì danh sách trượt vào từ trái và các hàng không trồi lên lại. Ở cửa sổ rộng, chọn mục khác thì nội dung chi tiết hiện dần lại (150 ms): tên keyframe đổi luân phiên để hiệu ứng chạy lại mà không phải dựng lại khung. Nhấn hàng thì hàng co 0.98. Giảm chuyển động thì tắt hết (`!important` vì hiệu ứng đặt trong style).
+  - `boards2.js` (Tài khoản), `WideCatalog` sửa tay theo cùng cách; `RailCatalog`: thẻ sách co 0.96 khi nhấn (dùng thuộc tính `scale` riêng để không đè hiệu ứng trồi lên).
+  - Sinh lại 21 màn `Wide*` và `Mid*`. README mockup và kế hoạch §6.5 ghi phần mockup đã có; bảng §6.5 thêm "hàng rộng hết khung co 0.98".
+- **Đo trước → sau:** 23 màn rộng và vừa vẫn 0 lỗi bố cục ở cả 7 biến thể có màn lớn; tương phản chữ 1212 đoạn mỗi theme, chỉ 5 lỗi cũ; icon và viền bắt buộc 67, 1 lỗi cũ; 455 nút, 0 có vùng chạm dưới 48 px; script của 43 màn chạy không lỗi. Thử trong trình duyệt: đổi tên keyframe trong style thì trình duyệt tạo hiệu ứng mới và chạy lại từ đầu.
+- **AI:** Claude Code (Claude Opus 5.5). AI chọn đổi tên keyframe luân phiên thay cho dựng lại khung, vì dựng lại khung tốn hơn và làm mất vị trí cuộn; đây cũng là ý của quy tắc "không đổi bố cục khi chuyển" trong §6.5. Mockup chỉ làm phần khung mới đi vào. AI ghi nhận thêm: số lỗi của hai biến thể điện thoại `flipcover` và `split` đổi chỗ một lỗi tràn đáy cho nhau (84/85 hay 85/84) tùy lúc đo trước hay sau khi font web tải xong; màn điện thoại không đổi, tổng không đổi. Ba lượt đo chờ 2,5 giây cho cùng 84 (74 tràn đáy, 10 chữ đè) và 85 (70 tràn đáy, 15 chữ đè).
+- **Kiểm thử:** `node tools/wide-boards/gen.js .`, `tools/check-scripts.js`, `tools/contrast.js`, `tools/nontext-contrast.js`, `tools/target-size.js`; dựng 15 biến thể, chạy `tools/layout-check.js` trong trình duyệt của app; một trang thử riêng cho việc chạy lại hiệu ứng khi đổi tên keyframe.

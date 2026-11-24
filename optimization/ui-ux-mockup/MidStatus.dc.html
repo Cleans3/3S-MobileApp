@@ -22,6 +22,10 @@ a{color:var(--ink)}a:hover{opacity:.85}
 @keyframes st-ping{0%{opacity:.55;scale:1}100%{opacity:0;scale:1.35}}
 @keyframes st-breathe{0%,100%{scale:1}50%{scale:1.04}}
 @keyframes st-spin{to{transform:rotate(360deg)}}
+@keyframes st-xa{from{opacity:0}to{opacity:1}}
+@keyframes st-xb{from{opacity:0}to{opacity:1}}
+@keyframes st-axr{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes st-axl{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
 .st-row{animation:st-rise 320ms cubic-bezier(.2,.8,.2,1) both}
 .st-rise{animation:st-rise 420ms cubic-bezier(.2,.8,.2,1) both}
 .st-item{animation:st-item 240ms cubic-bezier(.2,.8,.2,1) both}
@@ -38,9 +42,10 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-knob{transition:transform 220ms cubic-bezier(.2,.8,.2,1)}
 .st-chip{transition:background-color 180ms ease,color 180ms ease,transform 120ms ease}
 .st-chip:active{transform:scale(0.96)}
-.st-pick{transition:background-color 180ms ease}
+.st-pick{transition:background-color 180ms ease,scale 120ms ease}.st-pick:active{scale:.98}
 @media (prefers-reduced-motion: reduce){
   .st-row,.st-rise,.st-item,.st-detail,.st-fade,.st-pop,.st-ping,.st-breathe,.st-spin{animation:none}
+  .st-list,.st-detail{animation:none !important}
   .st-draw{animation:none;stroke-dashoffset:0}
   .st-press,.st-swap,.st-knob,.st-chip,.st-pick{transition:none}
 }
@@ -192,18 +197,24 @@ class Component extends DCLogic {
       })
     });
   }
-  // side menu collapse (expanded window) and list/detail switching (medium window)
+  // side menu collapse (expanded window), list/detail switching (medium window) and pane transitions:
+  // medium window slides the incoming pane 30 px along the x axis (forward from the right, back from the
+  // left); expanded window fades the detail content in (the animation name alternates so it replays).
   __layout() {
     var self = this, st = this.state || {};
     var mini = !!st.navMini, mid = true;
-    var view = st.view || 'list';
+    var view = st.view || 'list', n = st.swapN || 0;
+    var ease = ' 300ms cubic-bezier(.2,.8,.2,1) both';
     return {
       navMode: mini ? 'mini' : 'full', navOpen: !mini,
       navToggleLabel: mini ? 'Mở rộng menu' : 'Thu gọn menu',
       toggleNav: function () { self.setState({ navMini: !mini }); },
       showList: !mid || view === 'list', showDetail: !mid || view === 'detail',
-      back: function () { self.setState({ view: 'list' }); },
-      toDetail: function () { if (mid) self.setState({ view: 'detail' }); }
+      listAnim: mid && st.navDir === 'back' ? 'st-axl' + ease : 'st-fade 260ms ease-out both',
+      detailAnim: mid ? 'st-axr' + ease : (n % 2 ? 'st-xb' : 'st-xa') + ' 150ms ease-out both',
+      rowsStill: !!st.navDir,
+      back: function () { self.setState({ view: 'list', navDir: 'back' }); },
+      toDetail: function () { var o = { swapN: n + 1, navDir: 'fwd' }; if (mid) o.view = 'detail'; self.setState(o); }
     };
   }
   // helpers shared by the wide boards
@@ -230,7 +241,8 @@ class Component extends DCLogic {
           status: o.status || '', pill: o.pill || '',
           hasNote: !!o.note, note: o.note || '', hasReason: !!o.reason, reason: o.reason || '',
           current: o.on ? 'true' : 'false', pick: function () { o.pick(); lay.toDetail(); },
-          delay: 'animation-delay:' + Math.min(o.i || 0, 8) * 40 + 'ms',
+          // rows rise once, on first load; coming back to the list does not replay it
+          delay: lay.rowsStill ? 'animation:none' : 'animation-delay:' + Math.min(o.i || 0, 8) * 40 + 'ms',
           style: 'width:100%;display:flex;gap:12px;align-items:center;padding:10px;border-radius:20px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;min-height:48px;border:1px solid ' + (o.on ? 'rgba(var(--ink-rgb),0.5)' : 'transparent') + ';background:' + (o.on ? 'var(--surface)' : 'rgba(var(--glass),0.72)'),
           cover: 'width:44px;height:62px;flex:none;border-radius:10px;display:flex;align-items:flex-end;padding:6px;box-sizing:border-box;font-size:13px;font-weight:700;letter-spacing:0.5px;background:' + o.bg + ';color:' + o.fg
         };

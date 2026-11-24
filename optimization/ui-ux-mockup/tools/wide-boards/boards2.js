@@ -19,7 +19,7 @@ const card = inner => `
 // ---------- Tài khoản (gộp Thông báo) ----------
 out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) + S.nav('WideAccount.dc.html') + `
   <sc-if value="{{showList}}" hint-placeholder-val="{{ true }}">
-  <section aria-label="Mục cài đặt" class="st-list st-fade" style="position: absolute; ${S.listPos(320)}; top: ${S.isMid() ? 40 : 16}px; bottom: 16px; display: flex; flex-direction: column; gap: 12px">
+  <section aria-label="Mục cài đặt" class="st-list st-fade" style="animation: {{listAnim}}; position: absolute; ${S.listPos(320)}; top: ${S.isMid() ? 40 : 16}px; bottom: 16px; display: flex; flex-direction: column; gap: 12px">
     <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Tài khoản</h1>
     <div style="padding: 16px; border-radius: 24px; background:  #2f4a44; color: #ffffff; display: flex; align-items: center; gap: 12px; flex: none">
       <span style="width: 48px; height: 48px; flex: none; border-radius: 999px; background:  rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center">
@@ -42,7 +42,7 @@ out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) 
   </sc-if>
   <sc-if value="{{showDetail}}" hint-placeholder-val="{{ true }}">
   <section aria-label="{{catLabel}}" class="st-pane" style="position: absolute; ${S.panePos()}; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
-    <div class="st-scroll st-detail" style="position: absolute; inset: 0; padding: 12px 20px 24px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 14px">
+    <div class="st-scroll st-detail" style="animation: {{detailAnim}}; position: absolute; inset: 0; padding: 12px 20px 24px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 14px">
       <div style="display: flex; align-items: center; gap: 8px; min-height: 48px">${S.backBtn()}
         <h2 style="flex: 1; margin: 0; font-size: 20px; font-weight: 700">{{catLabel}}</h2>
         <div style="width: 84px; flex: none"></div>
