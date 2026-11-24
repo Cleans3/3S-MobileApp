@@ -173,7 +173,7 @@ fun SideNav(items: List<MenuItem>, current: String?, width: androidx.compose.ui.
             // The rail is too narrow for the full sentence: it shows one word, and TalkBack hears the name of the screen it opens.
             // (Not the sentence: it starts with "tap", which Accessibility Test Framework rejects in a description.)
             val full = stringResource(R.string.tab_checkout)
-            Button(
+            PrimaryButton(
                 onClick = onPill,
                 modifier = Modifier.fillMaxWidth().heightIn(min = Spacing.touch).then(if (centred) Modifier.semantics { contentDescription = full } else Modifier),
                 contentPadding = PaddingValues(horizontal = if (centred) Spacing.xs else Spacing.l, vertical = Spacing.s), // a button's default side padding leaves no room in 96 dp

@@ -160,3 +160,12 @@
 - **AI:** Claude Code (Sonnet 5.5). Dựng server, ghi log máy, đọc log. Người dùng đăng nhập và thử.
 - **Kiểm thử:** như trên. Không có test tự động mới.
 - **Ghi chú cho báo cáo:** nếu tái hiện lại, giữ log (`adb logcat -b crash`) và ghi bước chính xác.
+
+## 2026-11-24 17:32 · §6.5 (tiếp): nhấn nút co lại, hàng trồi lên, khung xương nhấp nhô, hàng đổi chỗ, menu có hiệu ứng đóng
+
+- **Vấn đề:** §6.5 còn thiếu: nhấn nút/thẻ co 0,96; hàng danh sách trồi lên lần lượt ở lần tải đầu; khung xương lấp lánh khi tải; hàng đổi chỗ mượt khi hủy hoặc gia hạn; menu chỉ có hiệu ứng mở, đóng là biến mất ngay.
+- **Thay đổi:** `ui/theme/MotionModifiers.kt`: `pressScale` (co 0,96 trong 120 ms khi nhấn), `riseIn` (trồi lên 16 dp và hiện dần 320 ms, cách nhau 40 ms, tối đa 8 hàng, chỉ trong khoảng 0,9 s đầu của danh sách; `rememberRiseIn`), `itemMotion` (`animateItem`); tất cả đọc ở pha vẽ, tầng Nhẹ không có. `Components.kt`: `PrimaryButton`, `SecondaryButton` (có `pressScale`; mọi `Button` và `OutlinedButton` trong `ui/` đổi sang hai hàm này, `TextButton` giữ nguyên); khung xương nhấp nhô alpha 1 → 0,55 (1,2 s, vòng lặp tự dừng khi khung xương rời màn hình; tầng Nhẹ đứng yên). `AppRoot.kt`: nút nổi co khi nhấn; `MenuLayer`: menu thu về góc nút và mờ đi 200 ms khi đóng (tầng Nhẹ đóng ngay). Danh mục, Sách đang mượn, Đặt trước: hàng trồi lên ở lần tải đầu; hai danh sách sau còn `animateItem` (danh mục không có, theo quy tắc "không hiệu ứng trong hàng lúc cuộn").
+- **Đo trước → sau:** emulator Android 16 (sáng, font 2.0, vừa): ATF vẫn 2 phát hiện (hai nút bị vô hiệu), không lỗi mới; bài đo vẫn chạy xong (khung xương nhấp nhô là hoạt ảnh lặp, lo ngại làm bài test không "rảnh" nhưng không xảy ra vì dữ liệu giả trả lời ngay). **Chưa đo:** chuyển động chưa được nhìn thấy; số khung hình và số lần recompose khi hàng trồi lên (Layout Inspector); chi phí `animateItem`.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn `graphicsLayer` cho mọi hiệu ứng (quy tắc 1), khoảng "trồi lên" chỉ trong 0,9 s đầu (không phát lại khi cuộn lại), và bọc nút thay vì sửa từng chỗ. Con người chưa duyệt.
+- **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1`: qua.
+- **Chưa làm:** vào màn (khối trồi lên, trễ 80 ms); vòng NFC lan ra khi chờ chạm; dấu tích bật lên và thẻ lỗi rung sau khi server trả lời; morph gia hạn; shared element bìa sách; "quay lại dự đoán" chưa kiểm (app nhắm `targetSdk` 36 nên hệ thống bật mặc định; chưa thử); tắt blur trong lúc chuyển cảnh.

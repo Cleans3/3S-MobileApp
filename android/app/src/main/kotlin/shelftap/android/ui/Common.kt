@@ -165,7 +165,7 @@ fun NfcGate(content: @Composable () -> Unit) {
         NfcAvailability.DISABLED -> Centered {
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 Text(stringResource(R.string.nfc_off))
-                Button(onClick = { context.startActivity(Intent(Settings.ACTION_NFC_SETTINGS)) }) { Text(stringResource(R.string.nfc_open_settings)) }
+                PrimaryButton(onClick = { context.startActivity(Intent(Settings.ACTION_NFC_SETTINGS)) }) { Text(stringResource(R.string.nfc_open_settings)) }
             }
         }
     }

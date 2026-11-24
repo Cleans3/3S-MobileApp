@@ -162,7 +162,7 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
                 stringResource(R.string.account_history_keep_caption),
                 checked = me.historyEnabled, enabled = !state.busy, onChange = vm::setHistoryEnabled,
             )
-            OutlinedButton(onClick = onHistory, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.account_history)) }
+            SecondaryButton(onClick = onHistory, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.account_history)) }
             HorizontalDivider()
 
             Text(stringResource(R.string.account_theme), style = MaterialTheme.typography.titleMedium)
@@ -194,8 +194,8 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
                 stringResource(R.string.account_auto_logout, BuildConfig.INACTIVITY_LIMIT_MS / 60_000),
                 style = MaterialTheme.typography.bodySmall,
             )
-            OutlinedButton(onClick = onChangePassword, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.account_change_password)) }
-            OutlinedButton(onClick = { scope.launch { vm.logout() } }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.action_logout)) }
+            SecondaryButton(onClick = onChangePassword, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.account_change_password)) }
+            SecondaryButton(onClick = { scope.launch { vm.logout() } }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.action_logout)) }
         }
     }
 }

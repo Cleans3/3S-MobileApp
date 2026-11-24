@@ -127,12 +127,12 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
         )
         PasswordField(password, { password = it }, stringResource(R.string.login_password), Modifier.fillMaxWidth())
         ErrorText(state.error)
-        Button(
+        PrimaryButton(
             onClick = { vm.login(email, password) },
             enabled = !state.busy && email.isNotBlank() && password.isNotEmpty(),
             modifier = Modifier.fillMaxWidth(),
         ) { Text(stringResource(if (state.busy) R.string.login_busy else R.string.login_action)) }
-        OutlinedButton(onClick = onCard, enabled = !state.busy, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.login_with_card)) }
+        SecondaryButton(onClick = onCard, enabled = !state.busy, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.login_with_card)) }
     }
 }
 
@@ -163,7 +163,7 @@ fun OfflineScreen() {
     Centered {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
             Text(stringResource(R.string.offline_message))
-            Button(onClick = { scope.launch { session.restore() } }) { Text(stringResource(R.string.action_retry)) }
+            PrimaryButton(onClick = { scope.launch { session.restore() } }) { Text(stringResource(R.string.action_retry)) }
             TextButton(onClick = { scope.launch { session.logout() } }) { Text(stringResource(R.string.action_logout)) }
         }
     }
@@ -187,7 +187,7 @@ fun LockScreen() {
     Centered {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
             Text(stringResource(R.string.lock_locked), style = MaterialTheme.typography.titleMedium)
-            Button(onClick = unlock) { Text(stringResource(R.string.lock_unlock)) }
+            PrimaryButton(onClick = unlock) { Text(stringResource(R.string.lock_unlock)) }
             TextButton(onClick = { scope.launch { session.logout() } }) { Text(stringResource(R.string.action_logout)) }
         }
     }
@@ -240,7 +240,7 @@ fun ChangePasswordScreen(forced: Boolean, onDone: () -> Unit) {
         if (new.isNotEmpty() && again.isNotEmpty() && new != again) Text(stringResource(R.string.pw_mismatch), color = MaterialTheme.colorScheme.error)
         ErrorText(state.error)
         Spacer(Modifier.height(Spacing.xs))
-        Button(
+        PrimaryButton(
             onClick = { vm.change(current, new) },
             enabled = !state.busy && current.isNotEmpty() && new.isNotEmpty() && new == again,
             modifier = Modifier.fillMaxWidth(),
@@ -281,7 +281,7 @@ fun StepUpDialog(defaultEmail: String = "", onDismiss: () -> Unit, onDone: () ->
             }
         },
         confirmButton = {
-            Button(
+            PrimaryButton(
                 enabled = !busy && email.isNotBlank() && password.isNotEmpty(),
                 onClick = {
                     busy = true

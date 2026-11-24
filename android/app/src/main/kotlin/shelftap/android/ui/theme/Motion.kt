@@ -18,6 +18,10 @@ object Motion {
     const val FADE_IN_MS = 220
     const val FADE_OUT_MS = 90
     const val SHORT_FADE_MS = 150
+    const val PRESS_MS = 120
+    const val RISE_MS = 320
+    const val MENU_EXIT_MS = 200
+    const val PULSE_MS = 1200
 
     /** Close to `cubic-bezier(0.2, 0.8, 0.2, 1)` in the mockup: fast start, soft landing. */
     val decelerate = CubicBezierEasing(0.2f, 0.8f, 0.2f, 1f)

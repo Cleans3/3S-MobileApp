@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -53,6 +54,9 @@ import shelftap.android.ui.icons.LucideMorphs
 import shelftap.android.ui.icons.MorphIcon
 import shelftap.android.ui.theme.IconSize
 import shelftap.android.ui.theme.Spacing
+import shelftap.android.ui.theme.itemMotion
+import shelftap.android.ui.theme.rememberRiseIn
+import shelftap.android.ui.theme.riseIn
 import shelftap.android.ui.theme.shelfTap
 import java.time.Instant
 
@@ -100,13 +104,14 @@ fun LoansScreen() {
     val vm = appViewModel { LoansViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
     LoadView(state.list, onRetry = vm::load, loading = { SkeletonList(modifier = Modifier.fillMaxSize()) }) { loans ->
+        val rise = rememberRiseIn()
         Column(Modifier.fillMaxSize()) {
             ErrorText(state.error, Modifier.padding(Spacing.l))
             if (loans.isEmpty()) EmptyState(R.string.loans_empty, R.string.loans_empty_hint)
             LazyColumn {
-                items(loans, key = { it.loanId }) { loan ->
+                itemsIndexed(loans, key = { _, it -> it.loanId }) { index, loan ->
                     val renewFor = stringResource(R.string.loans_renew_for, loan.title)
-                    Row(Modifier.fillMaxWidth().padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
+                    Row(Modifier.then(itemMotion()).riseIn(index, rise).fillMaxWidth().padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(loan.title, style = MaterialTheme.typography.titleMedium)
                             Text(stringResource(R.string.loans_due, formatDate(loan.dueAt), loan.renewals), style = MaterialTheme.typography.bodyMedium)
@@ -118,7 +123,7 @@ fun LoansScreen() {
                                 Text(stringResource(R.string.err_renewal_not_allowed), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
                             }
                         }
-                        OutlinedButton(
+                        SecondaryButton(
                             onClick = { vm.renew(loan) }, enabled = loan.renewable && state.busyId == null,
                             modifier = Modifier.semantics { contentDescription = renewFor }, // two "Renew" buttons read the same otherwise
                         ) {
@@ -199,11 +204,11 @@ fun CheckoutScreen() {
                         modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
                     )
                     Text(stringResource(R.string.checkout_due, formatDate(s.loan.dueAt)))
-                    Button(onClick = vm::reset) { Text(stringResource(R.string.checkout_again)) }
+                    PrimaryButton(onClick = vm::reset) { Text(stringResource(R.string.checkout_again)) }
                 }
                 is CheckoutViewModel.UiState.Failed -> {
                     ErrorText(s.message, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
-                    Button(onClick = vm::reset) { Text(stringResource(R.string.action_retry)) }
+                    PrimaryButton(onClick = vm::reset) { Text(stringResource(R.string.action_retry)) }
                 }
             }
         }
@@ -249,13 +254,14 @@ fun ReservationsScreen() {
     val vm = appViewModel { ReservationsViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
     LoadView(state.list, onRetry = vm::load, loading = { SkeletonList(modifier = Modifier.fillMaxSize()) }) { reservations ->
+        val rise = rememberRiseIn()
         Column(Modifier.fillMaxSize()) {
             ErrorText(state.error, Modifier.padding(Spacing.l))
             if (reservations.isEmpty()) EmptyState(R.string.reservations_empty, R.string.reservations_empty_hint)
             LazyColumn {
-                items(reservations, key = { it.reservationId }) { r ->
+                itemsIndexed(reservations, key = { _, it -> it.reservationId }) { index, r ->
                     val cancelFor = stringResource(R.string.reservations_cancel_for, r.title)
-                    Row(Modifier.fillMaxWidth().padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
+                    Row(Modifier.then(itemMotion()).riseIn(index, rise).fillMaxWidth().padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(r.title, style = MaterialTheme.typography.titleMedium)
                             Text(
@@ -271,7 +277,7 @@ fun ReservationsScreen() {
                             )
                         }
                         if (r.status == ReservationStatus.WAITING || r.status == ReservationStatus.READY) {
-                            OutlinedButton(
+                            SecondaryButton(
                                 onClick = { vm.cancel(r) }, enabled = state.busyId == null,
                                 modifier = Modifier.semantics { contentDescription = cancelFor },
                             ) {
@@ -320,7 +326,7 @@ fun HistoryScreen() {
         Centered {
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 Text(stringResource(R.string.history_needs_password))
-                Button(onClick = { askPassword = true }) { Text(stringResource(R.string.history_login_password)) }
+                PrimaryButton(onClick = { askPassword = true }) { Text(stringResource(R.string.history_login_password)) }
             }
         }
     } else {

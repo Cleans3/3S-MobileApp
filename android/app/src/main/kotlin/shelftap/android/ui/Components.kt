@@ -1,7 +1,19 @@
 package shelftap.android.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +51,10 @@ import androidx.compose.ui.text.style.TextAlign
 import shelftap.android.R
 import shelftap.android.ui.icons.LucideMorphs
 import shelftap.android.ui.icons.MorphIcon
+import shelftap.android.ui.theme.EffectTier
+import shelftap.android.ui.theme.LocalEffectTier
+import shelftap.android.ui.theme.Motion
+import shelftap.android.ui.theme.pressScale
 import shelftap.android.ui.theme.CoverSize
 import shelftap.android.ui.theme.Spacing
 
@@ -73,10 +89,13 @@ fun ErrorState(message: UiText, offline: Boolean, onRetry: () -> Unit, modifier:
                 if (offline) Text(stringResource(R.string.state_offline_title), style = MaterialTheme.typography.titleMedium)
                 Text(message.asString(), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
             }
-            Button(onClick = onRetry) { Text(stringResource(R.string.action_retry)) }
+            PrimaryButton(onClick = onRetry) { Text(stringResource(R.string.action_retry)) }
         }
     }
 }
+
+/** The dimmest point of the skeleton pulse. */
+private const val SKELETON_LOW_ALPHA = 0.55f
 
 /**
  * Placeholder rows with the same cover size as the real rows, so the list does not jump when data arrives. Static
@@ -87,7 +106,15 @@ fun SkeletonList(rows: Int = 6, modifier: Modifier = Modifier) {
     val loading = stringResource(R.string.state_loading)
     val block = MaterialTheme.colorScheme.surfaceVariant
     val shape = MaterialTheme.shapes.extraSmall
-    Column(modifier.clearAndSetSemantics { contentDescription = loading; liveRegion = LiveRegionMode.Polite }) {
+    // The blocks breathe (1.2 s) on the full and medium tiers; still on the light tier. The loop ends when the skeleton leaves the screen.
+    val tier = LocalEffectTier.current
+    val pulse = if (tier == EffectTier.LIGHT) null else rememberInfiniteTransition(label = "skeleton").animateFloat(
+        initialValue = 1f, targetValue = SKELETON_LOW_ALPHA,
+        animationSpec = infiniteRepeatable(tween(Motion.PULSE_MS, easing = LinearEasing), RepeatMode.Reverse), label = "pulse",
+    )
+    Column(
+        modifier.graphicsLayer { alpha = pulse?.value ?: 1f }.clearAndSetSemantics { contentDescription = loading; liveRegion = LiveRegionMode.Polite },
+    ) {
         repeat(rows) {
             Row(Modifier.fillMaxWidth().padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 Box(Modifier.size(width = CoverSize.rowWidth, height = CoverSize.rowHeight).background(block, shape))
@@ -128,4 +155,29 @@ fun SearchTrailingIcon(hasText: Boolean, onClear: () -> Unit) {
         ),
         contentAlignment = Alignment.Center,
     ) { MorphIcon(LucideMorphs.SearchToX, toEnd = hasText) }
+}
+
+/** The filled button of the app: shrinks a little while pressed (plan section 6.5). */
+@Composable
+fun PrimaryButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    content: @Composable RowScope.() -> Unit,
+) {
+    val source = remember { MutableInteractionSource() }
+    Button(onClick, modifier.pressScale(source), enabled, interactionSource = source, contentPadding = contentPadding, content = content)
+}
+
+/** The outlined button of the app, same press feedback. */
+@Composable
+fun SecondaryButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    content: @Composable RowScope.() -> Unit,
+) {
+    val source = remember { MutableInteractionSource() }
+    OutlinedButton(onClick, modifier.pressScale(source), enabled, interactionSource = source, content = content)
 }

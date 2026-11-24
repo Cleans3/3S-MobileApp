@@ -51,6 +51,8 @@ import shelftap.android.api.TitleSummary
 import shelftap.android.data.Repository
 import shelftap.android.ui.theme.CoverSize
 import shelftap.android.ui.theme.Spacing
+import shelftap.android.ui.theme.rememberRiseIn
+import shelftap.android.ui.theme.riseIn
 
 class CatalogViewModel(private val repo: Repository) : ViewModel() {
     data class UiState(
@@ -118,6 +120,7 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
         }
     }
 
+    val rise = rememberRiseIn()
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
             OutlinedTextField(
@@ -130,7 +133,7 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
         }
         LazyColumn(Modifier.fillMaxSize()) {
             itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
-                TitleRow(item, onClick = { onOpen(item.titleId) })
+                TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.riseIn(index, rise))
                 HorizontalDivider()
                 if (index == state.items.lastIndex) LaunchedEffect(state.items.size) { vm.loadMore() }
             }
@@ -146,8 +149,8 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
 }
 
 @Composable
-private fun TitleRow(item: TitleSummary, onClick: () -> Unit) {
-    Row(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+private fun TitleRow(item: TitleSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Row(modifier.fillMaxWidth().clickable(onClick = onClick).padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
         Cover(item.coverUrl, Modifier.size(width = CoverSize.rowWidth, height = CoverSize.rowHeight))
         Column(Modifier.weight(1f)) {
             Text(item.title, style = MaterialTheme.typography.titleMedium)
@@ -220,7 +223,7 @@ fun TitleDetailScreen(titleId: String, onLogin: (() -> Unit)? = null) {
             Text(stringResource(R.string.title_copies, t.copiesAvailable, t.copiesTotal))
             state.message?.let { Text(it.asString()) }
             ErrorText(state.error)
-            Button(onClick = onLogin ?: vm::reserve, enabled = onLogin != null || (!state.busy && !state.reserved)) {
+            PrimaryButton(onClick = onLogin ?: vm::reserve, enabled = onLogin != null || (!state.busy && !state.reserved)) {
                 // The bookmark gets its tick only after the server confirmed (or said it was already reserved).
                 MorphIcon(LucideMorphs.BookmarkToCheck, toEnd = onLogin == null && state.reserved)
                 Spacer(Modifier.width(Spacing.s))

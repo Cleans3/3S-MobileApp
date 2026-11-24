@@ -1,11 +1,13 @@
 package shelftap.android.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
@@ -22,7 +24,9 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -30,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -51,6 +56,7 @@ import shelftap.android.ui.theme.AdaptiveSize
 import shelftap.android.ui.theme.EffectTier
 import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.Motion
+import shelftap.android.ui.theme.pressScale
 import shelftap.android.ui.theme.Spacing
 
 /**
@@ -162,8 +168,11 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                 },
                 floatingActionButton = {
                     if (showPill) {
+                        val pillSource = remember { MutableInteractionSource() }
                         ExtendedFloatingActionButton(
                             onClick = { nav.goTo(CHECKOUT) },
+                            modifier = Modifier.pressScale(pillSource),
+                            interactionSource = pillSource,
                             containerColor = MaterialTheme.colorScheme.primary,
                             contentColor = MaterialTheme.colorScheme.onPrimary,
                         ) { Text(stringResource(R.string.checkout_pill)) }
@@ -210,14 +219,29 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                     }
                 }
             }
-            if (overlayOpen) {
-                MenuOverlay(
-                    items, current = route, glass = glass,
-                    onSelect = { menuOpen = false; nav.goTo(it) },
-                    onDismiss = { menuOpen = false },
-                )
-            }
+            MenuLayer(
+                visible = overlayOpen, tier = tier, items = items, current = route, glass = glass,
+                onSelect = { menuOpen = false; nav.goTo(it) }, onDismiss = { menuOpen = false },
+            )
         }
+    }
+}
+
+/**
+ * The menu panel with its exit: it leaves the way it came, shrinking toward the button's corner and fading (200 ms); at once on
+ * the light tier. A separate function, because inside the navigation [Row] a bare AnimatedVisibility would take the row as its receiver.
+ */
+@Composable
+private fun MenuLayer(
+    visible: Boolean, tier: EffectTier, items: List<MenuItem>, current: String?, glass: Boolean, onSelect: (String) -> Unit, onDismiss: () -> Unit,
+) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = EnterTransition.None,
+        exit = if (tier == EffectTier.LIGHT) ExitTransition.None
+        else fadeOut(Motion.spec(tier, Motion.MENU_EXIT_MS)) + scaleOut(Motion.spec(tier, Motion.MENU_EXIT_MS), targetScale = 0.92f, transformOrigin = TransformOrigin(0f, 0f)),
+    ) {
+        MenuOverlay(items, current = current, glass = glass, onSelect = onSelect, onDismiss = onDismiss)
     }
 }
 
