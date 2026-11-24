@@ -1,11 +1,14 @@
 package shelftap.android.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -23,6 +26,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -51,6 +55,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -72,6 +77,7 @@ import shelftap.android.ui.theme.EffectTier
 import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.Motion
 import shelftap.android.ui.theme.MenuSize
+import shelftap.android.ui.theme.Radius
 import shelftap.android.ui.theme.pressScale
 import shelftap.android.ui.theme.Spacing
 import shelftap.android.ui.theme.shelfTap
@@ -162,10 +168,25 @@ private fun <T> gestureSpec(tier: EffectTier, gesture: Int): FiniteAnimationSpec
 /** The screen underneath moves this fraction (1/3) of the width while the one above moves all of it. */
 private const val PARALLAX = 3
 
-/** A screen of the navigation graph with its own page colour, so that two screens sliding past each other do not show through. */
+/**
+ * A screen of the navigation graph with its own page colour, so that two screens sliding past each other do not show through.
+ * With [rounded] the screen's corners are rounded while it moves in or out (a back gesture drags it by them) and square at rest.
+ */
 @Composable
-private fun Screen(content: @Composable () -> Unit) {
-    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) { content() }
+private fun AnimatedContentScope.Screen(rounded: Boolean = false, content: @Composable () -> Unit) {
+    val tier = LocalEffectTier.current
+    val corner by transition.animateDp(transitionSpec = { tween(Motion.SCREEN_MS, easing = LinearEasing) }, label = "screen corner") { state ->
+        if (rounded && tier != EffectTier.LIGHT && state != EnterExitState.Visible) Radius.sheet else 0.dp
+    }
+    Box(
+        Modifier.fillMaxSize()
+            .graphicsLayer {
+                val r = corner.toPx()
+                shape = RoundedCornerShape(r)
+                clip = r > 0f
+            }
+            .background(MaterialTheme.colorScheme.background),
+    ) { content() }
 }
 
 private fun NavHostController.goTo(route: String) = navigate(route) {
@@ -276,7 +297,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                                 }
                             }
                             composable("title/{id}", arguments = listOf(navArgument("id") { type = NavType.StringType })) {
-                                Screen {
+                                Screen(rounded = true) {
                                     TitleDetailScreen(
                                         it.arguments?.getString("id").orEmpty(), onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null,
                                         onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }),
@@ -291,7 +312,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                             composable("reservations") { Screen { ReservationsScreen() } }
                             composable("account") { Screen { AccountScreen(onHistory = { nav.navigate("history") }, onChangePassword = { nav.navigate("password") }) } }
                             composable("history") { Screen { HistoryScreen() } }
-                            composable("password") { Screen { ChangePasswordScreen(forced = false, onDone = { nav.popBackStack() }) } }
+                            composable("password") { Screen(rounded = true) { ChangePasswordScreen(forced = false, onDone = { nav.popBackStack() }) } }
                         }
                     }
                     }

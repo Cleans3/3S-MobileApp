@@ -338,3 +338,11 @@
 - **Cách thử trên bản debug:** sau khi cài, chạy `adb shell cmd package compile -m speed -f shelftap.android` (bản debug không tự nhận hồ sơ).
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn ký tự đại diện thay vì sinh hồ sơ từ hành trình; con người chưa duyệt.
 - **Kiểm thử:** `assembleDebug assembleRelease testDebugUnitTest`: qua.
+
+## 2026-11-25 01:40 · Trang sách bo tròn góc khi đang trượt vào/ra và khi kéo back (nguồn: yêu cầu của người dùng)
+
+- **Vấn đề:** trang sách trượt như một tấm phẳng có bốn góc vuông; khi kéo back (cử chỉ) hoặc trượt ra, mép và góc vuông của cả màn hình nhìn gắt so với phần còn lại của giao diện (thẻ, nút đều bo tròn). Mình hiểu "thẻ thông tin sách" là cả trang sách; nếu bạn muốn nói các ô nhỏ trong trang (ô Tình trạng, ISBN) thì chúng đã bo `Radius.tile + 4 dp` từ trước.
+- **Thay đổi:** `AppRoot.kt`: `Screen(rounded = true)` cho trang sách và trang đổi mật khẩu: bán kính góc của màn (`Radius.sheet` 34 dp) animate theo `transition` của `AnimatedContentScope` (khác 0 khi màn đang vào hoặc ra, về 0 khi đứng yên, tuyến tính 260 ms nên bám theo ngón tay khi kéo back), vẽ bằng `graphicsLayer { shape; clip }` đọc ở pha vẽ; không bo ở tầng nhẹ.
+- **Đo trước → sau:** không có số đo (thay đổi thẩm mỹ). **Chưa đo/kiểm:** hình giữa chừng trên máy (FLAG_SECURE che ảnh chụp); chi phí khung của `clip` bo tròn trong lúc trượt (có thể thêm một lớp cắt trên trang nặng); màn đứng dưới (danh mục) không bo; góc bo có thể lộ nền sau trang (màu trang) ở hai góc trên.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn 34 dp (`Radius.sheet`) và chỉ bo lúc di chuyển; con người chưa duyệt.
+- **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1` (sáng, tối): ATF 5 mỗi cấu hình, như trước.
