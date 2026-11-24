@@ -138,4 +138,13 @@
     <string name="title_reserved">Đã đặt trước. Sách sẽ hiện trong mục Đặt trước khi sẵn sàng.</string>
     <string name="title_reserving">Đang đặt…</string>
     <string name="title_reserve">Đặt trước sách này</string>
+    <!-- Trạng thái màn hình -->
+    <string name="state_loading">Đang tải…</string>
+    <string name="state_offline_title">Không có kết nối</string>
+    <string name="loans_empty_hint">Mượn sách bằng mục Tự mượn: áp điện thoại vào thẻ trong cuốn sách.</string>
+    <string name="reservations_empty_hint">Tìm sách trong Danh mục rồi bấm Đặt trước.</string>
+    <string name="loans_overdue">Quá hạn</string>
+    <string name="title_reserve_done">Đã đặt trước hoặc đang mượn</string>
+    <string name="checkout_sending">Đang gửi yêu cầu mượn…</string>
+    <string name="catalog_empty_hint">Thử tìm bằng tên khác, hoặc bỏ bớt từ khóa.</string>
 </resources>

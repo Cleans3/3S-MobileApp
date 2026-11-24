@@ -57,7 +57,7 @@ inline fun <reified VM : ViewModel> appViewModel(key: String? = null, crossinlin
 
 sealed interface Load<out T> {
     data object Loading : Load<Nothing>
-    data class Failed(val message: UiText) : Load<Nothing>
+    data class Failed(val message: UiText, val offline: Boolean = false) : Load<Nothing>
     data class Ready<T>(val value: T) : Load<T>
 }
 
@@ -112,17 +112,15 @@ fun ErrorText(message: UiText?, modifier: Modifier = Modifier) {
     if (message != null) Text(message.asString(), color = MaterialTheme.colorScheme.error, modifier = modifier)
 }
 
-/** Loading / failed / content for a [Load]. */
+/** A failed [Load] for [Throwable]: no connection is flagged, so the screen can say so. */
+fun Throwable.toFailed(): Load.Failed = Load.Failed(userMessage(), offline = this is ApiException.Network)
+
+/** Loading / failed / content for a [Load]. [loading] is what shows while waiting: a skeleton for lists, a spinner by default. */
 @Composable
-fun <T> LoadView(load: Load<T>, onRetry: () -> Unit, content: @Composable (T) -> Unit) {
+fun <T> LoadView(load: Load<T>, onRetry: () -> Unit, loading: @Composable () -> Unit = { Spinner() }, content: @Composable (T) -> Unit) {
     when (load) {
-        Load.Loading -> Spinner()
-        is Load.Failed -> Centered {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
-                ErrorText(load.message)
-                Button(onClick = onRetry) { Text(stringResource(R.string.action_retry)) }
-            }
-        }
+        Load.Loading -> loading()
+        is Load.Failed -> ErrorState(load.message, load.offline, onRetry)
         is Load.Ready -> content(load.value)
     }
 }

@@ -10,17 +10,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.contentDescription
@@ -44,6 +48,12 @@ import shelftap.android.api.ReservationStatus
 import shelftap.android.data.Repository
 import shelftap.android.nfc.TagReader
 import shelftap.android.ui.theme.Spacing
+import shelftap.android.ui.theme.shelfTap
+import java.time.Instant
+
+/** True when the due date (ISO instant from the server) is in the past. An unreadable date is not overdue. */
+private fun isOverdue(dueAt: String): Boolean =
+    try { Instant.parse(dueAt).isBefore(Instant.now()) } catch (_: java.time.format.DateTimeParseException) { false }
 
 /** A list screen's state: the loaded list plus the outcome of the last row action. */
 data class ListState<T>(val list: Load<List<T>> = Load.Loading, val busyId: String? = null, val error: UiText? = null)
@@ -59,7 +69,7 @@ class LoansViewModel(private val repo: Repository) : ViewModel() {
     fun load() {
         _state.value = ListState()
         viewModelScope.launch {
-            val list = try { Load.Ready(repo.loans()) } catch (e: ApiException) { Load.Failed(e.userMessage()) }
+            val list = try { Load.Ready(repo.loans()) } catch (e: ApiException) { e.toFailed() }
             _state.update { it.copy(list = list) }
         }
     }
@@ -84,10 +94,10 @@ class LoansViewModel(private val repo: Repository) : ViewModel() {
 fun LoansScreen() {
     val vm = appViewModel { LoansViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
-    LoadView(state.list, onRetry = vm::load) { loans ->
+    LoadView(state.list, onRetry = vm::load, loading = { SkeletonList(modifier = Modifier.fillMaxSize()) }) { loans ->
         Column(Modifier.fillMaxSize()) {
             ErrorText(state.error, Modifier.padding(Spacing.l))
-            if (loans.isEmpty()) Text(stringResource(R.string.loans_empty), Modifier.padding(Spacing.l))
+            if (loans.isEmpty()) EmptyState(R.string.loans_empty, R.string.loans_empty_hint)
             LazyColumn {
                 items(loans, key = { it.loanId }) { loan ->
                     val renewFor = stringResource(R.string.loans_renew_for, loan.title)
@@ -95,6 +105,13 @@ fun LoansScreen() {
                         Column(Modifier.weight(1f)) {
                             Text(loan.title, style = MaterialTheme.typography.titleMedium)
                             Text(stringResource(R.string.loans_due, formatDate(loan.dueAt), loan.renewals), style = MaterialTheme.typography.bodyMedium)
+                            // Overdue is said in words, not only by colour.
+                            if (isOverdue(loan.dueAt)) {
+                                Text(stringResource(R.string.loans_overdue), color = MaterialTheme.shelfTap.danger, style = MaterialTheme.typography.labelLarge)
+                            }
+                            if (!loan.renewable) {
+                                Text(stringResource(R.string.err_renewal_not_allowed), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
+                            }
                         }
                         OutlinedButton(
                             onClick = { vm.renew(loan) }, enabled = loan.renewable && state.busyId == null,
@@ -148,6 +165,10 @@ class CheckoutViewModel(private val repo: Repository) : ViewModel() {
 fun CheckoutScreen() {
     val vm = appViewModel { CheckoutViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
+    val haptics = LocalHapticFeedback.current
+    LaunchedEffect(state is CheckoutViewModel.UiState.Working) {
+        if (state is CheckoutViewModel.UiState.Working) haptics.performHapticFeedback(HapticFeedbackType.ContextClick) // the tag was read
+    }
     NfcGate {
         NfcReaderEffect(TagReader.BOOK_FLAGS) { vm.tagTapped(it) }
         Column(
@@ -158,7 +179,10 @@ fun CheckoutScreen() {
             Text(stringResource(R.string.checkout_title), style = MaterialTheme.typography.headlineSmall)
             when (val s = state) {
                 CheckoutViewModel.UiState.Idle -> Text(stringResource(R.string.checkout_hold))
-                CheckoutViewModel.UiState.Working -> Spinner()
+                CheckoutViewModel.UiState.Working -> {
+                    CircularProgressIndicator()
+                    Text(stringResource(R.string.checkout_sending), modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+                }
                 is CheckoutViewModel.UiState.Done -> {
                     Text(
                         stringResource(R.string.checkout_borrowed, s.loan.title), style = MaterialTheme.typography.titleMedium,
@@ -187,7 +211,7 @@ class ReservationsViewModel(private val repo: Repository) : ViewModel() {
     fun load() {
         _state.value = ListState()
         viewModelScope.launch {
-            val list = try { Load.Ready(repo.reservations()) } catch (e: ApiException) { Load.Failed(e.userMessage()) }
+            val list = try { Load.Ready(repo.reservations()) } catch (e: ApiException) { e.toFailed() }
             _state.update { it.copy(list = list) }
         }
     }
@@ -214,10 +238,10 @@ class ReservationsViewModel(private val repo: Repository) : ViewModel() {
 fun ReservationsScreen() {
     val vm = appViewModel { ReservationsViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
-    LoadView(state.list, onRetry = vm::load) { reservations ->
+    LoadView(state.list, onRetry = vm::load, loading = { SkeletonList(modifier = Modifier.fillMaxSize()) }) { reservations ->
         Column(Modifier.fillMaxSize()) {
             ErrorText(state.error, Modifier.padding(Spacing.l))
-            if (reservations.isEmpty()) Text(stringResource(R.string.reservations_empty), Modifier.padding(Spacing.l))
+            if (reservations.isEmpty()) EmptyState(R.string.reservations_empty, R.string.reservations_empty_hint)
             LazyColumn {
                 items(reservations, key = { it.reservationId }) { r ->
                     val cancelFor = stringResource(R.string.reservations_cancel_for, r.title)
@@ -270,7 +294,7 @@ class HistoryViewModel(private val repo: Repository) : ViewModel() {
             } catch (e: ApiException) {
                 // A card session may not read history (403 STEP_UP_REQUIRED): offer the password login instead of an error.
                 if (e is ApiException.Http && e.code == ErrorCode.STEP_UP_REQUIRED) UiState(needsPassword = true)
-                else UiState(Load.Failed(e.userMessage()))
+                else UiState(e.toFailed())
             }
         }
     }
@@ -290,9 +314,9 @@ fun HistoryScreen() {
             }
         }
     } else {
-        LoadView(state.items, onRetry = vm::load) { items ->
+        LoadView(state.items, onRetry = vm::load, loading = { SkeletonList(modifier = Modifier.fillMaxSize()) }) { items ->
             if (items.isEmpty()) {
-                Centered { Text(stringResource(R.string.history_empty)) }
+                EmptyState(R.string.history_empty)
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
                     items(items) { h ->

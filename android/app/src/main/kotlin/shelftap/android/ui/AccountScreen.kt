@@ -75,7 +75,7 @@ class AccountViewModel(
     fun load() {
         _state.update { it.copy(me = Load.Loading) }
         viewModelScope.launch {
-            val me = try { Load.Ready(repo.me()) } catch (e: ApiException) { Load.Failed(e.userMessage()) }
+            val me = try { Load.Ready(repo.me()) } catch (e: ApiException) { e.toFailed() }
             _state.update { it.copy(me = me) }
             refreshSecurity()
         }

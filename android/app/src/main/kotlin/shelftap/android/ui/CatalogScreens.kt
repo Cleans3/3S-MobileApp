@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import shelftap.android.R
 import shelftap.android.api.ApiException
+import shelftap.android.api.ErrorCode
 import shelftap.android.api.TitleDetail
 import shelftap.android.api.TitleSummary
 import shelftap.android.data.Repository
@@ -54,6 +55,7 @@ class CatalogViewModel(private val repo: Repository) : ViewModel() {
         val total: Long = 0,
         val loading: Boolean = false,
         val error: UiText? = null,
+        val offline: Boolean = false,
     ) {
         val canLoadMore get() = !loading && error == null && items.size < total
     }
@@ -73,7 +75,7 @@ class CatalogViewModel(private val repo: Repository) : ViewModel() {
     }
 
     fun retry() {
-        _state.update { it.copy(error = null, loading = true) }
+        _state.update { it.copy(error = null, offline = false, loading = true) }
         loadPage(_state.value.page + 1)
     }
 
@@ -90,7 +92,7 @@ class CatalogViewModel(private val repo: Repository) : ViewModel() {
                 val result = repo.titles(_state.value.query, page)
                 _state.update { it.copy(items = it.items + result.items, page = page, total = result.total, loading = false, error = null) }
             } catch (e: ApiException) {
-                _state.update { it.copy(loading = false, error = e.userMessage()) }
+                _state.update { it.copy(loading = false, error = e.userMessage(), offline = e is ApiException.Network) }
             }
         }
     }
@@ -120,12 +122,9 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
             }
             item {
                 when {
-                    state.loading -> Spinner()
-                    state.error != null -> Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                        ErrorText(state.error)
-                        Button(onClick = vm::retry) { Text(stringResource(R.string.action_retry)) }
-                    }
-                    state.items.isEmpty() -> Text(stringResource(R.string.catalog_empty), Modifier.padding(Spacing.l))
+                    state.loading -> SkeletonList(rows = if (state.items.isEmpty()) 6 else 1) // first page: full skeleton; later pages: one row
+                    state.error != null -> ErrorState(state.error!!, state.offline, vm::retry, Modifier.fillMaxWidth())
+                    state.items.isEmpty() -> EmptyState(R.string.catalog_empty, R.string.catalog_empty_hint, Modifier.fillMaxWidth())
                 }
             }
         }
@@ -155,7 +154,11 @@ private fun Cover(coverUrl: String?, modifier: Modifier) {
 }
 
 class TitleViewModel(private val repo: Repository, private val titleId: String) : ViewModel() {
-    data class UiState(val title: Load<TitleDetail> = Load.Loading, val busy: Boolean = false, val message: UiText? = null, val error: UiText? = null)
+    data class UiState(
+        val title: Load<TitleDetail> = Load.Loading, val busy: Boolean = false, val message: UiText? = null, val error: UiText? = null,
+        /** Reserved now, or the server said ALREADY_RESERVED: the button stays off and says why. */
+        val reserved: Boolean = false,
+    )
 
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
@@ -167,7 +170,7 @@ class TitleViewModel(private val repo: Repository, private val titleId: String) 
     fun load() {
         _state.update { it.copy(title = Load.Loading) }
         viewModelScope.launch {
-            val result = try { Load.Ready(repo.title(titleId)) } catch (e: ApiException) { Load.Failed(e.userMessage()) }
+            val result = try { Load.Ready(repo.title(titleId)) } catch (e: ApiException) { e.toFailed() }
             _state.update { it.copy(title = result) }
         }
     }
@@ -178,9 +181,11 @@ class TitleViewModel(private val repo: Repository, private val titleId: String) 
         viewModelScope.launch {
             try {
                 repo.reserve(titleId)
-                _state.update { it.copy(busy = false, message = uiText(R.string.title_reserved)) }
+                _state.update { it.copy(busy = false, reserved = true, message = uiText(R.string.title_reserved)) }
             } catch (e: ApiException) {
-                _state.update { it.copy(busy = false, error = e.userMessage()) }
+                _state.update {
+                    it.copy(busy = false, error = e.userMessage(), reserved = it.reserved || (e is ApiException.Http && e.code == ErrorCode.ALREADY_RESERVED))
+                }
             }
         }
     }
@@ -190,7 +195,7 @@ class TitleViewModel(private val repo: Repository, private val titleId: String) 
 fun TitleDetailScreen(titleId: String) {
     val vm = appViewModel(key = "title-$titleId") { TitleViewModel(it.repository, titleId) }
     val state by vm.state.collectAsStateWithLifecycle()
-    LoadView(state.title, onRetry = vm::load) { t ->
+    LoadView(state.title, onRetry = vm::load, loading = { SkeletonList(rows = 1, modifier = Modifier.fillMaxSize()) }) { t ->
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
             Cover(t.coverUrl, Modifier.size(width = CoverSize.detailWidth, height = CoverSize.detailHeight))
             Text(t.title, style = MaterialTheme.typography.headlineSmall)
@@ -200,7 +205,9 @@ fun TitleDetailScreen(titleId: String) {
             Text(stringResource(R.string.title_copies, t.copiesAvailable, t.copiesTotal))
             state.message?.let { Text(it.asString()) }
             ErrorText(state.error)
-            Button(onClick = vm::reserve, enabled = !state.busy) { Text(stringResource(if (state.busy) R.string.title_reserving else R.string.title_reserve)) }
+            Button(onClick = vm::reserve, enabled = !state.busy && !state.reserved) {
+                Text(stringResource(when { state.busy -> R.string.title_reserving; state.reserved -> R.string.title_reserve_done; else -> R.string.title_reserve }))
+            }
         }
     }
 }

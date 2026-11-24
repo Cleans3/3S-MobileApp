@@ -138,4 +138,13 @@
     <string name="title_reserved">Reserved. You will see it under Reserved when it is ready.</string>
     <string name="title_reserving">Reserving...</string>
     <string name="title_reserve">Reserve this title</string>
+    <!-- Trạng thái màn hình -->
+    <string name="state_loading">Loading…</string>
+    <string name="state_offline_title">No connection</string>
+    <string name="loans_empty_hint">Borrow with Self-checkout: hold the phone against the tag inside the book.</string>
+    <string name="reservations_empty_hint">Find a book in Catalog and tap Reserve.</string>
+    <string name="loans_overdue">Overdue</string>
+    <string name="title_reserve_done">Already reserved or on loan</string>
+    <string name="checkout_sending">Sending the loan request…</string>
+    <string name="catalog_empty_hint">Try another title, or fewer words.</string>
 </resources>
