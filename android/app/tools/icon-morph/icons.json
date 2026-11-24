@@ -18,7 +18,10 @@
     "lock",
     "lock-open",
     "arrow-up-right",
-    "user"
+    "user",
+    "book-open",
+    "history",
+    "log-in"
   ],
   "pairs": [
     {

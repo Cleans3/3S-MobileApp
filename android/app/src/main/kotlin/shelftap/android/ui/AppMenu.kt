@@ -57,12 +57,15 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import shelftap.android.R
+import shelftap.android.ui.icons.LucideIcon
 import shelftap.android.ui.icons.LucideMorphs
 import shelftap.android.ui.icons.MorphIcon
 import shelftap.android.ui.theme.EffectTier
+import shelftap.android.ui.theme.GlassSize
 import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.MenuSize
 import shelftap.android.ui.theme.Radius
+import shelftap.android.ui.theme.shelfTap
 import shelftap.android.ui.theme.Motion
 import shelftap.android.ui.theme.Spacing
 
@@ -72,8 +75,8 @@ private const val GLASS_ALPHA = 0.94f
 /** The panel starts a little smaller than its final size and grows into it. */
 private const val MENU_START_SCALE = 0.92f
 
-/** One entry of the ☰ menu: where it goes and its label. */
-data class MenuItem(val route: String, @StringRes val label: Int)
+/** One entry of the ☰ menu: where it goes, its label and its Lucide icon (path data from [shelftap.android.ui.icons.LucideIcons]). */
+data class MenuItem(val route: String, @StringRes val label: Int, val icon: String)
 
 /** The bar above every main screen: the ☰ button and the screen's name. */
 @Composable
@@ -139,9 +142,11 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, onSelec
                         Modifier.fillMaxWidth().heightIn(min = Spacing.touch).clip(shape)
                             .background(if (selected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent)
                             .selectable(selected = selected, role = Role.Tab, onClick = { onSelect(item.route) })
-                            .padding(horizontal = Spacing.m),
+                            .padding(horizontal = Spacing.s),
                         verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(Spacing.m),
                     ) {
+                        MenuIconTile(item.icon, selected)
                         Text(stringResource(item.label), style = if (selected) MaterialTheme.typography.titleSmall else MaterialTheme.typography.bodyLarge)
                     }
                 }
@@ -199,12 +204,37 @@ fun SideNav(items: List<MenuItem>, current: String?, width: androidx.compose.ui.
                     .padding(horizontal = Spacing.s, vertical = Spacing.s),
                 contentAlignment = if (centred) Alignment.Center else Alignment.CenterStart,
             ) {
-                Text(
-                    stringResource(item.label), textAlign = if (centred) TextAlign.Center else TextAlign.Start,
-                    style = if (selected) MaterialTheme.typography.titleSmall else MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.clearAndSetSemantics {},
-                )
+                val label: @Composable () -> Unit = {
+                    Text(
+                        stringResource(item.label), textAlign = if (centred) TextAlign.Center else TextAlign.Start,
+                        style = if (selected) MaterialTheme.typography.titleSmall else MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.clearAndSetSemantics {},
+                    )
+                }
+                if (centred) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                        MenuIconTile(item.icon, selected)
+                        label()
+                    }
+                } else {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                        MenuIconTile(item.icon, selected)
+                        label()
+                    }
+                }
             }
         }
     }
 }
+
+/** The rounded tile behind an entry's icon; the selected entry's tile is solid, the others glass. The icon only accompanies the label, so it has no description. */
+@Composable
+private fun MenuIconTile(pathData: String, selected: Boolean) {
+    val c = MaterialTheme.shelfTap
+    Box(
+        Modifier.size(GlassSize.tile).clip(RoundedCornerShape(Radius.tile - Spacing.xs / 2)).background(if (selected) c.surface else c.glass.copy(alpha = TILE_FILL)),
+        contentAlignment = Alignment.Center,
+    ) { LucideIcon(pathData, tint = c.ink, size = GlassSize.tileIcon) }
+}
+
+private const val TILE_FILL = 0.5f

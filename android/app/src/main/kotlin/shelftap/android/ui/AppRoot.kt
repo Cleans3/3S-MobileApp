@@ -50,6 +50,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import shelftap.android.R
+import shelftap.android.ui.icons.LucideIcons
 import shelftap.android.session.LogoutReason
 import shelftap.android.session.SessionState
 import shelftap.android.ui.theme.AdaptiveSize
@@ -88,10 +89,11 @@ private const val CHECKOUT = "checkout"
 private const val LOGIN = "login"
 
 private val memberMenu = listOf(
-    MenuItem(CATALOG, R.string.tab_catalog), MenuItem("loans", R.string.tab_loans), MenuItem("reservations", R.string.tab_reservations),
-    MenuItem("history", R.string.account_history), MenuItem("account", R.string.tab_account),
+    MenuItem(CATALOG, R.string.tab_catalog, LucideIcons.BookOpen), MenuItem("loans", R.string.tab_loans, LucideIcons.Clock),
+    MenuItem("reservations", R.string.tab_reservations, LucideIcons.Bookmark),
+    MenuItem("history", R.string.account_history, LucideIcons.History), MenuItem("account", R.string.tab_account, LucideIcons.User),
 )
-private val guestMenu = listOf(MenuItem(CATALOG, R.string.tab_catalog), MenuItem(LOGIN, R.string.login_action))
+private val guestMenu = listOf(MenuItem(CATALOG, R.string.tab_catalog, LucideIcons.BookOpen), MenuItem(LOGIN, R.string.login_action, LucideIcons.LogIn))
 
 /** What the top bar calls each screen that has one. Detail and password screens have no bar and use the system back. */
 @StringRes

@@ -75,4 +75,7 @@ object GlassSize {
     val panelInset = 10.dp
     val arrow = 44.dp
     val arrowIcon = 18.dp
+    /** The tile behind a menu entry's icon, and the icon in it. */
+    val tile = 36.dp
+    val tileIcon = 20.dp
 }
