@@ -4,6 +4,8 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -136,17 +138,26 @@ private fun isDeep(route: String?) = route?.startsWith("title/") == true || rout
  * movement only, no fade and no scaling, so the page is on screen from the first frame of the move. Each screen paints its own
  * background (see [Screen]), so nothing shows through while two are on screen.
  */
-private fun screenEnter(from: String?, to: String?, tier: EffectTier, back: Boolean): EnterTransition = when {
+private fun screenEnter(from: String?, to: String?, tier: EffectTier, back: Boolean, gesture: Int = NO_GESTURE): EnterTransition = when {
     tier == EffectTier.LIGHT -> if (isDeep(from) || isDeep(to)) fadeIn(tween(Motion.SHORT_FADE_MS)) else EnterTransition.None
-    isDeep(from) || isDeep(to) -> slideInHorizontally(Motion.spec(tier, Motion.SCREEN_MS)) { if (back) -it / PARALLAX else it }
+    // A back gesture from the right edge moves the page left with the finger, so the screen under it comes in from the right.
+    isDeep(from) || isDeep(to) -> slideInHorizontally(gestureSpec(tier, gesture)) { if (!back) it else if (gesture == EDGE_RIGHT) it / PARALLAX else -it / PARALLAX }
     else -> fadeIn(Motion.spec(tier, Motion.FADE_IN_MS, delayMs = Motion.FADE_OUT_MS)) // old screen out first, then the new one in
 }
 
-private fun screenExit(from: String?, to: String?, tier: EffectTier, back: Boolean): ExitTransition = when {
+private fun screenExit(from: String?, to: String?, tier: EffectTier, back: Boolean, gesture: Int = NO_GESTURE): ExitTransition = when {
     tier == EffectTier.LIGHT -> if (isDeep(from) || isDeep(to)) fadeOut(tween(Motion.SHORT_FADE_MS)) else ExitTransition.None
-    isDeep(from) || isDeep(to) -> slideOutHorizontally(Motion.spec(tier, Motion.SCREEN_MS)) { if (back) it else -it / PARALLAX }
+    isDeep(from) || isDeep(to) -> slideOutHorizontally(gestureSpec(tier, gesture)) { if (!back) -it / PARALLAX else if (gesture == EDGE_RIGHT) -it else it }
     else -> fadeOut(Motion.spec(tier, Motion.FADE_OUT_MS))
 }
+
+/** The edge a back gesture starts from, as the platform numbers it (`BackEventCompat.EDGE_LEFT` = 0, `EDGE_RIGHT` = 1); [NO_GESTURE] for a button or a call. */
+private const val EDGE_RIGHT = 1
+private const val NO_GESTURE = -1
+
+/** While the finger drags a back gesture the move follows it one to one (no easing); a button or a call uses the usual curve. */
+private fun <T> gestureSpec(tier: EffectTier, gesture: Int): FiniteAnimationSpec<T> =
+    if (gesture != NO_GESTURE && tier != EffectTier.LIGHT) tween(Motion.SCREEN_MS, easing = LinearEasing) else Motion.spec(tier, Motion.SCREEN_MS)
 
 /** The screen underneath moves this fraction (1/3) of the width while the one above moves all of it. */
 private const val PARALLAX = 3
@@ -250,6 +261,9 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                             exitTransition = { screenExit(initialState.destination.route, targetState.destination.route, tier, back = false) },
                             popEnterTransition = { screenEnter(initialState.destination.route, targetState.destination.route, tier, back = true) },
                             popExitTransition = { screenExit(initialState.destination.route, targetState.destination.route, tier, back = true) },
+                            // The back gesture: the platform default shrinks the page to 70% and fades it; here it slides like the button's back does.
+                            predictivePopEnterTransition = { edge -> screenEnter(initialState.destination.route, targetState.destination.route, tier, back = true, gesture = edge) },
+                            predictivePopExitTransition = { edge -> screenExit(initialState.destination.route, targetState.destination.route, tier, back = true, gesture = edge) },
                         ) {
                             composable(CATALOG) {
                                 Screen {
