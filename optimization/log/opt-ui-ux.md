@@ -79,3 +79,12 @@
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn menu đặc không blur (tầng Nhẹ của §6.3), vẽ icon thay vì thêm `material-icons`, và chọn 300 ms cho debounce (chưa có số đo để chọn khác). Con người chọn bật Guest. Chưa duyệt bố cục menu trên máy thật bằng tay.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua. `run_audit.ps1` trên Xiaomi: qua. Không có test tự động riêng cho debounce và Guest.
 - **Chưa làm (§6.2):** "Gợi ý cho bạn" (chưa có màn hình); icon morph ☰ → ✕ (chỉ đổi hình, chưa có chuyển động); hành động tiếp theo riêng cho từng lỗi (xem tiền phạt, liên hệ thủ thư: chưa có màn tiền phạt); rung nhẹ đã làm ở commit trước; nút nổi có thể che dòng cuối của danh sách (chưa thêm đệm cuối). Menu có Guest chưa có Danh mục "Tất cả sách".
+
+## 2026-11-24 16:22 · Chừa chỗ cho nút nổi "Chạm sách để mượn" (nội dung không nằm sau nút)
+
+- **Vấn đề:** layout ở font 2.0. Sau commit §6.2, ảnh chụp bài đo ở font 2.0 cho thấy nút nổi che dòng cuối của danh sách sách đang mượn và màn Tài khoản (chữ nằm sau nút, không cuộn lên được). Đây là điều đã ghi ở mục "Chưa làm" của entry trước.
+- **Thay đổi:** `AppRoot.kt` chừa `Spacing.pillClearance` (88 dp) ở đáy vùng nội dung trên các màn có nút nổi; chỗ này giữ nguyên khi menu mở để trang không nhảy. `Spacing.kt` thêm `pillClearance` và `none`.
+- **Đo trước → sau:** trên emulator `lowend36ui` (Android 16, tiếng Anh) ở font scale 2.0, xem ảnh chụp 7 màn hình: trước, nút nổi che chữ ở 2 màn (Sách đang mượn, Tài khoản) và danh mục; sau, không màn nào có chữ nằm sau nút (nội dung bị cắt ở mép vùng cuộn, kéo lên được). Cùng ảnh: không còn nhãn bị ngắt giữa chữ (cột A: nhãn thanh tab vỡ ở 5/7 màn); ở rộng 320 dp (560x1120 ở 280 dpi) không thấy chỗ vỡ. ATF: 2 phát hiện ở cả bốn cấu hình (hai nút bị vô hiệu), 0 phát hiện touch target. **Đây là số do AI xem ảnh, chờ người duyệt, chưa điền vào cột B.** Chưa đo ở font 2.0 trên máy thật (Xiaomi, chỉ chạy sáng và tối).
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI tự thấy lỗi từ ảnh chụp và sửa. Con người chưa duyệt.
+- **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1` bốn cấu hình trên emulator: qua.
+- **Ghi chú cho báo cáo:** khoảng chừa cố định 88 dp tốn chỗ ở màn thấp (cửa sổ thấp, gập). Mockup (§6.4) chỉ hiện icon khi cửa sổ ≤ 480 dp cao; app chưa làm.

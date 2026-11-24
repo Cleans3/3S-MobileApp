@@ -29,6 +29,7 @@ import androidx.navigation.navArgument
 import shelftap.android.R
 import shelftap.android.session.LogoutReason
 import shelftap.android.session.SessionState
+import shelftap.android.ui.theme.Spacing
 
 /**
  * The session state picks the screen: there is no back stack from a protected screen to the login. Logged out is not a
@@ -91,7 +92,8 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     val items = if (guest) guestMenu else memberMenu
     val title = titleOf(route)
     // Self-checkout is not in the menu: it is a button that is always in reach on the main screens (members only).
-    val showPill = !guest && title != null && route != CHECKOUT && !menuOpen
+    val pillHere = !guest && title != null && route != CHECKOUT
+    val showPill = pillHere && !menuOpen // the room for it stays while the menu is open, so the page does not jump
 
     Box(Modifier.fillMaxSize()) {
         Scaffold(
@@ -108,7 +110,10 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
             floatingActionButtonPosition = FabPosition.Center,
         ) { padding ->
             // With the menu open the page behind it is out of reach: TalkBack reads the menu, not the screen under it.
-            Box(Modifier.fillMaxSize().padding(padding).then(if (menuOpen) Modifier.clearAndSetSemantics {} else Modifier)) {
+            Box(
+                Modifier.fillMaxSize().padding(padding).padding(bottom = if (pillHere) Spacing.pillClearance else Spacing.none)
+                    .then(if (menuOpen) Modifier.clearAndSetSemantics {} else Modifier),
+            ) {
                 NavHost(nav, startDestination = if (guest && reason != null) LOGIN else CATALOG) {
                     composable(CATALOG) { CatalogScreen(onOpen = { nav.navigate("title/$it") }) }
                     composable("title/{id}", arguments = listOf(navArgument("id") { type = NavType.StringType })) {
