@@ -107,6 +107,8 @@
     <string name="res_fulfilled">Collected</string>
     <string name="res_cancelled">Cancelled</string>
     <string name="res_expired">Expired</string>
+    <string name="history_step_title">A password is needed to see this</string>
+    <string name="history_manage">Turn saving your history on or off in Account</string>
     <string name="history_needs_password">Reading history needs your password. You logged in with your card.</string>
     <string name="history_login_password">Log in with password</string>
     <string name="history_empty">Nothing here. Reading history is empty, or switched off in Account.</string>

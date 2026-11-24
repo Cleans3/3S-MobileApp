@@ -54,6 +54,12 @@ object AuditData {
     /** A fine on the overdue loan, so the loans screen shows its overdue state and its figure. */
     val fines = listOf(Fine("f-1", "l-1", 18000, null))
 
+    val history = listOf(
+        HistoryItem("t-3", "Truyện Kiều", "2026-10-02T02:00:00Z", "2026-10-15T02:00:00Z"),
+        HistoryItem("t-7", "Tắt đèn", "2026-09-10T02:00:00Z", "2026-09-24T02:00:00Z"),
+        HistoryItem("t-4", titles[3].title, "2026-11-20T02:00:00Z", null),
+    )
+
     val reservations = listOf(
         Reservation("r-1", "t-2", "Số đỏ", "2026-11-18T02:00:00Z", null, ReservationStatus.WAITING),
         Reservation("r-2", "t-6", "Nhà giả kim", "2026-11-10T02:00:00Z", "2026-11-21T02:00:00Z", ReservationStatus.READY),
@@ -78,7 +84,7 @@ object AuditData {
         override suspend fun setPrivacy(body: PrivacyRequest): Me = me.copy(historyEnabled = body.historyEnabled)
         override suspend fun loans(): List<Loan> = loans
         override suspend fun fines(): List<Fine> = fines
-        override suspend fun history(): List<HistoryItem> = emptyList()
+        override suspend fun history(): List<HistoryItem> = history
         override suspend fun reservations(): List<Reservation> = reservations
         override suspend fun checkout(body: LoanRequest): Loan = loans.first()
         override suspend fun renew(loanId: String): Loan = loans.first { it.loanId == loanId }

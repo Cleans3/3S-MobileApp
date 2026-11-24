@@ -41,6 +41,7 @@ import shelftap.android.ui.DoneCard
 import shelftap.android.ui.FailedCard
 import shelftap.android.ui.NfcStage
 import shelftap.android.ui.SendingCard
+import shelftap.android.ui.StepUpCard
 import shelftap.android.ui.theme.EffectTier
 import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.ShelfTapTheme
@@ -156,6 +157,7 @@ class UiAuditTest {
                     Text(str(R.string.checkout_hold), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
                 }
             }
+            overlayShot("history-stepup", activity) { StepUpCard(onLogin = {}) }
             overlayShot("checkout-sending", activity) { SendingCard() }
             overlayShot("checkout-done", activity) { DoneCard(AuditData.loans[1], onAgain = {}, onLoans = {}) }
             overlayShot("checkout-failed", activity) { FailedCard(CheckoutViewModel.UiState.Failed(uiText(R.string.err_unpaid_fine), unpaidFine = true), onAgain = {}, onLoans = {}) }
@@ -171,6 +173,10 @@ class UiAuditTest {
 
             tab(R.string.tab_account); waitFor(AuditData.me.fullName)
             audit("account", activity)
+            compose.onNodeWithText(str(R.string.account_history)).performClick(); waitFor(AuditData.history.first().title)
+            audit("history", activity)
+            scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+            compose.waitForIdle()
 
             openMenu()
             audit("menu", activity)

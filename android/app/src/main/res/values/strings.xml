@@ -107,7 +107,9 @@
     <string name="res_fulfilled">Đã nhận</string>
     <string name="res_cancelled">Đã hủy</string>
     <string name="res_expired">Đã hết hạn</string>
-    <string name="history_needs_password">Xem lịch sử đọc cần mật khẩu của bạn. Bạn đang đăng nhập bằng thẻ.</string>
+    <string name="history_step_title">Cần mật khẩu để xem</string>
+    <string name="history_manage">Bật hoặc tắt lưu lịch sử trong Tài khoản</string>
+    <string name="history_needs_password">Bạn đang đăng nhập bằng thẻ. Lịch sử đọc là dữ liệu cá nhân, nên cần thêm mật khẩu.</string>
     <string name="history_login_password">Đăng nhập bằng mật khẩu</string>
     <string name="history_empty">Chưa có gì ở đây. Lịch sử đọc đang trống, hoặc đã tắt trong Tài khoản.</string>
     <string name="history_returned">Mượn %1$s · trả %2$s</string>
