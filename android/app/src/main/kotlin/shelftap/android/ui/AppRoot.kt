@@ -415,12 +415,12 @@ private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
         if (id != null && share > 0.01f) {
             VerticalDivider()
             Box(Modifier.weight(share).fillMaxHeight().clipToBounds()) {
-                Box(Modifier.padding(top = LocalPageInsets.current.top)) {
-                    TitleDetailScreen(
-                        id, onLogin = onLogin, onCheckout = onCheckout, onSubject = { subjectSearch.value = it }, barInDock = onLogin == null,
-                        onClose = { selected = null },
-                    )
-                }
+                // The book's colour field runs to the top edge of the pane, as on a phone: no strip is kept free for a bar (the window's title is
+                // over the list, not over this pane).
+                TitleDetailScreen(
+                    id, onLogin = onLogin, onCheckout = onCheckout, onSubject = { subjectSearch.value = it }, barInDock = onLogin == null,
+                    onClose = { selected = null },
+                )
             }
         }
     }

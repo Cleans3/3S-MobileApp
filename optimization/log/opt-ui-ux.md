@@ -458,3 +458,11 @@
 - **Đo trước → sau:** ảnh GPU (emulator, cửa sổ rộng): nút tròn kính với icon panel ở cả hai trạng thái (menu mở, thanh dọc), cùng kiểu với nút ✕ ở khung sách; ATF 0. **Chưa đo/kiểm:** chế độ tối; mình chưa so với các icon ở bản máy thật. Viền kính của nút trên nền menu trắng khá nhạt (cùng độ tương phản với các nút kính khác, vốn không bị ATF báo).
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn nút tròn kính và icon panel của Lucide; con người chưa duyệt lại.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Configs expanded -Locale vi`: qua.
+
+## 2026-11-25 15:10 · Cửa sổ rộng: khung sách chạy sát mép trên, bỏ dải trống phía trên (nguồn: yêu cầu của người dùng)
+
+- **Vấn đề:** ở cửa sổ rộng, khung sách bên phải bị chừa một dải trống cao bằng thanh tiêu đề (khoảng 70 dp) phía trên mảng màu của bìa: `CatalogTwoPane` đệm đầu khung bằng chiều cao thanh trên (`LocalPageInsets.top`), nhưng tiêu đề cửa sổ chỉ nằm trên cột danh sách, không phủ khung này. Trên điện thoại và cửa sổ vừa mảng màu chạy sát mép trên.
+- **Thay đổi:** `AppRoot.kt` (`CatalogTwoPane`): bỏ đệm đầu; mảng màu và nút ✕ nằm sát mép trên khung (nút ✕ có sẵn khoảng chừa thanh trạng thái).
+- **Đo trước → sau:** ảnh GPU `detail` (emulator, cửa sổ rộng 960×720 dp): dải trống phía trên khung sách (khoảng 70 dp) → mảng màu sát mép; ô "Tình trạng" và ISBN nay hiện trọn trên thanh đặt trước khi chưa cuộn (trước đó bị thanh che một phần); ATF 0. **Chưa đo/kiểm:** chiều cao mảng màu (448 dp) vẫn lớn so với khung hẹp: chưa chỉnh theo kích thước khung; cửa sổ rộng ở cỡ chữ lớn và ở máy thật.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI đoán khoảng trống là dải đệm đầu khung (khớp với ảnh); con người chưa xác nhận đó là chỗ người dùng muốn nói.
+- **Kiểm thử:** `run_audit.ps1 -Configs expanded -Locale vi`: qua (kèm biên dịch).
