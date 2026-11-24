@@ -49,6 +49,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -103,8 +106,6 @@ private const val SCRIM_ALPHA = 0.16f
 /** CSS `saturate(160%)` behind the panel. */
 private const val BACKDROP_SATURATION = 1.6f
 
-/** The panel starts a little smaller than its final size and grows into it. */
-private const val MENU_START_SCALE = 0.92f
 
 /** One entry of the ☰ menu: where it goes, its label and its Lucide icon (path data from [shelftap.android.ui.icons.LucideIcons]). */
 data class MenuItem(val route: String, @StringRes val label: Int, val icon: String)
@@ -188,43 +189,39 @@ private fun MenuGlyph(open: Boolean) {
 }
 
 /**
- * The menu panel under the ☰ button, over a dimmed page. Closes on a tap outside, the back gesture, or a choice.
- * [backdrop] is set on the MEDIUM and FULL tiers: the page is lightly blurred behind the scrim and strongly right behind the panel, so
- * the panel reads as glass (the mockup's `blur(26px) saturate(160%)`); on the light tier it is null and the panel is solid. The panel grows from the button's corner and the page dims in (260 ms, none on the light tier).
+ * The menu panel under the ☰ button, over a page that is blurred and dimmed as a whole. Closes on a tap outside, the back gesture, or a choice.
+ * Everything comes in at once and by the same amount: [open] runs from 0 (shut) to 1 (open) and is driven by [MenuLayer], which also drives
+ * it back to 0 for the exit. The dimming fades over the whole screen (the page's blur, in [MainNav], runs with it), and the panel fades in
+ * where it stands with a small rise; no rectangle grows from a corner and nothing is scaled. With [glass] (the blur tiers) the panel is
+ * translucent glass over the blurred page, else solid. [interactive] is false while the menu is closing.
  */
 @Composable
-fun MenuOverlay(items: List<MenuItem>, current: String?, backdrop: BackdropState?, onSelect: (String) -> Unit, onDismiss: () -> Unit) {
-    BackHandler(onBack = onDismiss)
-    val tier = LocalEffectTier.current
-    val enter = remember { Animatable(if (tier == EffectTier.LIGHT) 1f else 0f) }
-    LaunchedEffect(Unit) { if (tier != EffectTier.LIGHT) enter.animateTo(1f, Motion.spec(tier, Motion.MENU_MS)) }
+fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, open: () -> Float, interactive: Boolean, onSelect: (String) -> Unit, onDismiss: () -> Unit) {
+    BackHandler(enabled = interactive, onBack = onDismiss)
     Box(Modifier.fillMaxSize()) {
         Box(
             // A tap outside closes. It is a gesture, not a clickable, so TalkBack does not see an unlabelled button;
             // the ✕ button is the accessible way to close.
-            Modifier.fillMaxSize().graphicsLayer { alpha = enter.value }.background(menuScrim.copy(alpha = SCRIM_ALPHA))
-                .pointerInput(Unit) { detectTapGestures { onDismiss() } },
+            Modifier.fillMaxSize().graphicsLayer { alpha = open() }.background(menuScrim.copy(alpha = SCRIM_ALPHA))
+                .pointerInput(interactive) { if (interactive) detectTapGestures { onDismiss() } },
         )
         val shape = RoundedCornerShape(Radius.menu)
         val c = MaterialTheme.shelfTap
-        val blurPx = with(LocalDensity.current) { MenuSize.backdropBlur.toPx() }
+        val risePx = with(LocalDensity.current) { MenuSize.rise.toPx() }
         Box(
             modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(start = Spacing.l, top = Spacing.touch + Spacing.s)
                 .graphicsLayer {
-                    val p = enter.value
-                    alpha = p
+                    val p = open()
                     // Alpha is applied to each thing drawn, not to an off-screen copy of the panel: that copy ended at the panel's rectangle and
                     // cut the shadow there, which showed as a dark square around the panel while it faded in.
                     compositingStrategy = CompositingStrategy.ModulateAlpha
-                    scaleX = MENU_START_SCALE + (1f - MENU_START_SCALE) * p
-                    scaleY = scaleX
-                    transformOrigin = TransformOrigin(0f, 0f) // grows from the ☰ corner
+                    alpha = p
+                    translationY = -risePx * (1f - p)
                 }
                 .width(MenuSize.width)
                 .shadow(MenuSize.shadow, shape, ambientColor = menuShadow, spotColor = menuShadow)
                 .clip(shape)
-                .then(if (backdrop != null) Modifier.backdropBlur(backdrop, blurPx, BACKDROP_SATURATION, menuScrim.copy(alpha = SCRIM_ALPHA)) else Modifier)
-                .background(if (backdrop != null) c.glass.copy(alpha = MENU_FILL) else MaterialTheme.colorScheme.surfaceContainerHigh)
+                .background(if (glass) c.glass.copy(alpha = MENU_FILL) else MaterialTheme.colorScheme.surfaceContainerHigh)
                 .border(BorderStroke(Radius.hairline, c.edge.copy(alpha = MENU_EDGE)), shape),
         ) {
             Column(Modifier.selectableGroup().padding(Spacing.s)) {
