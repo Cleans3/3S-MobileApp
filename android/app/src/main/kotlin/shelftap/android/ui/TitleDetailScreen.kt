@@ -27,7 +27,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -76,7 +79,7 @@ private const val CHIP_FILL = 0.8f
  */
 @Composable
 fun TitleDetailScreen(
-    titleId: String, onLogin: (() -> Unit)? = null, onCheckout: (() -> Unit)? = null, onBack: (() -> Unit)? = null, checkoutInPill: Boolean = false,
+    titleId: String, onLogin: (() -> Unit)? = null, onCheckout: (() -> Unit)? = null, onBack: (() -> Unit)? = null, barInDock: Boolean = false,
     onSubject: ((String) -> Unit)? = null,
 ) {
     val vm = appViewModel(key = "title-$titleId") { TitleViewModel(it.repository, titleId) }
@@ -93,11 +96,16 @@ fun TitleDetailScreen(
                     LucideIcon(LucideIcons.ArrowLeft, tint = MaterialTheme.shelfTap.ink, size = GlassSize.menuIcon)
                 }
             }
-            ActionBar(
-                busy = state.busy, reserved = state.reserved, confirmed = state.message != null, guest = onLogin != null,
-                onReserve = onLogin ?: vm::reserve, onCheckout = onCheckout, checkoutInPill = checkoutInPill,
-                modifier = Modifier.align(Alignment.BottomCenter),
-            )
+            val owner = remember { Any() }
+            val reserve = reserveActionOf(owner, state.busy, state.reserved, state.message != null, guest = onLogin != null, onReserve = onLogin ?: vm::reserve)
+            val dock = LocalReserveBar.current.takeIf { barInDock }
+            if (dock != null) {
+                // The button is drawn by the dock at the foot of the screen (it does not slide with this page): hand it what to say and do.
+                SideEffect { dock.value = reserve }
+                DisposableEffect(owner) { onDispose { if (dock.value?.owner === owner) dock.value = null } }
+            } else {
+                ActionBar(reserve, guest = onLogin != null, onCheckout = onCheckout, modifier = Modifier.align(Alignment.BottomCenter))
+            }
         }
     }
 }
@@ -190,17 +198,11 @@ private fun InfoTile(label: String, value: String, valueColor: Color, modifier: 
     }
 }
 
-/**
- * The glass bar at the foot: a round button to borrow by tapping the book (members) and the reserve button, which says what is
- * happening: sending, then done only after the server confirmed. Its colour changes with the state, and so does its words.
- */
+/** What the reserve button says and does for the page's current state: sending, then done only after the server confirmed; its colour changes with the state. */
 @Composable
-private fun ActionBar(
-    busy: Boolean, reserved: Boolean, confirmed: Boolean, guest: Boolean, onReserve: () -> Unit, onCheckout: (() -> Unit)?, checkoutInPill: Boolean, modifier: Modifier,
-) {
+private fun reserveActionOf(owner: Any, busy: Boolean, reserved: Boolean, confirmed: Boolean, guest: Boolean, onReserve: () -> Unit): ReserveAction {
     val c = MaterialTheme.shelfTap
-    val source = androidx.compose.runtime.remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
-    val (fill, textColor) = when {
+    val (fill, ink) = when {
         guest -> c.primary to c.onPrimary
         busy -> busyFill to Color.White
         reserved -> okFill to Color.White
@@ -215,12 +217,19 @@ private fun ActionBar(
             else -> R.string.title_reserve
         },
     )
+    return ReserveAction(owner, label, fill, ink, enabled = guest || (!busy && !reserved), reserved = !guest && reserved, onClick = onReserve)
+}
+
+/**
+ * The glass bar at the foot of the page, for a guest and for a window with no dock: a round button to borrow by tapping the book
+ * (members) and the reserve button. (A member on a compact window has both in the dock instead, see [ActionDock].)
+ */
+@Composable
+private fun ActionBar(reserve: ReserveAction, guest: Boolean, onCheckout: (() -> Unit)?, modifier: Modifier) {
+    val c = MaterialTheme.shelfTap
     GlassSurface(modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.xl), shape = CircleShape, fill = BAR_FILL) {
         Row(Modifier.padding(Spacing.s), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
-            if (onCheckout != null && !guest && checkoutInPill) {
-                // The floating "Tap a book to borrow" button folds to its icon and sits here (see [CheckoutPill]): only its place is kept.
-                Spacer(Modifier.size(HeroSize.barButton))
-            } else if (onCheckout != null && !guest) {
+            if (onCheckout != null && !guest) {
                 val description = stringResource(R.string.title_borrow_by_tap)
                 Box(
                     Modifier.size(HeroSize.barButton).clip(CircleShape).background(c.surface).semantics { contentDescription = description }
@@ -228,15 +237,7 @@ private fun ActionBar(
                     contentAlignment = Alignment.Center,
                 ) { LucideIcon(LucideIcons.MockupNfc, tint = c.ink, size = GlassSize.menuIcon) }
             }
-            Row(
-                Modifier.weight(1f).height(HeroSize.barButton).pressScale(source).clip(CircleShape).background(fill)
-                    .clickable(interactionSource = source, indication = null, enabled = guest || (!busy && !reserved), role = Role.Button, onClick = onReserve)
-                    .padding(horizontal = Spacing.m),
-                horizontalArrangement = Arrangement.spacedBy(Spacing.s, Alignment.CenterHorizontally), verticalAlignment = Alignment.CenterVertically,
-            ) {
-                MorphIcon(LucideMorphs.BookmarkToCheck, toEnd = !guest && reserved, tint = textColor)
-                Text(label, style = MaterialTheme.typography.titleSmall, color = textColor, maxLines = 2)
-            }
+            ReserveButton(reserve, Modifier.weight(1f).height(HeroSize.barButton), guest = guest)
         }
     }
 }

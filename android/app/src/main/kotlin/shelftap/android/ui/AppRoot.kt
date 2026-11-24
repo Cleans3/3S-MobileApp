@@ -198,6 +198,7 @@ private fun NavHostController.goTo(route: String) = navigate(route) {
 @Composable
 private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     val nav = rememberNavController()
+    val reserveBar = remember { mutableStateOf<ReserveAction?>(null) } // what the book page's reserve button says, drawn by the dock
     val subjectSearch = LocalContainer.current.subjectSearch
     val route = nav.currentBackStackEntryAsState().value?.destination?.route
     var menuOpen by rememberSaveable { mutableStateOf(false) }
@@ -250,7 +251,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                 },
                 floatingActionButton = {
                     // On a book's page the same button stays, folded to its icon, in the place of the reserve bar's round "borrow" button.
-                    if (showPill || pillOnBook) CheckoutPill(collapsed = pillOnBook, onClick = { nav.goTo(CHECKOUT) })
+                    if (showPill || pillOnBook) ActionDock(onBar = pillOnBook, reserve = reserveBar.value, onCheckout = { nav.goTo(CHECKOUT) })
                 },
                 floatingActionButtonPosition = FabPosition.Center,
             ) { padding ->
@@ -275,7 +276,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                         .then(if (overlayOpen) Modifier.clearAndSetSemantics {} else Modifier),
                     contentAlignment = Alignment.TopCenter,
                 ) {
-                    CompositionLocalProvider(LocalPageInsets provides insets) {
+                    CompositionLocalProvider(LocalPageInsets provides insets, LocalReserveBar provides reserveBar) {
                     Box(Modifier.fillMaxHeight().widthIn(max = contentMax).fillMaxWidth()) {
                         NavHost(
                             nav, startDestination = if (guest && reason != null) LOGIN else CATALOG,
@@ -303,7 +304,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                                         it.arguments?.getString("id").orEmpty(), onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null,
                                         onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }),
                                         // On a compact window the top bar's own button is the back button; the page draws one only without that bar.
-                                        onBack = if (compact) null else ({ nav.popBackStack() }), checkoutInPill = compact,
+                                        onBack = if (compact) null else ({ nav.popBackStack() }), barInDock = compact && !guest,
                                         // A subject on the page becomes the catalog's search: back to the catalog, which takes it.
                                         onSubject = { subject ->
                                             subjectSearch.value = subject
