@@ -86,6 +86,7 @@
     <!-- Loans, checkout, reservations, history -->
     <string name="loans_empty">No books on loan.</string>
     <string name="loans_due">Due %1$s · renewed %2$d×</string>
+    <string name="loans_renew_for">Renew %1$s</string>
     <string name="loans_renew">Renew</string>
     <string name="checkout_title">Self-checkout</string>
     <string name="checkout_hold">Hold the phone against the tag inside the book.</string>
@@ -93,6 +94,7 @@
     <string name="checkout_due">Due %1$s</string>
     <string name="checkout_again">Scan another book</string>
     <string name="reservations_empty">No reservations.</string>
+    <string name="reservations_cancel_for">Cancel reservation of %1$s</string>
     <string name="res_waiting">Waiting since %1$s</string>
     <string name="res_ready">Ready to collect</string>
     <string name="res_ready_since">Ready to collect since %1$s</string>

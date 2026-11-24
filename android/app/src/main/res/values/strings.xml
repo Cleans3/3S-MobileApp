@@ -86,6 +86,7 @@
     <!-- Sách đang mượn, tự mượn, đặt trước, lịch sử -->
     <string name="loans_empty">Bạn chưa mượn cuốn nào.</string>
     <string name="loans_due">Hạn trả %1$s · đã gia hạn %2$d lần</string>
+    <string name="loans_renew_for">Gia hạn %1$s</string>
     <string name="loans_renew">Gia hạn</string>
     <string name="checkout_title">Tự mượn sách</string>
     <string name="checkout_hold">Hãy áp điện thoại vào thẻ bên trong cuốn sách.</string>
@@ -93,6 +94,7 @@
     <string name="checkout_due">Hạn trả %1$s</string>
     <string name="checkout_again">Quét cuốn khác</string>
     <string name="reservations_empty">Chưa có sách đặt trước.</string>
+    <string name="reservations_cancel_for">Hủy đặt trước %1$s</string>
     <string name="res_waiting">Đang chờ từ %1$s</string>
     <string name="res_ready">Sẵn sàng để nhận</string>
     <string name="res_ready_since">Sẵn sàng để nhận từ %1$s</string>

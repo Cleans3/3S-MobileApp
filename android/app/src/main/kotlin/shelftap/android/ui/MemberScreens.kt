@@ -22,6 +22,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -86,12 +90,16 @@ fun LoansScreen() {
             if (loans.isEmpty()) Text(stringResource(R.string.loans_empty), Modifier.padding(16.dp))
             LazyColumn {
                 items(loans, key = { it.loanId }) { loan ->
+                    val renewFor = stringResource(R.string.loans_renew_for, loan.title)
                     Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(loan.title, style = MaterialTheme.typography.titleMedium)
                             Text(stringResource(R.string.loans_due, formatDate(loan.dueAt), loan.renewals), style = MaterialTheme.typography.bodyMedium)
                         }
-                        OutlinedButton(onClick = { vm.renew(loan) }, enabled = loan.renewable && state.busyId == null) {
+                        OutlinedButton(
+                            onClick = { vm.renew(loan) }, enabled = loan.renewable && state.busyId == null,
+                            modifier = Modifier.semantics { contentDescription = renewFor }, // two "Renew" buttons read the same otherwise
+                        ) {
                             Text(stringResource(if (state.busyId == loan.loanId) R.string.busy_dots else R.string.loans_renew))
                         }
                     }
@@ -152,12 +160,15 @@ fun CheckoutScreen() {
                 CheckoutViewModel.UiState.Idle -> Text(stringResource(R.string.checkout_hold))
                 CheckoutViewModel.UiState.Working -> Spinner()
                 is CheckoutViewModel.UiState.Done -> {
-                    Text(stringResource(R.string.checkout_borrowed, s.loan.title), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        stringResource(R.string.checkout_borrowed, s.loan.title), style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+                    )
                     Text(stringResource(R.string.checkout_due, formatDate(s.loan.dueAt)))
                     Button(onClick = vm::reset) { Text(stringResource(R.string.checkout_again)) }
                 }
                 is CheckoutViewModel.UiState.Failed -> {
-                    ErrorText(s.message)
+                    ErrorText(s.message, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
                     Button(onClick = vm::reset) { Text(stringResource(R.string.action_retry)) }
                 }
             }
@@ -209,6 +220,7 @@ fun ReservationsScreen() {
             if (reservations.isEmpty()) Text(stringResource(R.string.reservations_empty), Modifier.padding(16.dp))
             LazyColumn {
                 items(reservations, key = { it.reservationId }) { r ->
+                    val cancelFor = stringResource(R.string.reservations_cancel_for, r.title)
                     Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(r.title, style = MaterialTheme.typography.titleMedium)
@@ -225,7 +237,10 @@ fun ReservationsScreen() {
                             )
                         }
                         if (r.status == ReservationStatus.WAITING || r.status == ReservationStatus.READY) {
-                            OutlinedButton(onClick = { vm.cancel(r) }, enabled = state.busyId == null) {
+                            OutlinedButton(
+                                onClick = { vm.cancel(r) }, enabled = state.busyId == null,
+                                modifier = Modifier.semantics { contentDescription = cancelFor },
+                            ) {
                                 Text(stringResource(if (state.busyId == r.reservationId) R.string.busy_dots else R.string.action_cancel))
                             }
                         }

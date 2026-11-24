@@ -29,3 +29,12 @@
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI soạn toàn bộ bản dịch tiếng Việt. **Con người chưa duyệt bản dịch:** cần thủ thư hoặc người bản ngữ xem lại cách xưng hô ("bạn"), từ "đầu sách", "áp thẻ", "đặt trước". Chưa làm: `formatDate` vẫn in ngày dạng ISO (`2026-11-24`) và `memberType`/`status` từ server vẫn là chữ thô viết thường; tiền phạt `1.000 ₫` chưa có chỗ hiển thị trong app. Ghi vào việc còn lại, không coi là xong.
 - **Kiểm thử:** `cd android && ./gradlew assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua (59 test unit). Chưa chạy lại `run_audit.ps1` trên emulator, nên chưa xác nhận bằng mắt rằng màn hình hiển thị đúng chữ.
 - **Ghi chú cho báo cáo:** máy đặt ngôn ngữ tiếng Anh sẽ thấy tiếng Anh, mọi ngôn ngữ khác thấy tiếng Việt. Khi đo B phải ghi rõ ngôn ngữ máy dùng cho bài đo, vì cột A đo ở tiếng Anh.
+
+## 2026-11-24 15:37 · Accessibility: nút "Gia hạn"/"Hủy" nói rõ sách nào; thông báo kết quả tự mượn bằng liveRegion
+
+- **Vấn đề:** U02 (nhãn trùng). Ở cột A, ATF báo 2 phát hiện `DuplicateSpeakableText`: các nút "Renew" ở Sách đang mượn và "Cancel" ở Đặt trước đọc giống nhau, không biết sách nào. Kết quả tự mượn (Đã mượn hay lỗi) không được TalkBack đọc ra khi hiện (U06, §5.3).
+- **Thay đổi:** `MemberScreens.kt`: hai nút gắn `contentDescription` có tên sách ("Gia hạn <tên sách>", "Hủy đặt trước <tên sách>", chuỗi `loans_renew_for`, `reservations_cancel_for` ở cả hai ngôn ngữ). Tiêu đề "Đã mượn: …" và thông báo lỗi của màn Tự mượn đặt `liveRegion = Polite`. Chữ hiển thị không đổi.
+- **Đo trước → sau:** chưa đo. Cột A: 2 phát hiện trùng nhãn trong 4. Cần chạy lại `run_audit.ps1` để biết còn bao nhiêu; làm một lần sau khi xong các thay đổi UI, để không đo nhiều lần cho cùng một cột B. TalkBack chưa thử trên máy thật.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn gắn `contentDescription` có tên sách thay vì đổi chữ nút. Con người chưa duyệt.
+- **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua.
+- **Ghi chú cho báo cáo:** `liveRegion` chưa kiểm tra với TalkBack thật. Phần "nhãn tab vỡ ở font 2.0" (A: 5/7 màn) chưa sửa riêng: thanh 5 tab sẽ được thay bằng menu ☰ nếu nhóm đồng ý (`ui-ux-plan.md` §6.2), nên chưa sửa tạm.
