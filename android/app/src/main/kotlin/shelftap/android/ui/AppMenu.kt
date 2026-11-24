@@ -50,6 +50,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.lerp
@@ -177,6 +178,9 @@ fun AppTopBar(
 /** The glyphs turn a quarter of a turn as they swap. */
 private const val QUARTER_TURN = 90f
 
+/** At or under this window height the side menu is dense. */
+private const val DENSE_HEIGHT_DP = 480
+
 /** ☰ when closed, ✕ when open: the Lucide "menu" and "x" icons morphing with the baked spring (full tier), cross-fading (medium) or switching (light). */
 @Composable
 private fun MenuGlyph(open: Boolean) {
@@ -261,6 +265,9 @@ fun SideNav(
     items: List<MenuItem>, current: String?, width: androidx.compose.ui.unit.Dp, centred: Boolean, showPill: Boolean, onPill: () -> Unit, onSelect: (String) -> Unit,
     onToggle: (() -> Unit)? = null,
 ) {
+    // On a window under 480 dp tall (a phone held sideways) the entries sit closer, so all five fit without scrolling.
+    val dense = LocalConfiguration.current.screenHeightDp <= DENSE_HEIGHT_DP
+
     val c = MaterialTheme.shelfTap
     val edge = c.edge.copy(alpha = MENU_EDGE)
     val hairline = with(LocalDensity.current) { Radius.hairline.toPx() }
@@ -278,7 +285,7 @@ fun SideNav(
     }
     Column(
         glassModifier.verticalScroll(rememberScrollState()).padding(Spacing.s).selectableGroup(),
-        verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+        verticalArrangement = Arrangement.spacedBy(if (dense) Spacing.none else Spacing.xs),
     ) {
         if (onToggle != null) {
             // The button at the head of the wide menu, the same round glass as the top bar's buttons: it folds the menu into the rail
@@ -315,7 +322,7 @@ fun SideNav(
                     .background(if (selected) MaterialTheme.shelfTap.glass.copy(alpha = ACTIVE_PILL) else Color.Transparent)
                     .selectable(selected = selected, role = Role.Tab, onClick = { onSelect(item.route) })
                     .semantics { contentDescription = goTo }
-                    .padding(horizontal = Spacing.s, vertical = Spacing.s),
+                    .padding(horizontal = Spacing.s, vertical = if (dense) Spacing.xs else Spacing.s),
                 contentAlignment = if (centred) Alignment.Center else Alignment.CenterStart,
             ) {
                 val label: @Composable () -> Unit = {
