@@ -69,6 +69,7 @@ import shelftap.android.ui.theme.AdaptiveSize
 import shelftap.android.ui.theme.EffectTier
 import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.Motion
+import shelftap.android.ui.theme.MenuSize
 import shelftap.android.ui.theme.pressScale
 import shelftap.android.ui.theme.Spacing
 
@@ -157,7 +158,8 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     val title = titleOf(route)
     val tier = LocalEffectTier.current
     val glass = tier != EffectTier.LIGHT
-    val blurPx = with(LocalDensity.current) { Spacing.l.toPx() }
+    val blurPx = with(LocalDensity.current) { MenuSize.pageBlur.toPx() }
+    val backdrop = rememberBackdrop()
     val slidePx = with(LocalDensity.current) { Motion.slideDistance.roundToPx() }
     val overlayOpen = menuOpen && compact // a window that grew past the compact size has no ☰ menu to keep open
     // Self-checkout is not in the menu: a button that is always in reach on the main screens (members only).
@@ -169,6 +171,8 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
         NavLayout.SIDE -> if (route == CATALOG) Dp.Unspecified else AdaptiveSize.contentMaxWide
     }
 
+    // Records the page only while the menu is open.
+    backdrop.enabled = glass && overlayOpen
     Row(Modifier.fillMaxSize()) {
         if (!compact) {
             SideNav(
@@ -221,8 +225,10 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                         // A book's page paints its colour field up to the top edge, under the status bar; it pads its own buttons.
                         .padding(if (route?.startsWith("title/") == true) PaddingValues(start = padding.calculateStartPadding(LayoutDirection.Ltr), end = padding.calculateEndPadding(LayoutDirection.Ltr), bottom = padding.calculateBottomPadding()) else padding)
                         .padding(bottom = if (pillHere && compact) Spacing.pillClearance else Spacing.none)
-                        // The blur reads the flag in the draw phase and costs nothing while the menu is shut. Only the page is blurred.
+                        // The page is blurred lightly (the mockup's 3 px) and records itself for the strong blur right behind the panel.
+                        // Both read their flag in the draw phase and cost nothing while the menu is shut.
                         .graphicsLayer { if (glass && overlayOpen) renderEffect = BlurEffect(blurPx, blurPx, TileMode.Clamp) }
+                        .then(if (glass) Modifier.recordBackdrop(backdrop) else Modifier)
                         .then(if (overlayOpen) Modifier.clearAndSetSemantics {} else Modifier),
                     contentAlignment = Alignment.TopCenter,
                 ) {
@@ -260,7 +266,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                 }
             }
             MenuLayer(
-                visible = overlayOpen, tier = tier, items = items, current = route, glass = glass,
+                visible = overlayOpen, tier = tier, items = items, current = route, backdrop = if (glass) backdrop else null,
                 onSelect = { menuOpen = false; nav.goTo(it) }, onDismiss = { menuOpen = false },
             )
         }
@@ -273,7 +279,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
  */
 @Composable
 private fun MenuLayer(
-    visible: Boolean, tier: EffectTier, items: List<MenuItem>, current: String?, glass: Boolean, onSelect: (String) -> Unit, onDismiss: () -> Unit,
+    visible: Boolean, tier: EffectTier, items: List<MenuItem>, current: String?, backdrop: BackdropState?, onSelect: (String) -> Unit, onDismiss: () -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -281,7 +287,7 @@ private fun MenuLayer(
         exit = if (tier == EffectTier.LIGHT) ExitTransition.None
         else fadeOut(Motion.spec(tier, Motion.MENU_EXIT_MS)) + scaleOut(Motion.spec(tier, Motion.MENU_EXIT_MS), targetScale = 0.92f, transformOrigin = TransformOrigin(0f, 0f)),
     ) {
-        MenuOverlay(items, current = current, glass = glass, onSelect = onSelect, onDismiss = onDismiss)
+        MenuOverlay(items, current = current, backdrop = backdrop, onSelect = onSelect, onDismiss = onDismiss)
     }
 }
 

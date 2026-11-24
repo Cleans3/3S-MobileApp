@@ -30,6 +30,13 @@ object CoverSize {
 object MenuSize {
     val width = 240.dp
     val icon = 24.dp
+    /** The soft shadow under the panel (the mockup: 0 24px 60px). */
+    val shadow = 24.dp
+    /** The blur of the page right behind the panel, and of the whole page behind the scrim (CSS blur(26px) and blur(3px)). */
+    val backdropBlur = 26.dp
+    val pageBlur = 3.dp
+    /** The wide menu floats this far from the window's edges. */
+    val sideInset = 16.dp
 }
 
 /** Sizes for the wider windows (plan §6.4). */

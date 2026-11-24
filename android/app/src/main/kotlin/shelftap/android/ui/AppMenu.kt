@@ -4,7 +4,9 @@ import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.border
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +47,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.lerp
 import androidx.compose.ui.graphics.Color
@@ -68,15 +73,32 @@ import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.MenuSize
 import shelftap.android.ui.theme.Radius
 import shelftap.android.ui.theme.ShelfTapText
+import shelftap.android.ui.theme.menuScrim
+import shelftap.android.ui.theme.menuShadow
 import shelftap.android.ui.theme.shelfTap
 import shelftap.android.ui.theme.Motion
 import shelftap.android.ui.theme.Spacing
 
-/** How much of the page shows through the glass panel: very little, so the menu stays readable even where the blur is not drawn (0.86 let page text bleed through in the audit screenshot). */
 /** The active entry of the menu: a white (dark: smoky) pill, 0.85 as in the mockup. */
 private const val ACTIVE_PILL = 0.85f
 
-private const val GLASS_ALPHA = 0.94f
+/**
+ * The ☰ panel's glass: 0.62 in the mockup; 0.70 here, so the worst case behind it (a white page under the dark theme's smoky glass,
+ * a black one under the white glass) still gives the text 4.5:1 once the page is blurred. The light tier has no blur and a solid panel.
+ */
+private const val MENU_FILL = 0.70f
+
+/** The rail and the side menu have nothing scrolling behind them, so no blur is needed: the mockup's 0.62. */
+private const val NAV_FILL = 0.62f
+
+/** The edge of the glass: 0.85 in the mockup. */
+private const val MENU_EDGE = 0.85f
+
+/** The warm dimming behind the open menu: 0.16 in the mockup. */
+private const val SCRIM_ALPHA = 0.16f
+
+/** CSS `saturate(160%)` behind the panel. */
+private const val BACKDROP_SATURATION = 1.6f
 
 /** The panel starts a little smaller than its final size and grows into it. */
 private const val MENU_START_SCALE = 0.92f
@@ -134,11 +156,11 @@ private fun MenuGlyph(open: Boolean) {
 
 /**
  * The menu panel under the ☰ button, over a dimmed page. Closes on a tap outside, the back gesture, or a choice.
- * [glass]: the page behind is blurred (MEDIUM and FULL tiers), so the panel can let some of it show through; on the
- * light tier the panel is solid. The panel grows from the button's corner and the page dims in (260 ms, none on the light tier).
+ * [backdrop] is set on the MEDIUM and FULL tiers: the page is lightly blurred behind the scrim and strongly right behind the panel, so
+ * the panel reads as glass (the mockup's `blur(26px) saturate(160%)`); on the light tier it is null and the panel is solid. The panel grows from the button's corner and the page dims in (260 ms, none on the light tier).
  */
 @Composable
-fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, onSelect: (String) -> Unit, onDismiss: () -> Unit) {
+fun MenuOverlay(items: List<MenuItem>, current: String?, backdrop: BackdropState?, onSelect: (String) -> Unit, onDismiss: () -> Unit) {
     BackHandler(onBack = onDismiss)
     val tier = LocalEffectTier.current
     val enter = remember { Animatable(if (tier == EffectTier.LIGHT) 1f else 0f) }
@@ -147,10 +169,13 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, onSelec
         Box(
             // A tap outside closes. It is a gesture, not a clickable, so TalkBack does not see an unlabelled button;
             // the ✕ button is the accessible way to close.
-            Modifier.fillMaxSize().graphicsLayer { alpha = enter.value }.background(Color.Black.copy(alpha = 0.32f))
+            Modifier.fillMaxSize().graphicsLayer { alpha = enter.value }.background(menuScrim.copy(alpha = SCRIM_ALPHA))
                 .pointerInput(Unit) { detectTapGestures { onDismiss() } },
         )
-        Surface(
+        val shape = RoundedCornerShape(Radius.menu)
+        val c = MaterialTheme.shelfTap
+        val blurPx = with(LocalDensity.current) { MenuSize.backdropBlur.toPx() }
+        Box(
             modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(start = Spacing.l, top = Spacing.touch + Spacing.s)
                 .graphicsLayer {
                     val p = enter.value
@@ -159,10 +184,12 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, onSelec
                     scaleY = scaleX
                     transformOrigin = TransformOrigin(0f, 0f) // grows from the ☰ corner
                 }
-                .width(MenuSize.width),
-            shape = RoundedCornerShape(Radius.menu),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = if (glass) GLASS_ALPHA else 1f),
-            shadowElevation = Spacing.s,
+                .width(MenuSize.width)
+                .shadow(MenuSize.shadow, shape, ambientColor = menuShadow, spotColor = menuShadow)
+                .clip(shape)
+                .then(if (backdrop != null) Modifier.backdropBlur(backdrop, blurPx, BACKDROP_SATURATION, menuScrim.copy(alpha = SCRIM_ALPHA)) else Modifier)
+                .background(if (backdrop != null) c.glass.copy(alpha = MENU_FILL) else MaterialTheme.colorScheme.surfaceContainerHigh)
+                .border(BorderStroke(Radius.hairline, c.edge.copy(alpha = MENU_EDGE)), shape),
         ) {
             Column(Modifier.selectableGroup().padding(Spacing.s)) {
                 items.forEach { item ->
@@ -199,10 +226,23 @@ fun AppTitleBar(@StringRes title: Int) {
  */
 @Composable
 fun SideNav(items: List<MenuItem>, current: String?, width: androidx.compose.ui.unit.Dp, centred: Boolean, showPill: Boolean, onPill: () -> Unit, onSelect: (String) -> Unit) {
-    Column(
-        Modifier.width(width).fillMaxHeight().background(MaterialTheme.colorScheme.surfaceContainer)
+    val c = MaterialTheme.shelfTap
+    val edge = c.edge.copy(alpha = MENU_EDGE)
+    val hairline = with(LocalDensity.current) { Radius.hairline.toPx() }
+    // The mockup's glass: the rail is a strip with an edge on its right side; the wide menu floats, inset, with the panel's radius.
+    // Nothing scrolls behind either, so there is no blur to pay for: a translucent fill over the page colour.
+    val shape = if (centred) androidx.compose.ui.graphics.RectangleShape else RoundedCornerShape(Radius.menu)
+    val glassModifier = if (centred) {
+        Modifier.width(width).fillMaxHeight().background(c.glass.copy(alpha = NAV_FILL))
+            .drawBehind { drawLine(edge, Offset(size.width - hairline / 2, 0f), Offset(size.width - hairline / 2, size.height), hairline) }
             .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top + WindowInsetsSides.Bottom + WindowInsetsSides.Start))
-            .verticalScroll(rememberScrollState()).padding(Spacing.s).selectableGroup(),
+    } else {
+        Modifier.windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top + WindowInsetsSides.Bottom + WindowInsetsSides.Start))
+            .padding(MenuSize.sideInset).width(width).fillMaxHeight().clip(shape).background(c.glass.copy(alpha = NAV_FILL))
+            .border(BorderStroke(Radius.hairline, edge), shape)
+    }
+    Column(
+        glassModifier.verticalScroll(rememberScrollState()).padding(Spacing.s).selectableGroup(),
         verticalArrangement = Arrangement.spacedBy(Spacing.xs),
     ) {
         if (showPill) {

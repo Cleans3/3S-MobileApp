@@ -4,6 +4,11 @@ import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.UiAutomation
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.HardwareRenderer
+import android.graphics.PixelFormat
+import android.graphics.RenderNode
+import android.hardware.HardwareBuffer
+import android.media.ImageReader
 import android.view.View
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasScrollAction
@@ -195,6 +200,10 @@ class UiAuditTest {
         }
         File(outDir, config).mkdirs()
         File(outDir, "$config/$screen.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        // The software draw above cannot show what the GPU draws (blur, backdrop layers, shadows). The same tree drawn by the hardware
+        // renderer into an off-screen buffer can; it is saved beside it, and the checks run on it too (findings-hw-<config>.tsv).
+        val hardware = captureHardware(activity.window.decorView)
+        if (hardware != null) File(outDir, "$config/$screen-hw.png").outputStream().use { hardware.compress(Bitmap.CompressFormat.PNG, 100, it) }
 
         // The tree comes from the system through UiAutomation, as Accessibility Scanner gets it; FLAG_SECURE does not hide it.
         var rootNode = uiAutomation.rootInActiveWindow
@@ -209,27 +218,59 @@ class UiAuditTest {
         val elementRows = hierarchy.activeWindow.allViews.joinToString("") { e ->
             "$config\t$screen\t${e.className}\t${e.text}\t${e.contentDescription}\t${e.boundsInScreen}\tclickable=${e.isClickable}\n"
         }
-        val params = Parameters().apply { putScreenCapture(BitmapImage(bitmap)) }
         val checks = AccessibilityCheckPreset.getAccessibilityHierarchyChecksForPreset(AccessibilityCheckPreset.LATEST)
         File(outDir, "checks.txt").writeText(checks.joinToString("\n") { it.javaClass.simpleName } + "\n") // what "0 findings" was checked against
-        val results: List<AccessibilityHierarchyCheckResult> =
-            checks
+        fun run(image: Bitmap): List<AccessibilityHierarchyCheckResult> {
+            val params = Parameters().apply { putScreenCapture(BitmapImage(image)) }
+            return checks
                 .flatMap { it.runCheckOnHierarchy(hierarchy, null, params) }
                 .filter { it.type == AccessibilityCheckResultType.ERROR || it.type == AccessibilityCheckResultType.WARNING }
-
-        val tsv = File(outDir, "findings-$config.tsv")
-        if (!tsv.exists()) tsv.writeText("config\tscreen\tcheck\ttype\telement\tbounds\tmessage\n")
-        tsv.appendText(
-            results.joinToString("") { r ->
-                val e = r.element
-                val what = listOfNotNull(e?.className?.toString()?.substringAfterLast('.'), e?.text?.toString(), e?.contentDescription?.toString())
-                    .joinToString(" | ")
-                listOf(config, screen, r.sourceCheckClass.simpleName, r.type.name, what, e?.boundsInScreen?.toString().orEmpty(), r.getMessage(Locale.ENGLISH).toString())
-                    .joinToString("\t") { it.replace('\t', ' ').replace('\n', ' ') } + "\n"
-            },
-        )
+        }
+        fun write(name: String, rows: List<AccessibilityHierarchyCheckResult>) {
+            val tsv = File(outDir, name)
+            if (!tsv.exists()) tsv.writeText("config\tscreen\tcheck\ttype\telement\tbounds\tmessage\n")
+            tsv.appendText(
+                rows.joinToString("") { r ->
+                    val e = r.element
+                    val what = listOfNotNull(e?.className?.toString()?.substringAfterLast('.'), e?.text?.toString(), e?.contentDescription?.toString())
+                        .joinToString(" | ")
+                    listOf(config, screen, r.sourceCheckClass.simpleName, r.type.name, what, e?.boundsInScreen?.toString().orEmpty(), r.getMessage(Locale.ENGLISH).toString())
+                        .joinToString("\t") { it.replace('\t', ' ').replace('\n', ' ') } + "\n"
+                },
+            )
+        }
+        val results = run(bitmap)
+        write("findings-$config.tsv", results)
+        if (hardware != null) write("findings-hw-$config.tsv", run(hardware))
         File(outDir, "elements-$config.tsv").appendText(elementRows)
         File(outDir, "screens-$config.tsv").appendText("$config\t$screen\t$elements\t${results.size}\n")
+    }
+
+    /** The window's view tree drawn by the GPU renderer into an off-screen buffer (not the screen, so FLAG_SECURE is not involved). Null if the device cannot. */
+    private fun captureHardware(root: View): Bitmap? = try {
+        val w = root.width
+        val h = root.height
+        val reader = ImageReader.newInstance(w, h, PixelFormat.RGBA_8888, 1, HardwareBuffer.USAGE_GPU_COLOR_OUTPUT or HardwareBuffer.USAGE_GPU_SAMPLED_IMAGE)
+        val node = RenderNode("ui-audit")
+        node.setPosition(0, 0, w, h)
+        instrumentation.runOnMainSync {
+            val canvas = node.beginRecording(w, h)
+            root.draw(canvas)
+            node.endRecording()
+        }
+        val renderer = HardwareRenderer()
+        renderer.setSurface(reader.surface)
+        renderer.setContentRoot(node)
+        renderer.createRenderRequest().setWaitForPresent(true).syncAndDraw()
+        var image: android.media.Image? = null
+        for (attempt in 1..20) { image = reader.acquireLatestImage(); if (image != null) break; Thread.sleep(50) }
+        val buffer = image?.hardwareBuffer
+        val copy = buffer?.let { Bitmap.wrapHardwareBuffer(it, null)?.copy(Bitmap.Config.ARGB_8888, false) }
+        image?.close(); renderer.destroy(); reader.close(); node.discardDisplayList()
+        copy
+    } catch (e: Throwable) {
+        android.util.Log.w("UiAudit", "no hardware capture: $e")
+        null
     }
 
     /** Session over a fake auth API and an in-memory vault; repository over [AuditData]. Returns the new session. */
