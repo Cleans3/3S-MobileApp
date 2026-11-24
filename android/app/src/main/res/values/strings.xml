@@ -113,6 +113,10 @@
     <string name="account_history_keep">Lưu lịch sử đọc của tôi</string>
     <string name="account_history_keep_caption">Tắt: các lượt mượn đã trả sẽ không được ghi vào lịch sử (Nghị định 13/2023).</string>
     <string name="account_history">Lịch sử đọc</string>
+    <string name="account_theme">Giao diện</string>
+    <string name="theme_system">Theo hệ thống</string>
+    <string name="theme_light">Sáng</string>
+    <string name="theme_dark">Tối</string>
     <string name="account_security">Bảo mật</string>
     <string name="account_bio">Khóa sinh trắc học</string>
     <string name="account_bio_caption">Cần vân tay hoặc khuôn mặt để mở app sau khi app chạy nền.</string>

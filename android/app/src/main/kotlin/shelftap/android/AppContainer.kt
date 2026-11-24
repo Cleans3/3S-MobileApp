@@ -12,6 +12,7 @@ import shelftap.android.api.Net
 import shelftap.android.api.ShelfTapApi
 import shelftap.android.data.DeviceIdStore
 import shelftap.android.data.Repository
+import shelftap.android.data.ThemeStore
 import shelftap.android.security.IntegrityChecker
 import shelftap.android.security.KeystoreRefreshTokenVault
 import shelftap.android.security.RefreshTokenVault
@@ -26,6 +27,7 @@ class AppContainer(context: Context) {
     private val dataStore = PreferenceDataStoreFactory.create { context.preferencesDataStoreFile("shelftap") }
     val vault: RefreshTokenVault = KeystoreRefreshTokenVault(dataStore)
     val integrity = IntegrityChecker(context)
+    val themeStore = ThemeStore(dataStore)
 
     val baseClient = Net.baseClient(baseUrl, BuildConfig.API_PINS.split(',').filter { it.isNotBlank() })
     val session = SessionManager(

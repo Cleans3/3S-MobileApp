@@ -7,13 +7,16 @@ import android.os.Looper
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
+import shelftap.android.data.ThemeMode
 import shelftap.android.session.LogoutReason
 import shelftap.android.session.SessionState
 import shelftap.android.ui.AppRoot
 import shelftap.android.ui.LocalContainer
-import shelftap.android.ui.ShelfTapTheme
+import shelftap.android.ui.theme.ShelfTapTheme
 
 /** FragmentActivity because BiometricPrompt needs one. Hardening is set here once, for every screen. */
 class MainActivity : FragmentActivity() {
@@ -33,7 +36,8 @@ class MainActivity : FragmentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) setRecentsScreenshotEnabled(false)
         setContent {
             CompositionLocalProvider(LocalContainer provides container) {
-                ShelfTapTheme { AppRoot() }
+                val mode by container.themeStore.mode.collectAsStateWithLifecycle(ThemeMode.SYSTEM)
+                ShelfTapTheme(mode) { AppRoot() }
             }
         }
         // Tapjacking: ignore touches while another window covers ours.

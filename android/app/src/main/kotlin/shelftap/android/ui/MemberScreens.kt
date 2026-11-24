@@ -26,7 +26,6 @@ import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -44,6 +43,7 @@ import shelftap.android.api.Reservation
 import shelftap.android.api.ReservationStatus
 import shelftap.android.data.Repository
 import shelftap.android.nfc.TagReader
+import shelftap.android.ui.theme.Spacing
 
 /** A list screen's state: the loaded list plus the outcome of the last row action. */
 data class ListState<T>(val list: Load<List<T>> = Load.Loading, val busyId: String? = null, val error: UiText? = null)
@@ -86,12 +86,12 @@ fun LoansScreen() {
     val state by vm.state.collectAsStateWithLifecycle()
     LoadView(state.list, onRetry = vm::load) { loans ->
         Column(Modifier.fillMaxSize()) {
-            ErrorText(state.error, Modifier.padding(16.dp))
-            if (loans.isEmpty()) Text(stringResource(R.string.loans_empty), Modifier.padding(16.dp))
+            ErrorText(state.error, Modifier.padding(Spacing.l))
+            if (loans.isEmpty()) Text(stringResource(R.string.loans_empty), Modifier.padding(Spacing.l))
             LazyColumn {
                 items(loans, key = { it.loanId }) { loan ->
                     val renewFor = stringResource(R.string.loans_renew_for, loan.title)
-                    Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Row(Modifier.fillMaxWidth().padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(loan.title, style = MaterialTheme.typography.titleMedium)
                             Text(stringResource(R.string.loans_due, formatDate(loan.dueAt), loan.renewals), style = MaterialTheme.typography.bodyMedium)
@@ -151,8 +151,8 @@ fun CheckoutScreen() {
     NfcGate {
         NfcReaderEffect(TagReader.BOOK_FLAGS) { vm.tagTapped(it) }
         Column(
-            Modifier.fillMaxSize().padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+            Modifier.fillMaxSize().padding(Spacing.xl),
+            verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(stringResource(R.string.checkout_title), style = MaterialTheme.typography.headlineSmall)
@@ -216,12 +216,12 @@ fun ReservationsScreen() {
     val state by vm.state.collectAsStateWithLifecycle()
     LoadView(state.list, onRetry = vm::load) { reservations ->
         Column(Modifier.fillMaxSize()) {
-            ErrorText(state.error, Modifier.padding(16.dp))
-            if (reservations.isEmpty()) Text(stringResource(R.string.reservations_empty), Modifier.padding(16.dp))
+            ErrorText(state.error, Modifier.padding(Spacing.l))
+            if (reservations.isEmpty()) Text(stringResource(R.string.reservations_empty), Modifier.padding(Spacing.l))
             LazyColumn {
                 items(reservations, key = { it.reservationId }) { r ->
                     val cancelFor = stringResource(R.string.reservations_cancel_for, r.title)
-                    Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Row(Modifier.fillMaxWidth().padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(r.title, style = MaterialTheme.typography.titleMedium)
                             Text(
@@ -284,7 +284,7 @@ fun HistoryScreen() {
 
     if (state.needsPassword) {
         Centered {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 Text(stringResource(R.string.history_needs_password))
                 Button(onClick = { askPassword = true }) { Text(stringResource(R.string.history_login_password)) }
             }
@@ -296,7 +296,7 @@ fun HistoryScreen() {
             } else {
                 LazyColumn(Modifier.fillMaxSize()) {
                     items(items) { h ->
-                        Column(Modifier.fillMaxWidth().padding(16.dp)) {
+                        Column(Modifier.fillMaxWidth().padding(Spacing.l)) {
                             Text(h.title, style = MaterialTheme.typography.titleMedium)
                             Text(
                                 h.returnedAt?.let { stringResource(R.string.history_returned, formatDate(h.outAt), formatDate(it)) }

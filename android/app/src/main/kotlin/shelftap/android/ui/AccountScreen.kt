@@ -6,12 +6,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,8 +24,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,9 +43,12 @@ import shelftap.android.api.ApiException
 import shelftap.android.api.ErrorCode
 import shelftap.android.api.Me
 import shelftap.android.data.Repository
+import shelftap.android.data.ThemeMode
+import shelftap.android.ui.theme.shelfTapSwitchColors
 import shelftap.android.security.BiometricLock
 import shelftap.android.security.RefreshTokenVault
 import shelftap.android.session.SessionManager
+import shelftap.android.ui.theme.Spacing
 
 class AccountViewModel(
     private val repo: Repository,
@@ -131,12 +138,14 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
     val activity = LocalActivity.current as FragmentActivity
     val scope = rememberCoroutineScope()
     val biometricAvailable = BiometricLock.available(context)
+    val themeStore = LocalContainer.current.themeStore
+    val themeMode by themeStore.mode.collectAsStateWithLifecycle(ThemeMode.SYSTEM)
     val bioTurnOn = stringResource(R.string.account_bio_turn_on)
     val bioConfirm = stringResource(R.string.account_bio_confirm)
     val cancelLabel = stringResource(R.string.action_cancel)
 
     LoadView(state.me, onRetry = vm::load) { me ->
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
             Text(me.fullName, style = MaterialTheme.typography.headlineSmall)
             Text(stringResource(R.string.account_line, me.email, me.memberType.lowercase(), me.status.lowercase()))
             IntegrityBanner()
@@ -153,6 +162,10 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
                 checked = me.historyEnabled, enabled = !state.busy, onChange = vm::setHistoryEnabled,
             )
             OutlinedButton(onClick = onHistory, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.account_history)) }
+            HorizontalDivider()
+
+            Text(stringResource(R.string.account_theme), style = MaterialTheme.typography.titleMedium)
+            ThemeChoice(themeMode, onChange = { scope.launch { themeStore.set(it) } })
             HorizontalDivider()
 
             Text(stringResource(R.string.account_security), style = MaterialTheme.typography.titleMedium)
@@ -181,13 +194,34 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
     }
 }
 
+/** Light, dark or follow the phone. Radio rows, not a segmented bar: they keep their labels whole at large font sizes. */
+@Composable
+private fun ThemeChoice(selected: ThemeMode, onChange: (ThemeMode) -> Unit) {
+    Column(Modifier.selectableGroup()) {
+        listOf(
+            ThemeMode.SYSTEM to R.string.theme_system,
+            ThemeMode.LIGHT to R.string.theme_light,
+            ThemeMode.DARK to R.string.theme_dark,
+        ).forEach { (mode, label) ->
+            Row(
+                Modifier.fillMaxWidth().heightIn(min = Spacing.touch).selectable(selected = selected == mode, role = Role.RadioButton, onClick = { onChange(mode) }),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+            ) {
+                RadioButton(selected = selected == mode, onClick = null)
+                Text(stringResource(label))
+            }
+        }
+    }
+}
+
 @Composable
 private fun SwitchRow(title: String, caption: String, checked: Boolean, enabled: Boolean, onChange: (Boolean) -> Unit) {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
         Column(Modifier.weight(1f)) {
             Text(title)
             Text(caption, style = MaterialTheme.typography.bodySmall)
         }
-        Switch(checked = checked, onCheckedChange = onChange, enabled = enabled)
+        Switch(checked = checked, onCheckedChange = onChange, enabled = enabled, colors = shelfTapSwitchColors())
     }
 }

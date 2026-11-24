@@ -32,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
 import androidx.fragment.app.FragmentActivity
@@ -55,6 +54,7 @@ import shelftap.android.nfc.TagReader
 import shelftap.android.security.BiometricLock
 import shelftap.android.session.LogoutReason
 import shelftap.android.session.SessionManager
+import shelftap.android.ui.theme.Spacing
 
 class AuthViewModel(private val session: SessionManager) : ViewModel() {
     data class UiState(val busy: Boolean = false, val error: UiText? = null)
@@ -115,8 +115,8 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
     var password by remember { mutableStateOf("") } // never saved to instance state
 
     Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.xl),
+        verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
     ) {
         Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium)
         IntegrityBanner()
@@ -147,8 +147,8 @@ fun CardLoginScreen(onBack: () -> Unit) {
     NfcGate {
         NfcReaderEffect(TagReader.CARD_FLAGS) { vm.cardTapped(it) }
         Column(
-            Modifier.fillMaxSize().padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+            Modifier.fillMaxSize().padding(Spacing.xl),
+            verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(stringResource(R.string.card_hold), style = MaterialTheme.typography.titleMedium)
@@ -165,7 +165,7 @@ fun OfflineScreen() {
     val session = LocalContainer.current.session
     val scope = rememberCoroutineScope()
     Centered {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
             Text(stringResource(R.string.offline_message))
             Button(onClick = { scope.launch { session.restore() } }) { Text(stringResource(R.string.action_retry)) }
             TextButton(onClick = { scope.launch { session.logout() } }) { Text(stringResource(R.string.action_logout)) }
@@ -189,7 +189,7 @@ fun LockScreen() {
     }
     LaunchedEffect(Unit) { unlock() }
     Centered {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
             Text(stringResource(R.string.lock_locked), style = MaterialTheme.typography.titleMedium)
             Button(onClick = unlock) { Text(stringResource(R.string.lock_unlock)) }
             TextButton(onClick = { scope.launch { session.logout() } }) { Text(stringResource(R.string.action_logout)) }
@@ -229,8 +229,8 @@ fun ChangePasswordScreen(forced: Boolean, onDone: () -> Unit) {
     LaunchedEffect(state.done) { if (state.done) onDone() }
 
     Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.xl),
+        verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
     ) {
         Text(stringResource(R.string.pw_title), style = MaterialTheme.typography.headlineSmall)
         if (forced) Text(stringResource(R.string.pw_forced))
@@ -247,7 +247,7 @@ fun ChangePasswordScreen(forced: Boolean, onDone: () -> Unit) {
         }
         if (new.isNotEmpty() && again.isNotEmpty() && new != again) Text(stringResource(R.string.pw_mismatch), color = MaterialTheme.colorScheme.error)
         ErrorText(state.error)
-        Spacer(Modifier.height(4.dp))
+        Spacer(Modifier.height(Spacing.xs))
         Button(
             onClick = { vm.change(current, new) },
             enabled = !state.busy && current.isNotEmpty() && new.isNotEmpty() && new == again,
@@ -278,7 +278,7 @@ fun StepUpDialog(defaultEmail: String = "", onDismiss: () -> Unit, onDone: () ->
         properties = DialogProperties(securePolicy = SecureFlagPolicy.SecureOn),
         title = { Text(stringResource(R.string.stepup_title)) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 Text(stringResource(R.string.stepup_text))
                 OutlinedTextField(
                     value = email, onValueChange = { email = it }, label = { Text(stringResource(R.string.login_email)) }, singleLine = true,

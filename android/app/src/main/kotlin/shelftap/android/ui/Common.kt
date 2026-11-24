@@ -13,10 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
@@ -25,12 +22,10 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -49,15 +44,9 @@ import shelftap.android.nfc.CardException
 import shelftap.android.nfc.NfcAvailability
 import shelftap.android.nfc.TagReader
 import shelftap.android.security.IntegrityFlag
+import shelftap.android.ui.theme.Spacing
 
 val LocalContainer = compositionLocalOf<AppContainer> { error("AppContainer not provided") }
-
-@Composable
-fun ShelfTapTheme(content: @Composable () -> Unit) {
-    MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background, content = content)
-    }
-}
 
 /** ViewModel built from the app container; [key] separates instances that differ by an argument. */
 @Composable
@@ -112,7 +101,7 @@ fun formatDate(iso: String): String =
 
 @Composable
 fun Centered(content: @Composable () -> Unit) {
-    Box(Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) { content() }
+    Box(Modifier.fillMaxSize().padding(Spacing.xl), contentAlignment = Alignment.Center) { content() }
 }
 
 @Composable
@@ -129,7 +118,7 @@ fun <T> LoadView(load: Load<T>, onRetry: () -> Unit, content: @Composable (T) ->
     when (load) {
         Load.Loading -> Spinner()
         is Load.Failed -> Centered {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 ErrorText(load.message)
                 Button(onClick = onRetry) { Text(stringResource(R.string.action_retry)) }
             }
@@ -176,7 +165,7 @@ fun NfcGate(content: @Composable () -> Unit) {
         NfcAvailability.READY -> content()
         NfcAvailability.MISSING -> Centered { Text(stringResource(R.string.nfc_missing)) }
         NfcAvailability.DISABLED -> Centered {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 Text(stringResource(R.string.nfc_off))
                 Button(onClick = { context.startActivity(Intent(Settings.ACTION_NFC_SETTINGS)) }) { Text(stringResource(R.string.nfc_open_settings)) }
             }

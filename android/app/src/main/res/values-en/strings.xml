@@ -113,6 +113,10 @@
     <string name="account_history_keep">Keep my reading history</string>
     <string name="account_history_keep_caption">Off: finished loans are not recorded in your history (Decree 13/2023).</string>
     <string name="account_history">Reading history</string>
+    <string name="account_theme">Appearance</string>
+    <string name="theme_system">Follow the phone</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
     <string name="account_security">Security</string>
     <string name="account_bio">Biometric lock</string>
     <string name="account_bio_caption">Fingerprint or face is needed to open the app after it was in the background.</string>

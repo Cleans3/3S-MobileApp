@@ -28,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -44,6 +43,8 @@ import shelftap.android.api.ApiException
 import shelftap.android.api.TitleDetail
 import shelftap.android.api.TitleSummary
 import shelftap.android.data.Repository
+import shelftap.android.ui.theme.CoverSize
+import shelftap.android.ui.theme.Spacing
 
 class CatalogViewModel(private val repo: Repository) : ViewModel() {
     data class UiState(
@@ -102,7 +103,7 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
     var input by rememberSaveable { mutableStateOf("") }
 
     Column(Modifier.fillMaxSize()) {
-        Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        Row(Modifier.padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
             OutlinedTextField(
                 value = input, onValueChange = { input = it }, label = { Text(stringResource(R.string.catalog_search_label)) }, singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
@@ -120,11 +121,11 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
             item {
                 when {
                     state.loading -> Spinner()
-                    state.error != null -> Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    state.error != null -> Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         ErrorText(state.error)
                         Button(onClick = vm::retry) { Text(stringResource(R.string.action_retry)) }
                     }
-                    state.items.isEmpty() -> Text(stringResource(R.string.catalog_empty), Modifier.padding(16.dp))
+                    state.items.isEmpty() -> Text(stringResource(R.string.catalog_empty), Modifier.padding(Spacing.l))
                 }
             }
         }
@@ -133,8 +134,8 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
 
 @Composable
 private fun TitleRow(item: TitleSummary, onClick: () -> Unit) {
-    Row(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        Cover(item.coverUrl, Modifier.size(width = 48.dp, height = 72.dp))
+    Row(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+        Cover(item.coverUrl, Modifier.size(width = CoverSize.rowWidth, height = CoverSize.rowHeight))
         Column(Modifier.weight(1f)) {
             Text(item.title, style = MaterialTheme.typography.titleMedium)
             Text(item.authors.joinToString(", "), style = MaterialTheme.typography.bodyMedium)
@@ -190,8 +191,8 @@ fun TitleDetailScreen(titleId: String) {
     val vm = appViewModel(key = "title-$titleId") { TitleViewModel(it.repository, titleId) }
     val state by vm.state.collectAsStateWithLifecycle()
     LoadView(state.title, onRetry = vm::load) { t ->
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Cover(t.coverUrl, Modifier.size(width = 120.dp, height = 180.dp))
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            Cover(t.coverUrl, Modifier.size(width = CoverSize.detailWidth, height = CoverSize.detailHeight))
             Text(t.title, style = MaterialTheme.typography.headlineSmall)
             Text(t.authors.joinToString(", "))
             Text(stringResource(R.string.title_isbn, t.isbn))
