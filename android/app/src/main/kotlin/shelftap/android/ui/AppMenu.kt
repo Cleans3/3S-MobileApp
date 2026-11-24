@@ -42,6 +42,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -107,25 +108,49 @@ private const val MENU_START_SCALE = 0.92f
 /** One entry of the ☰ menu: where it goes, its label and its Lucide icon (path data from [shelftap.android.ui.icons.LucideIcons]). */
 data class MenuItem(val route: String, @StringRes val label: Int, val icon: String)
 
-/** The bar above every main screen: the ☰ button and the screen's name. */
+/**
+ * The bar above every main screen: the ☰ button and the screen's name.
+ * On a book's page ([back]) the same round button stays where it is, and its glyph turns from ☰ into ← while the library's name and the
+ * account button fade out, so the button does not jump and the two screens share it; [onBack] is what it does then.
+ */
 @Composable
 fun AppTopBar(
     @StringRes title: Int, menuOpen: Boolean, onMenu: () -> Unit,
     centred: Boolean = false, accountDescription: String? = null, onAccount: (() -> Unit)? = null,
+    back: Boolean = false, onBack: () -> Unit = {},
 ) {
     if (centred) {
+        val tier = LocalEffectTier.current
+        val toBack = remember { Animatable(if (back) 1f else 0f) } // 0 the menu button .. 1 the back button
+        LaunchedEffect(back, tier) { toBack.animateTo(if (back) 1f else 0f, Motion.spec(tier, Motion.GLYPH_MS)) }
+        val accountShown by remember { derivedStateOf { toBack.value < 1f } }
         // The catalog's bar in the mockup: the menu button, the library's name in the middle, an account button.
         Row(
             Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.statusBars).padding(horizontal = Spacing.s),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            GlassCircleButton(onClick = onMenu, description = stringResource(if (menuOpen) R.string.menu_close else R.string.menu_open)) { MenuGlyph(open = menuOpen) }
+            GlassCircleButton(
+                onClick = if (back) onBack else onMenu,
+                description = stringResource(if (back) R.string.back_to_catalog else if (menuOpen) R.string.menu_close else R.string.menu_open),
+            ) {
+                // Both glyphs are drawn, one turning out of sight as the other turns in: only draw-phase values change per frame.
+                Box(contentAlignment = Alignment.Center) {
+                    Box(Modifier.graphicsLayer { alpha = 1f - toBack.value; rotationZ = -QUARTER_TURN * toBack.value }) { MenuGlyph(open = menuOpen) }
+                    Box(Modifier.graphicsLayer { alpha = toBack.value; rotationZ = QUARTER_TURN * (1f - toBack.value) }) {
+                        LucideIcon(LucideIcons.ArrowLeft, tint = MaterialTheme.shelfTap.ink, size = GlassSize.menuIcon)
+                    }
+                }
+            }
             Text(
                 stringResource(title), style = ShelfTapText.barTitle, color = MaterialTheme.shelfTap.ink2, textAlign = TextAlign.Center,
-                modifier = Modifier.weight(1f).then(if (menuOpen) Modifier.clearAndSetSemantics {} else Modifier),
+                modifier = Modifier.weight(1f).graphicsLayer { alpha = 1f - toBack.value }
+                    .then(if (menuOpen || back) Modifier.clearAndSetSemantics {} else Modifier),
             )
-            if (onAccount != null && accountDescription != null) {
-                GlassCircleButton(onClick = onAccount, description = accountDescription) {
+            if (onAccount != null && accountDescription != null && accountShown) {
+                GlassCircleButton(
+                    onClick = onAccount, description = accountDescription,
+                    modifier = Modifier.graphicsLayer { alpha = 1f - toBack.value }.then(if (back) Modifier.clearAndSetSemantics {} else Modifier),
+                ) {
                     LucideIcon(LucideIcons.User, tint = MaterialTheme.shelfTap.ink, size = GlassSize.menuIcon)
                 }
             } else {
@@ -148,6 +173,9 @@ fun AppTopBar(
         )
     }
 }
+
+/** The glyphs turn a quarter of a turn as they swap. */
+private const val QUARTER_TURN = 90f
 
 /** ☰ when closed, ✕ when open: the Lucide "menu" and "x" icons morphing with the baked spring (full tier), cross-fading (medium) or switching (light). */
 @Composable

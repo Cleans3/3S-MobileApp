@@ -59,8 +59,8 @@ import shelftap.android.ui.theme.okFill
 import shelftap.android.ui.theme.pressScale
 import shelftap.android.ui.theme.shelfTap
 
-private const val HERO_CIRCLE_TINT = 0.35f
-private const val HERO_CIRCLE_PALE = 0.6f
+/** How far the cover's colour is lightened to make the field behind the jacket. */
+private const val HERO_FIELD_TINT = 0.35f
 private const val BOOK_TILT = -3f
 /** The board uses 0.62 over a blur; with no blur the page text would show through the bar, so it is denser. */
 private const val BAR_FILL = 0.92f
@@ -74,7 +74,9 @@ private const val CHIP_FILL = 0.8f
  * Not shown, because the API has no such data: the shelf and the loan period, the description.
  */
 @Composable
-fun TitleDetailScreen(titleId: String, onLogin: (() -> Unit)? = null, onCheckout: (() -> Unit)? = null, onBack: (() -> Unit)? = null) {
+fun TitleDetailScreen(
+    titleId: String, onLogin: (() -> Unit)? = null, onCheckout: (() -> Unit)? = null, onBack: (() -> Unit)? = null, checkoutInPill: Boolean = false,
+) {
     val vm = appViewModel(key = "title-$titleId") { TitleViewModel(it.repository, titleId) }
     val state by vm.state.collectAsStateWithLifecycle()
     LoadView(state.title, onRetry = vm::load, loading = { SkeletonList(rows = 1, modifier = Modifier.fillMaxSize()) }) { t ->
@@ -91,23 +93,20 @@ fun TitleDetailScreen(titleId: String, onLogin: (() -> Unit)? = null, onCheckout
             }
             ActionBar(
                 busy = state.busy, reserved = state.reserved, confirmed = state.message != null, guest = onLogin != null,
-                onReserve = onLogin ?: vm::reserve, onCheckout = onCheckout,
+                onReserve = onLogin ?: vm::reserve, onCheckout = onCheckout, checkoutInPill = checkoutInPill,
                 modifier = Modifier.align(Alignment.BottomCenter),
             )
         }
     }
 }
 
-/** The colour field of the cover's colour, two soft circles, the tilted jacket, and a fade into the page at the foot. */
+/** The colour field of the cover's colour, the tilted jacket on it, and a fade into the page at the foot. (The board's two soft circles are left out: only the book and its field.) */
 @Composable
 private fun Hero(t: TitleDetail) {
     val (cover, ink) = coverColors(t.title)
-    val field = lerp(cover, Color.White, HERO_CIRCLE_TINT)
-    val pale = lerp(cover, Color.White, HERO_CIRCLE_PALE)
+    val field = lerp(cover, Color.White, HERO_FIELD_TINT)
     val page = MaterialTheme.colorScheme.background
     Box(Modifier.fillMaxWidth().height(HeroSize.height).clearAndDecorative().background(field)) {
-        Box(Modifier.offset(x = -HeroSize.circleInset, y = -HeroSize.circleLift).size(HeroSize.circleA).clip(CircleShape).background(cover))
-        Box(Modifier.align(Alignment.TopEnd).offset(x = HeroSize.circleOut, y = HeroSize.circleDrop).size(HeroSize.circleB).clip(CircleShape).background(pale))
         Jacket(t, cover, ink, Modifier.align(Alignment.TopCenter).padding(top = HeroSize.jacketTop))
         Box(Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(HeroSize.fade).background(Brush.verticalGradient(listOf(Color.Transparent, page))))
     }
@@ -187,7 +186,9 @@ private fun InfoTile(label: String, value: String, valueColor: Color, modifier: 
  * happening: sending, then done only after the server confirmed. Its colour changes with the state, and so does its words.
  */
 @Composable
-private fun ActionBar(busy: Boolean, reserved: Boolean, confirmed: Boolean, guest: Boolean, onReserve: () -> Unit, onCheckout: (() -> Unit)?, modifier: Modifier) {
+private fun ActionBar(
+    busy: Boolean, reserved: Boolean, confirmed: Boolean, guest: Boolean, onReserve: () -> Unit, onCheckout: (() -> Unit)?, checkoutInPill: Boolean, modifier: Modifier,
+) {
     val c = MaterialTheme.shelfTap
     val source = androidx.compose.runtime.remember { androidx.compose.foundation.interaction.MutableInteractionSource() }
     val (fill, textColor) = when {
@@ -207,7 +208,10 @@ private fun ActionBar(busy: Boolean, reserved: Boolean, confirmed: Boolean, gues
     )
     GlassSurface(modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.xl), shape = CircleShape, fill = BAR_FILL) {
         Row(Modifier.padding(Spacing.s), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
-            if (onCheckout != null && !guest) {
+            if (onCheckout != null && !guest && checkoutInPill) {
+                // The floating "Tap a book to borrow" button folds to its icon and sits here (see [CheckoutPill]): only its place is kept.
+                Spacer(Modifier.size(HeroSize.barButton))
+            } else if (onCheckout != null && !guest) {
                 val description = stringResource(R.string.title_borrow_by_tap)
                 Box(
                     Modifier.size(HeroSize.barButton).clip(CircleShape).background(c.surface).semantics { contentDescription = description }

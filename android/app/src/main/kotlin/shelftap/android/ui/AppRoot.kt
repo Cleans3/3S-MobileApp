@@ -102,7 +102,6 @@ private fun LoggedOutHost(reason: LogoutReason?) {
 }
 
 /** The glass circle behind the NFC glyph of the floating button. */
-private const val PILL_CIRCLE = 0.16f
 
 private const val CATALOG = "catalog"
 private const val CHECKOUT = "checkout"
@@ -181,6 +180,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     // Self-checkout is not in the menu: a button that is always in reach on the main screens (members only).
     val pillHere = !guest && title != null && route != CHECKOUT
     val showPill = pillHere && !overlayOpen && compact // the room for it stays while the menu is open, so the page does not jump
+    val pillOnBook = !guest && compact && route?.startsWith("title/") == true
     val contentMax = when (layout) {
         NavLayout.COMPACT -> Dp.Unspecified
         NavLayout.RAIL -> AdaptiveSize.contentMax
@@ -199,39 +199,25 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
         Box(Modifier.weight(1f).fillMaxHeight()) {
             Scaffold(
                 topBar = {
-                    if (title != null) {
-                        if (compact && route == CATALOG) {
+                    val onBookPage = route?.startsWith("title/") == true
+                    if (title != null || (compact && onBookPage)) {
+                        if (compact && (route == CATALOG || onBookPage)) {
                             // The mockup's catalog bar: the library's name in the middle, a round account button (the login for a guest).
+                            // On a book's page the one bar stays and its menu button turns into the back button (same place, same button).
                             AppTopBar(
                                 R.string.catalog_bar_title, overlayOpen, onMenu = { menuOpen = !menuOpen }, centred = true,
                                 accountDescription = stringResource(if (guest) R.string.login_title else R.string.open_account),
                                 onAccount = { nav.goTo(if (guest) LOGIN else "account") },
+                                back = onBookPage, onBack = { nav.popBackStack() },
                             )
-                        } else if (compact) {
-                            AppTopBar(title, overlayOpen, onMenu = { menuOpen = !menuOpen })
-                        } else {
-                            AppTitleBar(title)
+                        } else if (title != null) {
+                            if (compact) AppTopBar(title, overlayOpen, onMenu = { menuOpen = !menuOpen }) else AppTitleBar(title)
                         }
                     }
                 },
                 floatingActionButton = {
-                    if (showPill) {
-                        val pillSource = remember { MutableInteractionSource() }
-                        ExtendedFloatingActionButton(
-                            onClick = { nav.goTo(CHECKOUT) },
-                            modifier = Modifier.pressScale(pillSource),
-                            interactionSource = pillSource,
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                        ) {
-                            // The NFC glyph in a small glass circle, then the sentence (as in the mockup).
-                            Box(Modifier.size(GlassSize.pillCircle).clip(CircleShape).background(MaterialTheme.colorScheme.onPrimary.copy(alpha = PILL_CIRCLE)), contentAlignment = Alignment.Center) {
-                                LucideIcon(LucideIcons.MockupNfc, tint = MaterialTheme.colorScheme.onPrimary, size = GlassSize.pillGlyph)
-                            }
-                            Spacer(Modifier.width(Spacing.m))
-                            Text(stringResource(R.string.checkout_pill))
-                        }
-                    }
+                    // On a book's page the same button stays, folded to its icon, in the place of the reserve bar's round "borrow" button.
+                    if (showPill || pillOnBook) CheckoutPill(collapsed = pillOnBook, onClick = { nav.goTo(CHECKOUT) })
                 },
                 floatingActionButtonPosition = FabPosition.Center,
             ) { padding ->
@@ -279,7 +265,9 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                                 Screen {
                                     TitleDetailScreen(
                                         it.arguments?.getString("id").orEmpty(), onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null,
-                                        onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }), onBack = { nav.popBackStack() },
+                                        onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }),
+                                        // On a compact window the top bar's own button is the back button; the page draws one only without that bar.
+                                        onBack = if (compact) null else ({ nav.popBackStack() }), checkoutInPill = compact,
                                     )
                                 }
                             }

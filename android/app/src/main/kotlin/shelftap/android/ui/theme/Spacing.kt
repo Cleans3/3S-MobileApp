@@ -120,12 +120,6 @@ object HeroSize {
     val jacketHeight = 296.dp
     val jacketTop = 104.dp
     val jacketShadow = 24.dp
-    val circleA = 300.dp
-    val circleB = 280.dp
-    val circleInset = 60.dp
-    val circleLift = 40.dp
-    val circleOut = 80.dp
-    val circleDrop = 120.dp
     val rule = 48.dp
     val ruleThickness = 3.dp
     val barButton = 52.dp
