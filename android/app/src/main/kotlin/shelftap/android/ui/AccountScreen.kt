@@ -44,6 +44,7 @@ import shelftap.android.api.ErrorCode
 import shelftap.android.api.Me
 import shelftap.android.data.Repository
 import shelftap.android.data.ThemeMode
+import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.shelfTapSwitchColors
 import shelftap.android.security.BiometricLock
 import shelftap.android.security.RefreshTokenVault
@@ -168,6 +169,11 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
             ThemeChoice(themeMode, onChange = { scope.launch { themeStore.set(it) } })
             HorizontalDivider()
 
+            if (BuildConfig.DEBUG) {
+                DebugEffectChoice(onChange = { name -> scope.launch { themeStore.setForcedEffect(name) } })
+                HorizontalDivider()
+            }
+
             Text(stringResource(R.string.account_security), style = MaterialTheme.typography.titleMedium)
             SwitchRow(
                 stringResource(R.string.account_bio),
@@ -191,6 +197,27 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
             OutlinedButton(onClick = onChangePassword, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.account_change_password)) }
             OutlinedButton(onClick = { scope.launch { vm.logout() } }, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.action_logout)) }
         }
+    }
+}
+
+/** Debug builds only: force one effect tier to compare A/B on the same phone (plan §6.3). Never in a release build. */
+@Composable
+private fun DebugEffectChoice(onChange: (String?) -> Unit) {
+    val current = LocalEffectTier.current
+    val forced by LocalContainer.current.themeStore.forcedEffect.collectAsStateWithLifecycle(null)
+    Text(stringResource(R.string.debug_effect_title, current.name), style = MaterialTheme.typography.titleMedium)
+    Column(Modifier.selectableGroup()) {
+        listOf(null to R.string.debug_effect_auto, "FULL" to R.string.debug_effect_full, "MEDIUM" to R.string.debug_effect_medium, "LIGHT" to R.string.debug_effect_light)
+            .forEach { (name, label) ->
+                Row(
+                    Modifier.fillMaxWidth().heightIn(min = Spacing.touch).selectable(selected = forced == name, role = Role.RadioButton, onClick = { onChange(name) }),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+                ) {
+                    RadioButton(selected = forced == name, onClick = null)
+                    Text(stringResource(label))
+                }
+            }
     }
 }
 

@@ -16,7 +16,10 @@ import shelftap.android.session.LogoutReason
 import shelftap.android.session.SessionState
 import shelftap.android.ui.AppRoot
 import shelftap.android.ui.LocalContainer
+import shelftap.android.ui.theme.EffectTier
+import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.ShelfTapTheme
+import shelftap.android.ui.theme.rememberEffectTier
 
 /** FragmentActivity because BiometricPrompt needs one. Hardening is set here once, for every screen. */
 class MainActivity : FragmentActivity() {
@@ -35,8 +38,12 @@ class MainActivity : FragmentActivity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) setRecentsScreenshotEnabled(false)
         setContent {
-            CompositionLocalProvider(LocalContainer provides container) {
-                val mode by container.themeStore.mode.collectAsStateWithLifecycle(ThemeMode.SYSTEM)
+            val mode by container.themeStore.mode.collectAsStateWithLifecycle(ThemeMode.SYSTEM)
+            val forcedName by container.themeStore.forcedEffect.collectAsStateWithLifecycle(null)
+            // The forced tier is a debug tool for A/B on one phone; a release build never reads it.
+            val forced = if (BuildConfig.DEBUG) EffectTier.entries.firstOrNull { it.name == forcedName } else null
+            val tier = rememberEffectTier(forced)
+            CompositionLocalProvider(LocalContainer provides container, LocalEffectTier provides tier) {
                 ShelfTapTheme(mode) { AppRoot() }
             }
         }

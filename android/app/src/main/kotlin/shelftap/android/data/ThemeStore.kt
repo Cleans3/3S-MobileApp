@@ -19,7 +19,15 @@ class ThemeStore(private val store: DataStore<Preferences>) {
         store.edit { it[KEY] = mode.name }
     }
 
+    /** Debug builds only: the effect tier the tester forced, by name, or null for "decide from the phone". Release ignores it. */
+    val forcedEffect: Flow<String?> = store.data.map { it[FORCED_EFFECT] }
+
+    suspend fun setForcedEffect(name: String?) {
+        store.edit { if (name == null) it.remove(FORCED_EFFECT) else it[FORCED_EFFECT] = name }
+    }
+
     private companion object {
         val KEY = stringPreferencesKey("theme_mode")
+        val FORCED_EFFECT = stringPreferencesKey("forced_effect_tier")
     }
 }

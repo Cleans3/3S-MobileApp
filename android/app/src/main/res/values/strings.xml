@@ -152,4 +152,9 @@
     <string name="checkout_pill">Chạm sách để mượn</string>
     <string name="title_reserve_login">Đăng nhập để đặt trước</string>
     <string name="login_title">Đăng nhập vào ShelfTap</string>
+    <string name="debug_effect_title">Hiệu ứng (chỉ bản debug), đang dùng: %1$s</string>
+    <string name="debug_effect_auto">Tự động theo máy</string>
+    <string name="debug_effect_full">Đầy đủ</string>
+    <string name="debug_effect_medium">Vừa</string>
+    <string name="debug_effect_light">Nhẹ</string>
 </resources>

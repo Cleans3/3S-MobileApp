@@ -15,6 +15,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlurEffect
+import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -29,6 +33,8 @@ import androidx.navigation.navArgument
 import shelftap.android.R
 import shelftap.android.session.LogoutReason
 import shelftap.android.session.SessionState
+import shelftap.android.ui.theme.EffectTier
+import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.Spacing
 
 /**
@@ -92,6 +98,9 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     val items = if (guest) guestMenu else memberMenu
     val title = titleOf(route)
     // Self-checkout is not in the menu: it is a button that is always in reach on the main screens (members only).
+    val tier = LocalEffectTier.current
+    val glass = tier != EffectTier.LIGHT
+    val blurPx = with(LocalDensity.current) { Spacing.l.toPx() }
     val pillHere = !guest && title != null && route != CHECKOUT
     val showPill = pillHere && !menuOpen // the room for it stays while the menu is open, so the page does not jump
 
@@ -112,6 +121,8 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
             // With the menu open the page behind it is out of reach: TalkBack reads the menu, not the screen under it.
             Box(
                 Modifier.fillMaxSize().padding(padding).padding(bottom = if (pillHere) Spacing.pillClearance else Spacing.none)
+                    // The blur reads menuOpen in the draw phase and costs nothing while the menu is shut. Only the page is blurred.
+                    .graphicsLayer { if (glass && menuOpen) renderEffect = BlurEffect(blurPx, blurPx, TileMode.Clamp) }
                     .then(if (menuOpen) Modifier.clearAndSetSemantics {} else Modifier),
             ) {
                 NavHost(nav, startDestination = if (guest && reason != null) LOGIN else CATALOG) {
@@ -131,7 +142,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
         }
         if (menuOpen) {
             MenuOverlay(
-                items, current = route,
+                items, current = route, glass = glass,
                 onSelect = { menuOpen = false; nav.goTo(it) },
                 onDismiss = { menuOpen = false },
             )
