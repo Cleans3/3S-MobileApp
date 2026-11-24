@@ -216,3 +216,11 @@
 - **AI:** Claude Code (Claude Opus 5.5). AI đề xuất gộp theo kiểu bố cục để mỗi chức năng có một màn rộng (10 màn thay vì 17), người dùng chọn vẽ đủ 10. AI dùng script sinh vì 10 màn chung khung, tránh chép tay. Phần thu menu khi cửa sổ thấp là AI thêm sau khi đo ở 844 × 390, theo hướng dẫn thanh điều hướng dọc của Material 3. Tên API vị trí ăng-ten NFC lấy theo trí nhớ, đã ghi cần đối chiếu. Hai số đo của màn điện thoại lệch một lỗi so với lần ghi trước; AI dựng lại từ commit trước, đo bằng script hiện tại cũng ra số mới, nên ghi số mới và nói rõ.
 - **Kiểm thử:** `node tools/check-scripts.js .` (32 màn không lỗi), `tools/contrast.js`, `tools/nontext-contrast.js`, `tools/target-size.js`; dựng 11 biến thể và chạy `tools/layout-check.js` hai lượt trong trình duyệt của app, kết quả giống nhau; xem bằng mắt `WideLoans` ở 844 × 390, `WideAccount`, `WideSignIn`, `WideStatus`.
 - **Ghi chú cho báo cáo:** khung chi tiết 244 dp ở điện thoại xoay ngang là ví dụ cho việc chỉ dựa vào bề rộng (từ 840 dp là "rộng") chưa đủ; cần xét cả chiều cao.
+
+## 2026-11-24 09:04 · Đăng 10 màn rộng
+
+- **Vấn đề:** 10 màn rộng mới và phần thu gọn của `WideCatalog` đã có trong repo nhưng chưa có trên link mockup. Người dùng yêu cầu đăng lên link mockup.
+- **Thay đổi:** đăng `canvas.json`, `WideCatalog` và 10 màn mới lên artifact (bản 23). `optimization/ui-ux-mockup/README.md` ghi các file là bản 23.
+- **Đo trước → sau:** không áp dụng. Sau khi đăng, tải về cả 33 file đang đăng và so với `docs/ui-ux-plan`: trùng từng byte.
+- **AI:** Claude Code (Claude Opus 5.5). Trang artifact báo bản 23 dù trước đó là bản 21 và chỉ đăng một lần, giống lần đăng trước (18 lên 21); AI ghi lại và kiểm bằng cách so file.
+- **Kiểm thử:** so 33 file tải về với blob trên nhánh.
