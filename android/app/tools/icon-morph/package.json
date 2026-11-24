@@ -1,0 +1,13 @@
+{
+  "name": "shelftap-icon-morph",
+  "private": true,
+  "description": "Build-time tool: turns Lucide SVG icons into Kotlin path data and bakes Morphicons spring keyframes for the icon morphs (ui-ux-plan section 6.3). The app runs no JavaScript.",
+  "type": "module",
+  "scripts": {
+    "generate": "node generate.mjs"
+  },
+  "dependencies": {
+    "lucide-static": "1.62.0",
+    "morphicons": "2.0.2"
+  }
+}
