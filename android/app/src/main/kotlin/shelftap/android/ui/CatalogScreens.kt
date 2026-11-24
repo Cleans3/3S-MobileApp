@@ -272,7 +272,7 @@ private fun CatalogHome(
         state.items.isEmpty() -> Column { Spacer(Modifier.height(top)); Column(Modifier.padding(horizontal = GlassSize.page)) { header() }; EmptyState(R.string.catalog_empty, R.string.catalog_empty_hint) }
         else -> {
             val strips = remember(state.items) { stripsOf(state.items) }
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = pagePadding(GlassSize.page, Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
+            LazyColumn(Modifier.fillMaxSize(), state = rememberPreparedListState(), contentPadding = pagePadding(GlassSize.page, Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
                 item { Column { header() } }
                 item {
                     val first = strips.first()
@@ -359,7 +359,7 @@ private fun CatalogList(
     state: CatalogViewModel.UiState, onOpen: (String) -> Unit, rise: Boolean, onLoadMore: () -> Unit, onRetry: () -> Unit, topExtra: Dp,
 ) {
     val insets = LocalPageInsets.current
-    LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = insets.top + topExtra, bottom = insets.bottom)) {
+    LazyColumn(Modifier.fillMaxSize(), state = rememberPreparedListState(), contentPadding = PaddingValues(top = insets.top + topExtra, bottom = insets.bottom)) {
         itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
             TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.riseIn(index, rise))
             HorizontalDivider()
@@ -390,14 +390,26 @@ private fun TitleRow(item: TitleSummary, onClick: () -> Unit, modifier: Modifier
     }
 }
 
-/** The cover: its colour and title underneath (so a book without an image is never an empty box), the image on top when there is one. */
+/** Cover addresses that failed to load in this run: asked for again only after the app restarts, not every time a card scrolls back into view. */
+private val failedCovers: MutableSet<String> = java.util.Collections.newSetFromMap(java.util.concurrent.ConcurrentHashMap())
+
+/**
+ * The cover: its colour and title underneath (so a book without an image is never an empty box), the image on top when there is one.
+ * An address that failed once is not requested again while scrolling: with an unreachable image host (measured on the phone, where the
+ * development data points at the emulator's 10.0.2.2) every card scrolling into view started a request that could only fail.
+ */
 @Composable
 internal fun Cover(coverUrl: String?, title: String, modifier: Modifier, shape: Shape = RoundedCornerShape(Radius.tile), large: Boolean = false) {
     val baseUrl = LocalContainer.current.baseUrl
     val url = coverUrl?.let { baseUrl.resolve(it)?.toString() } // absolute or server-relative
     Box(modifier.clip(shape)) {
         TextCover(title, Modifier.fillMaxSize(), shape = shape, large = large)
-        if (url != null) AsyncImage(model = url, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
+        if (url != null && url !in failedCovers) {
+            AsyncImage(
+                model = url, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize(),
+                onError = { failedCovers.add(url) },
+            )
+        }
     }
 }
 

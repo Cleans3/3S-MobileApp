@@ -51,6 +51,12 @@ object AdaptiveSize {
     val contentMaxWide = 720.dp
 }
 
+/** How far past the visible part a lazy list prepares its items, so composing a card happens before it scrolls into view and not in the frame that needs it. */
+object ScrollSize {
+    val cacheAhead = 600.dp
+    val cacheBehind = 200.dp
+}
+
 /** Icon sizes: next to text, and the large one that shows a result. */
 object IconSize {
     val small = 24.dp

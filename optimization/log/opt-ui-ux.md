@@ -281,3 +281,11 @@
 - **Khác mockup có chủ ý:** ô tìm thu gọn khi cuộn (mockup `List` luôn hiện), theo yêu cầu người dùng. Việc ẩn nút nổi và thanh trên khi cuộn đã thử rồi gỡ theo ý người dùng; bản thử lưu ngoài repo.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. Chọn chạm 24 dp, 260 ms theo nhịp của menu. Con người chưa duyệt hoạt ảnh.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Locale vi`: qua.
+
+## 2026-11-24 21:35 · Cuộn trang chủ bớt khựng: nhớ bìa lỗi, dựng thẻ trước khi cuộn tới (nguồn: yêu cầu của người dùng)
+
+- **Vấn đề:** cuộn trang chủ trên Xiaomi khựng (phân vị 90 của khung 46–57 ms, 4–7% khung "janky"). Không phải do số sách: server có 100.013 đầu sách nhưng app tải 20 cuốn mỗi trang và chỉ dựng cái đang hiện. Dữ liệu dev trả địa chỉ bìa `https://10.0.2.2:8444/covers/…`, địa chỉ của máy ảo, không tới được từ điện thoại: mỗi thẻ cuộn vào màn hình khởi một yêu cầu chỉ có thể lỗi.
+- **Thay đổi:** `CatalogScreens.kt`: `Cover` nhớ địa chỉ đã lỗi trong lần chạy (`failedCovers`) và không yêu cầu lại; `PreparedList.kt` (`rememberPreparedListState`): danh sách trang chủ và danh sách kết quả dựng sẵn 600 dp phía trước và 200 dp phía sau (`LazyLayoutCacheWindow`, token `ScrollSize`).
+- **Đo trước → sau (cuộn trang chủ trên Xiaomi, Android 17, `gfxinfo`, xen kẽ 3 và 2 lượt):** khung "janky" 7,0–7,2% → 1,5–2,7%; phân vị 90 của khung 53–57 ms → 29–36 ms; phân vị 99 109–117 ms → 65–81 ms. Thử riêng (bản tắt hẳn tải bìa): phân vị 90 34–42 ms so với 46–53 ms của bản gốc cùng lượt, nên bìa lỗi chiếm phần lớn nhưng không phải toàn bộ. **Chưa đo/kiểm:** bản gần nhất so với bản trước hôm nay (7abab9d, phân vị 90 20–28 ms): chưa so cùng lượt sau thay đổi này; bìa tải được thật (server dev không phục vụ được tới điện thoại); danh sách tìm kiếm 100k tên; Perfetto.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI đoán bìa lỗi là nguyên nhân, đo để kiểm (bản thử tắt bìa không nằm trong repo). Con người chưa duyệt cảm giác cuộn.
+- **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Locale vi`: qua (ATF sáng 5, tối 5).
