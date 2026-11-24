@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ShelfTap · Sách đang mượn</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:var(--ink)}a:hover{opacity:.85}
+@keyframes st-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes st-fade{from{opacity:0}to{opacity:1}}
+@keyframes st-pop{0%{opacity:0;scale:.6}70%{opacity:1;scale:1.06}100%{opacity:1;scale:1}}
+@keyframes st-draw{to{stroke-dashoffset:0}}
+@keyframes st-ping{0%{opacity:.55;scale:1}100%{opacity:0;scale:1.35}}
+@keyframes st-breathe{0%,100%{scale:1}50%{scale:1.04}}
+@keyframes st-sheet{from{transform:translateY(110%)}to{transform:none}}
+@keyframes st-shake{0%,100%{translate:0 0}20%,60%{translate:-6px 0}40%,80%{translate:6px 0}}
+.st-rise{animation:st-rise 420ms cubic-bezier(.2,.8,.2,1) both}
+.st-fade{animation:st-fade 260ms ease-out both}
+.st-pop{animation:st-pop 380ms cubic-bezier(.2,.8,.2,1) both}
+.st-draw{stroke-dasharray:30;stroke-dashoffset:30;animation:st-draw 420ms 180ms ease-out forwards}
+.st-ping{opacity:0;animation:st-ping 1.8s cubic-bezier(.2,.6,.3,1) infinite}
+.st-late{animation-delay:.9s}
+.st-breathe{animation:st-breathe 2.4s ease-in-out infinite}
+.st-sheet{animation:st-sheet 320ms cubic-bezier(.2,.9,.25,1) both}
+.st-shake{animation:st-shake 360ms ease both}
+.st-press{transition:scale 120ms ease}.st-press:active{scale:.96}
+.st-swap{transition:background-color 220ms ease,color 220ms ease}
+.st-knob{transition:transform 220ms cubic-bezier(.2,.8,.2,1)}
+.d1{animation-delay:80ms}.d2{animation-delay:160ms}.d3{animation-delay:240ms}
+@media (prefers-reduced-motion: reduce){
+  .st-rise,.st-fade,.st-pop,.st-ping,.st-breathe,.st-sheet,.st-shake{animation:none}
+  .st-draw{animation:none;stroke-dashoffset:0}
+  .st-press,.st-swap,.st-knob{transition:none}
+}
+.st-root{--bg:#ece7e1;--bg-rgb:236,231,225;--bg2:#d9d1c6;--surface:#ffffff;--glass:255,255,255;--edge:255,255,255;--ink:#1c1b1a;--ink-rgb:28,27,26;--ink2:#3d3833;--ink2b:#4a4540;--ink3:#5c554e;--primary:#1c1b1a;--on-primary:#ffffff;--ok:#2f5b3a;--danger:#7a3420;--danger2:#8a2f1b;--warn:#6b4a10;--warn2:#6b5220;--warn3:#8a6a2a;--warn-bg:#fff4dc;--danger-bg:#f6e4dc;--dialog:#f4f1ec;}
+.st-root[data-theme="dark"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}
+@media (prefers-color-scheme: dark){.st-root[data-theme="auto"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}}
+.st-root button,.st-root input{color:var(--ink)}
+.st-root ::placeholder{color:var(--ink3);opacity:1}
+.st-root :is(button,a,[role="switch"]){position:relative}
+.st-root :is(button,a,[role="switch"])::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,48px);height:max(100%,48px);transform:translate(-50%,-50%)}
+.st-root input{min-width:0}
+div.st-root{container-type:size}
+.st-fab{width:max-content;max-width:calc(100% - 32px)}
+@container (max-height: 480px){
+  .st-fab .st-fab-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .st-fab a,.st-fab button{padding:8px !important}
+}
+</style>
+</helmet>
+<div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+
+  <a href="Catalog.dc.html" aria-label="Mở menu" style="position: absolute; top: 56px; left: 20px; width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.9); background:  rgba(var(--glass),0.62); display: flex; align-items: center; justify-content: center; text-decoration: none">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
+  </a>
+
+  <div class="st-page" style="position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none">
+  <div style="position: relative; min-height: max(100%, 844px)">
+  <div class="st-rise" style="position: absolute; top: 124px; left: 20px; right: 20px; display: flex; flex-direction: column; gap: 16px">
+    <h1 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.3px">Sách đang mượn</h1>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <div style="padding: 14px; border-radius: 20px; background: var(--surface); display: flex; flex-direction: column; gap: 2px">
+        <div style="font-size: 12px; color: var(--ink3)">Đang mượn</div>
+        <div style="font-size: 20px; font-weight: 700">2 <span style="font-size: 13px; font-weight: 500; color: var(--ink3)">/ tối đa 5</span></div>
+      </div>
+      <div style="padding: 14px; border-radius: 20px; background: var(--danger-bg); display: flex; flex-direction: column; gap: 2px">
+        <div style="font-size: 12px; color: var(--danger)">Tiền phạt chưa trả</div>
+        <div style="font-size: 20px; font-weight: 700; color: var(--danger)">2.000 ₫</div>
+      </div>
+    </div>
+
+    <article style="padding: 14px; border-radius: 26px; background:  rgba(var(--glass),0.8); display: flex; gap: 14px">
+      <div style="width: 72px; height: 104px; flex: none; border-radius: 12px; background:  #b5452b; color: #ffffff; padding: 10px 8px; box-sizing: border-box; font-size: 12px; font-weight: 700; line-height: 1.2">Số đỏ</div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 4px">
+        <h2 style="margin: 0; font-size: 16px; font-weight: 700">Số đỏ</h2>
+        <div style="font-size: 13px; color: var(--ink2b)">Vũ Trọng Phụng</div>
+        <div style="font-size: 13px; color: var(--ink)">{{dueLabel}}</div>
+        <div style="flex: 1"></div>
+        <button type="button" onClick="{{renew}}" aria-live="polite" class="st-swap st-press" style="{{renewStyle}}">{{renewLabel}}</button>
+      </div>
+    </article>
+
+    <article style="padding: 14px; border-radius: 26px; background:  rgba(var(--glass),0.8); border: 2px solid #c4572e; display: flex; gap: 14px">
+      <div style="width: 72px; height: 104px; flex: none; border-radius: 12px; background:  #3e3a36; color: #ffffff; padding: 10px 8px; box-sizing: border-box; font-size: 12px; font-weight: 700; line-height: 1.2">Chí Phèo</div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 4px">
+        <h2 style="margin: 0; font-size: 16px; font-weight: 700">Chí Phèo</h2>
+        <div style="font-size: 13px; color: var(--ink2b)">Nam Cao</div>
+        <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--danger)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--danger)"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6"></path><path d="M12 16.5v.5"></path></svg>
+          Quá hạn 2 ngày · phạt 2.000 ₫
+        </div>
+        <div style="font-size: 12px; line-height: 1.4; color: var(--ink2b)">Không gia hạn được vì đã quá hạn. Hãy trả sách và thanh toán tại quầy.</div>
+      </div>
+    </article>
+    <p style="margin: 0; font-size: 12px; color: var(--ink3)">[Dữ liệu mẫu cho bản phác: ngày và khoản phạt minh họa theo chính sách mượn mặc định]</p>
+  </div>
+  </div>
+  </div>
+  <div class="st-fab st-fade d2" style="position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%)">
+    <a href="Checkout.dc.html" style="min-height: 56px; padding: 0 22px 0 8px; box-sizing: border-box; line-height: 1.2; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 12px; text-decoration: none; font-size: 15px; font-weight: 600; box-shadow: 0 10px 30px rgba(28,27,26,0.3)">
+      <span style="width: 40px; height: 40px; border-radius: 999px; background:  rgba(var(--glass),0.16); display: flex; align-items: center; justify-content: center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg>
+      </span>
+      <span class="st-fab-label">Chạm sách để mượn</span>
+    </a>
+  </div>
+  <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 12px; right: 14px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
+    <sc-if value="{{themeIsLight}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+    <sc-if value="{{themeIsDark}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+    {{themeLabel}}
+  </button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  __theme() {
+    var self = this;
+    var t = (this.state && this.state.__theme) || 'auto';
+    var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
+    var dark = t === 'dark' || (t === 'auto' && sys);
+    var opts = [['auto', 'Theo hệ thống'], ['light', 'Sáng'], ['dark', 'Tối']];
+    return {
+      themeAttr: t,
+      themeLabel: dark ? 'Sáng' : 'Tối',
+      themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
+      themeIsDark: dark,
+      themeIsLight: !dark,
+      toggleTheme: function () { self.setState({ __theme: dark ? 'light' : 'dark' }); },
+      themeOpts: opts.map(function (o) {
+        var on = o[0] === t;
+        return {
+          label: o[1], on: on,
+          pick: function () { self.setState({ __theme: o[0] }); },
+          style: 'height:40px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? 'var(--primary)' : 'transparent') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
+        };
+      })
+    };
+  }
+  componentWillUnmount() { if (this.timer) clearTimeout(this.timer); }
+  renderVals() {
+    var self = this;
+    var phase = (this.state && this.state.phase) || 'idle';
+    var label = { idle: 'Gia hạn', sending: 'Đang gửi yêu cầu…', done: 'Đã gia hạn' };
+    var bg = { idle: 'var(--primary)', sending: '#5c554e', done: '#2f5b3a' };
+    return Object.assign(this.__theme(), {
+      dueLabel: phase === 'done' ? 'Hạn trả mới: 21/12/2026' : 'Hạn trả: 07/12/2026 · còn 14 ngày',
+      renewLabel: label[phase],
+      renewStyle: 'align-self:flex-start;height:44px;padding:0 18px;border-radius:999px;border:0;background:' + bg[phase] + ';color:' + (phase === 'idle' ? 'var(--on-primary)' : '#ffffff') + ';font:inherit;font-size:14px;font-weight:600;cursor:pointer',
+      renew: function () {
+        if (phase !== 'idle') return;
+        self.setState({ phase: 'sending' });
+        self.timer = setTimeout(function () { self.setState({ phase: 'done' }); }, 1200);
+      }
+    });
+  }
+}
+</script>
+</body>
+</html>

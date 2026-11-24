@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ShelfTap · Thông báo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:var(--ink)}a:hover{opacity:.85}
+@keyframes st-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes st-fade{from{opacity:0}to{opacity:1}}
+@keyframes st-pop{0%{opacity:0;scale:.6}70%{opacity:1;scale:1.06}100%{opacity:1;scale:1}}
+@keyframes st-draw{to{stroke-dashoffset:0}}
+@keyframes st-ping{0%{opacity:.55;scale:1}100%{opacity:0;scale:1.35}}
+@keyframes st-breathe{0%,100%{scale:1}50%{scale:1.04}}
+@keyframes st-sheet{from{transform:translateY(110%)}to{transform:none}}
+@keyframes st-shake{0%,100%{translate:0 0}20%,60%{translate:-6px 0}40%,80%{translate:6px 0}}
+.st-rise{animation:st-rise 420ms cubic-bezier(.2,.8,.2,1) both}
+.st-fade{animation:st-fade 260ms ease-out both}
+.st-pop{animation:st-pop 380ms cubic-bezier(.2,.8,.2,1) both}
+.st-draw{stroke-dasharray:30;stroke-dashoffset:30;animation:st-draw 420ms 180ms ease-out forwards}
+.st-ping{opacity:0;animation:st-ping 1.8s cubic-bezier(.2,.6,.3,1) infinite}
+.st-late{animation-delay:.9s}
+.st-breathe{animation:st-breathe 2.4s ease-in-out infinite}
+.st-sheet{animation:st-sheet 320ms cubic-bezier(.2,.9,.25,1) both}
+.st-shake{animation:st-shake 360ms ease both}
+.st-press{transition:scale 120ms ease}.st-press:active{scale:.96}
+.st-swap{transition:background-color 220ms ease,color 220ms ease}
+.st-knob{transition:transform 220ms cubic-bezier(.2,.8,.2,1)}
+.d1{animation-delay:80ms}.d2{animation-delay:160ms}.d3{animation-delay:240ms}
+@media (prefers-reduced-motion: reduce){
+  .st-rise,.st-fade,.st-pop,.st-ping,.st-breathe,.st-sheet,.st-shake{animation:none}
+  .st-draw{animation:none;stroke-dashoffset:0}
+  .st-press,.st-swap,.st-knob{transition:none}
+}
+@keyframes st-spin{to{rotate:360deg}}
+@keyframes st-bar{from{transform:translateX(-100%)}to{transform:translateX(260%)}}
+.st-spin{animation:st-spin 900ms linear infinite}
+.st-indet{animation:st-bar 1.3s cubic-bezier(.4,0,.2,1) infinite}
+.st-scroll{scrollbar-width:none}.st-scroll::-webkit-scrollbar{display:none}
+@media (prefers-reduced-motion: reduce){.st-spin{animation-duration:2.4s}.st-indet{animation:none;transform:none}}
+.st-root{--switch-on:#2f5b3a;--switch-knob-on:#ffffff;--bg:#ece7e1;--bg-rgb:236,231,225;--bg2:#d9d1c6;--surface:#ffffff;--glass:255,255,255;--edge:255,255,255;--ink:#1c1b1a;--ink-rgb:28,27,26;--ink2:#3d3833;--ink2b:#4a4540;--ink3:#5c554e;--primary:#1c1b1a;--on-primary:#ffffff;--ok:#2f5b3a;--danger:#7a3420;--danger2:#8a2f1b;--warn:#6b4a10;--warn2:#6b5220;--warn3:#8a6a2a;--warn-bg:#fff4dc;--danger-bg:#f6e4dc;--dialog:#f4f1ec;}
+.st-root[data-theme="dark"]{--switch-on:#9fd3ac;--switch-knob-on:#1c1b1a;--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}
+@media (prefers-color-scheme: dark){.st-root[data-theme="auto"]{--switch-on:#9fd3ac;--switch-knob-on:#1c1b1a;--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}}
+.st-root button,.st-root input{color:var(--ink)}
+.st-root ::placeholder{color:var(--ink3);opacity:1}
+.st-root :is(button,a,[role="switch"]){position:relative}
+.st-root :is(button,a,[role="switch"])::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,48px);height:max(100%,48px);transform:translate(-50%,-50%)}
+.st-root input{min-width:0}
+</style>
+</helmet>
+<div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+  <sc-if value="{{isAsk}}" hint-placeholder-val="{{ true }}">
+    <div aria-hidden="true" style="position: absolute; inset: 0; padding: 124px 20px 0; display: flex; flex-direction: column; gap: 12px">
+      <div style="height: 120px; border-radius: 28px; background: var(--surface)"></div>
+      <div style="height: 120px; border-radius: 28px; background: var(--surface)"></div>
+    </div>
+    <div class="st-fade" style="position: absolute; inset: 0; background:  rgba(28,22,16,0.28); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px)"></div>
+    <sc-if value="{{rationale}}" hint-placeholder-val="{{ true }}">
+      <div role="dialog" aria-label="Bật thông báo" class="st-sheet" style="position: absolute; left: 12px; right: 12px; bottom: 74px; padding: 24px 20px 18px; border-radius: 34px; background:  rgba(var(--glass),0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); display: flex; flex-direction: column; gap: 12px">
+        <span style="width: 52px; height: 52px; border-radius: 18px; background:  #2f4a44; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"></path></svg></span>
+        <h2 style="margin: 0; font-size: 20px; font-weight: 700">Nhắc bạn trước hạn trả?</h2>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2)">ShelfTap báo một ngày trước hạn trả và khi sách bạn đặt trước đã sẵn sàng. Không có quảng cáo. Màn khóa không hiện tên sách.</p>
+        <button type="button" onClick="{{toSystem}}" class="st-press" style="min-height: 54px; padding: 6px 16px; line-height: 1.2; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Cho phép thông báo</button>
+        <button type="button" onClick="{{toSettings}}" style="min-height: 44px; padding: 6px 16px; line-height: 1.2; border: 0; background:  transparent; font: inherit; font-size: 15px; font-weight: 600; color: var(--ink2); cursor: pointer">Để sau</button>
+      </div>
+    </sc-if>
+    <sc-if value="{{system}}" hint-placeholder-val="{{ false }}">
+      <div role="dialog" aria-label="Hộp thoại quyền của hệ thống" class="st-pop" style="position: absolute; left: 34px; right: 34px; top: 280px; padding: 22px 20px 12px; border-radius: 28px; background: var(--dialog); display: flex; flex-direction: column; gap: 14px; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.25)">
+        <div style="font-size: 11px; color: var(--ink3)">[Hộp thoại do Android vẽ, app không tự thiết kế]</div>
+        <div style="font-size: 17px; font-weight: 600; line-height: 1.35">Cho phép ShelfTap gửi thông báo cho bạn?</div>
+        <button type="button" onClick="{{toShade}}" style="height: 48px; border-radius: 999px; border: 0; background:  #2f4a44; color: #ffffff; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Cho phép</button>
+        <button type="button" onClick="{{toSettings}}" style="height: 48px; border-radius: 999px; border: 0; background:  transparent; font: inherit; font-size: 15px; font-weight: 600; color: #2f4a44; cursor: pointer">Không cho phép</button>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <sc-if value="{{isShade}}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" style="position: absolute; inset: 0; background:  linear-gradient(160deg, #2f4a44, #1c2a27 60%, #3d3326)"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 90px; text-align: center; color: #ffffff">
+      <div style="font-size: 64px; font-weight: 300; letter-spacing: -1px">07:30</div>
+      <div style="font-size: 14px; color: rgba(255,255,255,0.8)">Thứ Sáu, 6 tháng 12</div>
+    </div>
+    <div style="position: absolute; left: 14px; right: 14px; top: 290px; display: flex; flex-direction: column; gap: 10px">
+      <sc-if value="{{locked}}" hint-placeholder-val="{{ true }}">
+        <div class="st-rise" style="padding: 14px 16px; border-radius: 26px; background:  rgba(var(--glass),0.22); border: 1px solid rgba(var(--edge),0.35); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #ffffff; display: flex; gap: 12px">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; background: var(--surface); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f4a44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.8)"><span>ShelfTap · Sắp đến hạn</span><span>bây giờ</span></div>
+            <div style="font-size: 14px; font-weight: 700">1 cuốn sách đến hạn ngày mai</div>
+            <div style="font-size: 13px; line-height: 1.4; color: rgba(255,255,255,0.9)">Mở ShelfTap để xem và gia hạn.</div>
+          </div>
+        </div>
+        <div class="st-rise" style="padding: 14px 16px; border-radius: 26px; background:  rgba(var(--glass),0.22); border: 1px solid rgba(var(--edge),0.35); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #ffffff; display: flex; gap: 12px">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; background: var(--surface); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f4a44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path><path d="m9 10 2 2 4-4"></path></svg></span>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.8)"><span>ShelfTap · Đặt trước</span><span>07:02</span></div>
+            <div style="font-size: 14px; font-weight: 700">Sách bạn đặt trước đã sẵn sàng</div>
+            <div style="font-size: 13px; line-height: 1.4; color: rgba(255,255,255,0.9)">Mở ShelfTap để xem chi tiết.</div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{unlocked}}" hint-placeholder-val="{{ false }}">
+        <div class="st-rise" style="padding: 14px 16px; border-radius: 26px; background:  rgba(var(--glass),0.22); border: 1px solid rgba(var(--edge),0.35); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #ffffff; display: flex; gap: 12px">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; background: var(--surface); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f4a44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.8)"><span>ShelfTap · Sắp đến hạn</span><span>bây giờ</span></div>
+            <div style="font-size: 14px; font-weight: 700">Số đỏ đến hạn ngày mai (07/12)</div>
+            <div style="font-size: 13px; line-height: 1.4; color: rgba(255,255,255,0.9)">Còn 1 lần gia hạn. Chạm để gia hạn thêm 14 ngày.</div>
+          </div>
+        </div>
+        <div class="st-rise" style="padding: 14px 16px; border-radius: 26px; background:  rgba(var(--glass),0.22); border: 1px solid rgba(var(--edge),0.35); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: #ffffff; display: flex; gap: 12px">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; background: var(--surface); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f4a44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path><path d="m9 10 2 2 4-4"></path></svg></span>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.8)"><span>ShelfTap · Đặt trước</span><span>07:02</span></div>
+            <div style="font-size: 14px; font-weight: 700">Dế Mèn phiêu lưu ký đã sẵn sàng</div>
+            <div style="font-size: 13px; line-height: 1.4; color: rgba(255,255,255,0.9)">Nhận tại quầy trước 10/12, sau đó lượt đặt sẽ hết hạn.</div>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+    <button type="button" onClick="{{toggleLock}}" class="st-press" style="position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%); height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.4); background:  rgba(var(--glass),0.15); color: #ffffff; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap">{{lockLabel}}</button>
+    <p style="position: absolute; left: 28px; right: 28px; bottom: 150px; margin: 0; font-size: 12px; line-height: 1.5; color: rgba(255,255,255,0.75); text-align: center">Trên màn khóa không hiện tên sách: sách bạn mượn là dữ liệu cá nhân nhạy cảm (Nghị định 13/2023). [Ngày, giờ và tên sách là dữ liệu mẫu]</p>
+  </sc-if>
+
+  <sc-if value="{{isSettings}}" hint-placeholder-val="{{ false }}">
+  <a href="Account.dc.html" aria-label="Quay lại Tài khoản" class="st-press" style="position: absolute; top: 56px; left: 20px; width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.9); background:  rgba(var(--glass),0.62); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; align-items: center; justify-content: center; text-decoration: none">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m15 18-6-6 6-6"></path></svg>
+  </a>
+    <div class="st-rise" style="position: absolute; top: 124px; left: 20px; right: 20px; display: flex; flex-direction: column; gap: 14px">
+      <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.3px">Thông báo</h1>
+      <sc-if value="{{denied}}" hint-placeholder-val="{{ true }}">
+        <div class="st-fade" role="status" style="display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 22px; background: var(--warn-bg)">
+          <div style="flex: 1; font-size: 13px; line-height: 1.45; color: var(--warn)">Thông báo của ShelfTap đang bị tắt trong cài đặt của máy.</div>
+          <button type="button" onClick="{{toSystem}}" style="height: 40px; padding: 0 14px; border-radius: 999px; border: 0; background:  #6b4a10; color: #ffffff; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap">Bật lại</button>
+        </div>
+      </sc-if>
+      <div style="border-radius: 24px; background:  rgba(var(--glass),0.8); padding: 4px 16px">
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 15px; font-weight: 600">Nhắc trước hạn trả</div>
+          <div style="font-size: 12px; line-height: 1.4; color: var(--ink2b)">Một ngày trước hạn, lúc 7:30 sáng.</div>
+        </div>
+        <button type="button" role="switch" aria-checked="{{due}}" aria-label="Nhắc trước hạn trả" onClick="{{t_due}}" class="st-swap" style="{{dueTrack}}"><span class="st-knob" style="{{dueKnob}}"></span></button>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 15px; font-weight: 600">Sách đặt trước đã sẵn sàng</div>
+          <div style="font-size: 12px; line-height: 1.4; color: var(--ink2b)">Báo khi thư viện giữ sách cho bạn.</div>
+        </div>
+        <button type="button" role="switch" aria-checked="{{ready}}" aria-label="Sách đặt trước đã sẵn sàng" onClick="{{t_ready}}" class="st-swap" style="{{readyTrack}}"><span class="st-knob" style="{{readyKnob}}"></span></button>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 15px; font-weight: 600">Ẩn tên sách trên màn khóa</div>
+          <div style="font-size: 12px; line-height: 1.4; color: var(--ink2b)">Chỉ hiện tên sách sau khi mở khóa máy.</div>
+        </div>
+        <button type="button" role="switch" aria-checked="{{hide}}" aria-label="Ẩn tên sách trên màn khóa" onClick="{{t_hide}}" class="st-swap" style="{{hideTrack}}"><span class="st-knob" style="{{hideKnob}}"></span></button>
+      </div>
+      </div>
+      <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink2b); padding: 0 6px">Nhắc hạn trả được tính ngay trên máy từ hạn mượn, không cần server gửi. Báo sách đặt trước sẵn sàng thì cần server, API hiện chưa có.</p>
+    </div>
+  </sc-if>
+  <div role="group" aria-label="Trạng thái xem trước (chỉ có trong bản phác)" style="position: absolute; left: 12px; right: 12px; bottom: 14px; padding: 4px; border-radius: 999px; background: rgba(28,27,26,0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px">
+    <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+      <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" class="st-swap st-press" style="{{t.style}}">{{t.label}}</button>
+    </sc-for>
+  </div>
+  <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 12px; right: 14px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
+    <sc-if value="{{themeIsLight}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+    <sc-if value="{{themeIsDark}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+    {{themeLabel}}
+  </button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  __theme() {
+    var self = this;
+    var t = (this.state && this.state.__theme) || 'auto';
+    var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
+    var dark = t === 'dark' || (t === 'auto' && sys);
+    var opts = [['auto', 'Theo hệ thống'], ['light', 'Sáng'], ['dark', 'Tối']];
+    return {
+      themeAttr: t,
+      themeLabel: dark ? 'Sáng' : 'Tối',
+      themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
+      themeIsDark: dark,
+      themeIsLight: !dark,
+      toggleTheme: function () { self.setState({ __theme: dark ? 'light' : 'dark' }); },
+      themeOpts: opts.map(function (o) {
+        var on = o[0] === t;
+        return {
+          label: o[1], on: on,
+          pick: function () { self.setState({ __theme: o[0] }); },
+          style: 'height:40px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? 'var(--primary)' : 'transparent') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
+        };
+      })
+    };
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    var tabsOf = function (defs, cur, key) {
+      return defs.map(function (d) {
+        var on = d[0] === cur;
+        return {
+          label: d[1], on: on,
+          pick: function () { var o = {}; o[key] = d[0]; self.setState(o); },
+          style: 'height:36px;border-radius:999px;border:0;font:inherit;font-size:11px;line-height:1.1;padding:0 4px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? '#ffffff' : 'transparent') + ';color:' + (on ? '#1c1b1a' : 'rgba(255,255,255,0.85)')
+        };
+      });
+    };
+    var v = st.v || 'ask';
+    var sub = st.sub || 'rationale';
+    var sw = function (k, def) { return st[k] === undefined ? def : st[k]; };
+    var track = function (on) { return 'width:52px;height:32px;flex:none;box-sizing:border-box;border-radius:999px;padding:2px;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;border:2px solid ' + (on ? 'var(--switch-on)' : 'var(--ink3)') + ';background:' + (on ? 'var(--switch-on)' : 'rgba(var(--ink-rgb),0.06)'); };
+    var knob = function (on) { return 'width:24px;height:24px;border-radius:999px;background:' + (on ? 'var(--switch-knob-on)' : 'var(--ink3)') + ';box-shadow:0 1px 3px rgba(0,0,0,0.2);transform:translateX(' + (on ? '20px' : '0') + ') scale(' + (on ? '1' : '0.72') + ')'; };
+    var flip = function (k, def) { return function () { var o = {}; o[k] = !sw(k, def); self.setState(o); }; };
+    var due = sw('due', true), ready = sw('ready', true), hide = sw('hide', true);
+    var locked = sw('locked', true);
+    return Object.assign(this.__theme(), {
+      isAsk: v === 'ask', isShade: v === 'shade', isSettings: v === 'settings',
+      rationale: sub === 'rationale', system: sub === 'system',
+      toSystem: function () { self.setState({ v: 'ask', sub: 'system' }); },
+      toShade: function () { self.setState({ v: 'shade', sub: 'rationale', denied: false }); },
+      toSettings: function () { self.setState({ v: 'settings', sub: 'rationale', denied: true }); },
+      denied: sw('denied', true),
+      locked: locked, unlocked: !locked,
+      lockLabel: locked ? 'Mở khóa máy (mô phỏng)' : 'Khóa máy lại',
+      toggleLock: flip('locked', true),
+      due: due, ready: ready, hide: hide,
+      dueTrack: track(due), dueKnob: knob(due), t_due: flip('due', true),
+      readyTrack: track(ready), readyKnob: knob(ready), t_ready: flip('ready', true),
+      hideTrack: track(hide), hideKnob: knob(hide), t_hide: flip('hide', true),
+      tabs: tabsOf([['ask', 'Xin quyền'], ['shade', 'Màn khóa'], ['settings', 'Cài đặt']], v, 'v')
+    });
+  }
+}
+</script>
+</body>
+</html>
