@@ -192,3 +192,11 @@
 - **AI:** Claude Code (Claude Opus 5.5). AI chọn cách chia theo nhóm cỡ cửa sổ của Material 3 (thanh dọc ở cỡ vừa, menu cố định và hai khung ở cỡ rộng) thay cho quy tắc cũ "từ 600 dp dùng menu cố định", vì ở 720 dp ba cột menu, danh sách và chi tiết quá chật. Lượt đo đầu báo 2 lỗi chữ đè giả (chip trong hàng cuộn ngang bị tính là đè lên khung chi tiết dù phần tràn đã bị cắt); AI sửa script thay vì sửa màn. Phiên bị ngắt giữa chừng do hết lượt dùng; phần tài liệu và commit làm ở lượt sau.
 - **Kiểm thử:** `node tools/check-scripts.js .` (22 màn không lỗi), `tools/contrast.js`, `tools/nontext-contrast.js`, `tools/target-size.js`; dựng 11 biến thể và chạy `tools/layout-check.js` trong trình duyệt của app.
 - **Ghi chú cho báo cáo:** cùng nội dung, đổi từ bố cục điện thoại kéo giãn sang bố cục theo cỡ cửa sổ làm số màn bị kéo giãn ở 960 dp từ 18/20 về 0 trên màn Danh mục.
+
+## 2026-11-24 08:52 · Đăng hai màn cửa sổ rộng
+
+- **Vấn đề:** hai màn `WideCatalog` và `RailCatalog` đã có trong repo nhưng chưa có trên link mockup. Lần đăng đầu bị chế độ tự động chặn; người dùng đổi chế độ quyền rồi yêu cầu đăng lên link mockup.
+- **Thay đổi:** đăng `canvas.json` và hai màn mới lên artifact (bản 21). `optimization/ui-ux-mockup/README.md` ghi các file là bản 21.
+- **Đo trước → sau:** không áp dụng. Sau khi đăng, tải về cả 23 file đang đăng và so với `docs/ui-ux-plan`: trùng từng byte.
+- **AI:** Claude Code (Claude Opus 5.5). Trang artifact báo bản 21 dù trước đó là bản 18 và chỉ đăng một lần; AI không biết bản 19 và 20 từ đâu ra, nên ghi rõ điều đó và kiểm bằng cách so file thay vì suy đoán.
+- **Kiểm thử:** so sha của 23 file tải về với blob trên nhánh.
