@@ -208,20 +208,23 @@ fun SecondaryButton(
     OutlinedButton(onClick, modifier.pressScale(source), enabled, interactionSource = source, content = content)
 }
 
-/** A full-width pill button (52 dp tall unless [height] says otherwise) that shrinks a little while pressed and dims when it is off. */
+/**
+ * A full-width pill button (52 dp tall unless [height] says otherwise) that shrinks a little while pressed. When it is off it is the board's
+ * quiet one: a light grey pill (the ink at 12%) with the words still in a strong colour, so that they stay readable.
+ */
 @Composable
-internal fun PillAction(label: String, onClick: () -> Unit, container: Color, ink: Color, enabled: Boolean = true, height: androidx.compose.ui.unit.Dp = GlassSize.pillAction, description: String? = null,
-) {
+internal fun PillAction(label: String, onClick: () -> Unit, container: Color, ink: Color, enabled: Boolean = true, height: androidx.compose.ui.unit.Dp = GlassSize.pillAction, description: String? = null) {
     val source = remember { MutableInteractionSource() }
+    val c = MaterialTheme.shelfTap
     Box(
-        Modifier.fillMaxWidth().height(height).pressScale(source).clip(CircleShape).background(container.copy(alpha = if (enabled) 1f else DISABLED_ALPHA))
+        Modifier.fillMaxWidth().height(height).pressScale(source).clip(CircleShape).background(if (enabled) container else c.ink.copy(alpha = OFF_FILL))
             .clickable(interactionSource = source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
             .then(if (description != null) Modifier.semantics { contentDescription = description } else Modifier),
         contentAlignment = Alignment.Center,
-    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = ink.copy(alpha = if (enabled) 1f else DISABLED_ALPHA)) }
+    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = if (enabled) ink else c.ink2) }
 }
 
-private const val DISABLED_ALPHA = 0.45f
+private const val OFF_FILL = 0.12f
 
 /**
  * A text field with its label above it, as in the boards: 50 dp tall, a rounded box with an edge strong enough to be seen (3:1), the label

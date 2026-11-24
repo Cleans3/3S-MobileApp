@@ -418,3 +418,11 @@
 - **Đo trước → sau:** ATF 4 mỗi cấu hình sáng và tối; ảnh GPU `password-first`, `lock`, `offline` (sáng; `offline` cả tối) khớp board về bố cục và màu; ở ảnh khóa đầu tiên các khối phía sau lộ xuyên thẻ nên độ đặc của thẻ khóa tăng lên 0,98. **Chưa đo/kiểm:** quy trình đổi mật khẩu thật, mở khóa sinh trắc học thật, bấm thử lại khi mất mạng (audit chỉ dựng giao diện với dữ liệu giả); nền mờ thật (không có blur, việc B); các mảng màu mềm là "hình cầu" mà người dùng đã bảo bỏ ở trang sách: đây là màn khác của board nên mình giữ, nhưng cần người dùng duyệt; `font2`, `w320`, cửa sổ vừa/rộng; TalkBack với danh sách quy tắc.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI giữ lại đúng những khẳng định đã kiểm với mã (server, `MainActivity`), bỏ phần chưa có; con người chưa duyệt.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1` (light, dark, tiếng Việt, kèm `overlayShot`): qua.
+
+## 2026-11-25 11:05 · Nút viên khi tắt: nền xám nhạt, chữ vẫn đậm (sửa lỗi tương phản của nút "Đăng nhập")
+
+- **Vấn đề:** ATF báo `TextContrastCheck` 1,71 (sáng) và 1,98 (tối) ở nút "Đăng nhập" lúc chưa nhập gì: mình làm mờ cả nút lẫn chữ (độ đặc 0,45) nên chữ xám trên nền xám. Board làm khác: nền là mực 12%, chữ vẫn `ink2`.
+- **Thay đổi:** `Components.kt` (`PillAction`): khi tắt, nền là `ink` 12% và chữ `ink2`, thay cho việc giảm độ đặc của cả hai; áp cho mọi nút viên (Đăng nhập, Lưu mật khẩu, Thử lại khi đang thử).
+- **Đo trước → sau:** ATF 4 → 3 mỗi cấu hình sáng và tối (lỗi "Đăng nhập" hết; còn "Còn 3 bản", "Còn 5 bản" ở Danh mục và "Giao diện" ở Tài khoản, cả ba nằm dưới dải mờ ở mép đáy, đã ghi ở lượt làm nội dung chạy tràn màn). Ảnh `password-first` (sáng): nút tắt xám nhạt, chữ đọc rõ. **Chưa đo/kiểm:** tỷ lệ tương phản chính xác của nút tắt (ATF không còn báo nên trên 4,5 theo ước lượng của nó); chế độ tối bằng mắt.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. Con người chưa duyệt.
+- **Kiểm thử:** `run_audit.ps1` (light, dark, tiếng Việt): qua.
