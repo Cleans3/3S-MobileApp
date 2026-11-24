@@ -266,3 +266,11 @@
 - **Đo trước → sau:** 23 màn rộng và vừa vẫn 0 lỗi bố cục ở cả 7 biến thể có màn lớn; tương phản chữ 1212 đoạn mỗi theme, chỉ 5 lỗi cũ; icon và viền bắt buộc 67, 1 lỗi cũ; 455 nút, 0 có vùng chạm dưới 48 px; script của 43 màn chạy không lỗi. Thử trong trình duyệt: đổi tên keyframe trong style thì trình duyệt tạo hiệu ứng mới và chạy lại từ đầu.
 - **AI:** Claude Code (Claude Opus 5.5). AI chọn đổi tên keyframe luân phiên thay cho dựng lại khung, vì dựng lại khung tốn hơn và làm mất vị trí cuộn; đây cũng là ý của quy tắc "không đổi bố cục khi chuyển" trong §6.5. Mockup chỉ làm phần khung mới đi vào. AI ghi nhận thêm: số lỗi của hai biến thể điện thoại `flipcover` và `split` đổi chỗ một lỗi tràn đáy cho nhau (84/85 hay 85/84) tùy lúc đo trước hay sau khi font web tải xong; màn điện thoại không đổi, tổng không đổi. Ba lượt đo chờ 2,5 giây cho cùng 84 (74 tràn đáy, 10 chữ đè) và 85 (70 tràn đáy, 15 chữ đè).
 - **Kiểm thử:** `node tools/wide-boards/gen.js .`, `tools/check-scripts.js`, `tools/contrast.js`, `tools/nontext-contrast.js`, `tools/target-size.js`; dựng 15 biến thể, chạy `tools/layout-check.js` trong trình duyệt của app; một trang thử riêng cho việc chạy lại hiệu ứng khi đổi tên keyframe.
+
+## 2026-11-24 09:43 · Đăng chuyển khung và nhấn thẻ
+
+- **Vấn đề:** chuyển khung và hiệu ứng nhấn thẻ đã có trong repo nhưng chưa có trên link mockup. Người dùng yêu cầu đăng lên link mockup.
+- **Thay đổi:** đăng 11 màn `Wide*`, 11 màn `Mid*` và `RailCatalog` lên artifact (bản 26; `canvas.json` không đổi). `optimization/ui-ux-mockup/README.md` ghi các file là bản 26.
+- **Đo trước → sau:** không áp dụng. Sau khi đăng, tải về 26 file (23 màn vừa đăng, `canvas.json` và hai màn điện thoại) và so với `docs/ui-ux-plan`: trùng từng byte; 18 màn điện thoại còn lại không gửi lần này và đã trùng ở bản 25.
+- **AI:** Claude Code (Claude Opus 5.5). Lần này số bản tăng đúng một (25 lên 26).
+- **Kiểm thử:** so hash của các file tải về với blob trên nhánh.
