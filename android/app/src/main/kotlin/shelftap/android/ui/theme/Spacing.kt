@@ -60,6 +60,8 @@ object Radius {
     val hairline = 1.dp
     val group = 24.dp
     val sheet = 34.dp
+    /** The spine side of a jacket: nearly square, as in the board. */
+    val spine = 10.dp
 }
 
 /** Fixed sizes of the glass components, from the mockup. */
@@ -93,4 +95,27 @@ object AccountSize {
     val rowTall = 64.dp
     val action = 54.dp
     val segment = 48.dp
+}
+
+/** Sizes on the book page, from the board `Detail`. */
+object HeroSize {
+    val height = 448.dp
+    val fade = 200.dp
+    val overlap = 32.dp
+    val contentInset = 24.dp
+    val jacketWidth = 200.dp
+    val jacketHeight = 296.dp
+    val jacketTop = 104.dp
+    val jacketShadow = 24.dp
+    val circleA = 300.dp
+    val circleB = 280.dp
+    val circleInset = 60.dp
+    val circleLift = 40.dp
+    val circleOut = 80.dp
+    val circleDrop = 120.dp
+    val rule = 48.dp
+    val ruleThickness = 3.dp
+    val barButton = 52.dp
+    /** Room under the page for the floating bar. */
+    val barClearance = 112.dp
 }

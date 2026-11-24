@@ -139,6 +139,16 @@ fun SectionHeader(title: String, actionLabel: String?, onAction: () -> Unit, mod
     }
 }
 
+/** Content whose size does not follow the system font scale: picture-like lettering such as a jacket. */
+@Composable
+fun FixedScale(content: @Composable () -> Unit) {
+    val density = LocalDensity.current
+    CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = 1f)) { content() }
+}
+
+/** Marks a purely decorative block: nothing inside it is read out. */
+fun Modifier.clearAndDecorative(): Modifier = this.clearAndSetSemantics {}
+
 /** A book without an image: its colour and its title, so the list never shows an empty box. Decorative: the row names the book. */
 @Composable
 fun TextCover(title: String, modifier: Modifier = Modifier, shape: Shape = RoundedCornerShape(Radius.cover), large: Boolean = false) {

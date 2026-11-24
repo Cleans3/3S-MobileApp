@@ -135,7 +135,7 @@
     <string name="title_isbn">ISBN %1$s</string>
     <string name="title_copies">%1$d of %2$d copies available</string>
     <string name="title_reserved">Reserved. You will see it under Reserved when it is ready.</string>
-    <string name="title_reserving">Reserving...</string>
+    <string name="title_reserving">Sending the request…</string>
     <string name="title_reserve">Reserve this title</string>
     <!-- Trạng thái màn hình -->
     <string name="state_loading">Loading…</string>
@@ -175,4 +175,8 @@
     <string name="logout_confirm_title">Log out of ShelfTap?</string>
     <string name="logout_confirm_body">Your session on this phone will be removed. Next time you will need to log in again with your password or card.</string>
     <string name="logout_stay">Stay</string>
+    <string name="back_to_catalog">Back to the catalog</string>
+    <string name="title_status">Availability</string>
+    <string name="title_reserve_confirmed">Reserved · the library confirmed</string>
+    <string name="title_borrow_by_tap">Borrow by tapping the phone on the book</string>
 </resources>

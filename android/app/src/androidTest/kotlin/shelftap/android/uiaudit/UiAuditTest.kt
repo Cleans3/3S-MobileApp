@@ -99,7 +99,7 @@ class UiAuditTest {
             audit("catalog", activity)
 
             openFirstTitle()
-            waitFor(str(R.string.title_isbn, AuditData.titles.first().isbn))
+            waitFor(AuditData.titles.first().isbn) // the ISBN tile of the book page
             audit("detail", activity)
             // On a wide window the detail is a pane beside the list, not a screen to go back from.
             if (config != "expanded") scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }

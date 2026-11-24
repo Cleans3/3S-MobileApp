@@ -11,6 +11,10 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -213,7 +217,9 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
             ) { padding ->
                 // With the menu open the page behind it is out of reach: TalkBack reads the menu, not the screen under it.
                 Box(
-                    Modifier.fillMaxSize().padding(padding)
+                    Modifier.fillMaxSize()
+                        // A book's page paints its colour field up to the top edge, under the status bar; it pads its own buttons.
+                        .padding(if (route?.startsWith("title/") == true) PaddingValues(start = padding.calculateStartPadding(LayoutDirection.Ltr), end = padding.calculateEndPadding(LayoutDirection.Ltr), bottom = padding.calculateBottomPadding()) else padding)
                         .padding(bottom = if (pillHere && compact) Spacing.pillClearance else Spacing.none)
                         // The blur reads the flag in the draw phase and costs nothing while the menu is shut. Only the page is blurred.
                         .graphicsLayer { if (glass && overlayOpen) renderEffect = BlurEffect(blurPx, blurPx, TileMode.Clamp) }
@@ -231,13 +237,16 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                             composable(CATALOG) {
                                 val onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null
                                 if (layout == NavLayout.SIDE) {
-                                    CatalogTwoPane(onLogin)
+                                    CatalogTwoPane(onLogin, onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }))
                                 } else {
                                     CatalogScreen(onOpen = { nav.navigate("title/$it") })
                                 }
                             }
                             composable("title/{id}", arguments = listOf(navArgument("id") { type = NavType.StringType })) {
-                                TitleDetailScreen(it.arguments?.getString("id").orEmpty(), onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null)
+                                TitleDetailScreen(
+                                    it.arguments?.getString("id").orEmpty(), onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null,
+                                    onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }), onBack = { nav.popBackStack() },
+                                )
                             }
                             composable(LOGIN) { LoggedOutHost(reason) }
                             composable("loans") { LoansScreen() }
@@ -278,14 +287,14 @@ private fun MenuLayer(
 
 /** A wide window shows the catalog and the chosen book side by side, so picking a book does not leave the list. */
 @Composable
-private fun CatalogTwoPane(onLogin: (() -> Unit)?) {
+private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
     var selected by rememberSaveable { mutableStateOf<String?>(null) }
     Row(Modifier.fillMaxSize()) {
         Box(Modifier.weight(1f).fillMaxHeight()) { CatalogScreen(onOpen = { selected = it }) }
         VerticalDivider()
         Box(Modifier.weight(1.3f).fillMaxHeight()) {
             val id = selected
-            if (id == null) EmptyState(R.string.catalog_pick_hint) else TitleDetailScreen(id, onLogin = onLogin)
+            if (id == null) EmptyState(R.string.catalog_pick_hint) else TitleDetailScreen(id, onLogin = onLogin, onCheckout = onCheckout)
         }
     }
 }

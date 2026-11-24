@@ -21,3 +21,7 @@ val bannerScrim = Color(0xFF141E1B)
 
 /** The solid red of the sign-out confirmation: white text on it clears 4.5:1 in both themes (a fixed colour in the mockup). */
 val dangerSolid = Color(0xFF7A3420)
+
+/** The reserve button while the request is on its way, and after the server confirmed: fixed fills with white text (as in the board). */
+val busyFill = Color(0xFF5C554E)
+val okFill = Color(0xFF2F5B3A)

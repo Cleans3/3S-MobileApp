@@ -326,7 +326,7 @@ private fun TitleRow(item: TitleSummary, onClick: () -> Unit, modifier: Modifier
 
 /** The cover: its colour and title underneath (so a book without an image is never an empty box), the image on top when there is one. */
 @Composable
-private fun Cover(coverUrl: String?, title: String, modifier: Modifier, shape: Shape = RoundedCornerShape(Radius.tile), large: Boolean = false) {
+internal fun Cover(coverUrl: String?, title: String, modifier: Modifier, shape: Shape = RoundedCornerShape(Radius.tile), large: Boolean = false) {
     val baseUrl = LocalContainer.current.baseUrl
     val url = coverUrl?.let { baseUrl.resolve(it)?.toString() } // absolute or server-relative
     Box(modifier.clip(shape)) {
@@ -368,40 +368,6 @@ class TitleViewModel(private val repo: Repository, private val titleId: String) 
                 _state.update {
                     it.copy(busy = false, error = e.userMessage(), reserved = it.reserved || (e is ApiException.Http && e.code == ErrorCode.ALREADY_RESERVED))
                 }
-            }
-        }
-    }
-}
-
-/** [onLogin] is set for a guest: reserving then asks for a login instead of calling the server. */
-@Composable
-fun TitleDetailScreen(titleId: String, onLogin: (() -> Unit)? = null) {
-    val vm = appViewModel(key = "title-$titleId") { TitleViewModel(it.repository, titleId) }
-    val state by vm.state.collectAsStateWithLifecycle()
-    LoadView(state.title, onRetry = vm::load, loading = { SkeletonList(rows = 1, modifier = Modifier.fillMaxSize()) }) { t ->
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-            Cover(t.coverUrl, t.title, Modifier.size(width = CoverSize.detailWidth, height = CoverSize.detailHeight), large = true)
-            Text(t.title, style = MaterialTheme.typography.headlineSmall)
-            Text(t.authors.joinToString(", "))
-            Text(stringResource(R.string.title_isbn, t.isbn))
-            if (t.subjects.isNotEmpty()) Text(t.subjects.joinToString(", "))
-            Text(stringResource(R.string.title_copies, t.copiesAvailable, t.copiesTotal))
-            state.message?.let { Text(it.asString()) }
-            ErrorText(state.error)
-            PrimaryButton(onClick = onLogin ?: vm::reserve, enabled = onLogin != null || (!state.busy && !state.reserved)) {
-                // The bookmark gets its tick only after the server confirmed (or said it was already reserved).
-                MorphIcon(LucideMorphs.BookmarkToCheck, toEnd = onLogin == null && state.reserved)
-                Spacer(Modifier.width(Spacing.s))
-                Text(
-                    stringResource(
-                        when {
-                            onLogin != null -> R.string.title_reserve_login
-                            state.busy -> R.string.title_reserving
-                            state.reserved -> R.string.title_reserve_done
-                            else -> R.string.title_reserve
-                        },
-                    ),
-                )
             }
         }
     }

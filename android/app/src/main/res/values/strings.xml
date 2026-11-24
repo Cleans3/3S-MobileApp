@@ -135,7 +135,7 @@
     <string name="title_isbn">ISBN %1$s</string>
     <string name="title_copies">Còn %1$d trên %2$d bản</string>
     <string name="title_reserved">Đã đặt trước. Sách sẽ hiện trong mục Đặt trước khi sẵn sàng.</string>
-    <string name="title_reserving">Đang đặt…</string>
+    <string name="title_reserving">Đang gửi yêu cầu…</string>
     <string name="title_reserve">Đặt trước sách này</string>
     <!-- Trạng thái màn hình -->
     <string name="state_loading">Đang tải…</string>
@@ -175,4 +175,8 @@
     <string name="logout_confirm_title">Đăng xuất khỏi ShelfTap?</string>
     <string name="logout_confirm_body">Phiên đăng nhập trên máy này sẽ bị xóa. Lần sau bạn cần đăng nhập lại bằng mật khẩu hoặc thẻ.</string>
     <string name="logout_stay">Ở lại</string>
+    <string name="back_to_catalog">Quay lại danh mục</string>
+    <string name="title_status">Tình trạng</string>
+    <string name="title_reserve_confirmed">Đã đặt trước · thư viện xác nhận</string>
+    <string name="title_borrow_by_tap">Mượn bằng cách chạm điện thoại vào sách</string>
 </resources>

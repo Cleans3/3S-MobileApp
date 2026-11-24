@@ -44,6 +44,12 @@ object ShelfTapText {
     /** "Xem tất cả": 13, medium, underlined like the mockup's links. */
     val link = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.Medium, fontSize = 13.sp, textDecoration = TextDecoration.Underline)
 
+    /** The title lettered on a jacket: 30, bold, tight. */
+    val jacketTitle = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 30.sp, lineHeight = 33.sp, letterSpacing = (-0.4).sp)
+
+    /** The title on the book page: 28, bold. */
+    val detailTitle = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 28.sp, lineHeight = 32.sp, letterSpacing = (-0.3).sp)
+
     /** The title in the middle of the catalog's top bar: 15, semibold. */
     val barTitle = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
 }
