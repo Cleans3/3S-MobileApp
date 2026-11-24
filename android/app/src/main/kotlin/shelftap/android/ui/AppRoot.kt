@@ -131,18 +131,31 @@ private fun titleOf(route: String?): Int? = when (route) {
 /** Screens one level down (list to detail, account to password) slide; screens at the same level fade through. */
 private fun isDeep(route: String?) = route?.startsWith("title/") == true || route == "password"
 
-private fun screenEnter(from: String?, to: String?, tier: EffectTier, slidePx: Int, back: Boolean): EnterTransition = when {
+/**
+ * Going deeper, the new screen slides in over the old one from the right edge (the old one moves a third of the way to the left behind it);
+ * going back, the same in reverse: the screen being left slides out to the right and the one under it returns from the left. Whole-screen
+ * movement only, no fade and no scaling, so the page is on screen from the first frame of the move. Each screen paints its own
+ * background (see [Screen]), so nothing shows through while two are on screen.
+ */
+private fun screenEnter(from: String?, to: String?, tier: EffectTier, back: Boolean): EnterTransition = when {
     tier == EffectTier.LIGHT -> if (isDeep(from) || isDeep(to)) fadeIn(tween(Motion.SHORT_FADE_MS)) else EnterTransition.None
-    isDeep(from) || isDeep(to) ->
-        slideInHorizontally(Motion.spec(tier, Motion.SCREEN_MS)) { if (back) -slidePx else slidePx } + fadeIn(Motion.spec(tier, Motion.SCREEN_MS))
+    isDeep(from) || isDeep(to) -> slideInHorizontally(Motion.spec(tier, Motion.SCREEN_MS)) { if (back) -it / PARALLAX else it }
     else -> fadeIn(Motion.spec(tier, Motion.FADE_IN_MS, delayMs = Motion.FADE_OUT_MS)) // old screen out first, then the new one in
 }
 
-private fun screenExit(from: String?, to: String?, tier: EffectTier, slidePx: Int, back: Boolean): ExitTransition = when {
+private fun screenExit(from: String?, to: String?, tier: EffectTier, back: Boolean): ExitTransition = when {
     tier == EffectTier.LIGHT -> if (isDeep(from) || isDeep(to)) fadeOut(tween(Motion.SHORT_FADE_MS)) else ExitTransition.None
-    isDeep(from) || isDeep(to) ->
-        slideOutHorizontally(Motion.spec(tier, Motion.SCREEN_MS)) { if (back) slidePx else -slidePx } + fadeOut(Motion.spec(tier, Motion.SCREEN_MS))
+    isDeep(from) || isDeep(to) -> slideOutHorizontally(Motion.spec(tier, Motion.SCREEN_MS)) { if (back) it else -it / PARALLAX }
     else -> fadeOut(Motion.spec(tier, Motion.FADE_OUT_MS))
+}
+
+/** The screen underneath moves this fraction (1/3) of the width while the one above moves all of it. */
+private const val PARALLAX = 3
+
+/** A screen of the navigation graph with its own page colour, so that two screens sliding past each other do not show through. */
+@Composable
+private fun Screen(content: @Composable () -> Unit) {
+    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) { content() }
 }
 
 private fun NavHostController.goTo(route: String) = navigate(route) {
@@ -164,7 +177,6 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     val glass = tier != EffectTier.LIGHT
     val blurPx = with(LocalDensity.current) { MenuSize.pageBlur.toPx() }
     val backdrop = rememberBackdrop()
-    val slidePx = with(LocalDensity.current) { Motion.slideDistance.roundToPx() }
     val overlayOpen = menuOpen && compact // a window that grew past the compact size has no ☰ menu to keep open
     // Self-checkout is not in the menu: a button that is always in reach on the main screens (members only).
     val pillHere = !guest && title != null && route != CHECKOUT
@@ -248,32 +260,36 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                     Box(Modifier.fillMaxHeight().widthIn(max = contentMax).fillMaxWidth()) {
                         NavHost(
                             nav, startDestination = if (guest && reason != null) LOGIN else CATALOG,
-                            enterTransition = { screenEnter(initialState.destination.route, targetState.destination.route, tier, slidePx, back = false) },
-                            exitTransition = { screenExit(initialState.destination.route, targetState.destination.route, tier, slidePx, back = false) },
-                            popEnterTransition = { screenEnter(initialState.destination.route, targetState.destination.route, tier, slidePx, back = true) },
-                            popExitTransition = { screenExit(initialState.destination.route, targetState.destination.route, tier, slidePx, back = true) },
+                            enterTransition = { screenEnter(initialState.destination.route, targetState.destination.route, tier, back = false) },
+                            exitTransition = { screenExit(initialState.destination.route, targetState.destination.route, tier, back = false) },
+                            popEnterTransition = { screenEnter(initialState.destination.route, targetState.destination.route, tier, back = true) },
+                            popExitTransition = { screenExit(initialState.destination.route, targetState.destination.route, tier, back = true) },
                         ) {
                             composable(CATALOG) {
-                                val onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null
-                                if (layout == NavLayout.SIDE) {
-                                    CatalogTwoPane(onLogin, onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }))
-                                } else {
-                                    CatalogScreen(onOpen = { nav.navigate("title/$it") })
+                                Screen {
+                                    val onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null
+                                    if (layout == NavLayout.SIDE) {
+                                        CatalogTwoPane(onLogin, onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }))
+                                    } else {
+                                        CatalogScreen(onOpen = { nav.navigate("title/$it") })
+                                    }
                                 }
                             }
                             composable("title/{id}", arguments = listOf(navArgument("id") { type = NavType.StringType })) {
-                                TitleDetailScreen(
-                                    it.arguments?.getString("id").orEmpty(), onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null,
-                                    onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }), onBack = { nav.popBackStack() },
-                                )
+                                Screen {
+                                    TitleDetailScreen(
+                                        it.arguments?.getString("id").orEmpty(), onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null,
+                                        onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }), onBack = { nav.popBackStack() },
+                                    )
+                                }
                             }
-                            composable(LOGIN) { LoggedOutHost(reason) }
-                            composable("loans") { LoansScreen() }
-                            composable(CHECKOUT) { CheckoutScreen() }
-                            composable("reservations") { ReservationsScreen() }
-                            composable("account") { AccountScreen(onHistory = { nav.navigate("history") }, onChangePassword = { nav.navigate("password") }) }
-                            composable("history") { HistoryScreen() }
-                            composable("password") { ChangePasswordScreen(forced = false, onDone = { nav.popBackStack() }) }
+                            composable(LOGIN) { Screen { LoggedOutHost(reason) } }
+                            composable("loans") { Screen { LoansScreen() } }
+                            composable(CHECKOUT) { Screen { CheckoutScreen() } }
+                            composable("reservations") { Screen { ReservationsScreen() } }
+                            composable("account") { Screen { AccountScreen(onHistory = { nav.navigate("history") }, onChangePassword = { nav.navigate("password") }) } }
+                            composable("history") { Screen { HistoryScreen() } }
+                            composable("password") { Screen { ChangePasswordScreen(forced = false, onDone = { nav.popBackStack() }) } }
                         }
                     }
                     }
