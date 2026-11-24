@@ -287,13 +287,13 @@ Lỗi ở chữ 2.0 đến từ cách mockup đặt mọi khối ở vị trí c
 |---|---|---|---|---|
 | Điện thoại dài 21:9 | 412 × 960 | 0 / 20 | 0 | không áp dụng |
 | Màn ngoài rộng 10:16 của máy gập ngang | 480 × 768 | 1 / 20 | 1 (nút Đăng xuất ở Tài khoản nằm dưới đáy) | không áp dụng |
-| Màn phụ của máy gập dọc | 360 × 400 | 15 / 20 | 85 (75 tràn đáy, 10 chữ đè) | không áp dụng |
-| Chia đôi màn hình | 390 × 420 | 15 / 20 | 84 (69 tràn đáy, 15 chữ đè) | không áp dụng |
+| Màn phụ của máy gập dọc | 360 × 400 | 15 / 20 | 84 (74 tràn đáy, 10 chữ đè) | không áp dụng |
+| Chia đôi màn hình | 390 × 420 | 15 / 20 | 85 (70 tràn đáy, 15 chữ đè) | không áp dụng |
 | Điện thoại xoay ngang | 844 × 390 | 14 / 20 | 78 (74 tràn đáy, 4 chữ đè) | 18 / 20 |
 | Máy gập mở, gần vuông | 720 × 840 | 0 / 20 | 0 | 17 / 20 |
 | Máy gập mở, cầm ngang (4:3) | 960 × 720 | 4 / 20 | 7 | 18 / 20 |
 
-"Lỗi vỡ" là bốn loại ở bảng trên (tràn mép, tràn đáy, chữ đè, chữ bị cắt). Bốn biến thể cũ đo lại cho đúng số cũ. Số của màn phụ máy gập dọc và chia đôi màn hình là lượt đo lại ngày 2026-11-24 bằng script hiện tại (lần ghi trước: 84 và 85, mỗi bên lệch một lỗi tràn đáy; mockup điện thoại không đổi).
+"Lỗi vỡ" là bốn loại ở bảng trên (tràn mép, tràn đáy, chữ đè, chữ bị cắt). Bốn biến thể cũ đo lại cho đúng số cũ. Số của màn phụ máy gập dọc và chia đôi màn hình đo với font cố định (`optimization/ui-ux-mockup/tools/fonts/`). Khi trang đo còn tải font từ Google Fonts, hai số này đổi chỗ một lỗi tràn đáy cho nhau giữa các lượt (vị trí chữ lệch 1–3 px); chi tiết trong README của mockup.
 
 Đọc kết quả:
 - **Màn cao hơn 844 dp, hoặc rộng hơn một chút** (21:9, màn ngoài 10:16) gần như không sao.

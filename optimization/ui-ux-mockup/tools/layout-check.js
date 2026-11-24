@@ -8,14 +8,17 @@
 //               at most 80); shows up when a phone layout is stretched wide
 //   stretched : on a screen wider than 600 dp, a card, row, button or section over 85% of the screen
 //               width: the phone layout is stretched instead of using columns or a side menu
+//   font      : the board's Nunito face has not loaded, so its other numbers are not valid; wait for
+//               document.fonts.ready in every frame and run again
 // Decorative layers (aria-hidden) and anything inside a scrolling area are ignored for offscreen/cut.
-// Returns { board: { offscreen, cut, overlap, clipped, long, stretched } }, each a list.
+// Returns { board: { offscreen, cut, overlap, clipped, long, stretched, font } }, each a list.
 (() => {
   const out = {};
   for (const fig of document.querySelectorAll('figure[data-board]')) {
     const doc = fig.querySelector('iframe').contentDocument;
     const root = doc.querySelector('.st-root');
     if (!root) continue;
+    const fontOk = [...doc.fonts].some(f => f.family.replace(/["']/g, '') === 'Nunito' && f.status === 'loaded');
     // measure the final layout, not a frame of an entrance animation (a sheet still sliding up reads as cut)
     if (!doc.getElementById('lc-still')) { const s = doc.createElement('style'); s.id = 'lc-still'; s.textContent = '*,*::before,*::after{animation:none!important;transition:none!important}'; doc.head.appendChild(s); }
     const R = root.getBoundingClientRect();
@@ -33,7 +36,7 @@
     const controls = [...root.querySelectorAll('button, a, input, [role="switch"]')].filter(el => !hidden(el));
     // 1 px boxes are visually hidden labels for screen readers, not visible text
     const visible = el => { const r = el.getBoundingClientRect(); const cs = doc.defaultView.getComputedStyle(el); return r.width > 1 && r.height > 1 && cs.visibility !== 'hidden' && cs.display !== 'none'; };
-    const res = { offscreen: [], cut: [], overlap: [], clipped: [], long: [], stretched: [] };
+    const res = { offscreen: [], cut: [], overlap: [], clipped: [], long: [], stretched: [], font: fontOk ? [] : ['Nunito chưa tải xong'] };
     if (R.width > 600) for (const el of root.querySelectorAll('a, button, section, li')) {
       if (hidden(el)) continue;
       const r = el.getBoundingClientRect();

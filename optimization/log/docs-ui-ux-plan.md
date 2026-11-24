@@ -274,3 +274,16 @@
 - **Đo trước → sau:** không áp dụng. Sau khi đăng, tải về 26 file (23 màn vừa đăng, `canvas.json` và hai màn điện thoại) và so với `docs/ui-ux-plan`: trùng từng byte; 18 màn điện thoại còn lại không gửi lần này và đã trùng ở bản 25.
 - **AI:** Claude Code (Claude Opus 5.5). Lần này số bản tăng đúng một (25 lên 26).
 - **Kiểm thử:** so hash của các file tải về với blob trên nhánh.
+
+## 2026-11-24 09:51 · Cố định font khi đo bố cục
+
+- **Vấn đề:** số lỗi của hai biến thể điện thoại `flipcover` và `split` đổi chỗ một lỗi tràn đáy cho nhau giữa các lượt đo (84/85 hay 85/84) dù mockup không đổi. Người dùng hỏi nên sửa thế nào, rồi chọn dùng font cục bộ và đồng ý tải font.
+- **Nguyên nhân tìm được:** so từng mục giữa các lượt: font đã tải xong ở cả hai trạng thái (`document.fonts.ready`, `fonts.check` đều đạt), nhưng vị trí chữ lệch 1–3 px theo cả hai chiều. Hai mục sát mép dưới vì vậy lúc tràn lúc không: nút "Gia hạn" ở Sách đang mượn (đáy 402 px trên màn 400) và đoạn "Ứng dụng tự khóa…" ở Khóa (đáy 421–422 px trên màn 420). Ghi chú ở mục trước ("tùy font đã tải xong hay chưa") là sai. Giả thuyết: khác phiên bản file font từ Google Fonts; chưa kiểm được vì máy chỉ còn bản v32 trong cache.
+- **Thay đổi:**
+  - `tools/fonts/`: `Nunito[wght].ttf` (276.932 byte) và `OFL.txt` (4.385 byte) tải từ repo `google/fonts` ở commit 6049366 (người dùng đồng ý tải; font dùng giấy phép SIL OFL, cho phép chép lại kèm giấy phép).
+  - `tools/render-static.js`: thay link Google Fonts trong mỗi màn bằng `@font-face` trỏ tới bản font cố định, chép font cạnh trang dựng ra; báo lỗi nếu màn nào không có link Google Fonts như mong đợi.
+  - `tools/layout-check.js`: thêm mục `font` cho màn chưa tải xong Nunito, để lượt đo đó không bị dùng nhầm.
+  - README mockup (bảng số, cách chạy lại, thư mục `tools/fonts/`) và kế hoạch §6.4 (bảng và ghi chú).
+- **Đo trước → sau:** trước: `flipcover` 84 hoặc 85, `split` 85 hoặc 84 tùy lượt. Sau: `flipcover` 84 (74 tràn đáy, 10 chữ đè), `split` 85 (70 tràn đáy, 15 chữ đè); các biến thể khác giữ số cũ (chữ 2.0: 30, rộng 320 và chữ 2.0: 55, `wide`: 1, xoay ngang: 78, `unfoldl`: 7), 23 màn rộng và vừa 0 lỗi. Hai lượt đủ 15 biến thể cho cùng số; ba lượt khi font đã nằm trong cache và hai lượt buộc tải lại font cho kết quả giống nhau đến từng mục. Lượt đầu tiên ngay sau khi dựng có ba biến thể khác chi tiết (cùng số lỗi) so với lượt sau; không lặp lại được ở năm lượt kiểm tra tiếp theo.
+- **AI:** Claude Code (Claude Opus 5.5). AI đề xuất hai cách (font cố định, hoặc dung sai 2 px khi tính tràn), khuyên dùng font cố định vì nó bỏ nguồn gây lệch thay vì che triệu chứng; người dùng chọn font cố định. AI sửa lại nhận định sai ở mục trước sau khi so từng mục.
+- **Kiểm thử:** dựng 15 biến thể với font cố định; chạy `tools/layout-check.js` hai lượt đủ 15 biến thể, ba lượt (chữ 2.0, rộng 320 và chữ 2.0, `wide`) và hai lượt buộc tải lại font (sáu biến thể); thử trỏ font tới file không có: cả 20 màn có mục `font`.

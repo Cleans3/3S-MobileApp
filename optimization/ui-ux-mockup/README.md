@@ -16,7 +16,8 @@ Mã nguồn của mockup 43 màn (20 màn điện thoại, 11 màn cửa sổ r�
 | `tools/target-size.js` | Đọc kích thước vẽ và vùng chạm của mọi nút, link và công tắc |
 | `tools/render-static.js` | Dựng các màn thành HTML tĩnh ở 15 biến thể: gốc, rộng 320, chữ 2.0, cả hai, bảy cỡ màn tỷ lệ đặc biệt, và bốn biến thể chỉ cho màn lớn. Màn cửa sổ rộng và vừa giữ kích thước vẽ ở biến thể gốc và chữ 2.0; các màn `Wide*` dựng thêm ở 844 × 390 (`land`) và với menu thu gọn (`navmini`); các màn cỡ vừa dựng thêm ở khung chi tiết (`middetail`), ở 600 × 840 (`mid600`) và cả hai (`mid600d`) |
 | `tools/wide-boards/` | Script sinh 10 màn rộng và 11 màn cỡ vừa từ một khung chung (`node tools/wide-boards/gen.js .`, ghi lại các file `.dc.html` và vị trí trong `canvas.json`). Mỗi màn dựng hai lần: `Wide*` 960 × 720 và `Mid*` 720 × 840. Sửa các màn đó ở đây rồi chạy lại; `WideCatalog` và `RailCatalog` viết tay |
-| `tools/layout-check.js` | Chạy trong trình duyệt trên trang của `render-static.js`, sau khi tắt hiệu ứng động: đếm chữ tràn mép, tràn đáy, chữ đè chữ, chữ bị cắt; trên màn rộng hơn 600 dp đếm thêm dòng quá 80 ký tự và khối bị kéo giãn |
+| `tools/layout-check.js` | Chạy trong trình duyệt trên trang của `render-static.js`, sau khi tắt hiệu ứng động: đếm chữ tràn mép, tràn đáy, chữ đè chữ, chữ bị cắt; trên màn rộng hơn 600 dp đếm thêm dòng quá 80 ký tự và khối bị kéo giãn. Màn nào chưa tải xong font thì có mục `font` ("Nunito chưa tải xong"): số của màn đó không dùng được |
+| `tools/fonts/` | Font Nunito cố định cho phép đo (`Nunito[wght].ttf`, repo `google/fonts` ở commit 6049366) và giấy phép `OFL.txt`. Mockup đăng trên link vẫn tải Nunito từ Google Fonts |
 | `tools/hero-worst-case.js` | Tính riêng chữ trắng trên ảnh ở màn chào, ở trường hợp xấu nhất |
 | `tools/check-scripts.js` | Chạy script của từng màn, gọi mọi handler, kiểm tra mọi biến trong template đều có giá trị |
 | `contrast-results.json` | Kết quả của `tools/contrast.js` |
@@ -31,7 +32,7 @@ node tools/check-scripts.js .
 node tools/contrast.js .
 node tools/nontext-contrast.js .
 node tools/target-size.js .
-node tools/render-static.js . rendered   # rồi mở rendered/*.html qua một web server cục bộ và chạy tools/layout-check.js trong trang
+node tools/render-static.js . rendered   # rồi mở rendered/*.html qua một web server cục bộ, chờ document.fonts.ready ở mọi khung, và chạy tools/layout-check.js trong trang
 node tools/hero-worst-case.js
 ```
 
@@ -130,8 +131,8 @@ Bảy cỡ màn thêm vào `tools/render-static.js`, chữ bình thường, đơ
 |---|---|---|---|---|
 | Điện thoại dài 21:9 (`tall`) | 412 × 960 | 0 / 20 | 0 | không áp dụng |
 | Màn ngoài rộng 10:16 của máy gập ngang (`wide`) | 480 × 768 | 1 / 20 | 1 | không áp dụng |
-| Màn phụ của máy gập dọc (`flipcover`) | 360 × 400 | 15 / 20 | 85 | không áp dụng |
-| Chia đôi màn hình (`split`) | 390 × 420 | 15 / 20 | 84 | không áp dụng |
+| Màn phụ của máy gập dọc (`flipcover`) | 360 × 400 | 15 / 20 | 84 | không áp dụng |
+| Chia đôi màn hình (`split`) | 390 × 420 | 15 / 20 | 85 | không áp dụng |
 | Điện thoại xoay ngang (`land`) | 844 × 390 | 14 / 20 | 78 | 18 / 20 |
 | Máy gập mở, gần vuông (`unfold`) | 720 × 840 | 0 / 20 | 0 | 17 / 20 |
 | Máy gập mở, cầm ngang 4:3 (`unfoldl`) | 960 × 720 | 4 / 20 | 7 | 18 / 20 |
@@ -142,7 +143,7 @@ Màn thấp vỡ vì cùng lý do với chữ 2.0: chỉ năm màn có vùng cu�
 
 Lượt đo đầu có 4 lỗi "tràn đáy" giả ở màn Thông báo: bảng hỏi quyền còn đang trượt lên khi đo. Từ lượt này, `tools/layout-check.js` tắt hiệu ứng động trước khi đo.
 
-Bảng trên là số đo ngày 2026-11-24 với script hiện tại, đo hai lượt cho cùng kết quả. Lần ghi trước, `flipcover` là 84 (74 tràn đáy) và `split` là 85 (70 tràn đáy); nay là 85 (75 tràn đáy, 10 chữ đè) và 84 (69 tràn đáy, 15 chữ đè). Các màn điện thoại không đổi, và bản dựng từ commit trước đo bằng script hiện tại cũng ra đúng các số mới; vậy chênh lệch đến từ script đo hoặc lượt đo cũ, không phải từ mockup.
+Bảng trên đo ngày 2026-11-24 với font cố định trong `tools/fonts/`: `flipcover` 84 (74 tràn đáy, 10 chữ đè), `split` 85 (70 tràn đáy, 15 chữ đè). Trước đó, khi trang đo còn tải Nunito từ Google Fonts, hai số này đổi chỗ cho nhau giữa các lượt đo (85 và 84, hay 84 và 85) dù mockup không đổi. Vị trí chữ lệch 1–3 px giữa các lượt, nên hai mục nằm sát mép dưới lúc tràn lúc không: nút "Gia hạn" ở Sách đang mượn (đáy 402 px trên màn 400) và đoạn "Ứng dụng tự khóa…" ở Khóa (đáy 421–422 px trên màn 420). Font đã tải xong ở cả hai trạng thái, nên nguyên nhân không phải font tải chậm; giả thuyết là khác phiên bản file font, chưa kiểm được vì máy chỉ còn một bản trong cache. Với font cố định, hai lượt đo đủ 15 biến thể, ba lượt khi đã có font trong cache và hai lượt buộc tải lại font cho cùng kết quả, đến từng mục.
 
 ## Cửa sổ rộng
 

@@ -21,12 +21,21 @@
 // own size in the variants that keep the size as drawn (base, font2). Boards drawn for 840 dp and up
 // are also rendered at 844 x 390 in `land`, since a phone turned sideways is an expanded window.
 // Usage (from optimization/ui-ux-mockup): node tools/render-static.js . <out-dir>
-// Then open <out-dir>/<variant>.html in a browser and run tools/layout-check.js in it.
+// Then open <out-dir>/<variant>.html in a browser through a local web server, wait for the fonts
+// (document.fonts.ready in every board's frame) and run tools/layout-check.js in it.
+// Font: the boards load Nunito from Google Fonts, whose files can change version, which moved text by
+// 1-3 px between runs and flipped items sitting at the bottom edge. The rendered pages use the copy
+// pinned in tools/fonts/ instead (google/fonts commit 6049366, SIL OFL), copied next to the output.
 const fs = require('fs'), path = require('path');
 global.setTimeout = () => 0; global.clearTimeout = () => {};
 global.window = { matchMedia: () => ({ matches: false }) };
 const { parse, expand } = require('./contrast.js');
 const dir = process.argv[2] || '.', out = process.argv[3] || 'rendered';
+const FONT_FILE = 'Nunito[wght].ttf';
+const GOOGLE_FONT = /<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com">\s*<link href="https:\/\/fonts\.googleapis\.com\/css2\?family=Nunito[^"]*" rel="stylesheet">/;
+const LOCAL_FONT = `<style>@font-face{font-family:'Nunito';src:url('fonts/${encodeURIComponent(FONT_FILE)}') format('truetype');font-weight:200 1000;font-style:normal}</style>`;
+fs.mkdirSync(path.join(out, 'fonts'), { recursive: true });
+fs.copyFileSync(path.join(__dirname, 'fonts', FONT_FILE), path.join(out, 'fonts', FONT_FILE));
 fs.mkdirSync(out, { recursive: true });
 
 // Android 14+ scales text non-linearly: small text grows by the full factor, large text grows less.
@@ -69,7 +78,9 @@ function board(file, width, height, fontScale, extra) {
   const C = new Function('DCLogic', js + '\nreturn Component;')(class { setState(s) { this.state = Object.assign({}, this.state, s); } });
   const c = new C(); c.props = {}; c.state = Object.assign({ __theme: 'light', loaded: true, done: true, open: false, sheet: false }, extra);
   const vals = c.renderVals();
-  const helmet = html.slice(html.indexOf('<helmet>') + 8, html.indexOf('</helmet>'));
+  let helmet = html.slice(html.indexOf('<helmet>') + 8, html.indexOf('</helmet>'));
+  if (!GOOGLE_FONT.test(helmet)) throw new Error(file + ': Google Fonts link for Nunito not found');
+  helmet = helmet.replace(GOOGLE_FONT, LOCAL_FONT);
   let tpl = html.slice(html.indexOf('</helmet>') + 9, html.indexOf('</x-dc>'));
   tpl = tpl.replace(/<div class="st-root" data-theme="\{\{themeAttr\}\}" style="width: \d+px; height: \d+px;/, '<div class="st-root" data-theme="{{themeAttr}}" style="width: ' + width + 'px; height: ' + height + 'px;');
   // parse() wraps the template in a '#root' node; render its children, not the wrapper itself
