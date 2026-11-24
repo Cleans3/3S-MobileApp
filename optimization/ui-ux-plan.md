@@ -359,7 +359,34 @@ Tầng Vừa có đủ các hiệu ứng trên, chỉ khác là không blur (§6
 
 **Đường cong:** vào màn và mở bảng dùng đường cong giảm tốc (gần `cubic-bezier(0.2, 0.8, 0.2, 1)` trong mockup). Nếu bản Material 3 nhóm dùng có sẵn bộ token chuyển động thì dùng token đó thay cho số tự đặt.
 
-**Đo:** thêm vào §8.5 các hành trình mở và đóng menu ☰, chuyển màn Danh mục → Danh sách → Chi tiết, và tải trang đầu của danh sách.
+**Thẻ và chuyển trang.** App hiện dùng chuyển cảnh mặc định của `NavHost` (`ui/AppRoot.kt`). Mockup chưa có chuyển trang vì mỗi màn là một bảng riêng. Cách chuyển theo kiểu của Material motion:
+
+| Chuyển | Hiệu ứng | Thời lượng | Tầng Nhẹ |
+|---|---|---|---|
+| Giữa các mục của menu ☰ hoặc thanh dọc (Danh mục, Sách đang mượn, Đặt trước…) | Màn cũ mờ đi rồi màn mới hiện dần (fade through), không trượt, vì hai màn ngang hàng | khoảng 200–250 ms | Đổi ngay |
+| Đi sâu một bậc (Danh sách → Chi tiết, Tài khoản → Lịch sử) và quay lại | Trượt ngang 30 dp kèm mờ dần (shared axis X); quay lại thì ngược chiều và theo tay khi vuốt "quay lại dự đoán" (predictive back) | khoảng 300 ms | Mờ dần 150 ms |
+| Thẻ sách → Chi tiết | Bìa và tên sách bay từ thẻ sang chỗ của chúng ở Chi tiết (shared element); phần còn lại hiện dần | khoảng 300–350 ms | Mờ dần 150 ms |
+| Cửa sổ vừa: danh sách ↔ chi tiết | Trượt ngang 30 dp kèm mờ dần trong khung nội dung; thanh dọc đứng yên | khoảng 300 ms | Đổi ngay |
+| Cửa sổ rộng: chọn sách khác | Chỉ nội dung khung chi tiết mờ chéo (crossfade); danh sách và khung đứng yên | 150 ms | Đổi ngay |
+| Nhấn thẻ | Co 0.96 (như nút) | 120 ms | Không co |
+
+Hệ số hoạt ảnh của máy bằng 0 thì mọi chuyển cảnh đổi ngay. "Quay lại dự đoán" là cử chỉ của hệ thống, nên ở mọi tầng màn vẫn đi theo tay người dùng.
+
+**Tối ưu khi làm thẻ và chuyển trang:**
+1. **Đọc giá trị hiệu ứng ở pha vẽ, không ở pha composition.** Dùng dạng lambda: `Modifier.graphicsLayer { alpha = a.value; translationX = x.value }`, `Modifier.offset { … }`. Dạng truyền thẳng giá trị (`Modifier.alpha(a)`, `graphicsLayer(alpha = a)`) đọc state trong composition, nên mỗi khung hình compose lại cả màn. Kiểm bằng số lần recompose trong Layout Inspector: lúc chuyển cảnh, con số này không được tăng theo số khung hình.
+2. **Không đổi kích thước trong lúc chuyển.** Không dùng `expandVertically` hay `animateContentSize` cho chuyển trang. Trượt và mờ chỉ chạm pha đặt chỗ và pha vẽ, không phải đo lại.
+3. **Shared element chỉ cho bìa và tên sách, không cho cả thẻ.** Phần tử dùng chung được vẽ ở một lớp phủ riêng, nên càng ít càng rẻ; lớp kính và bóng của thẻ không bay theo.
+4. **Bìa ở Chi tiết dùng lại ảnh đã có trong bộ nhớ.** Với Coil 3, đặt `placeholderMemoryCacheKey` của ảnh ở Chi tiết bằng khóa ảnh ở hàng danh sách, để bìa hiện ngay trong lúc bay, không có khung trống hay tải lại. Ảnh lớn hơn tải sau rồi thay vào.
+5. **Màn đích không làm việc nặng ở khung hình đầu.** Những gì đã có (tên, tác giả, bìa từ danh sách) hiện ngay; gọi server chạy song song ở luồng nền. Không tìm kiếm, sắp xếp hay phân tích JSON trên luồng chính trong lúc chuyển.
+6. **Tắt blur trong lúc chuyển cảnh (đề xuất, chốt bằng số đo ở §8.5).** Lúc chuyển, cả hai màn cùng được vẽ nên lớp kính tốn gấp đôi. Trong lúc chuyển, lớp kính dùng nền bán trong suốt như tầng Nhẹ, xong thì bật blur lại.
+7. **Một chuyển cảnh mỗi lúc, ngắt được.** Bấm tiếp hoặc vuốt quay lại giữa chừng thì hiệu ứng đổi hướng từ vị trí đang có (`Animatable`, chuyển cảnh của Navigation), không xếp hàng chờ.
+8. **Không cộng vào thời gian tự mượn.** Mục tiêu "chạm sách dưới 1 s" tính đến lúc kết quả hiện ra. Dấu tích và hiệu ứng chạy cùng lúc với kết quả, không chạy trước rồi mới hiện kết quả.
+9. **Danh sách đổi phần tử** (hủy đặt trước, trả sách): dùng `Modifier.animateItem()` với `key` ổn định để các hàng còn lại trượt vào chỗ. Không có hiệu ứng khi chỉ cuộn (như quy tắc ở trên).
+10. **Lần chuyển đầu không giật vì mã chưa biên dịch:** khi app có baseline profile, thêm các hành trình chuyển màn vào kịch bản sinh profile.
+
+Tên API (`SharedTransitionLayout`, `Modifier.sharedElement`, `placeholderMemoryCacheKey`, hỗ trợ "quay lại dự đoán" trong Navigation Compose 2.10 mà app đang dùng) lấy theo trí nhớ của AI; cần đối chiếu tài liệu Android, Compose và Coil trước khi làm.
+
+**Đo:** thêm vào §8.5 các hành trình mở và đóng menu ☰, chuyển màn Danh mục → Danh sách → Chi tiết, thẻ sách → Chi tiết, đổi mục menu, quay lại bằng cử chỉ, và tải trang đầu của danh sách.
 
 ## 7. Ràng buộc hiệu năng cho mọi thay đổi UI
 
@@ -429,8 +456,8 @@ Từ log này trả lời được: AI làm tốt phần UI nào (dự kiến: a
 
 Câu hỏi cho báo cáo: **hiệu ứng kính tốn bao nhiêu khung hình, và chia tầng có giữ được máy yếu ở mục tiêu 60 fps không?**
 
-- **Cách đo:** cùng một APK release, dùng công tắc ép tầng của bản debug-benchmark, cuộn danh mục 100k sách với nút nổi "Chạm sách để mượn" và vùng mờ dần ở đáy màn đè lên; đo thêm lúc mở và đóng menu ☰, lúc chuyển màn Danh mục → Danh sách → Chi tiết và lúc tải trang đầu của danh sách (hiệu ứng động ở §6.5). Ở màn đứng yên (không có hiệu ứng lặp), kiểm tra app không vẽ thêm frame nào (`dumpsys gfxinfo`), để chắc hiệu ứng lặp đã dừng. Dùng chung kịch bản và bộ dữ liệu của `opt/app-catalog` (Macrobenchmark, `FrameTimingMetric`), chạy theo thứ tự ABAB, nhiều vòng, báo trung vị và khoảng.
-- **Chỉ số:** tỷ lệ frame trễ hạn, `frameDurationCpuMs` p50 và p90, `frameOverrunMs` nếu có, bộ nhớ RSS.
+- **Cách đo:** cùng một APK release, dùng công tắc ép tầng của bản debug-benchmark, cuộn danh mục 100k sách với nút nổi "Chạm sách để mượn" và vùng mờ dần ở đáy màn đè lên; đo thêm lúc mở và đóng menu ☰, lúc chuyển màn Danh mục → Danh sách → Chi tiết, thẻ sách → Chi tiết, đổi mục menu, quay lại bằng cử chỉ và lúc tải trang đầu của danh sách (hiệu ứng động ở §6.5). Với thẻ sách → Chi tiết, so ba cách trên cùng máy: shared element, chỉ mờ dần, không hiệu ứng; và so blur bật với blur tắt trong lúc chuyển. Ở màn đứng yên (không có hiệu ứng lặp), kiểm tra app không vẽ thêm frame nào (`dumpsys gfxinfo`), để chắc hiệu ứng lặp đã dừng. Dùng chung kịch bản và bộ dữ liệu của `opt/app-catalog` (Macrobenchmark, `FrameTimingMetric`), chạy theo thứ tự ABAB, nhiều vòng, báo trung vị và khoảng.
+- **Chỉ số:** tỷ lệ frame trễ hạn, `frameDurationCpuMs` p50 và p90, `frameOverrunMs` nếu có, bộ nhớ RSS. Với chuyển cảnh: số frame trễ hạn trong khoảng chuyển cảnh, và số lần recompose mỗi khung hình (Layout Inspector hoặc composition tracing) để kiểm quy tắc 1 ở §6.5.
 - **Ma trận:**
 
 | Máy | Tầng Nhẹ | Tầng Vừa | Tầng Đầy đủ |
@@ -439,6 +466,7 @@ Câu hỏi cho báo cáo: **hiệu ứng kính tốn bao nhiêu khung hình, và
 | Emulator cấu hình thấp, Android 17 | Đo thực tế | Đo thực tế | Đo thực tế |
 | Điện thoại thật (nếu có) | Đo thực tế | Đo thực tế | Đo thực tế nếu máy chạy Android 17 |
 
+- **Quy tắc cho chuyển cảnh:** nếu shared element làm máy cấu hình thấp trễ hạn nhiều hơn chỉ mờ dần, tầng Vừa dùng mờ dần; nếu tắt blur trong lúc chuyển không giảm frame trễ hạn thì bỏ quy tắc 6 ở §6.5 cho đơn giản.
 - **Quy tắc nhận:** một tầng chỉ được bật mặc định trên một nhóm máy nếu ở nhóm đó nó vẫn đạt mục tiêu cuộn 60 fps của môn. Nếu không đạt, hạ ngưỡng của tầng xuống, và ghi lý do vào nhật ký.
 - **Lưu ý:** emulator vẽ GPU bằng phần mềm, nên chi phí blur trên emulator có thể khác xa máy thật. Số đo trên emulator chỉ dùng để so sánh giữa các tầng, không dùng làm con số tuyệt đối. E2 cũng có cùng giới hạn này.
 

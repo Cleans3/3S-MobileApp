@@ -247,3 +247,11 @@
 - **Đo trước → sau:** không áp dụng. Sau khi đăng, tải về cả 44 file đang đăng và so với `docs/ui-ux-plan`: trùng từng byte.
 - **AI:** Claude Code (Claude Opus 5.5). Trang artifact báo bản 25 dù trước đó là bản 23 và chỉ đăng một lần, giống hai lần đăng trước; AI ghi lại và kiểm bằng cách so file.
 - **Kiểm thử:** so hash của 44 file tải về với blob trên nhánh.
+
+## 2026-11-24 09:33 · Tối ưu hiệu ứng thẻ và chuyển trang
+
+- **Vấn đề:** người dùng yêu cầu tối ưu khi thêm hiệu ứng động cho thẻ và chuyển trang. Kế hoạch §6.5 có quy tắc chung cho hiệu ứng (chỉ đổi transform và opacity, không hiệu ứng khi cuộn) nhưng chưa nói cách chuyển giữa các màn, thẻ sách mở Chi tiết ra sao, và cách giữ chi phí thấp. App hiện dùng chuyển cảnh mặc định của `NavHost`.
+- **Thay đổi:** kế hoạch §6.5 thêm bảng chuyển trang theo kiểu Material motion (đổi mục menu, đi sâu một bậc, thẻ → Chi tiết bằng shared element, cửa sổ vừa và rộng, nhấn thẻ) và 10 quy tắc tối ưu: đọc giá trị hiệu ứng ở pha vẽ, không đổi kích thước, shared element chỉ cho bìa và tên, dùng lại ảnh bìa trong bộ nhớ, màn đích không làm việc nặng ở khung đầu, tắt blur trong lúc chuyển (đề xuất), ngắt được, không cộng vào thời gian tự mượn, `animateItem` khi danh sách đổi, baseline profile. §8.5 thêm các hành trình chuyển cảnh, phép so shared element với mờ dần và không hiệu ứng, số lần recompose mỗi khung hình, và quy tắc chọn theo số đo.
+- **Đo trước → sau:** chưa đo; đây là kế hoạch. Phép đo nằm ở §8.5.
+- **AI:** Claude Code (Claude Opus 5.5). AI đọc §6.3, §6.5, §7, §8.5 và `ui/AppRoot.kt`, rồi đề xuất các quy tắc trên. Tên API lấy theo trí nhớ, đã ghi trong kế hoạch là cần đối chiếu tài liệu. "Tắt blur trong lúc chuyển" là giả thuyết, chỉ giữ nếu số đo cho thấy có lợi.
+- **Kiểm thử:** không áp dụng (chỉ sửa tài liệu); kiểm diff chỉ chạm §6.5 và §8.5.
