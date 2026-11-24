@@ -64,6 +64,17 @@
     <string name="login_action">Log in</string>
     <string name="login_busy">Logging in...</string>
     <string name="login_with_card">Log in with library card</string>
+    <string name="login_subtitle">Use the library account you were given.</string>
+    <string name="login_with_password">Sign in with email and password</string>
+    <string name="login_or">or</string>
+    <string name="login_footer">No account yet? Sign up at the librarian\'s desk and bring your ID card.</string>
+    <string name="card_title">Sign in with a card</string>
+    <string name="card_subtitle">Hold the library card against the back of the phone and keep it still for a few seconds.</string>
+    <string name="card_step_read">Reading the card</string>
+    <string name="card_step_verify">The library checks the card</string>
+    <string name="card_step_done">Signed in</string>
+    <string name="card_footnote">No PIN: the card only proves you hold it. To see your reading history you will need your password.</string>
+    <string name="card_illustration_name">Library card</string>
     <string name="card_hold">Hold your library card against the back of the phone.</string>
     <string name="card_explain">The card proves it is yours with a signature. You do not type a PIN, and nothing on the card is read.</string>
     <string name="card_use_password">Use email and password instead</string>

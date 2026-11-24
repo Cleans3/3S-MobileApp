@@ -8,6 +8,11 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import shelftap.android.ui.theme.LoginSize
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 import shelftap.android.ui.theme.GlassSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -203,16 +208,60 @@ fun SecondaryButton(
     OutlinedButton(onClick, modifier.pressScale(source), enabled, interactionSource = source, content = content)
 }
 
-/** A full-width pill button, 52 dp tall, that shrinks a little while pressed. */
+/** A full-width pill button (52 dp tall unless [height] says otherwise) that shrinks a little while pressed and dims when it is off. */
 @Composable
-internal fun PillAction(label: String, onClick: () -> Unit, container: Color, ink: Color) {
+internal fun PillAction(label: String, onClick: () -> Unit, container: Color, ink: Color, enabled: Boolean = true, height: androidx.compose.ui.unit.Dp = GlassSize.pillAction, description: String? = null,
+) {
     val source = remember { MutableInteractionSource() }
     Box(
-        Modifier.fillMaxWidth().height(GlassSize.pillAction).pressScale(source).clip(CircleShape).background(container)
-            .clickable(interactionSource = source, indication = null, role = Role.Button, onClick = onClick),
+        Modifier.fillMaxWidth().height(height).pressScale(source).clip(CircleShape).background(container.copy(alpha = if (enabled) 1f else DISABLED_ALPHA))
+            .clickable(interactionSource = source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
+            .then(if (description != null) Modifier.semantics { contentDescription = description } else Modifier),
         contentAlignment = Alignment.Center,
-    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = ink) }
+    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = ink.copy(alpha = if (enabled) 1f else DISABLED_ALPHA)) }
 }
+
+private const val DISABLED_ALPHA = 0.45f
+
+/**
+ * A text field with its label above it, as in the boards: 50 dp tall, a rounded box with an edge strong enough to be seen (3:1), the label
+ * read out by TalkBack. With [password] the text is hidden and an eye at the end (a bookmark-like morph) shows or hides it; the
+ * shown state is never saved.
+ */
+@Composable
+fun LabeledField(
+    label: String, value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier,
+    keyboardType: KeyboardType = KeyboardType.Text, password: Boolean = false, enabled: Boolean = true,
+) {
+    val c = MaterialTheme.shelfTap
+    var shown by remember { mutableStateOf(false) }
+    val eyeDescription = stringResource(if (shown) R.string.password_hide else R.string.password_show)
+    val shape = RoundedCornerShape(Spacing.l)
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(Spacing.xs + Spacing.xs / 2)) {
+        Text(label, style = MaterialTheme.typography.labelLarge, color = c.ink2, modifier = Modifier.clearAndSetSemantics {})
+        Box(Modifier.fillMaxWidth().height(LoginSize.field).clip(shape).background(c.surface).border(BorderStroke(Radius.hairline, c.ink.copy(alpha = FIELD_EDGE)), shape)) {
+            BasicTextField(
+                value = value, onValueChange = onValueChange, enabled = enabled, singleLine = true,
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = c.ink), cursorBrush = SolidColor(c.ink),
+                visualTransformation = if (password && !shown) PasswordVisualTransformation() else VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+                modifier = Modifier.fillMaxSize().semantics { contentDescription = label },
+                decorationBox = { inner ->
+                    Box(Modifier.fillMaxSize().padding(start = Spacing.l, end = if (password) Spacing.xl * 2 + Spacing.xs else Spacing.l), contentAlignment = Alignment.CenterStart) { inner() }
+                },
+            )
+            if (password) {
+                Box(
+                    Modifier.align(Alignment.CenterEnd).padding(end = Spacing.xs).size(Spacing.touch - Spacing.xs)
+                        .semantics { contentDescription = eyeDescription }.pressable(RoundedCornerShape(Spacing.m), { shown = !shown }, shrink = false),
+                    contentAlignment = Alignment.Center,
+                ) { MorphIcon(LucideMorphs.EyeToEyeOff, toEnd = shown, tint = c.ink2) }
+            }
+        }
+    }
+}
+
+private const val FIELD_EDGE = 0.5f
 
 /** A quiet text button with a 48 dp touch height. */
 @Composable

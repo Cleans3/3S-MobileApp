@@ -64,6 +64,17 @@
     <string name="login_action">Đăng nhập</string>
     <string name="login_busy">Đang đăng nhập…</string>
     <string name="login_with_card">Đăng nhập bằng thẻ thư viện</string>
+    <string name="login_subtitle">Dùng tài khoản thư viện đã cấp cho bạn.</string>
+    <string name="login_with_password">Đăng nhập bằng email và mật khẩu</string>
+    <string name="login_or">hoặc</string>
+    <string name="login_footer">Chưa có tài khoản? Đăng ký tại quầy thủ thư, mang theo CCCD.</string>
+    <string name="card_title">Đăng nhập bằng thẻ</string>
+    <string name="card_subtitle">Áp thẻ thư viện vào mặt sau điện thoại và giữ yên vài giây.</string>
+    <string name="card_step_read">Đọc thẻ</string>
+    <string name="card_step_verify">Thư viện xác thực thẻ</string>
+    <string name="card_step_done">Đã đăng nhập</string>
+    <string name="card_footnote">Không cần PIN: thẻ chỉ chứng minh bạn đang giữ thẻ. Muốn xem lịch sử đọc, bạn sẽ cần nhập mật khẩu.</string>
+    <string name="card_illustration_name">Thẻ thư viện</string>
     <string name="card_hold">Hãy áp thẻ thư viện vào mặt sau điện thoại.</string>
     <string name="card_explain">Thẻ chứng minh là của bạn bằng chữ ký. Bạn không nhập mã PIN, và không có gì trên thẻ bị đọc ra.</string>
     <string name="card_use_password">Dùng email và mật khẩu</string>

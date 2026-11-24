@@ -121,6 +121,18 @@ object NfcSize {
     val step = 24.dp
 }
 
+/** The login and the card login, from the boards `Login` and `CardLogin`. */
+object LoginSize {
+    val backdrop = 360.dp
+    val formTop = 250.dp
+    val button = 54.dp
+    val field = 50.dp
+    val stage = 300.dp
+    val disc = 220.dp
+    val cardWidth = 168.dp
+    val cardHeight = 106.dp
+}
+
 /** Sizes on the account screen, from the board. */
 object AccountSize {
     val avatar = 56.dp

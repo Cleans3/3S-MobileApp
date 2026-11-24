@@ -99,63 +99,6 @@ class AuthViewModel(private val session: SessionManager) : ViewModel() {
     }
 }
 
-@StringRes
-private fun LogoutReason.message() = when (this) {
-    LogoutReason.SESSION_EXPIRED -> R.string.logout_session_expired
-    LogoutReason.TOKEN_REUSED -> R.string.logout_token_reused
-    LogoutReason.INACTIVITY -> R.string.logout_inactivity
-    LogoutReason.LOCK_KEY_INVALIDATED -> R.string.logout_lock_key_invalidated
-}
-
-@Composable
-fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
-    val vm = appViewModel { AuthViewModel(it.session) }
-    val state by vm.state.collectAsStateWithLifecycle()
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by remember { mutableStateOf("") } // never saved to instance state
-
-    Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding()).padding(Spacing.xl),
-        verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
-    ) {
-        Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium)
-        IntegrityBanner()
-        reason?.let { Text(stringResource(it.message())) }
-        OutlinedTextField(
-            value = email, onValueChange = { email = it }, label = { Text(stringResource(R.string.login_email)) }, singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), modifier = Modifier.fillMaxWidth(),
-        )
-        PasswordField(password, { password = it }, stringResource(R.string.login_password), Modifier.fillMaxWidth())
-        ErrorText(state.error)
-        PrimaryButton(
-            onClick = { vm.login(email, password) },
-            enabled = !state.busy && email.isNotBlank() && password.isNotEmpty(),
-            modifier = Modifier.fillMaxWidth(),
-        ) { Text(stringResource(if (state.busy) R.string.login_busy else R.string.login_action)) }
-        SecondaryButton(onClick = onCard, enabled = !state.busy, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.login_with_card)) }
-    }
-}
-
-@Composable
-fun CardLoginScreen(onBack: () -> Unit) {
-    val vm = appViewModel { AuthViewModel(it.session) }
-    val state by vm.state.collectAsStateWithLifecycle()
-    NfcGate {
-        NfcReaderEffect(TagReader.CARD_FLAGS) { vm.cardTapped(it) }
-        Column(
-            Modifier.fillMaxSize().padding(pagePadding()).padding(Spacing.xl),
-            verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(stringResource(R.string.card_hold), style = MaterialTheme.typography.titleMedium)
-            Text(stringResource(R.string.card_explain))
-            if (state.busy) Spinner()
-            ErrorText(state.error)
-            TextButton(onClick = onBack, enabled = !state.busy) { Text(stringResource(R.string.card_use_password)) }
-        }
-    }
-}
-
 @Composable
 fun OfflineScreen() {
     val session = LocalContainer.current.session

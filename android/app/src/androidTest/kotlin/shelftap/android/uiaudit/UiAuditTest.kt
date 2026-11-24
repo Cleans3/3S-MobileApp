@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import shelftap.android.ui.CardLoginContent
 import shelftap.android.ui.CheckoutViewModel
 import shelftap.android.ui.DoneCard
 import shelftap.android.ui.FailedCard
@@ -158,6 +159,8 @@ class UiAuditTest {
                 }
             }
             overlayShot("history-stepup", activity) { StepUpCard(onLogin = {}) }
+            overlayShot("login-card", activity) { CardLoginContent(busy = false, error = null, onBack = {}) }
+            overlayShot("login-card-busy", activity) { CardLoginContent(busy = true, error = null, onBack = {}) }
             overlayShot("checkout-sending", activity) { SendingCard() }
             overlayShot("checkout-done", activity) { DoneCard(AuditData.loans[1], onAgain = {}, onLoans = {}) }
             overlayShot("checkout-failed", activity) { FailedCard(CheckoutViewModel.UiState.Failed(uiText(R.string.err_unpaid_fine), unpaidFine = true), onAgain = {}, onLoans = {}) }
