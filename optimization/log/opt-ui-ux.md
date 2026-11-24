@@ -12,3 +12,11 @@
 - **AI:** Claude Code (Opus 5.5, sau đó Sonnet 5.5; phiên đổi model giữa chừng). Prompt: yêu cầu của người dùng. AI đề xuất đo bằng Robolectric cho nhanh; thử thì ATF chỉ thấy khung View chứ không thấy phần tử Compose (1 phần tử mỗi màn hình, 0 phát hiện), nên AI bỏ cách đó và chuyển sang androidTest trên emulator. Lần đầu ATF cũng chỉ thấy DecorView khi truy vấn trong tiến trình; sau đổi sang lấy cây accessibility từ hệ thống qua UiAutomation thì thấy 17–67 phần tử mỗi màn hình. AI tự xem ảnh để đếm màn hình vỡ layout và ghi rõ chờ người duyệt. Con người chưa duyệt gì ở bước này.
 - **Kiểm thử:** `./gradlew assembleDebug testDebugUnitTest` trên A: qua, 59 test unit. `run_audit.ps1 -Label A` chạy hai lượt đủ bốn cấu hình, số liệu giống nhau. Bài đo chạy trên một emulator riêng (`-Serial emulator-5556`) để không đụng emulator `lowend36` đang dùng cho phép đo catalog của phiên `opt/app-catalog`.
 - **Ghi chú cho báo cáo:** công cụ là ATF, không phải app Accessibility Scanner; B phải dùng cùng công cụ. ATF báo contrast trên nút bị vô hiệu dù WCAG miễn trừ; nhóm quyết có đếm hay không trước khi đo B. Hai dạng lỗi dễ thấy ngay: nhãn tab vỡ ở font 2.0 và nhãn "Renew"/"Cancel" trùng nhau (đọc lên không biết sách nào).
+## 2026-11-24 15:33 · Bài test UX: viết `optimization/ux-test.md` (giai đoạn 3)
+
+- **Vấn đề:** §8.3 cần kịch bản, phiếu ghi và bảng kết quả trước khi tuyển người; chưa có file nào (Task flow, đo UX).
+- **Thay đổi:** thêm `optimization/ux-test.md`: kịch bản đọc to cho T1–T3, điều kiện thành công và thất bại, phiếu ghi cho người quan sát (thời gian, lỗi, bước, số lần tìm menu), SUS 10 câu kèm cách tính, câu hỏi "hợp với điện thoại" cho B, bảng kết quả A/B **để trống**, giới hạn. Không sửa code.
+- **Đo trước → sau:** không áp dụng, đây là tài liệu. Chưa chạy buổi test nào, không có số liệu.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI soạn toàn bộ chữ, gồm lời kịch bản, ngưỡng 90 s và 180 s, định nghĩa lỗi và bước. Con người chưa duyệt: các ngưỡng thời gian và tên cuốn sách cho T1 là chỗ nhóm cần chốt.
+- **Kiểm thử:** không có (chỉ thêm file tài liệu).
+- **Ghi chú cho báo cáo:** T2 cần thẻ NFC thật (§11 mục 4); nếu chưa có thì T2 không đo được, và file đã ghi sẵn điều này.
