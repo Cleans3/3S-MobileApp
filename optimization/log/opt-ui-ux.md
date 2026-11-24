@@ -522,3 +522,11 @@
 - **Đo trước → sau:** ba thang 0 → 1,0 trên Xiaomi. **Chưa đo/kiểm:** người dùng chưa xác nhận chuyển động đã trở lại; máy chưa có giá trị gốc khác 1,0 nên chưa thử nhánh khôi phục giá trị khác 1; không thể tự khôi phục nếu tiến trình bị giết từ ngoài (đã ghi vào README).
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI tự tìm ra nguyên nhân khi kiểm cài đặt trên máy.
 - **Kiểm thử:** đọc lại cài đặt trên máy sau khi khôi phục.
+
+## 2026-11-25 21:00 · Menu ☰: lúc đóng, bảng, bóng và lớp mờ nền đi cùng nhịp (nguồn: yêu cầu của người dùng)
+
+- **Vấn đề:** ảnh từng khung lúc đóng (cách 15 ms, audit `menuFrames`) cho thấy: bảng gần như hết ở 60 ms nhưng viền và bóng của nó còn hiện thành một hình chữ nhật bo góc sẫm (bóng đổ của nền tảng, độ cao cố định, không mờ theo độ trong suốt của lớp), trong khi trang còn mờ và tối nặng thêm gần 100 ms nữa (đường cong giảm tốc làm đuôi của lớp mờ rất dài, nên bảng đã đi mà "bóng" của trang còn nằm lại).
+- **Thay đổi:** `AppMenu.kt`: độ cao bóng nằm trong cùng lớp với độ mờ của bảng (`shadowElevation = shadowPx * q`), bỏ `.shadow()` độ cao cố định; `Motion.kt`: thêm `exitSpec` (đường thẳng, không đuôi mềm; tức thì ở tầng nhẹ), `MENU_EXIT_MS` 200 → 140; `AppRoot.kt`: lớp tối, blur trang và bảng đều dùng `exitSpec` khi đóng (bảng 90 ms, trang 140 ms).
+- **Đo trước → sau:** ảnh GPU (emulator, sáng): khung 60 ms trước: bảng gần hết, còn hình chữ nhật viền sẫm, trang mờ nặng; sau: bảng và viền mờ dần đều, không còn viền sẫm; khung 120 ms: trang gần rõ lại (trước đó phải sau 200 ms). ATF 3 (không đổi). **Chưa đo/kiểm:** máy thật (bản `measure` mới đã cài lên Xiaomi); chế độ tối (ảnh khung chỉ xem ở sáng); nếu "bóng" người dùng nói là chính lớp tối phủ toàn màn thì thay đổi `exitSpec` là phần chữa; chi phí khung lúc đóng.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chụp khung sát nhau để tìm đúng chỗ thay vì đoán; con người chưa xác nhận.
+- **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin assembleMeasure`: qua; `run_audit.ps1 -Configs light -Locale vi`: qua.

@@ -379,8 +379,8 @@ private fun MenuLayer(
     // light tier). The overlay stays composed while it runs down, so the exit is the opening played backwards, with nothing scaled.
     val open = remember { Animatable(0f) }
     val panel = remember { Animatable(0f) }
-    LaunchedEffect(visible, tier) { open.animateTo(if (visible) 1f else 0f, Motion.spec(tier, if (visible) Motion.MENU_MS else Motion.MENU_EXIT_MS)) }
-    LaunchedEffect(visible, tier) { panel.animateTo(if (visible) 1f else 0f, Motion.spec(tier, if (visible) Motion.PANEL_IN_MS else Motion.PANEL_OUT_MS)) }
+    LaunchedEffect(visible, tier) { open.animateTo(if (visible) 1f else 0f, if (visible) Motion.spec(tier, Motion.MENU_MS) else Motion.exitSpec(tier, Motion.MENU_EXIT_MS)) }
+    LaunchedEffect(visible, tier) { panel.animateTo(if (visible) 1f else 0f, if (visible) Motion.spec(tier, Motion.PANEL_IN_MS) else Motion.exitSpec(tier, Motion.PANEL_OUT_MS)) }
     // The page is recorded for the panel's own blur from the moment the menu opens until the panel is gone, not until it starts to close:
     // when the recording stopped at once, the panel went on drawing the page as it was when it opened, a frozen blurred rectangle over a page
     // that was already coming back into focus.

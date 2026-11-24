@@ -246,7 +246,7 @@ class UiAuditTest {
         }
         compose.onAllNodesWithContentDescription(str(R.string.menu_close))[0].performClick()
         at = 0
-        for (d in listOf(30, 50, 50, 70, 100)) {
+        for (d in listOf(15, 15, 15, 15, 15, 15, 30, 50, 50, 60)) { // fine steps first: the panel is gone within 90 ms
             compose.mainClock.advanceTimeBy(d.toLong()); at += d
             captureHardware(activity.window.decorView)?.let { bmp -> File(outDir, "$config/menu-close-$at-hw.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) } }
         }

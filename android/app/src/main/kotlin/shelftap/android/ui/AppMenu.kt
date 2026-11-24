@@ -212,6 +212,7 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, backdrop: BackdropState
         val c = MaterialTheme.shelfTap
         val risePx = with(LocalDensity.current) { MenuSize.rise.toPx() }
         val blurPx = with(LocalDensity.current) { MenuSize.backdropBlur.toPx() }
+        val shadowPx = with(LocalDensity.current) { MenuSize.shadow.toPx() }
         Box(
             modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(start = Spacing.l, top = Spacing.touch + Spacing.s)
                 .graphicsLayer {
@@ -223,9 +224,15 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, backdrop: BackdropState
                     val q = panel()
                     alpha = q
                     translationY = -risePx * (1f - q)
+                    // The shadow is part of this layer and goes with the same value. A shadow of fixed height next to a layer that fades
+                    // is not faded with it (the platform keeps drawing its outline): the faint dark rectangle that stayed around the panel as it left.
+                    this.shape = shape
+                    clip = true
+                    shadowElevation = shadowPx * q
+                    ambientShadowColor = menuShadow
+                    spotShadowColor = menuShadow
                 }
                 .width(MenuSize.width)
-                .shadow(MenuSize.shadow, shape, ambientColor = menuShadow, spotColor = menuShadow)
                 .clip(shape)
                 // The glass: the page right behind the panel, blurred hard and made more vivid, so what lies under it is only colour that melts
                 // into the next (a book's cover is not a shape you can make out). The panel stays where it is: it is not scaled.

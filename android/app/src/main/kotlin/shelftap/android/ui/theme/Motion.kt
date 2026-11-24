@@ -19,7 +19,7 @@ object Motion {
     const val SHORT_FADE_MS = 150
     const val PRESS_MS = 120
     const val RISE_MS = 320
-    const val MENU_EXIT_MS = 200
+    const val MENU_EXIT_MS = 140
 
     /** The menu panel itself comes and goes faster than the page's blur and dimming around it (a half-faded glass panel is a pale rectangle). */
     const val PANEL_IN_MS = 140
@@ -28,6 +28,13 @@ object Motion {
 
     /** Close to `cubic-bezier(0.2, 0.8, 0.2, 1)` in the mockup: fast start, soft landing. */
     val decelerate = CubicBezierEasing(0.2f, 0.8f, 0.2f, 1f)
+
+    /**
+     * The spec of something that is leaving: even speed, no long soft tail. (With [decelerate] the last third of a leaving blur or dimming
+     * takes as long as the first two, and it lingers after the panel it belonged to is gone.) An instant change on the light tier.
+     */
+    fun <T> exitSpec(tier: EffectTier, durationMs: Int): FiniteAnimationSpec<T> =
+        if (tier == EffectTier.LIGHT) snap() else tween(durationMs, easing = androidx.compose.animation.core.LinearEasing)
 
     /** A tween on the full and medium tiers, an instant change on the light tier. */
     fun <T> spec(tier: EffectTier, durationMs: Int, delayMs: Int = 0): FiniteAnimationSpec<T> =
