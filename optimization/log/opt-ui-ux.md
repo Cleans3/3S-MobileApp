@@ -88,3 +88,12 @@
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI tự thấy lỗi từ ảnh chụp và sửa. Con người chưa duyệt.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1` bốn cấu hình trên emulator: qua.
 - **Ghi chú cho báo cáo:** khoảng chừa cố định 88 dp tốn chỗ ở màn thấp (cửa sổ thấp, gập). Mockup (§6.4) chỉ hiện icon khi cửa sổ ≤ 480 dp cao; app chưa làm.
+
+## 2026-11-24 16:25 · Đo cột B của §8.2 (tại `96a2895`) và lưu kết quả thô
+
+- **Vấn đề:** cột B của bảng §8.2 còn trống sau khi xong §5 (một phần) và §6.2; người dùng yêu cầu điền.
+- **Thay đổi:** không sửa code. Chạy `run_audit.ps1 -Label B -Serial emulator-5556` trên AVD `lowend36ui` (cùng máy và cấu hình với A), lưu kết quả thô ở `optimization/ui-ux/audit/B/`, điền cột B và thêm ghi chú 9–14 ở `optimization/ui-ux-metrics.md`.
+- **Đo trước → sau (A → B, cùng công cụ, 7 màn hình cũ):** phát hiện ATF 4 → 2 (cả 4 cấu hình: light, dark, font 2.0, 320 dp); cặp màu dưới 4,5:1 2 → 2 (vẫn hai nút bị vô hiệu: 1,86 → 1,93 và 1,95 → 2,01); vùng chạm dưới 48 dp 0 → 0; vỡ layout ở font 2.0 5/7 → 0/7 và ở 320 dp 0/7 → 0/7 (AI xem ảnh, chờ người duyệt); chuỗi viết cứng 51 → 0 (cùng lệnh `grep`). B có 9 màn hình (thêm guest và menu) và cũng 2 phát hiện trên cả 9. Android 17 (Xiaomi, sáng và tối): 2 phát hiện.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chạy bài đo, tính số từ file thô và xem ảnh chụp ở font 2.0 và 320 dp. AI không điền ô nào mà chưa có số đo; các chỉ số chưa đo được ghi ở ghi chú 13. Con người chưa duyệt ảnh.
+- **Kiểm thử:** `run_audit.ps1` bốn cấu hình: qua. Bài đo trước đó (`assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`) qua ở cùng commit.
+- **Ghi chú cho báo cáo:** B này chưa phải B cuối: thiếu kính, tầng hiệu ứng, bố cục thích ứng, chuyển động và định dạng ngày. Cải thiện chính đến từ chuỗi (0 chuỗi cứng), nhãn nút rõ nghĩa (0 trùng nhãn) và bỏ thanh tab (không còn nhãn vỡ). Hai phát hiện contrast còn lại là nút bị vô hiệu mà WCAG miễn trừ; nếu nhóm loại chúng thì cả A lẫn B là 0 cặp màu dưới 4,5:1.
