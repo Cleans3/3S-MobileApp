@@ -14,6 +14,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.Dp
+import androidx.compose.animation.core.Animatable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.drawscope.clipRect
+import shelftap.android.ui.theme.LocalEffectTier
+import shelftap.android.ui.theme.Motion
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
@@ -189,11 +202,49 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
         )
     }
     if (showList) {
-        // The results: the search field stays on top (below the bar), the rows scroll under the bottom button.
-        Column(Modifier.fillMaxSize()) {
-            Spacer(Modifier.height(LocalPageInsets.current.top))
-            Box(Modifier.padding(horizontal = GlassSize.page)) { search() }
-            CatalogList(state, onOpen, rise, onLoadMore = vm::loadMore, onRetry = vm::retry)
+        // The results: the search field stays on top (below the bar) over the rows, which run under it and under the bottom button.
+        // The list's own top padding is the bar plus the field, so the first row starts below both and nothing is counted twice.
+        // The field folds away to its middle while the rows scroll down and opens out to both sides on a scroll up (and while typing).
+        // It changes state after a short run in one direction (no following the finger), then plays a 260 ms animation read in the draw phase.
+        // With a screen reader on it stays. Folded away, it is not on screen, not touchable and not read out.
+        val insets = LocalPageInsets.current
+        val searchBlock = GlassSize.search + Spacing.s * 2
+        val slopPx = with(LocalDensity.current) { Spacing.xl.toPx() }
+        val screenReader = rememberTouchExploration()
+        val tier = LocalEffectTier.current
+        var shown by remember { mutableStateOf(true) }
+        val open = remember { Animatable(1f) } // 1 open .. 0 folded
+        LaunchedEffect(input, screenReader) { shown = true }
+        LaunchedEffect(shown, tier) { open.animateTo(if (shown) 1f else 0f, Motion.spec(tier, Motion.MENU_MS)) }
+        val onScreen by remember { derivedStateOf { open.value > 0f } }
+        val follow = remember(slopPx, screenReader) {
+            var run = 0f
+            object : NestedScrollConnection {
+                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                    val dy = available.y
+                    if (!screenReader && dy != 0f) {
+                        if (dy * run < 0f) run = 0f
+                        run += dy
+                        if (run < -slopPx) shown = false else if (run > slopPx) shown = true
+                    }
+                    return Offset.Zero // only watching: the list scrolls as it would
+                }
+            }
+        }
+        Box(Modifier.fillMaxSize().nestedScroll(follow)) {
+            CatalogList(state, onOpen, rise, onLoadMore = vm::loadMore, onRetry = vm::retry, topExtra = searchBlock)
+            if (onScreen) {
+                Box(Modifier.align(Alignment.TopCenter).graphicsLayer { alpha = open.value }) {
+                    FadeBand(insets.top + searchBlock, fromTop = true)
+                    Box(
+                        Modifier.padding(top = insets.top, start = GlassSize.page, end = GlassSize.page)
+                            .drawWithContent {
+                                val side = size.width * (1f - open.value) / 2f
+                                clipRect(left = side, right = size.width - side) { this@drawWithContent.drawContent() }
+                            },
+                    ) { search() }
+                }
+            }
         }
     } else {
         // The home: greeting and search scroll with the page, so everything passes under the top bar as in the mockup.
@@ -216,7 +267,7 @@ private fun CatalogHome(
 ) {
     val top = LocalPageInsets.current.top
     when {
-        state.items.isEmpty() && state.loading -> Column { Spacer(Modifier.height(top)); Column(Modifier.padding(horizontal = GlassSize.page)) { header() }; SkeletonList(rows = 6) }
+        state.items.isEmpty() && state.loading -> Column { Spacer(Modifier.height(top)); Column(Modifier.padding(horizontal = GlassSize.page)) { header() }; SkeletonList(rows = 6, padded = false) }
         state.items.isEmpty() && state.error != null -> Column { Spacer(Modifier.height(top)); Column(Modifier.padding(horizontal = GlassSize.page)) { header() }; ErrorState(state.error!!, state.offline, onRetry) }
         state.items.isEmpty() -> Column { Spacer(Modifier.height(top)); Column(Modifier.padding(horizontal = GlassSize.page)) { header() }; EmptyState(R.string.catalog_empty, R.string.catalog_empty_hint) }
         else -> {
@@ -304,8 +355,11 @@ private fun Banner(subject: String?, books: List<TitleSummary>, onClick: () -> U
 
 /** Every book of the search, one row each, with paging. Rows are solid and carry no blur (plan section 7). */
 @Composable
-private fun CatalogList(state: CatalogViewModel.UiState, onOpen: (String) -> Unit, rise: Boolean, onLoadMore: () -> Unit, onRetry: () -> Unit) {
-    LazyColumn(Modifier.fillMaxSize(), contentPadding = pagePadding()) {
+private fun CatalogList(
+    state: CatalogViewModel.UiState, onOpen: (String) -> Unit, rise: Boolean, onLoadMore: () -> Unit, onRetry: () -> Unit, topExtra: Dp,
+) {
+    val insets = LocalPageInsets.current
+    LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = insets.top + topExtra, bottom = insets.bottom)) {
         itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
             TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.riseIn(index, rise))
             HorizontalDivider()
@@ -313,7 +367,7 @@ private fun CatalogList(state: CatalogViewModel.UiState, onOpen: (String) -> Uni
         }
         item {
             when {
-                state.loading -> SkeletonList(rows = if (state.items.isEmpty()) 6 else 1) // first page: full skeleton; later pages: one row
+                state.loading -> SkeletonList(rows = if (state.items.isEmpty()) 6 else 1, padded = false) // first page: full skeleton; later pages: one row
                 state.error != null -> ErrorState(state.error!!, state.offline, onRetry, Modifier.fillMaxWidth())
                 state.items.isEmpty() -> EmptyState(R.string.catalog_empty, R.string.catalog_empty_hint, Modifier.fillMaxWidth())
             }

@@ -103,7 +103,7 @@ private const val SKELETON_LOW_ALPHA = 0.55f
  * (no shimmer): it costs no animation frames on a low-end phone. TalkBack reads one "Loading" for the whole block.
  */
 @Composable
-fun SkeletonList(rows: Int = 6, modifier: Modifier = Modifier) {
+fun SkeletonList(rows: Int = 6, modifier: Modifier = Modifier, padded: Boolean = true) {
     val loading = stringResource(R.string.state_loading)
     val block = MaterialTheme.colorScheme.surfaceVariant
     val shape = MaterialTheme.shapes.extraSmall
@@ -114,7 +114,7 @@ fun SkeletonList(rows: Int = 6, modifier: Modifier = Modifier) {
         animationSpec = infiniteRepeatable(tween(Motion.PULSE_MS, easing = LinearEasing), RepeatMode.Reverse), label = "pulse",
     )
     Column(
-        modifier.padding(pagePadding()).graphicsLayer { alpha = pulse?.value ?: 1f }.clearAndSetSemantics { contentDescription = loading; liveRegion = LiveRegionMode.Polite },
+        modifier.then(if (padded) Modifier.padding(pagePadding()) else Modifier).graphicsLayer { alpha = pulse?.value ?: 1f }.clearAndSetSemantics { contentDescription = loading; liveRegion = LiveRegionMode.Polite },
     ) {
         repeat(rows) {
             Row(Modifier.fillMaxWidth().padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {

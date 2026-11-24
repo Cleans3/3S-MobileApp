@@ -5,6 +5,12 @@ import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.animation.core.tween
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.node.DrawModifierNode
+import androidx.compose.ui.node.ModifierNodeElement
+import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -19,24 +25,41 @@ const val PRESS_SCALE_ROW = 0.98f
 
 /**
  * The control shrinks a little while pressed (120 ms). Not on the light tier. Put it OUTSIDE the control's clip.
- * The press is followed in a coroutine and the scale is read in the draw phase, so a press never recomposes the control.
+ * It is a draw-only modifier node: no composition state, no layer of its own while the control rests, one small coroutine that
+ * follows the presses. Lists are full of pressable rows and cards, so what each one costs while scrolling matters; the first version
+ * (a `remember`ed animation, a `LaunchedEffect` and a `graphicsLayer` per item) measured slower on the phone.
  */
 @Composable
 fun Modifier.pressScale(source: InteractionSource, target: Float = PRESS_SCALE_CARD): Modifier {
     val tier = LocalEffectTier.current
     if (tier == EffectTier.LIGHT) return this
-    val scale = remember { Animatable(1f) }
-    LaunchedEffect(source, tier, target) {
-        source.interactions.collectLatest { interaction ->
-            when (interaction) {
-                is PressInteraction.Press -> scale.animateTo(target, Motion.spec(tier, Motion.PRESS_MS))
-                is PressInteraction.Release, is PressInteraction.Cancel -> scale.animateTo(1f, Motion.spec(tier, Motion.PRESS_MS))
+    return this.then(PressScaleElement(source, target))
+}
+
+private data class PressScaleElement(val source: InteractionSource, val target: Float) : ModifierNodeElement<PressScaleNode>() {
+    override fun create() = PressScaleNode(source, target)
+    override fun update(node: PressScaleNode) {
+        node.target = target
+    }
+}
+
+private class PressScaleNode(private val source: InteractionSource, var target: Float) : Modifier.Node(), DrawModifierNode {
+    private val scale = Animatable(1f)
+
+    override fun onAttach() {
+        coroutineScope.launch {
+            source.interactions.collectLatest { interaction ->
+                when (interaction) {
+                    is PressInteraction.Press -> scale.animateTo(target, tween(Motion.PRESS_MS))
+                    is PressInteraction.Release, is PressInteraction.Cancel -> scale.animateTo(1f, tween(Motion.PRESS_MS))
+                }
             }
         }
     }
-    return this.graphicsLayer {
-        scaleX = scale.value
-        scaleY = scale.value
+
+    override fun ContentDrawScope.draw() {
+        val s = scale.value
+        if (s == 1f) drawContent() else scale(s, s, pivot = center) { this@draw.drawContent() }
     }
 }
 

@@ -314,7 +314,7 @@ private fun MenuLayer(
 
 /** A band that fades the page colour out over [height]: solid at the screen's edge, clear at the other end. Draws only, never takes a touch. */
 @Composable
-private fun FadeBand(height: Dp, fromTop: Boolean, modifier: Modifier = Modifier) {
+internal fun FadeBand(height: Dp, fromTop: Boolean, modifier: Modifier = Modifier) {
     val bg = MaterialTheme.shelfTap.bg
     val solid = bg.copy(alpha = FADE_SOLID)
     val stops = if (fromTop) arrayOf(0f to solid, FADE_HOLD to solid, 1f to bg.copy(alpha = 0f)) else arrayOf(0f to bg.copy(alpha = 0f), 1f - FADE_HOLD to solid, 1f to solid)
