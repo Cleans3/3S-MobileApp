@@ -154,7 +154,10 @@
     <string name="login_title">Đăng nhập vào ShelfTap</string>
     <string name="debug_effect_title">Hiệu ứng (chỉ bản debug), đang dùng: %1$s</string>
     <string name="debug_effect_auto">Tự động theo máy</string>
-    <string name="debug_effect_full">Đầy đủ</string>
-    <string name="debug_effect_medium">Vừa</string>
-    <string name="debug_effect_light">Nhẹ</string>
+    <string name="debug_effect_full">Hiệu ứng đầy đủ</string>
+    <string name="debug_effect_medium">Hiệu ứng vừa</string>
+    <string name="debug_effect_light">Hiệu ứng nhẹ</string>
+    <string name="catalog_pick_hint">Chọn một cuốn sách ở danh sách bên trái.</string>
+    <string name="nav_go_to">Chuyển đến %1$s</string>
+    <string name="checkout_pill_short">Mượn</string>
 </resources>

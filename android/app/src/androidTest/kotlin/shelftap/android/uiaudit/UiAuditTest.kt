@@ -5,11 +5,13 @@ import android.app.UiAutomation
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onLast
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -82,7 +84,7 @@ class UiAuditTest {
             // Logged out is a guest: the catalog first, and the login one step away in the menu.
             waitFor(AuditData.titles.first().title)
             audit("guest", activity)
-            openMenu(); compose.onAllNodesWithText(str(R.string.login_action)).onLast().performClick()
+            openMenu(); loginEntry()
             waitFor(str(R.string.login_with_card))
             audit("login", activity)
 
@@ -93,13 +95,14 @@ class UiAuditTest {
             compose.onAllNodesWithText(AuditData.titles.first().title).onFirst().performClick()
             waitFor(str(R.string.title_isbn, AuditData.titles.first().isbn))
             audit("detail", activity)
-            scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+            // On a wide window the detail is a pane beside the list, not a screen to go back from.
+            if (config != "expanded") scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
 
             tab(R.string.tab_loans); waitFor(AuditData.loans.first().title)
             audit("loans", activity)
 
             // The emulator has no NFC, so Checkout shows its "This phone has no NFC." state; a phone with NFC shows "Self-checkout".
-            compose.onNodeWithText(str(R.string.checkout_pill)).performClick(); waitFor(str(R.string.checkout_title), str(R.string.nfc_missing))
+            compose.onNode(hasText(str(R.string.checkout_pill)) or hasContentDescription(str(R.string.tab_checkout))).performClick(); waitFor(str(R.string.checkout_title), str(R.string.nfc_missing))
             audit("checkout", activity)
 
             tab(R.string.tab_reservations); waitFor(AuditData.reservations.first().title)
@@ -116,15 +119,36 @@ class UiAuditTest {
     /** Text as the app shows it in the device's current language, so the tour works in Vietnamese and in English. */
     private fun str(id: Int, vararg args: Any) = instrumentation.targetContext.getString(id, *args)
 
+    /** The ☰ menu exists on narrow windows only; on a medium or wide window the navigation is always on screen. */
     private fun openMenu() {
-        compose.onNodeWithContentDescription(str(R.string.menu_open)).performClick()
+        val burger = compose.onAllNodesWithContentDescription(str(R.string.menu_open))
+        if (burger.fetchSemanticsNodes().isNotEmpty()) burger[0].performClick()
         compose.waitForIdle()
     }
 
     /** Opens the menu and picks the entry; the title bar shows the current screen's name too, so the menu entry is the last match. */
+    /** The ☰ button is on screen, open (its label is "close menu") or shut. */
+    private fun hasBurger() =
+        compose.onAllNodesWithContentDescription(str(R.string.menu_open)).fetchSemanticsNodes().isNotEmpty() ||
+            compose.onAllNodesWithContentDescription(str(R.string.menu_close)).fetchSemanticsNodes().isNotEmpty()
+
+    /** Guest: the login entry of the menu, or of the always-visible navigation. */
+    private fun loginEntry() {
+        val burger = hasBurger()
+        if (burger) compose.onAllNodesWithText(str(R.string.login_action)).onLast().performClick()
+        else compose.onNodeWithContentDescription(str(R.string.nav_go_to, str(R.string.login_action))).performClick()
+        compose.waitForIdle()
+    }
+
     private fun tab(id: Int) {
-        openMenu()
-        compose.onAllNodesWithText(str(id)).onLast().performClick()
+        val burger = hasBurger()
+        if (burger) {
+            openMenu()
+            compose.onAllNodesWithText(str(id)).onLast().performClick()
+        } else {
+            // The always-visible navigation reads each entry as "Go to <name>".
+            compose.onNodeWithContentDescription(str(R.string.nav_go_to, str(id))).performClick()
+        }
         compose.waitForIdle()
     }
 

@@ -12,7 +12,7 @@ param(
     [Parameter(Mandatory)] [string] $Label,
     [Parameter(Mandatory)] [string] $Serial,
     # Which device configurations to run. On a physical phone use 'light','dark': font2 and w320 change the phone's font and display size.
-    [string[]] $Configs = @('light', 'dark', 'font2', 'w320')
+    [string[]] $Configs = @('light', 'dark', 'font2', 'w320', 'medium', 'expanded')
 )
 $ErrorActionPreference = 'Stop'
 $adb = Join-Path $env:LOCALAPPDATA 'Android\Sdk\platform-tools\adb.exe'
@@ -49,6 +49,8 @@ foreach ($config in $Configs) {
         'dark'  { Sh 'cmd uimode night yes' }
         'font2' { Sh 'settings put system font_scale 2.0' }
         'w320'  { Sh 'wm size 560x1120' } # 320 dp x 640 dp at 280 dpi
+        'medium'   { Sh 'wm size 1260x1470' } # 720 dp x 840 dp at 280 dpi: a folded-open phone, nearly square
+        'expanded' { Sh 'wm size 1680x1260' } # 960 dp x 720 dp at 280 dpi: a tablet or an unfolded phone held sideways
     }
     Write-Host "== $config"
     Push-Location (Join-Path $repo 'android')

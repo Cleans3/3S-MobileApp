@@ -154,7 +154,10 @@
     <string name="login_title">Log in to ShelfTap</string>
     <string name="debug_effect_title">Effects (debug build only), now using: %1$s</string>
     <string name="debug_effect_auto">Automatic for this phone</string>
-    <string name="debug_effect_full">Full</string>
-    <string name="debug_effect_medium">Medium</string>
-    <string name="debug_effect_light">Light</string>
+    <string name="debug_effect_full">Full effects</string>
+    <string name="debug_effect_medium">Medium effects</string>
+    <string name="debug_effect_light">Light effects</string>
+    <string name="catalog_pick_hint">Pick a book from the list on the left.</string>
+    <string name="nav_go_to">Go to %1$s</string>
+    <string name="checkout_pill_short">Borrow</string>
 </resources>

@@ -31,3 +31,15 @@ object MenuSize {
     val width = 240.dp
     val icon = 24.dp
 }
+
+/** Sizes for the wider windows (plan §6.4). */
+object AdaptiveSize {
+    val railWidth = 96.dp
+    val sideWidth = 216.dp
+
+    /** One pane of content never grows wider than this on a medium window, so lines stay readable. */
+    val contentMax = 528.dp
+
+    /** On a wide window, screens other than the catalog are not stretched past this. */
+    val contentMaxWide = 720.dp
+}

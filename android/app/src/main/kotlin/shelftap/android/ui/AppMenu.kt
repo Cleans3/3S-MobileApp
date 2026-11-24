@@ -11,7 +11,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -149,6 +158,65 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, onSelec
                         Text(stringResource(item.label), style = if (selected) MaterialTheme.typography.titleSmall else MaterialTheme.typography.bodyLarge)
                     }
                 }
+            }
+        }
+    }
+}
+
+/** The title of a main screen when the menu is always on screen: no ☰ button. */
+@Composable
+fun AppTitleBar(@StringRes title: Int) {
+    Row(Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.statusBars).padding(horizontal = Spacing.l, vertical = Spacing.s)) {
+        Text(stringResource(title), style = MaterialTheme.typography.titleLarge)
+    }
+}
+
+/**
+ * The menu as a column that stays on screen: the rail (96 dp, labels centred) on a medium window and the fixed menu
+ * (216 dp) on a wide one. Members get the "Tap a book to borrow" button at the top. Scrolls, so large text never cuts it.
+ */
+@Composable
+fun SideNav(items: List<MenuItem>, current: String?, width: androidx.compose.ui.unit.Dp, centred: Boolean, showPill: Boolean, onPill: () -> Unit, onSelect: (String) -> Unit) {
+    Column(
+        Modifier.width(width).fillMaxHeight().background(MaterialTheme.colorScheme.surfaceContainer)
+            .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Top + WindowInsetsSides.Bottom + WindowInsetsSides.Start))
+            .verticalScroll(rememberScrollState()).padding(Spacing.s).selectableGroup(),
+        verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+    ) {
+        if (showPill) {
+            // The rail is too narrow for the full sentence: it shows one word, and TalkBack hears the name of the screen it opens.
+            // (Not the sentence: it starts with "tap", which Accessibility Test Framework rejects in a description.)
+            val full = stringResource(R.string.tab_checkout)
+            Button(
+                onClick = onPill,
+                modifier = Modifier.fillMaxWidth().heightIn(min = Spacing.touch).then(if (centred) Modifier.semantics { contentDescription = full } else Modifier),
+                contentPadding = PaddingValues(horizontal = if (centred) Spacing.xs else Spacing.l, vertical = Spacing.s), // a button's default side padding leaves no room in 96 dp
+            ) {
+                Text(
+                    stringResource(if (centred) R.string.checkout_pill_short else R.string.checkout_pill), textAlign = TextAlign.Center,
+                    maxLines = if (centred) 1 else Int.MAX_VALUE, style = MaterialTheme.typography.labelLarge,
+                    modifier = if (centred) Modifier.clearAndSetSemantics {} else Modifier,
+                )
+            }
+        }
+        items.forEach { item ->
+            val selected = item.route == current
+            // The screen's own title and its buttons carry the same names as these entries, and are on screen at the same time:
+            // the entry is read as "Go to <name>" so no two controls sound alike.
+            val goTo = stringResource(R.string.nav_go_to, stringResource(item.label))
+            Box(
+                Modifier.fillMaxWidth().heightIn(min = Spacing.touch).clip(RoundedCornerShape(Spacing.m))
+                    .background(if (selected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent)
+                    .selectable(selected = selected, role = Role.Tab, onClick = { onSelect(item.route) })
+                    .semantics { contentDescription = goTo }
+                    .padding(horizontal = Spacing.s, vertical = Spacing.s),
+                contentAlignment = if (centred) Alignment.Center else Alignment.CenterStart,
+            ) {
+                Text(
+                    stringResource(item.label), textAlign = if (centred) TextAlign.Center else TextAlign.Start,
+                    style = if (selected) MaterialTheme.typography.titleSmall else MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.clearAndSetSemantics {},
+                )
             }
         }
     }
