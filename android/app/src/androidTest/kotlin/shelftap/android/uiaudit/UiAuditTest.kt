@@ -196,6 +196,7 @@ class UiAuditTest {
             scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
             compose.waitForIdle()
 
+            menuFrames(activity)
             openMenu()
             audit("menu", activity)
         }
@@ -225,6 +226,31 @@ class UiAuditTest {
         captureHardware(activity.window.decorView)?.let { bmp -> File(outDir, "$config/$name-hw.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) } }
         compose.mainClock.autoAdvance = true
         instrumentation.runOnMainSync { (activity.window.decorView as ViewGroup).removeView(view) }
+        compose.waitForIdle()
+    }
+
+    /**
+     * The menu opening and closing, frame by frame: the compose clock is stopped and advanced by hand, and the GPU renderer captures the
+     * window at each step (`menu-open-<ms>-hw.png`, `menu-close-<ms>-hw.png`), so the in-between frames can be looked at.
+     */
+    private fun menuFrames(activity: MainActivity) {
+        val burger = compose.onAllNodesWithContentDescription(str(R.string.menu_open))
+        if (burger.fetchSemanticsNodes().isEmpty()) return
+        compose.mainClock.autoAdvance = false
+        val steps = listOf(30, 60, 60, 80, 120) // cumulative: 30, 90, 150, 230, 350 ms
+        var at = 0
+        burger[0].performClick()
+        for (d in steps) {
+            compose.mainClock.advanceTimeBy(d.toLong()); at += d
+            captureHardware(activity.window.decorView)?.let { bmp -> File(outDir, "$config/menu-open-$at-hw.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) } }
+        }
+        compose.onAllNodesWithContentDescription(str(R.string.menu_close))[0].performClick()
+        at = 0
+        for (d in listOf(30, 50, 50, 70, 100)) {
+            compose.mainClock.advanceTimeBy(d.toLong()); at += d
+            captureHardware(activity.window.decorView)?.let { bmp -> File(outDir, "$config/menu-close-$at-hw.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) } }
+        }
+        compose.mainClock.autoAdvance = true
         compose.waitForIdle()
     }
 

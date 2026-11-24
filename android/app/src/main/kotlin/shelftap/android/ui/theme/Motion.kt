@@ -20,6 +20,10 @@ object Motion {
     const val PRESS_MS = 120
     const val RISE_MS = 320
     const val MENU_EXIT_MS = 200
+
+    /** The menu panel itself comes and goes faster than the page's blur and dimming around it (a half-faded glass panel is a pale rectangle). */
+    const val PANEL_IN_MS = 140
+    const val PANEL_OUT_MS = 90
     const val PULSE_MS = 1200
 
     /** Close to `cubic-bezier(0.2, 0.8, 0.2, 1)` in the mockup: fast start, soft landing. */

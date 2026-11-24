@@ -374,9 +374,11 @@ private fun MenuLayer(
     // One value runs the panel and the dimming: up to 1 when the menu opens, back to 0 when it closes (at once on the
     // light tier). The overlay stays composed while it runs down, so the exit is the opening played backwards, with nothing scaled.
     val open = remember { Animatable(0f) }
+    val panel = remember { Animatable(0f) }
     LaunchedEffect(visible, tier) { open.animateTo(if (visible) 1f else 0f, Motion.spec(tier, if (visible) Motion.MENU_MS else Motion.MENU_EXIT_MS)) }
-    if (visible || open.value > 0f) {
-        MenuOverlay(items, current = current, glass = glass, open = { open.value }, interactive = visible, onSelect = onSelect, onDismiss = onDismiss)
+    LaunchedEffect(visible, tier) { panel.animateTo(if (visible) 1f else 0f, Motion.spec(tier, if (visible) Motion.PANEL_IN_MS else Motion.PANEL_OUT_MS)) }
+    if (visible || open.value > 0f || panel.value > 0f) {
+        MenuOverlay(items, current = current, glass = glass, open = { open.value }, panel = { panel.value }, interactive = visible, onSelect = onSelect, onDismiss = onDismiss)
     }
 }
 

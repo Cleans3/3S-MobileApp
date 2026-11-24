@@ -92,7 +92,7 @@ private const val ACTIVE_PILL = 0.85f
  * The ☰ panel's glass: 0.62 in the mockup; 0.70 here, so the worst case behind it (a white page under the dark theme's smoky glass,
  * a black one under the white glass) still gives the text 4.5:1 once the page is blurred. The light tier has no blur and a solid panel.
  */
-private const val MENU_FILL = 0.70f
+private const val MENU_FILL = 0.97f
 
 /** The rail and the side menu have nothing scrolling behind them, so no blur is needed: the mockup's 0.62. */
 private const val NAV_FILL = 0.62f
@@ -196,7 +196,7 @@ private fun MenuGlyph(open: Boolean) {
  * translucent glass over the blurred page, else solid. [interactive] is false while the menu is closing.
  */
 @Composable
-fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, open: () -> Float, interactive: Boolean, onSelect: (String) -> Unit, onDismiss: () -> Unit) {
+fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, open: () -> Float, panel: () -> Float, interactive: Boolean, onSelect: (String) -> Unit, onDismiss: () -> Unit) {
     BackHandler(enabled = interactive, onBack = onDismiss)
     Box(Modifier.fillMaxSize()) {
         Box(
@@ -211,12 +211,14 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, open: (
         Box(
             modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(start = Spacing.l, top = Spacing.touch + Spacing.s)
                 .graphicsLayer {
-                    val p = open()
                     // Alpha is applied to each thing drawn, not to an off-screen copy of the panel: that copy ended at the panel's rectangle and
                     // cut the shadow there, which showed as a dark square around the panel while it faded in.
                     compositingStrategy = CompositingStrategy.ModulateAlpha
-                    alpha = p
-                    translationY = -risePx * (1f - p)
+                    // The panel has its own, quicker value: a translucent panel at half strength is a pale rectangle over the page, so it
+                    // should spend as few frames as possible between gone and there.
+                    val q = panel()
+                    alpha = q
+                    translationY = -risePx * (1f - q)
                 }
                 .width(MenuSize.width)
                 .shadow(MenuSize.shadow, shape, ambientColor = menuShadow, spotColor = menuShadow)
