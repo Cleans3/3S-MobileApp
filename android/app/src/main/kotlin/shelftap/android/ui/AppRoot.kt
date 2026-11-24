@@ -3,6 +3,8 @@ package shelftap.android.ui
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
+import kotlinx.coroutines.flow.first
 import androidx.compose.animation.core.Animatable
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.animation.core.animateFloatAsState
@@ -236,8 +238,6 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
         NavLayout.SIDE -> if (route == CATALOG) Dp.Unspecified else AdaptiveSize.contentMaxWide
     }
 
-    // The page is recorded for the panel's own blur only while the menu is open.
-    backdrop.enabled = glass && overlayOpen
     Row(Modifier.fillMaxSize()) {
         if (!compact) {
             SideNav(
@@ -381,6 +381,19 @@ private fun MenuLayer(
     val panel = remember { Animatable(0f) }
     LaunchedEffect(visible, tier) { open.animateTo(if (visible) 1f else 0f, Motion.spec(tier, if (visible) Motion.MENU_MS else Motion.MENU_EXIT_MS)) }
     LaunchedEffect(visible, tier) { panel.animateTo(if (visible) 1f else 0f, Motion.spec(tier, if (visible) Motion.PANEL_IN_MS else Motion.PANEL_OUT_MS)) }
+    // The page is recorded for the panel's own blur from the moment the menu opens until the panel is gone, not until it starts to close:
+    // when the recording stopped at once, the panel went on drawing the page as it was when it opened, a frozen blurred rectangle over a page
+    // that was already coming back into focus.
+    if (backdrop != null) {
+        LaunchedEffect(visible, backdrop) {
+            if (visible) {
+                backdrop.enabled = true
+            } else {
+                snapshotFlow { open.value <= 0f && panel.value <= 0f }.first { it }
+                backdrop.enabled = false
+            }
+        }
+    }
     if (visible || open.value > 0f || panel.value > 0f) {
         MenuOverlay(items, current = current, backdrop = backdrop, open = { open.value }, panel = { panel.value }, interactive = visible, onSelect = onSelect, onDismiss = onDismiss)
     }
