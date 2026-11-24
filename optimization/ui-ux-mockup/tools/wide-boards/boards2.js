@@ -1,6 +1,7 @@
 // Wide boards: account settings, sign-in, system states, self-checkout, guest.
 const S = require('./shell.js');
-const W = 960, H = 720;
+module.exports = function () {
+const W = S.W(), H = S.H();
 const out = {};
 
 const sw = (label, desc, on, flip, track, knob) => `
@@ -17,7 +18,8 @@ const card = inner => `
 
 // ---------- Tài khoản (gộp Thông báo) ----------
 out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) + S.nav('WideAccount.dc.html') + `
-  <section aria-label="Mục cài đặt" class="st-list" style="position: absolute; left: 248px; top: 16px; bottom: 16px; width: 320px; display: flex; flex-direction: column; gap: 12px">
+  <sc-if value="{{showList}}" hint-placeholder-val="{{ true }}">
+  <section aria-label="Mục cài đặt" class="st-list st-fade" style="position: absolute; ${S.listPos(320)}; top: ${S.isMid() ? 40 : 16}px; bottom: 16px; display: flex; flex-direction: column; gap: 12px">
     <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Tài khoản</h1>
     <div style="padding: 16px; border-radius: 24px; background:  #2f4a44; color: #ffffff; display: flex; align-items: center; gap: 12px; flex: none">
       <span style="width: 48px; height: 48px; flex: none; border-radius: 999px; background:  rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center">
@@ -37,9 +39,11 @@ out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) 
       </sc-for>
     </div>
   </section>
-  <section aria-label="{{catLabel}}" class="st-pane" style="position: absolute; left: 584px; right: 16px; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
+  </sc-if>
+  <sc-if value="{{showDetail}}" hint-placeholder-val="{{ true }}">
+  <section aria-label="{{catLabel}}" class="st-pane" style="position: absolute; ${S.panePos()}; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
     <div class="st-scroll st-detail" style="position: absolute; inset: 0; padding: 12px 20px 24px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 14px">
-      <div style="display: flex; align-items: center; gap: 8px; min-height: 48px">
+      <div style="display: flex; align-items: center; gap: 8px; min-height: 48px">${S.backBtn()}
         <h2 style="flex: 1; margin: 0; font-size: 20px; font-weight: 700">{{catLabel}}</h2>
         <div style="width: 84px; flex: none"></div>
       </div>
@@ -84,7 +88,8 @@ out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) 
         </div>
       </sc-if>
     </div>
-  </section>` +
+  </section>
+  </sc-if>` +
   S.foot(W, H, `
   renderVals() {
     var self = this, st = this.state || {}, ui = this.__ui();
@@ -105,7 +110,7 @@ out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) 
     return Object.assign(this.__theme(), {
       cats: cats.map(function (c) {
         var on = c[0] === cat, bad = c[0] === 'logout';
-        return { label: c[1], desc: c[2], current: on ? 'true' : 'false', pick: function () { self.setState({ cat: c[0] }); },
+        return { label: c[1], desc: c[2], current: on ? 'true' : 'false', pick: function () { self.setState({ cat: c[0] }); self.__layout().toDetail(); },
           style: 'width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 14px;border-radius:20px;text-align:left;font:inherit;cursor:pointer;min-height:56px;color:' + (bad ? 'var(--danger)' : 'var(--ink)') + ';border:1px solid ' + (on ? 'rgba(var(--ink-rgb),0.5)' : 'transparent') + ';background:' + (on ? 'var(--surface)' : 'rgba(var(--glass),0.72)') };
       }),
       catLabel: label,
@@ -128,7 +133,7 @@ const input = (label, type, extra) => `
             <input type="${type}" ${extra || ''} style="height: 50px; padding: 0 16px; border-radius: 16px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); font: inherit; font-size: 15px; font-weight: 400">
           </label>`;
 out['WideSignIn.dc.html'] = S.head('Chào và đăng nhập ở cửa sổ rộng', W, H) + `
-  <div aria-hidden="true" style="position: absolute; left: 0; top: 0; bottom: 0; width: 440px; overflow: hidden; background:  #3a2a1e">
+  <div aria-hidden="true" style="position: absolute; left: 0; top: 0; bottom: 0; width: ${S.isMid() ? 240 : 440}px; overflow: hidden; background:  #3a2a1e">
     <div style="position: absolute; inset: 0; padding: 40px 28px; display: flex; flex-direction: column; gap: 22px">
       <sc-for list="{{shelves}}" as="s" hint-placeholder-count="5">
         <div style="display: flex; align-items: flex-end; gap: 3px; padding-bottom: 6px; border-bottom: 8px solid #6b4a30">
@@ -138,9 +143,9 @@ out['WideSignIn.dc.html'] = S.head('Chào và đăng nhập ở cửa sổ rộn
     </div>
     <div style="position: absolute; inset: 0; background:  linear-gradient(to right, rgba(20,14,10,0.1), rgba(20,14,10,0.45))"></div>
   </div>
-  <div style="position: absolute; left: 24px; bottom: 24px; width: 392px">` + S.preview('tabs', 'Xem trước màn') + `
+  <div style="position: absolute; z-index: 40; ${S.isMid() ? 'left: 16px; right: 16px; bottom: 12px' : 'left: 24px; bottom: 24px; width: 392px'}">` + S.preview('tabs', 'Xem trước màn') + `
   </div>
-  <section aria-label="{{paneLabel}}" class="st-scroll" style="position: absolute; left: 440px; right: 0; top: 0; bottom: 0; padding: 72px 60px 40px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column">
+  <section aria-label="{{paneLabel}}" class="st-scroll" style="position: absolute; left: ${S.isMid() ? 240 : 440}px; right: 0; top: 0; bottom: 0; padding: ${S.isMid() ? '72px 40px 150px' : '72px 60px 40px'}; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column">
     <div class="st-detail" style="width: 100%; max-width: 400px; margin: auto 0; display: flex; flex-direction: column; gap: 14px">
       <div style="font-size: 15px; font-weight: 700; color: var(--ink2b)">ShelfTap</div>
       <sc-if value="{{isWelcome}}" hint-placeholder-val="{{ true }}">
@@ -368,10 +373,10 @@ out['WideStatus.dc.html'] = S.head('Trạng thái hệ thống ở cửa sổ r�
 
 // ---------- Tự mượn ----------
 out['WideCheckout.dc.html'] = S.head('Tự mượn sách ở cửa sổ rộng', W, H) +
-  S.nav('WideCheckout.dc.html', { preview: S.preview('tabs', 'Xem trước trạng thái', '', 'st-hide-c') }) + `
-  <section aria-label="Chỗ chạm" class="st-list st-scroll" style="position: absolute; left: 248px; top: 16px; bottom: 16px; width: 336px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px">
+  S.nav('WideCheckout.dc.html', { preview: ['tabs', 'Xem trước trạng thái'] }) + `
+  <section aria-label="Chỗ chạm" class="st-list st-scroll" style="position: absolute; ${S.listPos(320)}; top: ${S.isMid() ? 40 : 16}px; ${S.isMid() ? 'height: 380px' : 'bottom: 16px'}; overflow-y: auto; display: flex; flex-direction: column; gap: 12px">
     <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Tự mượn sách</h1>
-    <div aria-hidden="true" style="position: relative; height: 260px; border-radius: 30px; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85); overflow: hidden">
+    <div aria-hidden="true" style="position: relative; height: ${S.isMid() ? 200 : 260}px; flex: none; border-radius: 30px; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85); overflow: hidden">
       <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 236px; height: 200px; border-radius: 22px; border: 3px solid var(--ink3); display: flex">
         <div style="flex: 1; border-right: 2px dashed var(--ink3)"></div>
         <div style="flex: 1; position: relative">
@@ -384,7 +389,7 @@ out['WideCheckout.dc.html'] = S.head('Tự mượn sách ở cửa sổ rộng',
     <p style="margin: 0; padding: 0 4px; font-size: 14px; line-height: 1.5; color: var(--ink2b)">Áp mặt sau máy, ở chấm xanh, vào nhãn dán bên trong bìa sách.</p>` +
   S.note('Chấm xanh là chỗ có ăng-ten NFC. Máy gập và tablet mỗi mẫu một chỗ; từ Android 14 app đọc vị trí ăng-ten từ hệ thống (NfcAntennaInfo) để vẽ đúng, máy không có thông tin này thì hiện lời dặn chung. [Vị trí trên hình là ví dụ]', '; padding: 0 4px') + `
   </section>
-  <section aria-label="Kết quả mượn" aria-live="polite" class="st-pane" style="position: absolute; left: 600px; right: 16px; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
+  <section aria-label="Kết quả mượn" aria-live="polite" class="st-pane" style="position: absolute; ${S.panePos()}; top: ${S.isMid() ? 436 : 16}px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
     <div class="st-scroll st-detail" style="position: absolute; inset: 0; padding: 72px 22px 24px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 14px">
       <sc-if value="{{isWait}}" hint-placeholder-val="{{ true }}">
         <div style="font-size: 20px; font-weight: 700; line-height: 1.25">Sẵn sàng đọc nhãn sách</div>
@@ -430,19 +435,7 @@ out['WideCheckout.dc.html'] = S.head('Tự mượn sách ở cửa sổ rộng',
   }`);
 
 // ---------- Khách ----------
-out['WideGuest.dc.html'] = S.head('Chế độ khách ở cửa sổ rộng', W, H) + `
-  <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 20px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
-    <div class="st-hide-c" style="padding: 0 12px 14px; display: flex; flex-direction: column; gap: 2px">
-      <div style="font-size: 13px; color: var(--ink3)">Bạn đang xem với tư cách khách</div>
-      <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
-    </div>
-    <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">` +
-  S.menuItem('Danh mục', 'WideGuest.dc.html', 'catalog', true, 0) + `
-      <p class="st-hide-c" style="margin: 8px 6px 0; font-size: 12px; line-height: 1.5; color: var(--ink2b)">Khách xem và tìm sách được. Đặt trước, mượn, gia hạn và lịch sử đọc cần tài khoản thư viện.</p>
-    </div>
-    <a href="WideSignIn.dc.html" class="st-press" aria-label="Đăng nhập để mượn sách" style="min-height: 56px; padding: 8px 16px; border-radius: 28px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1.2"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary); flex: none"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path></svg><span class="st-hide-c">Đăng nhập để mượn sách</span></a>
-    <p class="st-hide-c" style="margin: 8px 6px 0; font-size: 11px; line-height: 1.45; color: var(--ink3)">Chưa có thẻ? Đăng ký tại quầy thủ thư, mang theo CCCD.</p>
-  </nav>` +
+out['WideGuest.dc.html'] = S.head('Chế độ khách ở cửa sổ rộng', W, H) + S.nav('WideGuest.dc.html', { guest: true }) +
   S.listPane('Danh sách sách', 'Danh mục', S.searchAndChips, 'rows', `
       <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
         <li style="padding: 24px 8px; font-size: 14px; color: var(--ink3)">Không có sách khớp. Thử bỏ dấu hoặc chọn "Tất cả".</li>
@@ -488,4 +481,5 @@ out['WideGuest.dc.html'] = S.head('Chế độ khách ở cửa sổ rộng', W,
     });
   }`);
 
-module.exports = out;
+return out;
+};

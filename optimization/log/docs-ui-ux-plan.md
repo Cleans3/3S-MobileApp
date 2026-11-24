@@ -224,3 +224,18 @@
 - **Đo trước → sau:** không áp dụng. Sau khi đăng, tải về cả 33 file đang đăng và so với `docs/ui-ux-plan`: trùng từng byte.
 - **AI:** Claude Code (Claude Opus 5.5). Trang artifact báo bản 23 dù trước đó là bản 21 và chỉ đăng một lần, giống lần đăng trước (18 lên 21); AI ghi lại và kiểm bằng cách so file.
 - **Kiểm thử:** so 33 file tải về với blob trên nhánh.
+
+## 2026-11-24 09:24 · Nút thu gọn menu và màn cỡ vừa cho mọi chức năng
+
+- **Vấn đề:** người dùng hỏi vì sao menu ở cửa sổ từ 840 dp không thu gọn được như thanh dọc ở 600–840 dp, và chỉ ra rằng cỡ 600–840 dp mới có một màn (`RailCatalog`). Người dùng chọn làm cả hai.
+- **Thay đổi:**
+  - Nút thu gọn ở đầu menu của 11 màn `Wide*` (48 × 48 dp, `aria-expanded`, tên đổi theo trạng thái). Bấm thì menu thu thành thanh dọc 72 dp, danh sách và chi tiết dịch sang trái. Nút ẩn khi cửa sổ đã tự thu gọn. `WideCatalog` sửa tay theo cùng quy tắc.
+  - 11 màn `Mid*` 720 × 840: `MidCatalog` (danh sách rồi chi tiết sách), `MidLoans`, `MidReservations`, `MidHistory`, `MidRecommend`, `MidOfflineSearch`, `MidGuest`, `MidAccount`, `MidSignIn`, `MidStatus`, `MidCheckout`. Thanh dọc 96 dp, một khung mỗi lúc với nút quay lại, nội dung rộng tối đa 528 dp.
+  - `tools/wide-boards/`: mỗi màn dựng hai lần (rộng và vừa) từ cùng khung; `gen.js` ghi thêm các màn `Mid*` và ba hàng mới trong `canvas.json`.
+  - `RailCatalog`: thanh dọc, sách và "Xem tất cả" trỏ sang các màn `Mid*` thay cho màn điện thoại.
+  - `tools/render-static.js`: thêm 4 biến thể (`navmini`, `middetail`, `mid600`, `mid600d`) để đo cả trạng thái menu thu gọn, khung chi tiết cỡ vừa và cạnh hẹp 600 dp của cỡ vừa.
+  - Giới hạn độ rộng đoạn chữ ở màn rộng và vừa: 40em xuống 36em.
+  - README mockup và kế hoạch §5.5, §6.4, §9, §11 mục 15, §12: 43 màn, mục "Cửa sổ vừa", kết quả đo.
+- **Đo trước → sau:** trước: cỡ 600–840 dp có 1 màn, trạng thái menu thu gọn và khung chi tiết cỡ vừa không được đo. Sau, lượt đầu: 1 lỗi (ghi chú ở Sách đang mượn khoảng 86 ký tự một dòng, gặp ở `navmini` và `middetail`). Sau khi sửa: 23 màn rộng và vừa 0 lỗi ở cả 7 biến thể có màn lớn, đo hai lượt cùng kết quả. Tương phản chữ 1212 đoạn mỗi theme (trước 862), chỉ còn 5 lỗi cũ ở màn chào; icon và viền bắt buộc 67 (trước 51), 1 lỗi cũ; 455 nút (trước 310), 0 có vùng chạm dưới 48 px. 20 màn điện thoại không đổi.
+- **AI:** Claude Code (Claude Opus 5.5). AI chọn một khung mỗi lúc và nút quay lại cho cỡ vừa theo cách Material 3 chia cỡ cửa sổ, và giới hạn 528 dp để giữ khoảng 80 ký tự một dòng. AI thêm các biến thể đo mới sau khi nhận ra bản dựng tĩnh chỉ có trạng thái đầu (menu mở, khung danh sách), nên hai trạng thái mới sẽ không được đo nếu không thêm.
+- **Kiểm thử:** `node tools/wide-boards/gen.js .`, `node tools/check-scripts.js .` (43 màn không lỗi), `tools/contrast.js`, `tools/nontext-contrast.js`, `tools/target-size.js`; dựng 15 biến thể, chạy `tools/layout-check.js` hai lượt trong trình duyệt của app; xem bằng mắt `WideAccount` với menu thu gọn và `MidAccount` ở khung chi tiết 600 dp. So với nhánh: 20 màn điện thoại không đổi.

@@ -54,18 +54,29 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-root input{min-width:0}
 .st-scroll{scrollbar-width:none}.st-scroll::-webkit-scrollbar{display:none}
 .st-scroll>*{flex-shrink:0}
+.st-root p,.st-root li{max-width:36em}
 div.st-root{container-type:size}
-@container (max-width: 900px) or (max-height: 480px){
+
+  .st-root[data-nav="mini"] .st-nav{width:72px !important;padding:12px 6px !important}
+  .st-root[data-nav="mini"] .st-nav .st-hide-c{display:none !important}
+  .st-root[data-nav="mini"] .st-nav a{justify-content:center !important;padding:6px !important}
+  .st-root[data-nav="mini"] .st-nav .st-navhead{justify-content:center !important;padding:0 0 10px !important}
+  .st-root[data-nav="mini"] .st-list{left:104px !important}
+  .st-root[data-nav="mini"] .st-pane{left:440px !important}
+  .st-root[data-nav="mini"] .st-full{left:104px !important}
+@container (min-width: 840px) and ((max-width: 900px) or (max-height: 480px)){
   .st-nav{width:72px !important;padding:12px 6px !important}
   .st-nav .st-hide-c{display:none !important}
   .st-nav a{justify-content:center !important;padding:6px !important}
+  .st-nav .st-navhead{justify-content:center !important;padding:0 0 10px !important}
+  .st-navtoggle{display:none !important}
   .st-list{left:104px !important;width:300px !important}
   .st-pane{left:420px !important}
   .st-full{left:104px !important}
 }
 </style>
 </helmet>
-<div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+<div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
 
   <div aria-hidden="true" style="position: absolute; left: -120px; top: -140px; width: 520px; height: 520px; border-radius: 999px; background:  #d7c39a; opacity: 0.55"></div>
   <div aria-hidden="true" style="position: absolute; right: -140px; bottom: -160px; width: 560px; height: 560px; border-radius: 999px; background:  #b9c7bf; opacity: 0.55"></div>
@@ -164,7 +175,7 @@ class Component extends DCLogic {
     var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
     var dark = t === 'dark' || (t === 'auto' && sys);
     var opts = [['auto', 'Theo hệ thống'], ['light', 'Sáng'], ['dark', 'Tối']];
-    return {
+    return Object.assign(this.__layout(), {
       themeAttr: t,
       themeLabel: dark ? 'Sáng' : 'Tối',
       themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
@@ -179,6 +190,20 @@ class Component extends DCLogic {
           style: 'flex:1;height:40px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? 'var(--primary)' : 'transparent') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
         };
       })
+    });
+  }
+  // side menu collapse (expanded window) and list/detail switching (medium window)
+  __layout() {
+    var self = this, st = this.state || {};
+    var mini = !!st.navMini, mid = false;
+    var view = st.view || 'list';
+    return {
+      navMode: mini ? 'mini' : 'full', navOpen: !mini,
+      navToggleLabel: mini ? 'Mở rộng menu' : 'Thu gọn menu',
+      toggleNav: function () { self.setState({ navMini: !mini }); },
+      showList: !mid || view === 'list', showDetail: !mid || view === 'detail',
+      back: function () { self.setState({ view: 'list' }); },
+      toDetail: function () { if (mid) self.setState({ view: 'detail' }); }
     };
   }
   // helpers shared by the wide boards
@@ -199,11 +224,12 @@ class Component extends DCLogic {
         });
       },
       row: function (o) {
+        var lay = self.__layout();
         return {
           title: o.title, author: o.author || '', mono: mono(o.title),
           status: o.status || '', pill: o.pill || '',
           hasNote: !!o.note, note: o.note || '', hasReason: !!o.reason, reason: o.reason || '',
-          current: o.on ? 'true' : 'false', pick: o.pick,
+          current: o.on ? 'true' : 'false', pick: function () { o.pick(); lay.toDetail(); },
           delay: 'animation-delay:' + Math.min(o.i || 0, 8) * 40 + 'ms',
           style: 'width:100%;display:flex;gap:12px;align-items:center;padding:10px;border-radius:20px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;min-height:48px;border:1px solid ' + (o.on ? 'rgba(var(--ink-rgb),0.5)' : 'transparent') + ';background:' + (o.on ? 'var(--surface)' : 'rgba(var(--glass),0.72)'),
           cover: 'width:44px;height:62px;flex:none;border-radius:10px;display:flex;align-items:flex-end;padding:6px;box-sizing:border-box;font-size:13px;font-weight:700;letter-spacing:0.5px;background:' + o.bg + ';color:' + o.fg

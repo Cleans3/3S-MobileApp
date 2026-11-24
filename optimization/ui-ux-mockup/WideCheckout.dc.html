@@ -54,23 +54,37 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-root input{min-width:0}
 .st-scroll{scrollbar-width:none}.st-scroll::-webkit-scrollbar{display:none}
 .st-scroll>*{flex-shrink:0}
+.st-root p,.st-root li{max-width:36em}
 div.st-root{container-type:size}
-@container (max-width: 900px) or (max-height: 480px){
+
+  .st-root[data-nav="mini"] .st-nav{width:72px !important;padding:12px 6px !important}
+  .st-root[data-nav="mini"] .st-nav .st-hide-c{display:none !important}
+  .st-root[data-nav="mini"] .st-nav a{justify-content:center !important;padding:6px !important}
+  .st-root[data-nav="mini"] .st-nav .st-navhead{justify-content:center !important;padding:0 0 10px !important}
+  .st-root[data-nav="mini"] .st-list{left:104px !important}
+  .st-root[data-nav="mini"] .st-pane{left:440px !important}
+  .st-root[data-nav="mini"] .st-full{left:104px !important}
+@container (min-width: 840px) and ((max-width: 900px) or (max-height: 480px)){
   .st-nav{width:72px !important;padding:12px 6px !important}
   .st-nav .st-hide-c{display:none !important}
   .st-nav a{justify-content:center !important;padding:6px !important}
+  .st-nav .st-navhead{justify-content:center !important;padding:0 0 10px !important}
+  .st-navtoggle{display:none !important}
   .st-list{left:104px !important;width:300px !important}
   .st-pane{left:420px !important}
   .st-full{left:104px !important}
 }
 </style>
 </helmet>
-<div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+<div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
 
-  <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 20px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
-    <div class="st-hide-c" style="padding: 0 12px 14px; display: flex; flex-direction: column; gap: 2px">
-      <div style="font-size: 13px; color: var(--ink3)">Chào bạn,</div>
-      <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
+  <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 14px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
+    <div class="st-navhead" style="display: flex; align-items: center; gap: 4px; padding: 0 0 10px 12px">
+      <div class="st-hide-c" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+        <div style="font-size: 13px; color: var(--ink3)">Chào bạn,</div>
+        <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
+      </div>
+      <button type="button" class="st-navtoggle st-press" onClick="{{toggleNav}}" aria-label="{{navToggleLabel}}" aria-expanded="{{navOpen}}" style="width: 48px; height: 48px; flex: none; border-radius: 14px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="M9 4v16"></path></svg></button>
     </div>
     <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">
         <a href="WideCatalog.dc.html" class="st-item" aria-label="Danh mục" aria-current="false" style="animation-delay: 40ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
@@ -123,9 +137,9 @@ div.st-root{container-type:size}
       <span class="st-hide-c">Chạm sách để mượn</span>
     </a>
   </nav>
-  <section aria-label="Chỗ chạm" class="st-list st-scroll" style="position: absolute; left: 248px; top: 16px; bottom: 16px; width: 336px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px">
+  <section aria-label="Chỗ chạm" class="st-list st-scroll" style="position: absolute; left: 248px; width: 320px; top: 16px; bottom: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px">
     <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Tự mượn sách</h1>
-    <div aria-hidden="true" style="position: relative; height: 260px; border-radius: 30px; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85); overflow: hidden">
+    <div aria-hidden="true" style="position: relative; height: 260px; flex: none; border-radius: 30px; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85); overflow: hidden">
       <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 236px; height: 200px; border-radius: 22px; border: 3px solid var(--ink3); display: flex">
         <div style="flex: 1; border-right: 2px dashed var(--ink3)"></div>
         <div style="flex: 1; position: relative">
@@ -138,7 +152,7 @@ div.st-root{container-type:size}
     <p style="margin: 0; padding: 0 4px; font-size: 14px; line-height: 1.5; color: var(--ink2b)">Áp mặt sau máy, ở chấm xanh, vào nhãn dán bên trong bìa sách.</p>
       <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink3); padding: 0 4px">Chấm xanh là chỗ có ăng-ten NFC. Máy gập và tablet mỗi mẫu một chỗ; từ Android 14 app đọc vị trí ăng-ten từ hệ thống (NfcAntennaInfo) để vẽ đúng, máy không có thông tin này thì hiện lời dặn chung. [Vị trí trên hình là ví dụ]</p>
   </section>
-  <section aria-label="Kết quả mượn" aria-live="polite" class="st-pane" style="position: absolute; left: 600px; right: 16px; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
+  <section aria-label="Kết quả mượn" aria-live="polite" class="st-pane" style="position: absolute; left: 584px; right: 16px; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
     <div class="st-scroll st-detail" style="position: absolute; inset: 0; padding: 72px 22px 24px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 14px">
       <sc-if value="{{isWait}}" hint-placeholder-val="{{ true }}">
         <div style="font-size: 20px; font-weight: 700; line-height: 1.25">Sẵn sàng đọc nhãn sách</div>
@@ -187,7 +201,7 @@ class Component extends DCLogic {
     var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
     var dark = t === 'dark' || (t === 'auto' && sys);
     var opts = [['auto', 'Theo hệ thống'], ['light', 'Sáng'], ['dark', 'Tối']];
-    return {
+    return Object.assign(this.__layout(), {
       themeAttr: t,
       themeLabel: dark ? 'Sáng' : 'Tối',
       themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
@@ -202,6 +216,20 @@ class Component extends DCLogic {
           style: 'flex:1;height:40px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? 'var(--primary)' : 'transparent') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
         };
       })
+    });
+  }
+  // side menu collapse (expanded window) and list/detail switching (medium window)
+  __layout() {
+    var self = this, st = this.state || {};
+    var mini = !!st.navMini, mid = false;
+    var view = st.view || 'list';
+    return {
+      navMode: mini ? 'mini' : 'full', navOpen: !mini,
+      navToggleLabel: mini ? 'Mở rộng menu' : 'Thu gọn menu',
+      toggleNav: function () { self.setState({ navMini: !mini }); },
+      showList: !mid || view === 'list', showDetail: !mid || view === 'detail',
+      back: function () { self.setState({ view: 'list' }); },
+      toDetail: function () { if (mid) self.setState({ view: 'detail' }); }
     };
   }
   // helpers shared by the wide boards
@@ -222,11 +250,12 @@ class Component extends DCLogic {
         });
       },
       row: function (o) {
+        var lay = self.__layout();
         return {
           title: o.title, author: o.author || '', mono: mono(o.title),
           status: o.status || '', pill: o.pill || '',
           hasNote: !!o.note, note: o.note || '', hasReason: !!o.reason, reason: o.reason || '',
-          current: o.on ? 'true' : 'false', pick: o.pick,
+          current: o.on ? 'true' : 'false', pick: function () { o.pick(); lay.toDetail(); },
           delay: 'animation-delay:' + Math.min(o.i || 0, 8) * 40 + 'ms',
           style: 'width:100%;display:flex;gap:12px;align-items:center;padding:10px;border-radius:20px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;min-height:48px;border:1px solid ' + (o.on ? 'rgba(var(--ink-rgb),0.5)' : 'transparent') + ';background:' + (o.on ? 'var(--surface)' : 'rgba(var(--glass),0.72)'),
           cover: 'width:44px;height:62px;flex:none;border-radius:10px;display:flex;align-items:flex-end;padding:6px;box-sizing:border-box;font-size:13px;font-weight:700;letter-spacing:0.5px;background:' + o.bg + ';color:' + o.fg

@@ -53,11 +53,11 @@ a{color:var(--ink)}a:hover{opacity:.85}
     <section aria-label="Gợi ý cho bạn" style="display: flex; flex-direction: column; gap: 12px">
       <div style="display: flex; align-items: baseline; justify-content: space-between">
         <h2 style="margin: 0; font-size: 18px; font-weight: 700">Gợi ý cho bạn</h2>
-        <a href="Recommend.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
+        <a href="MidRecommend.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
       </div>
       <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
         <sc-for list="{{recs}}" as="r" hint-placeholder-count="4">
-          <a href="Detail.dc.html" class="st-rise" style="{{r.wrapStyle}}">
+          <a href="MidCatalog.dc.html" class="st-rise" style="{{r.wrapStyle}}">
             <div aria-hidden="true" style="{{r.coverStyle}}">{{r.title}}</div>
             <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{r.title}}.</span>
             <div style="font-size: 12px; font-weight: 700; line-height: 1.35; color: var(--warn2)">{{r.reason}}</div>
@@ -70,12 +70,12 @@ a{color:var(--ink)}a:hover{opacity:.85}
     <section aria-label="Văn học Việt Nam" style="display: flex; flex-direction: column; gap: 12px">
       <div style="display: flex; align-items: baseline; justify-content: space-between">
         <h2 style="margin: 0; font-size: 18px; font-weight: 700">Văn học Việt Nam</h2>
-        <a href="List.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
+        <a href="MidCatalog.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
       </div>
       <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
         <sc-for list="{{rows}}" as="b" hint-placeholder-count="6">
           <li class="st-rise" style="{{b.delay}}">
-            <a href="Detail.dc.html" style="display: flex; gap: 12px; align-items: center; padding: 10px; border-radius: 20px; background:  rgba(var(--glass),0.72); text-decoration: none; color: var(--ink); min-height: 48px; height: 100%; box-sizing: border-box">
+            <a href="MidCatalog.dc.html" style="display: flex; gap: 12px; align-items: center; padding: 10px; border-radius: 20px; background:  rgba(var(--glass),0.72); text-decoration: none; color: var(--ink); min-height: 48px; height: 100%; box-sizing: border-box">
               <div aria-hidden="true" style="{{b.cover}}">{{b.mono}}</div>
               <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
                 <div style="font-size: 15px; font-weight: 700; line-height: 1.25">{{b.title}}</div>
@@ -94,7 +94,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
 
   <!-- Navigation rail: replaces the ☰ menu and the floating checkout button on a medium window -->
   <nav aria-label="Điều hướng chính" style="position: absolute; left: 0; top: 0; bottom: 0; width: 96px; padding: 44px 8px 16px; box-sizing: border-box; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border-right: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; align-items: center; gap: 4px">
-    <a href="Checkout.dc.html" class="st-press" style="width: 80px; padding: 8px 0 6px; border-radius: 20px; background: var(--primary); color: var(--on-primary); display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; font-size: 12px; font-weight: 700; line-height: 1.2; text-align: center; box-shadow: 0 10px 24px rgba(28,27,26,0.25); margin-bottom: 16px">
+    <a href="MidCheckout.dc.html" class="st-press" style="width: 80px; padding: 8px 0 6px; border-radius: 20px; background: var(--primary); color: var(--on-primary); display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; font-size: 12px; font-weight: 700; line-height: 1.2; text-align: center; box-shadow: 0 10px 24px rgba(28,27,26,0.25); margin-bottom: 16px">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg>
       Chạm để mượn
     </a>
@@ -179,12 +179,12 @@ class Component extends DCLogic {
         };
       }),
       menu: [
-        railItem('Danh mục', 'Catalog.dc.html', 'M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z', 'M8 7h7', true),
-        railItem('Gợi ý', 'Recommend.dc.html', 'M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z', '', false),
-        railItem('Đang mượn', 'Loans.dc.html', 'M12 7v5l3 2', 'M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z', false),
-        railItem('Đặt trước', 'Reservations.dc.html', 'M6 3h12v18l-6-4-6 4z', 'M9 9h6', false),
-        railItem('Lịch sử', 'History.dc.html', 'M3 12a9 9 0 1 0 3-6.7L3 8', 'M3 3v5h5', false),
-        railItem('Tài khoản', 'Account.dc.html', 'M4 21a8 8 0 0 1 16 0', 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z', false)
+        railItem('Danh mục', 'RailCatalog.dc.html', 'M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z', 'M8 7h7', true),
+        railItem('Gợi ý', 'MidRecommend.dc.html', 'M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z', '', false),
+        railItem('Đang mượn', 'MidLoans.dc.html', 'M12 7v5l3 2', 'M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z', false),
+        railItem('Đặt trước', 'MidReservations.dc.html', 'M6 3h12v18l-6-4-6 4z', 'M9 9h6', false),
+        railItem('Lịch sử', 'MidHistory.dc.html', 'M3 12a9 9 0 1 0 3-6.7L3 8', 'M3 3v5h5', false),
+        railItem('Tài khoản', 'MidAccount.dc.html', 'M4 21a8 8 0 0 1 16 0', 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z', false)
       ]
     });
   }

@@ -1,16 +1,46 @@
-// Shared pieces for the wide-window boards (960 x 720). Each board file stays standalone:
+// Shared pieces for the boards drawn for larger windows. Each board file stays standalone:
 // the generator writes the full HTML, so the boards need nothing from this file at run time.
+// Two sizes, following the Material 3 window size classes:
+//   'wide'   (Wide*.dc.html, 960 x 720): expanded window, 840 dp and up. Fixed side menu with a
+//            collapse button, list and detail side by side.
+//   'medium' (Mid*.dc.html, 720 x 840): medium window, 600-840 dp. Navigation rail, one pane at a
+//            time: the list, then the detail with a back button.
+let MODE = 'wide';
+const setMode = m => { MODE = m; };
+const isMid = () => MODE === 'medium';
+const W = () => isMid() ? 720 : 960;
+const H = () => isMid() ? 840 : 720;
+// positions of the two panes; in medium both take the content area (capped at 528 dp, centred)
+const MID_AREA = 'left: 112px; right: 16px; max-width: 528px; margin: 0 auto';
+const listPos = w => isMid() ? MID_AREA : `left: 248px; width: ${w || 320}px`;
+const panePos = l => isMid() ? MID_AREA : `left: ${l || 584}px; right: 16px`;
+const fullPos = () => isMid() ? 'left: 112px; right: 16px' : 'left: 248px; right: 16px';
+const BACK = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m15 18-6-6 6-6"></path></svg>';
+// back button shown in a detail pane on a medium window (goes back to the list)
+const backBtn = () => isMid() ? `
+        <button type="button" onClick="{{back}}" aria-label="Quay lại danh sách" style="width: 48px; height: 48px; flex: none; border-radius: 999px; border: 1px solid rgba(var(--edge),0.8); background:  rgba(var(--glass),0.6); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">${BACK}</button>` : '';
 const TOK_L = '--switch-on:#2f5b3a;--switch-knob-on:#ffffff;--bg:#ece7e1;--bg-rgb:236,231,225;--bg2:#d9d1c6;--surface:#ffffff;--glass:255,255,255;--edge:255,255,255;--ink:#1c1b1a;--ink-rgb:28,27,26;--ink2:#3d3833;--ink2b:#4a4540;--ink3:#5c554e;--primary:#1c1b1a;--on-primary:#ffffff;--ok:#2f5b3a;--danger:#7a3420;--danger2:#8a2f1b;--warn:#6b4a10;--warn2:#6b5220;--warn3:#8a6a2a;--warn-bg:#fff4dc;--danger-bg:#f6e4dc;--dialog:#f4f1ec;';
 const TOK_D = '--switch-on:#9fd3ac;--switch-knob-on:#1c1b1a;--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;';
 
-// Expanded window that is narrow (840-900 dp) or short (under 480 dp, e.g. a phone held sideways):
-// the side menu folds into an icon rail and the panes move left. The board root is the container,
-// so this follows the board's own size (render-static's 844 x 390 variant), not the browser window.
-const COMPACT = `div.st-root{container-type:size}
-@container (max-width: 900px) or (max-height: 480px){
-  .st-nav{width:72px !important;padding:12px 6px !important}
-  .st-nav .st-hide-c{display:none !important}
-  .st-nav a{justify-content:center !important;padding:6px !important}
+// The side menu becomes a 72 dp icon rail in two cases:
+// - the user presses the collapse button (data-nav="mini" on the board root);
+// - the expanded window is narrow (840-900 dp) or short (under 480 dp, e.g. a phone held sideways).
+//   The board root is the container, so this follows the board's own size (render-static's
+//   844 x 390 variant), not the browser window. The collapse button is hidden then.
+// Paragraphs are capped at about 80 characters a line.
+const MINI = p => `
+  ${p}.st-nav{width:72px !important;padding:12px 6px !important}
+  ${p}.st-nav .st-hide-c{display:none !important}
+  ${p}.st-nav a{justify-content:center !important;padding:6px !important}
+  ${p}.st-nav .st-navhead{justify-content:center !important;padding:0 0 10px !important}`;
+const COMPACT = `.st-root p,.st-root li{max-width:36em}
+div.st-root{container-type:size}
+${MINI('.st-root[data-nav="mini"] ')}
+  .st-root[data-nav="mini"] .st-list{left:104px !important}
+  .st-root[data-nav="mini"] .st-pane{left:440px !important}
+  .st-root[data-nav="mini"] .st-full{left:104px !important}
+@container (min-width: 840px) and ((max-width: 900px) or (max-height: 480px)){${MINI('')}
+  .st-navtoggle{display:none !important}
   .st-list{left:104px !important;width:300px !important}
   .st-pane{left:420px !important}
   .st-full{left:104px !important}
@@ -75,7 +105,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
 ${COMPACT}
 </style>
 </helmet>
-<div class="st-root" data-theme="{{themeAttr}}" style="width: ${w}px; height: ${h}px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+<div class="st-root" data-theme="{{themeAttr}}" style="width: ${w}px; height: ${h}px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
 `;
 
 const themeBtn = `
@@ -96,7 +126,7 @@ class Component extends DCLogic {
     var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
     var dark = t === 'dark' || (t === 'auto' && sys);
     var opts = [['auto', 'Theo hệ thống'], ['light', 'Sáng'], ['dark', 'Tối']];
-    return {
+    return Object.assign(this.__layout(), {
       themeAttr: t,
       themeLabel: dark ? 'Sáng' : 'Tối',
       themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
@@ -111,6 +141,20 @@ class Component extends DCLogic {
           style: 'flex:1;height:40px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? 'var(--primary)' : 'transparent') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
         };
       })
+    });
+  }
+  // side menu collapse (expanded window) and list/detail switching (medium window)
+  __layout() {
+    var self = this, st = this.state || {};
+    var mini = !!st.navMini, mid = ${isMid()};
+    var view = st.view || 'list';
+    return {
+      navMode: mini ? 'mini' : 'full', navOpen: !mini,
+      navToggleLabel: mini ? 'Mở rộng menu' : 'Thu gọn menu',
+      toggleNav: function () { self.setState({ navMini: !mini }); },
+      showList: !mid || view === 'list', showDetail: !mid || view === 'detail',
+      back: function () { self.setState({ view: 'list' }); },
+      toDetail: function () { if (mid) self.setState({ view: 'detail' }); }
     };
   }
   // helpers shared by the wide boards
@@ -131,11 +175,12 @@ class Component extends DCLogic {
         });
       },
       row: function (o) {
+        var lay = self.__layout();
         return {
           title: o.title, author: o.author || '', mono: mono(o.title),
           status: o.status || '', pill: o.pill || '',
           hasNote: !!o.note, note: o.note || '', hasReason: !!o.reason, reason: o.reason || '',
-          current: o.on ? 'true' : 'false', pick: o.pick,
+          current: o.on ? 'true' : 'false', pick: function () { o.pick(); lay.toDetail(); },
           delay: 'animation-delay:' + Math.min(o.i || 0, 8) * 40 + 'ms',
           style: 'width:100%;display:flex;gap:12px;align-items:center;padding:10px;border-radius:20px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;min-height:48px;border:1px solid ' + (o.on ? 'rgba(var(--ink-rgb),0.5)' : 'transparent') + ';background:' + (o.on ? 'var(--surface)' : 'rgba(var(--glass),0.72)'),
           cover: 'width:44px;height:62px;flex:none;border-radius:10px;display:flex;align-items:flex-end;padding:6px;box-sizing:border-box;font-size:13px;font-weight:700;letter-spacing:0.5px;background:' + o.bg + ';color:' + o.fg
@@ -194,38 +239,79 @@ const menuItem = (label, href, icon, active, i) => `
         </a>`;
 
 // state preview (mockup only), dark like the phone boards' preview bar
-const preview = (list, label, extraRow, cls) => `
-    <div role="group" aria-label="Xem trước trạng thái (bản phác)" class="${cls || ''}" style="margin: 4px 0 10px; padding: 8px; border-radius: 22px; background:  rgba(28,27,26,0.82); display: flex; flex-direction: column; gap: 6px">
-      <div style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.85); padding: 0 6px">${label}</div>
-      <div style="display: flex; flex-wrap: wrap; gap: 2px">
+// narrow = inside the 96 dp rail: one tab per line
+const preview = (list, label, extraRow, cls, narrow) => `
+    <div role="group" aria-label="Xem trước trạng thái (bản phác)" class="${cls || ''}" style="margin: 4px 0 ${narrow ? 0 : 10}px; padding: ${narrow ? 6 : 8}px; ${narrow ? 'width: 100%; box-sizing: border-box; ' : ''}border-radius: 22px; background:  rgba(28,27,26,0.82); display: flex; flex-direction: column; gap: 6px">
+      <div style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.85); padding: 0 ${narrow ? 2 : 6}px">${label}</div>
+      <div style="display: flex; flex-${narrow ? 'direction: column' : 'wrap: wrap'}; gap: 2px">
         <sc-for list="{{${list}}}" as="t" hint-placeholder-count="3">
           <button type="button" aria-pressed="{{t.on}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
         </sc-for>
       </div>${extraRow || ''}
     </div>`;
 
-// fixed side menu for a member; active = href of the current item (or '' for none)
+const LOGIN_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary); flex: none"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path></svg>';
+const PANEL_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="M9 4v16"></path></svg>';
+// the main action at the bottom of the menu (top of the rail): self-checkout for a member, sign-in for a guest
+const mainAction = (guest, active) => guest
+  ? { href: 'WideSignIn.dc.html', label: 'Đăng nhập để mượn sách', short: 'Đăng nhập', icon: LOGIN_ICON, current: false }
+  : { href: 'WideCheckout.dc.html', label: 'Chạm sách để mượn', short: 'Chạm để mượn', icon: NFC, current: active === 'WideCheckout.dc.html' };
+
+// navigation; active = href of the current item (or '' for none).
+// opts.preview: state preview group (mockup only); opts.guest: the reduced guest menu
 const nav = (active, opts) => {
   opts = opts || {};
-  const items = MEMBER_MENU.map((m, i) => menuItem(m[0], m[1], m[2], m[1] === active, i)).join('');
+  const menu = opts.guest ? [['Danh mục', 'WideGuest.dc.html', 'catalog']] : MEMBER_MENU;
+  const act = mainAction(opts.guest, active);
+  if (isMid()) return rail(active, opts, menu, act);
+  const items = menu.map((m, i) => menuItem(m[0], m[1], m[2], m[1] === active, i)).join('');
   return `
-  <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 20px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
-    <div class="st-hide-c" style="padding: 0 12px 14px; display: flex; flex-direction: column; gap: 2px">
-      <div style="font-size: 13px; color: var(--ink3)">Chào bạn,</div>
-      <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
+  <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 14px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
+    <div class="st-navhead" style="display: flex; align-items: center; gap: 4px; padding: 0 0 10px 12px">
+      <div class="st-hide-c" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+        <div style="font-size: 13px; color: var(--ink3)">${opts.guest ? 'Bạn đang xem với tư cách khách' : 'Chào bạn,'}</div>
+        <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
+      </div>
+      <button type="button" class="st-navtoggle st-press" onClick="{{toggleNav}}" aria-label="{{navToggleLabel}}" aria-expanded="{{navOpen}}" style="width: 48px; height: 48px; flex: none; border-radius: 14px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">${PANEL_ICON}</button>
     </div>
-    <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">${items}
-    </div>${opts.preview || ''}
-    <a href="WideCheckout.dc.html" class="st-press" aria-label="Chạm sách để mượn" aria-current="${active === 'WideCheckout.dc.html' ? 'page' : 'false'}" style="min-height: 56px; padding: 8px 14px 8px 8px; border-radius: 28px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1.2; box-shadow: 0 10px 30px rgba(28,27,26,0.25)">
-      <span style="width: 40px; height: 40px; flex: none; border-radius: 999px; background:  rgba(var(--glass),0.16); display: flex; align-items: center; justify-content: center">${NFC}</span>
-      <span class="st-hide-c">Chạm sách để mượn</span>
+    <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">${items}${opts.guest ? `
+      <p class="st-hide-c" style="margin: 8px 6px 0; font-size: 12px; line-height: 1.5; color: var(--ink2b)">Khách xem và tìm sách được. Đặt trước, mượn, gia hạn và lịch sử đọc cần tài khoản thư viện.</p>` : ''}
+    </div>${opts.preview ? preview(opts.preview[0], opts.preview[1], '', 'st-hide-c') : ''}
+    <a href="${act.href}" class="st-press" aria-label="${act.label}" aria-current="${act.current ? 'page' : 'false'}" style="min-height: 56px; padding: 8px 14px 8px 8px; border-radius: 28px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1.2; box-shadow: 0 10px 30px rgba(28,27,26,0.25)">
+      <span style="width: 40px; height: 40px; flex: none; border-radius: 999px; background:  rgba(var(--glass),0.16); display: flex; align-items: center; justify-content: center">${act.icon}</span>
+      <span class="st-hide-c">${act.label}</span>
+    </a>${opts.guest ? `
+    <p class="st-hide-c" style="margin: 8px 6px 0; font-size: 11px; line-height: 1.45; color: var(--ink3)">Chưa có thẻ? Đăng ký tại quầy thủ thư, mang theo CCCD.</p>` : ''}
+  </nav>`;
+};
+
+// navigation rail for a medium window: main action on top, then the destinations with short labels
+const RAIL_LABEL = { 'Gợi ý cho bạn': 'Gợi ý', 'Sách đang mượn': 'Đang mượn', 'Lịch sử đọc': 'Lịch sử' };
+const rail = (active, opts, menu, act) => {
+  const items = menu.map((m, i) => {
+    const on = m[1] === active, href = m[1] === 'WideCatalog.dc.html' ? 'RailCatalog.dc.html' : m[1];
+    return `
+      <a href="${href}" class="st-item" aria-label="${m[0]}" aria-current="${on ? 'page' : 'false'}" style="animation-delay: ${40 + 35 * i}ms; width: 80px; min-height: 56px; padding: 4px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: ${on ? 700 : 500}">
+        <span style="width: 56px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; background: ${on ? 'var(--surface)' : 'transparent'}; box-shadow: ${on ? '0 0 0 1px rgba(var(--ink-rgb),0.5)' : 'none'}">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="${ICON[m[2]][0]}"></path><path d="${ICON[m[2]][1]}"></path></svg>
+        </span>
+        ${RAIL_LABEL[m[0]] || m[0]}
+      </a>`;
+  }).join('');
+  return `
+  <nav aria-label="Điều hướng chính" style="position: absolute; left: 0; top: 0; bottom: 0; width: 96px; padding: 48px 8px 12px; box-sizing: border-box; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border-right: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; align-items: center; gap: 4px">
+    <a href="${act.href}" class="st-press" aria-label="${act.label}" aria-current="${act.current ? 'page' : 'false'}" style="width: 80px; flex: none; padding: 8px 0 6px; border-radius: 20px; background: var(--primary); color: var(--on-primary); display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; font-size: 12px; font-weight: 700; line-height: 1.2; text-align: center; box-shadow: 0 10px 24px rgba(28,27,26,0.25); margin-bottom: 12px">${act.icon.replace('width="20" height="20"', 'width="24" height="24"')}
+      ${act.short}
     </a>
+    <div class="st-scroll" style="flex: 1; min-height: 0; width: 100%; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 4px">${items}
+    </div>${opts.preview ? preview(opts.preview[0], opts.preview[1], '', '', true) : ''}
   </nav>`;
 };
 
 // list pane: title, optional extra html between title and list, rows bound to `list`
 const listPane = (label, title, extra, list, after) => `
-  <section aria-label="${label}" class="st-list" style="position: absolute; left: 248px; top: 16px; bottom: 0; width: 320px; display: flex; flex-direction: column; gap: 12px">
+  <sc-if value="{{showList}}" hint-placeholder-val="{{ true }}">
+  <section aria-label="${label}" class="st-list st-fade" style="position: absolute; ${listPos()}; top: ${isMid() ? 40 : 16}px; bottom: 0; display: flex; flex-direction: column; gap: 12px">
     <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">${title}</h1>${extra || ''}
     <ul class="st-scroll" style="list-style: none; margin: 0; padding: 0 0 16px; flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 8px">
       <sc-for list="{{${list}}}" as="b" hint-placeholder-count="3">
@@ -245,20 +331,23 @@ const listPane = (label, title, extra, list, after) => `
         </li>
       </sc-for>${after || ''}
     </ul>
-  </section>`;
+  </section>
+  </sc-if>`;
 
 // detail pane: header row with a label, scrollable body, optional action bar pinned at the bottom
 const detailPane = (label, body, bar) => `
-  <section aria-label="${label}" class="st-pane" style="position: absolute; left: 584px; right: 16px; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
+  <sc-if value="{{showDetail}}" hint-placeholder-val="{{ true }}">
+  <section aria-label="${label}" class="st-pane" style="position: absolute; ${panePos()}; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
     <div class="st-scroll st-detail" style="position: absolute; inset: 0; padding: 12px 20px ${bar ? 96 : 24}px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 16px">
-      <div style="display: flex; align-items: center; gap: 8px; min-height: 48px">
+      <div style="display: flex; align-items: center; gap: 8px; min-height: 48px">${backBtn()}
         <div style="flex: 1; font-size: 13px; font-weight: 600; color: var(--ink3)">${label}</div>
         <div style="width: 84px; flex: none"></div>
       </div>${body}
     </div>${bar ? `
     <div style="position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 8px; border-radius: 999px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%); border: 1px solid rgba(var(--edge),0.9); display: flex; gap: 8px">${bar}
     </div>` : ''}
-  </section>`;
+  </section>
+  </sc-if>`;
 
 // book header used in detail panes: cover + tags + title + author, bound to `sel`
 const bookHead = (tags) => `
@@ -346,4 +435,5 @@ const btnGlass = 'min-height: 52px; padding: 6px 20px; border-radius: 999px; bor
 const note = (text, extra) => `
       <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink3)${extra || ''}">${text}</p>`;
 
-module.exports = { head, foot, nav, preview, listPane, detailPane, bookHead, fact, facts, BOOKS, searchAndChips, SEARCH_JS, btnPrimary, btnGlass, note, NFC, menuItem };
+module.exports = { head, foot, nav, preview, listPane, detailPane, bookHead, fact, facts, BOOKS, searchAndChips, SEARCH_JS, btnPrimary, btnGlass, note, NFC, menuItem,
+  setMode, isMid, W, H, listPos, panePos, fullPos, backBtn };

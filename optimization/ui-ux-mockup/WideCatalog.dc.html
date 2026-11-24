@@ -43,24 +43,37 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-root input{min-width:0}
 .st-scroll{scrollbar-width:none}.st-scroll::-webkit-scrollbar{display:none}
 .st-scroll>*{flex-shrink:0}
+.st-root p,.st-root li{max-width:36em}
 div.st-root{container-type:size}
-@container (max-width: 900px) or (max-height: 480px){
+  .st-root[data-nav="mini"] .st-nav{width:72px !important;padding:12px 6px !important}
+  .st-root[data-nav="mini"] .st-nav .st-hide-c{display:none !important}
+  .st-root[data-nav="mini"] .st-nav a{justify-content:center !important;padding:6px !important}
+  .st-root[data-nav="mini"] .st-nav .st-navhead{justify-content:center !important;padding:0 0 10px !important}
+  .st-root[data-nav="mini"] .st-list{left:104px !important}
+  .st-root[data-nav="mini"] .st-pane{left:440px !important}
+  .st-root[data-nav="mini"] .st-full{left:104px !important}
+@container (min-width: 840px) and ((max-width: 900px) or (max-height: 480px)){
   .st-nav{width:72px !important;padding:12px 6px !important}
   .st-nav .st-hide-c{display:none !important}
   .st-nav a{justify-content:center !important;padding:6px !important}
+  .st-nav .st-navhead{justify-content:center !important;padding:0 0 10px !important}
+  .st-navtoggle{display:none !important}
   .st-list{left:104px !important;width:300px !important}
   .st-pane{left:420px !important}
   .st-full{left:104px !important}
 }
 </style>
 </helmet>
-<div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+<div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
 
-  <!-- 1. Fixed menu: on a wide window the ☰ menu stays open at the left edge -->
+  <!-- 1. Fixed menu: on a wide window the ☰ menu stays open at the left edge; the button at its top folds it into an icon rail -->
   <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 20px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
-    <div class="st-hide-c" style="padding: 0 12px 14px; display: flex; flex-direction: column; gap: 2px">
-      <div style="font-size: 13px; color: var(--ink3)">Chào bạn,</div>
-      <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
+    <div class="st-navhead" style="display: flex; align-items: center; gap: 4px; padding: 0 0 10px 12px">
+      <div class="st-hide-c" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+        <div style="font-size: 13px; color: var(--ink3)">Chào bạn,</div>
+        <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
+      </div>
+      <button type="button" class="st-navtoggle st-press" onClick="{{toggleNav}}" aria-label="{{navToggleLabel}}" aria-expanded="{{navOpen}}" style="width: 48px; height: 48px; flex: none; border-radius: 14px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="M9 4v16"></path></svg></button>
     </div>
     <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">
       <sc-for list="{{menu}}" as="m" hint-placeholder-count="6">
@@ -192,13 +205,19 @@ class Component extends DCLogic {
     var t = (this.state && this.state.__theme) || 'auto';
     var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
     var dark = t === 'dark' || (t === 'auto' && sys);
+    var mini = !!(this.state && this.state.navMini);
     return {
       themeAttr: t,
       themeLabel: dark ? 'Sáng' : 'Tối',
       themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
       themeIsDark: dark,
       themeIsLight: !dark,
-      toggleTheme: function () { self.setState({ __theme: dark ? 'light' : 'dark' }); }
+      toggleTheme: function () { self.setState({ __theme: dark ? 'light' : 'dark' }); },
+      // the button at the top of the menu folds it into a 72 dp icon rail
+      navMode: mini ? 'mini' : 'full',
+      navOpen: !mini,
+      navToggleLabel: mini ? 'Mở rộng menu' : 'Thu gọn menu',
+      toggleNav: function () { self.setState({ navMini: !mini }); }
     };
   }
   renderVals() {

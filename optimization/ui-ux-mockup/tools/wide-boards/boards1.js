@@ -1,6 +1,7 @@
 // List-detail boards for the wide window: loans, reservations, history, offline search, recommendations.
 const S = require('./shell.js');
-const W = 960, H = 720;
+module.exports = function () {
+const W = S.W(), H = S.H();
 const out = {};
 
 // ---------- Sách đang mượn ----------
@@ -126,9 +127,9 @@ out['WideReservations.dc.html'] = S.head('Đặt trước ở cửa sổ rộng'
 
 // ---------- Lịch sử đọc ----------
 out['WideHistory.dc.html'] = S.head('Lịch sử đọc ở cửa sổ rộng', W, H) +
-  S.nav('WideHistory.dc.html', { preview: S.preview('tabs', 'Xem trước: đăng nhập bằng', '', 'st-hide-c') }) + `
+  S.nav('WideHistory.dc.html', { preview: ['tabs', 'Xem trước: đăng nhập bằng'] }) + `
   <sc-if value="{{isStepUp}}" hint-placeholder-val="{{ true }}">
-    <div class="st-fade st-full" style="position: absolute; left: 248px; right: 16px; top: 16px; bottom: 16px; display: flex; align-items: center; justify-content: center">
+    <div class="st-fade st-full" style="position: absolute; ${S.fullPos()}; top: 16px; bottom: 16px; display: flex; align-items: center; justify-content: center">
       <section aria-label="Cần mật khẩu" class="st-scroll" style="width: 420px; max-width: 100%; max-height: 100%; overflow-y: auto; box-sizing: border-box; padding: 28px 24px; border-radius: 32px; background:  rgba(var(--glass),0.72); border: 1px solid rgba(var(--edge),0.9); display: flex; flex-direction: column; gap: 14px">
         <h1 style="margin: 0; font-size: 24px; line-height: 1.2; font-weight: 700">Cần mật khẩu để xem</h1>
         <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2b)">Bạn đang đăng nhập bằng thẻ. Lịch sử đọc là dữ liệu cá nhân, nên cần thêm mật khẩu.</p>
@@ -204,7 +205,7 @@ out['WideOfflineSearch.dc.html'] = S.head('Tìm khi không có mạng ở cửa 
 
 // ---------- Gợi ý cho bạn ----------
 out['WideRecommend.dc.html'] = S.head('Gợi ý cho bạn ở cửa sổ rộng', W, H) +
-  S.nav('WideRecommend.dc.html', { preview: S.preview('tabs', 'Xem trước: đăng nhập bằng', '', 'st-hide-c') }) +
+  S.nav('WideRecommend.dc.html', { preview: ['tabs', 'Xem trước: đăng nhập bằng'] }) +
   S.listPane('Sách gợi ý', 'Gợi ý cho bạn', `
     <div style="font-size: 14px; color: var(--ink2b); padding: 0 4px">{{subtitle}}</div>
     <sc-if value="{{isCard}}" hint-placeholder-val="{{ false }}">
@@ -268,4 +269,52 @@ out['WideRecommend.dc.html'] = S.head('Gợi ý cho bạn ở cửa sổ rộng'
     });
   }`);
 
-module.exports = out;
+// ---------- Danh mục (generated only for the medium window; the wide one is WideCatalog, written by hand) ----------
+if (S.isMid()) out['WideCatalog.dc.html'] = S.head('Danh mục ở cửa sổ vừa', W, H) + S.nav('WideCatalog.dc.html') +
+  S.listPane('Danh sách sách', 'Danh mục', S.searchAndChips, 'rows', `
+      <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+        <li style="padding: 24px 8px; font-size: 14px; color: var(--ink3)">Không có sách khớp. Thử bỏ dấu hoặc chọn "Tất cả".</li>
+      </sc-if>`) +
+  S.detailPane('Chi tiết sách', `
+      <sc-if value="{{hasSel}}" hint-placeholder-val="{{ true }}">` + S.bookHead(true) +
+  S.facts([S.fact('Tình trạng', '{{sel.status}}', '{{sel.statusStyle}}'), S.fact('Kệ', '{{sel.shelf}}'), S.fact('Hạn mượn', '14 ngày')]) + `
+        <p style="margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink2b)">[Mô tả sách: chưa có trong dữ liệu danh mục] · ISBN {{sel.isbn}}</p>
+      </sc-if>`, `
+      <a href="WideCheckout.dc.html" aria-label="Mượn bằng cách chạm điện thoại vào sách" style="width: 52px; height: 52px; flex: none; border-radius: 999px; background: var(--surface); display: flex; align-items: center; justify-content: center">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg>
+      </a>
+      <button type="button" onClick="{{reserve}}" aria-live="polite" class="st-swap st-press" style="{{reserveBtn.style}}">
+        <sc-if value="{{reserveBtn.isDone}}" hint-placeholder-val="{{ false }}"><svg class="st-pop" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path><path class="st-draw" d="m9 10 2 2 4-4"></path></svg></sc-if>
+        <sc-if value="{{reserveBtn.isIdle}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg></sc-if>
+        {{reserveBtn.label}}
+      </button>`) +
+  S.foot(W, H, `
+  renderVals() {
+    var self = this, st = this.state || {}, ui = this.__ui();
+    var phase = st.phase || 'idle';
+    ${S.SEARCH_JS}
+    var sel = hits.filter(function (b) { return b.isbn === (st.sel || '9780990000020'); })[0] || hits[0] || null;
+    var out = sel && sel.n === 0;
+    return Object.assign(this.__theme(), search, {
+      rows: hits.map(function (b, i) {
+        return ui.row({ i: i, title: b.t, author: b.a, bg: b.bg, fg: b.fg, on: sel && b.isbn === sel.isbn,
+          status: b.n ? 'Còn ' + b.n + ' bản' : 'Đang được mượn · đặt trước', pill: ui.pill(b.n ? 'ok' : 'bad'), note: 'Kệ ' + b.shelf,
+          pick: function () { self.setState({ sel: b.isbn, phase: 'idle' }); } });
+      }),
+      hasSel: !!sel,
+      sel: sel ? { title: sel.t, author: sel.a, shelf: sel.shelf, isbn: sel.isbn, coverStyle: ui.bigCover(sel.bg, sel.fg),
+        tags: sel.s.split(' · ').map(function (x) { return { label: x }; }),
+        status: out ? 'Đang được mượn' : 'Còn ' + sel.n + ' bản',
+        statusStyle: 'font-size:15px;font-weight:700;line-height:1.25;color:' + (out ? 'var(--danger2)' : 'var(--ok)') } : { tags: [] },
+      reserveBtn: ui.phaseBtn(phase, { idle: 'Đặt trước sách này', sending: 'Đang gửi yêu cầu…', done: 'Đã đặt trước · thư viện xác nhận' }),
+      reserve: function () {
+        if (phase === 'sending') return;
+        if (phase === 'done') { self.setState({ phase: 'idle' }); return; }
+        self.setState({ phase: 'sending' });
+        self.timer = setTimeout(function () { self.setState({ phase: 'done' }); }, 1200);
+      }
+    });
+  }`);
+
+return out;
+};

@@ -12,6 +12,10 @@
 //   land      : 844 x 390, a phone turned sideways
 //   unfold    : 720 x 840, the inner screen of a book foldable, open (close to square)
 //   unfoldl   : 960 x 720, the same kind of screen held sideways (4:3)
+//   navmini   : boards for 840 dp and up at their own size, with the menu folded into the icon rail
+//   middetail : boards for 600-840 dp at their own size, showing the detail pane instead of the list
+//   mid600    : boards for 600-840 dp at 600 x 840, the narrow end of that size class (list)
+//   mid600d   : the same, detail pane
 // These are size classes, not exact models: published specs of this year's foldables disagree.
 // Boards drawn for a wide window (not 390 x 844, e.g. WideCatalog, RailCatalog) are rendered at their
 // own size in the variants that keep the size as drawn (base, font2). Boards drawn for 840 dp and up
@@ -59,11 +63,11 @@ const sizeOf = file => {
   return [+m[1], +m[2]];
 };
 
-function board(file, width, height, fontScale) {
+function board(file, width, height, fontScale, extra) {
   const html = fs.readFileSync(path.join(dir, file), 'utf8');
   const js = html.split('data-dc-script')[1].split('>').slice(1).join('>').split('</script>')[0];
   const C = new Function('DCLogic', js + '\nreturn Component;')(class { setState(s) { this.state = Object.assign({}, this.state, s); } });
-  const c = new C(); c.props = {}; c.state = { __theme: 'light', loaded: true, done: true, open: false, sheet: false };
+  const c = new C(); c.props = {}; c.state = Object.assign({ __theme: 'light', loaded: true, done: true, open: false, sheet: false }, extra);
   const vals = c.renderVals();
   const helmet = html.slice(html.indexOf('<helmet>') + 8, html.indexOf('</helmet>'));
   let tpl = html.slice(html.indexOf('</helmet>') + 9, html.indexOf('</x-dc>'));
@@ -84,6 +88,18 @@ const ownSize = new Set(['base', 'font2']);
 // a phone held sideways is wider than 840 dp, so it gets the expanded layout: wide boards are also
 // rendered at that size (only the boards drawn for 840 dp and up, not the 600-840 dp rail board)
 const alsoWide = new Set(['land']);
+const expandedOnly = (bw, bh) => bw >= 840, mediumOnly = (bw, bh) => bw >= 600 && bw < 840 && bh !== 844;
+const special = {
+  navmini: [expandedOnly, null, { navMini: true }],
+  middetail: [mediumOnly, null, { view: 'detail' }],
+  mid600: [mediumOnly, [600, 840], { view: 'list' }],
+  mid600d: [mediumOnly, [600, 840], { view: 'detail' }],
+};
+const frame = (f, w, h, fs2, extra) => `<figure data-board="${f}" style="display:inline-block;margin:8px;vertical-align:top"><figcaption style="font:12px sans-serif">${f}</figcaption><iframe srcdoc="${esc(board(f, w, h, fs2, extra))}" style="width:${w}px;height:${h}px;border:1px solid #999"></iframe></figure>`;
+const page = (name, frames) => {
+  fs.writeFileSync(path.join(out, name + '.html'), `<!doctype html><html><head><meta charset="utf-8"><title>${name}</title></head><body style="margin:0;background:#888">${frames}</body></html>`);
+  console.log('wrote', name);
+};
 for (const [name, [vw, vh, fs2]] of Object.entries(variants)) {
   const frames = files.map(f => {
     const [bw, bh] = sizeOf(f);
@@ -91,8 +107,17 @@ for (const [name, [vw, vh, fs2]] of Object.entries(variants)) {
     const expanded = bw >= 840;
     if (!phone && !ownSize.has(name) && !(expanded && alsoWide.has(name))) return '';
     const [w, h] = phone || !ownSize.has(name) ? [vw, vh] : [bw, bh];
-    return `<figure data-board="${f}" style="display:inline-block;margin:8px;vertical-align:top"><figcaption style="font:12px sans-serif">${f}</figcaption><iframe srcdoc="${esc(board(f, w, h, fs2))}" style="width:${w}px;height:${h}px;border:1px solid #999"></iframe></figure>`;
+    return frame(f, w, h, fs2);
   }).filter(Boolean).join('\n');
-  fs.writeFileSync(path.join(out, name + '.html'), `<!doctype html><html><head><meta charset="utf-8"><title>${name}</title></head><body style="margin:0;background:#888">${frames}</body></html>`);
-  console.log('wrote', name);
+  page(name, frames);
+}
+// variants for one size class only: which boards, the size (null = as drawn) and the state they start in
+for (const [name, [only, size, extra]] of Object.entries(special)) {
+  const frames = files.map(f => {
+    const [bw, bh] = sizeOf(f);
+    if (!only(bw, bh)) return '';
+    const [w, h] = size || [bw, bh];
+    return frame(f, w, h, false, extra);
+  }).filter(Boolean).join('\n');
+  page(name, frames);
 }
