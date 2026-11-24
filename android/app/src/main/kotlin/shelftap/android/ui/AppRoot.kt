@@ -1,6 +1,13 @@
 package shelftap.android.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -35,6 +42,7 @@ import shelftap.android.session.LogoutReason
 import shelftap.android.session.SessionState
 import shelftap.android.ui.theme.EffectTier
 import shelftap.android.ui.theme.LocalEffectTier
+import shelftap.android.ui.theme.Motion
 import shelftap.android.ui.theme.Spacing
 
 /**
@@ -84,6 +92,23 @@ private fun titleOf(route: String?): Int? = when (route) {
     else -> null
 }
 
+/** Screens one level down (list to detail, account to password) slide; screens at the same level fade through. */
+private fun isDeep(route: String?) = route?.startsWith("title/") == true || route == "password"
+
+private fun screenEnter(from: String?, to: String?, tier: EffectTier, slidePx: Int, back: Boolean): EnterTransition = when {
+    tier == EffectTier.LIGHT -> if (isDeep(from) || isDeep(to)) fadeIn(tween(Motion.SHORT_FADE_MS)) else EnterTransition.None
+    isDeep(from) || isDeep(to) ->
+        slideInHorizontally(Motion.spec(tier, Motion.SCREEN_MS)) { if (back) -slidePx else slidePx } + fadeIn(Motion.spec(tier, Motion.SCREEN_MS))
+    else -> fadeIn(Motion.spec(tier, Motion.FADE_IN_MS, delayMs = Motion.FADE_OUT_MS)) // old screen out first, then the new one in
+}
+
+private fun screenExit(from: String?, to: String?, tier: EffectTier, slidePx: Int, back: Boolean): ExitTransition = when {
+    tier == EffectTier.LIGHT -> if (isDeep(from) || isDeep(to)) fadeOut(tween(Motion.SHORT_FADE_MS)) else ExitTransition.None
+    isDeep(from) || isDeep(to) ->
+        slideOutHorizontally(Motion.spec(tier, Motion.SCREEN_MS)) { if (back) slidePx else -slidePx } + fadeOut(Motion.spec(tier, Motion.SCREEN_MS))
+    else -> fadeOut(Motion.spec(tier, Motion.FADE_OUT_MS))
+}
+
 private fun NavHostController.goTo(route: String) = navigate(route) {
     popUpTo(graph.findStartDestination().id) { saveState = true }
     launchSingleTop = true
@@ -101,6 +126,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     val tier = LocalEffectTier.current
     val glass = tier != EffectTier.LIGHT
     val blurPx = with(LocalDensity.current) { Spacing.l.toPx() }
+    val slidePx = with(LocalDensity.current) { Motion.slideDistance.roundToPx() }
     val pillHere = !guest && title != null && route != CHECKOUT
     val showPill = pillHere && !menuOpen // the room for it stays while the menu is open, so the page does not jump
 
@@ -125,7 +151,13 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                     .graphicsLayer { if (glass && menuOpen) renderEffect = BlurEffect(blurPx, blurPx, TileMode.Clamp) }
                     .then(if (menuOpen) Modifier.clearAndSetSemantics {} else Modifier),
             ) {
-                NavHost(nav, startDestination = if (guest && reason != null) LOGIN else CATALOG) {
+                NavHost(
+                    nav, startDestination = if (guest && reason != null) LOGIN else CATALOG,
+                    enterTransition = { screenEnter(initialState.destination.route, targetState.destination.route, tier, slidePx, back = false) },
+                    exitTransition = { screenExit(initialState.destination.route, targetState.destination.route, tier, slidePx, back = false) },
+                    popEnterTransition = { screenEnter(initialState.destination.route, targetState.destination.route, tier, slidePx, back = true) },
+                    popExitTransition = { screenExit(initialState.destination.route, targetState.destination.route, tier, slidePx, back = true) },
+                ) {
                     composable(CATALOG) { CatalogScreen(onOpen = { nav.navigate("title/$it") }) }
                     composable("title/{id}", arguments = listOf(navArgument("id") { type = NavType.StringType })) {
                         TitleDetailScreen(it.arguments?.getString("id").orEmpty(), onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null)

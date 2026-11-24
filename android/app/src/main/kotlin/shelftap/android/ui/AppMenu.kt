@@ -2,6 +2,8 @@ package shelftap.android.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -27,12 +29,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.lerp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -40,11 +48,17 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import shelftap.android.R
+import shelftap.android.ui.theme.EffectTier
+import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.MenuSize
+import shelftap.android.ui.theme.Motion
 import shelftap.android.ui.theme.Spacing
 
-/** How much of the blurred page shows through the glass panel: little, so the text on it stays readable. */
-private const val GLASS_ALPHA = 0.86f
+/** How much of the page shows through the glass panel: very little, so the menu stays readable even where the blur is not drawn (0.86 let page text bleed through in the audit screenshot). */
+private const val GLASS_ALPHA = 0.94f
+
+/** The panel starts a little smaller than its final size and grows into it. */
+private const val MENU_START_SCALE = 0.92f
 
 /** One entry of the ☰ menu: where it goes and its label. */
 data class MenuItem(val route: String, @StringRes val label: Int)
@@ -71,36 +85,52 @@ fun AppTopBar(@StringRes title: Int, menuOpen: Boolean, onMenu: () -> Unit) {
 @Composable
 private fun MenuGlyph(open: Boolean) {
     val color = LocalContentColor.current
+    val tier = LocalEffectTier.current
+    val progress by animateFloatAsState(if (open) 1f else 0f, Motion.spec(tier, Motion.GLYPH_MS), label = "menuGlyph")
     Canvas(Modifier.size(MenuSize.icon)) {
+        val p = progress // read here, in the draw phase: the glyph redraws each frame without recomposing
         val stroke = size.minDimension / 12f
         val a = size.width * 0.15f
         val b = size.width * 0.85f
-        fun line(from: Offset, to: Offset) = drawLine(color, from, to, strokeWidth = stroke, cap = StrokeCap.Round)
-        if (open) {
-            line(Offset(a, a), Offset(b, b))
-            line(Offset(b, a), Offset(a, b))
-        } else {
-            listOf(0.25f, 0.5f, 0.75f).forEach { y -> line(Offset(a, size.height * y), Offset(b, size.height * y)) }
-        }
+        val top = size.height * 0.25f
+        val mid = size.height * 0.5f
+        val bottom = size.height * 0.75f
+        fun line(from: Offset, to: Offset, alpha: Float = 1f) = drawLine(color, from, to, strokeWidth = stroke, cap = StrokeCap.Round, alpha = alpha)
+        // top bar becomes the "\" stroke, bottom bar the "/" stroke, the middle bar fades out
+        line(lerp(Offset(a, top), Offset(a, a), p), lerp(Offset(b, top), Offset(b, b), p))
+        line(lerp(Offset(a, bottom), Offset(a, b), p), lerp(Offset(b, bottom), Offset(b, a), p))
+        line(Offset(a, mid), Offset(b, mid), alpha = 1f - p)
     }
 }
 
 /**
  * The menu panel under the ☰ button, over a dimmed page. Closes on a tap outside, the back gesture, or a choice.
- * Solid (no blur) so it costs nothing on a low-end phone; the glass look of plan §5.5 is a later tier.
+ * [glass]: the page behind is blurred (MEDIUM and FULL tiers), so the panel can let some of it show through; on the
+ * light tier the panel is solid. The panel grows from the button's corner and the page dims in (260 ms, none on the light tier).
  */
-/** [glass]: the page behind is blurred (MEDIUM and FULL tiers), so the panel can let some of it show through. */
 @Composable
 fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, onSelect: (String) -> Unit, onDismiss: () -> Unit) {
     BackHandler(onBack = onDismiss)
+    val tier = LocalEffectTier.current
+    val enter = remember { Animatable(if (tier == EffectTier.LIGHT) 1f else 0f) }
+    LaunchedEffect(Unit) { if (tier != EffectTier.LIGHT) enter.animateTo(1f, Motion.spec(tier, Motion.MENU_MS)) }
     Box(Modifier.fillMaxSize()) {
         Box(
             // A tap outside closes. It is a gesture, not a clickable, so TalkBack does not see an unlabelled button;
             // the ✕ button is the accessible way to close.
-            Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.32f)).pointerInput(Unit) { detectTapGestures { onDismiss() } },
+            Modifier.fillMaxSize().graphicsLayer { alpha = enter.value }.background(Color.Black.copy(alpha = 0.32f))
+                .pointerInput(Unit) { detectTapGestures { onDismiss() } },
         )
         Surface(
-            modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(start = Spacing.l, top = Spacing.touch + Spacing.s).width(MenuSize.width),
+            modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars).padding(start = Spacing.l, top = Spacing.touch + Spacing.s)
+                .graphicsLayer {
+                    val p = enter.value
+                    alpha = p
+                    scaleX = MENU_START_SCALE + (1f - MENU_START_SCALE) * p
+                    scaleY = scaleX
+                    transformOrigin = TransformOrigin(0f, 0f) // grows from the ☰ corner
+                }
+                .width(MenuSize.width),
             shape = MaterialTheme.shapes.large,
             color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = if (glass) GLASS_ALPHA else 1f),
             shadowElevation = Spacing.s,
