@@ -133,6 +133,13 @@ object LoginSize {
     val cardHeight = 106.dp
 }
 
+/** The password, lock and offline screens, from their boards: the soft colour behind the top, and the badge on the card. */
+object GateSize {
+    val backdrop = 360.dp
+    val badge = 76.dp
+    val badgeIcon = 32.dp
+}
+
 /** Sizes on the account screen, from the board. */
 object AccountSize {
     val avatar = 56.dp

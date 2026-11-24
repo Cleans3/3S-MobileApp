@@ -231,7 +231,7 @@ private const val DISABLED_ALPHA = 0.45f
 @Composable
 fun LabeledField(
     label: String, value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier,
-    keyboardType: KeyboardType = KeyboardType.Text, password: Boolean = false, enabled: Boolean = true,
+    keyboardType: KeyboardType = KeyboardType.Text, password: Boolean = false, enabled: Boolean = true, placeholder: String? = null,
 ) {
     val c = MaterialTheme.shelfTap
     var shown by remember { mutableStateOf(false) }
@@ -247,7 +247,10 @@ fun LabeledField(
                 keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
                 modifier = Modifier.fillMaxSize().semantics { contentDescription = label },
                 decorationBox = { inner ->
-                    Box(Modifier.fillMaxSize().padding(start = Spacing.l, end = if (password) Spacing.xl * 2 + Spacing.xs else Spacing.l), contentAlignment = Alignment.CenterStart) { inner() }
+                    Box(Modifier.fillMaxSize().padding(start = Spacing.l, end = if (password) Spacing.xl * 2 + Spacing.xs else Spacing.l), contentAlignment = Alignment.CenterStart) {
+                        inner()
+                        if (value.isEmpty() && placeholder != null) Text(placeholder, style = MaterialTheme.typography.bodyLarge, color = c.ink3, modifier = Modifier.clearAndSetSemantics {})
+                    }
                 },
             )
             if (password) {

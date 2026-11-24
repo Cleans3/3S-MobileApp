@@ -84,6 +84,24 @@
     <string name="lock_unlock">Mở khóa</string>
 
     <!-- Đổi mật khẩu và nhập lại mật khẩu -->
+    <string name="pw_first_login">Lần đăng nhập đầu tiên</string>
+    <string name="pw_forced_title">Đặt mật khẩu của riêng bạn</string>
+    <string name="pw_forced_body">Mật khẩu thư viện cấp chỉ dùng một lần. Đổi xong, các thiết bị khác đang đăng nhập sẽ bị đăng xuất.</string>
+    <string name="pw_body">Đổi xong, các thiết bị khác đang đăng nhập sẽ bị đăng xuất.</string>
+    <string name="pw_current_issued">Mật khẩu thư viện cấp</string>
+    <string name="pw_new_hint">Nhập mật khẩu mới</string>
+    <string name="pw_again_hint">Nhập lại</string>
+    <string name="pw_rule_length">Ít nhất %1$d ký tự</string>
+    <string name="pw_rule_differs">Khác mật khẩu hiện tại</string>
+    <string name="pw_rule_same">Hai lần nhập giống nhau</string>
+    <string name="pw_save">Lưu mật khẩu</string>
+    <string name="lock_locked_title">ShelfTap đang khóa</string>
+    <string name="lock_body">Ứng dụng tự khóa khi bạn chuyển sang ứng dụng khác.</string>
+    <string name="lock_footnote">Nếu sinh trắc học trên máy thay đổi, ShelfTap sẽ yêu cầu bạn đăng nhập lại bằng mật khẩu.</string>
+    <string name="offline_title">Không kết nối được thư viện</string>
+    <string name="offline_body">Kiểm tra Wi-Fi hoặc dữ liệu di động. Mượn, gia hạn và đặt trước cần mạng.</string>
+    <string name="offline_still">Vẫn chưa kết nối được (lần thử %1$d)</string>
+    <string name="offline_trying">Đang thử…</string>
     <string name="pw_title">Đổi mật khẩu</string>
     <string name="pw_forced">Tài khoản của bạn cần mật khẩu mới trước khi dùng thư viện.</string>
     <string name="pw_current">Mật khẩu hiện tại</string>

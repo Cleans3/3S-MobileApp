@@ -84,6 +84,24 @@
     <string name="lock_unlock">Unlock</string>
 
     <!-- Change password and password re-entry -->
+    <string name="pw_first_login">First sign-in</string>
+    <string name="pw_forced_title">Set a password of your own</string>
+    <string name="pw_forced_body">The password the library issued works once. When you change it, your other signed-in devices are signed out.</string>
+    <string name="pw_body">When you change it, your other signed-in devices are signed out.</string>
+    <string name="pw_current_issued">Password issued by the library</string>
+    <string name="pw_new_hint">Enter a new password</string>
+    <string name="pw_again_hint">Enter it again</string>
+    <string name="pw_rule_length">At least %1$d characters</string>
+    <string name="pw_rule_differs">Different from the current password</string>
+    <string name="pw_rule_same">Both entries match</string>
+    <string name="pw_save">Save password</string>
+    <string name="lock_locked_title">ShelfTap is locked</string>
+    <string name="lock_body">The app locks itself when you switch to another app.</string>
+    <string name="lock_footnote">If the biometrics on this phone change, ShelfTap will ask you to sign in again with your password.</string>
+    <string name="offline_title">Cannot reach the library</string>
+    <string name="offline_body">Check Wi-Fi or mobile data. Borrowing, renewing and reserving need a connection.</string>
+    <string name="offline_still">Still cannot connect (attempt %1$d)</string>
+    <string name="offline_trying">Trying…</string>
     <string name="pw_title">Change password</string>
     <string name="pw_forced">Your account needs a new password before you can use the library.</string>
     <string name="pw_current">Current password</string>

@@ -37,6 +37,9 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import shelftap.android.ui.CardLoginContent
+import shelftap.android.ui.ChangePasswordContent
+import shelftap.android.ui.LockContent
+import shelftap.android.ui.OfflineContent
 import shelftap.android.ui.CheckoutViewModel
 import shelftap.android.ui.DoneCard
 import shelftap.android.ui.FailedCard
@@ -159,6 +162,9 @@ class UiAuditTest {
                 }
             }
             overlayShot("history-stepup", activity) { StepUpCard(onLogin = {}) }
+            overlayShot("password-first", activity) { ChangePasswordContent(forced = true, busy = false, error = null, onSave = { _, _ -> }, onLogout = {}) }
+            overlayShot("lock", activity) { LockContent(onUnlock = {}, onLogout = {}) }
+            overlayShot("offline", activity) { OfflineContent(busy = false, tries = 2, onRetry = {}, onLogout = {}) }
             overlayShot("login-card", activity) { CardLoginContent(busy = false, error = null, onBack = {}) }
             overlayShot("login-card-busy", activity) { CardLoginContent(busy = true, error = null, onBack = {}) }
             overlayShot("checkout-sending", activity) { SendingCard() }
