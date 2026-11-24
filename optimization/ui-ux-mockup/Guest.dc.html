@@ -55,9 +55,17 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-root :is(button,a,[role="switch"]){position:relative}
 .st-root :is(button,a,[role="switch"])::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,48px);height:max(100%,48px);transform:translate(-50%,-50%)}
 .st-root input{min-width:0}
+div.st-root{container-type:size}
+.st-fab{width:max-content;max-width:calc(100% - 32px)}
+@container (max-height: 480px){
+  .st-fab .st-fab-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .st-fab a,.st-fab button{padding:8px !important}
+}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+  <div class="st-page" style="position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none">
+  <div style="position: relative; min-height: max(100%, 844px)">
   <div style="position: absolute; inset: 0; padding: 56px 20px 0; display: flex; flex-direction: column; gap: 18px">
     <div style="display: flex; align-items: center; justify-content: space-between; height: 48px">
       <div style="width: 48px"></div>
@@ -87,11 +95,12 @@ a{color:var(--ink)}a:hover{opacity:.85}
     </div>
     <div class="st-rise d3" style="padding: 14px 16px; border-radius: 22px; border: 1px dashed rgba(var(--ink-rgb),0.2); font-size: 13px; line-height: 1.5; color: var(--ink2b)">Khách xem và tìm sách được. Đặt trước, mượn, gia hạn và lịch sử đọc cần tài khoản thư viện.</div>
   </div>
-
-  <div style="position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%)">
-    <button type="button" onClick="{{askLogin}}" class="st-press" style="height: 56px; padding: 0 22px 0 8px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 12px; font: inherit; font-size: 15px; font-weight: 600; white-space: nowrap; cursor: pointer; box-shadow: 0 10px 30px rgba(28,27,26,0.3)">
+  </div>
+  </div>
+  <div class="st-fab" style="position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%)">
+    <button type="button" onClick="{{askLogin}}" class="st-press" style="min-height: 56px; padding: 0 22px 0 8px; box-sizing: border-box; line-height: 1.2; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 12px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 30px rgba(28,27,26,0.3)">
       <span style="width: 40px; height: 40px; border-radius: 999px; background:  rgba(var(--glass),0.16); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg></span>
-      Đăng nhập để mượn sách
+      <span class="st-fab-label">Đăng nhập để mượn sách</span>
     </button>
   </div>
 

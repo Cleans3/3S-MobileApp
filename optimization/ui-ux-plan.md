@@ -274,7 +274,7 @@ Số trên là sau hai thay đổi: Danh mục cuộn được (cùng lúc thêm
 
 Ba lỗi thật có cả ở cỡ chữ thường đã sửa trong mockup: ô nhập giữ bề rộng tối thiểu mặc định (khoảng 20 ký tự) nên tràn ra ngoài ở chữ lớn (`min-width: 0`); băng sách ở Danh mục tràn mép phải mà không cuộn ngang được; dải "Không có mạng" ở màn Tìm khi không có mạng đè lên dòng đếm.
 
-Lỗi ở chữ 2.0 đến từ cách mockup đặt mọi khối ở vị trí cố định trong một màn cao 844 px, không cuộn. Đây là quy tắc cho app, không sửa trên mockup:
+Lỗi ở chữ 2.0 đến từ cách mockup đặt mọi khối ở vị trí cố định trong một màn cao 844 px, không cuộn. Đây là quy tắc cho app; từ ngày 2026-11-24 mockup cũng làm theo (xem "Mockup đã sửa theo" ở cuối phần này):
 - **Mọi màn cuộn dọc được** (`verticalScroll` hoặc `LazyColumn`), không đặt khối ở toạ độ `y` cố định. Tài khoản, Chi tiết, Sách đang mượn, Đổi mật khẩu và Mất kết nối là các màn tràn đáy nhiều nhất.
 - **Thanh nổi chừa chỗ:** nội dung có `contentPadding` ở đáy bằng chiều cao thực của thanh nổi ("Chạm sách để mượn", thanh Đặt trước), đo lúc chạy chứ không viết cứng, vì thanh cao lên khi chữ lớn.
 - **Chữ trong nút dạng viên thuốc được xuống dòng** (tối đa 2 dòng), không ép một dòng; "Chạm sách để mượn" và "Đăng nhập để mượn sách" tràn mép ở rộng 320 và chữ 2.0.
@@ -303,6 +303,8 @@ Lỗi ở chữ 2.0 đến từ cách mockup đặt mọi khối ở vị trí c
 Quy tắc thêm cho app:
 - **Cửa sổ rộng không kéo giãn bố cục điện thoại:** từ 600 dp dùng thanh điều hướng dọc, từ 840 dp dùng menu cố định cạnh trái và hai khung (danh sách, chi tiết), như ở trên. Cột chữ giới hạn khoảng 600 dp hoặc 80 ký tự mỗi dòng.
 - **Màn thấp:** ngoài quy tắc cuộn dọc, khi chiều cao dưới khoảng 480 dp thì nút nổi tự mượn thu thành nút tròn chỉ có icon, để không che phần lớn màn. Đây là đề xuất, cần thử trên máy.
+
+**Mockup đã sửa theo (2026-11-24).** 15 màn điện thoại có trang cuộn dọc, cao ít nhất bằng bản vẽ; các nút và thanh nổi, menu, bảng xác nhận nằm ngoài trang. 9 màn có khối đè nhau ở chữ 2.0 chuyển sang cột tự xếp (khối dưới cùng đẩy xuống đáy). Nút nổi xuống dòng khi hẹp và thu thành nút tròn chỉ có icon khi cửa sổ thấp hơn 480 dp. Ở 390 × 844 chữ không dịch quá 0,4 px. Số lỗi vỡ: chữ 2.0 từ 30 xuống 0, rộng 320 và chữ 2.0 từ 55 xuống 0, màn phụ máy gập dọc từ 84 xuống 0, chia đôi màn hình từ 85 xuống 0, xoay ngang từ 78 xuống 0, máy gập mở cầm ngang từ 7 xuống 0, màn ngoài 10:16 từ 1 xuống 0. Màn điện thoại trên cửa sổ rộng vẫn bị kéo giãn (16 đến 17 trên 20); ở cỡ đó app dùng bố cục rộng ở dưới. Các bảng trên giữ số trước khi sửa làm mốc so sánh.
 
 **Mockup cho cửa sổ rộng (2026-11-24).** Hai màn mới ở hàng cuối của mockup, theo cách chia cỡ cửa sổ của Material 3:
 - **Danh mục ở cửa sổ từ 840 dp** (`WideCatalog`, 960 × 720): menu cố định bên trái, nút "Chạm sách để mượn" ở đáy menu thay cho nút nổi. Khung giữa là danh sách (ô tìm, chip chủ đề, tìm không dấu như màn Danh sách). Khung phải là chi tiết của sách đang chọn: bấm sách khác thì khung phải đổi theo, không chuyển trang; nút "Đặt trước" đi qua các trạng thái như màn Chi tiết. Hàng đang chọn có nền đặc và viền.

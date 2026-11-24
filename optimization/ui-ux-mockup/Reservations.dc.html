@@ -55,6 +55,8 @@ a{color:var(--ink)}a:hover{opacity:.85}
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
   </a>
 
+  <div class="st-page" style="position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none">
+  <div style="position: relative; min-height: max(100%, 844px)">
   <div class="st-rise" style="position: absolute; top: 124px; left: 20px; right: 20px; display: flex; flex-direction: column; gap: 16px">
     <h1 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.3px">Đặt trước</h1>
 
@@ -97,6 +99,8 @@ a{color:var(--ink)}a:hover{opacity:.85}
       <div class="st-fade" role="status" style="padding: 14px 16px; border-radius: 20px; background: var(--surface); font-size: 14px; color: var(--ink2)">Đã hủy đặt trước Clean Code.</div>
     </sc-if>
     <p style="margin: 0; font-size: 12px; color: var(--ink3)">[Dữ liệu mẫu cho bản phác; thư viện giữ sách 3 ngày theo chính sách mặc định]</p>
+  </div>
+  </div>
   </div>
   <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 12px; right: 14px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
     <sc-if value="{{themeIsLight}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>

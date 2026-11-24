@@ -2,7 +2,7 @@
 
 Mã nguồn của mockup 43 màn (20 màn điện thoại, 11 màn cửa sổ rộng và 12 màn cửa sổ vừa) ở `optimization/ui-ux-plan.md` §5.5, cùng các script đo dùng cho §5.3.
 
-- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 26 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý và Thông báo (bản 17), rồi ba lỗi bố cục tìm ra khi thử rộng 320 và chữ 2.0 cùng băng "Gợi ý cho bạn" trên Danh mục và Danh mục cuộn dọc (cả hai đăng chung trong bản 18), và hai màn cửa sổ rộng `WideCatalog`, `RailCatalog` (bản 21; số bản nhảy từ 18 lên 21 dù chỉ đăng một lần, và 23 file đang đăng ở bản 21 trùng từng byte với repo). 10 màn rộng còn lại (`WideLoans` đến `WideStatus`) và phần thu gọn của `WideCatalog` đăng ở bản 23 (số bản lại nhảy từ 21 lên 23 dù chỉ đăng một lần; 33 file đang đăng trùng từng byte với repo). Nút thu gọn menu ở màn rộng và 11 màn cửa sổ vừa `Mid*` đăng ở bản 25 (số bản lại nhảy từ 23 lên 25 dù chỉ đăng một lần; 44 file đang đăng trùng từng byte với repo). Chuyển khung và hiệu ứng nhấn thẻ đăng ở bản 26 (lần này số bản tăng đúng một).
+- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 26 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý và Thông báo (bản 17), rồi ba lỗi bố cục tìm ra khi thử rộng 320 và chữ 2.0 cùng băng "Gợi ý cho bạn" trên Danh mục và Danh mục cuộn dọc (cả hai đăng chung trong bản 18), và hai màn cửa sổ rộng `WideCatalog`, `RailCatalog` (bản 21; số bản nhảy từ 18 lên 21 dù chỉ đăng một lần, và 23 file đang đăng ở bản 21 trùng từng byte với repo). 10 màn rộng còn lại (`WideLoans` đến `WideStatus`) và phần thu gọn của `WideCatalog` đăng ở bản 23 (số bản lại nhảy từ 21 lên 23 dù chỉ đăng một lần; 33 file đang đăng trùng từng byte với repo). Nút thu gọn menu ở màn rộng và 11 màn cửa sổ vừa `Mid*` đăng ở bản 25 (số bản lại nhảy từ 23 lên 25 dù chỉ đăng một lần; 44 file đang đăng trùng từng byte với repo). Chuyển khung và hiệu ứng nhấn thẻ đăng ở bản 26 (lần này số bản tăng đúng một). Màn điện thoại cuộn dọc và nút nổi thu gọn (mục "Màn thấp và chữ 2.0" bên dưới) chưa đăng.
 - **Mở trực tiếp không chạy:** mỗi màn cần runtime `support.js` của trình xem artifact, file đó không có trong repo. Các script dưới đây không cần runtime: chúng tự đọc template và chạy phần script của từng màn.
 
 ## Nội dung
@@ -116,12 +116,12 @@ Mép nút kính không đạt 3:1 là chủ ý của phong cách kính và khôn
 |---|---|---|
 | Gốc: rộng 390, chữ bình thường | 0 / 20 | 0 (bản 17: 3 lỗi thật, đã sửa ở bản 18) |
 | Rộng 320 | 0 / 20 | 0 |
-| Chữ 2.0 | 10 / 20 (lượt đo đầu: 13) | 30 (lượt đo đầu: 41) |
-| Rộng 320 và chữ 2.0 | 16 / 20 (lượt đo đầu: 18) | 55 (lượt đo đầu: 65) |
+| Chữ 2.0 | 0 / 20 (trước khi sửa: 10; lượt đo đầu: 13) | 0 (trước khi sửa: 30; lượt đo đầu: 41) |
+| Rộng 320 và chữ 2.0 | 0 / 20 (trước khi sửa: 16; lượt đo đầu: 18) | 0 (trước khi sửa: 55; lượt đo đầu: 65) |
 
 "Lượt đo đầu" là bản 17 cộng ba lỗi bố cục đã sửa, trước khi thêm băng gợi ý; trạng thái này không được đăng riêng. Trong bản 18, Danh mục cuộn được và script không tính chữ trong vùng cuộn đi qua dưới thanh nổi là chữ đè (vùng cuộn chừa chỗ ở đáy). Hai thay đổi này cùng làm số giảm; Danh mục từ 6 lỗi (chữ 2.0) còn 0.
 
-Lỗi ở chữ 2.0 là do mockup đặt khối ở vị trí cố định trong màn 844 px không cuộn. Mockup không sửa phần này; quy tắc cho app ở `optimization/ui-ux-plan.md` §6.4. Một vài lỗi chữ đè ở Tự mượn, Gợi ý và Đăng nhập lại là thanh xem trước trạng thái, chỉ có trong bản phác.
+"Trước khi sửa" là số đến ngày 2026-11-24, khi mockup đặt khối ở vị trí cố định trong màn 844 px không cuộn. Cách sửa ở mục "Màn thấp và chữ 2.0" bên dưới.
 
 ## Màn tỷ lệ đặc biệt
 
@@ -130,20 +130,31 @@ Bảy cỡ màn thêm vào `tools/render-static.js`, chữ bình thường, đơ
 | Cỡ màn | dp | Màn vỡ bố cục | Lỗi vỡ | Màn bị kéo giãn |
 |---|---|---|---|---|
 | Điện thoại dài 21:9 (`tall`) | 412 × 960 | 0 / 20 | 0 | không áp dụng |
-| Màn ngoài rộng 10:16 của máy gập ngang (`wide`) | 480 × 768 | 1 / 20 | 1 | không áp dụng |
-| Màn phụ của máy gập dọc (`flipcover`) | 360 × 400 | 15 / 20 | 84 | không áp dụng |
-| Chia đôi màn hình (`split`) | 390 × 420 | 15 / 20 | 85 | không áp dụng |
-| Điện thoại xoay ngang (`land`) | 844 × 390 | 14 / 20 | 78 | 18 / 20 |
+| Màn ngoài rộng 10:16 của máy gập ngang (`wide`) | 480 × 768 | 0 / 20 (trước: 1) | 0 (trước: 1) | không áp dụng |
+| Màn phụ của máy gập dọc (`flipcover`) | 360 × 400 | 0 / 20 (trước: 15) | 0 (trước: 84) | không áp dụng |
+| Chia đôi màn hình (`split`) | 390 × 420 | 0 / 20 (trước: 15) | 0 (trước: 85) | không áp dụng |
+| Điện thoại xoay ngang (`land`) | 844 × 390 | 0 / 20 (trước: 14) | 0 (trước: 78) | 16 / 20 (trước: 18) |
 | Máy gập mở, gần vuông (`unfold`) | 720 × 840 | 0 / 20 | 0 | 17 / 20 |
-| Máy gập mở, cầm ngang 4:3 (`unfoldl`) | 960 × 720 | 4 / 20 | 7 | 18 / 20 |
+| Máy gập mở, cầm ngang 4:3 (`unfoldl`) | 960 × 720 | 0 / 20 (trước: 4) | 0 (trước: 7) | 17 / 20 (trước: 18) |
 
 "Lỗi vỡ" là tràn mép, tràn đáy, chữ đè và chữ bị cắt. "Màn bị kéo giãn" là màn có dòng quá 80 ký tự hoặc có thẻ, hàng hay nút rộng quá 85% màn; chỉ tính khi màn rộng hơn 600 dp.
 
-Màn thấp vỡ vì cùng lý do với chữ 2.0: chỉ năm màn có vùng cuộn (Danh mục, Danh sách, Thông báo, Tìm khi không có mạng, Gợi ý) giữ nguyên. Màn rộng không vỡ nhưng là bố cục điện thoại bị kéo giãn, vì mockup chưa có màn nào cho cửa sổ rộng.
+"Trước" là số trước khi sửa: màn thấp vỡ vì cùng lý do với chữ 2.0, chỉ năm màn có vùng cuộn (Danh mục, Danh sách, Thông báo, Tìm khi không có mạng, Gợi ý) giữ nguyên. Màn điện thoại trên cửa sổ rộng vẫn bị kéo giãn; ở cỡ đó app dùng các màn `Wide*` và `Mid*` (mục "Cửa sổ rộng").
+
+## Màn thấp và chữ 2.0
+
+Sửa theo quy tắc ở kế hoạch §6.4 (ngày 2026-11-24):
+
+- **Trang cuộn được.** 15 màn điện thoại (trừ Danh mục, Danh sách, Tìm khi không có mạng, Gợi ý và Thông báo, vốn đã cuộn) bọc nội dung trong một trang cuộn dọc, cao ít nhất 844 px như bản vẽ. Cửa sổ thấp hơn thì cuộn thay vì cắt. Nút ☰, nút quay lại, nút và thanh nổi, menu, bảng xác nhận, thanh xem trước và nút đổi nền nằm ngoài trang, cố định theo cửa sổ.
+- **Khối xếp theo cột.** 9 màn có khối đè nhau ở chữ 2.0 (Đăng nhập bằng thẻ, Đổi mật khẩu, Đăng nhập, Mất kết nối, Khóa, Màn chào, Đăng nhập lại, Khởi động, Tự mượn) chuyển từ toạ độ cố định sang cột tự xếp. Khối nằm trên giữ khoảng cách như bản vẽ, khối dưới cùng đẩy xuống đáy (`margin-top: auto`). Ở 390 × 844 chữ không dịch quá 0,4 px; chữ lớn hơn thì các khối đẩy nhau xuống và trang cuộn.
+- **Nút nổi.** "Chạm sách để mượn" và "Đăng nhập để mượn sách" xuống dòng khi không đủ chỗ (rộng tối đa bằng màn trừ 32 px). Cửa sổ thấp hơn 480 px thì nút thu thành nút tròn 56 × 56 chỉ có icon; tên nút vẫn còn cho trình đọc màn hình.
+- **Hai nút ở bảng hỏi quyền thông báo** cao tối thiểu thay vì cố định, nên chữ xuống dòng được.
+
+Kết quả: 0 lỗi vỡ ở cả 15 biến thể, đo hai lượt cho cùng kết quả đến từng mục. Màn ngoài trang (thanh xem trước, nút nổi) vẫn có thể che nội dung khi cuộn; script không tính đó là chữ đè vì người dùng cuộn được nội dung lên trên.
 
 Lượt đo đầu có 4 lỗi "tràn đáy" giả ở màn Thông báo: bảng hỏi quyền còn đang trượt lên khi đo. Từ lượt này, `tools/layout-check.js` tắt hiệu ứng động trước khi đo.
 
-Bảng trên đo ngày 2026-11-24 với font cố định trong `tools/fonts/`: `flipcover` 84 (74 tràn đáy, 10 chữ đè), `split` 85 (70 tràn đáy, 15 chữ đè). Trước đó, khi trang đo còn tải Nunito từ Google Fonts, hai số này đổi chỗ cho nhau giữa các lượt đo (85 và 84, hay 84 và 85) dù mockup không đổi. Vị trí chữ lệch 1–3 px giữa các lượt, nên hai mục nằm sát mép dưới lúc tràn lúc không: nút "Gia hạn" ở Sách đang mượn (đáy 402 px trên màn 400) và đoạn "Ứng dụng tự khóa…" ở Khóa (đáy 421–422 px trên màn 420). Font đã tải xong ở cả hai trạng thái, nên nguyên nhân không phải font tải chậm; giả thuyết là khác phiên bản file font, chưa kiểm được vì máy chỉ còn một bản trong cache. Với font cố định, hai lượt đo đủ 15 biến thể, ba lượt khi đã có font trong cache và hai lượt buộc tải lại font cho cùng kết quả, đến từng mục.
+Số "trước" ở bảng trên đo ngày 2026-11-24 với font cố định trong `tools/fonts/`: `flipcover` 84 (74 tràn đáy, 10 chữ đè), `split` 85 (70 tràn đáy, 15 chữ đè). Trước khi có font cố định, khi trang đo còn tải Nunito từ Google Fonts, hai số này đổi chỗ cho nhau giữa các lượt đo (85 và 84, hay 84 và 85) dù mockup không đổi. Vị trí chữ lệch 1–3 px giữa các lượt, nên hai mục nằm sát mép dưới lúc tràn lúc không: nút "Gia hạn" ở Sách đang mượn (đáy 402 px trên màn 400) và đoạn "Ứng dụng tự khóa…" ở Khóa (đáy 421–422 px trên màn 420). Font đã tải xong ở cả hai trạng thái, nên nguyên nhân không phải font tải chậm; giả thuyết là khác phiên bản file font, chưa kiểm được vì máy chỉ còn một bản trong cache. Với font cố định, hai lượt đo đủ 15 biến thể, ba lượt khi đã có font trong cache và hai lượt buộc tải lại font cho cùng kết quả, đến từng mục.
 
 ## Cửa sổ rộng
 
@@ -196,12 +207,13 @@ Máy gập mở gần vuông và tablet nhỏ cầm dọc. Theo Material 3, cỡ
 
 Đo hai lượt, cùng kết quả. Lỗi ở lượt đầu là một ghi chú chữ 12 px ở màn Sách đang mượn dài khoảng 86 ký tự một dòng khi khung chi tiết rộng ra. Giới hạn độ rộng đoạn chữ đổi từ 40em xuống 36em (khoảng 77 ký tự ở chữ nhỏ).
 
-Tương phản chữ: 1212 đoạn mỗi theme, tối 0 lỗi, sáng chỉ còn 5 đoạn chữ trên ảnh ở màn chào như trước. Mục bắt buộc về icon và viền: 67, chỉ còn icon trên ảnh ở màn chào. Vùng chạm: 455 nút, 0 dưới 48 px. Script của cả 43 màn chạy không lỗi.
+Tương phản chữ: 1207 đoạn mỗi theme, tối 0 lỗi, sáng chỉ còn 5 đoạn chữ trên ảnh ở màn chào như trước. (Trước đây là 1212: 5 dòng chú thích HTML trong `WideCatalog` và `RailCatalog` bị đọc nhầm là chữ; `tools/contrast.js` nay bỏ qua chú thích, và trang dựng của `render-static.js` không còn in chúng ra.) Mục bắt buộc về icon và viền: 67, chỉ còn icon trên ảnh ở màn chào. Vùng chạm: 455 nút, 0 dưới 48 px. Script của cả 43 màn chạy không lỗi.
 
 Các lỗi tìm ra và đã sửa khi vẽ: menu cố định của `WideCatalog` đè mục ở chữ 2.0 vì không cuộn; ở 844 × 390 khung chi tiết chỉ còn 244 dp và cắt chữ (dẫn tới phần thu gọn ở trên); ghi chú ở cột trái màn Tự mượn tràn đáy ở chữ 2.0.
 
 Sửa trong script đo:
 - `tools/layout-check.js` chỉ so chữ đè trên phần chữ thật sự hiện ra (chip trong hàng cuộn ngang từng bị báo nhầm), và không coi chữ trong vùng cuộn là "bị cắt" (người dùng cuộn tới được). Khung bao ngoài toàn màn của `WideStatus` và `WideHistory` đổi từ `section` sang `div` để không bị tính là "khối kéo giãn"; nhãn vùng chuyển vào thẻ ở giữa.
+- `tools/contrast.js` (bộ đọc template dùng chung với `render-static.js`) bỏ qua chú thích HTML `<!-- … -->`; trước đây chú thích bị coi là chữ.
 - `tools/render-static.js` trước đây in chữ `<#root>` lên đầu mỗi màn; đã bỏ. Số đo không đổi vì script đo tính theo khung màn.
 
 Chi tiết từng lỗi và cách sửa: `optimization/ui-ux-plan.md` §5.3 và `optimization/log/docs-ui-ux-plan.md`.

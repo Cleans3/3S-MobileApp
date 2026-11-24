@@ -31,6 +31,8 @@ const hex = c => '#' + c.slice(0, 3).map(v => Math.round(v).toString(16).padStar
 // ---------- template parsing ----------
 const VOID = new Set(['input', 'img', 'br', 'meta', 'link', 'hr']);
 function parse(html) {
+  // HTML comments are not content (they used to be read as text: "!-- 1. Fixed menu …")
+  html = html.replace(/<!--[\s\S]*?-->/g, '');
   const root = { tag: '#root', attrs: {}, children: [] }; const stack = [root];
   const re = /<(\/?)([a-zA-Z][\w-]*)((?:[^>"']|"[^"]*"|'[^']*')*)>|([^<]+)/g; let m;
   while ((m = re.exec(html))) {

@@ -55,12 +55,14 @@ a{color:var(--ink)}a:hover{opacity:.85}
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m15 18-6-6 6-6"></path></svg>
   </a>
 
-  <div class="st-rise" style="position: absolute; top: 120px; left: 24px; right: 24px; display: flex; flex-direction: column; gap: 6px">
+  <div class="st-page" style="position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none">
+  <div style="position: relative; min-height: max(100%, 844px); display: flex; flex-direction: column">
+  <div class="st-rise" style="position: relative; flex: none; margin: 120px 24px 0; display: flex; flex-direction: column; gap: 6px">
     <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.3px">Đăng nhập bằng thẻ</h1>
     <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2b)">Áp thẻ thư viện vào mặt sau điện thoại và giữ yên vài giây.</p>
   </div>
 
-  <button type="button" onClick="{{advance}}" aria-label="Mô phỏng chạm thẻ" style="position: absolute; left: 50%; top: 230px; transform: translateX(-50%); width: 300px; height: 300px; border: 0; padding: 0; background:  transparent; cursor: pointer">
+  <button type="button" onClick="{{advance}}" aria-label="Mô phỏng chạm thẻ" style="position: relative; flex: none; align-self: center; margin-top: 24px; width: 300px; height: 300px; border: 0; padding: 0; background:  transparent; cursor: pointer">
     <span aria-hidden="true" class="st-ping" style="{{ping}}"></span>
     <span aria-hidden="true" class="st-ping st-late" style="{{ping}}"></span>
     <span aria-hidden="true" class="st-swap" style="{{ring1}}"></span>
@@ -74,7 +76,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
     </span>
   </button>
 
-  <div style="position: absolute; left: 16px; right: 16px; top: 556px; padding: 16px 18px; border-radius: 28px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(var(--edge),0.9); display: flex; flex-direction: column; gap: 12px" aria-live="polite">
+  <div style="position: relative; flex: none; margin: 26px 16px 0; padding: 16px 18px; border-radius: 28px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(var(--edge),0.9); display: flex; flex-direction: column; gap: 12px" aria-live="polite">
     <sc-for list="{{steps}}" as="s" hint-placeholder-count="3">
       <div style="display: flex; align-items: center; gap: 12px">
         <span class="st-swap" style="{{s.dotStyle}}">
@@ -87,11 +89,13 @@ a{color:var(--ink)}a:hover{opacity:.85}
     </sc-for>
   </div>
 
-  <div style="position: absolute; left: 24px; right: 24px; bottom: 36px; display: flex; flex-direction: column; gap: 12px">
+  <div style="position: relative; flex: none; margin: auto 24px 36px; padding-top: 16px; display: flex; flex-direction: column; gap: 12px">
     <sc-if value="{{isDone}}" hint-placeholder-val="{{ false }}">
       <a class="st-rise" href="Catalog.dc.html" style="height: 54px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 16px; font-weight: 600">Vào thư viện</a>
     </sc-if>
     <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink2b); text-align: center">Không cần PIN: thẻ chỉ chứng minh bạn đang giữ thẻ. Muốn xem lịch sử đọc, bạn sẽ cần nhập mật khẩu.</p>
+  </div>
+  </div>
   </div>
   <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 12px; right: 14px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
     <sc-if value="{{themeIsLight}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>

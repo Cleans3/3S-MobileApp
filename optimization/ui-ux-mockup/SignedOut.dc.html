@@ -56,11 +56,13 @@ a{color:var(--ink)}a:hover{opacity:.85}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+  <div class="st-page" style="position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none">
+  <div style="position: relative; min-height: max(100%, 844px); display: flex; flex-direction: column">
   <div aria-hidden="true" style="position: absolute; left: -80px; top: -60px; width: 320px; height: 320px; border-radius: 999px; background:  #d7c39a; color: #1c1b1a"></div>
   <div aria-hidden="true" style="position: absolute; right: -90px; top: 60px; width: 260px; height: 260px; border-radius: 999px; background:  #b9c7bf"></div>
   <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 340px; backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px)"></div>
 
-  <div style="position: absolute; left: 16px; right: 16px; top: 64px; display: flex; flex-direction: column">
+  <div style="position: relative; flex: none; margin: 64px 16px 0; display: flex; flex-direction: column">
     <sc-if value="{{is_expired}}" hint-placeholder-val="{{ false }}">
       <div class="st-rise" role="status" style="display: flex; gap: 12px; padding: 14px 16px; border-radius: 22px; background: var(--surface); border: 1px solid rgba(var(--ink-rgb),0.08); box-shadow: 0 10px 30px rgba(40,28,18,0.08)">
         <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; background:  rgba(var(--glass),0.7); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
@@ -108,7 +110,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
     </sc-if>
   </div>
 
-  <form style="position: absolute; left: 16px; right: 16px; top: 300px; padding: 22px 20px 20px; border-radius: 32px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(var(--edge),0.9); box-shadow: 0 24px 60px rgba(40,28,18,0.12); display: flex; flex-direction: column; gap: 12px">
+  <form style="position: relative; flex: none; margin: 126px 16px 0; padding: 22px 20px 20px; border-radius: 32px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(var(--edge),0.9); box-shadow: 0 24px 60px rgba(40,28,18,0.12); display: flex; flex-direction: column; gap: 12px">
     <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.3px">Đăng nhập lại</h1>
     <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--ink2)">
       Email
@@ -121,7 +123,9 @@ a{color:var(--ink)}a:hover{opacity:.85}
     <a href="Catalog.dc.html" class="st-press" style="height: 54px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 16px; font-weight: 600; margin-top: 2px">Đăng nhập</a>
     <a href="CardLogin.dc.html" class="st-press" style="height: 50px; border-radius: 999px; background:  rgba(var(--glass),0.85); border: 1px solid rgba(var(--ink-rgb),0.12); color: var(--ink); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 600">Đăng nhập bằng thẻ thư viện</a>
   </form>
-  <p style="position: absolute; left: 24px; right: 24px; bottom: 74px; margin: 0; font-size: 11px; line-height: 1.5; color: var(--ink3); text-align: center">Mỗi thông báo ứng với một lý do trong code: {{code}}.</p>
+  <p style="position: relative; flex: none; margin: auto 24px 74px; padding-top: 16px; font-size: 11px; line-height: 1.5; color: var(--ink3); text-align: center">Mỗi thông báo ứng với một lý do trong code: {{code}}.</p>
+  </div>
+  </div>
   <div role="group" aria-label="Trạng thái xem trước (chỉ có trong bản phác)" style="position: absolute; left: 12px; right: 12px; bottom: 14px; padding: 4px; border-radius: 999px; background: rgba(28,27,26,0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px">
     <sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
       <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" class="st-swap st-press" style="{{t.style}}">{{t.label}}</button>

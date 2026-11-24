@@ -18258,20 +18258,6 @@
  {
   "file": "RailCatalog.dc.html",
   "theme": "light",
-  "text": "!-- Content: one pane, text column capped at 560",
-  "ratio": 13.99,
-  "need": 4.5,
-  "pass": true,
-  "fg": "#1c1b1a",
-  "bg": "#ece7e1",
-  "fgSrc": "#1c1b1a",
-  "bgSrc": "#ece7e1",
-  "gradient": false,
-  "size": 16
- },
- {
-  "file": "RailCatalog.dc.html",
-  "theme": "light",
   "text": "Chào bạn,",
   "ratio": 5.96,
   "need": 4.5,
@@ -18846,20 +18832,6 @@
  {
   "file": "RailCatalog.dc.html",
   "theme": "light",
-  "text": "!-- Navigation rail: replaces the ☰ menu and the",
-  "ratio": 13.99,
-  "need": 4.5,
-  "pass": true,
-  "fg": "#1c1b1a",
-  "bg": "#ece7e1",
-  "fgSrc": "#1c1b1a",
-  "bgSrc": "#ece7e1",
-  "gradient": false,
-  "size": 16
- },
- {
-  "file": "RailCatalog.dc.html",
-  "theme": "light",
   "text": "Chạm để mượn",
   "ratio": 17.2,
   "need": 4.5,
@@ -18968,20 +18940,6 @@
   "bgSrc": "rgba(255,255,255,0.8)",
   "gradient": false,
   "size": 12
- },
- {
-  "file": "RailCatalog.dc.html",
-  "theme": "dark",
-  "text": "!-- Content: one pane, text column capped at 560",
-  "ratio": 15.94,
-  "need": 4.5,
-  "pass": true,
-  "fg": "#f2eee9",
-  "bg": "#151412",
-  "fgSrc": "#f2eee9",
-  "bgSrc": "#151412",
-  "gradient": false,
-  "size": 16
  },
  {
   "file": "RailCatalog.dc.html",
@@ -19556,20 +19514,6 @@
   "bgSrc": "rgba(44,40,36,0.72)",
   "gradient": false,
   "size": 12
- },
- {
-  "file": "RailCatalog.dc.html",
-  "theme": "dark",
-  "text": "!-- Navigation rail: replaces the ☰ menu and the",
-  "ratio": 15.94,
-  "need": 4.5,
-  "pass": true,
-  "fg": "#f2eee9",
-  "bg": "#151412",
-  "fgSrc": "#f2eee9",
-  "bgSrc": "#151412",
-  "gradient": false,
-  "size": 16
  },
  {
   "file": "RailCatalog.dc.html",
@@ -22318,20 +22262,6 @@
  {
   "file": "WideCatalog.dc.html",
   "theme": "light",
-  "text": "!-- 1. Fixed menu: on a wide window the ☰ menu s",
-  "ratio": 13.99,
-  "need": 4.5,
-  "pass": true,
-  "fg": "#1c1b1a",
-  "bg": "#ece7e1",
-  "fgSrc": "#1c1b1a",
-  "bgSrc": "#ece7e1",
-  "gradient": false,
-  "size": 16
- },
- {
-  "file": "WideCatalog.dc.html",
-  "theme": "light",
   "text": "Chào bạn,",
   "ratio": 6.79,
   "need": 4.5,
@@ -22454,20 +22384,6 @@
   "bgSrc": "#1c1b1a",
   "gradient": false,
   "size": 15
- },
- {
-  "file": "WideCatalog.dc.html",
-  "theme": "light",
-  "text": "!-- 2. List pane -->",
-  "ratio": 13.99,
-  "need": 4.5,
-  "pass": true,
-  "fg": "#1c1b1a",
-  "bg": "#ece7e1",
-  "fgSrc": "#1c1b1a",
-  "bgSrc": "#ece7e1",
-  "gradient": false,
-  "size": 16
  },
  {
   "file": "WideCatalog.dc.html",
@@ -23326,20 +23242,6 @@
  {
   "file": "WideCatalog.dc.html",
   "theme": "light",
-  "text": "!-- 3. Detail pane: shows the book picked in the",
-  "ratio": 13.99,
-  "need": 4.5,
-  "pass": true,
-  "fg": "#1c1b1a",
-  "bg": "#ece7e1",
-  "fgSrc": "#1c1b1a",
-  "bgSrc": "#ece7e1",
-  "gradient": false,
-  "size": 16
- },
- {
-  "file": "WideCatalog.dc.html",
-  "theme": "light",
   "text": "Chi tiết sách",
   "ratio": 6.69,
   "need": 4.5,
@@ -23536,20 +23438,6 @@
  {
   "file": "WideCatalog.dc.html",
   "theme": "dark",
-  "text": "!-- 1. Fixed menu: on a wide window the ☰ menu s",
-  "ratio": 15.94,
-  "need": 4.5,
-  "pass": true,
-  "fg": "#f2eee9",
-  "bg": "#151412",
-  "fgSrc": "#f2eee9",
-  "bgSrc": "#151412",
-  "gradient": false,
-  "size": 16
- },
- {
-  "file": "WideCatalog.dc.html",
-  "theme": "dark",
   "text": "Chào bạn,",
   "ratio": 6.2,
   "need": 4.5,
@@ -23672,20 +23560,6 @@
   "bgSrc": "#f2eee9",
   "gradient": false,
   "size": 15
- },
- {
-  "file": "WideCatalog.dc.html",
-  "theme": "dark",
-  "text": "!-- 2. List pane -->",
-  "ratio": 15.94,
-  "need": 4.5,
-  "pass": true,
-  "fg": "#f2eee9",
-  "bg": "#151412",
-  "fgSrc": "#f2eee9",
-  "bgSrc": "#151412",
-  "gradient": false,
-  "size": 16
  },
  {
   "file": "WideCatalog.dc.html",
@@ -24540,20 +24414,6 @@
   "bgSrc": "rgba(44,40,36,0.72)",
   "gradient": false,
   "size": 12
- },
- {
-  "file": "WideCatalog.dc.html",
-  "theme": "dark",
-  "text": "!-- 3. Detail pane: shows the book picked in the",
-  "ratio": 15.94,
-  "need": 4.5,
-  "pass": true,
-  "fg": "#f2eee9",
-  "bg": "#151412",
-  "fgSrc": "#f2eee9",
-  "bgSrc": "#151412",
-  "gradient": false,
-  "size": 16
  },
  {
   "file": "WideCatalog.dc.html",
