@@ -1,20 +1,21 @@
 # Mockup giao diện kính ShelfTap và phép đo tương phản
 
-Mã nguồn của mockup 22 màn (20 màn điện thoại và 2 màn cửa sổ rộng) ở `optimization/ui-ux-plan.md` §5.5, cùng các script đo dùng cho §5.3.
+Mã nguồn của mockup 32 màn (20 màn điện thoại và 12 màn cửa sổ rộng) ở `optimization/ui-ux-plan.md` §5.5, cùng các script đo dùng cho §5.3.
 
-- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 21 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý và Thông báo (bản 17), rồi ba lỗi bố cục tìm ra khi thử rộng 320 và chữ 2.0 cùng băng "Gợi ý cho bạn" trên Danh mục và Danh mục cuộn dọc (cả hai đăng chung trong bản 18), và hai màn cửa sổ rộng `WideCatalog`, `RailCatalog` (bản 21; số bản nhảy từ 18 lên 21 dù chỉ đăng một lần, và 23 file đang đăng ở bản 21 trùng từng byte với repo).
+- **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 21 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý và Thông báo (bản 17), rồi ba lỗi bố cục tìm ra khi thử rộng 320 và chữ 2.0 cùng băng "Gợi ý cho bạn" trên Danh mục và Danh mục cuộn dọc (cả hai đăng chung trong bản 18), và hai màn cửa sổ rộng `WideCatalog`, `RailCatalog` (bản 21; số bản nhảy từ 18 lên 21 dù chỉ đăng một lần, và 23 file đang đăng ở bản 21 trùng từng byte với repo). 10 màn rộng còn lại (`WideLoans` đến `WideStatus`) và phần thu gọn của `WideCatalog` có trong repo nhưng chưa đăng lên link.
 - **Mở trực tiếp không chạy:** mỗi màn cần runtime `support.js` của trình xem artifact, file đó không có trong repo. Các script dưới đây không cần runtime: chúng tự đọc template và chạy phần script của từng màn.
 
 ## Nội dung
 
 | File | Là gì |
 |---|---|
-| `*.dc.html` | 22 màn: 20 màn điện thoại 390 × 844, `WideCatalog` 960 × 720 và `RailCatalog` 720 × 840. Màu viết bằng biến CSS (token) có giá trị sáng và tối, font Nunito |
+| `*.dc.html` | 32 màn: 20 màn điện thoại 390 × 844, 11 màn `Wide*` 960 × 720 và `RailCatalog` 720 × 840. Màu viết bằng biến CSS (token) có giá trị sáng và tối, font Nunito |
 | `canvas.json` | Vị trí và tên các màn trên canvas |
 | `tools/contrast.js` | Đo tương phản WCAG cho mọi đoạn chữ, ở theme sáng và tối (SC 1.4.3) |
 | `tools/nontext-contrast.js` | Đo tương phản cho icon, viền ô nhập, công tắc và trạng thái đang chọn (SC 1.4.11) |
 | `tools/target-size.js` | Đọc kích thước vẽ và vùng chạm của mọi nút, link và công tắc |
-| `tools/render-static.js` | Dựng các màn thành HTML tĩnh ở 11 biến thể: gốc, rộng 320, chữ 2.0, cả hai, và bảy cỡ màn tỷ lệ đặc biệt. Màn cửa sổ rộng giữ kích thước vẽ và chỉ có ở biến thể gốc và chữ 2.0 |
+| `tools/render-static.js` | Dựng các màn thành HTML tĩnh ở 11 biến thể: gốc, rộng 320, chữ 2.0, cả hai, và bảy cỡ màn tỷ lệ đặc biệt. Màn cửa sổ rộng giữ kích thước vẽ ở biến thể gốc và chữ 2.0; các màn `Wide*` dựng thêm ở 844 × 390 (`land`) |
+| `tools/wide-boards/` | Script sinh 10 màn rộng từ một khung chung (`node tools/wide-boards/gen.js .`, ghi lại các file `.dc.html` và vị trí trong `canvas.json`). Sửa các màn đó ở đây rồi chạy lại; `WideCatalog` và `RailCatalog` viết tay |
 | `tools/layout-check.js` | Chạy trong trình duyệt trên trang của `render-static.js`, sau khi tắt hiệu ứng động: đếm chữ tràn mép, tràn đáy, chữ đè chữ, chữ bị cắt; trên màn rộng hơn 600 dp đếm thêm dòng quá 80 ký tự và khối bị kéo giãn |
 | `tools/hero-worst-case.js` | Tính riêng chữ trắng trên ảnh ở màn chào, ở trường hợp xấu nhất |
 | `tools/check-scripts.js` | Chạy script của từng màn, gọi mọi handler, kiểm tra mọi biến trong template đều có giá trị |
@@ -129,8 +130,8 @@ Bảy cỡ màn thêm vào `tools/render-static.js`, chữ bình thường, đơ
 |---|---|---|---|---|
 | Điện thoại dài 21:9 (`tall`) | 412 × 960 | 0 / 20 | 0 | không áp dụng |
 | Màn ngoài rộng 10:16 của máy gập ngang (`wide`) | 480 × 768 | 1 / 20 | 1 | không áp dụng |
-| Màn phụ của máy gập dọc (`flipcover`) | 360 × 400 | 15 / 20 | 84 | không áp dụng |
-| Chia đôi màn hình (`split`) | 390 × 420 | 15 / 20 | 85 | không áp dụng |
+| Màn phụ của máy gập dọc (`flipcover`) | 360 × 400 | 15 / 20 | 85 | không áp dụng |
+| Chia đôi màn hình (`split`) | 390 × 420 | 15 / 20 | 84 | không áp dụng |
 | Điện thoại xoay ngang (`land`) | 844 × 390 | 14 / 20 | 78 | 18 / 20 |
 | Máy gập mở, gần vuông (`unfold`) | 720 × 840 | 0 / 20 | 0 | 17 / 20 |
 | Máy gập mở, cầm ngang 4:3 (`unfoldl`) | 960 × 720 | 4 / 20 | 7 | 18 / 20 |
@@ -141,17 +142,43 @@ Màn thấp vỡ vì cùng lý do với chữ 2.0: chỉ năm màn có vùng cu�
 
 Lượt đo đầu có 4 lỗi "tràn đáy" giả ở màn Thông báo: bảng hỏi quyền còn đang trượt lên khi đo. Từ lượt này, `tools/layout-check.js` tắt hiệu ứng động trước khi đo.
 
+Bảng trên là số đo ngày 2026-11-24 với script hiện tại, đo hai lượt cho cùng kết quả. Lần ghi trước, `flipcover` là 84 (74 tràn đáy) và `split` là 85 (70 tràn đáy); nay là 85 (75 tràn đáy, 10 chữ đè) và 84 (69 tràn đáy, 15 chữ đè). Các màn điện thoại không đổi, và bản dựng từ commit trước đo bằng script hiện tại cũng ra đúng các số mới; vậy chênh lệch đến từ script đo hoặc lượt đo cũ, không phải từ mockup.
+
 ## Cửa sổ rộng
 
-Hai màn Danh mục theo cách chia cỡ cửa sổ của Material 3 (kế hoạch §6.4):
+12 màn theo cách chia cỡ cửa sổ của Material 3 (kế hoạch §6.4). Mỗi chức năng của 20 màn điện thoại có một màn rộng:
 
-| Màn | Cỡ | Bố cục |
+| Màn | Thay cho màn điện thoại | Bố cục ở cửa sổ từ 840 dp |
 |---|---|---|
-| `WideCatalog` | 960 × 720, cửa sổ từ 840 dp | Menu cố định bên trái (nút mượn ở đáy menu), danh sách ở giữa, chi tiết sách bên phải; bấm sách thì khung phải đổi theo |
-| `RailCatalog` | 720 × 840, cửa sổ 600–840 dp | Thanh điều hướng dọc 96 dp, một khung nội dung rộng tối đa 560 dp |
+| `WideCatalog` | Danh mục, Danh sách, Chi tiết | Menu cố định, danh sách, chi tiết sách; bấm sách thì khung phải đổi theo |
+| `WideLoans` | Sách đang mượn | Danh sách lượt mượn, chi tiết và nút gia hạn; sách quá hạn không gia hạn được |
+| `WideReservations` | Đặt trước | Danh sách, chi tiết; hủy có hộp xác nhận ngay trong khung phải |
+| `WideHistory` | Lịch sử đọc | Bước hỏi mật khẩu khi đăng nhập bằng thẻ, rồi danh sách và chi tiết |
+| `WideRecommend` | Gợi ý cho bạn | Danh sách kèm lý do, chi tiết "vì sao gợi ý"; ba trạng thái mật khẩu, thẻ, tắt lịch sử |
+| `WideOfflineSearch` | Tìm khi không có mạng | Như Danh mục, không có số bản còn, nút đặt trước tắt vì cần mạng |
+| `WideCheckout` | Tự mượn sách | Hình chỉ chỗ có ăng-ten NFC bên trái, kết quả bên phải; bốn trạng thái |
+| `WideAccount` | Tài khoản, Thông báo | Cài đặt hai khung: mục bên trái, nội dung bên phải; đăng xuất xác nhận trong khung |
+| `WideSignIn` | Màn chào, Đăng nhập, Đăng nhập bằng thẻ, Đổi mật khẩu | Ảnh kệ sách bên trái, nội dung bên phải |
+| `WideStatus` | Khởi động, Khóa, Mất kết nối, Đăng xuất kèm lý do | Một thẻ ở giữa, rộng 460 dp |
+| `WideGuest` | Chế độ khách | Menu rút gọn, danh sách, chi tiết; "Đặt trước" mở lời mời đăng nhập ngay trong khung |
+| `RailCatalog` | Danh mục ở cửa sổ 600–840 dp | Thanh điều hướng dọc 96 dp, một khung nội dung rộng tối đa 560 dp |
 
-Đo ở chữ thường và chữ 2.0: cả hai màn 0 lỗi vỡ, 0 dòng quá 80 ký tự, 0 khối bị kéo giãn. Tương phản chữ không thêm lỗi (505 đoạn mỗi theme); 5 mục bắt buộc mới về icon và viền đều đạt; 189 nút, không nút nào có vùng chạm dưới 48 px. Lượt đo đầu có 3 mục menu đè nhau ở chữ 2.0 vì khung menu không cuộn, đã sửa.
+Màn gộp nhiều chức năng có thanh xem trước trạng thái (nền tối), chỉ có trong bản phác. Menu trong các màn rộng trỏ sang màn rộng tương ứng.
 
-Cùng lượt này `tools/layout-check.js` chỉ so phần chữ thật sự hiện ra (cắt theo khung cuộn hoặc khung ẩn phần tràn của phần tử cha), vì chip trong hàng cuộn ngang bị báo nhầm là đè lên khung bên cạnh. Số của các biến thể điện thoại đo lại không đổi.
+**Cửa sổ rộng mà hẹp hoặc thấp.** Điện thoại xoay ngang rộng hơn 840 dp nên cũng dùng bố cục rộng, nhưng chỉ cao khoảng 390 dp. Khi cửa sổ hẹp hơn 900 dp hoặc thấp hơn 480 dp, menu cố định thu thành thanh dọc 72 dp chỉ có icon (tên mục đọc qua `aria-label`), hai khung dịch sang trái. Mockup làm bằng container query trên khung màn, nên `render-static.js` dựng các màn `Wide*` ở 844 × 390 để đo phần này.
+
+| Biến thể | Màn rộng | Lỗi vỡ | Dòng quá 80 ký tự hoặc khối kéo giãn |
+|---|---|---|---|
+| Kích thước vẽ | 12 | 0 | 0 |
+| Chữ 2.0 | 12 | 0 | 0 |
+| 844 × 390 (`land`) | 11 (không tính `RailCatalog`) | 0 | 0 |
+
+Tương phản chữ: 862 đoạn mỗi theme, tối 0 lỗi, sáng chỉ còn 5 đoạn chữ trên ảnh ở màn chào như trước. Mục bắt buộc về icon và viền: 51, chỉ còn icon trên ảnh ở màn chào. Vùng chạm: 310 nút, 0 dưới 48 px.
+
+Các lỗi tìm ra và đã sửa khi vẽ: menu cố định của `WideCatalog` đè mục ở chữ 2.0 vì không cuộn; ở 844 × 390 khung chi tiết chỉ còn 244 dp và cắt chữ (dẫn tới phần thu gọn ở trên); ghi chú ở cột trái màn Tự mượn tràn đáy ở chữ 2.0.
+
+Sửa trong script đo:
+- `tools/layout-check.js` chỉ so chữ đè trên phần chữ thật sự hiện ra (chip trong hàng cuộn ngang từng bị báo nhầm), và không coi chữ trong vùng cuộn là "bị cắt" (người dùng cuộn tới được). Khung bao ngoài toàn màn của `WideStatus` và `WideHistory` đổi từ `section` sang `div` để không bị tính là "khối kéo giãn"; nhãn vùng chuyển vào thẻ ở giữa.
+- `tools/render-static.js` trước đây in chữ `<#root>` lên đầu mỗi màn; đã bỏ. Số đo không đổi vì script đo tính theo khung màn.
 
 Chi tiết từng lỗi và cách sửa: `optimization/ui-ux-plan.md` §5.3 và `optimization/log/docs-ui-ux-plan.md`.

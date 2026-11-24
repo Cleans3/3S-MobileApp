@@ -14,7 +14,8 @@
 //   unfoldl   : 960 x 720, the same kind of screen held sideways (4:3)
 // These are size classes, not exact models: published specs of this year's foldables disagree.
 // Boards drawn for a wide window (not 390 x 844, e.g. WideCatalog, RailCatalog) are rendered at their
-// own size, only in the variants that keep the size as drawn (base, font2).
+// own size in the variants that keep the size as drawn (base, font2). Boards drawn for 840 dp and up
+// are also rendered at 844 x 390 in `land`, since a phone turned sideways is an expanded window.
 // Usage (from optimization/ui-ux-mockup): node tools/render-static.js . <out-dir>
 // Then open <out-dir>/<variant>.html in a browser and run tools/layout-check.js in it.
 const fs = require('fs'), path = require('path');
@@ -66,8 +67,9 @@ function board(file, width, height, fontScale) {
   const vals = c.renderVals();
   const helmet = html.slice(html.indexOf('<helmet>') + 8, html.indexOf('</helmet>'));
   let tpl = html.slice(html.indexOf('</helmet>') + 9, html.indexOf('</x-dc>'));
-  if (tpl.includes(PHONE)) tpl = tpl.replace(PHONE, '<div class="st-root" data-theme="{{themeAttr}}" style="width: ' + width + 'px; height: ' + height + 'px;');
-  const body = expand(parse(tpl), vals).map(n => toHtml(n, fontScale)).join('');
+  tpl = tpl.replace(/<div class="st-root" data-theme="\{\{themeAttr\}\}" style="width: \d+px; height: \d+px;/, '<div class="st-root" data-theme="{{themeAttr}}" style="width: ' + width + 'px; height: ' + height + 'px;');
+  // parse() wraps the template in a '#root' node; render its children, not the wrapper itself
+  const body = expand(parse(tpl), vals).flatMap(n => n.tag === '#root' ? n.children : [n]).map(n => toHtml(n, fontScale)).join('');
   // the global helmet rules (body margin, link colour) and the board's own font
   return '<!doctype html><html lang="vi"><head><meta charset="utf-8">' + helmet + '</head><body>' + body + '</body></html>';
 }
@@ -79,12 +81,16 @@ const variants = {
 };
 const files = fs.readdirSync(dir).filter(f => f.endsWith('.dc.html')).sort();
 const ownSize = new Set(['base', 'font2']);
+// a phone held sideways is wider than 840 dp, so it gets the expanded layout: wide boards are also
+// rendered at that size (only the boards drawn for 840 dp and up, not the 600-840 dp rail board)
+const alsoWide = new Set(['land']);
 for (const [name, [vw, vh, fs2]] of Object.entries(variants)) {
   const frames = files.map(f => {
     const [bw, bh] = sizeOf(f);
     const phone = bw === 390 && bh === 844;
-    if (!phone && !ownSize.has(name)) return '';
-    const [w, h] = phone ? [vw, vh] : [bw, bh];
+    const expanded = bw >= 840;
+    if (!phone && !ownSize.has(name) && !(expanded && alsoWide.has(name))) return '';
+    const [w, h] = phone || !ownSize.has(name) ? [vw, vh] : [bw, bh];
     return `<figure data-board="${f}" style="display:inline-block;margin:8px;vertical-align:top"><figcaption style="font:12px sans-serif">${f}</figcaption><iframe srcdoc="${esc(board(f, w, h, fs2))}" style="width:${w}px;height:${h}px;border:1px solid #999"></iframe></figure>`;
   }).filter(Boolean).join('\n');
   fs.writeFileSync(path.join(out, name + '.html'), `<!doctype html><html><head><meta charset="utf-8"><title>${name}</title></head><body style="margin:0;background:#888">${frames}</body></html>`);

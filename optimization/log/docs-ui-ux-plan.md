@@ -200,3 +200,19 @@
 - **Đo trước → sau:** không áp dụng. Sau khi đăng, tải về cả 23 file đang đăng và so với `docs/ui-ux-plan`: trùng từng byte.
 - **AI:** Claude Code (Claude Opus 5.5). Trang artifact báo bản 21 dù trước đó là bản 18 và chỉ đăng một lần; AI không biết bản 19 và 20 từ đâu ra, nên ghi rõ điều đó và kiểm bằng cách so file thay vì suy đoán.
 - **Kiểm thử:** so sha của 23 file tải về với blob trên nhánh.
+
+## 2026-11-24 09:01 · Màn rộng cho mọi chức năng
+
+- **Vấn đề:** người dùng thấy bản cửa sổ rộng mới có Danh mục, còn các chức năng khác thì chưa. Rà lại: 17 trên 20 màn điện thoại chưa có bản rộng, và các màn rộng chưa được đo ở điện thoại xoay ngang (844 × 390, theo Material 3 cũng là cửa sổ rộng). Người dùng chọn vẽ đủ 10 màn.
+- **Thay đổi:**
+  - 10 màn mới 960 × 720: `WideLoans`, `WideReservations`, `WideHistory`, `WideRecommend`, `WideOfflineSearch`, `WideGuest` (danh sách và chi tiết), `WideAccount` (gộp Thông báo, cài đặt hai khung), `WideSignIn` (gộp Màn chào, Đăng nhập, Thẻ, Đổi mật khẩu), `WideStatus` (gộp Khởi động, Khóa, Mất kết nối, Đăng xuất kèm lý do), `WideCheckout`. Nội dung, câu chữ và trạng thái lấy từ màn điện thoại tương ứng. Hộp xác nhận nằm trong khung chi tiết thay cho bảng trượt.
+  - `tools/wide-boards/`: script sinh 10 màn trên từ một khung chung (menu, hai khung, thanh xem trước, theme). Chạy lại từ thư mục repo ra đúng từng byte các file đã ghi.
+  - Cửa sổ rộng mà hẹp hoặc thấp (dưới 900 dp rộng hoặc 480 dp cao): menu thu thành thanh dọc 72 dp chỉ có icon, làm bằng container query; `WideCatalog` sửa theo, và menu của nó trỏ sang các màn rộng.
+  - `canvas.json`: thêm ba hàng cho màn rộng.
+  - `tools/render-static.js`: dựng thêm các màn `Wide*` ở 844 × 390; bỏ chữ `<#root>` bị in lên đầu mỗi màn.
+  - `tools/layout-check.js`: chữ trong vùng cuộn không còn bị tính là "bị cắt".
+  - Kế hoạch §5.5, §6.4 (bảng 10 màn, hộp xác nhận trong khung, vị trí ăng-ten NFC, thu menu khi cửa sổ thấp, kết quả đo, công tắc "Gợi ý theo lịch sử đọc" còn thiếu ở màn Tài khoản điện thoại), §9, §11 mục 15, §12. README thêm bảng 12 màn rộng và kết quả.
+- **Đo trước → sau:** lượt đầu có 2 lỗi ở kích thước vẽ và chữ 2.0 (khung bao màn Trạng thái tính là kéo giãn; ghi chú màn Tự mượn tràn đáy ở chữ 2.0); ở 844 × 390 có 6 màn cắt chữ vì khung chi tiết chỉ còn 244 dp. Sau khi thêm phần thu gọn và sửa: 12 màn rộng 0 lỗi ở kích thước vẽ và chữ 2.0, 11 màn từ 840 dp 0 lỗi ở 844 × 390. Tương phản chữ 862 đoạn mỗi theme, tối 0 lỗi, sáng 5 (chữ trên ảnh ở màn chào như trước); icon và viền bắt buộc 51, 1 lỗi cũ ở màn chào; 310 nút, 0 dưới 48 px. Màn phụ máy gập dọc và chia đôi màn hình đo lại ra 85 và 84 (ghi trước là 84 và 85).
+- **AI:** Claude Code (Claude Opus 5.5). AI đề xuất gộp theo kiểu bố cục để mỗi chức năng có một màn rộng (10 màn thay vì 17), người dùng chọn vẽ đủ 10. AI dùng script sinh vì 10 màn chung khung, tránh chép tay. Phần thu menu khi cửa sổ thấp là AI thêm sau khi đo ở 844 × 390, theo hướng dẫn thanh điều hướng dọc của Material 3. Tên API vị trí ăng-ten NFC lấy theo trí nhớ, đã ghi cần đối chiếu. Hai số đo của màn điện thoại lệch một lỗi so với lần ghi trước; AI dựng lại từ commit trước, đo bằng script hiện tại cũng ra số mới, nên ghi số mới và nói rõ.
+- **Kiểm thử:** `node tools/check-scripts.js .` (32 màn không lỗi), `tools/contrast.js`, `tools/nontext-contrast.js`, `tools/target-size.js`; dựng 11 biến thể và chạy `tools/layout-check.js` hai lượt trong trình duyệt của app, kết quả giống nhau; xem bằng mắt `WideLoans` ở 844 × 390, `WideAccount`, `WideSignIn`, `WideStatus`.
+- **Ghi chú cho báo cáo:** khung chi tiết 244 dp ở điện thoại xoay ngang là ví dụ cho việc chỉ dựa vào bề rộng (từ 840 dp là "rộng") chưa đủ; cần xét cả chiều cao.

@@ -79,6 +79,8 @@
       if (cs.textOverflow === 'ellipsis') continue;
       for (let p = el; p && p !== root; p = p.parentElement) {
         const pcs = doc.defaultView.getComputedStyle(p);
+        // text inside a scrolling area is reached by scrolling, so it is not clipped
+        if (/(auto|scroll)/.test(pcs.overflowX + pcs.overflowY)) break;
         if (pcs.overflow === 'hidden' || pcs.overflowX === 'hidden' || pcs.overflowY === 'hidden') {
           const pr = p.getBoundingClientRect(), tr = textRect(el);
           if (tr.right > pr.right + 1 || tr.bottom > pr.bottom + 1 || tr.left < pr.left - 1) res.clipped.push(label(el));

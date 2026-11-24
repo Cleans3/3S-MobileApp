@@ -43,36 +43,45 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-root input{min-width:0}
 .st-scroll{scrollbar-width:none}.st-scroll::-webkit-scrollbar{display:none}
 .st-scroll>*{flex-shrink:0}
+div.st-root{container-type:size}
+@container (max-width: 900px) or (max-height: 480px){
+  .st-nav{width:72px !important;padding:12px 6px !important}
+  .st-nav .st-hide-c{display:none !important}
+  .st-nav a{justify-content:center !important;padding:6px !important}
+  .st-list{left:104px !important;width:300px !important}
+  .st-pane{left:420px !important}
+  .st-full{left:104px !important}
+}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
 
   <!-- 1. Fixed menu: on a wide window the ☰ menu stays open at the left edge -->
-  <nav aria-label="Điều hướng chính" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 20px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
-    <div style="padding: 0 12px 14px; display: flex; flex-direction: column; gap: 2px">
+  <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 20px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
+    <div class="st-hide-c" style="padding: 0 12px 14px; display: flex; flex-direction: column; gap: 2px">
       <div style="font-size: 13px; color: var(--ink3)">Chào bạn,</div>
       <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
     </div>
     <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">
       <sc-for list="{{menu}}" as="m" hint-placeholder-count="6">
-        <a href="{{m.href}}" class="st-item" aria-current="{{m.current}}" style="{{m.style}}">
+        <a href="{{m.href}}" class="st-item" aria-label="{{m.label}}" aria-current="{{m.current}}" style="{{m.style}}">
           <span style="{{m.iconStyle}}">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="{{m.d1}}"></path><path d="{{m.d2}}"></path></svg>
           </span>
-          {{m.label}}
+          <span class="st-hide-c">{{m.label}}</span>
         </a>
       </sc-for>
     </div>
-    <a href="Checkout.dc.html" class="st-press" style="min-height: 56px; padding: 8px 14px 8px 8px; border-radius: 28px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1.2; box-shadow: 0 10px 30px rgba(28,27,26,0.25)">
+    <a href="WideCheckout.dc.html" class="st-press" aria-label="Chạm sách để mượn" style="min-height: 56px; padding: 8px 14px 8px 8px; border-radius: 28px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1.2; box-shadow: 0 10px 30px rgba(28,27,26,0.25)">
       <span style="width: 40px; height: 40px; flex: none; border-radius: 999px; background:  rgba(var(--glass),0.16); display: flex; align-items: center; justify-content: center">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg>
       </span>
-      Chạm sách để mượn
+      <span class="st-hide-c">Chạm sách để mượn</span>
     </a>
   </nav>
 
   <!-- 2. List pane -->
-  <section aria-label="Danh sách sách" style="position: absolute; left: 248px; top: 16px; bottom: 0; width: 320px; display: flex; flex-direction: column; gap: 12px">
+  <section aria-label="Danh sách sách" class="st-list" style="position: absolute; left: 248px; top: 16px; bottom: 0; width: 320px; display: flex; flex-direction: column; gap: 12px">
     <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Danh mục</h1>
     <label style="display: flex; align-items: center; gap: 10px; height: 48px; flex: none; padding: 0 16px; border-radius: 999px; background:  rgba(var(--glass),0.75); border: 1px solid rgba(var(--ink-rgb),0.5)">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink3)"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
@@ -108,7 +117,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
   </section>
 
   <!-- 3. Detail pane: shows the book picked in the list, no page change -->
-  <section aria-label="Chi tiết sách" style="position: absolute; left: 584px; right: 16px; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
+  <section aria-label="Chi tiết sách" class="st-pane" style="position: absolute; left: 584px; right: 16px; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
     <sc-if value="{{hasSel}}" hint-placeholder-val="{{ true }}">
       <div class="st-scroll st-detail" style="position: absolute; inset: 0; padding: 12px 20px 96px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 16px">
         <div style="display: flex; align-items: center; gap: 8px; height: 48px">
@@ -297,12 +306,12 @@ class Component extends DCLogic {
         self.timer = setTimeout(function () { self.setState({ phase: 'done' }); }, 1200);
       },
       menu: [
-        menuItem('Danh mục', 'Catalog.dc.html', 'M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z', 'M8 7h7', true),
-        menuItem('Gợi ý cho bạn', 'Recommend.dc.html', 'M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z', '', false),
-        menuItem('Sách đang mượn', 'Loans.dc.html', 'M12 7v5l3 2', 'M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z', false),
-        menuItem('Đặt trước', 'Reservations.dc.html', 'M6 3h12v18l-6-4-6 4z', 'M9 9h6', false),
-        menuItem('Lịch sử đọc', 'History.dc.html', 'M3 12a9 9 0 1 0 3-6.7L3 8', 'M3 3v5h5', false),
-        menuItem('Tài khoản', 'Account.dc.html', 'M4 21a8 8 0 0 1 16 0', 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z', false)
+        menuItem('Danh mục', 'WideCatalog.dc.html', 'M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z', 'M8 7h7', true),
+        menuItem('Gợi ý cho bạn', 'WideRecommend.dc.html', 'M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z', '', false),
+        menuItem('Sách đang mượn', 'WideLoans.dc.html', 'M12 7v5l3 2', 'M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z', false),
+        menuItem('Đặt trước', 'WideReservations.dc.html', 'M6 3h12v18l-6-4-6 4z', 'M9 9h6', false),
+        menuItem('Lịch sử đọc', 'WideHistory.dc.html', 'M3 12a9 9 0 1 0 3-6.7L3 8', 'M3 3v5h5', false),
+        menuItem('Tài khoản', 'WideAccount.dc.html', 'M4 21a8 8 0 0 1 16 0', 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z', false)
       ]
     });
   }
