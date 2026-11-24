@@ -172,4 +172,7 @@
     <string name="catalog_bar_title">ShelfTap library</string>
     <string name="open_account">Open account</string>
     <string name="catalog_search_placeholder">Title, author, ISBN</string>
+    <string name="logout_confirm_title">Log out of ShelfTap?</string>
+    <string name="logout_confirm_body">Your session on this phone will be removed. Next time you will need to log in again with your password or card.</string>
+    <string name="logout_stay">Stay</string>
 </resources>

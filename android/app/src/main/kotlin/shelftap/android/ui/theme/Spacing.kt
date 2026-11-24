@@ -58,6 +58,8 @@ object Radius {
     val banner = 28.dp
     val menu = 30.dp
     val hairline = 1.dp
+    val group = 24.dp
+    val sheet = 34.dp
 }
 
 /** Fixed sizes of the glass components, from the mockup. */
@@ -82,4 +84,13 @@ object GlassSize {
     /** The circle that carries the NFC glyph in the floating button, and the glyph. */
     val pillCircle = 40.dp
     val pillGlyph = 20.dp
+}
+
+/** Sizes on the account screen, from the board. */
+object AccountSize {
+    val avatar = 56.dp
+    val row = 56.dp
+    val rowTall = 64.dp
+    val action = 54.dp
+    val segment = 48.dp
 }

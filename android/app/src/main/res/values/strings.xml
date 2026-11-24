@@ -172,4 +172,7 @@
     <string name="catalog_bar_title">Thư viện ShelfTap</string>
     <string name="open_account">Mở tài khoản</string>
     <string name="catalog_search_placeholder">Tên sách, tác giả, ISBN</string>
+    <string name="logout_confirm_title">Đăng xuất khỏi ShelfTap?</string>
+    <string name="logout_confirm_body">Phiên đăng nhập trên máy này sẽ bị xóa. Lần sau bạn cần đăng nhập lại bằng mật khẩu hoặc thẻ.</string>
+    <string name="logout_stay">Ở lại</string>
 </resources>
