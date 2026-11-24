@@ -112,9 +112,9 @@ fun LoansScreen() {
     LoadView(state.list, onRetry = vm::load, loading = { SkeletonList(modifier = Modifier.fillMaxSize()) }) { loans ->
         val rise = rememberRiseIn()
         Column(Modifier.fillMaxSize()) {
-            ErrorText(state.error, Modifier.padding(Spacing.l))
-            if (loans.isEmpty()) EmptyState(R.string.loans_empty, R.string.loans_empty_hint)
-            LazyColumn {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = pagePadding()) {
+                item { ErrorText(state.error, Modifier.padding(Spacing.l)) }
+                if (loans.isEmpty()) item { EmptyState(R.string.loans_empty, R.string.loans_empty_hint, Modifier.fillParentMaxSize()) }
                 itemsIndexed(loans, key = { _, it -> it.loanId }) { index, loan ->
                     val renewFor = stringResource(R.string.loans_renew_for, loan.title)
                     Row(Modifier.then(itemMotion()).riseIn(index, rise).fillMaxWidth().padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
@@ -191,7 +191,7 @@ fun CheckoutScreen() {
     NfcGate {
         NfcReaderEffect(TagReader.BOOK_FLAGS) { vm.tagTapped(it) }
         Column(
-            Modifier.fillMaxSize().padding(Spacing.xl),
+            Modifier.fillMaxSize().padding(pagePadding()).padding(Spacing.xl),
             verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -266,9 +266,9 @@ fun ReservationsScreen() {
     LoadView(state.list, onRetry = vm::load, loading = { SkeletonList(modifier = Modifier.fillMaxSize()) }) { reservations ->
         val rise = rememberRiseIn()
         Column(Modifier.fillMaxSize()) {
-            ErrorText(state.error, Modifier.padding(Spacing.l))
-            if (reservations.isEmpty()) EmptyState(R.string.reservations_empty, R.string.reservations_empty_hint)
-            LazyColumn {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = pagePadding()) {
+                item { ErrorText(state.error, Modifier.padding(Spacing.l)) }
+                if (reservations.isEmpty()) item { EmptyState(R.string.reservations_empty, R.string.reservations_empty_hint, Modifier.fillParentMaxSize()) }
                 itemsIndexed(reservations, key = { _, it -> it.reservationId }) { index, r ->
                     val cancelFor = stringResource(R.string.reservations_cancel_for, r.title)
                     Row(Modifier.then(itemMotion()).riseIn(index, rise).fillMaxWidth().padding(Spacing.l), verticalAlignment = Alignment.CenterVertically) {
@@ -344,7 +344,7 @@ fun HistoryScreen() {
             if (items.isEmpty()) {
                 EmptyState(R.string.history_empty)
             } else {
-                LazyColumn(Modifier.fillMaxSize()) {
+                LazyColumn(Modifier.fillMaxSize(), contentPadding = pagePadding()) {
                     items(items) { h ->
                         Column(Modifier.fillMaxWidth().padding(Spacing.l)) {
                             Text(h.title, style = MaterialTheme.typography.titleMedium)

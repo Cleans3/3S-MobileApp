@@ -182,7 +182,7 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
 
     LoadView(state.me, onRetry = vm::load) { me ->
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = GlassSize.page, vertical = Spacing.s),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding(GlassSize.page, Spacing.s)),
             verticalArrangement = Arrangement.spacedBy(Spacing.m),
         ) {
             ProfileCard(me.fullName, me.email)

@@ -115,7 +115,7 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
     var password by remember { mutableStateOf("") } // never saved to instance state
 
     Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.xl),
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding()).padding(Spacing.xl),
         verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
     ) {
         Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium)
@@ -143,7 +143,7 @@ fun CardLoginScreen(onBack: () -> Unit) {
     NfcGate {
         NfcReaderEffect(TagReader.CARD_FLAGS) { vm.cardTapped(it) }
         Column(
-            Modifier.fillMaxSize().padding(Spacing.xl),
+            Modifier.fillMaxSize().padding(pagePadding()).padding(Spacing.xl),
             verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

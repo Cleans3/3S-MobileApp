@@ -182,35 +182,47 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
 
     val rise = rememberRiseIn()
     val searchLabel = stringResource(R.string.catalog_search_label)
-    Column(Modifier.fillMaxSize()) {
-        if (!showList) {
-            Column(Modifier.padding(start = GlassSize.page, end = GlassSize.page, top = Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+    val search: @Composable () -> Unit = {
+        SearchPill(
+            value = input, onValueChange = { input = it }, label = searchLabel, placeholder = stringResource(R.string.catalog_search_placeholder), onSearch = { vm.search(input) },
+            modifier = Modifier.padding(vertical = Spacing.s),
+        )
+    }
+    if (showList) {
+        // The results: the search field stays on top (below the bar), the rows scroll under the bottom button.
+        Column(Modifier.fillMaxSize()) {
+            Spacer(Modifier.height(LocalPageInsets.current.top))
+            Box(Modifier.padding(horizontal = GlassSize.page)) { search() }
+            CatalogList(state, onOpen, rise, onLoadMore = vm::loadMore, onRetry = vm::retry)
+        }
+    } else {
+        // The home: greeting and search scroll with the page, so everything passes under the top bar as in the mockup.
+        val header: @Composable () -> Unit = {
+            Column(Modifier.padding(top = Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                 Text(stringResource(R.string.catalog_hello), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.shelfTap.ink3)
                 Text(stringResource(R.string.catalog_headline), style = ShelfTapText.greeting)
             }
+            search()
         }
-        SearchPill(
-            value = input, onValueChange = { input = it }, label = searchLabel, placeholder = stringResource(R.string.catalog_search_placeholder), onSearch = { vm.search(input) },
-            modifier = Modifier.padding(horizontal = GlassSize.page, vertical = Spacing.s),
-        )
-        if (showList) {
-            CatalogList(state, onOpen, rise, onLoadMore = vm::loadMore, onRetry = vm::retry)
-        } else {
-            CatalogHome(state, onOpen, onSubject = { input = it }, onAll = { listAll = true }, onRetry = vm::retry)
-        }
+        CatalogHome(state, onOpen, onSubject = { input = it }, onAll = { listAll = true }, onRetry = vm::retry, header = header)
     }
 }
 
 /** Banner, strips by subject, and a way to the full list. */
 @Composable
-private fun CatalogHome(state: CatalogViewModel.UiState, onOpen: (String) -> Unit, onSubject: (String) -> Unit, onAll: () -> Unit, onRetry: () -> Unit) {
+private fun CatalogHome(
+    state: CatalogViewModel.UiState, onOpen: (String) -> Unit, onSubject: (String) -> Unit, onAll: () -> Unit, onRetry: () -> Unit,
+    header: @Composable () -> Unit,
+) {
+    val top = LocalPageInsets.current.top
     when {
-        state.items.isEmpty() && state.loading -> SkeletonList(rows = 6)
-        state.items.isEmpty() && state.error != null -> ErrorState(state.error!!, state.offline, onRetry)
-        state.items.isEmpty() -> EmptyState(R.string.catalog_empty, R.string.catalog_empty_hint)
+        state.items.isEmpty() && state.loading -> Column { Spacer(Modifier.height(top)); Column(Modifier.padding(horizontal = GlassSize.page)) { header() }; SkeletonList(rows = 6) }
+        state.items.isEmpty() && state.error != null -> Column { Spacer(Modifier.height(top)); Column(Modifier.padding(horizontal = GlassSize.page)) { header() }; ErrorState(state.error!!, state.offline, onRetry) }
+        state.items.isEmpty() -> Column { Spacer(Modifier.height(top)); Column(Modifier.padding(horizontal = GlassSize.page)) { header() }; EmptyState(R.string.catalog_empty, R.string.catalog_empty_hint) }
         else -> {
             val strips = remember(state.items) { stripsOf(state.items) }
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(horizontal = GlassSize.page, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = pagePadding(GlassSize.page, Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
+                item { Column { header() } }
                 item {
                     val first = strips.first()
                     Banner(first.subject, first.books.take(BANNER_BOOKS), onClick = { first.subject?.let(onSubject) ?: onAll() })
@@ -293,7 +305,7 @@ private fun Banner(subject: String?, books: List<TitleSummary>, onClick: () -> U
 /** Every book of the search, one row each, with paging. Rows are solid and carry no blur (plan section 7). */
 @Composable
 private fun CatalogList(state: CatalogViewModel.UiState, onOpen: (String) -> Unit, rise: Boolean, onLoadMore: () -> Unit, onRetry: () -> Unit) {
-    LazyColumn(Modifier.fillMaxSize()) {
+    LazyColumn(Modifier.fillMaxSize(), contentPadding = pagePadding()) {
         itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
             TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.riseIn(index, rise))
             HorizontalDivider()

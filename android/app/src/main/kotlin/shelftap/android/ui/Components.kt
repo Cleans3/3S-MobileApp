@@ -114,7 +114,7 @@ fun SkeletonList(rows: Int = 6, modifier: Modifier = Modifier) {
         animationSpec = infiniteRepeatable(tween(Motion.PULSE_MS, easing = LinearEasing), RepeatMode.Reverse), label = "pulse",
     )
     Column(
-        modifier.graphicsLayer { alpha = pulse?.value ?: 1f }.clearAndSetSemantics { contentDescription = loading; liveRegion = LiveRegionMode.Polite },
+        modifier.padding(pagePadding()).graphicsLayer { alpha = pulse?.value ?: 1f }.clearAndSetSemantics { contentDescription = loading; liveRegion = LiveRegionMode.Polite },
     ) {
         repeat(rows) {
             Row(Modifier.fillMaxWidth().padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {

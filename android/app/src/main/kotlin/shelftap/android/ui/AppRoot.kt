@@ -72,6 +72,10 @@ import shelftap.android.ui.theme.Motion
 import shelftap.android.ui.theme.MenuSize
 import shelftap.android.ui.theme.pressScale
 import shelftap.android.ui.theme.Spacing
+import shelftap.android.ui.theme.shelfTap
+import androidx.compose.foundation.layout.height
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Brush
 
 /**
  * The session state picks the screen: there is no back stack from a protected screen to the login. Logged out is not a
@@ -220,11 +224,19 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                 floatingActionButtonPosition = FabPosition.Center,
             ) { padding ->
                 // With the menu open the page behind it is out of reach: TalkBack reads the menu, not the screen under it.
+                // The page is drawn edge to edge: it scrolls under the status bar, the top bar and the floating button, and each screen
+                // keeps its first and last item clear of them with [pagePadding]. A book's page paints its colour field up to the top edge itself.
+                val titleRoute = route?.startsWith("title/") == true
+                val insets = if (titleRoute) PageInsets() else PageInsets(
+                    top = padding.calculateTopPadding(),
+                    bottom = padding.calculateBottomPadding() + (if (pillHere && compact) Spacing.pillClearance else Spacing.none),
+                )
                 Box(
                     Modifier.fillMaxSize()
-                        // A book's page paints its colour field up to the top edge, under the status bar; it pads its own buttons.
-                        .padding(if (route?.startsWith("title/") == true) PaddingValues(start = padding.calculateStartPadding(LayoutDirection.Ltr), end = padding.calculateEndPadding(LayoutDirection.Ltr), bottom = padding.calculateBottomPadding()) else padding)
-                        .padding(bottom = if (pillHere && compact) Spacing.pillClearance else Spacing.none)
+                        .padding(
+                            start = padding.calculateStartPadding(LayoutDirection.Ltr), end = padding.calculateEndPadding(LayoutDirection.Ltr),
+                            bottom = if (titleRoute) padding.calculateBottomPadding() else Spacing.none,
+                        )
                         // The page is blurred lightly (the mockup's 3 px) and records itself for the strong blur right behind the panel.
                         // Both read their flag in the draw phase and cost nothing while the menu is shut.
                         .graphicsLayer { if (glass && overlayOpen) renderEffect = BlurEffect(blurPx, blurPx, TileMode.Clamp) }
@@ -232,6 +244,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                         .then(if (overlayOpen) Modifier.clearAndSetSemantics {} else Modifier),
                     contentAlignment = Alignment.TopCenter,
                 ) {
+                    CompositionLocalProvider(LocalPageInsets provides insets) {
                     Box(Modifier.fillMaxHeight().widthIn(max = contentMax).fillMaxWidth()) {
                         NavHost(
                             nav, startDestination = if (guest && reason != null) LOGIN else CATALOG,
@@ -263,6 +276,13 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                             composable("password") { ChangePasswordScreen(forced = false, onDone = { nav.popBackStack() }) }
                         }
                     }
+                    }
+                    // Soft fades of the page colour where the page runs under the bars, so a title or the floating button always sits on
+                    // something calm. (Where the tier allows, the blur of the mockup goes here too.)
+                    if (!titleRoute) {
+                        FadeBand(insets.top + Spacing.l, fromTop = true, modifier = Modifier.align(Alignment.TopCenter))
+                        if (pillHere && compact) FadeBand(insets.bottom + Spacing.l, fromTop = false, modifier = Modifier.align(Alignment.BottomCenter))
+                    }
                 }
             }
             MenuLayer(
@@ -291,6 +311,19 @@ private fun MenuLayer(
     }
 }
 
+/** A band that fades the page colour out over [height]: solid at the screen's edge, clear at the other end. Draws only, never takes a touch. */
+@Composable
+private fun FadeBand(height: Dp, fromTop: Boolean, modifier: Modifier = Modifier) {
+    val bg = MaterialTheme.shelfTap.bg
+    val solid = bg.copy(alpha = FADE_SOLID)
+    val stops = if (fromTop) arrayOf(0f to solid, FADE_HOLD to solid, 1f to bg.copy(alpha = 0f)) else arrayOf(0f to bg.copy(alpha = 0f), 1f - FADE_HOLD to solid, 1f to solid)
+    Box(modifier.fillMaxWidth().height(height).background(Brush.verticalGradient(colorStops = stops)))
+}
+
+/** How opaque the fade is where it meets the edge, and how much of its height stays that way before it fades. */
+private const val FADE_SOLID = 0.96f
+private const val FADE_HOLD = 0.7f
+
 /** A wide window shows the catalog and the chosen book side by side, so picking a book does not leave the list. */
 @Composable
 private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
@@ -300,7 +333,7 @@ private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
         VerticalDivider()
         Box(Modifier.weight(1.3f).fillMaxHeight()) {
             val id = selected
-            if (id == null) EmptyState(R.string.catalog_pick_hint) else TitleDetailScreen(id, onLogin = onLogin, onCheckout = onCheckout)
+            if (id == null) EmptyState(R.string.catalog_pick_hint) else Box(Modifier.padding(top = LocalPageInsets.current.top)) { TitleDetailScreen(id, onLogin = onLogin, onCheckout = onCheckout) }
         }
     }
 }
