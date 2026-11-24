@@ -1,0 +1,6 @@
+# Baseline Profile of the ShelfTap member app: tells the Android runtime which code to compile ahead of time at install, so the first
+# minutes after opening the app do not run through the slow interpreter/JIT warm-up (measured: the first 12 book-page openings were twice
+# as janky as the next 12). The Compose, Material, Coil and navigation libraries ship their own profiles inside their AARs; this file covers
+# the app's own code. Wildcards: every class and method of the app package is marked hot (H), startup (S) and post-startup (P).
+HSPLshelftap/android/**;->**(**)**
+Lshelftap/android/**;

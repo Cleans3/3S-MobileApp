@@ -329,3 +329,12 @@
 - **Đo trước → sau:** không có số đo. **Chưa kiểm:** cử chỉ thật (lệnh `input motionevent` từ mép không kích hoạt back trên Xiaomi nên không mô phỏng được); chiều trượt theo cạnh (chọn theo quy ước: trang đi theo ngón tay); cảm giác khi thả giữa chừng (huỷ).
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI đọc nguồn thư viện để tìm mặc định, chọn kiểu trượt theo cạnh; con người chưa thử cử chỉ.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua (74 test).
+
+## 2026-11-25 01:05 · Baseline Profile cho code của app (nguồn: yêu cầu của người dùng)
+
+- **Vấn đề:** ở bản debug, vài chục giây đầu sau khi mở app mọi thao tác giật gấp đôi lúc sau (12 lần mở sách đầu: janky ~10%, phân vị 90 ~125 ms; 12 lần sau ~5%, ~60 ms): mã chạy qua trình thông dịch/JIT trước khi được biên dịch.
+- **Thay đổi:** `app/src/main/baseline-prof.txt` (mới): quy tắc ký tự đại diện đánh dấu mọi lớp và phương thức của `shelftap.android.**` là nóng/khởi động/sau khởi động, để ART biên dịch trước khi cài. Không thêm thư viện: `androidx.profileinstaller` 1.4.1 vốn đã có trong app (Compose kéo vào), và các thư viện Compose, Material, Coil, điều hướng tự mang hồ sơ riêng trong AAR. Hồ sơ này viết tay bằng ký tự đại diện, không sinh từ hành trình thật (macrobenchmark `BaselineProfileRule` cần module mới và thiết bị Android 13+); nên biên dịch hơi rộng hơn mức cần.
+- **Đo trước → sau (Xiaomi, bản debug, `gfxinfo`, 4 đoạn × 6 lần mở sách; "sau" = ép biên dịch toàn bộ bằng `cmd package compile -m speed -f` để mô phỏng trần của hồ sơ, vì bản debug không mang hồ sơ):** khung janky 12,7 / 8,5 / 4,7 / 5,2% → 4,8 / 4,3 / 4,1 / 3,5%; phân vị 90 125 / 85 / 61 / 53 ms → 85 / 69 / 61 / 48 ms. Lượt "trước" là bản thử ngay trước đó, mỗi bên một lượt, chưa xen kẽ, nhiễu cỡ ±2% janky. Bản release (`assembleRelease`) mang `assets/dexopt/baseline.prof` (10 KB) và `.profm`; kiểm bằng cách mở APK, không chạy máy. **Chưa đo/kiểm:** bản release thật trên máy (bản release không ký, và chưa chắc tin được chứng chỉ dev của server nên có thể không kết nối được); hiệu quả thực của quy tắc đại diện so với mô phỏng `-m speed`; kích thước odex tăng; thời gian cài.
+- **Cách thử trên bản debug:** sau khi cài, chạy `adb shell cmd package compile -m speed -f shelftap.android` (bản debug không tự nhận hồ sơ).
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn ký tự đại diện thay vì sinh hồ sơ từ hành trình; con người chưa duyệt.
+- **Kiểm thử:** `assembleDebug assembleRelease testDebugUnitTest`: qua.
