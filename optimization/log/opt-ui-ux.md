@@ -151,3 +151,12 @@
 - **AI:** Claude Code (Sonnet 5.5). AI dựng server, chẩn đoán lỗi TLS từ bảng TCP của điện thoại và log server, tạo lại chứng chỉ. Con người cài chứng chỉ, đăng nhập và đánh giá.
 - **Kiểm thử:** server dev trả 200 trên đăng nhập thử bằng tài khoản dev (trên máy tính). Chưa có test tự động cho phần này.
 - **Ghi chú cho báo cáo:** `FLAG_SECURE` làm ảnh chụp và quay màn hình đều đen, nên chuyển động chỉ đánh giá được bằng mắt hoặc camera ngoài (đúng như `ux-test.md` đã ghi). Máy chạy server dev ở phiên này dùng cơ sở dữ liệu `shelftap_bench` có sẵn của phiên đo `opt/app-catalog` (hơn 100 nghìn đầu sách).
+
+## 2026-11-24 17:28 · Kiểm tra lỗi "app thoát khi vào Account" trên Xiaomi Android 17: không tái hiện được
+
+- **Vấn đề:** người dùng (qua phiên bên lề) báo app thoát khi vào Tài khoản.
+- **Thay đổi:** không sửa code. Kiểm tra: (1) log crash của máy trống và các dòng "app died" đều `isCrashing=false`; (2) bài đo `UiAuditTest` mở được màn Tài khoản trên Xiaomi ở sáng và tối; (3) `KeystoreRefreshTokenVaultTest` (Keystore thật) chạy trên Xiaomi: qua; (4) dựng lại server dev thật, người dùng đăng nhập (server cấp refresh token lúc 17:27:13) và vào Tài khoản bằng tay, log máy ghi lại: không có `FATAL EXCEPTION` hay exception của ShelfTap.
+- **Đo trước → sau:** người dùng xác nhận: **không bị thoát** khi vào Tài khoản sau đăng nhập thật. Khả năng giải thích lần thoát đã thấy: bài đo tự đóng activity ngay sau khi chụp màn Tài khoản (bước cuối của `UiAuditTest`), không phải lỗi của app. Chưa kiểm chứng điều này trực tiếp: người dùng không nói rõ lần thoát đó xảy ra khi nào.
+- **AI:** Claude Code (Sonnet 5.5). Dựng server, ghi log máy, đọc log. Người dùng đăng nhập và thử.
+- **Kiểm thử:** như trên. Không có test tự động mới.
+- **Ghi chú cho báo cáo:** nếu tái hiện lại, giữ log (`adb logcat -b crash`) và ghi bước chính xác.
