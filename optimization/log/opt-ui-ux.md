@@ -466,3 +466,19 @@
 - **Đo trước → sau:** ảnh GPU `detail` (emulator, cửa sổ rộng 960×720 dp): dải trống phía trên khung sách (khoảng 70 dp) → mảng màu sát mép; ô "Tình trạng" và ISBN nay hiện trọn trên thanh đặt trước khi chưa cuộn (trước đó bị thanh che một phần); ATF 0. **Chưa đo/kiểm:** chiều cao mảng màu (448 dp) vẫn lớn so với khung hẹp: chưa chỉnh theo kích thước khung; cửa sổ rộng ở cỡ chữ lớn và ở máy thật.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI đoán khoảng trống là dải đệm đầu khung (khớp với ảnh); con người chưa xác nhận đó là chỗ người dùng muốn nói.
 - **Kiểm thử:** `run_audit.ps1 -Configs expanded -Locale vi`: qua (kèm biên dịch).
+
+## 2026-11-25 16:00 · Điện thoại nằm ngang: thanh dọc đủ năm mục không bị cắt (việc 4 của kế hoạch xử lý lỗi còn lại)
+
+- **Vấn đề:** ở cửa sổ cao 411 dp (điện thoại nằm ngang), năm mục của thanh dọc cần khoảng 420 dp nên mục cuối "Tài khoản" bị cắt ở mép dưới khi chưa cuộn. Thanh dọc có `verticalScroll`, nên vẫn tới được nhưng không có dấu hiệu nào cho thấy phải cuộn.
+- **Thay đổi:** `AppMenu.kt` (`SideNav`): khi cửa sổ cao không quá 480 dp, bỏ khoảng giữa các mục và đệm dọc mỗi mục từ 8 xuống 4 dp.
+- **Đo trước → sau:** ảnh GPU `detail` (emulator, `land` 731×411 dp): "Tài khoản" bị cắt → cả năm mục hiện trọn, mục cuối cách mép dưới khoảng 90 px; điện thoại thường không đổi; ATF 0. **Chưa đo/kiểm:** máy nằm ngang thật; cỡ chữ 2.0 ở chiều cao này (năm mục sẽ lại dài hơn cửa sổ, và vẫn cuộn được); cỡ cao giữa 411 và 480 dp.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI tính từ ảnh rằng thiếu khoảng 10 dp và chọn bỏ 56 dp; con người chưa duyệt.
+- **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Configs land,w320,light -Locale vi`: qua.
+
+## 2026-11-25 16:10 · Mảng màu của bìa theo kích thước khung (việc 3 của kế hoạch xử lý lỗi còn lại)
+
+- **Vấn đề:** mảng màu trang sách luôn cao 448 dp và bìa 200×296 dp, kể cả ở cửa sổ thấp (ngang: 411 dp, mảng màu chiếm gần hết màn, đẩy chữ ra khỏi màn) và hẹp (320 dp).
+- **Thay đổi:** `TitleDetailScreen.kt` (`Hero`, hàm thuần `heroScale`): hệ số thu nhỏ = min(chiều rộng khung / 390 dp, 0,62 × chiều cao màn / 448 dp), kẹp trong khoảng 0,6 đến 1; mảng màu, vị trí và cỡ bìa, dải mờ đều nhân hệ số; bìa dựng đủ cỡ rồi phóng nhỏ bằng `graphicsLayer` nên chữ trên bìa nhỏ theo; điện thoại thường (≥ 390 dp rộng, ≥ 723 dp cao) giữ nguyên 448 dp. `HeroScaleTest` (4 test: máy thường giữ nguyên, khung hẹp, cửa sổ thấp, sàn và trần).
+- **Đo trước → sau:** ảnh GPU `detail` (emulator): `land` 411 dp cao: mảng màu 448 dp (gần hết màn) → 0,6 × 448 = 269 dp, thấy được tên sách và hai ô; `w320`: 0,82 (368 dp), ô "Tình trạng" và ISBN hiện trên thanh đặt trước (trước đó nằm sau); `light` 411×914 dp: không đổi; ATF 0 ở `land` và `w320`, 3 ở `light` (như trước). **Chưa đo/kiểm:** cửa sổ rộng và vừa (hệ số 1 nên không đổi, nhưng chưa đối chiếu lại ảnh); ảnh bìa thật (tỷ lệ khác); chữ 2.0 ở cửa sổ thấp; chi phí khung của `graphicsLayer` thêm một lớp.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn công thức 0,62 và sàn 0,6; con người chưa duyệt.
+- **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin`: qua (83 test, thêm 4); `run_audit.ps1 -Configs land,w320,light -Locale vi`: qua.

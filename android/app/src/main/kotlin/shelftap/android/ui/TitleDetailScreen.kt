@@ -4,6 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -121,11 +124,27 @@ private fun Hero(t: TitleDetail) {
     val (cover, ink) = coverColors(t.title)
     val field = lerp(cover, Color.White, HERO_FIELD_TINT)
     val page = MaterialTheme.colorScheme.background
-    Box(Modifier.fillMaxWidth().height(HeroSize.height).clearAndDecorative().background(field)) {
-        Jacket(t, cover, ink, Modifier.align(Alignment.TopCenter).padding(top = HeroSize.jacketTop))
-        Box(Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(HeroSize.fade).background(Brush.verticalGradient(listOf(Color.Transparent, page))))
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        // The field and the jacket shrink together on a narrow or a short window, so the page's text is not pushed off the screen.
+        val s = heroScale(maxWidth.value, LocalConfiguration.current.screenHeightDp.toFloat())
+        Box(Modifier.fillMaxWidth().height(HeroSize.height * s).clearAndDecorative().background(field)) {
+            Box(Modifier.align(Alignment.TopCenter).padding(top = HeroSize.jacketTop * s).size(HeroSize.jacketWidth * s, HeroSize.jacketHeight * s)) {
+                // Laid out at its full size and scaled, so its lettering shrinks with it.
+                Jacket(t, cover, ink, Modifier.wrapContentSize(unbounded = true).graphicsLayer { scaleX = s; scaleY = s })
+            }
+            Box(Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(HeroSize.fade * s).background(Brush.verticalGradient(listOf(Color.Transparent, page))))
+        }
     }
 }
+
+/** How much of its full size (448 dp tall, made for a 390 dp wide phone) the colour field takes: less on a narrower window and on a short one, never under 60%. */
+internal fun heroScale(widthDp: Float, screenHeightDp: Float): Float =
+    minOf(widthDp / HERO_DESIGN_WIDTH, HERO_SHARE_OF_SCREEN * screenHeightDp / HERO_DESIGN_HEIGHT).coerceIn(HERO_MIN_SCALE, 1f)
+
+private const val HERO_DESIGN_WIDTH = 390f
+private const val HERO_DESIGN_HEIGHT = 448f
+private const val HERO_SHARE_OF_SCREEN = 0.62f
+private const val HERO_MIN_SCALE = 0.6f
 
 /** The tilted jacket: the image when the book has one, else its colour with the title and author in large letters. Fixed-size lettering, as on a real jacket. */
 @Composable
