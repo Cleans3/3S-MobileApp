@@ -12,6 +12,12 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.widthIn
@@ -50,7 +56,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import shelftap.android.R
+import shelftap.android.ui.icons.LucideIcon
 import shelftap.android.ui.icons.LucideIcons
+import shelftap.android.ui.theme.GlassSize
 import shelftap.android.session.LogoutReason
 import shelftap.android.session.SessionState
 import shelftap.android.ui.theme.AdaptiveSize
@@ -84,16 +92,19 @@ private fun LoggedOutHost(reason: LogoutReason?) {
     if (card) CardLoginScreen(onBack = { card = false }) else LoginScreen(reason, onCard = { card = true })
 }
 
+/** The glass circle behind the NFC glyph of the floating button. */
+private const val PILL_CIRCLE = 0.16f
+
 private const val CATALOG = "catalog"
 private const val CHECKOUT = "checkout"
 private const val LOGIN = "login"
 
 private val memberMenu = listOf(
-    MenuItem(CATALOG, R.string.tab_catalog, LucideIcons.BookOpen), MenuItem("loans", R.string.tab_loans, LucideIcons.Clock),
-    MenuItem("reservations", R.string.tab_reservations, LucideIcons.Bookmark),
-    MenuItem("history", R.string.account_history, LucideIcons.History), MenuItem("account", R.string.tab_account, LucideIcons.User),
+    MenuItem(CATALOG, R.string.tab_catalog, LucideIcons.MockupCatalog), MenuItem("loans", R.string.tab_loans, LucideIcons.MockupLoans),
+    MenuItem("reservations", R.string.tab_reservations, LucideIcons.MockupReservations),
+    MenuItem("history", R.string.account_history, LucideIcons.MockupHistory), MenuItem("account", R.string.tab_account, LucideIcons.MockupAccount),
 )
-private val guestMenu = listOf(MenuItem(CATALOG, R.string.tab_catalog, LucideIcons.BookOpen), MenuItem(LOGIN, R.string.login_action, LucideIcons.LogIn))
+private val guestMenu = listOf(MenuItem(CATALOG, R.string.tab_catalog, LucideIcons.MockupCatalog), MenuItem(LOGIN, R.string.login_action, LucideIcons.LogIn))
 
 /** What the top bar calls each screen that has one. Detail and password screens have no bar and use the system back. */
 @StringRes
@@ -165,7 +176,18 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
             Scaffold(
                 topBar = {
                     if (title != null) {
-                        if (compact) AppTopBar(title, overlayOpen, onMenu = { menuOpen = !menuOpen }) else AppTitleBar(title)
+                        if (compact && route == CATALOG) {
+                            // The mockup's catalog bar: the library's name in the middle, a round account button (the login for a guest).
+                            AppTopBar(
+                                R.string.catalog_bar_title, overlayOpen, onMenu = { menuOpen = !menuOpen }, centred = true,
+                                accountDescription = stringResource(if (guest) R.string.login_title else R.string.open_account),
+                                onAccount = { nav.goTo(if (guest) LOGIN else "account") },
+                            )
+                        } else if (compact) {
+                            AppTopBar(title, overlayOpen, onMenu = { menuOpen = !menuOpen })
+                        } else {
+                            AppTitleBar(title)
+                        }
                     }
                 },
                 floatingActionButton = {
@@ -177,7 +199,14 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                             interactionSource = pillSource,
                             containerColor = MaterialTheme.colorScheme.primary,
                             contentColor = MaterialTheme.colorScheme.onPrimary,
-                        ) { Text(stringResource(R.string.checkout_pill)) }
+                        ) {
+                            // The NFC glyph in a small glass circle, then the sentence (as in the mockup).
+                            Box(Modifier.size(GlassSize.pillCircle).clip(CircleShape).background(MaterialTheme.colorScheme.onPrimary.copy(alpha = PILL_CIRCLE)), contentAlignment = Alignment.Center) {
+                                LucideIcon(LucideIcons.MockupNfc, tint = MaterialTheme.colorScheme.onPrimary, size = GlassSize.pillGlyph)
+                            }
+                            Spacer(Modifier.width(Spacing.m))
+                            Text(stringResource(R.string.checkout_pill))
+                        }
                     }
                 },
                 floatingActionButtonPosition = FabPosition.Center,

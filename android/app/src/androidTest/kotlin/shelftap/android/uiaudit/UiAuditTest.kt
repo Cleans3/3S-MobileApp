@@ -6,7 +6,13 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
@@ -82,14 +88,14 @@ class UiAuditTest {
             scenario.onActivity { activity = it }
 
             // Logged out is a guest: the catalog first, and the login one step away in the menu.
-            waitFor(AuditData.titles.first().title)
+            waitFor(str(R.string.catalog_theme)) // the banner: always on screen, unlike the strips below it at a large font
             audit("guest", activity)
             openMenu(); loginEntry()
             waitFor(str(R.string.login_with_card))
             audit("login", activity)
 
             runBlocking { session.login(AuditData.EMAIL, "audit-only") }
-            waitFor(AuditData.titles.first().title)
+            waitFor(str(R.string.catalog_theme)) // the banner: always on screen, unlike the strips below it at a large font
             audit("catalog", activity)
 
             openFirstTitle()
@@ -131,7 +137,20 @@ class UiAuditTest {
     private fun openFirstTitle() {
         val title = AuditData.titles.first().title
         val cards = compose.onAllNodes(hasContentDescription(title, substring = true))
-        if (cards.fetchSemanticsNodes().isNotEmpty()) cards[0].performClick() else compose.onAllNodesWithText(title).onFirst().performClick()
+        // At a large font the banner pushes the strips below the fold, and a lazy list composes only what is on screen: scroll to them.
+        repeat(4) {
+            if (cards.fetchSemanticsNodes().isEmpty() && compose.onAllNodesWithText(title).fetchSemanticsNodes().isEmpty()) {
+                compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() }
+                compose.waitForIdle()
+            }
+        }
+        if (cards.fetchSemanticsNodes().isNotEmpty()) {
+            // Bring the card clear of the floating button before touching it: its centre can sit under the button.
+            cards[0].performScrollTo()
+            cards[0].performSemanticsAction(SemanticsActions.OnClick) // the action, not a touch: at a large font the card can lie under the button
+        } else {
+            compose.onAllNodesWithText(title).onFirst().performClick()
+        }
     }
 
     /** The ☰ button is on screen, open (its label is "close menu") or shut. */

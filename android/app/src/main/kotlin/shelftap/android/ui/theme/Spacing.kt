@@ -76,6 +76,10 @@ object GlassSize {
     val arrow = 44.dp
     val arrowIcon = 18.dp
     /** The tile behind a menu entry's icon, and the icon in it. */
-    val tile = 36.dp
-    val tileIcon = 20.dp
+    val menuIcon = 20.dp
+    /** The side margin of a home screen in the mockup (20, where ordinary screens use 16). */
+    val page = 20.dp
+    /** The circle that carries the NFC glyph in the floating button, and the glyph. */
+    val pillCircle = 40.dp
+    val pillGlyph = 20.dp
 }

@@ -12,7 +12,9 @@ param(
     [Parameter(Mandatory)] [string] $Label,
     [Parameter(Mandatory)] [string] $Serial,
     # Which device configurations to run. On a physical phone use 'light','dark': font2 and w320 change the phone's font and display size.
-    [string[]] $Configs = @('light', 'dark', 'font2', 'w320', 'medium', 'expanded')
+    [string[]] $Configs = @('light', 'dark', 'font2', 'w320', 'medium', 'expanded'),
+    # App language for the run (per-app locale, Android 13+), for example 'vi' to compare with the Vietnamese mockup. Default: leave as the device has it.
+    [string] $Locale = ''
 )
 $ErrorActionPreference = 'Stop'
 $adb = Join-Path $env:LOCALAPPDATA 'Android\Sdk\platform-tools\adb.exe'
@@ -52,6 +54,7 @@ foreach ($config in $Configs) {
         'medium'   { Sh 'wm size 1260x1470' } # 720 dp x 840 dp at 280 dpi: a folded-open phone, nearly square
         'expanded' { Sh 'wm size 1680x1260' } # 960 dp x 720 dp at 280 dpi: a tablet or an unfolded phone held sideways
     }
+    if ($Locale) { Sh "cmd locale set-app-locales shelftap.android --locales $Locale" }
     Write-Host "== $config"
     Push-Location (Join-Path $repo 'android')
     try {
@@ -65,4 +68,5 @@ foreach ($config in $Configs) {
     & $adb -s $Serial pull "$remote/." $out | Out-Null
 }
 ApplyBase
+if ($Locale) { Sh 'cmd locale set-app-locales shelftap.android --locales ""' }
 Write-Host "results in $out"

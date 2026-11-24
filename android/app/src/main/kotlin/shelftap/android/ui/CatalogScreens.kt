@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -73,6 +75,7 @@ import shelftap.android.api.TitleSummary
 import shelftap.android.data.Repository
 import shelftap.android.ui.theme.CoverSize
 import shelftap.android.ui.theme.GlassSize
+import shelftap.android.ui.theme.ShelfTapText
 import shelftap.android.ui.theme.Radius
 import shelftap.android.ui.theme.Spacing
 import shelftap.android.ui.theme.bannerBackground
@@ -140,6 +143,9 @@ private const val STRIPS = 2
 private const val BANNER_BOOKS = 3
 private const val BANNER_SCRIM_ALPHA = 0.75f
 
+/** Above this system font scale the banner stacks its text under the covers. */
+private const val STACK_FONT_SCALE = 1.3f
+
 /** One strip of the home: a subject and some of its books. */
 private data class Strip(val subject: String?, val books: List<TitleSummary>)
 
@@ -178,14 +184,14 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
     val searchLabel = stringResource(R.string.catalog_search_label)
     Column(Modifier.fillMaxSize()) {
         if (!showList) {
-            Column(Modifier.padding(horizontal = Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Column(Modifier.padding(start = GlassSize.page, end = GlassSize.page, top = Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                 Text(stringResource(R.string.catalog_hello), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.shelfTap.ink3)
-                Text(stringResource(R.string.catalog_headline), style = MaterialTheme.typography.headlineMedium)
+                Text(stringResource(R.string.catalog_headline), style = ShelfTapText.greeting)
             }
         }
         SearchPill(
-            value = input, onValueChange = { input = it }, label = searchLabel, placeholder = searchLabel, onSearch = { vm.search(input) },
-            modifier = Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s),
+            value = input, onValueChange = { input = it }, label = searchLabel, placeholder = stringResource(R.string.catalog_search_placeholder), onSearch = { vm.search(input) },
+            modifier = Modifier.padding(horizontal = GlassSize.page, vertical = Spacing.s),
         )
         if (showList) {
             CatalogList(state, onOpen, rise, onLoadMore = vm::loadMore, onRetry = vm::retry)
@@ -204,7 +210,7 @@ private fun CatalogHome(state: CatalogViewModel.UiState, onOpen: (String) -> Uni
         state.items.isEmpty() -> EmptyState(R.string.catalog_empty, R.string.catalog_empty_hint)
         else -> {
             val strips = remember(state.items) { stripsOf(state.items) }
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(horizontal = Spacing.l, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
+            LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(horizontal = GlassSize.page, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.l)) {
                 item {
                     val first = strips.first()
                     Banner(first.subject, first.books.take(BANNER_BOOKS), onClick = { first.subject?.let(onSubject) ?: onAll() })
@@ -234,15 +240,19 @@ private fun CatalogHome(state: CatalogViewModel.UiState, onOpen: (String) -> Uni
     }
 }
 
-/** The theme banner: a few covers, a scrim at the foot for the white text, the subject, an arrow. The whole banner is one button. */
+/**
+ * The theme banner: a few covers, a scrim at the foot for the white text, the subject, an arrow. The whole banner is one button.
+ * With an enlarged system font the text no longer fits under the covers, so it moves to its own area below them and the banner grows,
+ * instead of drawing over the covers' titles.
+ */
 @Composable
 private fun Banner(subject: String?, books: List<TitleSummary>, onClick: () -> Unit) {
     val theme = stringResource(R.string.catalog_theme)
     val name = subject ?: stringResource(R.string.catalog_library_strip)
-    Box(
-        Modifier.fillMaxWidth().height(GlassSize.bannerHeight).clip(RoundedCornerShape(Radius.banner)).background(bannerBackground)
-            .clickable(role = Role.Button, onClick = onClick).semantics(mergeDescendants = true) { contentDescription = "$theme: $name" },
-    ) {
+    val stacked = LocalDensity.current.fontScale > STACK_FONT_SCALE
+    val frame = Modifier.fillMaxWidth().clip(RoundedCornerShape(Radius.banner)).background(bannerBackground)
+        .clickable(role = Role.Button, onClick = onClick).semantics(mergeDescendants = true) { contentDescription = "$theme: $name" }
+    val covers: @Composable () -> Unit = {
         Row(Modifier.padding(start = Spacing.xl, top = Spacing.xl), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
             books.forEach { book ->
                 Cover(
@@ -252,19 +262,30 @@ private fun Banner(subject: String?, books: List<TitleSummary>, onClick: () -> U
                 )
             }
         }
-        Box(
-            Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(GlassSize.scrimHeight)
-                .background(Brush.verticalGradient(listOf(Color.Transparent, bannerScrim.copy(alpha = BANNER_SCRIM_ALPHA)))),
-        )
-        Row(
-            Modifier.align(Alignment.BottomCenter).fillMaxWidth().padding(start = Spacing.xl, end = Spacing.l, bottom = Spacing.l),
-            verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
+    }
+    val label: @Composable (Modifier) -> Unit = { m ->
+        Row(m.fillMaxWidth().padding(start = Spacing.xl, end = Spacing.l, bottom = Spacing.l), verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.SpaceBetween) {
             Column(Modifier.weight(1f)) {
                 Text(theme, style = MaterialTheme.typography.labelLarge, color = Color.White)
                 Text(name, style = MaterialTheme.typography.titleLarge, color = Color.White, maxLines = 2, overflow = TextOverflow.Ellipsis)
             }
             GlassArrow()
+        }
+    }
+    if (stacked) {
+        Column(frame) {
+            covers()
+            Spacer(Modifier.height(Spacing.m))
+            label(Modifier)
+        }
+    } else {
+        Box(frame.height(GlassSize.bannerHeight)) {
+            covers()
+            Box(
+                Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(GlassSize.scrimHeight)
+                    .background(Brush.verticalGradient(listOf(Color.Transparent, bannerScrim.copy(alpha = BANNER_SCRIM_ALPHA)))),
+            )
+            label(Modifier.align(Alignment.BottomCenter))
         }
     }
 }

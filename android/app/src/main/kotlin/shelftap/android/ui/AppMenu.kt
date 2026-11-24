@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.PaddingValues
@@ -58,6 +59,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import shelftap.android.R
 import shelftap.android.ui.icons.LucideIcon
+import shelftap.android.ui.icons.LucideIcons
 import shelftap.android.ui.icons.LucideMorphs
 import shelftap.android.ui.icons.MorphIcon
 import shelftap.android.ui.theme.EffectTier
@@ -65,11 +67,15 @@ import shelftap.android.ui.theme.GlassSize
 import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.MenuSize
 import shelftap.android.ui.theme.Radius
+import shelftap.android.ui.theme.ShelfTapText
 import shelftap.android.ui.theme.shelfTap
 import shelftap.android.ui.theme.Motion
 import shelftap.android.ui.theme.Spacing
 
 /** How much of the page shows through the glass panel: very little, so the menu stays readable even where the blur is not drawn (0.86 let page text bleed through in the audit screenshot). */
+/** The active entry of the menu: a white (dark: smoky) pill, 0.85 as in the mockup. */
+private const val ACTIVE_PILL = 0.85f
+
 private const val GLASS_ALPHA = 0.94f
 
 /** The panel starts a little smaller than its final size and grows into it. */
@@ -80,7 +86,31 @@ data class MenuItem(val route: String, @StringRes val label: Int, val icon: Stri
 
 /** The bar above every main screen: the ☰ button and the screen's name. */
 @Composable
-fun AppTopBar(@StringRes title: Int, menuOpen: Boolean, onMenu: () -> Unit) {
+fun AppTopBar(
+    @StringRes title: Int, menuOpen: Boolean, onMenu: () -> Unit,
+    centred: Boolean = false, accountDescription: String? = null, onAccount: (() -> Unit)? = null,
+) {
+    if (centred) {
+        // The catalog's bar in the mockup: the menu button, the library's name in the middle, an account button.
+        Row(
+            Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.statusBars).padding(horizontal = Spacing.s),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            GlassCircleButton(onClick = onMenu, description = stringResource(if (menuOpen) R.string.menu_close else R.string.menu_open)) { MenuGlyph(open = menuOpen) }
+            Text(
+                stringResource(title), style = ShelfTapText.barTitle, color = MaterialTheme.shelfTap.ink2, textAlign = TextAlign.Center,
+                modifier = Modifier.weight(1f).then(if (menuOpen) Modifier.clearAndSetSemantics {} else Modifier),
+            )
+            if (onAccount != null && accountDescription != null) {
+                GlassCircleButton(onClick = onAccount, description = accountDescription) {
+                    LucideIcon(LucideIcons.User, tint = MaterialTheme.shelfTap.ink, size = GlassSize.menuIcon)
+                }
+            } else {
+                Spacer(Modifier.size(GlassSize.round))
+            }
+        }
+        return
+    }
     Row(
         Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.statusBars).padding(horizontal = Spacing.s),
         verticalAlignment = Alignment.CenterVertically,
@@ -140,7 +170,7 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, onSelec
                     val shape = RoundedCornerShape(Spacing.m)
                     Row(
                         Modifier.fillMaxWidth().heightIn(min = Spacing.touch).clip(shape)
-                            .background(if (selected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent)
+                            .background(if (selected) MaterialTheme.shelfTap.glass.copy(alpha = ACTIVE_PILL) else Color.Transparent)
                             .selectable(selected = selected, role = Role.Tab, onClick = { onSelect(item.route) })
                             .padding(horizontal = Spacing.s),
                         verticalAlignment = Alignment.CenterVertically,
@@ -198,7 +228,7 @@ fun SideNav(items: List<MenuItem>, current: String?, width: androidx.compose.ui.
             val goTo = stringResource(R.string.nav_go_to, stringResource(item.label))
             Box(
                 Modifier.fillMaxWidth().heightIn(min = Spacing.touch).clip(RoundedCornerShape(Spacing.m))
-                    .background(if (selected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent)
+                    .background(if (selected) MaterialTheme.shelfTap.glass.copy(alpha = ACTIVE_PILL) else Color.Transparent)
                     .selectable(selected = selected, role = Role.Tab, onClick = { onSelect(item.route) })
                     .semantics { contentDescription = goTo }
                     .padding(horizontal = Spacing.s, vertical = Spacing.s),
@@ -227,14 +257,8 @@ fun SideNav(items: List<MenuItem>, current: String?, width: androidx.compose.ui.
     }
 }
 
-/** The rounded tile behind an entry's icon; the selected entry's tile is solid, the others glass. The icon only accompanies the label, so it has no description. */
+/** The entry's icon, drawn plainly as in the mockup (no tile): the active entry is marked by its pill, not by the icon. */
 @Composable
 private fun MenuIconTile(pathData: String, selected: Boolean) {
-    val c = MaterialTheme.shelfTap
-    Box(
-        Modifier.size(GlassSize.tile).clip(RoundedCornerShape(Radius.tile - Spacing.xs / 2)).background(if (selected) c.surface else c.glass.copy(alpha = TILE_FILL)),
-        contentAlignment = Alignment.Center,
-    ) { LucideIcon(pathData, tint = c.ink, size = GlassSize.tileIcon) }
+    LucideIcon(pathData, tint = MaterialTheme.shelfTap.ink, size = GlassSize.menuIcon)
 }
-
-private const val TILE_FILL = 0.5f

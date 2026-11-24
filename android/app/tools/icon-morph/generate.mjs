@@ -33,6 +33,9 @@ function parseSvg(text) {
 
 const nodes = {};
 for (const name of spec.icons) nodes[name] = parseSvg(readFileSync(join(here, 'node_modules/lucide-static/icons', `${name}.svg`), 'utf8'));
+// Icons the mockup draws by hand (tools/wide-boards/shell.js): the same 24-grid, 2-unit round stroke as Lucide, kept as drawn so the app matches the boards.
+const custom = spec.custom ?? {};
+for (const [name, paths] of Object.entries(custom)) nodes[name] = paths.map((d) => ['path', { d }]);
 
 const camel = (name) => name.replace(/(^|-)(\w)/g, (_, __, c) => c.toUpperCase());
 const round = (n) => Math.round(n * 100) / 100;
@@ -84,7 +87,7 @@ lines.push(`// Icons: Lucide ${lucideVersion} (ISC, https://lucide.dev). Morphs:
 lines.push('package shelftap.android.ui.icons', '');
 lines.push('/** Lucide icons as path data on a 24 x 24 grid, drawn with a 2-unit round stroke. */');
 lines.push('object LucideIcons {');
-for (const name of spec.icons) lines.push(`    val ${camel(name)} = "${cubicsToPathD(iconToCubics(nodes[name]))}"`);
+for (const name of [...spec.icons, ...Object.keys(custom)]) lines.push(`    val ${camel(name)} = "${cubicsToPathD(iconToCubics(nodes[name]))}"`);
 lines.push('}', '');
 lines.push('/** Spring keyframes baked by Morphicons: play linearly over [MorphSpec.durationMs]; the easing is already in the frames. */');
 lines.push('object LucideMorphs {');

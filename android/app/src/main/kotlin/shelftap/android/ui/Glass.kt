@@ -45,6 +45,7 @@ import shelftap.android.ui.icons.LucideMorphs
 import shelftap.android.ui.icons.MorphIcon
 import shelftap.android.ui.theme.GlassSize
 import shelftap.android.ui.theme.Radius
+import shelftap.android.ui.theme.ShelfTapText
 import shelftap.android.ui.theme.Spacing
 import shelftap.android.ui.theme.shelfTap
 
@@ -129,10 +130,10 @@ private fun SearchLeadingIcon(hasText: Boolean, onClear: () -> Unit) {
 @Composable
 fun SectionHeader(title: String, actionLabel: String?, onAction: () -> Unit, modifier: Modifier = Modifier) {
     Row(modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f, fill = false))
+        Text(title, style = ShelfTapText.sectionTitle, modifier = Modifier.weight(1f, fill = false))
         if (actionLabel != null) {
             Box(Modifier.height(GlassSize.round).clickable(role = Role.Button, onClick = onAction).padding(start = Spacing.m), contentAlignment = Alignment.CenterEnd) {
-                Text(actionLabel, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.shelfTap.ink3)
+                Text(actionLabel, style = ShelfTapText.link, color = MaterialTheme.shelfTap.ink3)
             }
         }
     }

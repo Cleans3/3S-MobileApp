@@ -6,6 +6,8 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.sp
 import shelftap.android.R
 
 /**
@@ -29,4 +31,19 @@ val ShelfTapTypography: Typography = Typography().let { m3 ->
         bodyLarge = m3.bodyLarge.nunito(400), bodyMedium = m3.bodyMedium.nunito(400), bodySmall = m3.bodySmall.nunito(400),
         labelLarge = m3.labelLarge.nunito(600), labelMedium = m3.labelMedium.nunito(600), labelSmall = m3.labelSmall.nunito(600),
     )
+}
+
+/** Text styles the mockup sets by hand (px values of the boards read as sp). */
+object ShelfTapText {
+    /** "Hôm nay đọc gì?": 32, bold, line 1.15. */
+    val greeting = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 32.sp, lineHeight = 37.sp, letterSpacing = (-0.3).sp)
+
+    /** The title of a strip: 18, bold. */
+    val sectionTitle = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+
+    /** "Xem tất cả": 13, medium, underlined like the mockup's links. */
+    val link = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.Medium, fontSize = 13.sp, textDecoration = TextDecoration.Underline)
+
+    /** The title in the middle of the catalog's top bar: 15, semibold. */
+    val barTitle = TextStyle(fontFamily = Nunito, fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
 }

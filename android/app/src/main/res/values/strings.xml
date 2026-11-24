@@ -169,4 +169,7 @@
     <string name="see_all">Xem tất cả</string>
     <string name="catalog_see_all_books">Xem tất cả sách</string>
     <string name="catalog_library_strip">Sách trong thư viện</string>
+    <string name="catalog_bar_title">Thư viện ShelfTap</string>
+    <string name="open_account">Mở tài khoản</string>
+    <string name="catalog_search_placeholder">Tên sách, tác giả, ISBN</string>
 </resources>
