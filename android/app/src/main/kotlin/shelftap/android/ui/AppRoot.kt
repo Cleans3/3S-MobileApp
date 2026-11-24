@@ -198,6 +198,7 @@ private fun NavHostController.goTo(route: String) = navigate(route) {
 @Composable
 private fun MainNav(guest: Boolean, reason: LogoutReason?) {
     val nav = rememberNavController()
+    val subjectSearch = LocalContainer.current.subjectSearch
     val route = nav.currentBackStackEntryAsState().value?.destination?.route
     var menuOpen by rememberSaveable { mutableStateOf(false) }
     val layout = rememberNavLayout()
@@ -303,6 +304,11 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                                         onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }),
                                         // On a compact window the top bar's own button is the back button; the page draws one only without that bar.
                                         onBack = if (compact) null else ({ nav.popBackStack() }), checkoutInPill = compact,
+                                        // A subject on the page becomes the catalog's search: back to the catalog, which takes it.
+                                        onSubject = { subject ->
+                                            subjectSearch.value = subject
+                                            if (!nav.popBackStack(CATALOG, false)) nav.goTo(CATALOG)
+                                        },
                                     )
                                 }
                             }
@@ -367,13 +373,14 @@ private const val FADE_HOLD = 0.25f
 /** A wide window shows the catalog and the chosen book side by side, so picking a book does not leave the list. */
 @Composable
 private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
+    val subjectSearch = LocalContainer.current.subjectSearch
     var selected by rememberSaveable { mutableStateOf<String?>(null) }
     Row(Modifier.fillMaxSize()) {
         Box(Modifier.weight(1f).fillMaxHeight()) { CatalogScreen(onOpen = { selected = it }) }
         VerticalDivider()
         Box(Modifier.weight(1.3f).fillMaxHeight()) {
             val id = selected
-            if (id == null) EmptyState(R.string.catalog_pick_hint) else Box(Modifier.padding(top = LocalPageInsets.current.top)) { TitleDetailScreen(id, onLogin = onLogin, onCheckout = onCheckout) }
+            if (id == null) EmptyState(R.string.catalog_pick_hint) else Box(Modifier.padding(top = LocalPageInsets.current.top)) { TitleDetailScreen(id, onLogin = onLogin, onCheckout = onCheckout, onSubject = { subjectSearch.value = it }) }
         }
     }
 }

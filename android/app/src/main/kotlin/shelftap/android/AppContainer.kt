@@ -41,5 +41,8 @@ class AppContainer(context: Context) {
         session,
     )
 
+    /** A subject picked on a book's page: the catalog takes it as its search the next time it is on screen, then clears it. */
+    val subjectSearch = kotlinx.coroutines.flow.MutableStateFlow<String?>(null)
+
     val inactivity = InactivityTracker(BuildConfig.INACTIVITY_LIMIT_MS, android.os.SystemClock::elapsedRealtime)
 }

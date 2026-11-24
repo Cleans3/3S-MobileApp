@@ -179,6 +179,12 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
     val state by vm.state.collectAsStateWithLifecycle()
     var input by rememberSaveable { mutableStateOf("") }
     var listAll by rememberSaveable { mutableStateOf(false) }
+    // A subject tapped on a book's page arrives here as a search (and is used once).
+    val subjectSearch = LocalContainer.current.subjectSearch
+    val requested by subjectSearch.collectAsStateWithLifecycle()
+    LaunchedEffect(requested) {
+        requested?.let { input = it; listAll = false; subjectSearch.value = null }
+    }
     // Search while typing, after a pause, so a burst of keystrokes is one request; the older query is cancelled in the ViewModel.
     LaunchedEffect(input) {
         if (input.trim() != state.query) {

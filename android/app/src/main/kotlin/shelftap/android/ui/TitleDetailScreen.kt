@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -76,6 +77,7 @@ private const val CHIP_FILL = 0.8f
 @Composable
 fun TitleDetailScreen(
     titleId: String, onLogin: (() -> Unit)? = null, onCheckout: (() -> Unit)? = null, onBack: (() -> Unit)? = null, checkoutInPill: Boolean = false,
+    onSubject: ((String) -> Unit)? = null,
 ) {
     val vm = appViewModel(key = "title-$titleId") { TitleViewModel(it.repository, titleId) }
     val state by vm.state.collectAsStateWithLifecycle()
@@ -83,7 +85,7 @@ fun TitleDetailScreen(
         Box(Modifier.fillMaxSize()) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                 Hero(t)
-                Info(t, state.message?.asString(), state.error, partial = state.partial)
+                Info(t, state.message?.asString(), state.error, partial = state.partial, onSubject = onSubject)
                 Spacer(Modifier.height(HeroSize.barClearance))
             }
             if (onBack != null) {
@@ -140,18 +142,25 @@ private fun Jacket(t: TitleDetail, cover: Color, ink: Color, modifier: Modifier)
 /** Subjects, title, author, availability and ISBN. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun Info(t: TitleDetail, message: String?, error: UiText?, partial: Boolean) {
+private fun Info(t: TitleDetail, message: String?, error: UiText?, partial: Boolean, onSubject: ((String) -> Unit)?) {
     val c = MaterialTheme.shelfTap
     Column(
         Modifier.fillMaxWidth().padding(horizontal = HeroSize.contentInset).offset(y = -HeroSize.overlap),
         verticalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs / 2),
     ) {
         if (t.subjects.isNotEmpty()) {
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            // A subject opens the search for it. Its touch area is 48 dp tall; the pill itself keeps its size.
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 t.subjects.forEach { subject ->
+                    val description = stringResource(R.string.title_subject_search, subject)
+                    val tap = if (onSubject != null) {
+                        Modifier.minimumInteractiveComponentSize().pressable(CircleShape, onClick = { onSubject(subject) }).semantics { contentDescription = description }
+                    } else {
+                        Modifier.padding(vertical = Spacing.xs).clip(CircleShape)
+                    }
                     Text(
                         subject, style = MaterialTheme.typography.labelMedium, color = c.ink2,
-                        modifier = Modifier.clip(CircleShape).background(c.glass.copy(alpha = CHIP_FILL)).padding(horizontal = Spacing.m, vertical = Spacing.xs + Spacing.xs / 2),
+                        modifier = tap.background(c.glass.copy(alpha = CHIP_FILL)).padding(horizontal = Spacing.m, vertical = Spacing.xs + Spacing.xs / 2),
                     )
                 }
             }

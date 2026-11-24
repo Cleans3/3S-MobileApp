@@ -175,6 +175,7 @@
     <string name="logout_confirm_title">Log out of ShelfTap?</string>
     <string name="logout_confirm_body">Your session on this phone will be removed. Next time you will need to log in again with your password or card.</string>
     <string name="logout_stay">Stay</string>
+    <string name="title_subject_search">Find books on the subject %1$s</string>
     <string name="back_to_catalog">Back to the catalog</string>
     <string name="title_status">Availability</string>
     <string name="title_reserve_confirmed">Reserved · the library confirmed</string>
