@@ -89,10 +89,10 @@
     <string name="loans_renew_for">Renew %1$s</string>
     <string name="loans_renew">Renew</string>
     <string name="checkout_title">Self-checkout</string>
-    <string name="checkout_hold">Hold the phone against the tag inside the book.</string>
+    <string name="checkout_hold">Hold the phone against the sticker inside the cover.</string>
     <string name="checkout_borrowed">Borrowed: %1$s</string>
     <string name="checkout_due">Due %1$s</string>
-    <string name="checkout_again">Scan another book</string>
+    <string name="checkout_again">Borrow another book</string>
     <string name="reservations_empty">No reservations.</string>
     <string name="reservations_cancel_for">Cancel reservation of %1$s</string>
     <string name="res_waiting">Waiting since %1$s</string>
@@ -158,6 +158,16 @@
         <item quantity="other">%1$d days overdue</item>
     </plurals>
     <string name="title_reserve_done">Already reserved or on loan</string>
+    <string name="checkout_read">Tag read</string>
+    <string name="checkout_sending_note">The library checks that the book can be lent, how many you have and any fine. Only when it agrees is the book recorded as borrowed.</string>
+    <string name="checkout_failed_title">Could not borrow</string>
+    <string name="checkout_view_loans">See my loans</string>
+    <string name="checkout_view_fines">See the fine</string>
+    <string name="checkout_try_other">Try another book</string>
+    <plurals name="checkout_due_days">
+        <item quantity="one">Due %1$s · %2$d day</item>
+        <item quantity="other">Due %1$s · %2$d days</item>
+    </plurals>
     <string name="checkout_sending">Sending the loan request…</string>
     <string name="catalog_empty_hint">Try another title, or fewer words.</string>
     <!-- Menu ☰ -->

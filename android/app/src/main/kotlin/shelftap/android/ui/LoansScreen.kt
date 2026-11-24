@@ -93,7 +93,7 @@ internal fun formatVnd(amount: Long, locale: Locale = Locale.getDefault()): Stri
 
 private val DAY_MONTH_YEAR: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-private fun formatDay(iso: String): String =
+internal fun formatDay(iso: String): String =
     try { Instant.parse(iso).atZone(ZoneId.systemDefault()).format(DAY_MONTH_YEAR) } catch (_: DateTimeParseException) { iso }
 
 /** The card is the glass of the mockup (0.8 over the page). */

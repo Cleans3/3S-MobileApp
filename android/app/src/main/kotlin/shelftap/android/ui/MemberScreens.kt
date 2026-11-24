@@ -1,6 +1,42 @@
 package shelftap.android.ui
 
 import android.nfc.Tag
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.remember
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import kotlin.math.PI
+import kotlin.math.sin
+import shelftap.android.ui.theme.EffectTier
+import shelftap.android.ui.theme.GlassSize
+import shelftap.android.ui.theme.LocalEffectTier
+import shelftap.android.ui.theme.NfcSize
+import shelftap.android.ui.theme.Radius
+import shelftap.android.ui.theme.dangerSolid
+import shelftap.android.ui.theme.okFill
+import shelftap.android.ui.theme.pressScale
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -74,7 +110,8 @@ class CheckoutViewModel(private val repo: Repository) : ViewModel() {
         data object Idle : UiState
         data object Working : UiState
         data class Done(val loan: Loan) : UiState
-        data class Failed(val message: UiText) : UiState
+        /** [unpaidFine]: the server refused because of a fine, so the way on is the loans screen, where it is shown. */
+        data class Failed(val message: UiText, val unpaidFine: Boolean = false) : UiState
     }
 
     private val _state = MutableStateFlow<UiState>(UiState.Idle)
@@ -93,7 +130,7 @@ class CheckoutViewModel(private val repo: Repository) : ViewModel() {
             _state.value = try {
                 UiState.Done(repo.checkout(tagId))
             } catch (e: ApiException) {
-                UiState.Failed(e.userMessage())
+                UiState.Failed(e.userMessage(), unpaidFine = e is ApiException.Http && e.code == ErrorCode.UNPAID_FINE)
             }
         }
     }
@@ -103,8 +140,13 @@ class CheckoutViewModel(private val repo: Repository) : ViewModel() {
     }
 }
 
+/**
+ * Self-checkout, built to the board `Checkout`: the disc that waits for a tag ([NfcStage]), a card while the request is on its way
+ * (the tag was read, the library is deciding: nothing is "borrowed" yet), a card with a tick once the server confirmed the loan, and a
+ * red card with the reason when it refused (a fine leads to the loans screen). [onLoans] opens it.
+ */
 @Composable
-fun CheckoutScreen() {
+fun CheckoutScreen(onLoans: () -> Unit = {}) {
     val vm = appViewModel { CheckoutViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
     val haptics = LocalHapticFeedback.current
@@ -114,37 +156,124 @@ fun CheckoutScreen() {
     NfcGate {
         NfcReaderEffect(TagReader.BOOK_FLAGS) { vm.tagTapped(it) }
         Column(
-            Modifier.fillMaxSize().padding(pagePadding()).padding(Spacing.xl),
-            verticalArrangement = Arrangement.spacedBy(Spacing.m, Alignment.CenterVertically),
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding()).padding(horizontal = Spacing.xl),
+            verticalArrangement = Arrangement.spacedBy(Spacing.xl, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // The tag icon becomes a tick only after the server confirmed the loan; a refusal shows the alert icon.
-            NfcStage(
-                waiting = state is CheckoutViewModel.UiState.Idle,
-                done = state is CheckoutViewModel.UiState.Done,
-                failed = state is CheckoutViewModel.UiState.Failed,
-            )
-            Text(stringResource(R.string.checkout_title), style = MaterialTheme.typography.headlineSmall)
             when (val s = state) {
-                CheckoutViewModel.UiState.Idle -> Text(stringResource(R.string.checkout_hold))
-                CheckoutViewModel.UiState.Working -> {
-                    CircularProgressIndicator()
-                    Text(stringResource(R.string.checkout_sending), modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+                CheckoutViewModel.UiState.Idle -> {
+                    NfcStage()
+                    Text(stringResource(R.string.checkout_hold), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
                 }
-                is CheckoutViewModel.UiState.Done -> {
-                    Text(
-                        stringResource(R.string.checkout_borrowed, s.loan.title), style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
-                    )
-                    Text(stringResource(R.string.checkout_due, formatDate(s.loan.dueAt)))
-                    PrimaryButton(onClick = vm::reset) { Text(stringResource(R.string.checkout_again)) }
-                }
-                is CheckoutViewModel.UiState.Failed -> {
-                    ErrorText(s.message, Modifier.semantics { liveRegion = LiveRegionMode.Polite })
-                    PrimaryButton(onClick = vm::reset) { Text(stringResource(R.string.action_retry)) }
-                }
+                CheckoutViewModel.UiState.Working -> SendingCard()
+                is CheckoutViewModel.UiState.Done -> DoneCard(s.loan, onAgain = vm::reset, onLoans = onLoans)
+                is CheckoutViewModel.UiState.Failed -> FailedCard(s, onAgain = vm::reset, onLoans = onLoans)
             }
         }
+    }
+}
+
+/** A card that says how the checkout stands: glass (0.72 while sending, 0.8 when done) or the red tint of a refusal. */
+@Composable
+private fun ResultCard(container: Color, modifier: Modifier = Modifier, shake: Boolean = false, content: @Composable ColumnScope.() -> Unit) {
+    val tier = LocalEffectTier.current
+    val wobble = remember { Animatable(if (shake && tier != EffectTier.LIGHT) 0f else 1f) }
+    LaunchedEffect(shake) { if (shake && tier != EffectTier.LIGHT) wobble.animateTo(1f, tween(RESULT_SHAKE_MS, easing = LinearEasing)) }
+    val distance = with(LocalDensity.current) { RESULT_SHAKE_DP.dp.toPx() }
+    Column(
+        modifier.fillMaxWidth().graphicsLayer { translationX = sin(wobble.value * 2 * PI.toFloat() * 2) * (1f - wobble.value) * distance }
+            .clip(RoundedCornerShape(Radius.result)).background(container).padding(Spacing.xl),
+        verticalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs / 2),
+        content = content,
+    )
+}
+
+private const val RESULT_SHAKE_MS = 360
+private const val RESULT_SHAKE_DP = 6
+private const val SENDING_FILL = 0.72f
+private const val DONE_FILL = 0.8f
+
+@Composable
+internal fun SendingCard() {
+    val c = MaterialTheme.shelfTap
+    ResultCard(c.glass.copy(alpha = SENDING_FILL)) {
+        // The tag is read; the library has not answered: the second step is still open (a ring), not a tick.
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+            Box(Modifier.size(NfcSize.step).clip(CircleShape).background(okFill), contentAlignment = Alignment.Center) {
+                LucideIcon(LucideIcons.Check, tint = Color.White, size = Spacing.m + Spacing.xs / 2)
+            }
+            Text(stringResource(R.string.checkout_read), style = MaterialTheme.typography.titleSmall)
+        }
+        Row(
+            Modifier.semantics { liveRegion = LiveRegionMode.Polite }, verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+        ) {
+            Box(Modifier.size(NfcSize.step).border(BorderStroke(Spacing.xs / 2, c.ink), CircleShape))
+            Text(stringResource(R.string.checkout_sending), style = MaterialTheme.typography.titleSmall)
+        }
+        Text(stringResource(R.string.checkout_sending_note), style = MaterialTheme.typography.bodySmall, color = c.ink2)
+    }
+}
+
+@Composable
+internal fun DoneCard(loan: Loan, onAgain: () -> Unit, onLoans: () -> Unit) {
+    val c = MaterialTheme.shelfTap
+    val days = daysToDue(loan.dueAt)
+    ResultCard(c.glass.copy(alpha = DONE_FILL)) {
+        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs / 2)) {
+            DoneBadge()
+            Text(
+                stringResource(R.string.checkout_borrowed, loan.title), style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center,
+                modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+            )
+            Text(
+                if (days != null && days > 0) pluralStringResource(R.plurals.checkout_due_days, days, formatDay(loan.dueAt), days)
+                else stringResource(R.string.checkout_due, formatDay(loan.dueAt)),
+                style = MaterialTheme.typography.bodyLarge, color = c.ink2, textAlign = TextAlign.Center,
+            )
+        }
+        PillAction(stringResource(R.string.checkout_again), onClick = onAgain, container = c.primary, ink = c.onPrimary)
+        TextAction(stringResource(R.string.checkout_view_loans), onClick = onLoans, modifier = Modifier.align(Alignment.CenterHorizontally))
+    }
+}
+
+@Composable
+internal fun FailedCard(s: CheckoutViewModel.UiState.Failed, onAgain: () -> Unit, onLoans: () -> Unit) {
+    val c = MaterialTheme.shelfTap
+    ResultCard(c.dangerBg, shake = true) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m - Spacing.xs / 2)) {
+            LucideIcon(LucideIcons.CircleAlert, tint = c.danger, size = Spacing.xl - Spacing.xs / 2)
+            Text(stringResource(R.string.checkout_failed_title), style = MaterialTheme.typography.titleMedium, color = c.danger)
+        }
+        Text(
+            s.message.asString(), style = MaterialTheme.typography.bodyMedium, color = c.ink2,
+            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+        )
+        if (s.unpaidFine) {
+            PillAction(stringResource(R.string.checkout_view_fines), onClick = onLoans, container = dangerSolid, ink = Color.White)
+            TextAction(stringResource(R.string.checkout_try_other), onClick = onAgain, modifier = Modifier.align(Alignment.CenterHorizontally), ink = c.ink2)
+        } else {
+            PillAction(stringResource(R.string.action_retry), onClick = onAgain, container = dangerSolid, ink = Color.White)
+        }
+    }
+}
+
+/** A full-width pill button, 52 dp tall, that shrinks a little while pressed. */
+@Composable
+private fun PillAction(label: String, onClick: () -> Unit, container: Color, ink: Color) {
+    val source = remember { MutableInteractionSource() }
+    Box(
+        Modifier.fillMaxWidth().height(GlassSize.pillAction).pressScale(source).clip(CircleShape).background(container)
+            .clickable(interactionSource = source, indication = null, role = Role.Button, onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = ink) }
+}
+
+/** A quiet text button with a 48 dp touch height. */
+@Composable
+private fun TextAction(label: String, onClick: () -> Unit, modifier: Modifier = Modifier, ink: Color = MaterialTheme.shelfTap.ink) {
+    Box(modifier.heightIn(min = Spacing.touch).pressable(CircleShape, onClick).padding(horizontal = Spacing.l), contentAlignment = Alignment.Center) {
+        Text(label, style = MaterialTheme.typography.bodyMedium, color = ink)
     }
 }
 

@@ -314,7 +314,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                             }
                             composable(LOGIN) { Screen { LoggedOutHost(reason) } }
                             composable("loans") { Screen { LoansScreen() } }
-                            composable(CHECKOUT) { Screen { CheckoutScreen() } }
+                            composable(CHECKOUT) { Screen { CheckoutScreen(onLoans = { nav.goTo("loans") }) } }
                             composable("reservations") { Screen { ReservationsScreen() } }
                             composable("account") { Screen { AccountScreen(onHistory = { nav.navigate("history") }, onChangePassword = { nav.navigate("password") }) } }
                             composable("history") { Screen { HistoryScreen() } }

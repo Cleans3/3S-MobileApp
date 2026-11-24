@@ -20,6 +20,31 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import androidx.compose.ui.test.swipeDown
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
+import android.view.ViewGroup
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import shelftap.android.ui.CheckoutViewModel
+import shelftap.android.ui.DoneCard
+import shelftap.android.ui.FailedCard
+import shelftap.android.ui.NfcStage
+import shelftap.android.ui.SendingCard
+import shelftap.android.ui.theme.EffectTier
+import shelftap.android.ui.theme.LocalEffectTier
+import shelftap.android.ui.theme.ShelfTapTheme
+import shelftap.android.ui.uiText
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onLast
@@ -124,6 +149,16 @@ class UiAuditTest {
             // The emulator has no NFC, so Checkout shows its "This phone has no NFC." state; a phone with NFC shows "Self-checkout".
             compose.onNode(hasText(str(R.string.checkout_pill)) or hasContentDescription(str(R.string.tab_checkout))).performClick(); waitFor(str(R.string.checkout_title), str(R.string.nfc_missing))
             audit("checkout", activity)
+            // The emulator has no NFC, so the states of the self-checkout are drawn on their own, over the app.
+            overlayShot("checkout-wait", activity) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(24.dp)) {
+                    NfcStage()
+                    Text(str(R.string.checkout_hold), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
+                }
+            }
+            overlayShot("checkout-sending", activity) { SendingCard() }
+            overlayShot("checkout-done", activity) { DoneCard(AuditData.loans[1], onAgain = {}, onLoans = {}) }
+            overlayShot("checkout-failed", activity) { FailedCard(CheckoutViewModel.UiState.Failed(uiText(R.string.err_unpaid_fine), unpaidFine = true), onAgain = {}, onLoans = {}) }
 
             tab(R.string.tab_reservations); waitFor(AuditData.reservations.first().title)
             audit("reservations", activity)
@@ -134,6 +169,33 @@ class UiAuditTest {
             openMenu()
             audit("menu", activity)
         }
+    }
+
+    /**
+     * A composable drawn on its own over the whole window (the self-checkout states cannot be reached on an emulator without NFC),
+     * captured by the GPU renderer as `<config>/<name>-hw.png`, then removed. The frame clock is advanced by hand so that endless
+     * animations (the rings) do not keep the test from going idle.
+     */
+    private fun overlayShot(name: String, activity: MainActivity, content: @Composable () -> Unit) {
+        lateinit var view: ComposeView
+        instrumentation.runOnMainSync {
+            view = ComposeView(activity).apply {
+                setContent {
+                    CompositionLocalProvider(LocalEffectTier provides EffectTier.FULL) {
+                        ShelfTapTheme {
+                            Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(24.dp), contentAlignment = Alignment.Center) { content() }
+                        }
+                    }
+                }
+            }
+            (activity.window.decorView as ViewGroup).addView(view, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        }
+        compose.mainClock.autoAdvance = false
+        compose.mainClock.advanceTimeBy(900)
+        captureHardware(activity.window.decorView)?.let { bmp -> File(outDir, "$config/$name-hw.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) } }
+        compose.mainClock.autoAdvance = true
+        instrumentation.runOnMainSync { (activity.window.decorView as ViewGroup).removeView(view) }
+        compose.waitForIdle()
     }
 
     /** A control held down: the pressed state, drawn by the GPU renderer, saved as `<config>/<name>-hw.png`. Skipped when the control is not on screen. */

@@ -71,6 +71,8 @@ object Radius {
     /** A loan's or reservation's card (26 in the board) and a figure tile above them (20). */
     val panel = 26.dp
     val stat = 20.dp
+    /** The card that says how a self-checkout went (32 in the board). */
+    val result = 32.dp
     val banner = 28.dp
     val menu = 30.dp
     val hairline = 1.dp
@@ -106,6 +108,17 @@ object GlassSize {
     val loanCoverWidth = 72.dp
     val loanCoverHeight = 104.dp
     val renewButton = 44.dp
+    /** A full-width pill action on a result card. */
+    val pillAction = 52.dp
+}
+
+/** The self-checkout screen, from the board `Checkout`: the disc that waits for a tag, the disc inside it, the tick badge. */
+object NfcSize {
+    val disc = 280.dp
+    val inner = 200.dp
+    val badge = 64.dp
+    val badgeIcon = 30.dp
+    val step = 24.dp
 }
 
 /** Sizes on the account screen, from the board. */

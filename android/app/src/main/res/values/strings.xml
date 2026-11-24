@@ -89,10 +89,10 @@
     <string name="loans_renew_for">Gia hạn %1$s</string>
     <string name="loans_renew">Gia hạn</string>
     <string name="checkout_title">Tự mượn sách</string>
-    <string name="checkout_hold">Hãy áp điện thoại vào thẻ bên trong cuốn sách.</string>
+    <string name="checkout_hold">Áp điện thoại vào nhãn dán bên trong bìa sách.</string>
     <string name="checkout_borrowed">Đã mượn: %1$s</string>
     <string name="checkout_due">Hạn trả %1$s</string>
-    <string name="checkout_again">Quét cuốn khác</string>
+    <string name="checkout_again">Mượn cuốn khác</string>
     <string name="reservations_empty">Chưa có sách đặt trước.</string>
     <string name="reservations_cancel_for">Hủy đặt trước %1$s</string>
     <string name="res_waiting">Đang chờ từ %1$s</string>
@@ -157,6 +157,15 @@
         <item quantity="other">Quá hạn %1$d ngày</item>
     </plurals>
     <string name="title_reserve_done">Đã đặt trước hoặc đang mượn</string>
+    <string name="checkout_read">Đã đọc nhãn sách</string>
+    <string name="checkout_sending_note">Thư viện kiểm tra sách còn cho mượn, số sách bạn đang mượn và tiền phạt. Chỉ khi thư viện đồng ý, sách mới được ghi là đã mượn.</string>
+    <string name="checkout_failed_title">Chưa mượn được</string>
+    <string name="checkout_view_loans">Xem sách đang mượn</string>
+    <string name="checkout_view_fines">Xem khoản phạt</string>
+    <string name="checkout_try_other">Thử sách khác</string>
+    <plurals name="checkout_due_days">
+        <item quantity="other">Hạn trả %1$s · %2$d ngày</item>
+    </plurals>
     <string name="checkout_sending">Đang gửi yêu cầu mượn…</string>
     <string name="catalog_empty_hint">Thử tìm bằng tên khác, hoặc bỏ bớt từ khóa.</string>
     <!-- Menu ☰ -->
