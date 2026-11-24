@@ -162,6 +162,12 @@ class UiAuditTest {
 
             tab(R.string.tab_reservations); waitFor(AuditData.reservations.first().title)
             audit("reservations", activity)
+            // Cancelling asks first, inside the card.
+            compose.onNodeWithContentDescription(str(R.string.reservations_cancel_for, AuditData.reservations.first().title)).performClick()
+            waitFor(str(R.string.reservations_cancel_ask, AuditData.reservations.first().title))
+            audit("reservations-asking", activity)
+            compose.onNodeWithText(str(R.string.reservations_keep)).performClick()
+            compose.waitForIdle()
 
             tab(R.string.tab_account); waitFor(AuditData.me.fullName)
             audit("account", activity)

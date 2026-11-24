@@ -95,6 +95,12 @@
     <string name="checkout_again">Borrow another book</string>
     <string name="reservations_empty">No reservations.</string>
     <string name="reservations_cancel_for">Cancel reservation of %1$s</string>
+    <string name="res_chip_ready">Ready to collect</string>
+    <string name="res_chip_waiting">Waiting</string>
+    <string name="reservations_cancel">Cancel reservation</string>
+    <string name="reservations_cancel_ask">Cancel the reservation for %1$s?</string>
+    <string name="reservations_keep">Keep it</string>
+    <string name="reservations_cancelled_notice">Reservation for %1$s cancelled.</string>
     <string name="res_waiting">Waiting since %1$s</string>
     <string name="res_ready">Ready to collect</string>
     <string name="res_ready_since">Ready to collect since %1$s</string>

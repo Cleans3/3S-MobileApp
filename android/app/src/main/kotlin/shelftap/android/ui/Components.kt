@@ -8,6 +8,8 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import shelftap.android.ui.theme.GlassSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -199,4 +201,23 @@ fun SecondaryButton(
 ) {
     val source = remember { MutableInteractionSource() }
     OutlinedButton(onClick, modifier.pressScale(source), enabled, interactionSource = source, content = content)
+}
+
+/** A full-width pill button, 52 dp tall, that shrinks a little while pressed. */
+@Composable
+internal fun PillAction(label: String, onClick: () -> Unit, container: Color, ink: Color) {
+    val source = remember { MutableInteractionSource() }
+    Box(
+        Modifier.fillMaxWidth().height(GlassSize.pillAction).pressScale(source).clip(CircleShape).background(container)
+            .clickable(interactionSource = source, indication = null, role = Role.Button, onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = ink) }
+}
+
+/** A quiet text button with a 48 dp touch height. */
+@Composable
+internal fun TextAction(label: String, onClick: () -> Unit, modifier: Modifier = Modifier, ink: Color = MaterialTheme.shelfTap.ink) {
+    Box(modifier.heightIn(min = Spacing.touch).pressable(CircleShape, onClick).padding(horizontal = Spacing.l), contentAlignment = Alignment.Center) {
+        Text(label, style = MaterialTheme.typography.bodyMedium, color = ink)
+    }
 }

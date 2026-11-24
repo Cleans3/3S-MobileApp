@@ -95,6 +95,12 @@
     <string name="checkout_again">Mượn cuốn khác</string>
     <string name="reservations_empty">Chưa có sách đặt trước.</string>
     <string name="reservations_cancel_for">Hủy đặt trước %1$s</string>
+    <string name="res_chip_ready">Sẵn sàng nhận</string>
+    <string name="res_chip_waiting">Đang chờ</string>
+    <string name="reservations_cancel">Hủy đặt trước</string>
+    <string name="reservations_cancel_ask">Hủy đặt trước %1$s?</string>
+    <string name="reservations_keep">Giữ lại</string>
+    <string name="reservations_cancelled_notice">Đã hủy đặt trước %1$s.</string>
     <string name="res_waiting">Đang chờ từ %1$s</string>
     <string name="res_ready">Sẵn sàng để nhận</string>
     <string name="res_ready_since">Sẵn sàng để nhận từ %1$s</string>

@@ -26,6 +26,9 @@ val dangerSolid = Color(0xFF7A3420)
 val busyFill = Color(0xFF5C554E)
 val okFill = Color(0xFF2F5B3A)
 
+/** The card of a reservation that is ready to collect (a fixed deep teal in the board, white text on it). */
+val readyFill = Color(0xFF2F4A44)
+
 /** The edge of an overdue loan's card (a fixed orange-red in the mockup): the card also says it in words and with an icon. */
 val overdueEdge = Color(0xFFC4572E)
 
