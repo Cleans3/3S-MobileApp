@@ -1,5 +1,6 @@
 package shelftap.android.ui.theme
 
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -8,6 +9,7 @@ import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import shelftap.android.data.ThemeMode
 
@@ -22,7 +24,12 @@ fun ShelfTapTheme(mode: ThemeMode = ThemeMode.SYSTEM, content: @Composable () ->
     val colors = if (dark) DarkColors else LightColors
     CompositionLocalProvider(LocalShelfTapColors provides colors) {
         MaterialTheme(colorScheme = colors.toColorScheme(dark), typography = ShelfTapTypography) {
-            Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background, content = content)
+            // Every clickable, selectable and Material button picks this up from here instead of the ripple Material installs.
+            val tier = LocalEffectTier.current
+            val indication = remember(tier, colors.ink) { SoftPressIndication(tier, colors.ink) }
+            CompositionLocalProvider(LocalIndication provides indication) {
+                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background, content = content)
+            }
         }
     }
 }

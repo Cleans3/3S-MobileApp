@@ -1,9 +1,8 @@
 package shelftap.android.ui.theme
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.interaction.InteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -12,20 +11,32 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
-/** How far a pressed button shrinks. */
-private const val PRESS_SCALE = 0.96f
+/** How far a pressed button or card shrinks, and a full-width row (plan section 6.5: 0.96 and 0.98). */
+const val PRESS_SCALE_CARD = 0.96f
+const val PRESS_SCALE_ROW = 0.98f
 
-/** The control shrinks a little while pressed (120 ms), read in the draw phase. Not on the light tier. */
+/**
+ * The control shrinks a little while pressed (120 ms). Not on the light tier. Put it OUTSIDE the control's clip.
+ * The press is followed in a coroutine and the scale is read in the draw phase, so a press never recomposes the control.
+ */
 @Composable
-fun Modifier.pressScale(source: InteractionSource): Modifier {
+fun Modifier.pressScale(source: InteractionSource, target: Float = PRESS_SCALE_CARD): Modifier {
     val tier = LocalEffectTier.current
     if (tier == EffectTier.LIGHT) return this
-    val pressed by source.collectIsPressedAsState()
-    val scale by animateFloatAsState(if (pressed) PRESS_SCALE else 1f, Motion.spec(tier, Motion.PRESS_MS), label = "press")
+    val scale = remember { Animatable(1f) }
+    LaunchedEffect(source, tier, target) {
+        source.interactions.collectLatest { interaction ->
+            when (interaction) {
+                is PressInteraction.Press -> scale.animateTo(target, Motion.spec(tier, Motion.PRESS_MS))
+                is PressInteraction.Release, is PressInteraction.Cancel -> scale.animateTo(1f, Motion.spec(tier, Motion.PRESS_MS))
+            }
+        }
+    }
     return this.graphicsLayer {
-        scaleX = scale
-        scaleY = scale
+        scaleX = scale.value
+        scaleY = scale.value
     }
 }
 

@@ -9,6 +9,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.ButtonDefaults
@@ -151,7 +152,7 @@ fun SearchTrailingIcon(hasText: Boolean, onClear: () -> Unit) {
     val description = stringResource(R.string.search_clear)
     Box(
         Modifier.size(Spacing.touch).then(
-            if (hasText) Modifier.semantics { contentDescription = description }.clickable(role = Role.Button, onClick = onClear) else Modifier.clearAndSetSemantics {},
+            if (hasText) Modifier.semantics { contentDescription = description }.pressable(CircleShape, onClear, shrink = false) else Modifier.clearAndSetSemantics {},
         ),
         contentAlignment = Alignment.Center,
     ) { MorphIcon(LucideMorphs.SearchToX, toEnd = hasText) }

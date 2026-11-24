@@ -102,6 +102,8 @@ class UiAuditTest {
             runBlocking { session.login(AuditData.EMAIL, "audit-only") }
             waitFor(str(R.string.catalog_theme)) // the banner: always on screen, unlike the strips below it at a large font
             audit("catalog", activity)
+            holdShot("press-burger", compose.onAllNodesWithContentDescription(str(R.string.menu_open)), activity)
+            holdShot("press-card", compose.onAllNodes(hasContentDescription(AuditData.titles.first().title, substring = true)), activity, scroll = true)
 
             openFirstTitle()
             waitFor(AuditData.titles.first().isbn) // the ISBN tile of the book page
@@ -125,6 +127,18 @@ class UiAuditTest {
             openMenu()
             audit("menu", activity)
         }
+    }
+
+    /** A control held down: the pressed state, drawn by the GPU renderer, saved as `<config>/<name>-hw.png`. Skipped when the control is not on screen. */
+    private fun holdShot(name: String, nodes: androidx.compose.ui.test.SemanticsNodeInteractionCollection, activity: MainActivity, scroll: Boolean = false) {
+        if (nodes.fetchSemanticsNodes().isEmpty()) return
+        if (scroll) nodes[0].performScrollTo()
+        nodes[0].performTouchInput { down(center) }
+        compose.mainClock.advanceTimeBy(400) // inside a scrolling row the press shows after the tap timeout; then the veil and the shrink run to their held state
+        compose.waitForIdle()
+        captureHardware(activity.window.decorView)?.let { bmp -> File(outDir, "$config/$name-hw.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) } }
+        nodes[0].performTouchInput { cancel() } // cancel: a release would click
+        compose.waitForIdle()
     }
 
     /** Text as the app shows it in the device's current language, so the tour works in Vietnamese and in English. */

@@ -3,7 +3,11 @@ package shelftap.android.ui
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.remember
+import shelftap.android.ui.theme.pressScale
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -77,10 +81,12 @@ fun GlassSurface(
 /** A round glass button (menu, account), 48 dp: the smallest touch target. [description] is what TalkBack says. */
 @Composable
 fun GlassCircleButton(onClick: () -> Unit, description: String, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-    // The press ripple goes inside the clip: put on the surface's own modifier (before its clip) it flashed as a square around the circle.
-    GlassSurface(modifier.size(GlassSize.round), shape = CircleShape) {
+    // The shrink is outside the surface's clip and the veil inside it, so a press is never a square around the circle.
+    val source = remember { MutableInteractionSource() }
+    GlassSurface(modifier.size(GlassSize.round).pressScale(source), shape = CircleShape) {
         Box(
-            Modifier.fillMaxSize().semantics { contentDescription = description }.clickable(role = Role.Button, onClick = onClick),
+            Modifier.fillMaxSize().semantics { contentDescription = description }
+                .clickable(interactionSource = source, indication = LocalIndication.current, role = Role.Button, onClick = onClick),
             contentAlignment = Alignment.Center,
         ) { content() }
     }
@@ -123,7 +129,7 @@ private fun SearchLeadingIcon(hasText: Boolean, onClear: () -> Unit) {
     val description = stringResource(R.string.search_clear)
     Box(
         Modifier.size(GlassSize.round).then(
-            if (hasText) Modifier.semantics { contentDescription = description }.clickable(role = Role.Button, onClick = onClear) else Modifier,
+            if (hasText) Modifier.semantics { contentDescription = description }.pressable(CircleShape, onClear, shrink = false) else Modifier,
         ),
         contentAlignment = Alignment.Center,
     ) { MorphIcon(LucideMorphs.SearchToX, toEnd = hasText, tint = MaterialTheme.shelfTap.ink3) }
@@ -135,7 +141,7 @@ fun SectionHeader(title: String, actionLabel: String?, onAction: () -> Unit, mod
     Row(modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(title, style = ShelfTapText.sectionTitle, modifier = Modifier.weight(1f, fill = false))
         if (actionLabel != null) {
-            Box(Modifier.height(GlassSize.round).clickable(role = Role.Button, onClick = onAction).padding(start = Spacing.m), contentAlignment = Alignment.CenterEnd) {
+            Box(Modifier.height(GlassSize.round).pressable(RoundedCornerShape(Radius.tile), onAction, shrink = false).padding(start = Spacing.m), contentAlignment = Alignment.CenterEnd) {
                 Text(actionLabel, style = ShelfTapText.link, color = MaterialTheme.shelfTap.ink3)
             }
         }
@@ -173,8 +179,7 @@ fun TextCover(title: String, modifier: Modifier = Modifier, shape: Shape = Round
 fun BookCard(title: String, author: String, status: String, onClick: () -> Unit, cover: @Composable () -> Unit, modifier: Modifier = Modifier) {
     val c = MaterialTheme.shelfTap
     Box(
-        modifier.size(GlassSize.cardWidth, GlassSize.cardHeight).clip(RoundedCornerShape(Radius.card))
-            .clickable(role = Role.Button, onClick = onClick)
+        modifier.size(GlassSize.cardWidth, GlassSize.cardHeight).pressable(RoundedCornerShape(Radius.card), onClick)
             .semantics(mergeDescendants = true) { contentDescription = "$title, $author, $status" },
     ) {
         cover()

@@ -250,8 +250,8 @@ private fun Banner(subject: String?, books: List<TitleSummary>, onClick: () -> U
     val theme = stringResource(R.string.catalog_theme)
     val name = subject ?: stringResource(R.string.catalog_library_strip)
     val stacked = LocalDensity.current.fontScale > STACK_FONT_SCALE
-    val frame = Modifier.fillMaxWidth().clip(RoundedCornerShape(Radius.banner)).background(bannerBackground)
-        .clickable(role = Role.Button, onClick = onClick).semantics(mergeDescendants = true) { contentDescription = "$theme: $name" }
+    val frame = Modifier.fillMaxWidth().pressable(RoundedCornerShape(Radius.banner), onClick, row = true).background(bannerBackground)
+        .semantics(mergeDescendants = true) { contentDescription = "$theme: $name" }
     val covers: @Composable () -> Unit = {
         Row(Modifier.padding(start = Spacing.xl, top = Spacing.xl), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
             books.forEach { book ->
@@ -311,7 +311,7 @@ private fun CatalogList(state: CatalogViewModel.UiState, onOpen: (String) -> Uni
 
 @Composable
 private fun TitleRow(item: TitleSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Row(modifier.fillMaxWidth().clickable(onClick = onClick).padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+    Row(modifier.fillMaxWidth().pressable(RectangleShape, onClick, role = null, row = true).padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
         Cover(item.coverUrl, item.title, Modifier.size(width = CoverSize.rowWidth, height = CoverSize.rowHeight), shape = RoundedCornerShape(Radius.tile))
         Column(Modifier.weight(1f)) {
             Text(item.title, style = MaterialTheme.typography.titleMedium)
