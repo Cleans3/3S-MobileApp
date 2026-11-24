@@ -49,3 +49,30 @@ object IconSize {
     val small = 24.dp
     val hero = 72.dp
 }
+
+/** Corner radii of the glass design (plan section 5.5): small tile, card, banner and menu panel. */
+object Radius {
+    val tile = 14.dp
+    val cover = 16.dp
+    val card = 22.dp
+    val banner = 28.dp
+    val menu = 30.dp
+    val hairline = 1.dp
+}
+
+/** Fixed sizes of the glass components, from the mockup. */
+object GlassSize {
+    val round = 48.dp
+    val search = 52.dp
+    val bannerHeight = 200.dp
+    val bannerCoverWidth = 104.dp
+    val bannerCoverHeight = 150.dp
+    val cardWidth = 132.dp
+    val cardHeight = 196.dp
+    val scrimHeight = 110.dp
+    val shadow = 8.dp
+    val cardInset = 6.dp
+    val panelInset = 10.dp
+    val arrow = 44.dp
+    val arrowIcon = 18.dp
+}

@@ -163,4 +163,10 @@
     <string name="password_show">Show password</string>
     <string name="password_hide">Hide password</string>
     <string name="search_clear">Clear search</string>
+    <string name="catalog_hello">Hello,</string>
+    <string name="catalog_headline">What will you read today?</string>
+    <string name="catalog_theme">Subject</string>
+    <string name="see_all">See all</string>
+    <string name="catalog_see_all_books">See all books</string>
+    <string name="catalog_library_strip">Books in the library</string>
 </resources>

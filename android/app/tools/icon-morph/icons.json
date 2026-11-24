@@ -2,14 +2,59 @@
   "preset": "smooth",
   "keyframes": 10,
   "points": 32,
-  "icons": ["menu", "x", "search", "eye", "eye-off", "bookmark", "bookmark-check", "nfc", "check", "circle-alert", "clock", "calendar-check", "lock", "lock-open"],
+  "icons": [
+    "menu",
+    "x",
+    "search",
+    "eye",
+    "eye-off",
+    "bookmark",
+    "bookmark-check",
+    "nfc",
+    "check",
+    "circle-alert",
+    "clock",
+    "calendar-check",
+    "lock",
+    "lock-open",
+    "arrow-up-right",
+    "user"
+  ],
   "pairs": [
-    { "name": "MenuToX", "from": "menu", "to": "x" },
-    { "name": "SearchToX", "from": "search", "to": "x" },
-    { "name": "EyeToEyeOff", "from": "eye", "to": "eye-off" },
-    { "name": "BookmarkToCheck", "from": "bookmark", "to": "bookmark-check" },
-    { "name": "NfcToCheck", "from": "nfc", "to": "check" },
-    { "name": "ClockToCalendarCheck", "from": "clock", "to": "calendar-check" },
-    { "name": "LockToLockOpen", "from": "lock", "to": "lock-open" }
+    {
+      "name": "MenuToX",
+      "from": "menu",
+      "to": "x"
+    },
+    {
+      "name": "SearchToX",
+      "from": "search",
+      "to": "x"
+    },
+    {
+      "name": "EyeToEyeOff",
+      "from": "eye",
+      "to": "eye-off"
+    },
+    {
+      "name": "BookmarkToCheck",
+      "from": "bookmark",
+      "to": "bookmark-check"
+    },
+    {
+      "name": "NfcToCheck",
+      "from": "nfc",
+      "to": "check"
+    },
+    {
+      "name": "ClockToCalendarCheck",
+      "from": "clock",
+      "to": "calendar-check"
+    },
+    {
+      "name": "LockToLockOpen",
+      "from": "lock",
+      "to": "lock-open"
+    }
   ]
 }

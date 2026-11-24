@@ -31,6 +31,9 @@ class ShelfTapColors(
     val dangerBg: Color,
     val switchOn: Color,
     val switchKnobOn: Color,
+    /** Fill and edge of glass surfaces (`--glass`, `--edge` in the mockup); used with an alpha. */
+    val glass: Color,
+    val edge: Color,
 )
 
 val LightColors = ShelfTapColors(
@@ -40,6 +43,7 @@ val LightColors = ShelfTapColors(
     ok = Color(0xFF2F5B3A), danger = Color(0xFF7A3420), warn = Color(0xFF6B4A10),
     warnBg = Color(0xFFFFF4DC), dangerBg = Color(0xFFF6E4DC),
     switchOn = Color(0xFF2F5B3A), switchKnobOn = Color(0xFFFFFFFF),
+    glass = Color(0xFFFFFFFF), edge = Color(0xFFFFFFFF),
 )
 
 /** In the dark theme the primary button swaps to a light fill with dark text, instead of a black button on a black page. */
@@ -50,6 +54,7 @@ val DarkColors = ShelfTapColors(
     ok = Color(0xFF9FD3AC), danger = Color(0xFFF0A58E), warn = Color(0xFFF0C878),
     warnBg = Color(0xFF3A2E14), dangerBg = Color(0xFF3B221A),
     switchOn = Color(0xFF9FD3AC), switchKnobOn = Color(0xFF1C1B1A),
+    glass = Color(0xFF2C2824), edge = Color(0xFF60584F),
 )
 
 val LocalShelfTapColors = staticCompositionLocalOf { LightColors }

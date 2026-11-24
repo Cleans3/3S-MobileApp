@@ -92,7 +92,7 @@ class UiAuditTest {
             waitFor(AuditData.titles.first().title)
             audit("catalog", activity)
 
-            compose.onAllNodesWithText(AuditData.titles.first().title).onFirst().performClick()
+            openFirstTitle()
             waitFor(str(R.string.title_isbn, AuditData.titles.first().isbn))
             audit("detail", activity)
             // On a wide window the detail is a pane beside the list, not a screen to go back from.
@@ -127,6 +127,13 @@ class UiAuditTest {
     }
 
     /** Opens the menu and picks the entry; the title bar shows the current screen's name too, so the menu entry is the last match. */
+    /** The first book: a card of the home (named "title, author, status" for TalkBack) or a row of the list. */
+    private fun openFirstTitle() {
+        val title = AuditData.titles.first().title
+        val cards = compose.onAllNodes(hasContentDescription(title, substring = true))
+        if (cards.fetchSemanticsNodes().isNotEmpty()) cards[0].performClick() else compose.onAllNodesWithText(title).onFirst().performClick()
+    }
+
     /** The ☰ button is on screen, open (its label is "close menu") or shut. */
     private fun hasBurger() =
         compose.onAllNodesWithContentDescription(str(R.string.menu_open)).fetchSemanticsNodes().isNotEmpty() ||
@@ -154,7 +161,7 @@ class UiAuditTest {
 
     private fun waitFor(vararg texts: String) {
         compose.waitUntil(15_000) {
-            texts.any { compose.onAllNodes(hasText(it, substring = true)).fetchSemanticsNodes().isNotEmpty() }
+            texts.any { compose.onAllNodes(hasText(it, substring = true) or hasContentDescription(it, substring = true)).fetchSemanticsNodes().isNotEmpty() }
         }
         compose.waitForIdle()
     }

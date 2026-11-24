@@ -62,6 +62,7 @@ import shelftap.android.ui.icons.MorphIcon
 import shelftap.android.ui.theme.EffectTier
 import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.MenuSize
+import shelftap.android.ui.theme.Radius
 import shelftap.android.ui.theme.Motion
 import shelftap.android.ui.theme.Spacing
 
@@ -83,7 +84,7 @@ fun AppTopBar(@StringRes title: Int, menuOpen: Boolean, onMenu: () -> Unit) {
         horizontalArrangement = Arrangement.spacedBy(Spacing.s),
     ) {
         val label = stringResource(if (menuOpen) R.string.menu_close else R.string.menu_open)
-        IconButton(onClick = onMenu, modifier = Modifier.semantics { contentDescription = label }) { MenuGlyph(open = menuOpen) }
+        GlassCircleButton(onClick = onMenu, description = label) { MenuGlyph(open = menuOpen) }
         // While the menu is open the title is behind it, and the menu lists the same name: say it once.
         Text(
             stringResource(title), style = MaterialTheme.typography.titleLarge,
@@ -126,7 +127,7 @@ fun MenuOverlay(items: List<MenuItem>, current: String?, glass: Boolean, onSelec
                     transformOrigin = TransformOrigin(0f, 0f) // grows from the ☰ corner
                 }
                 .width(MenuSize.width),
-            shape = MaterialTheme.shapes.large,
+            shape = RoundedCornerShape(Radius.menu),
             color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = if (glass) GLASS_ALPHA else 1f),
             shadowElevation = Spacing.s,
         ) {
