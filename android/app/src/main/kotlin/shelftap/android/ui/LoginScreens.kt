@@ -293,7 +293,8 @@ private fun CardStage(active: Boolean) {
 fun CardLoginScreen(onBack: () -> Unit) {
     val vm = appViewModel { AuthViewModel(it.session) }
     val state by vm.state.collectAsStateWithLifecycle()
-    NfcGate {
+    // With no NFC (or NFC off) the gate shows only its message, so the way back to the password login is offered there too.
+    NfcGate(leave = { TextAction(stringResource(R.string.card_use_password), onClick = onBack) }) {
         NfcReaderEffect(TagReader.CARD_FLAGS) { vm.cardTapped(it) }
         CardLoginContent(busy = state.busy, error = state.error, onBack = onBack)
     }

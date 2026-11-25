@@ -150,9 +150,13 @@ fun NfcReaderEffect(flags: Int, onTag: (Tag) -> Unit) {
     }
 }
 
-/** Shows [content] when NFC is on; otherwise says what is missing. Re-checks on resume (the user may come back from settings). */
+/**
+ * Shows [content] when NFC is on; otherwise says what is missing. Re-checks on resume (the user may come back from settings).
+ * [leave] is a way out that the screen offers under the message (the card login: back to the password), since the content that
+ * held it is not shown when there is no NFC.
+ */
 @Composable
-fun NfcGate(content: @Composable () -> Unit) {
+fun NfcGate(leave: (@Composable () -> Unit)? = null, content: @Composable () -> Unit) {
     val context = LocalContext.current
     var availability by remember { mutableStateOf(TagReader.availability(context)) }
     LifecycleResumeEffect(Unit) {
@@ -161,11 +165,17 @@ fun NfcGate(content: @Composable () -> Unit) {
     }
     when (availability) {
         NfcAvailability.READY -> content()
-        NfcAvailability.MISSING -> Centered { Text(stringResource(R.string.nfc_missing)) }
+        NfcAvailability.MISSING -> Centered {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                Text(stringResource(R.string.nfc_missing))
+                leave?.invoke()
+            }
+        }
         NfcAvailability.DISABLED -> Centered {
             Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 Text(stringResource(R.string.nfc_off))
                 PrimaryButton(onClick = { context.startActivity(Intent(Settings.ACTION_NFC_SETTINGS)) }) { Text(stringResource(R.string.nfc_open_settings)) }
+                leave?.invoke()
             }
         }
     }

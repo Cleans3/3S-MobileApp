@@ -145,6 +145,7 @@ fun AppRoot() {
 @Composable
 private fun LoggedOutHost(reason: LogoutReason?, startWithCard: Boolean = false, onGuest: (() -> Unit)? = null) {
     var card by rememberSaveable { mutableStateOf(startWithCard) }
+    BackHandler(enabled = card) { card = false } // back from the card login is the password login, not out of the app
     // From 600 dp wide (a medium or wide window) the sign-in is two columns: shelves of books on the left, the screen on the right.
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val split = maxWidth >= AdaptiveSize.signInSplitMin
