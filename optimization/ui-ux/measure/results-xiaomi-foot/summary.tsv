@@ -1,0 +1,5 @@
+scenario	label	runs	jankMedian	jankMin	jankMax	p90Median	p90Min	p90Max	rssMedianMb
+scrollHome	topband	5	0.02	0	0.02	9	8	11	212
+scrollHome	foot	5	0.02	0.02	0.02	11	11	12	213
+scrollList	topband	5	0.02	0.02	0.02	12	12	13	237
+scrollList	foot	5	0.02	0.02	0.02	14	12	14	239

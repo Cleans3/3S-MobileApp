@@ -396,8 +396,8 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                     if (!titleRoute) {
                         if (bands) {
                             GlassBand(haze, insets.top + Spacing.l, fromTop = true, modifier = Modifier.align(Alignment.TopCenter))
-                            // The foot keeps the plain fade for now: the glass band under the floating button has not been looked at on a screen with it (a member's).
-                            if (pillHere && compact) FadeBand(insets.bottom - Spacing.pillClearance / 2, fromTop = false, modifier = Modifier.align(Alignment.BottomCenter))
+                            // The foot: glass behind the floating button too (a member's pill, or the guest's login pill).
+                            if ((pillHere || guestPill) && compact) GlassBand(haze, insets.bottom, fromTop = false, modifier = Modifier.align(Alignment.BottomCenter))
                         } else {
                             FadeBand(insets.top - Spacing.touch / 2, fromTop = true, modifier = Modifier.align(Alignment.TopCenter)) // status bar and half the top bar
                             // the system inset and the lower half of the floating button and its margin
