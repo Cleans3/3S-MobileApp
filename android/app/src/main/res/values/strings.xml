@@ -132,6 +132,14 @@
     <string name="loans_due">Hạn trả %1$s · đã gia hạn %2$d lần</string>
     <string name="loans_renew_for">Gia hạn %1$s</string>
     <string name="loans_renew">Gia hạn</string>
+    <string name="loans_detail_title">Chi tiết lượt mượn</string>
+    <string name="loans_detail_due">Hạn trả</string>
+    <string name="loans_detail_left">Còn lại</string>
+    <string name="loans_detail_today">Hôm nay</string>
+    <plurals name="loans_days_left">
+        <item quantity="other">%d ngày</item>
+    </plurals>
+    <string name="res_detail_title">Chi tiết đặt trước</string>
     <string name="checkout_title">Tự mượn sách</string>
     <string name="checkout_hold">Áp điện thoại vào nhãn dán bên trong bìa sách.</string>
     <string name="checkout_borrowed">Đã mượn: %1$s</string>

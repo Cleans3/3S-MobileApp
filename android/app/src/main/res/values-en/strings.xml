@@ -132,6 +132,15 @@
     <string name="loans_due">Due %1$s · renewed %2$d×</string>
     <string name="loans_renew_for">Renew %1$s</string>
     <string name="loans_renew">Renew</string>
+    <string name="loans_detail_title">Loan details</string>
+    <string name="loans_detail_due">Due</string>
+    <string name="loans_detail_left">Left</string>
+    <string name="loans_detail_today">Today</string>
+    <plurals name="loans_days_left">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <string name="res_detail_title">Reservation details</string>
     <string name="checkout_title">Self-checkout</string>
     <string name="checkout_hold">Hold the phone against the sticker inside the cover.</string>
     <string name="checkout_borrowed">Borrowed: %1$s</string>

@@ -121,13 +121,43 @@ private fun ShelfBackdrop(modifier: Modifier = Modifier) {
     }
 }
 
+/** The dark column of shelves on the left of a sign-in screen in a wide window (the boards `Mid*` and `Wide*` sign-in): rows of books to its full height. */
+@Composable
+internal fun ShelfColumn(modifier: Modifier = Modifier) {
+    Canvas(modifier.clearAndSetSemantics {}) {
+        drawRect(SHELF_DARK)
+        val dp = density
+        val rowHeight = 150f * dp
+        val gap = 24f * dp
+        var top = 40f * dp
+        var shelf = 0
+        while (top < size.height) {
+            var x = 28f * dp
+            var i = 0
+            while (x < size.width - 28f * dp) {
+                val w = BOOK_WIDTHS[(i + shelf * 3) % 12] * dp
+                val h = BOOK_HEIGHTS[(i * 5 + shelf) % 12] * dp
+                if (x + w > size.width - 28f * dp) break
+                drawRoundRect(BOOK_COLORS[(i * 3 + shelf * 7) % 10], Offset(x, top + rowHeight - h), Size(w, h), CornerRadius(2f * dp))
+                x += w + 4f * dp
+                i++
+            }
+            drawRect(PLANK, Offset(28f * dp, top + rowHeight), Size(size.width - 56f * dp, 9f * dp))
+            top += rowHeight + 9f * dp + gap
+            shelf++
+        }
+    }
+}
+
+private val SHELF_DARK = Color(0xFF2A1F18)
+
 /**
  * The login, built to the board `Login`: shelves of books at the top, a glass form over them (email, password with the eye, the
  * login button, "or", the card button) and a line about how to get an account. [reason] says why the member was signed out.
  * The password lives in memory only: it is not saved with the screen's state. (The board's blur behind the form is not drawn.)
  */
 @Composable
-fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
+fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit, split: Boolean = false, onGuest: (() -> Unit)? = null) {
     val vm = appViewModel { AuthViewModel(it.session) }
     val state by vm.state.collectAsStateWithLifecycle()
     var email by rememberSaveable { mutableStateOf("") }
@@ -135,17 +165,21 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
     val c = MaterialTheme.shelfTap
     val formShape = RoundedCornerShape(Radius.result)
 
-    val glass = rememberGateGlass() // on the full tier the form blurs the shelves behind it, as the board's glass does
+    // On the full tier the form blurs the shelves behind it, as the board's glass does. In a wide window ([split]) the shelves are a column of their own beside it.
+    val glass = if (split) null else rememberGateGlass()
     val blurPx = with(LocalDensity.current) { FORM_BLUR.toPx() }
     Box(Modifier.fillMaxSize()) {
-        ShelfBackdrop(Modifier.fillMaxWidth().height(LoginSize.backdrop).then(if (glass != null) Modifier.recordBackdrop(glass) else Modifier))
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding(0.dp, 0.dp))) {
+        if (!split) ShelfBackdrop(Modifier.fillMaxWidth().height(LoginSize.backdrop).then(if (glass != null) Modifier.recordBackdrop(glass) else Modifier))
+        Column(
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding(0.dp, 0.dp)),
+            verticalArrangement = if (split) Arrangement.Center else Arrangement.Top,
+        ) {
             if (reason != null) {
                 // Signed out: the notice for the reason first, then the form, which follows it (so a larger font moves the form down, not over the notice).
-                Spacer(Modifier.height(LoginSize.noticeTop))
+                if (!split) Spacer(Modifier.height(LoginSize.noticeTop))
                 SignedOutNotice(reason, Modifier.padding(horizontal = Spacing.l))
                 Spacer(Modifier.height(Spacing.xl))
-            } else {
+            } else if (!split) {
                 Spacer(Modifier.height(LoginSize.formTop))
             }
             Column(
@@ -179,8 +213,10 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
             }
             Text(
                 stringResource(R.string.login_footer), style = MaterialTheme.typography.bodySmall, color = c.ink2, textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(start = Spacing.xl, end = Spacing.xl, top = Spacing.xl, bottom = Spacing.xl * 2),
+                modifier = Modifier.fillMaxWidth().padding(start = Spacing.xl, end = Spacing.xl, top = Spacing.xl, bottom = if (split && onGuest != null) Spacing.s else Spacing.xl * 2),
             )
+            // With no menu beside the screen (a wide window), the way back to the catalog is here.
+            if (split && onGuest != null) TextAction(stringResource(R.string.welcome_guest), onClick = onGuest, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
     }
 }

@@ -51,6 +51,7 @@ import shelftap.android.api.ApiException
 import shelftap.android.api.Reservation
 import shelftap.android.api.ReservationStatus
 import shelftap.android.data.Repository
+import shelftap.android.ui.theme.CoverSize
 import shelftap.android.ui.theme.GlassSize
 import shelftap.android.ui.theme.Radius
 import shelftap.android.ui.theme.Spacing
@@ -115,27 +116,73 @@ fun ReservationsScreen() {
     val vm = appViewModel { ReservationsViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
     var asking by rememberSaveable { mutableStateOf<String?>(null) }
+    var selectedId by rememberSaveable { mutableStateOf<String?>(null) }
     LoadView(state.list, onRetry = vm::load, loading = { SkeletonList(modifier = Modifier.fillMaxSize()) }) { reservations ->
         val rise = rememberRiseIn()
-        LazyColumn(
-            Modifier.fillMaxSize(), state = rememberPreparedListState(), contentPadding = pagePadding(GlassSize.page, Spacing.s),
-            verticalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs),
-        ) {
-            item { ErrorText(state.error) }
-            if (reservations.isEmpty()) item { EmptyState(R.string.reservations_empty, R.string.reservations_empty_hint, Modifier.fillParentMaxSize()) }
-            itemsIndexed(reservations, key = { _, it -> it.reservationId }) { index, r ->
-                val mod = Modifier.then(itemMotion()).riseIn(index, rise)
-                if (r.reservationId in state.confirmed) {
-                    CancelledNotice(r.title, mod)
-                } else {
-                    ReservationCard(
-                        r, asking = asking == r.reservationId, busy = state.busyId == r.reservationId, canTap = state.busyId == null,
-                        onAsk = { asking = r.reservationId }, onKeep = { asking = null },
-                        onCancel = { vm.cancel(r); asking = null },
-                        modifier = mod,
-                    )
+        val selected = reservations.firstOrNull { it.reservationId == selectedId && it.reservationId !in state.confirmed }
+            ?: reservations.firstOrNull { it.reservationId !in state.confirmed }
+        val card: @Composable (Reservation, Modifier) -> Unit = { r, mod ->
+            ReservationCard(
+                r, asking = asking == r.reservationId, busy = state.busyId == r.reservationId, canTap = state.busyId == null,
+                onAsk = { asking = r.reservationId }, onKeep = { asking = null },
+                onCancel = { vm.cancel(r); asking = null },
+                modifier = mod,
+            )
+        }
+        val listContent: @Composable (Boolean) -> Unit = { twoPane ->
+            LazyColumn(
+                Modifier.fillMaxSize(), state = rememberPreparedListState(), contentPadding = pagePadding(GlassSize.page, Spacing.s),
+                verticalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs),
+            ) {
+                item { ErrorText(state.error) }
+                if (reservations.isEmpty()) item { EmptyState(R.string.reservations_empty, R.string.reservations_empty_hint, Modifier.fillParentMaxSize()) }
+                itemsIndexed(reservations, key = { _, it -> it.reservationId }) { index, r ->
+                    val mod = Modifier.then(itemMotion()).riseIn(index, rise)
+                    when {
+                        r.reservationId in state.confirmed -> CancelledNotice(r.title, mod)
+                        // Beside a detail pane the list holds short rows; the card with its buttons is the pane.
+                        twoPane -> ReservationRow(r, selected = r.reservationId == selected?.reservationId, onClick = { selectedId = r.reservationId }, modifier = mod)
+                        else -> card(r, mod)
+                    }
                 }
             }
+        }
+        if (reservations.isEmpty()) {
+            listContent(false)
+        } else {
+            TwoPane(
+                detailTitle = stringResource(R.string.res_detail_title), list = listContent,
+                detail = { selected?.let { card(it, Modifier) } },
+            )
+        }
+    }
+}
+
+/** One reservation as a short row of the list beside a detail pane: its cover, its title and where it stands. */
+@Composable
+private fun ReservationRow(r: Reservation, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val c = MaterialTheme.shelfTap
+    val ready = r.status == ReservationStatus.READY
+    val shape = RoundedCornerShape(Radius.card)
+    val status = stringResource(
+        when (r.status) {
+            ReservationStatus.READY -> R.string.res_chip_ready
+            ReservationStatus.WAITING -> R.string.res_chip_waiting
+            ReservationStatus.FULFILLED -> R.string.res_fulfilled
+            ReservationStatus.CANCELLED -> R.string.res_cancelled
+            ReservationStatus.EXPIRED -> R.string.res_expired
+        },
+    )
+    Row(
+        modifier.fillMaxWidth().pressable(shape, onClick, role = null, row = true).background(if (ready) readyFill else c.glass.copy(alpha = CARD_FILL))
+            .then(if (selected) Modifier.border(BorderStroke(Radius.hairline * 2, if (ready) Color.White else c.ink3), shape) else Modifier)
+            .padding(Spacing.m),
+        horizontalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs / 2), verticalAlignment = Alignment.CenterVertically,
+    ) {
+        TextCover(r.title, Modifier.size(CoverSize.rowWidth, CoverSize.rowHeight), RoundedCornerShape(Spacing.s))
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Text(r.title, style = MaterialTheme.typography.titleMedium, color = if (ready) Color.White else c.ink, maxLines = 2)
+            Text(status, style = MaterialTheme.typography.bodyMedium, color = if (ready) Color.White.copy(alpha = 0.9f) else c.ink2)
         }
     }
 }

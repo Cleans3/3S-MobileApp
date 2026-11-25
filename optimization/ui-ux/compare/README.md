@@ -33,10 +33,10 @@ Blur: các board dùng `backdrop-filter`, app vẽ blur thật ở **tầng Đ�
 
 `make_compare_wide.py` ghép `mid/pair-<màn>.jpg` (9 màn) và `wide/pair-<màn>.jpg` (8 màn): board bên trái, app bên phải. App chụp bằng `run_audit.ps1 -Label N -Serial emulator-5556 -Configs medium,expanded -Locale vi` (emulator, tầng Vừa). Audit: 0 phát hiện ATF ở cả hai khổ. Đã xem 7 cặp (Danh mục ở hai khổ, Đang mượn ở hai khổ, Tài khoản và Đăng nhập khổ Rộng, Khách khổ Vừa); chưa xem Đặt trước, Lịch sử, Tự mượn và các cặp còn lại.
 
-Khác biệt còn lại, do thiết kế hoặc chưa làm:
-- **Hai khung ở khổ Rộng:** board có Đang mượn, Đặt trước, Lịch sử, Tài khoản chia hai khung (danh sách rồi chi tiết, hoặc nhóm cài đặt rồi nội dung); app chỉ chia hai khung ở Danh mục, các màn kia một khung.
-- **Nút "Chạm để mượn":** board đặt nó ở đầu thanh dọc (khổ Vừa) hoặc chân khung menu (khổ Rộng). App dùng nút tròn nổi ở góc dưới phải, **theo quyết định của người dùng** (đã thử đưa vào thanh dọc, người dùng không chọn; xem nhật ký). Nút có lúc đè lên thẻ cuối trang (Tài khoản khổ Rộng).
+Khác biệt còn lại, do thiết kế hoặc chưa làm (cập nhật sau khi làm hai khung và đăng nhập chia đôi):
+- **Hai khung ở khổ Rộng:** Đang mượn (danh sách và "Chi tiết lượt mượn"), Đặt trước (danh sách ngắn và thẻ chi tiết có nút hủy) và Tài khoản (nhóm cài đặt rồi nội dung nhóm) đã chia hai khung, như Danh mục. Lịch sử đọc vẫn một khung: board chỉ vẽ trạng thái "cần mật khẩu" của nó, không có chi tiết từng lượt. Thiếu so với board: chi tiết không có tác giả, "Gia hạn 14 ngày" (API không trả số ngày), nhóm "Thông báo" (chưa làm), "/ tối đa 5" của số đang mượn.
+- **Nút "Chạm để mượn":** board đặt nó ở đầu thanh dọc (khổ Vừa) hoặc chân khung menu (khổ Rộng). App dùng nút tròn nổi ở góc dưới phải, **theo quyết định của người dùng** (đã thử đưa vào thanh dọc, người dùng không chọn; xem nhật ký). Vì vậy ở mọi cặp ảnh, nút nằm trong menu là của **board** (bên trái), không phải app.
 - **Khung menu khổ Rộng:** board có lời chào "Thư viện ShelfTap" ở đầu khung; app chỉ có nút thu gọn. Mục "Gợi ý" chưa có (chưa có API gợi ý); nhãn "Đang mượn" ngắn hơn "Sách đang mượn" của board.
 - **Thanh dọc khổ Vừa:** nhãn "Danh mục" và "Lịch sử đọc" xuống hai dòng; mục đang chọn là khối trắng thay vì viền quanh biểu tượng.
-- **Đăng nhập khổ Rộng:** app vẫn hiện khung menu bên trái và tiêu đề "Đăng nhập vào ShelfTap" nằm đè lên tranh giá sách (khó đọc); board bỏ menu, chia đôi (giá sách bên trái, nội dung bên phải) và có màn chào riêng.
+- **Đăng nhập khổ Vừa và Rộng:** đã chia đôi (cột giá sách tối bên trái, form bên phải, không còn menu và thanh tiêu đề); thêm nút "Xem sách mà không cần đăng nhập" dưới form vì không còn menu để quay lại. Chưa làm: màn Chào (`Main`) và Đổi mật khẩu lần đầu ở khổ này vẫn như điện thoại.
 - Nút chuyển sáng/tối "Tối" của board không có trong app (app theo cài đặt Tài khoản).

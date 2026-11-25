@@ -239,7 +239,8 @@ class UiAuditTest {
             repeat(3) { compose.onNode(accountPage).performTouchInput { swipeUp() } }
             compose.waitForIdle()
             audit("account-bottom", activity)
-            compose.onNode(accountPage).performScrollToNode(hasText(str(R.string.account_history)))
+            // (on a wide window the history link is in the pane beside the list, not in the list)
+            compose.onNode(hasScrollAction() and hasAnyDescendant(hasText(str(R.string.account_history)))).performScrollToNode(hasText(str(R.string.account_history)))
             compose.waitForIdle()
             compose.onNodeWithText(str(R.string.account_history)).performClick(); waitFor(AuditData.history.first().title)
             audit("history", activity)

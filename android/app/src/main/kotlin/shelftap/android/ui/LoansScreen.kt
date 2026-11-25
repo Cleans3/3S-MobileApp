@@ -57,6 +57,10 @@ import shelftap.android.api.ApiException
 import shelftap.android.api.Fine
 import shelftap.android.api.Loan
 import shelftap.android.data.Repository
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import shelftap.android.ui.theme.ShelfTapText
 import shelftap.android.ui.icons.LucideIcon
 import shelftap.android.ui.icons.LucideIcons
 import shelftap.android.ui.icons.LucideMorphs
@@ -150,51 +154,111 @@ fun LoansScreen() {
     val vm = appViewModel { LoansViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
     val fines by vm.fines.collectAsStateWithLifecycle()
+    var selectedId by rememberSaveable { mutableStateOf<String?>(null) }
     LoadView(state.list, onRetry = vm::load, loading = { SkeletonList(modifier = Modifier.fillMaxSize()) }) { loans ->
         val rise = rememberRiseIn()
         val owed = fines?.filter { it.paidAt == null }?.sumOf { it.amountVnd }
-        LazyColumn(
-            Modifier.fillMaxSize(), state = rememberPreparedListState(), contentPadding = pagePadding(GlassSize.page, Spacing.s),
-            verticalArrangement = Arrangement.spacedBy(Spacing.m),
-        ) {
-            item { ErrorText(state.error) }
-            if (loans.isEmpty() && (owed ?: 0L) == 0L) {
-                item { EmptyState(R.string.loans_empty, R.string.loans_empty_hint, Modifier.fillParentMaxSize()) }
-            } else {
-                item {
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.m - Spacing.xs / 2)) {
-                        StatTile(stringResource(R.string.loans_count_label), loans.size.toString(), Modifier.weight(1f))
-                        if (owed != null) {
-                            val c = MaterialTheme.shelfTap
-                            val owing = owed > 0
-                            StatTile(
-                                stringResource(R.string.loans_fines_label), formatVnd(owed), Modifier.weight(1f),
-                                container = if (owing) c.dangerBg else c.surface, labelColor = if (owing) c.danger else c.ink3, valueColor = if (owing) c.danger else c.ink,
-                            )
+        val selected = loans.firstOrNull { it.loanId == selectedId } ?: loans.firstOrNull()
+        val listContent: @Composable (Boolean) -> Unit = { twoPane ->
+            LazyColumn(
+                Modifier.fillMaxSize(), state = rememberPreparedListState(), contentPadding = pagePadding(GlassSize.page, Spacing.s),
+                verticalArrangement = Arrangement.spacedBy(Spacing.m),
+            ) {
+                item { ErrorText(state.error) }
+                if (loans.isEmpty() && (owed ?: 0L) == 0L) {
+                    item { EmptyState(R.string.loans_empty, R.string.loans_empty_hint, Modifier.fillParentMaxSize()) }
+                } else {
+                    item {
+                        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.m - Spacing.xs / 2)) {
+                            StatTile(stringResource(R.string.loans_count_label), loans.size.toString(), Modifier.weight(1f))
+                            if (owed != null) {
+                                val c = MaterialTheme.shelfTap
+                                val owing = owed > 0
+                                StatTile(
+                                    stringResource(R.string.loans_fines_label), formatVnd(owed), Modifier.weight(1f),
+                                    container = if (owing) c.dangerBg else c.surface, labelColor = if (owing) c.danger else c.ink3, valueColor = if (owing) c.danger else c.ink,
+                                )
+                            }
                         }
                     }
                 }
+                itemsIndexed(loans, key = { _, it -> it.loanId }) { index, loan ->
+                    LoanCard(
+                        loan, fine = fines?.let { unpaidFor(it, loan.loanId) } ?: 0L, renewing = state.busyId == loan.loanId,
+                        renewed = loan.loanId in state.confirmed, canTap = state.busyId == null, onRenew = { vm.renew(loan) },
+                        modifier = Modifier.then(itemMotion()).riseIn(index, rise),
+                        // Beside a detail pane the card is also a button that chooses its loan.
+                        selected = twoPane && loan.loanId == selected?.loanId, onSelect = if (twoPane) ({ selectedId = loan.loanId }) else null,
+                    )
+                }
             }
-            itemsIndexed(loans, key = { _, it -> it.loanId }) { index, loan ->
-                LoanCard(
-                    loan, fine = fines?.let { unpaidFor(it, loan.loanId) } ?: 0L, renewing = state.busyId == loan.loanId,
-                    renewed = loan.loanId in state.confirmed, canTap = state.busyId == null, onRenew = { vm.renew(loan) },
-                    modifier = Modifier.then(itemMotion()).riseIn(index, rise),
-                )
-            }
+        }
+        if (loans.isEmpty()) {
+            listContent(false)
+        } else {
+            TwoPane(
+                detailTitle = stringResource(R.string.loans_detail_title), list = listContent,
+                detail = {
+                    selected?.let { loan ->
+                        LoanDetail(
+                            loan, fine = fines?.let { unpaidFor(it, loan.loanId) } ?: 0L, renewing = state.busyId == loan.loanId,
+                            renewed = loan.loanId in state.confirmed, canTap = state.busyId == null, onRenew = { vm.renew(loan) },
+                        )
+                    }
+                },
+            )
         }
     }
 }
 
+/** The pane beside the list: the loan's cover and title, when it is due and how many days are left, and the renew button. */
 @Composable
-private fun LoanCard(loan: Loan, fine: Long, renewing: Boolean, renewed: Boolean, canTap: Boolean, onRenew: () -> Unit, modifier: Modifier = Modifier) {
+private fun LoanDetail(loan: Loan, fine: Long, renewing: Boolean, renewed: Boolean, canTap: Boolean, onRenew: () -> Unit) {
+    val c = MaterialTheme.shelfTap
+    val overdue = isOverdue(loan.dueAt)
+    val days = daysToDue(loan.dueAt)
+    Row(horizontalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs / 2)) {
+        TextCover(loan.title, Modifier.size(GlassSize.loanCoverWidth, GlassSize.loanCoverHeight), RoundedCornerShape(Spacing.m))
+        Text(loan.title, style = ShelfTapText.detailTitle, modifier = Modifier.weight(1f))
+    }
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.m - Spacing.xs / 2)) {
+        StatTile(stringResource(R.string.loans_detail_due), formatDay(loan.dueAt), Modifier.weight(1f))
+        val left = when {
+            overdue -> days?.let { -it }?.takeIf { it > 0 }?.let { pluralStringResource(R.plurals.loans_overdue_days, it, it) } ?: stringResource(R.string.loans_overdue)
+            days == 0 -> stringResource(R.string.loans_detail_today)
+            days != null -> pluralStringResource(R.plurals.loans_days_left, days, days)
+            else -> "-"
+        }
+        StatTile(
+            stringResource(R.string.loans_detail_left), left, Modifier.weight(1f),
+            container = if (overdue) c.dangerBg else c.surface, labelColor = if (overdue) c.danger else c.ink3, valueColor = if (overdue) c.danger else c.ink,
+        )
+    }
+    if (overdue) {
+        Text(
+            if (fine > 0) stringResource(R.string.loans_overdue_fine, stringResource(R.string.loans_overdue), formatVnd(fine)) else stringResource(R.string.loans_overdue),
+            style = MaterialTheme.typography.labelLarge, color = c.danger,
+        )
+        Text(stringResource(R.string.loans_overdue_note), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
+    } else if (loan.renewable || renewed) {
+        RenewButton(loan.title, renewing, renewed, enabled = canTap && !renewed, onClick = onRenew)
+    } else {
+        Text(stringResource(R.string.err_renewal_not_allowed), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
+    }
+}
+
+@Composable
+private fun LoanCard(
+    loan: Loan, fine: Long, renewing: Boolean, renewed: Boolean, canTap: Boolean, onRenew: () -> Unit, modifier: Modifier = Modifier,
+    selected: Boolean = false, onSelect: (() -> Unit)? = null,
+) {
     val c = MaterialTheme.shelfTap
     val overdue = isOverdue(loan.dueAt)
     val days = daysToDue(loan.dueAt)
     val shape = RoundedCornerShape(Radius.panel)
     Row(
-        modifier.fillMaxWidth().clip(shape).background(c.glass.copy(alpha = LOAN_FILL))
-            .then(if (overdue) Modifier.border(BorderStroke(OVERDUE_BORDER, overdueEdge), shape) else Modifier)
+        modifier.fillMaxWidth().then(if (onSelect != null) Modifier.pressable(shape, onSelect, role = null, row = true) else Modifier.clip(shape)).background(c.glass.copy(alpha = LOAN_FILL))
+            .then(if (overdue) Modifier.border(BorderStroke(OVERDUE_BORDER, overdueEdge), shape) else if (selected) Modifier.border(BorderStroke(Radius.hairline * 2, c.ink3), shape) else Modifier)
             .padding(Spacing.m + Spacing.xs / 2),
         horizontalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs / 2),
     ) {
@@ -224,7 +288,9 @@ private fun LoanCard(loan: Loan, fine: Long, renewing: Boolean, renewed: Boolean
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
-            if (loan.renewable || renewed) {
+            if (onSelect != null) {
+                // Beside a detail pane the card only chooses its loan; the renew button is in the pane (one button per loan, not two).
+            } else if (loan.renewable || renewed) {
                 Spacer(Modifier.weight(1f))
                 RenewButton(loan.title, renewing, renewed, enabled = canTap && !renewed, onClick = onRenew)
             } else {

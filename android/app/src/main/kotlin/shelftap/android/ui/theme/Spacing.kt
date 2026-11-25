@@ -55,6 +55,13 @@ object AdaptiveSize {
     /** A list of books runs in two columns where the pane is at least this wide. */
     val twoColumnMin = 520.dp
 
+    /** From this width a sign-in screen is two columns: shelves on the left, the form on the right (up to [signInFormMax] wide). */
+    val signInSplitMin = 600.dp
+
+    /** A list and the detail of its chosen item are side by side in a pane at least this wide. */
+    val twoPaneMin = 700.dp
+    val signInFormMax = 480.dp
+
     /** On a wide window, screens other than the catalog are not stretched past this. */
     val contentMaxWide = 720.dp
 

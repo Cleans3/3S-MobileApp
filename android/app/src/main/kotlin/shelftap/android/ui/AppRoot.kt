@@ -23,6 +23,7 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -142,16 +143,35 @@ fun AppRoot() {
 }
 
 @Composable
-private fun LoggedOutHost(reason: LogoutReason?, startWithCard: Boolean = false) {
+private fun LoggedOutHost(reason: LogoutReason?, startWithCard: Boolean = false, onGuest: (() -> Unit)? = null) {
     var card by rememberSaveable { mutableStateOf(startWithCard) }
-    if (card) CardLoginScreen(onBack = { card = false }) else LoginScreen(reason, onCard = { card = true })
+    // From 600 dp wide (a medium or wide window) the sign-in is two columns: shelves of books on the left, the screen on the right.
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val split = maxWidth >= AdaptiveSize.signInSplitMin
+        val screen: @Composable () -> Unit = {
+            if (card) CardLoginScreen(onBack = { card = false }) else LoginScreen(reason, onCard = { card = true }, split = split, onGuest = onGuest)
+        }
+        if (split) {
+            Row(Modifier.fillMaxSize()) {
+                ShelfColumn(Modifier.weight(SIGN_IN_SHELF_SHARE).fillMaxHeight())
+                Box(Modifier.weight(1f - SIGN_IN_SHELF_SHARE).fillMaxHeight(), contentAlignment = Alignment.Center) {
+                    Box(Modifier.widthIn(max = AdaptiveSize.signInFormMax)) { screen() }
+                }
+            }
+        } else screen()
+    }
 }
+
+private const val SIGN_IN_SHELF_SHARE = 0.45f
 
 /** The glass circle behind the NFC glyph of the floating button. */
 
 private const val CATALOG = "catalog"
 private const val CHECKOUT = "checkout"
 private const val LOGIN = "login"
+
+/** The screens that show a list and the detail of its chosen item side by side in a wide window (they take the whole page, not 720 dp of it). */
+private val TWO_PANE_ROUTES = setOf("loans", "reservations", "account")
 
 /** Where a signed-out member goes from the welcome screen. */
 private enum class Entry { CATALOG, LOGIN, CARD }
@@ -248,14 +268,16 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
     val layout = rememberNavLayout()
     val compact = layout == NavLayout.COMPACT
     val items = if (guest) guestMenu else memberMenu
-    val title = titleOf(route)
+    // The sign-in of a window that is not compact is a screen of its own: no menu beside it, no bar over it (the boards `Mid*` and `Wide*` sign-in).
+    val signIn = route == LOGIN && layout != NavLayout.COMPACT
+    val title = if (signIn) null else titleOf(route)
     val tier = LocalEffectTier.current
     val glass = tier != EffectTier.LIGHT
     val blurPx = with(LocalDensity.current) { MenuSize.pageBlur.toPx() }
     val backdrop = rememberBackdrop()
     // On the full tier the bands under the bars are glass (Haze): the page is their source while a screen with bands is shown (not on a book's page).
     val haze = rememberHazeState()
-    val bands = glassBands() && !(route?.startsWith("title/") == true)
+    val bands = glassBands() && !signIn && !(route?.startsWith("title/") == true)
     val overlayOpen = menuOpen && compact // a window that grew past the compact size has no ☰ menu to keep open
     // The whole page blurs and clears with the menu, all at once and by one value (the panel has no blur of its own).
     val pageBlur by animateFloatAsState(if (glass && overlayOpen) 1f else 0f, Motion.spec(tier, Motion.MENU_MS), label = "page blur")
@@ -267,14 +289,14 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
     val bookOpen = route?.startsWith("title/") == true || (layout == NavLayout.SIDE && reserveBar.value != null)
     val dockOnBar = !guest && bookOpen
     val showDock = !guest && (pillHere || dockOnBar) && !overlayOpen
-    val contentMax = when (layout) {
+    val contentMax = if (signIn) Dp.Unspecified else when (layout) {
         NavLayout.COMPACT -> Dp.Unspecified
         NavLayout.RAIL -> if (route == CATALOG) AdaptiveSize.contentMaxCatalog else AdaptiveSize.contentMax
-        NavLayout.SIDE -> if (route == CATALOG) Dp.Unspecified else AdaptiveSize.contentMaxWide
+        NavLayout.SIDE -> if (route == CATALOG || route in TWO_PANE_ROUTES) Dp.Unspecified else AdaptiveSize.contentMaxWide
     }
 
     Row(Modifier.fillMaxSize()) {
-        if (!compact) {
+        if (!compact && !signIn) {
             SideNav(
                 items, current = route, width = if (layout == NavLayout.RAIL || navFolded) AdaptiveSize.railWidth else AdaptiveSize.sideWidth,
                 centred = layout == NavLayout.RAIL || navFolded, showPill = false, onPill = { nav.goTo(CHECKOUT) }, onSelect = { nav.goTo(it) },
@@ -370,7 +392,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                                     )
                                 }
                             }
-                            composable(LOGIN) { Screen { LoggedOutHost(reason, startWithCard = entry == Entry.CARD) } }
+                            composable(LOGIN) { Screen { LoggedOutHost(reason, startWithCard = entry == Entry.CARD, onGuest = { nav.goTo(CATALOG) }) } }
                             composable("loans") { Screen { LoansScreen() } }
                             composable(CHECKOUT) { Screen { CheckoutScreen(onLoans = { nav.goTo("loans") }) } }
                             composable("reservations") { Screen { ReservationsScreen() } }
@@ -393,7 +415,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                     }
                     // Soft fades of the page colour where the page runs under the bars, so a title or the floating button always sits on
                     // something calm. (Where the tier allows, the blur of the mockup goes here too.)
-                    if (!titleRoute) {
+                    if (!titleRoute && !signIn) {
                         if (bands) {
                             GlassBand(haze, insets.top + Spacing.l, fromTop = true, modifier = Modifier.align(Alignment.TopCenter))
                             // The foot: glass behind the floating button too (a member's pill, or the guest's login pill).
