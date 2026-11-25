@@ -97,7 +97,7 @@ fun WelcomeScreen(onStart: () -> Unit, onCard: () -> Unit, onGuest: () -> Unit) 
                     Row(Modifier.fillMaxWidth().padding(start = Spacing.l + Spacing.s), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(stringResource(R.string.welcome_start), style = MaterialTheme.typography.titleMedium, color = Color.White)
                         Box(Modifier.size(40.dp).clip(CircleShape).background(MaterialTheme.colorScheme.surface), contentAlignment = Alignment.Center) {
-                            LucideIcon(LucideIcons.ArrowRight, tint = c.ink, size = 20.dp)
+                            LucideIcon(LucideIcons.ArrowUpRight, tint = c.ink, size = 20.dp)
                         }
                     }
                 }

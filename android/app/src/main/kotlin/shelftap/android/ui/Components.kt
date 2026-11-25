@@ -63,6 +63,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import shelftap.android.R
+import shelftap.android.ui.icons.LucideIcon
 import shelftap.android.ui.icons.LucideMorphs
 import shelftap.android.ui.icons.MorphIcon
 import shelftap.android.ui.theme.EffectTier
@@ -213,7 +214,7 @@ fun SecondaryButton(
  * quiet one: a light grey pill (the ink at 12%) with the words still in a strong colour, so that they stay readable.
  */
 @Composable
-internal fun PillAction(label: String, onClick: () -> Unit, container: Color, ink: Color, enabled: Boolean = true, height: androidx.compose.ui.unit.Dp = GlassSize.pillAction, description: String? = null) {
+internal fun PillAction(label: String, onClick: () -> Unit, container: Color, ink: Color, enabled: Boolean = true, height: androidx.compose.ui.unit.Dp = GlassSize.pillAction, description: String? = null, icon: String? = null) {
     val source = remember { MutableInteractionSource() }
     val c = MaterialTheme.shelfTap
     Box(
@@ -221,7 +222,13 @@ internal fun PillAction(label: String, onClick: () -> Unit, container: Color, in
             .clickable(interactionSource = source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
             .then(if (description != null) Modifier.semantics { contentDescription = description } else Modifier),
         contentAlignment = Alignment.Center,
-    ) { Text(label, style = MaterialTheme.typography.titleSmall, color = if (enabled) ink else c.ink2, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s)) }
+    ) {
+        // An icon, when there is one, sits before the label (the lock screen's fingerprint).
+        Row(Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
+            if (icon != null) LucideIcon(icon, tint = if (enabled) ink else c.ink2, size = Spacing.l + Spacing.xs)
+            Text(label, style = MaterialTheme.typography.titleSmall, color = if (enabled) ink else c.ink2, textAlign = TextAlign.Center)
+        }
+    }
 }
 
 private const val OFF_FILL = 0.12f

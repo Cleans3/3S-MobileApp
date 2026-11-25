@@ -107,10 +107,10 @@ private fun GateCard(modifier: Modifier = Modifier, fill: Float = CARD_FILL, con
 
 /** The round white badge with an icon on top of a status card. */
 @Composable
-private fun GateBadge(icon: String) {
+private fun GateBadge(icon: String, tint: androidx.compose.ui.graphics.Color? = null) {
     val c = MaterialTheme.shelfTap
     Box(Modifier.size(GateSize.badge).shadow(Spacing.m, CircleShape).clip(CircleShape).background(c.surface).clearAndSetSemantics {}, contentAlignment = Alignment.Center) {
-        LucideIcon(icon, tint = c.ink, size = GateSize.badgeIcon)
+        LucideIcon(icon, tint = tint ?: c.ink, size = GateSize.badgeIcon)
     }
 }
 
@@ -260,7 +260,7 @@ internal fun LockContent(onUnlock: () -> Unit, onLogout: () -> Unit) {
                 GateBadge(LucideIcons.Lock)
                 Text(stringResource(R.string.lock_locked_title), style = MaterialTheme.typography.headlineSmall)
                 Text(stringResource(R.string.lock_body), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
-                PillAction(stringResource(R.string.lock_unlock), onClick = onUnlock, container = c.primary, ink = c.onPrimary, height = LoginSize.button)
+                PillAction(stringResource(R.string.lock_unlock), onClick = onUnlock, container = c.primary, ink = c.onPrimary, height = LoginSize.button, icon = LucideIcons.Fingerprint)
                 TextAction(stringResource(R.string.action_logout), onClick = onLogout, modifier = Modifier.align(Alignment.CenterHorizontally), ink = c.ink2)
             }
             Text(
@@ -303,7 +303,7 @@ internal fun OfflineContent(busy: Boolean, tries: Int, onRetry: () -> Unit, onLo
         SoftBackdrop(Modifier.fillMaxWidth().height(GateSize.backdrop))
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding()).padding(horizontal = Spacing.l), verticalArrangement = Arrangement.Center) {
             GateCard {
-                GateBadge(LucideIcons.CircleAlert)
+                GateBadge(LucideIcons.WifiOff, tint = c.danger)
                 Text(stringResource(R.string.offline_title), style = MaterialTheme.typography.headlineSmall)
                 Text(stringResource(R.string.offline_body), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
                 if (tries > 0) {

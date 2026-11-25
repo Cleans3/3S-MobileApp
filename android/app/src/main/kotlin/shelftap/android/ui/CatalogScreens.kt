@@ -452,11 +452,11 @@ private fun TitleRow(item: TitleSummary, onClick: () -> Unit, modifier: Modifier
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs - 1.dp)) {
             Text(item.title, style = MaterialTheme.typography.titleMedium)
             Text(item.authors.joinToString(", "), style = MaterialTheme.typography.bodyMedium, color = c.ink2, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            // The state as a pill: green for copies in, plain for all on loan (the words carry the meaning, the colour only helps).
+            // The state as a pill: green for copies in, red for all on loan (the words carry the meaning, the colour only helps).
             Text(
                 if (available) stringResource(R.string.catalog_available, item.copiesAvailable) else stringResource(R.string.catalog_all_on_loan),
-                style = MaterialTheme.typography.labelMedium, color = if (available) c.ok else c.ink2,
-                modifier = Modifier.padding(top = Spacing.xs).clip(CircleShape).background((if (available) c.ok else c.ink).copy(alpha = PILL_FILL))
+                style = MaterialTheme.typography.labelMedium, color = if (available) c.ok else c.danger,
+                modifier = Modifier.padding(top = Spacing.xs).clip(CircleShape).background((if (available) c.ok else c.danger).copy(alpha = PILL_FILL))
                     .padding(horizontal = Spacing.m - Spacing.xs / 2, vertical = Spacing.xs),
             )
         }
