@@ -76,14 +76,6 @@ import shelftap.android.ui.theme.okFill
 import shelftap.android.ui.theme.pressScale
 import shelftap.android.ui.theme.shelfTap
 
-@StringRes
-private fun LogoutReason.message() = when (this) {
-    LogoutReason.SESSION_EXPIRED -> R.string.logout_session_expired
-    LogoutReason.TOKEN_REUSED -> R.string.logout_token_reused
-    LogoutReason.INACTIVITY -> R.string.logout_inactivity
-    LogoutReason.LOCK_KEY_INVALIDATED -> R.string.logout_lock_key_invalidated
-}
-
 private const val FORM_FILL = 0.92f // the board's 0.68 sits on a blur; with none the form must stay readable over the books
 private const val FORM_EDGE = 0.9f
 private const val OR_RULE_ALPHA = 0.12f
@@ -142,7 +134,14 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
     Box(Modifier.fillMaxSize()) {
         ShelfBackdrop(Modifier.fillMaxWidth().height(LoginSize.backdrop))
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding(0.dp, 0.dp))) {
-            Spacer(Modifier.height(LoginSize.formTop))
+            if (reason != null) {
+                // Signed out: the notice for the reason first, then the form, which follows it (so a larger font moves the form down, not over the notice).
+                Spacer(Modifier.height(LoginSize.noticeTop))
+                SignedOutNotice(reason, Modifier.padding(horizontal = Spacing.l))
+                Spacer(Modifier.height(Spacing.xl))
+            } else {
+                Spacer(Modifier.height(LoginSize.formTop))
+            }
             Column(
                 Modifier.padding(horizontal = Spacing.l).fillMaxWidth()
                     .shadow(Spacing.xl, formShape, ambientColor = c.ink.copy(alpha = 0.18f), spotColor = c.ink.copy(alpha = 0.18f))
@@ -151,11 +150,10 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(Spacing.l),
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                    Text(stringResource(R.string.login_action), style = ShelfTapText.detailTitle)
-                    Text(stringResource(R.string.login_subtitle), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
+                    Text(stringResource(if (reason != null) R.string.login_again else R.string.login_action), style = ShelfTapText.detailTitle)
+                    if (reason == null) Text(stringResource(R.string.login_subtitle), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
                 }
                 IntegrityBanner()
-                reason?.let { Text(stringResource(it.message()), style = MaterialTheme.typography.bodyMedium, color = c.danger) }
                 LabeledField(stringResource(R.string.login_email), email, { email = it }, keyboardType = KeyboardType.Email, enabled = !state.busy)
                 LabeledField(stringResource(R.string.login_password), password, { password = it }, keyboardType = KeyboardType.Password, password = true, enabled = !state.busy)
                 ErrorText(state.error)

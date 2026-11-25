@@ -55,15 +55,20 @@
     <string name="nfc_open_settings">Open NFC settings</string>
 
     <!-- Login -->
-    <string name="logout_session_expired">Your session expired. Log in again.</string>
-    <string name="logout_token_reused">This session was revoked because the account was used elsewhere. Log in again.</string>
-    <string name="logout_inactivity">Logged out after a period of inactivity.</string>
-    <string name="logout_lock_key_invalidated">Biometrics changed on this phone, so the biometric lock was reset. Log in again.</string>
     <string name="login_email">Email</string>
     <string name="login_password">Password</string>
     <string name="login_action">Log in</string>
     <string name="login_busy">Logging in...</string>
     <string name="login_with_card">Log in with library card</string>
+    <string name="signedout_expired_title">Your session expired</string>
+    <string name="signedout_expired_body">For your safety, you need to log in again.</string>
+    <string name="signedout_reused_title">Logged out to protect your account</string>
+    <string name="signedout_reused_body">Your session was just used on another device. If that was not you, change your password right after you log in.</string>
+    <string name="signedout_idle_title">Logged out automatically</string>
+    <string name="signedout_idle_body">You did not use the app for %1$d minutes. Log in again to continue.</string>
+    <string name="signedout_lockkey_title">Fingerprints on this phone changed</string>
+    <string name="signedout_lockkey_body">ShelfTap\'s fingerprint lock can no longer be used. Log in again with your password or card, then turn it on again in Account.</string>
+    <string name="login_again">Log in again</string>
     <string name="login_subtitle">Use the library account you were given.</string>
     <string name="login_with_password">Sign in with email and password</string>
     <string name="login_or">or</string>

@@ -130,6 +130,8 @@ object NfcSize {
 object LoginSize {
     val backdrop = 360.dp
     val formTop = 250.dp
+    /** The notice of a signed-out login starts this far from the top (under the app bar). */
+    val noticeTop = 64.dp
     val button = 54.dp
     val field = 50.dp
     val stage = 300.dp

@@ -55,15 +55,20 @@
     <string name="nfc_open_settings">Mở cài đặt NFC</string>
 
     <!-- Đăng nhập -->
-    <string name="logout_session_expired">Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.</string>
-    <string name="logout_token_reused">Phiên này bị thu hồi vì tài khoản được dùng ở nơi khác. Hãy đăng nhập lại.</string>
-    <string name="logout_inactivity">Bạn đã bị đăng xuất vì không dùng app một lúc.</string>
-    <string name="logout_lock_key_invalidated">Sinh trắc học trên điện thoại đã thay đổi nên khóa sinh trắc học được đặt lại. Hãy đăng nhập lại.</string>
     <string name="login_email">Email</string>
     <string name="login_password">Mật khẩu</string>
     <string name="login_action">Đăng nhập</string>
     <string name="login_busy">Đang đăng nhập…</string>
     <string name="login_with_card">Đăng nhập bằng thẻ thư viện</string>
+    <string name="signedout_expired_title">Phiên đăng nhập đã hết hạn</string>
+    <string name="signedout_expired_body">Vì an toàn, bạn cần đăng nhập lại.</string>
+    <string name="signedout_reused_title">Đã đăng xuất để bảo vệ tài khoản</string>
+    <string name="signedout_reused_body">Phiên của bạn vừa được dùng trên một thiết bị khác. Nếu đó không phải bạn, hãy đổi mật khẩu ngay sau khi đăng nhập.</string>
+    <string name="signedout_idle_title">Đã tự đăng xuất</string>
+    <string name="signedout_idle_body">Bạn không dùng app trong %1$d phút. Đăng nhập lại để tiếp tục.</string>
+    <string name="signedout_lockkey_title">Vân tay trên máy đã thay đổi</string>
+    <string name="signedout_lockkey_body">Khóa vân tay của ShelfTap không còn dùng được. Đăng nhập lại bằng mật khẩu hoặc thẻ, rồi bật lại trong Tài khoản.</string>
+    <string name="login_again">Đăng nhập lại</string>
     <string name="login_subtitle">Dùng tài khoản thư viện đã cấp cho bạn.</string>
     <string name="login_with_password">Đăng nhập bằng email và mật khẩu</string>
     <string name="login_or">hoặc</string>

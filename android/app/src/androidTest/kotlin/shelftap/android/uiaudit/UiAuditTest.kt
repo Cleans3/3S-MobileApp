@@ -78,6 +78,7 @@ import org.junit.runner.RunWith
 import shelftap.android.AppContainer
 import shelftap.android.MainActivity
 import shelftap.android.R
+import shelftap.android.session.LogoutReason
 import shelftap.android.ShelfTapApp
 import shelftap.android.data.Repository
 import shelftap.android.session.SessionManager
@@ -218,6 +219,15 @@ class UiAuditTest {
             menuFrames(activity)
             openMenu()
             audit("menu", activity)
+
+            // Signed out for each reason, by the real path: the session logs out and the login is what comes next, with the notice of that reason.
+            for (reason in LogoutReason.values()) {
+                runBlocking { session.logout(reason) }
+                waitFor(str(R.string.login_again))
+                audit("signedout-${reason.name.lowercase()}", activity)
+                runBlocking { session.login(AuditData.EMAIL, "audit-only") }
+                waitFor(str(R.string.catalog_theme))
+            }
         }
     }
 
