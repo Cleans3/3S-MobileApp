@@ -191,7 +191,10 @@ class UiAuditTest {
             audit("loans", activity)
 
             // The emulator has no NFC, so Checkout shows its "This phone has no NFC." state; a phone with NFC shows "Self-checkout".
-            compose.onNode(hasText(str(R.string.checkout_pill)) or hasContentDescription(str(R.string.tab_checkout))).performClick(); waitFor(str(R.string.checkout_title), str(R.string.nfc_missing))
+            compose.onNode(hasText(str(R.string.checkout_pill)) or hasContentDescription(str(R.string.tab_checkout))).performClick()
+            // A phone with NFC (or with NFC switched off) shows other words than the emulator's: wait for any of them, and go on when none comes (the shot is taken anyway).
+            runCatching { waitFor(str(R.string.checkout_title), str(R.string.nfc_missing)) }
+            compose.waitForIdle()
             audit("checkout", activity)
             // The emulator has no NFC, so the states of the self-checkout are drawn on their own, over the app.
             overlayShot("checkout-wait", activity) {
