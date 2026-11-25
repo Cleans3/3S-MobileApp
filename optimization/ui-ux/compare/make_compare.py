@@ -41,10 +41,11 @@ for theme in ('light', 'dark'):
             continue
         # the page sits next to fonts/ of the rendered folder, so the Nunito files load
         page = os.path.join(rendered, '%s_%s.html' % (board, theme))
-        open(page, 'w', encoding='utf-8').write(re.sub(r'data-theme="[a-z]*"', 'data-theme="%s"' % theme, boards[board]))
+        # only the root element's attribute: the same text appears in the CSS selectors of the themes
+        open(page, 'w', encoding='utf-8').write(re.sub(r'(class="st-root"\s+data-theme=")[a-z]*"', r'\g<1>%s"' % theme, boards[board]))
         png = os.path.join(tmp, '%s_%s.png' % (board, theme))
         subprocess.run([chrome, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--window-size=390,844', '--force-device-scale-factor=3',
-                        '--virtual-time-budget=5000', '--screenshot=' + png, 'file:///' + page.replace('\\', '/')], capture_output=True, timeout=120)
+                        '--blink-settings=preferredColorScheme=%d' % (0 if theme == 'light' else 1), '--virtual-time-budget=5000', '--screenshot=' + png, 'file:///' + page.replace('\\', '/')], capture_output=True, timeout=120)
         cfg = 'ref' if theme == 'light' else 'refdark'
         a = os.path.join(audit, cfg, '%s-hw.png' % screen)
         if not (os.path.exists(a) and os.path.exists(png)):

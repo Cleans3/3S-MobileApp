@@ -256,6 +256,8 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
     val pageBlur by animateFloatAsState(if (glass && overlayOpen) 1f else 0f, Motion.spec(tier, Motion.MENU_MS), label = "page blur")
     // Self-checkout is not in the menu: a button that is always in reach on the main screens (members only).
     val pillHere = !guest && title != null && route != CHECKOUT
+    // A guest has the pill that asks for a login, on the catalog of a compact window.
+    val guestPill = guest && compact && route == CATALOG && listPage.value == null
     // A book is open: its page (a route), or on a wide window its pane (the page has published its reserve button).
     val bookOpen = route?.startsWith("title/") == true || (layout == NavLayout.SIDE && reserveBar.value != null)
     val dockOnBar = !guest && bookOpen
@@ -285,6 +287,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                             AppTopBar(
                                 R.string.catalog_bar_title, overlayOpen, onMenu = { menuOpen = !menuOpen }, centred = true,
                                 accountDescription = stringResource(if (guest) R.string.login_title else R.string.open_account),
+                                loginLabel = if (guest) stringResource(R.string.login_action) else null, onLogin = if (guest) ({ nav.goTo(LOGIN) }) else null,
                                 onAccount = { nav.goTo(if (guest) LOGIN else "account") },
                                 back = onBookPage || listPage.value != null,
                                 onBack = { listPage.value?.onBack?.invoke() ?: nav.popBackStack() },
@@ -298,6 +301,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                 floatingActionButton = {
                     // On a book's page the same button stays, folded to its icon, in the place of the reserve bar's round "borrow" button.
                     if (compact && showDock) ActionDock(onBar = dockOnBar, reserve = reserveBar.value, onCheckout = { nav.goTo(CHECKOUT) })
+                    else if (guestPill && !overlayOpen) GuestLoginPill(onClick = { nav.navigate(LOGIN) })
                 },
                 floatingActionButtonPosition = FabPosition.Center,
             ) { padding ->
@@ -307,7 +311,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                 val titleRoute = route?.startsWith("title/") == true
                 val insets = if (titleRoute) PageInsets() else PageInsets(
                     top = padding.calculateTopPadding(),
-                    bottom = padding.calculateBottomPadding() + (if (pillHere) Spacing.pillClearance else Spacing.none),
+                    bottom = padding.calculateBottomPadding() + (if (pillHere || guestPill) Spacing.pillClearance else Spacing.none),
                 )
                 Box(
                     Modifier.fillMaxSize()
@@ -340,7 +344,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                                     if (layout == NavLayout.SIDE) {
                                         CatalogTwoPane(onLogin, onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }))
                                     } else {
-                                        CatalogScreen(onOpen = { nav.navigate("title/$it") })
+                                        CatalogScreen(onOpen = { nav.navigate("title/$it") }, guest = guest)
                                     }
                                 }
                             }
@@ -458,7 +462,7 @@ private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
     var shown by remember { mutableStateOf(selected) } // the last book, kept on screen while the pane closes
     if (selected != null) shown = selected
     Row(Modifier.fillMaxSize()) {
-        Box(Modifier.weight(1f).fillMaxHeight()) { CatalogScreen(onOpen = { selected = it }) }
+        Box(Modifier.weight(1f).fillMaxHeight()) { CatalogScreen(onOpen = { selected = it }, guest = onLogin != null) }
         val id = shown
         if (id != null && share > 0.01f) {
             VerticalDivider()

@@ -2,6 +2,7 @@
 
 Mỗi ảnh `light/pair-<màn>.jpg` và `dark/pair-<màn>.jpg` có **board bên trái, app bên phải**, cùng cỡ 390 × 844 dp (ảnh 1170 × 2532 thu nhỏ còn một nửa), 17 màn, hai theme.
 
+- **Lưu ý về ảnh sáng:** bản đầu của công cụ dựng board sáng thành tối (Chrome không giao diện theo chế độ tối của Windows và `data-theme` bị thay cả trong CSS); đã sửa bằng cách chỉ đặt `data-theme` ở phần tử gốc và ép `preferredColorScheme`. Ảnh sáng hiện đã đúng cặp.
 - **Board:** `ui-ux-mockup/tools/render-static.js` dựng thành HTML tĩnh, `make_compare.py` tách từng board, đặt `data-theme`, chụp bằng Chrome không giao diện.
 - **App:** `run_audit.ps1 -Configs ref,refdark -Locale vi` trên emulator `lowend36ui`: màn hình 1170 × 2532 ở 480 dpi, tức đúng 390 × 844 dp, ảnh chụp bằng bộ vẽ GPU.
 
@@ -22,7 +23,8 @@ Có chủ ý hoặc do dữ liệu:
 - Cảnh báo thiết bị màu đỏ ("emulator, debugger") chỉ có trên emulator và bản gỡ lỗi.
 - Đăng nhập bằng thẻ, Khóa, Mất kết nối, Tự mượn, Đổi mật khẩu: audit chụp nội dung màn như lớp phủ riêng (không có thanh trên, nền thật), nên viền ngoài khác board; Tự mượn trên emulator chỉ thấy "Điện thoại này không có NFC".
 
-Thật sự khác, chưa sửa:
-- **Chế độ khách:** board `Guest` có dòng "Bạn đang xem với tư cách khách", nút "Đăng nhập" trên thanh, hộp ghi chú "Khách xem và tìm sách được…" và nút nổi "Đăng nhập để mượn sách"; app hiện danh mục thường với nút tài khoản. Cần làm riêng.
+Màn Khách đã làm theo board (thanh có nút "Đăng nhập", dòng "Bạn đang xem với tư cách khách", tiêu đề "Tìm sách trong thư viện", ô ghi chú viền đứt, nút nổi "Đăng nhập để mượn sách"). Khác board có chủ ý: app giữ banner chủ đề và các dải sách của danh mục thay cho một thẻ sách mẫu có nút "Chi tiết" và "Đặt trước", và bấm "Đặt trước" ở trang sách thì đi thẳng tới màn đăng nhập (board mở một tờ "Cần đăng nhập").
+
+Blur: các board dùng `backdrop-filter` nên kính thật sự mờ nền (rõ nhất ở màn Khóa, Mất kết nối, Đổi mật khẩu); app chưa vẽ blur ở các màn này, thẻ gần như đặc (kế hoạch §7, việc kính thật còn lại).
 
 Đã sửa sau lần so sánh đầu: mũi tên ↗ của "Bắt đầu" (màn chào), nhãn "Đã cho mượn hết" màu đỏ nhạt, icon vân tay ở nút mở khóa, icon wifi gạch chéo màu đỏ ở màn mất kết nối.

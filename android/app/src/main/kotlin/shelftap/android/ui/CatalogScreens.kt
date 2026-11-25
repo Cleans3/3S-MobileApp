@@ -188,7 +188,7 @@ private fun subjectsOf(items: List<TitleSummary>): List<String> =
 private const val CHIPS = 8
 
 @Composable
-fun CatalogScreen(onOpen: (String) -> Unit) {
+fun CatalogScreen(onOpen: (String) -> Unit, guest: Boolean = false) {
     val vm = appViewModel { CatalogViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
     var input by rememberSaveable { mutableStateOf("") }
@@ -299,10 +299,12 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
         // The home: greeting and search scroll with the page, so everything passes under the top bar as in the mockup.
         val header: @Composable () -> Unit = {
             Column(Modifier.padding(top = Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                Text(stringResource(R.string.catalog_hello), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.shelfTap.ink3)
-                Text(stringResource(R.string.catalog_headline), style = ShelfTapText.greeting)
+                // A guest is told so, and what the page is for (the board `Guest`); a member is greeted.
+                Text(stringResource(if (guest) R.string.guest_banner else R.string.catalog_hello), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.shelfTap.ink3)
+                Text(stringResource(if (guest) R.string.guest_headline else R.string.catalog_headline), style = ShelfTapText.greeting)
             }
             search()
+            if (guest) GuestNote(Modifier.padding(bottom = Spacing.xs))
         }
         CatalogHome(state, onOpen, onSubject = { input = it }, onAll = { listAll = true }, onRetry = vm::retry, header = header)
     }

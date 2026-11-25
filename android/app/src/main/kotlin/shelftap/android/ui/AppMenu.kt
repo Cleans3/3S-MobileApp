@@ -125,7 +125,7 @@ data class MenuItem(val route: String, @StringRes val label: Int, val icon: Stri
 fun AppTopBar(
     @StringRes title: Int, menuOpen: Boolean, onMenu: () -> Unit,
     centred: Boolean = false, accountDescription: String? = null, onAccount: (() -> Unit)? = null,
-    back: Boolean = false, onBack: () -> Unit = {}, @StringRes backTitle: Int? = null,
+    back: Boolean = false, onBack: () -> Unit = {}, @StringRes backTitle: Int? = null, loginLabel: String? = null, onLogin: (() -> Unit)? = null,
 ) {
     if (centred) {
         val tier = LocalEffectTier.current
@@ -165,7 +165,10 @@ fun AppTopBar(
                     )
                 }
             }
-            if (onAccount != null && accountDescription != null && accountShown) {
+            if (loginLabel != null && onLogin != null) {
+                // A guest: the "Log in" pill in the place of the account button (it goes with the page; on a book's page the back button takes the bar).
+                if (accountShown) LoginPill(loginLabel, onLogin, Modifier.graphicsLayer { alpha = 1f - toBack.value }) else Spacer(Modifier.size(GlassSize.round))
+            } else if (onAccount != null && accountDescription != null && accountShown) {
                 GlassCircleButton(
                     onClick = onAccount, description = accountDescription,
                     modifier = Modifier.graphicsLayer { alpha = 1f - toBack.value }.then(if (back) Modifier.clearAndSetSemantics {} else Modifier),

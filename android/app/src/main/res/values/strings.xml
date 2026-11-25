@@ -75,6 +75,10 @@
     <string name="welcome_body">Tìm sách trong thư viện, chạm điện thoại vào sách để mượn, gia hạn ngay trên máy.</string>
     <string name="welcome_start">Bắt đầu</string>
     <string name="welcome_guest">Xem sách mà không cần đăng nhập</string>
+    <string name="guest_banner">Bạn đang xem với tư cách khách</string>
+    <string name="guest_headline">Tìm sách trong thư viện</string>
+    <string name="guest_note">Khách xem và tìm sách được. Đặt trước, mượn, gia hạn và lịch sử đọc cần tài khoản thư viện.</string>
+    <string name="guest_pill">Đăng nhập để mượn sách</string>
     <string name="login_subtitle">Dùng tài khoản thư viện đã cấp cho bạn.</string>
     <string name="login_with_password">Đăng nhập bằng email và mật khẩu</string>
     <string name="login_or">hoặc</string>
