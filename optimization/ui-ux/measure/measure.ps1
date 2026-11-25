@@ -1,6 +1,6 @@
 # Repeated, interleaved frame measurements of the ShelfTap member app (optimization/ui-ux-plan.md section 8.5).
 #
-#   .\measure.ps1 -Serial 2a71036b -Apks 'head=C:\path\app-measure.apk','other=C:\path\other.apk' -Rounds 5
+#   .\measure.ps1 -Serial <serial máy> -Apks 'head=C:\path\app-measure.apk','other=C:\path\other.apk' -Rounds 5
 #
 # Why this exists: one run per build has noise of about +-2% janky frames and +-10 ms at the 90th percentile, so a single number cannot say
 # that one build is better than another. This script

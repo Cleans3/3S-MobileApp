@@ -146,7 +146,7 @@
 ## 2026-11-24 17:20 · Xác nhận bằng mắt trên Xiaomi Android 17: morph ☰ → ✕ và blur sau menu
 
 - **Vấn đề:** các mục "chưa nhìn thấy" ở entry §6.3, §6.5 và icon: blur sau menu và chuyển động morph (ảnh chụp của bài đo không có, vì `FLAG_SECURE`).
-- **Thay đổi:** không sửa code. Dựng server dev thật trên máy tính (`https://192.168.100.156:8443`, dữ liệu dev, chứng chỉ dev tự ký đánh dấu CA, chỉ dùng cho lần xem này; không đưa vào repo), cài bản debug trỏ tới server đó lên Xiaomi 25053RT47C (Android 17, tầng Đầy đủ). Lần đầu app không kết nối được vì chứng chỉ dev không được tin cậy (chứng chỉ lá không đánh dấu CA); sau khi tạo chứng chỉ mới có `CA:TRUE` và người dùng cài vào mục "Chứng chỉ CA" thì kết nối được.
+- **Thay đổi:** không sửa code. Dựng server dev thật trên máy tính (`https://<IP máy dev>:8443`, dữ liệu dev, chứng chỉ dev tự ký đánh dấu CA, chỉ dùng cho lần xem này; không đưa vào repo), cài bản debug trỏ tới server đó lên Xiaomi 25053RT47C (Android 17, tầng Đầy đủ). Lần đầu app không kết nối được vì chứng chỉ dev không được tin cậy (chứng chỉ lá không đánh dấu CA); sau khi tạo chứng chỉ mới có `CA:TRUE` và người dùng cài vào mục "Chứng chỉ CA" thì kết nối được.
 - **Đo trước → sau:** người dùng xem trực tiếp và nhận xét tích cực về cảm nhận cho morph ☰ → ✕ (lò xo "smooth", khoảng 0,6 s) và blur trang phía sau menu ở tầng Đầy đủ. Đây là nhận xét định tính của một người, trên một máy; không có số khung hình. **Chưa kiểm:** tầng Vừa và Nhẹ (công tắc ép tầng ở Tài khoản bản debug), các morph khác (tìm kiếm, mắt, bookmark, tự mượn), blur trên máy Android 12–16 thật (chỉ có emulator, không thấy blur), hiệu năng.
 - **AI:** Claude Code (Sonnet 5.5). AI dựng server, chẩn đoán lỗi TLS từ bảng TCP của điện thoại và log server, tạo lại chứng chỉ. Con người cài chứng chỉ, đăng nhập và đánh giá.
 - **Kiểm thử:** server dev trả 200 trên đăng nhập thử bằng tài khoản dev (trên máy tính). Chưa có test tự động cho phần này.
@@ -530,3 +530,11 @@
 - **Đo trước → sau:** ảnh GPU (emulator, sáng): khung 60 ms trước: bảng gần hết, còn hình chữ nhật viền sẫm, trang mờ nặng; sau: bảng và viền mờ dần đều, không còn viền sẫm; khung 120 ms: trang gần rõ lại (trước đó phải sau 200 ms). ATF 3 (không đổi). **Chưa đo/kiểm:** máy thật (bản `measure` mới đã cài lên Xiaomi); chế độ tối (ảnh khung chỉ xem ở sáng); nếu "bóng" người dùng nói là chính lớp tối phủ toàn màn thì thay đổi `exitSpec` là phần chữa; chi phí khung lúc đóng.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chụp khung sát nhau để tìm đúng chỗ thay vì đoán; con người chưa xác nhận.
 - **Kiểm thử:** `assembleDebug testDebugUnitTest compileDebugAndroidTestKotlin assembleMeasure`: qua; `run_audit.ps1 -Configs light -Locale vi`: qua.
+
+## 2026-11-25 22:10 · Bỏ địa chỉ IP mạng nội bộ và số serial máy khỏi nhật ký và script đo
+
+- **Vấn đề:** sau khi PR #1 được merge, kiểm tra trên web thấy hai chi tiết về máy của người làm còn trong repo: địa chỉ IP nội bộ của máy dev (nhật ký) và số serial của điện thoại thử (ví dụ trong `measure.ps1`). Lịch sử đã merge không viết lại được, nên chỉ sửa từ bản này trở đi.
+- **Thay đổi:** `opt-ui-ux.md` và `optimization/ui-ux/measure/measure.ps1`: thay hai giá trị bằng chỗ giữ chỗ (`<IP máy dev>`, `<serial máy>`). Không sửa code của app.
+- **Đo trước → sau:** không áp dụng (chỉ sửa chữ).
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI tìm bằng cách quét các dòng thêm trong nhánh; con người chưa duyệt.
+- **Kiểm thử:** `grep` không còn hai giá trị trong `optimization/`, `android/`, `server/`.
