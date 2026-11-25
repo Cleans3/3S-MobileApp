@@ -24,6 +24,7 @@ import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.Motion
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -173,6 +174,12 @@ private fun stripsOf(items: List<TitleSummary>): List<Strip> {
     return strips.ifEmpty { listOf(Strip(null, items.take(STRIP_BOOKS))) }
 }
 
+/** The subjects of the books on screen, the most frequent first, as many as fit a row of chips. */
+private fun subjectsOf(items: List<TitleSummary>): List<String> =
+    items.flatMap { it.subjects }.groupingBy { it }.eachCount().entries.sortedByDescending { it.value }.take(CHIPS).map { it.key }
+
+private const val CHIPS = 8
+
 @Composable
 fun CatalogScreen(onOpen: (String) -> Unit) {
     val vm = appViewModel { CatalogViewModel(it.repository) }
@@ -191,6 +198,11 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
             delay(SEARCH_DEBOUNCE_MS)
             vm.search(input)
         }
+    }
+    // The subjects offered as chips come from the catalog as it shows with no search; they stay while a search narrows the results.
+    var chipSubjects by rememberSaveable { mutableStateOf(emptyList<String>()) }
+    LaunchedEffect(state.items, state.query) {
+        if (state.query.isBlank() && state.items.isNotEmpty()) chipSubjects = subjectsOf(state.items)
     }
     // Typing or "see all" turns the home into the list of results; back returns to the home.
     val showList = listAll || input.isNotBlank()
@@ -214,7 +226,7 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
         // It changes state after a short run in one direction (no following the finger), then plays a 260 ms animation read in the draw phase.
         // With a screen reader on it stays. Folded away, it is not on screen, not touchable and not read out.
         val insets = LocalPageInsets.current
-        val searchBlock = GlassSize.search + Spacing.s * 2
+        val searchBlock = GlassSize.search + Spacing.s * 2 + Spacing.touch
         val slopPx = with(LocalDensity.current) { Spacing.xl.toPx() }
         val screenReader = rememberTouchExploration()
         val tier = LocalEffectTier.current
@@ -246,9 +258,26 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
                         Modifier.padding(top = insets.top, start = GlassSize.page, end = GlassSize.page)
                             .drawWithContent {
                                 val side = size.width * (1f - open.value) / 2f
-                                clipRect(left = side, right = size.width - side) { this@drawWithContent.drawContent() }
+                                // Open, nothing is clipped (the chips run out to the screen's edges); folding, the band narrows to its middle.
+                                if (side <= 0f) drawContent() else clipRect(left = side, right = size.width - side) { this@drawWithContent.drawContent() }
                             },
-                    ) { search() }
+                    ) {
+                        Column {
+                            search()
+                            // The chip of the current search is selected; a subject searched from a book page is added when it is not among the first ones.
+                            val current = input.trim().ifEmpty { null }
+                            SubjectChipRow(
+                                subjects = if (current != null && chipSubjects.none { it.equals(current, true) }) listOf(current) + chipSubjects else chipSubjects,
+                                selected = current, allLabel = stringResource(R.string.catalog_chip_all),
+                                onAll = { input = ""; listAll = true }, onSubject = { input = it; listAll = false },
+                                modifier = Modifier.layout { m, c -> // the chips run to both edges of the page, past the search field's gutter
+                                    val extra = (GlassSize.page * 2).roundToPx()
+                                    val p = m.measure(c.copy(maxWidth = c.maxWidth + extra))
+                                    layout(c.maxWidth, p.height) { p.place(-GlassSize.page.roundToPx(), 0) }
+                                },
+                            )
+                        }
+                    }
                 }
             }
         }

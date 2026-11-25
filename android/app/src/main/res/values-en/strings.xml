@@ -228,6 +228,7 @@
     <string name="catalog_headline">What will you read today?</string>
     <string name="catalog_theme">Subject</string>
     <string name="see_all">See all</string>
+    <string name="catalog_chip_all">All</string>
     <string name="catalog_see_all_books">See all books</string>
     <string name="catalog_library_strip">Books in the library</string>
     <string name="catalog_bar_title">ShelfTap library</string>

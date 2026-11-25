@@ -226,6 +226,7 @@
     <string name="catalog_headline">Hôm nay đọc gì?</string>
     <string name="catalog_theme">Chủ đề</string>
     <string name="see_all">Xem tất cả</string>
+    <string name="catalog_chip_all">Tất cả</string>
     <string name="catalog_see_all_books">Xem tất cả sách</string>
     <string name="catalog_library_strip">Sách trong thư viện</string>
     <string name="catalog_bar_title">Thư viện ShelfTap</string>

@@ -538,3 +538,11 @@
 - **Đo trước → sau:** không áp dụng (chỉ sửa chữ).
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI tìm bằng cách quét các dòng thêm trong nhánh; con người chưa duyệt.
 - **Kiểm thử:** `grep` không còn hai giá trị trong `optimization/`, `android/`, `server/`.
+
+## 2026-11-25 23:00 · Giai đoạn 5c: màn List có hàng chip chủ đề dưới ô tìm (nguồn: yêu cầu của người dùng)
+
+- **Vấn đề:** board `List` có ô tìm và một hàng chip chủ đề trên dải kính; trong app, "Xem tất cả sách" mở danh sách chỉ có ô tìm. Kế hoạch §5.5: chip đi qua tham số `q`, không đổi API (người dùng chọn hướng này). Việc dựng trang List riêng (tiêu đề "Tất cả sách", số đầu sách, nút ←) chưa làm: danh sách vẫn là chế độ của màn Danh mục, nên chỉ có một danh sách dài để tối ưu.
+- **Thay đổi:** `SubjectChips.kt` (mới): `SubjectChipRow`, hàng chip "Tất cả" rồi tối đa 8 chủ đề hay gặp nhất, vùng chạm 48 dp, chip vẽ 36 dp, chip đang chọn nền màu chính, có `selected` cho TalkBack. `CatalogScreens.kt`: dải trên của danh sách thành cột (ô tìm, chip), chiều cao dải cộng 48 dp; chạm chip gõ chủ đề vào ô tìm (`input`), "Tất cả" xóa ô tìm và giữ chế độ danh sách; các chip giữ nguyên khi kết quả thu hẹp (nhớ từ danh sách không tìm kiếm); chủ đề mở từ trang sách được thêm vào đầu hàng nếu chưa có; hàng chip chạy sát mép màn hình và không còn bị cắt ở lề khi dải mở (cắt chỉ khi dải thu về giữa). Chuỗi mới `catalog_chip_all` (vi, en).
+- **Đo trước → sau:** audit trên emulator 720×1280 (`lowend36ui`, sáng và tối, `-Locale vi`): màn `list` có 1 cảnh báo ATF mỗi cấu hình (chữ "Còn 2 bản" mờ dần dưới dải mờ đáy, cùng loại với cảnh báo đã biết ở việc B kính thật); `list-subject` 0 cảnh báo. Ảnh: `optimization/ui-ux/audit/C/{light,dark}/list-hw.png` và `list-subject-hw.png`. Dữ liệu audit có thêm 5 chủ đề xoay vòng để hàng chip có nhiều chip; kết quả rỗng ở `list-subject` là do máy chủ giả chỉ lọc theo tên sách, không phải lỗi của màn. Chưa đo khung hình của danh sách 100k đầu sách sau thay đổi này (hàng chip nằm trong dải kính, không thêm việc vẽ cho các hàng).
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn chip qua ô tìm thay vì thêm API; con người chưa duyệt bằng mắt trên máy thật.
+- **Kiểm thử:** `compileDebugKotlin`, `testDebugUnitTest`: qua; `run_audit.ps1 -Label C -Configs light,dark -Locale vi`: qua.

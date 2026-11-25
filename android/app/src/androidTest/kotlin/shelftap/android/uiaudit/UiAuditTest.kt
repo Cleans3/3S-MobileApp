@@ -13,6 +13,7 @@ import android.view.View
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
@@ -141,6 +142,24 @@ class UiAuditTest {
             compose.waitForIdle()
             holdShot("press-burger", compose.onAllNodesWithContentDescription(str(R.string.menu_open)), activity)
             holdShot("press-card", compose.onAllNodes(hasContentDescription(AuditData.titles.first().title, substring = true)), activity, scroll = true)
+
+            // "See all books" opens the list: the search field and the row of subject chips on glass over the rows.
+            // The button is the last item of a lazy column, so it exists only once scrolled to: swipe until it is composed.
+            repeat(8) {
+                if (compose.onAllNodesWithText(str(R.string.catalog_see_all_books)).fetchSemanticsNodes().isEmpty()) {
+                    compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() }
+                    compose.waitForIdle()
+                }
+            }
+            compose.onNodeWithText(str(R.string.catalog_see_all_books)).performScrollTo().performClick()
+            waitFor(str(R.string.catalog_chip_all))
+            audit("list", activity)
+            // A chip searches its subject (the second chip is the first subject).
+            compose.onAllNodes(hasText(str(R.string.catalog_chip_all)).not() and isSelectable()).onFirst().performClick()
+            compose.waitForIdle()
+            audit("list-subject", activity)
+            scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+            waitFor(str(R.string.catalog_theme))
 
             openFirstTitle()
             waitFor(AuditData.titles.first().isbn) // the ISBN tile of the book page
