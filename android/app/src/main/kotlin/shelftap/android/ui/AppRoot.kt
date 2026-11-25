@@ -78,6 +78,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.rememberHazeState
 import shelftap.android.R
 import shelftap.android.ui.icons.LucideIcon
 import shelftap.android.ui.icons.LucideIcons
@@ -251,6 +253,9 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
     val glass = tier != EffectTier.LIGHT
     val blurPx = with(LocalDensity.current) { MenuSize.pageBlur.toPx() }
     val backdrop = rememberBackdrop()
+    // On the full tier the bands under the bars are glass (Haze): the page is their source while a screen with bands is shown (not on a book's page).
+    val haze = rememberHazeState()
+    val bands = glassBands() && !(route?.startsWith("title/") == true)
     val overlayOpen = menuOpen && compact // a window that grew past the compact size has no ☰ menu to keep open
     // The whole page blurs and clears with the menu, all at once and by one value (the panel has no blur of its own).
     val pageBlur by animateFloatAsState(if (glass && overlayOpen) 1f else 0f, Motion.spec(tier, Motion.MENU_MS), label = "page blur")
@@ -327,7 +332,9 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                     contentAlignment = Alignment.TopCenter,
                 ) {
                     CompositionLocalProvider(LocalPageInsets provides insets, LocalReserveBar provides reserveBar, LocalListPage provides listPage) {
-                    Box(Modifier.fillMaxHeight().widthIn(max = contentMax).fillMaxWidth()) {
+                    // The page content is the source of the glass bands. The bands themselves are drawn beside it (further down), not inside it:
+                    // a band inside its own source blurs nothing.
+                    Box(Modifier.fillMaxHeight().widthIn(max = contentMax).fillMaxWidth().then(if (bands) Modifier.hazeSource(haze) else Modifier)) {
                         NavHost(
                             nav, startDestination = if (guest && (reason != null || entry != Entry.CATALOG)) LOGIN else CATALOG,
                             enterTransition = { screenEnter(initialState.destination.route, targetState.destination.route, tier, back = false) },
@@ -387,9 +394,15 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                     // Soft fades of the page colour where the page runs under the bars, so a title or the floating button always sits on
                     // something calm. (Where the tier allows, the blur of the mockup goes here too.)
                     if (!titleRoute) {
-                        FadeBand(insets.top - Spacing.touch / 2, fromTop = true, modifier = Modifier.align(Alignment.TopCenter)) // status bar and half the top bar
-                        // the system inset and the lower half of the floating button and its margin
-                        if (pillHere && compact) FadeBand(insets.bottom - Spacing.pillClearance / 2, fromTop = false, modifier = Modifier.align(Alignment.BottomCenter))
+                        if (bands) {
+                            GlassBand(haze, insets.top + Spacing.l, fromTop = true, modifier = Modifier.align(Alignment.TopCenter))
+                            // The foot keeps the plain fade for now: the glass band under the floating button has not been looked at on a screen with it (a member's).
+                            if (pillHere && compact) FadeBand(insets.bottom - Spacing.pillClearance / 2, fromTop = false, modifier = Modifier.align(Alignment.BottomCenter))
+                        } else {
+                            FadeBand(insets.top - Spacing.touch / 2, fromTop = true, modifier = Modifier.align(Alignment.TopCenter)) // status bar and half the top bar
+                            // the system inset and the lower half of the floating button and its margin
+                            if (pillHere && compact) FadeBand(insets.bottom - Spacing.pillClearance / 2, fromTop = false, modifier = Modifier.align(Alignment.BottomCenter))
+                        }
                     }
                 }
             }

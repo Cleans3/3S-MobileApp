@@ -91,6 +91,8 @@ object Radius {
 object GlassSize {
     val round = 48.dp
     val search = 52.dp
+    /** The blur of the glass bands under the top bar and the floating button. */
+    val bandBlur = 14.dp
     val bannerHeight = 200.dp
     val bannerCoverWidth = 104.dp
     val bannerCoverHeight = 150.dp
