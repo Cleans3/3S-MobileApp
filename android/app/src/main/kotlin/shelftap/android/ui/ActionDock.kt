@@ -108,6 +108,8 @@ fun ActionDock(
     val density = LocalDensity.current
     val label = stringResource(R.string.checkout_pill)
     val borrowByTap = stringResource(R.string.title_borrow_by_tap)
+    // The pill is named by the screen it opens, not by its sentence: in English that starts with "tap", and a description with an action word is what the checker rejects.
+    val checkoutName = stringResource(R.string.tab_checkout)
     val toBar = remember { Animatable(if (onBar) 1f else 0f) } // 0 the pill .. 1 the bar
     LaunchedEffect(onBar, tier) { toBar.animateTo(if (onBar) 1f else 0f, Motion.spec(tier, Motion.SCREEN_MS)) }
     val source = remember { MutableInteractionSource() }
@@ -146,7 +148,7 @@ fun ActionDock(
             }
             // Folded into the pill, the whole dock is the button; as the bar, only its parts are.
             .then(
-                if (!onBar) Modifier.clickable(interactionSource = source, indication = null, role = Role.Button, onClick = onCheckout).semantics { contentDescription = label }
+                if (!onBar) Modifier.clickable(interactionSource = source, indication = null, role = Role.Button, onClick = onCheckout).semantics { contentDescription = checkoutName }
                 else Modifier,
             ),
     ) {

@@ -45,6 +45,7 @@ import shelftap.android.ui.CardLoginContent
 import shelftap.android.ui.ChangePasswordContent
 import shelftap.android.ui.theme.AdaptiveSize
 import shelftap.android.ui.SignInSplitFrame
+import shelftap.android.ui.theme.Spacing
 import androidx.compose.foundation.layout.BoxWithConstraints
 import shelftap.android.ui.LockContent
 import shelftap.android.ui.OfflineContent
@@ -435,15 +436,26 @@ class UiAuditTest {
                 .flatMap { it.runCheckOnHierarchy(hierarchy, null, params) }
                 .filter { it.type == AccessibilityCheckResultType.ERROR || it.type == AccessibilityCheckResultType.WARNING }
         }
+        // The page scrolls under the top bar and under the floating button, and the soft band there fades what passes under it (by design,
+        // plan 5.5): text there is lighter than its own colour, which the checker cannot know. A finding on an element that reaches into
+        // those bands is marked `under_bar` (the last column), so it can be counted apart from a finding on the page itself.
+        val density = activity.resources.displayMetrics.density
+        val bars = activity.window.decorView.rootWindowInsets?.getInsets(android.view.WindowInsets.Type.systemBars())
+        val topBand = (bars?.top ?: 0) + Spacing.touch.value * density
+        val bottomBand = bitmap.height - ((bars?.bottom ?: 0) + Spacing.pillClearance.value * density)
+        fun underBar(r: AccessibilityHierarchyCheckResult): Boolean {
+            val b = r.element?.boundsInScreen ?: return false
+            return r.sourceCheckClass.simpleName == "TextContrastCheck" && (b.top < topBand || b.bottom > bottomBand)
+        }
         fun write(name: String, rows: List<AccessibilityHierarchyCheckResult>) {
             val tsv = File(outDir, name)
-            if (!tsv.exists()) tsv.writeText("config\tscreen\tcheck\ttype\telement\tbounds\tmessage\n")
+            if (!tsv.exists()) tsv.writeText("config\tscreen\tcheck\ttype\telement\tbounds\tmessage\tunder_bar\n")
             tsv.appendText(
                 rows.joinToString("") { r ->
                     val e = r.element
                     val what = listOfNotNull(e?.className?.toString()?.substringAfterLast('.'), e?.text?.toString(), e?.contentDescription?.toString())
                         .joinToString(" | ")
-                    listOf(config, screen, r.sourceCheckClass.simpleName, r.type.name, what, e?.boundsInScreen?.toString().orEmpty(), r.getMessage(Locale.ENGLISH).toString())
+                    listOf(config, screen, r.sourceCheckClass.simpleName, r.type.name, what, e?.boundsInScreen?.toString().orEmpty(), r.getMessage(Locale.ENGLISH).toString(), if (underBar(r)) "yes" else "no")
                         .joinToString("\t") { it.replace('\t', ' ').replace('\n', ' ') } + "\n"
                 },
             )

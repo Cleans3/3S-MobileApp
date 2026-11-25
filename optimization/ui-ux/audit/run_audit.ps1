@@ -47,6 +47,9 @@ New-Item -ItemType Directory -Force $out | Out-Null
 Sh "rm -rf $remote"
 $env:ANDROID_SERIAL = $Serial
 Sh 'input keyevent KEYCODE_WAKEUP'; Sh 'wm dismiss-keyguard'
+# The app language is set for the installed app: with the app not installed (another test run took it off the phone) that call does nothing
+# and the first configuration would be drawn in the phone's language. So install it first.
+if ($Locale) { Push-Location (Join-Path $repo 'android'); try { & .\gradlew.bat :app:installDebug --console=plain -q | Out-Null } finally { Pop-Location } }
 
 foreach ($config in $Configs) {
     ResetDevice
