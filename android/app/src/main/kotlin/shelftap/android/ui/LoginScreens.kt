@@ -15,6 +15,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import shelftap.android.ui.theme.AdaptiveSize
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -150,6 +153,23 @@ internal fun ShelfColumn(modifier: Modifier = Modifier) {
 }
 
 private val SHELF_DARK = Color(0xFF2A1F18)
+
+/** The share of a wide sign-in screen that the column of shelves takes. */
+private const val SIGN_IN_SHELF_SHARE = 0.45f
+
+/**
+ * The frame of a sign-in screen in a window from [shelf] wide: shelves of books on the left and, centred on the right, [content] at most
+ * [AdaptiveSize.signInFormMax] wide (the boards `Mid*` and `Wide*` sign-in).
+ */
+@Composable
+internal fun SignInSplitFrame(content: @Composable () -> Unit) {
+    Row(Modifier.fillMaxSize()) {
+        ShelfColumn(Modifier.weight(SIGN_IN_SHELF_SHARE).fillMaxHeight())
+        Box(Modifier.weight(1f - SIGN_IN_SHELF_SHARE).fillMaxHeight(), contentAlignment = Alignment.Center) {
+            Box(Modifier.widthIn(max = AdaptiveSize.signInFormMax)) { content() }
+        }
+    }
+}
 
 /**
  * The login, built to the board `Login`: shelves of books at the top, a glass form over them (email, password with the eye, the

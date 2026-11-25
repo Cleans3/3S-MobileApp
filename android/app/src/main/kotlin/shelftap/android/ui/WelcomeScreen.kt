@@ -45,6 +45,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import shelftap.android.R
+import shelftap.android.ui.theme.AdaptiveSize
+import shelftap.android.ui.theme.LoginSize
 import shelftap.android.ui.icons.LucideIcon
 import shelftap.android.ui.icons.LucideIcons
 import shelftap.android.ui.theme.Radius
@@ -71,6 +73,11 @@ private val CONTENT_MAX = 520.dp // a wide window keeps the text and buttons in 
 fun WelcomeScreen(onStart: () -> Unit, onCard: () -> Unit, onGuest: () -> Unit) {
     val c = MaterialTheme.shelfTap
     BoxWithConstraints(Modifier.fillMaxSize().background(c.bg2)) {
+        if (maxWidth >= AdaptiveSize.signInSplitMin) {
+            // A wide window: the shelves are a column on the left and the welcome is on the page beside them (the boards `Mid*` and `Wide*` sign-in, step "Chào").
+            SignInSplitFrame { WideWelcome(onStart, onCard, onGuest) }
+            return@BoxWithConstraints
+        }
         WelcomeShelves(Modifier.fillMaxSize())
         Box(
             Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(DARKEN_HEIGHT).clearAndSetSemantics {}
@@ -113,6 +120,29 @@ fun WelcomeScreen(onStart: () -> Unit, onCard: () -> Unit, onGuest: () -> Unit) 
                 )
             }
         }
+    }
+}
+
+/** The welcome on the page beside the shelves of a wide window: the name, the headline, the line about the app and the three ways in, in the page's own colours. */
+@Composable
+private fun WideWelcome(onStart: () -> Unit, onCard: () -> Unit, onGuest: () -> Unit) {
+    val c = MaterialTheme.shelfTap
+    Column(
+        Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal = Spacing.l),
+        verticalArrangement = Arrangement.spacedBy(Spacing.l + Spacing.xs / 2),
+    ) {
+        Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleSmall, color = c.ink2)
+        Text(
+            stringResource(R.string.welcome_title), color = c.ink, fontSize = 40.sp, lineHeight = 44.sp, fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp,
+            modifier = Modifier.semantics { heading() },
+        )
+        Text(stringResource(R.string.welcome_body), style = MaterialTheme.typography.bodyLarge, color = c.ink2)
+        PillAction(stringResource(R.string.welcome_start), onClick = onStart, container = c.primary, ink = c.onPrimary, height = LoginSize.button)
+        PillAction(
+            stringResource(R.string.login_with_card), onClick = onCard, container = c.glass.copy(alpha = 0.85f), ink = c.ink, height = LoginSize.button,
+            icon = LucideIcons.CreditCard,
+        )
+        TextAction(stringResource(R.string.welcome_guest), onClick = onGuest, modifier = Modifier.align(Alignment.CenterHorizontally))
     }
 }
 

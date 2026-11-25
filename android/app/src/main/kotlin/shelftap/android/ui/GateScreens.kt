@@ -7,6 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import shelftap.android.ui.theme.AdaptiveSize
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -176,12 +178,19 @@ fun ChangePasswordScreen(forced: Boolean, onDone: () -> Unit) {
     val session = LocalContainer.current.session
     val scope = rememberCoroutineScope()
     LaunchedEffect(state.done) { if (state.done) onDone() }
-    ChangePasswordContent(forced, state.busy, state.error, onSave = vm::change, onLogout = { scope.launch { session.logout() } })
+    // The first-login password change is a sign-in screen: in a wide window it is the form beside the shelves, like the login.
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val split = forced && maxWidth >= AdaptiveSize.signInSplitMin
+        val content: @Composable () -> Unit = {
+            ChangePasswordContent(forced, state.busy, state.error, onSave = vm::change, onLogout = { scope.launch { session.logout() } }, split = split)
+        }
+        if (split) SignInSplitFrame(content) else content()
+    }
 }
 
 /** What the password screen draws and the three fields it keeps (in memory only), apart from the model that saves: [onSave] gets current and new. */
 @Composable
-internal fun ChangePasswordContent(forced: Boolean, busy: Boolean, error: UiText?, onSave: (String, String) -> Unit, onLogout: () -> Unit) {
+internal fun ChangePasswordContent(forced: Boolean, busy: Boolean, error: UiText?, onSave: (String, String) -> Unit, onLogout: () -> Unit, split: Boolean = false) {
     var current by remember { mutableStateOf("") }
     var new by remember { mutableStateOf("") }
     var again by remember { mutableStateOf("") }
@@ -192,10 +201,13 @@ internal fun ChangePasswordContent(forced: Boolean, busy: Boolean, error: UiText
     val same = new.isNotEmpty() && new == again
     val valid = current.isNotEmpty() && longEnough && differs && same
 
-    val glass = rememberGateGlass()
+    val glass = if (split) null else rememberGateGlass() // beside the shelves ([split]) the card has no backdrop of its own to blur
     Box(Modifier.fillMaxSize()) {
-        SoftBackdrop(Modifier.fillMaxWidth().height(GateSize.backdrop).then(if (glass != null) Modifier.recordBackdrop(glass) else Modifier))
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding()).padding(horizontal = Spacing.l)) {
+        if (!split) SoftBackdrop(Modifier.fillMaxWidth().height(GateSize.backdrop).then(if (glass != null) Modifier.recordBackdrop(glass) else Modifier))
+        Column(
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding()).padding(horizontal = Spacing.l),
+            verticalArrangement = if (split) Arrangement.Center else Arrangement.Top,
+        ) {
             Column(Modifier.padding(horizontal = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.m - Spacing.xs / 2)) {
                 if (forced) {
                     Text(
@@ -206,7 +218,7 @@ internal fun ChangePasswordContent(forced: Boolean, busy: Boolean, error: UiText
                 Text(stringResource(if (forced) R.string.pw_forced_title else R.string.pw_title), style = ShelfTapText.detailTitle)
                 Text(stringResource(if (forced) R.string.pw_forced_body else R.string.pw_body), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
             }
-            Spacer(Modifier.height(Spacing.xl + Spacing.m))
+            Spacer(Modifier.height(if (split) Spacing.l else Spacing.xl + Spacing.m))
             GateCard(backdrop = glass) {
                 LabeledField(stringResource(if (forced) R.string.pw_current_issued else R.string.pw_current), current, { current = it }, keyboardType = KeyboardType.Password, password = true, enabled = !busy)
                 LabeledField(stringResource(R.string.pw_new), new, { new = it }, keyboardType = KeyboardType.Password, password = true, enabled = !busy, placeholder = stringResource(R.string.pw_new_hint))

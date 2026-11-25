@@ -152,18 +152,9 @@ private fun LoggedOutHost(reason: LogoutReason?, startWithCard: Boolean = false,
         val screen: @Composable () -> Unit = {
             if (card) CardLoginScreen(onBack = { card = false }) else LoginScreen(reason, onCard = { card = true }, split = split, onGuest = onGuest)
         }
-        if (split) {
-            Row(Modifier.fillMaxSize()) {
-                ShelfColumn(Modifier.weight(SIGN_IN_SHELF_SHARE).fillMaxHeight())
-                Box(Modifier.weight(1f - SIGN_IN_SHELF_SHARE).fillMaxHeight(), contentAlignment = Alignment.Center) {
-                    Box(Modifier.widthIn(max = AdaptiveSize.signInFormMax)) { screen() }
-                }
-            }
-        } else screen()
+        if (split) SignInSplitFrame(screen) else screen()
     }
 }
-
-private const val SIGN_IN_SHELF_SHARE = 0.45f
 
 /** The glass circle behind the NFC glyph of the floating button. */
 

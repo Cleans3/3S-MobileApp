@@ -43,6 +43,9 @@ import androidx.compose.ui.unit.dp
 import shelftap.android.ui.StartupScreen
 import shelftap.android.ui.CardLoginContent
 import shelftap.android.ui.ChangePasswordContent
+import shelftap.android.ui.theme.AdaptiveSize
+import shelftap.android.ui.SignInSplitFrame
+import androidx.compose.foundation.layout.BoxWithConstraints
 import shelftap.android.ui.LockContent
 import shelftap.android.ui.OfflineContent
 import shelftap.android.ui.CheckoutViewModel
@@ -205,7 +208,14 @@ class UiAuditTest {
                 }
             }
             overlayShot("history-stepup", activity) { StepUpCard(onLogin = {}) }
-            overlayShot("password-first", activity) { ChangePasswordContent(forced = true, busy = false, error = null, onSave = { _, _ -> }, onLogout = {}) }
+            overlayShot("password-first", activity, pad = 0.dp) {
+                // as the app draws it: beside the shelves in a wide window
+                BoxWithConstraints(Modifier.fillMaxSize()) {
+                    val split = maxWidth >= AdaptiveSize.signInSplitMin
+                    val content: @Composable () -> Unit = { ChangePasswordContent(forced = true, busy = false, error = null, onSave = { _, _ -> }, onLogout = {}, split = split) }
+                    if (split) SignInSplitFrame(content) else content()
+                }
+            }
             overlayShot("lock", activity) { LockContent(onUnlock = {}, onLogout = {}) }
             overlayShot("offline", activity) { OfflineContent(busy = false, tries = 2, onRetry = {}, onLogout = {}) }
             // The entrance of the start screen, frame by frame (the composition clock is advanced by hand): 120 ms, 300 ms, then done.
