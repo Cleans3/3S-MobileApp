@@ -35,7 +35,7 @@ Blur: các board dùng `backdrop-filter`, app vẽ blur thật ở **tầng Đ�
 
 Khác biệt còn lại, do thiết kế hoặc chưa làm:
 - **Hai khung ở khổ Rộng:** board có Đang mượn, Đặt trước, Lịch sử, Tài khoản chia hai khung (danh sách rồi chi tiết, hoặc nhóm cài đặt rồi nội dung); app chỉ chia hai khung ở Danh mục, các màn kia một khung.
-- **Nút "Chạm để mượn":** board đặt nó ở đầu thanh dọc (khổ Vừa) hoặc chân khung menu, dạng nút dài có chữ (khổ Rộng); app dùng nút tròn nổi ở góc dưới phải, có lúc đè lên thẻ cuối trang (Tài khoản khổ Rộng).
+- **Nút "Chạm để mượn":** board đặt nó ở đầu thanh dọc (khổ Vừa) hoặc chân khung menu (khổ Rộng). App dùng nút tròn nổi ở góc dưới phải, **theo quyết định của người dùng** (đã thử đưa vào thanh dọc, người dùng không chọn; xem nhật ký). Nút có lúc đè lên thẻ cuối trang (Tài khoản khổ Rộng).
 - **Khung menu khổ Rộng:** board có lời chào "Thư viện ShelfTap" ở đầu khung; app chỉ có nút thu gọn. Mục "Gợi ý" chưa có (chưa có API gợi ý); nhãn "Đang mượn" ngắn hơn "Sách đang mượn" của board.
 - **Thanh dọc khổ Vừa:** nhãn "Danh mục" và "Lịch sử đọc" xuống hai dòng; mục đang chọn là khối trắng thay vì viền quanh biểu tượng.
 - **Đăng nhập khổ Rộng:** app vẫn hiện khung menu bên trái và tiêu đề "Đăng nhập vào ShelfTap" nằm đè lên tranh giá sách (khó đọc); board bỏ menu, chia đôi (giá sách bên trái, nội dung bên phải) và có màn chào riêng.
