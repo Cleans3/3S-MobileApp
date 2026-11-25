@@ -54,6 +54,16 @@ android {
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+        // For timing only, never shipped: release without the debug flag (R8, Baseline Profile) signed with the debug key, against the dev
+        // server (src/measure/ trusts its user-installed CA). Build with `assembleMeasure -Pshelftap.apiBaseUrl=https://<host>:8443/`.
+        create("measure") {
+            initWith(getByName("release"))
+            matchingFallbacks += "release"
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = false
+            buildConfigField("String", "API_BASE_URL", "\"$debugApiBaseUrl\"")
+            buildConfigField("String", "API_PINS", "\"\"")
+        }
     }
 
     buildFeatures {
@@ -96,4 +106,11 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.kotlin.test.junit)
+    // UI audit (androidTest/uiaudit): real screens on a device, checked with the Accessibility Test Framework.
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.accessibility.test.framework)
+    androidTestImplementation(libs.guava) // ATF exposes Guava types in its API
+    // Compose ui-test pulls Espresso 3.5.0, which calls InputManager.getInstance by reflection; that method is gone on Android 17 (API 37).
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }

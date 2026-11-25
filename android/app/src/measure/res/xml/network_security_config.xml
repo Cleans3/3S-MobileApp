@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Only for the `measure` build type (see app/build.gradle.kts): a build that is not debuggable (like release: R8, no debug overhead, takes
+  the Baseline Profile) but that trusts the dev server's TLS certificate installed as a user CA, so it can be timed against the dev server.
+  The release type keeps the main config (system CAs only). Never ship this build.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

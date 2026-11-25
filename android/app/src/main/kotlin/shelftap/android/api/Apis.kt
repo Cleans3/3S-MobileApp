@@ -47,6 +47,9 @@ interface ShelfTapApi {
     @PUT("api/me/privacy")
     suspend fun setPrivacy(@Body body: PrivacyRequest): Me
 
+    @GET("api/me/fines")
+    suspend fun fines(): List<Fine>
+
     @GET("api/me/loans")
     suspend fun loans(): List<Loan>
 

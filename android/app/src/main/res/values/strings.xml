@@ -1,4 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Tiếng Việt là ngôn ngữ mặc định; bản tiếng Anh ở values-en/strings.xml. Khóa giống nhau ở hai file. -->
 <resources>
     <string name="app_name">ShelfTap</string>
+
+    <!-- Điều hướng -->
+    <string name="tab_catalog">Danh mục</string>
+    <string name="tab_loans">Đang mượn</string>
+    <string name="tab_checkout">Tự mượn</string>
+    <string name="tab_reservations">Đặt trước</string>
+    <string name="tab_account">Tài khoản</string>
+
+    <!-- Hành động dùng chung -->
+    <string name="action_retry">Thử lại</string>
+    <string name="action_cancel">Hủy</string>
+    <string name="action_logout">Đăng xuất</string>
+    <string name="busy_dots">…</string>
+
+    <!-- Lỗi (rẽ nhánh theo mã lỗi của server, không theo nội dung) -->
+    <string name="err_validation">Hãy kiểm tra lại thông tin bạn đã nhập.</string>
+    <string name="err_invalid_credentials">Email hoặc mật khẩu không đúng.</string>
+    <string name="err_account_locked">Bạn đăng nhập sai quá nhiều lần. Hãy thử lại sau.</string>
+    <string name="err_token_invalid">Phiên đăng nhập đã hết hạn. Hãy thử lại.</string>
+    <string name="err_token_reused">Phiên này đã bị thu hồi. Hãy đăng nhập lại.</string>
+    <string name="err_password_change_required">Bạn cần đổi mật khẩu trước.</string>
+    <string name="err_forbidden">Bạn không được phép làm việc này.</string>
+    <string name="err_not_found">Không tìm thấy.</string>
+    <string name="err_card_not_active">Thẻ này đã bị khóa, báo mất hoặc thu hồi. Hãy gặp thủ thư.</string>
+    <string name="err_card_auth_failed">Không xác minh được thẻ.</string>
+    <string name="err_challenge_expired">Quá lâu rồi. Hãy giữ thẻ sát điện thoại và thử lại.</string>
+    <string name="err_copy_not_available">Bản sách này đang được mượn hoặc không cho mượn.</string>
+    <string name="err_loan_limit">Bạn đã mượn tối đa số sách được phép.</string>
+    <string name="err_unpaid_fine">Bạn còn tiền phạt chưa đóng. Hãy đóng tại quầy trước.</string>
+    <string name="err_renewal_not_allowed">Không gia hạn được cuốn này (đã gia hạn, quá hạn hoặc có người đặt trước).</string>
+    <string name="err_reserved_by_other">Bản sách này đang được giữ cho thành viên khác.</string>
+    <string name="err_already_reserved">Bạn đã đặt trước hoặc đang mượn đầu sách này.</string>
+    <string name="err_rate_limited">Quá nhiều yêu cầu.</string>
+    <string name="err_rate_limited_retry">Quá nhiều yêu cầu. Hãy thử lại sau %1$d giây.</string>
+    <string name="err_step_up">Việc này cần mật khẩu của bạn. Hãy đăng nhập bằng mật khẩu trước.</string>
+    <string name="err_server">Máy chủ không thực hiện được yêu cầu (HTTP %1$d).</string>
+    <string name="err_network">Không kết nối được máy chủ. Hãy kiểm tra kết nối mạng.</string>
+    <string name="err_card_lost">Mất kết nối với thẻ. Hãy giữ thẻ yên sát mặt sau điện thoại.</string>
+    <string name="err_card_refused">Thẻ này không cho thao tác đó qua NFC.</string>
+    <string name="err_card_status">Thẻ trả về lỗi (%1$04X).</string>
+    <string name="err_card_protocol">Đây không phải thẻ thư viện ShelfTap, hoặc thẻ chưa được phát hành.</string>
+    <string name="err_generic">Đã có lỗi xảy ra.</string>
+    <string name="err_op_failed">Thao tác không thành công.</string>
+    <string name="err_not_book_tag">Đây không phải thẻ sách của thư viện.</string>
+    <string name="err_not_library_card">Đây không phải thẻ thư viện.</string>
+
+    <!-- Chung -->
+    <string name="integrity_warning">Cảnh báo thiết bị: %1$s. ShelfTap vẫn dùng được, và thư viện được báo.</string>
+    <string name="nfc_missing">Điện thoại này không có NFC.</string>
+    <string name="nfc_off">NFC đang tắt.</string>
+    <string name="nfc_open_settings">Mở cài đặt NFC</string>
+
+    <!-- Đăng nhập -->
+    <string name="logout_session_expired">Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.</string>
+    <string name="logout_token_reused">Phiên này bị thu hồi vì tài khoản được dùng ở nơi khác. Hãy đăng nhập lại.</string>
+    <string name="logout_inactivity">Bạn đã bị đăng xuất vì không dùng app một lúc.</string>
+    <string name="logout_lock_key_invalidated">Sinh trắc học trên điện thoại đã thay đổi nên khóa sinh trắc học được đặt lại. Hãy đăng nhập lại.</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Mật khẩu</string>
+    <string name="login_action">Đăng nhập</string>
+    <string name="login_busy">Đang đăng nhập…</string>
+    <string name="login_with_card">Đăng nhập bằng thẻ thư viện</string>
+    <string name="login_subtitle">Dùng tài khoản thư viện đã cấp cho bạn.</string>
+    <string name="login_with_password">Đăng nhập bằng email và mật khẩu</string>
+    <string name="login_or">hoặc</string>
+    <string name="login_footer">Chưa có tài khoản? Đăng ký tại quầy thủ thư, mang theo CCCD.</string>
+    <string name="card_title">Đăng nhập bằng thẻ</string>
+    <string name="card_subtitle">Áp thẻ thư viện vào mặt sau điện thoại và giữ yên vài giây.</string>
+    <string name="card_step_read">Đọc thẻ</string>
+    <string name="card_step_verify">Thư viện xác thực thẻ</string>
+    <string name="card_step_done">Đã đăng nhập</string>
+    <string name="card_footnote">Không cần PIN: thẻ chỉ chứng minh bạn đang giữ thẻ. Muốn xem lịch sử đọc, bạn sẽ cần nhập mật khẩu.</string>
+    <string name="card_illustration_name">Thẻ thư viện</string>
+    <string name="card_hold">Hãy áp thẻ thư viện vào mặt sau điện thoại.</string>
+    <string name="card_explain">Thẻ chứng minh là của bạn bằng chữ ký. Bạn không nhập mã PIN, và không có gì trên thẻ bị đọc ra.</string>
+    <string name="card_use_password">Dùng email và mật khẩu</string>
+    <string name="offline_message">Không kết nối được máy chủ.</string>
+    <string name="lock_title">Mở khóa ShelfTap</string>
+    <string name="lock_locked">ShelfTap đang khóa.</string>
+    <string name="lock_unlock">Mở khóa</string>
+
+    <!-- Đổi mật khẩu và nhập lại mật khẩu -->
+    <string name="pw_first_login">Lần đăng nhập đầu tiên</string>
+    <string name="pw_forced_title">Đặt mật khẩu của riêng bạn</string>
+    <string name="pw_forced_body">Mật khẩu thư viện cấp chỉ dùng một lần. Đổi xong, các thiết bị khác đang đăng nhập sẽ bị đăng xuất.</string>
+    <string name="pw_body">Đổi xong, các thiết bị khác đang đăng nhập sẽ bị đăng xuất.</string>
+    <string name="pw_current_issued">Mật khẩu thư viện cấp</string>
+    <string name="pw_new_hint">Nhập mật khẩu mới</string>
+    <string name="pw_again_hint">Nhập lại</string>
+    <string name="pw_rule_length">Ít nhất %1$d ký tự</string>
+    <string name="pw_rule_differs">Khác mật khẩu hiện tại</string>
+    <string name="pw_rule_same">Hai lần nhập giống nhau</string>
+    <string name="pw_save">Lưu mật khẩu</string>
+    <string name="lock_locked_title">ShelfTap đang khóa</string>
+    <string name="lock_body">Ứng dụng tự khóa khi bạn chuyển sang ứng dụng khác.</string>
+    <string name="lock_footnote">Nếu sinh trắc học trên máy thay đổi, ShelfTap sẽ yêu cầu bạn đăng nhập lại bằng mật khẩu.</string>
+    <string name="offline_title">Không kết nối được thư viện</string>
+    <string name="offline_body">Kiểm tra Wi-Fi hoặc dữ liệu di động. Mượn, gia hạn và đặt trước cần mạng.</string>
+    <string name="offline_still">Vẫn chưa kết nối được (lần thử %1$d)</string>
+    <string name="offline_trying">Đang thử…</string>
+    <string name="pw_title">Đổi mật khẩu</string>
+    <string name="pw_forced">Tài khoản của bạn cần mật khẩu mới trước khi dùng thư viện.</string>
+    <string name="pw_current">Mật khẩu hiện tại</string>
+    <string name="pw_new">Mật khẩu mới</string>
+    <string name="pw_again">Nhập lại mật khẩu mới</string>
+    <string name="pw_mismatch">Hai mật khẩu mới không khớp.</string>
+    <string name="pw_saving">Đang lưu…</string>
+    <string name="stepup_title">Cần mật khẩu</string>
+    <string name="stepup_text">Bạn đã đăng nhập bằng thẻ. Lịch sử đọc là dữ liệu cá nhân nên việc này cần mật khẩu của bạn.</string>
+
+    <!-- Sách đang mượn, tự mượn, đặt trước, lịch sử -->
+    <string name="loans_empty">Bạn chưa mượn cuốn nào.</string>
+    <string name="loans_due">Hạn trả %1$s · đã gia hạn %2$d lần</string>
+    <string name="loans_renew_for">Gia hạn %1$s</string>
+    <string name="loans_renew">Gia hạn</string>
+    <string name="checkout_title">Tự mượn sách</string>
+    <string name="checkout_hold">Áp điện thoại vào nhãn dán bên trong bìa sách.</string>
+    <string name="checkout_borrowed">Đã mượn: %1$s</string>
+    <string name="checkout_due">Hạn trả %1$s</string>
+    <string name="checkout_again">Mượn cuốn khác</string>
+    <string name="reservations_empty">Chưa có sách đặt trước.</string>
+    <string name="reservations_cancel_for">Hủy đặt trước %1$s</string>
+    <string name="res_chip_ready">Sẵn sàng nhận</string>
+    <string name="res_chip_waiting">Đang chờ</string>
+    <string name="reservations_cancel">Hủy đặt trước</string>
+    <string name="reservations_cancel_ask">Hủy đặt trước %1$s?</string>
+    <string name="reservations_keep">Giữ lại</string>
+    <string name="reservations_cancelled_notice">Đã hủy đặt trước %1$s.</string>
+    <string name="res_waiting">Đang chờ từ %1$s</string>
+    <string name="res_ready">Sẵn sàng để nhận</string>
+    <string name="res_ready_since">Sẵn sàng để nhận từ %1$s</string>
+    <string name="res_fulfilled">Đã nhận</string>
+    <string name="res_cancelled">Đã hủy</string>
+    <string name="res_expired">Đã hết hạn</string>
+    <string name="history_step_title">Cần mật khẩu để xem</string>
+    <string name="history_manage">Bật hoặc tắt lưu lịch sử trong Tài khoản</string>
+    <string name="history_needs_password">Bạn đang đăng nhập bằng thẻ. Lịch sử đọc là dữ liệu cá nhân, nên cần thêm mật khẩu.</string>
+    <string name="history_login_password">Đăng nhập bằng mật khẩu</string>
+    <string name="history_empty">Chưa có gì ở đây. Lịch sử đọc đang trống, hoặc đã tắt trong Tài khoản.</string>
+    <string name="history_returned">Mượn %1$s · trả %2$s</string>
+    <string name="history_not_returned">Mượn %1$s · chưa trả</string>
+
+    <!-- Tài khoản -->
+    <string name="account_line">%1$s · %2$s · %3$s</string>
+    <string name="account_privacy">Quyền riêng tư</string>
+    <string name="account_history_keep">Lưu lịch sử đọc của tôi</string>
+    <string name="account_history_keep_caption">Tắt: các lượt mượn đã trả sẽ không được ghi vào lịch sử (Nghị định 13/2023).</string>
+    <string name="account_history">Lịch sử đọc</string>
+    <string name="account_theme">Giao diện</string>
+    <string name="theme_system">Theo hệ thống</string>
+    <string name="theme_light">Sáng</string>
+    <string name="theme_dark">Tối</string>
+    <string name="account_security">Bảo mật</string>
+    <string name="account_bio">Khóa sinh trắc học</string>
+    <string name="account_bio_caption">Cần vân tay hoặc khuôn mặt để mở app sau khi app chạy nền.</string>
+    <string name="account_bio_none">Điện thoại này chưa đăng ký sinh trắc học đủ mạnh.</string>
+    <string name="account_bio_turn_on">Bật khóa sinh trắc học</string>
+    <string name="account_bio_confirm">Xác nhận</string>
+    <string name="account_session_key">Khóa phiên: %1$s</string>
+    <string name="account_auto_logout">Tự đăng xuất sau %1$d phút không dùng</string>
+    <string name="account_change_password">Đổi mật khẩu</string>
+
+    <!-- Danh mục và chi tiết sách -->
+    <string name="catalog_search_label">Tên sách, tác giả, ISBN, chủ đề</string>
+    <string name="catalog_empty">Không tìm thấy đầu sách nào.</string>
+    <string name="catalog_available">Còn %1$d bản</string>
+    <string name="catalog_all_on_loan">Đã cho mượn hết</string>
+    <string name="title_isbn">ISBN %1$s</string>
+    <string name="title_copies">Còn %1$d trên %2$d bản</string>
+    <string name="title_reserved">Đã đặt trước. Sách sẽ hiện trong mục Đặt trước khi sẵn sàng.</string>
+    <string name="title_reserving">Đang gửi yêu cầu…</string>
+    <string name="title_reserve">Đặt trước sách này</string>
+    <!-- Trạng thái màn hình -->
+    <string name="state_loading">Đang tải…</string>
+    <string name="state_offline_title">Không có kết nối</string>
+    <string name="loans_empty_hint">Mượn sách bằng mục Tự mượn: áp điện thoại vào thẻ trong cuốn sách.</string>
+    <string name="reservations_empty_hint">Tìm sách trong Danh mục rồi bấm Đặt trước.</string>
+    <string name="loans_overdue">Quá hạn</string>
+    <string name="loans_count_label">Đang mượn</string>
+    <string name="loans_fines_label">Tiền phạt chưa trả</string>
+    <string name="loans_due_left">Hạn trả: %1$s · còn %2$d ngày</string>
+    <string name="loans_due_today">Hạn trả: %1$s · hết hạn hôm nay</string>
+    <string name="loans_due_plain">Hạn trả: %1$s</string>
+    <string name="loans_due_new">Hạn trả mới: %1$s</string>
+    <string name="loans_overdue_fine">%1$s · phạt %2$s</string>
+    <string name="loans_overdue_note">Không gia hạn được vì đã quá hạn. Hãy trả sách và thanh toán tại quầy.</string>
+    <string name="loans_renewed">Đã gia hạn</string>
+    <string name="loans_renewed_for">Đã gia hạn %1$s</string>
+    <plurals name="loans_overdue_days">
+        <item quantity="other">Quá hạn %1$d ngày</item>
+    </plurals>
+    <string name="title_reserve_done">Đã đặt trước hoặc đang mượn</string>
+    <string name="checkout_read">Đã đọc nhãn sách</string>
+    <string name="checkout_sending_note">Thư viện kiểm tra sách còn cho mượn, số sách bạn đang mượn và tiền phạt. Chỉ khi thư viện đồng ý, sách mới được ghi là đã mượn.</string>
+    <string name="checkout_failed_title">Chưa mượn được</string>
+    <string name="checkout_view_loans">Xem sách đang mượn</string>
+    <string name="checkout_view_fines">Xem khoản phạt</string>
+    <string name="checkout_try_other">Thử sách khác</string>
+    <plurals name="checkout_due_days">
+        <item quantity="other">Hạn trả %1$s · %2$d ngày</item>
+    </plurals>
+    <string name="checkout_sending">Đang gửi yêu cầu mượn…</string>
+    <string name="catalog_empty_hint">Thử tìm bằng tên khác, hoặc bỏ bớt từ khóa.</string>
+    <!-- Menu ☰ -->
+    <string name="menu_open">Mở menu</string>
+    <string name="menu_close">Đóng menu</string>
+    <string name="checkout_pill">Chạm sách để mượn</string>
+    <string name="title_reserve_login">Đăng nhập để đặt trước</string>
+    <string name="login_title">Đăng nhập vào ShelfTap</string>
+    <string name="debug_effect_title">Hiệu ứng (chỉ bản debug), đang dùng: %1$s</string>
+    <string name="debug_effect_auto">Tự động theo máy</string>
+    <string name="debug_effect_full">Hiệu ứng đầy đủ</string>
+    <string name="debug_effect_medium">Hiệu ứng vừa</string>
+    <string name="debug_effect_light">Hiệu ứng nhẹ</string>
+    <string name="catalog_pick_hint">Chọn một cuốn sách ở danh sách bên trái.</string>
+    <string name="nav_go_to">Chuyển đến %1$s</string>
+    <string name="checkout_pill_short">Mượn</string>
+    <string name="password_show">Hiện mật khẩu</string>
+    <string name="password_hide">Ẩn mật khẩu</string>
+    <string name="search_clear">Xóa nội dung tìm kiếm</string>
+    <string name="catalog_hello">Chào bạn,</string>
+    <string name="catalog_headline">Hôm nay đọc gì?</string>
+    <string name="catalog_theme">Chủ đề</string>
+    <string name="see_all">Xem tất cả</string>
+    <string name="catalog_see_all_books">Xem tất cả sách</string>
+    <string name="catalog_library_strip">Sách trong thư viện</string>
+    <string name="catalog_bar_title">Thư viện ShelfTap</string>
+    <string name="open_account">Mở tài khoản</string>
+    <string name="catalog_search_placeholder">Tên sách, tác giả, ISBN</string>
+    <string name="logout_confirm_title">Đăng xuất khỏi ShelfTap?</string>
+    <string name="logout_confirm_body">Phiên đăng nhập trên máy này sẽ bị xóa. Lần sau bạn cần đăng nhập lại bằng mật khẩu hoặc thẻ.</string>
+    <string name="logout_stay">Ở lại</string>
+    <string name="title_subject_search">Tìm sách thuộc chủ đề %1$s</string>
+    <string name="nav_collapse">Thu gọn menu</string>
+    <string name="nav_expand">Mở rộng menu</string>
+    <string name="title_close_pane">Đóng trang sách</string>
+    <string name="back_to_catalog">Quay lại danh mục</string>
+    <string name="title_status">Tình trạng</string>
+    <string name="title_reserve_confirmed">Đã đặt trước · thư viện xác nhận</string>
+    <string name="title_borrow_by_tap">Mượn bằng cách chạm điện thoại vào sách</string>
 </resources>

@@ -3,6 +3,7 @@ package shelftap.android.data
 import shelftap.android.api.ApiException
 import shelftap.android.api.ChangePasswordRequest
 import shelftap.android.api.ErrorCode
+import shelftap.android.api.Fine
 import shelftap.android.api.HistoryItem
 import shelftap.android.api.Loan
 import shelftap.android.api.LoanRequest
@@ -28,7 +29,16 @@ class Repository(private val api: ShelfTapApi, private val session: SessionManag
             throw e
         }
 
-    suspend fun titles(query: String, page: Int): Page<TitleSummary> = call { api.titles(query, page, PAGE_SIZE) }
+    /** The last books a list showed (memory only, public catalog data), so a book's page can open with what the list already knows. */
+    private val seen = object : LinkedHashMap<String, TitleSummary>(SEEN_MAX, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, TitleSummary>?) = size > SEEN_MAX
+    }
+
+    suspend fun titles(query: String, page: Int): Page<TitleSummary> =
+        call { api.titles(query, page, PAGE_SIZE) }.also { result -> synchronized(seen) { result.items.forEach { seen[it.titleId] = it } } }
+
+    /** What a list showed of this book, or null when it did not (the page then waits for the server). */
+    fun seenTitle(titleId: String): TitleSummary? = synchronized(seen) { seen[titleId] }
 
     suspend fun title(titleId: String): TitleDetail = call { api.title(titleId) }
 
@@ -42,6 +52,8 @@ class Repository(private val api: ShelfTapApi, private val session: SessionManag
     suspend fun setHistoryEnabled(enabled: Boolean): Me = call { api.setPrivacy(PrivacyRequest(enabled)) }
 
     suspend fun loans(): List<Loan> = call { api.loans() }
+
+    suspend fun fines(): List<Fine> = call { api.fines() }
 
     suspend fun history(): List<HistoryItem> = call { api.history() }
 
@@ -58,5 +70,6 @@ class Repository(private val api: ShelfTapApi, private val session: SessionManag
 
     companion object {
         const val PAGE_SIZE = 20
+        private const val SEEN_MAX = 200
     }
 }

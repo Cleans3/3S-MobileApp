@@ -13,10 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
@@ -25,11 +22,10 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -41,21 +37,16 @@ import java.time.format.DateTimeParseException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import shelftap.android.AppContainer
+import shelftap.android.R
 import shelftap.android.api.ApiException
 import shelftap.android.api.ErrorCode
 import shelftap.android.nfc.CardException
 import shelftap.android.nfc.NfcAvailability
 import shelftap.android.nfc.TagReader
 import shelftap.android.security.IntegrityFlag
+import shelftap.android.ui.theme.Spacing
 
 val LocalContainer = compositionLocalOf<AppContainer> { error("AppContainer not provided") }
-
-@Composable
-fun ShelfTapTheme(content: @Composable () -> Unit) {
-    MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background, content = content)
-    }
-}
 
 /** ViewModel built from the app container; [key] separates instances that differ by an argument. */
 @Composable
@@ -66,39 +57,39 @@ inline fun <reified VM : ViewModel> appViewModel(key: String? = null, crossinlin
 
 sealed interface Load<out T> {
     data object Loading : Load<Nothing>
-    data class Failed(val message: String) : Load<Nothing>
+    data class Failed(val message: UiText, val offline: Boolean = false) : Load<Nothing>
     data class Ready<T>(val value: T) : Load<T>
 }
 
 /** What the member sees for a failure. Branches on the error `code`, never on the server's text. */
-fun Throwable.userMessage(): String = when (this) {
+fun Throwable.userMessage(): UiText = when (this) {
     is ApiException.Http -> when (code) {
-        ErrorCode.VALIDATION_FAILED -> "Check the details you entered."
-        ErrorCode.INVALID_CREDENTIALS -> "Wrong email or password."
-        ErrorCode.ACCOUNT_LOCKED -> "Too many failed logins. Try again later."
-        ErrorCode.TOKEN_INVALID -> "Your session expired. Try again."
-        ErrorCode.TOKEN_REUSED -> "This session was revoked. Log in again."
-        ErrorCode.PASSWORD_CHANGE_REQUIRED -> "You must change your password first."
-        ErrorCode.FORBIDDEN -> "You are not allowed to do that."
-        ErrorCode.NOT_FOUND -> "Not found."
-        ErrorCode.CARD_NOT_ACTIVE -> "This card is blocked, lost or revoked. See a librarian."
-        ErrorCode.CARD_AUTH_FAILED -> "The card could not be verified."
-        ErrorCode.CHALLENGE_EXPIRED -> "Took too long. Hold the card on the phone and try again."
-        ErrorCode.COPY_NOT_AVAILABLE -> "This copy is already on loan or cannot be lent."
-        ErrorCode.LOAN_LIMIT_REACHED -> "You have reached the maximum number of loans."
-        ErrorCode.UNPAID_FINE -> "You have an unpaid fine. Pay it at the desk first."
-        ErrorCode.RENEWAL_NOT_ALLOWED -> "This loan cannot be renewed (already renewed, overdue or reserved)."
-        ErrorCode.RESERVED_BY_OTHER -> "This copy is held for another member."
-        ErrorCode.ALREADY_RESERVED -> "You already have a reservation or loan for this title."
-        ErrorCode.RATE_LIMITED -> "Too many requests." + (retryAfterSeconds?.let { " Try again in $it s." } ?: "")
-        ErrorCode.STEP_UP_REQUIRED -> "This needs your password. Log in with it first."
-        ErrorCode.KEY_ALREADY_REGISTERED, ErrorCode.UNKNOWN -> "The server could not do that (HTTP $status)." // key registration is staff-only
+        ErrorCode.VALIDATION_FAILED -> uiText(R.string.err_validation)
+        ErrorCode.INVALID_CREDENTIALS -> uiText(R.string.err_invalid_credentials)
+        ErrorCode.ACCOUNT_LOCKED -> uiText(R.string.err_account_locked)
+        ErrorCode.TOKEN_INVALID -> uiText(R.string.err_token_invalid)
+        ErrorCode.TOKEN_REUSED -> uiText(R.string.err_token_reused)
+        ErrorCode.PASSWORD_CHANGE_REQUIRED -> uiText(R.string.err_password_change_required)
+        ErrorCode.FORBIDDEN -> uiText(R.string.err_forbidden)
+        ErrorCode.NOT_FOUND -> uiText(R.string.err_not_found)
+        ErrorCode.CARD_NOT_ACTIVE -> uiText(R.string.err_card_not_active)
+        ErrorCode.CARD_AUTH_FAILED -> uiText(R.string.err_card_auth_failed)
+        ErrorCode.CHALLENGE_EXPIRED -> uiText(R.string.err_challenge_expired)
+        ErrorCode.COPY_NOT_AVAILABLE -> uiText(R.string.err_copy_not_available)
+        ErrorCode.LOAN_LIMIT_REACHED -> uiText(R.string.err_loan_limit)
+        ErrorCode.UNPAID_FINE -> uiText(R.string.err_unpaid_fine)
+        ErrorCode.RENEWAL_NOT_ALLOWED -> uiText(R.string.err_renewal_not_allowed)
+        ErrorCode.RESERVED_BY_OTHER -> uiText(R.string.err_reserved_by_other)
+        ErrorCode.ALREADY_RESERVED -> uiText(R.string.err_already_reserved)
+        ErrorCode.RATE_LIMITED -> retryAfterSeconds?.let { uiText(R.string.err_rate_limited_retry, it) } ?: uiText(R.string.err_rate_limited)
+        ErrorCode.STEP_UP_REQUIRED -> uiText(R.string.err_step_up)
+        ErrorCode.KEY_ALREADY_REGISTERED, ErrorCode.UNKNOWN -> uiText(R.string.err_server, status) // key registration is staff-only
     }
-    is ApiException.Network -> "Can't reach the server. Check your connection."
-    is CardException.Lost -> "Lost the card. Hold it still against the back of the phone."
-    is CardException.Status -> if (sw == 0x6986) "This card refuses that over NFC." else "The card answered with an error (%04X).".format(sw)
-    is CardException.Protocol -> "That is not a ShelfTap library card, or it has not been issued."
-    else -> "Something went wrong."
+    is ApiException.Network -> uiText(R.string.err_network)
+    is CardException.Lost -> uiText(R.string.err_card_lost)
+    is CardException.Status -> if (sw == 0x6986) uiText(R.string.err_card_refused) else uiText(R.string.err_card_status, sw)
+    is CardException.Protocol -> uiText(R.string.err_card_protocol)
+    else -> uiText(R.string.err_generic)
 }
 
 fun formatDate(iso: String): String =
@@ -110,28 +101,26 @@ fun formatDate(iso: String): String =
 
 @Composable
 fun Centered(content: @Composable () -> Unit) {
-    Box(Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) { content() }
+    Box(Modifier.fillMaxSize().padding(Spacing.xl), contentAlignment = Alignment.Center) { content() }
 }
 
 @Composable
 fun Spinner() = Centered { CircularProgressIndicator() }
 
 @Composable
-fun ErrorText(message: String?, modifier: Modifier = Modifier) {
-    if (message != null) Text(message, color = MaterialTheme.colorScheme.error, modifier = modifier)
+fun ErrorText(message: UiText?, modifier: Modifier = Modifier) {
+    if (message != null) Text(message.asString(), color = MaterialTheme.colorScheme.error, modifier = modifier)
 }
 
-/** Loading / failed / content for a [Load]. */
+/** A failed [Load] for [Throwable]: no connection is flagged, so the screen can say so. */
+fun Throwable.toFailed(): Load.Failed = Load.Failed(userMessage(), offline = this is ApiException.Network)
+
+/** Loading / failed / content for a [Load]. [loading] is what shows while waiting: a skeleton for lists, a spinner by default. */
 @Composable
-fun <T> LoadView(load: Load<T>, onRetry: () -> Unit, content: @Composable (T) -> Unit) {
+fun <T> LoadView(load: Load<T>, onRetry: () -> Unit, loading: @Composable () -> Unit = { Spinner() }, content: @Composable (T) -> Unit) {
     when (load) {
-        Load.Loading -> Spinner()
-        is Load.Failed -> Centered {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                ErrorText(load.message)
-                Button(onClick = onRetry) { Text("Retry") }
-            }
-        }
+        Load.Loading -> loading()
+        is Load.Failed -> ErrorState(load.message, load.offline, onRetry)
         is Load.Ready -> content(load.value)
     }
 }
@@ -143,7 +132,7 @@ fun IntegrityBanner(modifier: Modifier = Modifier) {
     val flags by produceState(emptySet<IntegrityFlag>()) { value = withContext(Dispatchers.Default) { integrity.flags() } }
     if (flags.isNotEmpty()) {
         Text(
-            "Device warning: ${flags.joinToString(", ") { it.wire }}. ShelfTap still works, and the library is told.",
+            stringResource(R.string.integrity_warning, flags.joinToString(", ") { it.wire }),
             color = MaterialTheme.colorScheme.error,
             modifier = modifier.fillMaxWidth(),
         )
@@ -172,11 +161,11 @@ fun NfcGate(content: @Composable () -> Unit) {
     }
     when (availability) {
         NfcAvailability.READY -> content()
-        NfcAvailability.MISSING -> Centered { Text("This phone has no NFC.") }
+        NfcAvailability.MISSING -> Centered { Text(stringResource(R.string.nfc_missing)) }
         NfcAvailability.DISABLED -> Centered {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("NFC is switched off.")
-                Button(onClick = { context.startActivity(Intent(Settings.ACTION_NFC_SETTINGS)) }) { Text("Open NFC settings") }
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                Text(stringResource(R.string.nfc_off))
+                PrimaryButton(onClick = { context.startActivity(Intent(Settings.ACTION_NFC_SETTINGS)) }) { Text(stringResource(R.string.nfc_open_settings)) }
             }
         }
     }

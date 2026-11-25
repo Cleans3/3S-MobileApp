@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ShelfTap · Đăng nhập bằng thẻ</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:var(--ink)}a:hover{opacity:.85}
+@keyframes st-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes st-fade{from{opacity:0}to{opacity:1}}
+@keyframes st-pop{0%{opacity:0;scale:.6}70%{opacity:1;scale:1.06}100%{opacity:1;scale:1}}
+@keyframes st-draw{to{stroke-dashoffset:0}}
+@keyframes st-ping{0%{opacity:.55;scale:1}100%{opacity:0;scale:1.35}}
+@keyframes st-breathe{0%,100%{scale:1}50%{scale:1.04}}
+@keyframes st-sheet{from{transform:translateY(110%)}to{transform:none}}
+@keyframes st-shake{0%,100%{translate:0 0}20%,60%{translate:-6px 0}40%,80%{translate:6px 0}}
+.st-rise{animation:st-rise 420ms cubic-bezier(.2,.8,.2,1) both}
+.st-fade{animation:st-fade 260ms ease-out both}
+.st-pop{animation:st-pop 380ms cubic-bezier(.2,.8,.2,1) both}
+.st-draw{stroke-dasharray:30;stroke-dashoffset:30;animation:st-draw 420ms 180ms ease-out forwards}
+.st-ping{opacity:0;animation:st-ping 1.8s cubic-bezier(.2,.6,.3,1) infinite}
+.st-late{animation-delay:.9s}
+.st-breathe{animation:st-breathe 2.4s ease-in-out infinite}
+.st-sheet{animation:st-sheet 320ms cubic-bezier(.2,.9,.25,1) both}
+.st-shake{animation:st-shake 360ms ease both}
+.st-press{transition:scale 120ms ease}.st-press:active{scale:.96}
+.st-swap{transition:background-color 220ms ease,color 220ms ease}
+.st-knob{transition:transform 220ms cubic-bezier(.2,.8,.2,1)}
+.d1{animation-delay:80ms}.d2{animation-delay:160ms}.d3{animation-delay:240ms}
+@media (prefers-reduced-motion: reduce){
+  .st-rise,.st-fade,.st-pop,.st-ping,.st-breathe,.st-sheet,.st-shake{animation:none}
+  .st-draw{animation:none;stroke-dashoffset:0}
+  .st-press,.st-swap,.st-knob{transition:none}
+}
+.st-root{--bg:#ece7e1;--bg-rgb:236,231,225;--bg2:#d9d1c6;--surface:#ffffff;--glass:255,255,255;--edge:255,255,255;--ink:#1c1b1a;--ink-rgb:28,27,26;--ink2:#3d3833;--ink2b:#4a4540;--ink3:#5c554e;--primary:#1c1b1a;--on-primary:#ffffff;--ok:#2f5b3a;--danger:#7a3420;--danger2:#8a2f1b;--warn:#6b4a10;--warn2:#6b5220;--warn3:#8a6a2a;--warn-bg:#fff4dc;--danger-bg:#f6e4dc;--dialog:#f4f1ec;}
+.st-root[data-theme="dark"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}
+@media (prefers-color-scheme: dark){.st-root[data-theme="auto"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}}
+.st-root button,.st-root input{color:var(--ink)}
+.st-root ::placeholder{color:var(--ink3);opacity:1}
+.st-root :is(button,a,[role="switch"]){position:relative}
+.st-root :is(button,a,[role="switch"])::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,48px);height:max(100%,48px);transform:translate(-50%,-50%)}
+.st-root input{min-width:0}
+</style>
+</helmet>
+<div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
+
+  <a href="Login.dc.html" aria-label="Quay lại" style="position: absolute; top: 56px; left: 20px; width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.9); background:  rgba(var(--glass),0.6); display: flex; align-items: center; justify-content: center; text-decoration: none">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m15 18-6-6 6-6"></path></svg>
+  </a>
+
+  <div class="st-page" style="position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none">
+  <div style="position: relative; min-height: max(100%, 844px); display: flex; flex-direction: column">
+  <div class="st-rise" style="position: relative; flex: none; margin: 120px 24px 0; display: flex; flex-direction: column; gap: 6px">
+    <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.3px">Đăng nhập bằng thẻ</h1>
+    <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2b)">Áp thẻ thư viện vào mặt sau điện thoại và giữ yên vài giây.</p>
+  </div>
+
+  <button type="button" onClick="{{advance}}" aria-label="Mô phỏng chạm thẻ" style="position: relative; flex: none; align-self: center; margin-top: 24px; width: 300px; height: 300px; border: 0; padding: 0; background:  transparent; cursor: pointer">
+    <span aria-hidden="true" class="st-ping" style="{{ping}}"></span>
+    <span aria-hidden="true" class="st-ping st-late" style="{{ping}}"></span>
+    <span aria-hidden="true" class="st-swap" style="{{ring1}}"></span>
+    <span aria-hidden="true" class="st-swap" style="{{ring2}}"></span>
+    <span aria-hidden="true" class="st-breathe" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-8deg); width: 168px; height: 106px; border-radius: 14px; background:  #2f4a44; box-shadow: 0 20px 40px rgba(30,45,40,0.35); display: flex; flex-direction: column; justify-content: space-between; padding: 14px 16px; box-sizing: border-box; color: #ffffff; text-align: left">
+      <span style="font-size: 13px; font-weight: 700">ShelfTap</span>
+      <span style="display: flex; justify-content: space-between; align-items: flex-end">
+        <span style="width: 30px; height: 22px; border-radius: 5px; background:  #c9a66b; color: #1c1b1a"></span>
+        <span style="font-size: 10px; opacity: 0.85">Thẻ thư viện</span>
+      </span>
+    </span>
+  </button>
+
+  <div style="position: relative; flex: none; margin: 26px 16px 0; padding: 16px 18px; border-radius: 28px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(var(--edge),0.9); display: flex; flex-direction: column; gap: 12px" aria-live="polite">
+    <sc-for list="{{steps}}" as="s" hint-placeholder-count="3">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <span class="st-swap" style="{{s.dotStyle}}">
+          <sc-if value="{{s.done}}" hint-placeholder-val="{{ false }}">
+            <svg class="st-pop" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg>
+          </sc-if>
+        </span>
+        <span style="{{s.textStyle}}">{{s.label}}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="position: relative; flex: none; margin: auto 24px 36px; padding-top: 16px; display: flex; flex-direction: column; gap: 12px">
+    <sc-if value="{{isDone}}" hint-placeholder-val="{{ false }}">
+      <a class="st-rise" href="Catalog.dc.html" style="height: 54px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 16px; font-weight: 600">Vào thư viện</a>
+    </sc-if>
+    <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink2b); text-align: center">Không cần PIN: thẻ chỉ chứng minh bạn đang giữ thẻ. Muốn xem lịch sử đọc, bạn sẽ cần nhập mật khẩu.</p>
+  </div>
+  </div>
+  </div>
+  <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 12px; right: 14px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
+    <sc-if value="{{themeIsLight}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+    <sc-if value="{{themeIsDark}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+    {{themeLabel}}
+  </button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  __theme() {
+    var self = this;
+    var t = (this.state && this.state.__theme) || 'auto';
+    var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
+    var dark = t === 'dark' || (t === 'auto' && sys);
+    var opts = [['auto', 'Theo hệ thống'], ['light', 'Sáng'], ['dark', 'Tối']];
+    return {
+      themeAttr: t,
+      themeLabel: dark ? 'Sáng' : 'Tối',
+      themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
+      themeIsDark: dark,
+      themeIsLight: !dark,
+      toggleTheme: function () { self.setState({ __theme: dark ? 'light' : 'dark' }); },
+      themeOpts: opts.map(function (o) {
+        var on = o[0] === t;
+        return {
+          label: o[1], on: on,
+          pick: function () { self.setState({ __theme: o[0] }); },
+          style: 'height:40px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? 'var(--primary)' : 'transparent') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
+        };
+      })
+    };
+  }
+  renderVals() {
+    var self = this;
+    var phase = (this.state && this.state.phase) || 0;
+    var labels = ['Đọc thẻ', 'Thư viện xác thực thẻ', 'Đã đăng nhập'];
+    var steps = labels.map(function (l, i) {
+      var done = phase > i;
+      var current = phase === i;
+      return {
+        label: current && i < 2 ? l + '…' : l,
+        done: done,
+        dotStyle: 'width:24px;height:24px;flex:none;border-radius:999px;display:flex;align-items:center;justify-content:center;background:' + (done ? '#2f5b3a' : current ? 'var(--surface)' : 'rgba(var(--ink-rgb),0.08)') + ';border:' + (current ? '2px solid #1c1b1a' : '0') + ';box-sizing:border-box',
+        textStyle: 'font-size:15px;font-weight:' + (current ? '700' : '500') + ';color:' + (done || current ? 'var(--ink)' : 'var(--ink3)')
+      };
+    });
+    var ringBase = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:999px;';
+    var active = phase > 0 && phase < 3;
+    return Object.assign(this.__theme(), {
+      steps: steps,
+      isDone: phase >= 3,
+      ping: ringBase + 'width:220px;height:220px;border:2px solid rgba(47,74,68,0.45)' + (phase >= 3 ? ';display:none' : ''),
+      ring1: ringBase + 'width:300px;height:300px;background:rgba(var(--glass),' + (active ? '0.55' : '0.35') + ');border:1px solid rgba(var(--edge),0.9)',
+      ring2: ringBase + 'width:220px;height:220px;background:rgba(var(--glass),' + (active ? '0.8' : '0.55') + ');border:1px solid rgba(var(--edge),0.95)',
+      advance: function () { self.setState({ phase: phase >= 3 ? 0 : phase + 1 }); }
+    });
+  }
+}
+</script>
+</body>
+</html>

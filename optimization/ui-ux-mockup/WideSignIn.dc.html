@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ShelfTap · Chào và đăng nhập ở cửa sổ rộng</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:var(--ink)}a:hover{opacity:.85}
+@keyframes st-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes st-item{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+@keyframes st-swapin{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+@keyframes st-fade{from{opacity:0}to{opacity:1}}
+@keyframes st-pop{0%{opacity:0;scale:.6}70%{opacity:1;scale:1.06}100%{opacity:1;scale:1}}
+@keyframes st-draw{to{stroke-dashoffset:0}}
+@keyframes st-ping{0%{opacity:.55;scale:1}100%{opacity:0;scale:1.35}}
+@keyframes st-breathe{0%,100%{scale:1}50%{scale:1.04}}
+@keyframes st-spin{to{transform:rotate(360deg)}}
+@keyframes st-xa{from{opacity:0}to{opacity:1}}
+@keyframes st-xb{from{opacity:0}to{opacity:1}}
+@keyframes st-axr{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes st-axl{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
+.st-row{animation:st-rise 320ms cubic-bezier(.2,.8,.2,1) both}
+.st-rise{animation:st-rise 420ms cubic-bezier(.2,.8,.2,1) both}
+.st-item{animation:st-item 240ms cubic-bezier(.2,.8,.2,1) both}
+.st-detail{animation:st-swapin 260ms cubic-bezier(.2,.8,.2,1) both}
+.st-fade{animation:st-fade 260ms ease-out both}
+.st-pop{animation:st-pop 380ms cubic-bezier(.2,.8,.2,1) both}
+.st-draw{stroke-dasharray:30;stroke-dashoffset:30;animation:st-draw 420ms 180ms ease-out forwards}
+.st-ping{opacity:0;animation:st-ping 1.8s cubic-bezier(.2,.6,.3,1) infinite}
+.st-late{animation-delay:.9s}
+.st-breathe{animation:st-breathe 2.4s ease-in-out infinite}
+.st-spin{animation:st-spin 900ms linear infinite;transform-origin:50% 50%}
+.st-press{transition:scale 120ms ease}.st-press:active{scale:.96}
+.st-swap{transition:background-color 220ms ease,color 220ms ease}
+.st-knob{transition:transform 220ms cubic-bezier(.2,.8,.2,1)}
+.st-chip{transition:background-color 180ms ease,color 180ms ease,transform 120ms ease}
+.st-chip:active{transform:scale(0.96)}
+.st-pick{transition:background-color 180ms ease,scale 120ms ease}.st-pick:active{scale:.98}
+@media (prefers-reduced-motion: reduce){
+  .st-row,.st-rise,.st-item,.st-detail,.st-fade,.st-pop,.st-ping,.st-breathe,.st-spin{animation:none}
+  .st-list,.st-detail{animation:none !important}
+  .st-draw{animation:none;stroke-dashoffset:0}
+  .st-press,.st-swap,.st-knob,.st-chip,.st-pick{transition:none}
+}
+.st-root{--switch-on:#2f5b3a;--switch-knob-on:#ffffff;--bg:#ece7e1;--bg-rgb:236,231,225;--bg2:#d9d1c6;--surface:#ffffff;--glass:255,255,255;--edge:255,255,255;--ink:#1c1b1a;--ink-rgb:28,27,26;--ink2:#3d3833;--ink2b:#4a4540;--ink3:#5c554e;--primary:#1c1b1a;--on-primary:#ffffff;--ok:#2f5b3a;--danger:#7a3420;--danger2:#8a2f1b;--warn:#6b4a10;--warn2:#6b5220;--warn3:#8a6a2a;--warn-bg:#fff4dc;--danger-bg:#f6e4dc;--dialog:#f4f1ec;}
+.st-root[data-theme="dark"]{--switch-on:#9fd3ac;--switch-knob-on:#1c1b1a;--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}
+@media (prefers-color-scheme: dark){.st-root[data-theme="auto"]{--switch-on:#9fd3ac;--switch-knob-on:#1c1b1a;--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}}
+.st-root button,.st-root input{color:var(--ink)}
+.st-root ::placeholder{color:var(--ink3);opacity:1}
+.st-root :is(button,a,[role="switch"]){position:relative}
+.st-root :is(button,a,[role="switch"])::after{content:"";position:absolute;left:50%;top:50%;width:max(100%,48px);height:max(100%,48px);transform:translate(-50%,-50%)}
+.st-root input{min-width:0}
+.st-scroll{scrollbar-width:none}.st-scroll::-webkit-scrollbar{display:none}
+.st-scroll>*{flex-shrink:0}
+.st-root p,.st-root li{max-width:36em}
+div.st-root{container-type:size}
+
+  .st-root[data-nav="mini"] .st-nav{width:72px !important;padding:12px 6px !important}
+  .st-root[data-nav="mini"] .st-nav .st-hide-c{display:none !important}
+  .st-root[data-nav="mini"] .st-nav a{justify-content:center !important;padding:6px !important}
+  .st-root[data-nav="mini"] .st-nav .st-navhead{justify-content:center !important;padding:0 0 10px !important}
+  .st-root[data-nav="mini"] .st-list{left:104px !important}
+  .st-root[data-nav="mini"] .st-pane{left:440px !important}
+  .st-root[data-nav="mini"] .st-full{left:104px !important}
+@container (min-width: 840px) and ((max-width: 900px) or (max-height: 480px)){
+  .st-nav{width:72px !important;padding:12px 6px !important}
+  .st-nav .st-hide-c{display:none !important}
+  .st-nav a{justify-content:center !important;padding:6px !important}
+  .st-nav .st-navhead{justify-content:center !important;padding:0 0 10px !important}
+  .st-navtoggle{display:none !important}
+  .st-list{left:104px !important;width:300px !important}
+  .st-pane{left:420px !important}
+  .st-full{left:104px !important}
+}
+</style>
+</helmet>
+<div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
+
+  <div aria-hidden="true" style="position: absolute; left: 0; top: 0; bottom: 0; width: 440px; overflow: hidden; background:  #3a2a1e">
+    <div style="position: absolute; inset: 0; padding: 40px 28px; display: flex; flex-direction: column; gap: 22px">
+      <sc-for list="{{shelves}}" as="s" hint-placeholder-count="5">
+        <div style="display: flex; align-items: flex-end; gap: 3px; padding-bottom: 6px; border-bottom: 8px solid #6b4a30">
+          <sc-for list="{{s.books}}" as="b" hint-placeholder-count="12"><div style="{{b.style}}"></div></sc-for>
+        </div>
+      </sc-for>
+    </div>
+    <div style="position: absolute; inset: 0; background:  linear-gradient(to right, rgba(20,14,10,0.1), rgba(20,14,10,0.45))"></div>
+  </div>
+  <div style="position: absolute; z-index: 40; left: 24px; bottom: 24px; width: 392px">
+    <div role="group" aria-label="Xem trước trạng thái (bản phác)" class="" style="margin: 4px 0 10px; padding: 8px; border-radius: 22px; background:  rgba(28,27,26,0.82); display: flex; flex-direction: column; gap: 6px">
+      <div style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.85); padding: 0 6px">Xem trước màn</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 2px">
+        <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+          <button type="button" aria-pressed="{{t.on}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <section aria-label="{{paneLabel}}" class="st-scroll" style="position: absolute; left: 440px; right: 0; top: 0; bottom: 0; padding: 72px 60px 40px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column">
+    <div class="st-detail" style="width: 100%; max-width: 400px; margin: auto 0; display: flex; flex-direction: column; gap: 14px">
+      <div style="font-size: 15px; font-weight: 700; color: var(--ink2b)">ShelfTap</div>
+      <sc-if value="{{isWelcome}}" hint-placeholder-val="{{ true }}">
+        <h1 style="margin: 0; font-size: 34px; line-height: 1.12; font-weight: 800; letter-spacing: -0.4px">Mượn sách chỉ bằng một chạm</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.55; color: var(--ink2b)">Tìm sách trong thư viện, chạm điện thoại vào sách để mượn, gia hạn ngay trên máy.</p>
+        <button type="button" onClick="{{toLogin}}" class="st-press" style="min-height: 52px; padding: 6px 20px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font: inherit; font-size: 15px; font-weight: 600; line-height: 1.2; cursor: pointer; box-sizing: border-box">Bắt đầu</button>
+        <a href="WideGuest.dc.html" style="align-self: center; padding: 12px; font-size: 14px; font-weight: 600">Xem sách mà không cần đăng nhập</a>
+      </sc-if>
+      <sc-if value="{{isLogin}}" hint-placeholder-val="{{ false }}">
+        <h1 style="margin: 0; font-size: 30px; line-height: 1.15; font-weight: 700">Đăng nhập</h1>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2b)">Dùng tài khoản thư viện đã cấp cho bạn.</p>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--ink2)">
+            Email
+            <input type="email" autocomplete="username" value="member@shelftap.test" style="height: 50px; padding: 0 16px; border-radius: 16px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); font: inherit; font-size: 15px; font-weight: 400">
+          </label>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--ink2)">
+          Mật khẩu
+          <span style="display: flex; align-items: center; height: 50px; padding: 0 4px 0 16px; border-radius: 16px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface)">
+            <input type="{{pwType}}" autocomplete="current-password" style="flex: 1; border: 0; background:  transparent; font: inherit; font-size: 15px; font-weight: 400; outline: none">
+            <button type="button" aria-label="{{eyeLabel}}" onClick="{{toggleShow}}" style="width: 44px; height: 44px; border: 0; background:  transparent; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </span>
+        </label>
+        <button type="button" onClick="{{toChange}}" class="st-press" style="min-height: 52px; padding: 6px 20px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font: inherit; font-size: 15px; font-weight: 600; line-height: 1.2; cursor: pointer; box-sizing: border-box">Đăng nhập</button>
+        <div style="text-align: center; font-size: 13px; color: var(--ink3)">hoặc</div>
+        <button type="button" onClick="{{toCard}}" class="st-press" style="min-height: 52px; padding: 6px 20px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font: inherit; font-size: 15px; font-weight: 600; line-height: 1.2; cursor: pointer; box-sizing: border-box">Đăng nhập bằng thẻ thư viện</button>
+      <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink3); text-align: center">Chưa có tài khoản? Đăng ký tại quầy thủ thư, mang theo CCCD.</p>
+      </sc-if>
+      <sc-if value="{{isCard}}" hint-placeholder-val="{{ false }}">
+        <h1 style="margin: 0; font-size: 30px; line-height: 1.15; font-weight: 700">Đăng nhập bằng thẻ</h1>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2b)">Áp thẻ thư viện vào mặt sau máy, chỗ có ăng-ten NFC, và giữ yên vài giây. Trên máy gập và tablet, chỗ này khác điện thoại; app chỉ đúng chỗ nếu máy cho biết vị trí ăng-ten.</p>
+        <button type="button" onClick="{{advance}}" aria-label="Mô phỏng chạm thẻ" style="align-self: center; position: relative; width: 200px; height: 200px; border: 0; padding: 0; background:  transparent; cursor: pointer">
+          <span aria-hidden="true" class="st-ping" style="{{ping}}"></span>
+          <span aria-hidden="true" class="st-swap" style="{{ring}}"></span>
+          <span aria-hidden="true" class="st-breathe" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-8deg); width: 132px; height: 84px; border-radius: 12px; background:  #2f4a44; box-shadow: 0 16px 32px rgba(30,45,40,0.35); display: flex; flex-direction: column; justify-content: space-between; padding: 10px 12px; box-sizing: border-box; color: #ffffff; text-align: left">
+            <span style="font-size: 12px; font-weight: 700">ShelfTap</span>
+            <span style="width: 24px; height: 18px; border-radius: 4px; background:  #c9a66b"></span>
+          </span>
+        </button>
+        <div aria-live="polite" style="padding: 14px 16px; border-radius: 22px; background:  rgba(var(--glass),0.72); border: 1px solid rgba(var(--edge),0.9); display: flex; flex-direction: column; gap: 10px">
+          <sc-for list="{{steps}}" as="s" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 12px">
+              <span class="st-swap" style="{{s.dotStyle}}">
+                <sc-if value="{{s.done}}" hint-placeholder-val="{{ false }}"><svg class="st-pop" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></sc-if>
+              </span>
+              <span style="{{s.textStyle}}">{{s.label}}</span>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{cardDone}}" hint-placeholder-val="{{ false }}">
+          <a href="WideCatalog.dc.html" class="st-rise" style="min-height: 52px; padding: 6px 20px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font: inherit; font-size: 15px; font-weight: 600; line-height: 1.2; cursor: pointer; box-sizing: border-box">Vào thư viện</a>
+        </sc-if>
+      <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink3)">Không cần PIN: thẻ chỉ chứng minh bạn đang giữ thẻ. Muốn xem lịch sử đọc, bạn sẽ cần nhập mật khẩu.</p>
+      </sc-if>
+      <sc-if value="{{isChange}}" hint-placeholder-val="{{ false }}">
+        <span style="align-self: flex-start; padding: 6px 12px; border-radius: 999px; background:  rgba(var(--glass),0.8); font-size: 12px; font-weight: 600; color: var(--ink2)">Lần đăng nhập đầu tiên</span>
+        <h1 style="margin: 0; font-size: 30px; line-height: 1.15; font-weight: 700">Đặt mật khẩu của riêng bạn</h1>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2b)">Mật khẩu thư viện cấp chỉ dùng một lần. Đổi xong, các thiết bị khác đang đăng nhập sẽ bị đăng xuất.</p>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--ink2)">
+            Mật khẩu thư viện cấp
+            <input type="password" value="mật khẩu tạm" autocomplete="current-password" style="height: 50px; padding: 0 16px; border-radius: 16px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); font: inherit; font-size: 15px; font-weight: 400">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--ink2)">
+            Mật khẩu mới
+            <input type="password" value="{{pw}}" onChange="{{onPw}}" autocomplete="new-password" placeholder="Nhập mật khẩu mới" style="height: 50px; padding: 0 16px; border-radius: 16px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); font: inherit; font-size: 15px; font-weight: 400">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--ink2)">
+            Nhập lại mật khẩu mới
+            <input type="password" value="{{pw2}}" onChange="{{onPw2}}" autocomplete="new-password" placeholder="Nhập lại" style="height: 50px; padding: 0 16px; border-radius: 16px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); font: inherit; font-size: 15px; font-weight: 400">
+          </label>
+        <ul aria-live="polite" style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+          <sc-for list="{{rules}}" as="r" hint-placeholder-count="3">
+            <li style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink2)">
+              <span style="{{r.dot}}"><sc-if value="{{r.ok}}" hint-placeholder-val="{{ false }}"><svg class="st-pop" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg></sc-if></span>
+              {{r.label}}
+            </li>
+          </sc-for>
+        </ul>
+        <sc-if value="{{valid}}" hint-placeholder-val="{{ false }}"><a href="WideCatalog.dc.html" class="st-fade" style="min-height: 52px; padding: 6px 20px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font: inherit; font-size: 15px; font-weight: 600; line-height: 1.2; cursor: pointer; box-sizing: border-box">Lưu mật khẩu</a></sc-if>
+        <sc-if value="{{invalid}}" hint-placeholder-val="{{ true }}"><button type="button" disabled style="min-height: 52px; border-radius: 999px; border: 0; background:  rgba(var(--ink-rgb),0.12); color: var(--ink2b); font: inherit; font-size: 15px; font-weight: 600">Lưu mật khẩu</button></sc-if>
+      </sc-if>
+    </div>
+  </section>
+  <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 24px; right: 28px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
+    <sc-if value="{{themeIsLight}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
+    <sc-if value="{{themeIsDark}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+    {{themeLabel}}
+  </button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":960,"height":720}}'>
+class Component extends DCLogic {
+  __theme() {
+    var self = this;
+    var t = (this.state && this.state.__theme) || 'auto';
+    var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
+    var dark = t === 'dark' || (t === 'auto' && sys);
+    var opts = [['auto', 'Theo hệ thống'], ['light', 'Sáng'], ['dark', 'Tối']];
+    return Object.assign(this.__layout(), {
+      themeAttr: t,
+      themeLabel: dark ? 'Sáng' : 'Tối',
+      themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
+      themeIsDark: dark,
+      themeIsLight: !dark,
+      toggleTheme: function () { self.setState({ __theme: dark ? 'light' : 'dark' }); },
+      themeOpts: opts.map(function (o) {
+        var on = o[0] === t;
+        return {
+          label: o[1], on: on,
+          pick: function () { self.setState({ __theme: o[0] }); },
+          style: 'flex:1;height:40px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? 'var(--primary)' : 'transparent') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
+        };
+      })
+    });
+  }
+  // side menu collapse (expanded window), list/detail switching (medium window) and pane transitions:
+  // medium window slides the incoming pane 30 px along the x axis (forward from the right, back from the
+  // left); expanded window fades the detail content in (the animation name alternates so it replays).
+  __layout() {
+    var self = this, st = this.state || {};
+    var mini = !!st.navMini, mid = false;
+    var view = st.view || 'list', n = st.swapN || 0;
+    var ease = ' 300ms cubic-bezier(.2,.8,.2,1) both';
+    return {
+      navMode: mini ? 'mini' : 'full', navOpen: !mini,
+      navToggleLabel: mini ? 'Mở rộng menu' : 'Thu gọn menu',
+      toggleNav: function () { self.setState({ navMini: !mini }); },
+      showList: !mid || view === 'list', showDetail: !mid || view === 'detail',
+      listAnim: mid && st.navDir === 'back' ? 'st-axl' + ease : 'st-fade 260ms ease-out both',
+      detailAnim: mid ? 'st-axr' + ease : (n % 2 ? 'st-xb' : 'st-xa') + ' 150ms ease-out both',
+      rowsStill: !!st.navDir,
+      back: function () { self.setState({ view: 'list', navDir: 'back' }); },
+      toDetail: function () { var o = { swapN: n + 1, navDir: 'fwd' }; if (mid) o.view = 'detail'; self.setState(o); }
+    };
+  }
+  // helpers shared by the wide boards
+  __ui() {
+    var self = this;
+    var mono = function (t) { var w = t.split(/\s+/); return (w[0][0] + (w[1] ? w[1][0] : '')).toUpperCase(); };
+    return {
+      mono: mono,
+      // state preview tabs (mockup only), same look as the preview bar on the phone boards
+      tabs: function (defs, cur, key, extra) {
+        return defs.map(function (d) {
+          var on = d[0] === cur;
+          return {
+            label: d[1], on: on,
+            pick: function () { var o = {}; o[key] = d[0]; if (extra) Object.assign(o, extra); self.setState(o); },
+            style: 'min-height:32px;padding:4px 10px;border-radius:999px;border:0;font:inherit;font-size:12px;line-height:1.15;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? '#ffffff' : 'transparent') + ';color:' + (on ? '#1c1b1a' : 'rgba(255,255,255,0.85)')
+          };
+        });
+      },
+      row: function (o) {
+        var lay = self.__layout();
+        return {
+          title: o.title, author: o.author || '', mono: mono(o.title),
+          status: o.status || '', pill: o.pill || '',
+          hasNote: !!o.note, note: o.note || '', hasReason: !!o.reason, reason: o.reason || '',
+          current: o.on ? 'true' : 'false', pick: function () { o.pick(); lay.toDetail(); },
+          // rows rise once, on first load; coming back to the list does not replay it
+          delay: lay.rowsStill ? 'animation:none' : 'animation-delay:' + Math.min(o.i || 0, 8) * 40 + 'ms',
+          style: 'width:100%;display:flex;gap:12px;align-items:center;padding:10px;border-radius:20px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;min-height:48px;border:1px solid ' + (o.on ? 'rgba(var(--ink-rgb),0.5)' : 'transparent') + ';background:' + (o.on ? 'var(--surface)' : 'rgba(var(--glass),0.72)'),
+          cover: 'width:44px;height:62px;flex:none;border-radius:10px;display:flex;align-items:flex-end;padding:6px;box-sizing:border-box;font-size:13px;font-weight:700;letter-spacing:0.5px;background:' + o.bg + ';color:' + o.fg
+        };
+      },
+      pill: function (kind) {
+        var bg = { ok: 'rgba(47,91,58,0.12)', bad: 'rgba(181,69,43,0.12)', wait: 'rgba(var(--ink-rgb),0.08)' }[kind];
+        var fg = { ok: 'var(--ok)', bad: 'var(--danger2)', wait: 'var(--ink2)' }[kind];
+        return 'font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:' + bg + ';color:' + fg;
+      },
+      bigCover: function (bg, fg) {
+        return 'width:104px;height:150px;flex:none;border-radius:14px;padding:12px 10px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 12px 28px rgba(0,0,0,0.2);background:' + bg + ';color:' + fg;
+      },
+      phaseBtn: function (phase, labels, extra) {
+        var bg = { idle: 'var(--primary)', sending: '#5c554e', done: '#2f5b3a' };
+        return { label: labels[phase], isIdle: phase === 'idle', isDone: phase === 'done',
+          style: 'flex:1;min-height:52px;padding:6px 16px;border-radius:999px;border:0;background:' + bg[phase] + ';color:' + (phase === 'idle' ? 'var(--on-primary)' : '#ffffff') + ';display:flex;align-items:center;justify-content:center;gap:10px;font:inherit;font-size:15px;font-weight:600;line-height:1.2;cursor:pointer' + (extra || '') };
+      },
+      track: function (on) { return 'width:52px;height:32px;flex:none;box-sizing:border-box;border-radius:999px;padding:2px;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;border:2px solid ' + (on ? 'var(--switch-on)' : 'var(--ink3)') + ';background:' + (on ? 'var(--switch-on)' : 'rgba(var(--ink-rgb),0.06)'); },
+      knob: function (on) { return 'width:24px;height:24px;border-radius:999px;background:' + (on ? 'var(--switch-knob-on)' : 'var(--ink3)') + ';box-shadow:0 1px 3px rgba(0,0,0,0.2);transform:translateX(' + (on ? '20px' : '0') + ') scale(' + (on ? '1' : '0.72') + ')'; }
+    };
+  }
+
+  renderVals() {
+    var self = this, st = this.state || {}, ui = this.__ui();
+    var v = st.v || 'welcome';
+    var palette = ['#8e5a3c', '#2f4a44', '#c9a66b', '#6b6f7a', '#b5452b', '#3e3a36', '#d8c9a8', '#556b5a', '#a3633f', '#41506b'];
+    var widths = [22, 30, 18, 26, 34, 20, 28, 24, 16, 30, 22, 26];
+    var heights = [96, 84, 102, 76, 92, 104, 80, 98, 88, 78, 100, 86];
+    var shelves = [];
+    for (var s = 0; s < 5; s++) {
+      var books = [];
+      for (var i = 0; i < 12; i++) books.push({ style: 'width:' + widths[(i + s * 2) % 12] + 'px;height:' + heights[(i * 5 + s) % 12] + 'px;background:' + palette[(i * 3 + s * 5) % 10] + ';border-radius:2px 2px 0 0;box-shadow:inset -3px 0 0 rgba(0,0,0,0.12)' });
+      shelves.push({ books: books });
+    }
+    var show = !!st.show, phase = st.phase || 0, pw = st.pw || '', pw2 = st.pw2 || '';
+    var checks = [
+      { label: 'Ít nhất 10 ký tự', ok: pw.length >= 10 },
+      { label: 'Khác mật khẩu thư viện cấp', ok: pw.length > 0 && pw !== 'mật khẩu tạm' },
+      { label: 'Hai lần nhập giống nhau', ok: pw.length > 0 && pw === pw2 }
+    ];
+    var valid = checks.every(function (c) { return c.ok; });
+    var ringBase = 'position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:999px;';
+    var labels = { welcome: 'Chào mừng', login: 'Đăng nhập', card: 'Đăng nhập bằng thẻ', change: 'Đổi mật khẩu lần đầu' };
+    return Object.assign(this.__theme(), {
+      shelves: shelves,
+      tabs: ui.tabs([['welcome', 'Chào'], ['login', 'Mật khẩu'], ['card', 'Thẻ'], ['change', 'Đổi mật khẩu']], v, 'v', { phase: 0 }),
+      paneLabel: labels[v],
+      isWelcome: v === 'welcome', isLogin: v === 'login', isCard: v === 'card', isChange: v === 'change',
+      toLogin: function () { self.setState({ v: 'login' }); },
+      toCard: function () { self.setState({ v: 'card', phase: 0 }); },
+      toChange: function () { self.setState({ v: 'change' }); },
+      pwType: show ? 'text' : 'password', eyeLabel: show ? 'Ẩn mật khẩu' : 'Hiện mật khẩu',
+      toggleShow: function () { self.setState({ show: !show }); },
+      steps: ['Đọc thẻ', 'Thư viện xác thực thẻ', 'Đã đăng nhập'].map(function (l, i) {
+        var done = phase > i, cur = phase === i;
+        return { label: cur && i < 2 ? l + '…' : l, done: done,
+          dotStyle: 'width:24px;height:24px;flex:none;border-radius:999px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;background:' + (done ? '#2f5b3a' : cur ? 'var(--surface)' : 'rgba(var(--ink-rgb),0.08)') + ';border:' + (cur ? '2px solid var(--ink)' : '0'),
+          textStyle: 'font-size:15px;font-weight:' + (cur ? '700' : '500') + ';color:' + (done || cur ? 'var(--ink)' : 'var(--ink3)') };
+      }),
+      cardDone: phase >= 3,
+      ping: ringBase + 'width:170px;height:170px;border:2px solid rgba(47,74,68,0.45)' + (phase >= 3 ? ';display:none' : ''),
+      ring: ringBase + 'width:200px;height:200px;background:rgba(var(--glass),' + (phase > 0 && phase < 3 ? '0.8' : '0.55') + ');border:1px solid rgba(var(--edge),0.95)',
+      advance: function () { self.setState({ phase: phase >= 3 ? 0 : phase + 1 }); },
+      pw: pw, pw2: pw2,
+      onPw: function (e) { self.setState({ pw: e.target.value }); },
+      onPw2: function (e) { self.setState({ pw2: e.target.value }); },
+      rules: checks.map(function (c) { return { label: c.label, ok: c.ok, dot: 'width:20px;height:20px;flex:none;border-radius:999px;display:flex;align-items:center;justify-content:center;background:' + (c.ok ? '#2f5b3a' : 'rgba(var(--ink-rgb),0.1)') }; }),
+      valid: valid, invalid: !valid
+    });
+  }
+}
+</script>
+</body>
+</html>
