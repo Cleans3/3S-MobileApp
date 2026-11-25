@@ -39,8 +39,8 @@ function ScreenSize {
 }
 
 # The centre of the first node whose text or content description matches $pattern, or $null.
-function Centre([string]$pattern) {
-    for ($t = 0; $t -lt 6; $t++) {
+function Centre([string]$pattern, [int]$tries = 6) {
+    for ($t = 0; $t -lt $tries; $t++) {
         Sh 'uiautomator dump /sdcard/ui.xml' | Out-Null
         $xml = Sh 'cat /sdcard/ui.xml'
         foreach ($node in [regex]::Matches($xml, '<node [^>]*>')) {
@@ -57,6 +57,13 @@ function Centre([string]$pattern) {
 }
 
 function Tap($p) { Sh "input tap $($p[0]) $($p[1])" | Out-Null }
+
+# The app starts on the welcome screen when nobody is signed in: take "browse without logging in" to get to the catalog. (Does nothing when the
+# build starts on the catalog, as older builds do.)
+function EnterCatalog {
+    $guest = Centre '^(Xem sách mà không cần đăng nhập|Browse books without logging in)$' 2
+    if ($guest) { Tap $guest; Start-Sleep -Seconds 3 }
+}
 
 function RunScenario([string]$name) {
     $w, $h = ScreenSize
@@ -91,8 +98,12 @@ function RunScenario([string]$name) {
         }
         'scrollList' {
             $y0 = [int]($h * 0.8); $y1 = [int]($h * 0.3)
-            for ($i = 0; $i -lt 3; $i++) { Sh "input swipe $mid $y0 $mid $y1 300" | Out-Null; Start-Sleep -Milliseconds 500 }
-            $all = Centre '^Xem tất cả'
+            # The "see all books" button is the last item of the home: swipe up until it is on screen (the strips above it differ in length).
+            $all = $null
+            for ($i = 0; $i -lt 14 -and -not $all; $i++) {
+                $all = Centre '^(Xem tất cả sách|See all books)$' 1
+                if (-not $all) { Sh "input swipe $mid $y0 $mid $y1 300" | Out-Null; Start-Sleep -Milliseconds 500 }
+            }
             if (-not $all) { return $false }
             Tap $all; Start-Sleep -Seconds 4
             Sh 'dumpsys gfxinfo shelftap.android reset' | Out-Null
@@ -150,6 +161,7 @@ try {
             Start-Sleep -Seconds 4
             Sh "cmd package compile -f -m speed-profile $Package" | Out-Null
             Sh "am force-stop $Package" | Out-Null; Sh "am start -n $Package/.MainActivity" | Out-Null; Start-Sleep -Seconds 8
+            EnterCatalog
             foreach ($sc in $Scenarios) {
                 $ran = RunScenario $sc
                 if ($ran -eq $false) { Write-Host "  skip $sc"; continue }
@@ -158,6 +170,7 @@ try {
                 "$($b.Label)`t$round`t$sc`t$Tier`t$($s.frames)`t$($s.janky)`t$($s.jankPct)`t$($s.p50)`t$($s.p90)`t$($s.p95)`t$($s.p99)`t$($s.rssKb)`t$($s.pssKb)`t$temp" | Add-Content $tsv
                 Write-Host ("  round {0} {1,-6} {2,-10} janky {3,5}%  p90 {4,3} ms  rss {5} MB" -f $round, $b.Label, $sc, $s.jankPct, $s.p90, [int]($s.rssKb / 1024))
                 Sh "am force-stop $Package" | Out-Null; Sh "am start -n $Package/.MainActivity" | Out-Null; Start-Sleep -Seconds 6
+                EnterCatalog
             }
             Start-Sleep -Seconds $Cool
         }
