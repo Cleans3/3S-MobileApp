@@ -28,3 +28,15 @@ Màn Khách đã làm theo board (thanh có nút "Đăng nhập", dòng "Bạn �
 Blur: các board dùng `backdrop-filter`, app vẽ blur thật ở **tầng Đầy đủ** (Android 17 trở lên) cho thẻ kính của Khóa, Mất kết nối, Đổi mật khẩu và form Đăng nhập, và ở menu ☰; các ảnh trong thư mục này chụp ở tầng Đầy đủ (`run_audit.ps1 -Tier FULL`). Dải mờ trên và dưới của Danh mục và Danh sách (kính che nội dung đang cuộn) vẫn là lớp phai, chưa blur thật; tầng Vừa và Nhẹ giữ thẻ gần như đặc.
 
 Đã sửa sau lần so sánh đầu: mũi tên ↗ của "Bắt đầu" (màn chào), nhãn "Đã cho mượn hết" màu đỏ nhạt, icon vân tay ở nút mở khóa, icon wifi gạch chéo màu đỏ ở màn mất kết nối.
+
+## Khổ Vừa (720 × 840 dp) và khổ Rộng (960 × 720 dp), theme sáng
+
+`make_compare_wide.py` ghép `mid/pair-<màn>.jpg` (9 màn) và `wide/pair-<màn>.jpg` (8 màn): board bên trái, app bên phải. App chụp bằng `run_audit.ps1 -Label N -Serial emulator-5556 -Configs medium,expanded -Locale vi` (emulator, tầng Vừa). Audit: 0 phát hiện ATF ở cả hai khổ. Đã xem 6 cặp (Danh mục, Đang mượn, Tài khoản, Khách, Đăng nhập) và chưa xem Đặt trước, Lịch sử, Tự mượn.
+
+Khác biệt còn lại, do thiết kế hoặc chưa làm:
+- **Hai khung ở khổ Rộng:** board có Đang mượn, Đặt trước, Lịch sử, Tài khoản chia hai khung (danh sách rồi chi tiết, hoặc nhóm cài đặt rồi nội dung); app chỉ chia hai khung ở Danh mục, các màn kia một khung.
+- **Nút "Chạm để mượn":** board đặt nó ở đầu thanh dọc (khổ Vừa) hoặc chân khung menu, dạng nút dài có chữ (khổ Rộng); app dùng nút tròn nổi ở góc dưới phải, có lúc đè lên thẻ cuối trang (Tài khoản khổ Rộng).
+- **Khung menu khổ Rộng:** board có lời chào "Thư viện ShelfTap" ở đầu khung; app chỉ có nút thu gọn. Mục "Gợi ý" chưa có (chưa có API gợi ý); nhãn "Đang mượn" ngắn hơn "Sách đang mượn" của board.
+- **Thanh dọc khổ Vừa:** nhãn "Danh mục" và "Lịch sử đọc" xuống hai dòng; mục đang chọn là khối trắng thay vì viền quanh biểu tượng.
+- **Đăng nhập khổ Rộng:** app vẫn hiện khung menu bên trái và tiêu đề "Đăng nhập vào ShelfTap" nằm đè lên tranh giá sách (khó đọc); board bỏ menu, chia đôi (giá sách bên trái, nội dung bên phải) và có màn chào riêng.
+- Nút chuyển sáng/tối "Tối" của board không có trong app (app theo cài đặt Tài khoản).
