@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import shelftap.android.ui.StartupScreen
 import shelftap.android.ui.CardLoginContent
 import shelftap.android.ui.ChangePasswordContent
 import shelftap.android.ui.LockContent
@@ -194,6 +195,7 @@ class UiAuditTest {
             overlayShot("password-first", activity) { ChangePasswordContent(forced = true, busy = false, error = null, onSave = { _, _ -> }, onLogout = {}) }
             overlayShot("lock", activity) { LockContent(onUnlock = {}, onLogout = {}) }
             overlayShot("offline", activity) { OfflineContent(busy = false, tries = 2, onRetry = {}, onLogout = {}) }
+            overlayShot("splash", activity, pad = 0.dp) { StartupScreen() }
             overlayShot("login-card", activity) { CardLoginContent(busy = false, error = null, onBack = {}) }
             overlayShot("login-card-busy", activity) { CardLoginContent(busy = true, error = null, onBack = {}) }
             overlayShot("checkout-sending", activity) { SendingCard() }
@@ -236,14 +238,14 @@ class UiAuditTest {
      * captured by the GPU renderer as `<config>/<name>-hw.png`, then removed. The frame clock is advanced by hand so that endless
      * animations (the rings) do not keep the test from going idle.
      */
-    private fun overlayShot(name: String, activity: MainActivity, content: @Composable () -> Unit) {
+    private fun overlayShot(name: String, activity: MainActivity, pad: androidx.compose.ui.unit.Dp = 24.dp, content: @Composable () -> Unit) {
         lateinit var view: ComposeView
         instrumentation.runOnMainSync {
             view = ComposeView(activity).apply {
                 setContent {
                     CompositionLocalProvider(LocalEffectTier provides EffectTier.FULL) {
                         ShelfTapTheme {
-                            Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(24.dp), contentAlignment = Alignment.Center) { content() }
+                            Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).padding(pad), contentAlignment = Alignment.Center) { content() }
                         }
                     }
                 }

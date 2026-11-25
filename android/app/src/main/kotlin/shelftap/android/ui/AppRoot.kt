@@ -106,7 +106,7 @@ fun AppRoot() {
     val session = LocalContainer.current.session
     val state by session.state.collectAsStateWithLifecycle()
     when (val s = state) {
-        SessionState.Loading -> Spinner()
+        SessionState.Loading -> StartupScreen()
         is SessionState.LoggedOut -> MainNav(guest = true, reason = s.reason)
         SessionState.Offline -> OfflineScreen()
         SessionState.Locked -> LockScreen()

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.ShelfTap" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- The window shown while the app starts (the SplashScreen API, also before Android 12): the teal of the board `Splash` and the book mark.
+         When the app is ready the window switches to Theme.ShelfTap. -->
+    <style name="Theme.ShelfTap.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.ShelfTap</item>
+    </style>
 </resources>

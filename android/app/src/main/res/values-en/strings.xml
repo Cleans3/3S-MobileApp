@@ -69,6 +69,8 @@
     <string name="signedout_lockkey_title">Fingerprints on this phone changed</string>
     <string name="signedout_lockkey_body">ShelfTap\'s fingerprint lock can no longer be used. Log in again with your password or card, then turn it on again in Account.</string>
     <string name="login_again">Log in again</string>
+    <string name="splash_tagline">Your library in your pocket</string>
+    <string name="splash_checking">Checking your session…</string>
     <string name="login_subtitle">Use the library account you were given.</string>
     <string name="login_with_password">Sign in with email and password</string>
     <string name="login_or">or</string>

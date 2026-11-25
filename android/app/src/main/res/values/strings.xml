@@ -69,6 +69,8 @@
     <string name="signedout_lockkey_title">Vân tay trên máy đã thay đổi</string>
     <string name="signedout_lockkey_body">Khóa vân tay của ShelfTap không còn dùng được. Đăng nhập lại bằng mật khẩu hoặc thẻ, rồi bật lại trong Tài khoản.</string>
     <string name="login_again">Đăng nhập lại</string>
+    <string name="splash_tagline">Thư viện trong túi bạn</string>
+    <string name="splash_checking">Đang kiểm tra phiên đăng nhập…</string>
     <string name="login_subtitle">Dùng tài khoản thư viện đã cấp cho bạn.</string>
     <string name="login_with_password">Đăng nhập bằng email và mật khẩu</string>
     <string name="login_or">hoặc</string>
