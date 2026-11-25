@@ -25,6 +25,6 @@ Có chủ ý hoặc do dữ liệu:
 
 Màn Khách đã làm theo board (thanh có nút "Đăng nhập", dòng "Bạn đang xem với tư cách khách", tiêu đề "Tìm sách trong thư viện", ô ghi chú viền đứt, nút nổi "Đăng nhập để mượn sách"). Khác board có chủ ý: app giữ banner chủ đề và các dải sách của danh mục thay cho một thẻ sách mẫu có nút "Chi tiết" và "Đặt trước", và bấm "Đặt trước" ở trang sách thì đi thẳng tới màn đăng nhập (board mở một tờ "Cần đăng nhập").
 
-Blur: các board dùng `backdrop-filter` nên kính thật sự mờ nền (rõ nhất ở màn Khóa, Mất kết nối, Đổi mật khẩu); app chưa vẽ blur ở các màn này, thẻ gần như đặc (kế hoạch §7, việc kính thật còn lại).
+Blur: các board dùng `backdrop-filter`, app vẽ blur thật ở **tầng Đầy đủ** (Android 17 trở lên) cho thẻ kính của Khóa, Mất kết nối, Đổi mật khẩu và form Đăng nhập, và ở menu ☰; các ảnh trong thư mục này chụp ở tầng Đầy đủ (`run_audit.ps1 -Tier FULL`). Dải mờ trên và dưới của Danh mục và Danh sách (kính che nội dung đang cuộn) vẫn là lớp phai, chưa blur thật; tầng Vừa và Nhẹ giữ thẻ gần như đặc.
 
 Đã sửa sau lần so sánh đầu: mũi tên ↗ của "Bắt đầu" (màn chào), nhãn "Đã cho mượn hết" màu đỏ nhạt, icon vân tay ở nút mở khóa, icon wifi gạch chéo màu đỏ ở màn mất kết nối.

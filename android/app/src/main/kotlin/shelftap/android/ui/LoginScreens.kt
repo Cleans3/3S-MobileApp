@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
@@ -76,6 +77,9 @@ import shelftap.android.ui.theme.okFill
 import shelftap.android.ui.theme.pressScale
 import shelftap.android.ui.theme.shelfTap
 
+private const val BLUR_FORM_FILL = 0.68f // the board's value, used when the form blurs what is behind it
+private val FORM_BLUR = 24.dp
+private const val FORM_SATURATION = 1.2f
 private const val FORM_FILL = 0.92f // the board's 0.68 sits on a blur; with none the form must stay readable over the books
 private const val FORM_EDGE = 0.9f
 private const val OR_RULE_ALPHA = 0.12f
@@ -131,8 +135,10 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
     val c = MaterialTheme.shelfTap
     val formShape = RoundedCornerShape(Radius.result)
 
+    val glass = rememberGateGlass() // on the full tier the form blurs the shelves behind it, as the board's glass does
+    val blurPx = with(LocalDensity.current) { FORM_BLUR.toPx() }
     Box(Modifier.fillMaxSize()) {
-        ShelfBackdrop(Modifier.fillMaxWidth().height(LoginSize.backdrop))
+        ShelfBackdrop(Modifier.fillMaxWidth().height(LoginSize.backdrop).then(if (glass != null) Modifier.recordBackdrop(glass) else Modifier))
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding(0.dp, 0.dp))) {
             if (reason != null) {
                 // Signed out: the notice for the reason first, then the form, which follows it (so a larger font moves the form down, not over the notice).
@@ -145,7 +151,9 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
             Column(
                 Modifier.padding(horizontal = Spacing.l).fillMaxWidth()
                     .shadow(Spacing.xl, formShape, ambientColor = c.ink.copy(alpha = 0.18f), spotColor = c.ink.copy(alpha = 0.18f))
-                    .clip(formShape).background(c.glass.copy(alpha = FORM_FILL)).border(BorderStroke(Radius.hairline, c.edge.copy(alpha = FORM_EDGE)), formShape)
+                    .clip(formShape)
+                    .then(if (glass != null) Modifier.backdropBlur(glass, blurPx, FORM_SATURATION, Color.Transparent) else Modifier)
+                    .background(c.glass.copy(alpha = if (glass != null) BLUR_FORM_FILL else FORM_FILL)).border(BorderStroke(Radius.hairline, c.edge.copy(alpha = FORM_EDGE)), formShape)
                     .padding(start = Spacing.l + Spacing.xs, end = Spacing.l + Spacing.xs, top = Spacing.xl, bottom = Spacing.l + Spacing.xs),
                 verticalArrangement = Arrangement.spacedBy(Spacing.l),
             ) {

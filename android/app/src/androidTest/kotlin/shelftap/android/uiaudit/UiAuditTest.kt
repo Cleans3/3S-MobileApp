@@ -122,6 +122,8 @@ class UiAuditTest {
     fun tour() {
         val app = instrumentation.targetContext.applicationContext as ShelfTapApp
         val session = installFakes(app.container)
+        // The effect tier the run is made at (FULL, MEDIUM or LIGHT); the phone's own choice when none is given. Always set, because the setting is kept between runs.
+        runBlocking { app.container.themeStore.setForcedEffect(args.getString("tier")) }
         runBlocking { session.restore() } // empty vault -> LoggedOut
 
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->

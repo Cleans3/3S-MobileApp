@@ -14,7 +14,10 @@ param(
     # Which device configurations to run. On a physical phone use 'light','dark': font2 and w320 change the phone's font and display size.
     [string[]] $Configs = @('light', 'dark', 'font2', 'w320', 'tall', 'land', 'medium', 'expanded'),
     # App language for the run (per-app locale, Android 13+), for example 'vi' to compare with the Vietnamese mockup. Default: leave as the device has it.
-    [string] $Locale = ''
+    [string] $Locale = '',
+    # The effect tier to run at (FULL, MEDIUM or LIGHT): a debug build forces it. Default: what the device would pick (an Android 16 emulator picks MEDIUM,
+    # so the full-tier effects, the blurred glass, are only seen with -Tier FULL).
+    [string] $Tier = ''
 )
 $ErrorActionPreference = 'Stop'
 $adb = Join-Path $env:LOCALAPPDATA 'Android\Sdk\platform-tools\adb.exe'
@@ -60,13 +63,15 @@ foreach ($config in $Configs) {
     }
     if ($Locale) { Sh "cmd locale set-app-locales shelftap.android --locales $Locale" }
     Write-Host "== $config"
+    $tierArgs = @(); if ($Tier) { $tierArgs += "-Pandroid.testInstrumentationRunnerArguments.tier=$Tier" }
     Push-Location (Join-Path $repo 'android')
     try {
         & .\gradlew.bat :app:connectedDebugAndroidTest --console=plain `
             "-Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true" `
             "-Pandroid.testInstrumentationRunnerArguments.class=shelftap.android.uiaudit.UiAuditTest" `
             "-Pandroid.testInstrumentationRunnerArguments.uiAudit=$Label" `
-            "-Pandroid.testInstrumentationRunnerArguments.config=$config"
+            "-Pandroid.testInstrumentationRunnerArguments.config=$config" `
+            @tierArgs
         if ($LASTEXITCODE -ne 0) { throw "audit run '$config' failed" }
     } finally { Pop-Location }
     & $adb -s $Serial pull "$remote/." $out | Out-Null
