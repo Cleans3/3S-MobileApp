@@ -269,7 +269,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
     val showDock = !guest && (pillHere || dockOnBar) && !overlayOpen
     val contentMax = when (layout) {
         NavLayout.COMPACT -> Dp.Unspecified
-        NavLayout.RAIL -> AdaptiveSize.contentMax
+        NavLayout.RAIL -> if (route == CATALOG) AdaptiveSize.contentMaxCatalog else AdaptiveSize.contentMax
         NavLayout.SIDE -> if (route == CATALOG) Dp.Unspecified else AdaptiveSize.contentMaxWide
     }
 

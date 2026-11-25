@@ -5,12 +5,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.IntrinsicSize
+import shelftap.android.ui.theme.AdaptiveSize
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.Alignment
@@ -162,6 +165,7 @@ private const val SEARCH_DEBOUNCE_MS = 300L
 private const val STRIP_BOOKS = 8
 private const val STRIPS = 2
 private const val BANNER_BOOKS = 3
+private const val BANNER_MAX_BOOKS = 5
 private const val BANNER_SCRIM_ALPHA = 0.75f
 
 /** Above this system font scale the banner stacks its text under the covers. */
@@ -327,7 +331,7 @@ private fun CatalogHome(
                 item { Column { header() } }
                 item {
                     val first = strips.first()
-                    Banner(first.subject, first.books.take(BANNER_BOOKS), onClick = { first.subject?.let(onSubject) ?: onAll() })
+                    Banner(first.subject, first.books.take(BANNER_MAX_BOOKS), onClick = { first.subject?.let(onSubject) ?: onAll() })
                 }
                 items(strips, key = { it.subject ?: "" }) { strip ->
                     Column(verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
@@ -364,11 +368,15 @@ private fun Banner(subject: String?, books: List<TitleSummary>, onClick: () -> U
     val theme = stringResource(R.string.catalog_theme)
     val name = subject ?: stringResource(R.string.catalog_library_strip)
     val stacked = LocalDensity.current.fontScale > STACK_FONT_SCALE
+    BoxWithConstraints {
+    // The covers fill the banner's width: three where it is narrow, up to BANNER_MAX_BOOKS where the pane is wide (a medium window).
+    val fit = ((maxWidth - Spacing.xl * 2 + Spacing.m) / (GlassSize.bannerCoverWidth + Spacing.m)).toInt()
+    val shown = books.take(fit.coerceIn(BANNER_BOOKS, BANNER_MAX_BOOKS))
     val frame = Modifier.fillMaxWidth().pressable(RoundedCornerShape(Radius.banner), onClick, row = true).background(bannerBackground)
         .semantics(mergeDescendants = true) { contentDescription = "$theme: $name" }
     val covers: @Composable () -> Unit = {
         Row(Modifier.padding(start = Spacing.xl, top = Spacing.xl), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-            books.forEach { book ->
+            shown.forEach { book ->
                 Cover(
                     book.coverUrl, book.title,
                     Modifier.size(GlassSize.bannerCoverWidth, GlassSize.bannerCoverHeight).shadow(GlassSize.shadow, RoundedCornerShape(Radius.cover)),
@@ -402,6 +410,7 @@ private fun Banner(subject: String?, books: List<TitleSummary>, onClick: () -> U
             label(Modifier.align(Alignment.BottomCenter))
         }
     }
+    }
 }
 
 /** Every book of the search, one row each, with paging. Rows are solid and carry no blur (plan section 7). */
@@ -410,10 +419,14 @@ private fun CatalogList(
     state: CatalogViewModel.UiState, onOpen: (String) -> Unit, rise: Boolean, onLoadMore: () -> Unit, onRetry: () -> Unit, topExtra: Dp,
 ) {
     val insets = LocalPageInsets.current
+    // Where the pane is wide enough (a medium window, a phone on its side) the rows run in two columns, as the board's list does.
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+    val columns = if (maxWidth >= AdaptiveSize.twoColumnMin) 2 else 1
+    val gap = Spacing.s + Spacing.xs / 2
     LazyColumn(
         Modifier.fillMaxSize(), state = rememberPreparedListState(),
         contentPadding = PaddingValues(start = GlassSize.page, end = GlassSize.page, top = insets.top + topExtra, bottom = insets.bottom),
-        verticalArrangement = Arrangement.spacedBy(Spacing.s + Spacing.xs / 2),
+        verticalArrangement = Arrangement.spacedBy(gap),
     ) {
         if (state.total > 0) {
             item(key = "count") {
@@ -423,9 +436,21 @@ private fun CatalogList(
                 )
             }
         }
-        itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
-            TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.riseIn(index, rise))
-            if (index == state.items.lastIndex) LaunchedEffect(state.items.size) { onLoadMore() }
+        if (columns == 1) {
+            itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
+                TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.riseIn(index, rise))
+                if (index == state.items.lastIndex) LaunchedEffect(state.items.size) { onLoadMore() }
+            }
+        } else {
+            val rows = state.items.chunked(columns)
+            itemsIndexed(rows, key = { _, row -> row.first().titleId }) { index, row ->
+                // The two cards of a row are as high as the taller one.
+                Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(gap)) {
+                    row.forEachIndexed { i, item -> TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.weight(1f).fillMaxHeight().riseIn(index * columns + i, rise)) }
+                    repeat(columns - row.size) { Spacer(Modifier.weight(1f)) } // the last row may be short: its book keeps the width of one column
+                }
+                if (index == rows.lastIndex) LaunchedEffect(state.items.size) { onLoadMore() }
+            }
         }
         item {
             when {
@@ -434,6 +459,7 @@ private fun CatalogList(
                 state.items.isEmpty() -> EmptyState(R.string.catalog_empty, R.string.catalog_empty_hint, Modifier.fillMaxWidth())
             }
         }
+    }
     }
 }
 

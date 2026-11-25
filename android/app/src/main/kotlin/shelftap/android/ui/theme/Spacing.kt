@@ -49,6 +49,12 @@ object AdaptiveSize {
     /** One pane of content never grows wider than this on a medium window, so lines stay readable. */
     val contentMax = 528.dp
 
+    /** The catalog on a medium window takes nearly the whole pane next to the rail (the board's page is 584 dp): its rows run in two columns. */
+    val contentMaxCatalog = 600.dp
+
+    /** A list of books runs in two columns where the pane is at least this wide. */
+    val twoColumnMin = 520.dp
+
     /** On a wide window, screens other than the catalog are not stretched past this. */
     val contentMaxWide = 720.dp
 
