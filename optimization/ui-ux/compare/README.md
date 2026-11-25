@@ -31,7 +31,7 @@ Blur: các board dùng `backdrop-filter`, app vẽ blur thật ở **tầng Đ�
 
 ## Khổ Vừa (720 × 840 dp) và khổ Rộng (960 × 720 dp), theme sáng
 
-`make_compare_wide.py` ghép `mid/pair-<màn>.jpg` (9 màn) và `wide/pair-<màn>.jpg` (8 màn): board bên trái, app bên phải. App chụp bằng `run_audit.ps1 -Label N -Serial emulator-5556 -Configs medium,expanded -Locale vi` (emulator, tầng Vừa). Audit: 0 phát hiện ATF ở cả hai khổ. Đã xem 6 cặp (Danh mục, Đang mượn, Tài khoản, Khách, Đăng nhập) và chưa xem Đặt trước, Lịch sử, Tự mượn.
+`make_compare_wide.py` ghép `mid/pair-<màn>.jpg` (9 màn) và `wide/pair-<màn>.jpg` (8 màn): board bên trái, app bên phải. App chụp bằng `run_audit.ps1 -Label N -Serial emulator-5556 -Configs medium,expanded -Locale vi` (emulator, tầng Vừa). Audit: 0 phát hiện ATF ở cả hai khổ. Đã xem 7 cặp (Danh mục ở hai khổ, Đang mượn ở hai khổ, Tài khoản và Đăng nhập khổ Rộng, Khách khổ Vừa); chưa xem Đặt trước, Lịch sử, Tự mượn và các cặp còn lại.
 
 Khác biệt còn lại, do thiết kế hoặc chưa làm:
 - **Hai khung ở khổ Rộng:** board có Đang mượn, Đặt trước, Lịch sử, Tài khoản chia hai khung (danh sách rồi chi tiết, hoặc nhóm cài đặt rồi nội dung); app chỉ chia hai khung ở Danh mục, các màn kia một khung.
