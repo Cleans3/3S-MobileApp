@@ -298,7 +298,7 @@ private fun CardStage(active: Boolean) {
                 .size(LoginSize.cardWidth, LoginSize.cardHeight).clip(RoundedCornerShape(Radius.tile)).background(CARD_TEAL)
                 .padding(Spacing.m),
         ) {
-            Text("ShelfTap", color = Color.White, style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold), modifier = Modifier.align(Alignment.TopStart))
+            Text(stringResource(R.string.app_name), color = Color.White, style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold), modifier = Modifier.align(Alignment.TopStart))
             Box(Modifier.align(Alignment.BottomStart).size(30.dp, 22.dp).clip(RoundedCornerShape(5.dp)).background(CARD_CHIP))
             Text(stringResource(R.string.card_illustration_name), color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.labelSmall, modifier = Modifier.align(Alignment.BottomEnd))
         }

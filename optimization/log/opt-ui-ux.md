@@ -755,3 +755,11 @@
 - **Đo trước → sau:** ảnh khổ Rộng và Vừa (`compare/wide/pair-welcome.jpg`, `pair-password-first.jpg`, và `compare/mid/`): giá sách bên trái và nội dung bên phải như board; Đổi mật khẩu có đủ ba ô, ba quy tắc và nút Lưu trong một cột 480 dp. Audit `medium` và `expanded`: 0 phát hiện ATF. Khác board: nút thẻ ở Chào (app có đường vào bằng thẻ), nút "Tối" của board không có trong app.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chỉ so ảnh trên emulator; con người chưa xem trên máy gập hoặc tablet thật.
 - **Kiểm thử:** `testDebugUnitTest`: qua; `run_audit.ps1 -Configs medium,expanded -Locale vi`: qua.
+
+## 2026-11-27 04:30 · Đo lại cuộn danh sách 100k sau thay đổi hai cột; chuỗi cứng cuối cùng; cập nhật bảng chỉ số B (nguồn: kế hoạch §7 và yêu cầu của người dùng)
+
+- **Vấn đề:** kế hoạch (§7, §9 giai đoạn 5c) yêu cầu đo lại Danh mục và Danh sách trước khi sang màn khác; thay đổi hai cột của Danh mục khổ Vừa (`BoxWithConstraints` bọc danh sách 100k) chưa được đo. Bảng chỉ số B cũng chưa cập nhật từ 2026-11-24, và còn một chữ "ShelfTap" cứng trên hình thẻ ở màn đăng nhập bằng thẻ.
+- **Thay đổi:** `LoginScreens.kt`: chữ trên hình thẻ dùng `R.string.app_name`. `ui-ux-metrics.md`: thêm ghi chú 17 (tình trạng hiện tại). Kết quả đo ở `optimization/ui-ux/measure/results-xiaomi-cols/`.
+- **Đo trước → sau:** `measure.ps1`, Xiaomi 25053RT47C, Android 17, tầng tự động, bản `measure` (R8, Baseline), 100.013 đầu sách, cảnh `scrollList` (6100 đến 6400 khung mỗi vòng), 5 vòng xen kẽ, bản "trước" là `7c3b2d5` (trước thay đổi hai cột) và bản "sau" là cây hiện tại. Giật 0,02% ở cả hai. p90: 13 ms (13 đến 13) so với 13 ms (13 đến 13). p99: 15 đến 19 ms so với 15 đến 18 ms. RSS: 228 đến 239 MB so với 233 đến 239 MB; PSS 89 đến 100 MB so với 94 đến 100 MB. **Không khác nhau.** Giới hạn: máy flagship; điện thoại dọc đi đường một cột như cũ, nên phép đo này không chạy đường hai cột (khổ Vừa và điện thoại xoay ngang), chỉ cho thấy phần bọc không tốn thêm. Chưa đo đường hai cột trên thiết bị nào.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI báo trước rằng phép đo chỉ phủ đường một cột.
+- **Kiểm thử:** `compileDebugKotlin`: qua; `measure.ps1 -Scenarios scrollList -Rounds 5`: qua.
