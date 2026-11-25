@@ -25,6 +25,13 @@ import shelftap.android.ui.theme.Motion
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
+import shelftap.android.ui.icons.LucideIcons
+import shelftap.android.ui.icons.LucideIcon
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -204,8 +211,15 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
     LaunchedEffect(state.items, state.query) {
         if (state.query.isBlank() && state.items.isNotEmpty()) chipSubjects = subjectsOf(state.items)
     }
-    // Typing or "see all" turns the home into the list of results; back returns to the home.
     val showList = listAll || input.isNotBlank()
+    // While the list is on screen, the top bar shows ← and the list's name; ← closes the list (the same as the back gesture).
+    val listPage = LocalListPage.current
+    val listTitle = if (input.isBlank()) R.string.list_title else R.string.list_results
+    DisposableEffect(showList, listTitle) {
+        if (showList) listPage?.value = ListPage(listTitle) { input = ""; listAll = false }
+        onDispose { if (showList) listPage?.value = null }
+    }
+    // Typing or "see all" turns the home into the list of results; back returns to the home.
     BackHandler(enabled = showList) {
         input = ""
         listAll = false
@@ -394,10 +408,21 @@ private fun CatalogList(
     state: CatalogViewModel.UiState, onOpen: (String) -> Unit, rise: Boolean, onLoadMore: () -> Unit, onRetry: () -> Unit, topExtra: Dp,
 ) {
     val insets = LocalPageInsets.current
-    LazyColumn(Modifier.fillMaxSize(), state = rememberPreparedListState(), contentPadding = PaddingValues(top = insets.top + topExtra, bottom = insets.bottom)) {
+    LazyColumn(
+        Modifier.fillMaxSize(), state = rememberPreparedListState(),
+        contentPadding = PaddingValues(start = GlassSize.page, end = GlassSize.page, top = insets.top + topExtra, bottom = insets.bottom),
+        verticalArrangement = Arrangement.spacedBy(Spacing.s + Spacing.xs / 2),
+    ) {
+        if (state.total > 0) {
+            item(key = "count") {
+                Text(
+                    stringResource(R.string.list_count, state.total), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.shelfTap.ink3,
+                    modifier = Modifier.padding(horizontal = Spacing.xs).semantics { liveRegion = LiveRegionMode.Polite },
+                )
+            }
+        }
         itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
             TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.riseIn(index, rise))
-            HorizontalDivider()
             if (index == state.items.lastIndex) LaunchedEffect(state.items.size) { onLoadMore() }
         }
         item {
@@ -410,20 +435,37 @@ private fun CatalogList(
     }
 }
 
+/**
+ * One book of the list, as a glass card (the board `List`): the cover, the title, the authors and how many copies are in, and an arrow.
+ * (The board also says the shelf; the API does not give it yet, plan section 11 item 13.)
+ */
 @Composable
 private fun TitleRow(item: TitleSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Row(modifier.fillMaxWidth().pressable(RectangleShape, onClick, role = null, row = true).padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-        Cover(item.coverUrl, item.title, Modifier.size(width = CoverSize.rowWidth, height = CoverSize.rowHeight), shape = RoundedCornerShape(Radius.tile))
-        Column(Modifier.weight(1f)) {
+    val c = MaterialTheme.shelfTap
+    val shape = RoundedCornerShape(Radius.card)
+    val available = item.copiesAvailable > 0
+    Row(
+        modifier.fillMaxWidth().pressable(shape, onClick, role = null, row = true).background(c.glass.copy(alpha = ROW_FILL)).padding(Spacing.m),
+        horizontalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs / 2), verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Cover(item.coverUrl, item.title, Modifier.size(width = CoverSize.rowWidth, height = CoverSize.rowHeight), shape = RoundedCornerShape(Radius.cover - Spacing.xs))
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs - 1.dp)) {
             Text(item.title, style = MaterialTheme.typography.titleMedium)
-            Text(item.authors.joinToString(", "), style = MaterialTheme.typography.bodyMedium)
+            Text(item.authors.joinToString(", "), style = MaterialTheme.typography.bodyMedium, color = c.ink2, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            // The state as a pill: green for copies in, plain for all on loan (the words carry the meaning, the colour only helps).
             Text(
-                if (item.copiesAvailable > 0) stringResource(R.string.catalog_available, item.copiesAvailable) else stringResource(R.string.catalog_all_on_loan),
-                style = MaterialTheme.typography.bodySmall,
+                if (available) stringResource(R.string.catalog_available, item.copiesAvailable) else stringResource(R.string.catalog_all_on_loan),
+                style = MaterialTheme.typography.labelMedium, color = if (available) c.ok else c.ink2,
+                modifier = Modifier.padding(top = Spacing.xs).clip(CircleShape).background((if (available) c.ok else c.ink).copy(alpha = PILL_FILL))
+                    .padding(horizontal = Spacing.m - Spacing.xs / 2, vertical = Spacing.xs),
             )
         }
+        LucideIcon(LucideIcons.ChevronRight, tint = c.ink3, size = Spacing.l + Spacing.xs)
     }
 }
+
+private const val ROW_FILL = 0.72f
+private const val PILL_FILL = 0.12f
 
 /** Cover addresses that failed to load in this run: asked for again only after the app restarts, not every time a card scrolls back into view. */
 private val failedCovers: MutableSet<String> = java.util.Collections.newSetFromMap(java.util.concurrent.ConcurrentHashMap())

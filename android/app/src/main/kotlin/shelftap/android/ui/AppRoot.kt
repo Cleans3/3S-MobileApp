@@ -238,6 +238,7 @@ private fun NavHostController.goTo(route: String) = navigate(route) {
 private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.CATALOG) {
     val nav = rememberNavController()
     var navFolded by rememberSaveable { mutableStateOf(false) } // the wide menu folded into the rail by the member
+    val listPage = remember { mutableStateOf<ListPage?>(null) } // set by the catalog while its list is on screen: the bar then shows ← and its name
     val reserveBar = remember { mutableStateOf<ReserveAction?>(null) } // what the book page's reserve button says, drawn by the dock
     val subjectSearch = LocalContainer.current.subjectSearch
     val route = nav.currentBackStackEntryAsState().value?.destination?.route
@@ -285,7 +286,9 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                                 R.string.catalog_bar_title, overlayOpen, onMenu = { menuOpen = !menuOpen }, centred = true,
                                 accountDescription = stringResource(if (guest) R.string.login_title else R.string.open_account),
                                 onAccount = { nav.goTo(if (guest) LOGIN else "account") },
-                                back = onBookPage, onBack = { nav.popBackStack() },
+                                back = onBookPage || listPage.value != null,
+                                onBack = { listPage.value?.onBack?.invoke() ?: nav.popBackStack() },
+                                backTitle = if (onBookPage) null else listPage.value?.title,
                             )
                         } else if (title != null) {
                             if (compact) AppTopBar(title, overlayOpen, onMenu = { menuOpen = !menuOpen }) else AppTitleBar(title)
@@ -319,7 +322,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                         .then(if (overlayOpen) Modifier.clearAndSetSemantics {} else Modifier),
                     contentAlignment = Alignment.TopCenter,
                 ) {
-                    CompositionLocalProvider(LocalPageInsets provides insets, LocalReserveBar provides reserveBar) {
+                    CompositionLocalProvider(LocalPageInsets provides insets, LocalReserveBar provides reserveBar, LocalListPage provides listPage) {
                     Box(Modifier.fillMaxHeight().widthIn(max = contentMax).fillMaxWidth()) {
                         NavHost(
                             nav, startDestination = if (guest && (reason != null || entry != Entry.CATALOG)) LOGIN else CATALOG,

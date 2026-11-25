@@ -12,10 +12,12 @@ import android.media.ImageReader
 import android.view.View
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasScrollAction
+import androidx.compose.ui.test.hasScrollToNodeAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
@@ -149,13 +151,9 @@ class UiAuditTest {
             holdShot("press-card", compose.onAllNodes(hasContentDescription(AuditData.titles.first().title, substring = true)), activity, scroll = true)
 
             // "See all books" opens the list: the search field and the row of subject chips on glass over the rows.
-            // The button is the last item of a lazy column, so it exists only once scrolled to: swipe until it is composed.
-            repeat(8) {
-                if (compose.onAllNodesWithText(str(R.string.catalog_see_all_books)).fetchSemanticsNodes().isEmpty()) {
-                    compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() }
-                    compose.waitForIdle()
-                }
-            }
+            // The button is the last item of a lazy column, so it exists only once scrolled to: scroll the list to that item.
+            compose.onAllNodes(hasScrollToNodeAction()).onFirst().performScrollToNode(hasText(str(R.string.catalog_see_all_books)))
+            compose.waitForIdle()
             compose.onNodeWithText(str(R.string.catalog_see_all_books)).performScrollTo().performClick()
             waitFor(str(R.string.catalog_chip_all))
             audit("list", activity)
@@ -163,7 +161,13 @@ class UiAuditTest {
             compose.onAllNodes(hasText(str(R.string.catalog_chip_all)).not() and isSelectable()).onFirst().performClick()
             compose.waitForIdle()
             audit("list-subject", activity)
-            scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+            // The back button of the bar (the menu button turned into ←) closes the list and returns to the catalog's home.
+            // (A wide window has no top bar with a back button: there the back gesture does it.)
+            if (hasBurger() || compose.onAllNodesWithContentDescription(str(R.string.back_to_catalog)).fetchSemanticsNodes().isNotEmpty()) {
+                compose.onNodeWithContentDescription(str(R.string.back_to_catalog)).performClick()
+            } else {
+                scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+            }
             waitFor(str(R.string.catalog_theme))
 
             openFirstTitle()
