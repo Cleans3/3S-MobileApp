@@ -85,10 +85,10 @@ private const val TOP_VEIL = 0.85f
 private const val TOP_VEIL_END = 0.3f // of the backdrop's height: about the bar
 
 // The books on the shelves of the login: widths and heights in dp and a palette, from the board (so every run draws the same shelves).
-private val BOOK_COLORS = listOf(0xFF8E5A3C, 0xFF2F4A44, 0xFFC9A66B, 0xFF6B6F7A, 0xFFB5452B, 0xFF3E3A36, 0xFFD8C9A8, 0xFF556B5A, 0xFFA3633F, 0xFF41506B).map { Color(it) }
-private val BOOK_WIDTHS = intArrayOf(22, 30, 18, 26, 34, 20, 28, 24, 16, 30, 22, 26)
-private val BOOK_HEIGHTS = intArrayOf(130, 112, 140, 100, 126, 144, 108, 132, 120, 104, 138, 116)
-private val PLANK = Color(0xFF8A7461)
+internal val BOOK_COLORS = listOf(0xFF8E5A3C, 0xFF2F4A44, 0xFFC9A66B, 0xFF6B6F7A, 0xFFB5452B, 0xFF3E3A36, 0xFFD8C9A8, 0xFF556B5A, 0xFFA3633F, 0xFF41506B).map { Color(it) }
+internal val BOOK_WIDTHS = intArrayOf(22, 30, 18, 26, 34, 20, 28, 24, 16, 30, 22, 26)
+internal val BOOK_HEIGHTS = intArrayOf(130, 112, 140, 100, 126, 144, 108, 132, 120, 104, 138, 116)
+internal val PLANK = Color(0xFF8A7461)
 
 /** Two shelves of books behind the top of the login, fading into the page; decorative (nothing in it is read out). */
 @Composable

@@ -107,7 +107,21 @@ fun AppRoot() {
     val state by session.state.collectAsStateWithLifecycle()
     when (val s = state) {
         SessionState.Loading -> StartupScreen()
-        is SessionState.LoggedOut -> MainNav(guest = true, reason = s.reason)
+        is SessionState.LoggedOut -> {
+            // Signed out with no reason (first start, or a logout by the member): the welcome screen first; its choice says where the app opens.
+            // A forced logout (a reason) goes straight to the login with its notice. The choice is kept across a rotation, not across a new logout.
+            var welcomed by rememberSaveable { mutableStateOf(false) }
+            var entry by rememberSaveable { mutableStateOf(Entry.CATALOG) }
+            if (s.reason == null && !welcomed) {
+                WelcomeScreen(
+                    onStart = { entry = Entry.LOGIN; welcomed = true },
+                    onCard = { entry = Entry.CARD; welcomed = true },
+                    onGuest = { entry = Entry.CATALOG; welcomed = true },
+                )
+            } else {
+                MainNav(guest = true, reason = s.reason, entry = entry)
+            }
+        }
         SessionState.Offline -> OfflineScreen()
         SessionState.Locked -> LockScreen()
         SessionState.PasswordChangeRequired -> ChangePasswordScreen(forced = true, onDone = {})
@@ -116,8 +130,8 @@ fun AppRoot() {
 }
 
 @Composable
-private fun LoggedOutHost(reason: LogoutReason?) {
-    var card by rememberSaveable { mutableStateOf(false) }
+private fun LoggedOutHost(reason: LogoutReason?, startWithCard: Boolean = false) {
+    var card by rememberSaveable { mutableStateOf(startWithCard) }
     if (card) CardLoginScreen(onBack = { card = false }) else LoginScreen(reason, onCard = { card = true })
 }
 
@@ -126,6 +140,9 @@ private fun LoggedOutHost(reason: LogoutReason?) {
 private const val CATALOG = "catalog"
 private const val CHECKOUT = "checkout"
 private const val LOGIN = "login"
+
+/** Where a signed-out member goes from the welcome screen. */
+private enum class Entry { CATALOG, LOGIN, CARD }
 
 private val memberMenu = listOf(
     MenuItem(CATALOG, R.string.tab_catalog, LucideIcons.MockupCatalog), MenuItem("loans", R.string.tab_loans, LucideIcons.MockupLoans),
@@ -208,7 +225,7 @@ private fun NavHostController.goTo(route: String) = navigate(route) {
 }
 
 @Composable
-private fun MainNav(guest: Boolean, reason: LogoutReason?) {
+private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.CATALOG) {
     val nav = rememberNavController()
     var navFolded by rememberSaveable { mutableStateOf(false) } // the wide menu folded into the rail by the member
     val reserveBar = remember { mutableStateOf<ReserveAction?>(null) } // what the book page's reserve button says, drawn by the dock
@@ -295,7 +312,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                     CompositionLocalProvider(LocalPageInsets provides insets, LocalReserveBar provides reserveBar) {
                     Box(Modifier.fillMaxHeight().widthIn(max = contentMax).fillMaxWidth()) {
                         NavHost(
-                            nav, startDestination = if (guest && reason != null) LOGIN else CATALOG,
+                            nav, startDestination = if (guest && (reason != null || entry != Entry.CATALOG)) LOGIN else CATALOG,
                             enterTransition = { screenEnter(initialState.destination.route, targetState.destination.route, tier, back = false) },
                             exitTransition = { screenExit(initialState.destination.route, targetState.destination.route, tier, back = false) },
                             popEnterTransition = { screenEnter(initialState.destination.route, targetState.destination.route, tier, back = true) },
@@ -329,7 +346,7 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?) {
                                     )
                                 }
                             }
-                            composable(LOGIN) { Screen { LoggedOutHost(reason) } }
+                            composable(LOGIN) { Screen { LoggedOutHost(reason, startWithCard = entry == Entry.CARD) } }
                             composable("loans") { Screen { LoansScreen() } }
                             composable(CHECKOUT) { Screen { CheckoutScreen(onLoans = { nav.goTo("loans") }) } }
                             composable("reservations") { Screen { ReservationsScreen() } }

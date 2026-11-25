@@ -71,6 +71,10 @@
     <string name="login_again">Đăng nhập lại</string>
     <string name="splash_tagline">Thư viện trong túi bạn</string>
     <string name="splash_checking">Đang kiểm tra phiên đăng nhập…</string>
+    <string name="welcome_title">Mượn sách\nchỉ bằng một chạm</string>
+    <string name="welcome_body">Tìm sách trong thư viện, chạm điện thoại vào sách để mượn, gia hạn ngay trên máy.</string>
+    <string name="welcome_start">Bắt đầu</string>
+    <string name="welcome_guest">Xem sách mà không cần đăng nhập</string>
     <string name="login_subtitle">Dùng tài khoản thư viện đã cấp cho bạn.</string>
     <string name="login_with_password">Đăng nhập bằng email và mật khẩu</string>
     <string name="login_or">hoặc</string>

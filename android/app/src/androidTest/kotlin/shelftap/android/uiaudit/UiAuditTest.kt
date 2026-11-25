@@ -126,7 +126,10 @@ class UiAuditTest {
             lateinit var activity: MainActivity
             scenario.onActivity { activity = it }
 
-            // Logged out is a guest: the catalog first, and the login one step away in the menu.
+            // Logged out with no reason: the welcome screen first, then the catalog as a guest, and the login one step away in the menu.
+            waitFor(str(R.string.welcome_guest))
+            audit("welcome", activity)
+            compose.onNodeWithText(str(R.string.welcome_guest)).performClick()
             waitFor(str(R.string.catalog_theme)) // the banner: always on screen, unlike the strips below it at a large font
             audit("guest", activity)
             openMenu(); loginEntry()

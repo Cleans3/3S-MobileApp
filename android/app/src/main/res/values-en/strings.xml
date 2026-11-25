@@ -71,6 +71,10 @@
     <string name="login_again">Log in again</string>
     <string name="splash_tagline">Your library in your pocket</string>
     <string name="splash_checking">Checking your session…</string>
+    <string name="welcome_title">Borrow books\nwith a single tap</string>
+    <string name="welcome_body">Find books in the library, tap your phone on a book to borrow it, and renew right from your phone.</string>
+    <string name="welcome_start">Get started</string>
+    <string name="welcome_guest">Browse books without logging in</string>
     <string name="login_subtitle">Use the library account you were given.</string>
     <string name="login_with_password">Sign in with email and password</string>
     <string name="login_or">or</string>
