@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import dev.chrisbanes.haze.HazeInput
 import dev.chrisbanes.haze.HazeProgressive
@@ -21,11 +22,18 @@ import shelftap.android.ui.theme.shelfTap
 
 /**
  * Whether the bands under the bars are glass: the page behind the bar is blurred, strongest at the screen's edge and fading out inwards (the
- * boards' progressive blur under the top bar and under the floating button). Only on the full tier (Android 17 and later); the medium and
+ * boards' progressive blur under the top bar and under the floating button). Only on the full tier (Android 17 and later) and in a window higher than a phone on its side; the medium and
  * light tiers keep the plain fade of [FadeBand] (plan section 7).
  */
 @Composable
-fun glassBands(): Boolean = LocalEffectTier.current == EffectTier.FULL && android.os.Build.VERSION.SDK_INT >= 31
+fun glassBands(): Boolean =
+    LocalEffectTier.current == EffectTier.FULL && android.os.Build.VERSION.SDK_INT >= 31 && LocalConfiguration.current.screenHeightDp > SHORT_WINDOW_DP
+
+/**
+ * A window this high or lower (a phone on its side) keeps the plain fade: the two bands, with the bar and the floating button's room inside them,
+ * would take about two fifths of its height, and the page would hardly show between them. Same limit as the compact menu of [navLayoutFor].
+ */
+private const val SHORT_WINDOW_DP = 480
 
 /**
  * A band of glass over the page's edge, made with Haze (`hazeSource` on the page, `hazeBlur` here): the page is drawn again, blurred, and the
