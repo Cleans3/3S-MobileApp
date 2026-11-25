@@ -4,7 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
@@ -35,12 +34,9 @@ class MainActivity : FragmentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // The starting window stays only while the stored session is being checked, and for at most SPLASH_HOLD_MS: a check that waits for the
-        // network goes on behind the app's own start screen (it says what is happening) instead of behind a bare icon.
-        val started = SystemClock.elapsedRealtime()
-        installSplashScreen().setKeepOnScreenCondition {
-            container.session.state.value is SessionState.Loading && SystemClock.elapsedRealtime() - started < SPLASH_HOLD_MS
-        }
+        // The system's starting window (teal, the book) leaves as soon as the first frame is drawn, with no fade or zoom of its own: the app's start
+        // screen (StartupScreen) is the same teal and plays the board's entrance right after it.
+        installSplashScreen().setOnExitAnimationListener { it.remove() }
         super.onCreate(savedInstanceState)
         // No screenshots, no screen recording, no Recents thumbnail: every screen shows personal data or a password field.
         window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
@@ -89,6 +85,5 @@ class MainActivity : FragmentActivity() {
 
     private companion object {
         const val IDLE_POLL_MS = 15_000L
-        const val SPLASH_HOLD_MS = 400L
     }
 }

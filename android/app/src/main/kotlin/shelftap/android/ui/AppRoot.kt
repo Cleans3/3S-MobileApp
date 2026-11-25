@@ -105,7 +105,17 @@ import androidx.compose.ui.graphics.Brush
 fun AppRoot() {
     val session = LocalContainer.current.session
     val state by session.state.collectAsStateWithLifecycle()
-    when (val s = state) {
+    // The start screen shows while the stored session is checked and for at least SPLASH_MIN_MS, so its entrance is seen (a check that is
+    // already done at start would otherwise replace it after a few frames). Kept across a rotation; the light tier (animations off) skips the wait.
+    var startDone by rememberSaveable { mutableStateOf(false) }
+    val tier = LocalEffectTier.current
+    LaunchedEffect(tier) {
+        if (!startDone) {
+            if (tier != EffectTier.LIGHT) kotlinx.coroutines.delay(Motion.SPLASH_MIN_MS)
+            startDone = true
+        }
+    }
+    when (val s = if (!startDone && state !is SessionState.Loading) SessionState.Loading else state) {
         SessionState.Loading -> StartupScreen()
         is SessionState.LoggedOut -> {
             // Signed out with no reason (first start, or a logout by the member): the welcome screen first; its choice says where the app opens.

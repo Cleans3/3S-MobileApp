@@ -198,6 +198,11 @@ class UiAuditTest {
             overlayShot("password-first", activity) { ChangePasswordContent(forced = true, busy = false, error = null, onSave = { _, _ -> }, onLogout = {}) }
             overlayShot("lock", activity) { LockContent(onUnlock = {}, onLogout = {}) }
             overlayShot("offline", activity) { OfflineContent(busy = false, tries = 2, onRetry = {}, onLogout = {}) }
+            // The entrance of the start screen, frame by frame (the composition clock is advanced by hand): 120 ms, 300 ms, then done.
+            overlayShot("splash-120ms", activity, pad = 0.dp, advanceMs = 120) { StartupScreen() }
+            overlayShot("splash-300ms", activity, pad = 0.dp, advanceMs = 300) { StartupScreen() }
+            overlayShot("splash-600ms", activity, pad = 0.dp, advanceMs = 600) { StartupScreen() }
+            overlayShot("splash-1000ms", activity, pad = 0.dp, advanceMs = 1000) { StartupScreen() }
             overlayShot("splash", activity, pad = 0.dp) { StartupScreen() }
             overlayShot("login-card", activity) { CardLoginContent(busy = false, error = null, onBack = {}) }
             overlayShot("login-card-busy", activity) { CardLoginContent(busy = true, error = null, onBack = {}) }
@@ -241,7 +246,7 @@ class UiAuditTest {
      * captured by the GPU renderer as `<config>/<name>-hw.png`, then removed. The frame clock is advanced by hand so that endless
      * animations (the rings) do not keep the test from going idle.
      */
-    private fun overlayShot(name: String, activity: MainActivity, pad: androidx.compose.ui.unit.Dp = 24.dp, content: @Composable () -> Unit) {
+    private fun overlayShot(name: String, activity: MainActivity, pad: androidx.compose.ui.unit.Dp = 24.dp, advanceMs: Long = 900, content: @Composable () -> Unit) {
         lateinit var view: ComposeView
         instrumentation.runOnMainSync {
             view = ComposeView(activity).apply {
@@ -256,7 +261,7 @@ class UiAuditTest {
             (activity.window.decorView as ViewGroup).addView(view, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         }
         compose.mainClock.autoAdvance = false
-        compose.mainClock.advanceTimeBy(900)
+        compose.mainClock.advanceTimeBy(advanceMs)
         captureHardware(activity.window.decorView)?.let { bmp -> File(outDir, "$config/$name-hw.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) } }
         compose.mainClock.autoAdvance = true
         instrumentation.runOnMainSync { (activity.window.decorView as ViewGroup).removeView(view) }
