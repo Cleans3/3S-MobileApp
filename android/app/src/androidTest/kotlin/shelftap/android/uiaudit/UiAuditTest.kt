@@ -230,6 +230,14 @@ class UiAuditTest {
 
             tab(R.string.tab_account); waitFor(AuditData.me.fullName)
             audit("account", activity)
+            // The foot of the page too: its theme choice and the sign-out button sit below the first screen, and the scanner only judges what is on screen.
+            compose.onAllNodes(hasScrollAction()).onFirst().performScrollToNode(hasText(str(R.string.action_logout)))
+            // Scrolling to a node stops as soon as it shows; push on to the real end of the page, where the padding clears the floating button.
+            repeat(3) { compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() } }
+            compose.waitForIdle()
+            audit("account-bottom", activity)
+            compose.onAllNodes(hasScrollAction()).onFirst().performScrollToNode(hasText(str(R.string.account_history)))
+            compose.waitForIdle()
             compose.onNodeWithText(str(R.string.account_history)).performClick(); waitFor(AuditData.history.first().title)
             audit("history", activity)
             scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
