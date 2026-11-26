@@ -1,0 +1,11 @@
+// ID: code-07b
+// caption (vi): Quy tắc tương ứng với code-06: không ghi nội dung gửi/nhận qua mạng vào nhật ký; mức ghi log trong bản phát hành phải là NONE
+// claim: Quy tắc 7 của guardrail cấm đúng lỗi HttpLoggingInterceptor Level.BODY ở code-06
+//
+// source: optimization/study/guardrail/ANDROID-GUARDRAIL.md
+// lines: 15-16
+// run id: n/a (same guardrail file, rule 7)
+//
+
+## Logging
+7. Never log tokens, passwords, `Authorization` headers, request or response bodies, or personal data (names, e-mails, member IDs, reading history) through `Log.*`, `println`, Timber or any other sink. If `HttpLoggingInterceptor` is used at all, its level in release builds is `NONE`: its `HEADERS` and `BODY` levels can leak `Authorization` and `Cookie` headers and message bodies. [OkHttp logging-interceptor README; MASWE-0005]

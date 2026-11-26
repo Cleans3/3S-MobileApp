@@ -1,0 +1,29 @@
+// ID: code-05
+// caption (vi): Công cụ quét MobSF báo "màn hình để ngỏ cho app khác truy cập" nhưng đó chỉ là màn hình xem trước của thư viện đồ họa, chỉ có trong bản thử nghiệm, nên được xếp vào "báo động giả"
+// claim: MobSF cảnh báo cả những thứ vô hại (precision thấp); người đánh giá phải kiểm tra tay và loại bỏ (verdict fp = false positive)
+//
+// source (part 1): optimization/study/e3-security/results/mobsf/agy-g38flash-B1-detailed-functional-r1.json.gz
+// lines: n/a (the file is one line of JSON); JSON path manifest_analysis.manifest_findings[4], pretty-printed with python json.dumps(indent=2), content unchanged
+// run id: agy-g38flash-B1-detailed-functional-r1 (APK built from this E1 draft, package vn.shelftap.app, scanned with MobSF 4.6.9)
+// source (part 2): optimization/study/e3-security/results/findings.csv line 1 (header) and line 26 (verdict row)
+// source (part 3): optimization/study/e3-security/results/triage_manual.csv line 1 (header) and line 12 (the triage rule behind the verdict)
+//
+
+// ===== part 1: MobSF finding =====
+{
+  "rule": "explicitly_exported",
+  "title": "Activity (androidx.compose.ui.tooling.PreviewActivity) is not Protected. [android:exported=true]",
+  "severity": "warning",
+  "description": "An Activity is found to be shared with other apps on the device therefore leaving it accessible to any other application on the device.",
+  "name": "Activity androidx.compose.ui.tooling.PreviewActivity is not Protected. [android:exported=true]",
+  "component": [
+    "Activity",
+    "androidx.compose.ui.tooling.PreviewActivity"
+  ]
+}
+
+// ===== part 2: triage verdict (findings.csv:26; columns: target,tool,masvs,rule_id,severity,evidence,triage,method,native_rule) =====
+agy-g38flash-B1-detailed-functional-r1,mobsf,MASVS-PLATFORM,unmapped,warning,Activity (androidx.compose.ui.tooling.PreviewActivity) is not Protected. [android:exported=true],fp,"manual: debug-only Compose tooling activity merged into the debug manifest from the ui-tooling library; library code the app does not use for the flagged purpose, absent from release builds",explicitly_exported
+
+// ===== part 3: the rule that gave the verdict (triage_manual.csv:12; columns: target,native_rule,evidence_prefix,triage,note) =====
+*,explicitly_exported,Activity (androidx.compose.ui.tooling.PreviewActivity),fp,"debug-only Compose tooling activity merged into the debug manifest from the ui-tooling library; library code the app does not use for the flagged purpose, absent from release builds"

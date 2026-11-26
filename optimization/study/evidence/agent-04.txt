@@ -1,0 +1,22 @@
+# source: optimization/study/e5-optimizer/results/steps.csv:85 ; optimization/study/e5-optimizer/runs/e5-codex-none-r2/approve/diff.patch:5-9,436 ; /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/gradle-home/daemon/9.6.0/daemon-205363.out.log:88-90
+# lines: see source list above (elisions marked // …)
+# run id: e5-codex-none-r2, level approve (E5, codex-cli 0.170.0 + gpt-5.6-luna, no evidence arm, rep 2; step 8 = finding P11), 2026-11-21
+# caption (vi): Trợ lý thêm một "plugin" mới vào dự án; bộ kiểm tra tự động duyệt thay đổi này (không thấy gì sai), nhưng khi biên dịch thật thì dự án báo lỗi và không dựng được.
+# claim: E5: a codex fix accepted by the static checker (steps.csv: accepted=True) does not compile: plugin androidx.baselineprofile cannot be applied to the project (Gradle: "Module `:app` is not a supported android module"). 9 of 12 codex fixed trees failed to compile with this error.
+# compile verdict row: results/runs.csv line 23 (compiles=0, compile_error "An exception occurred applying plugin request [id: 'androidx.baselineprofile']")
+# Gradle log: the build copy dir 203c245e3c is sha1(path of this trial's approve work dir)[:10], recomputed with build_check.py's formula; log is outside the repo
+# ----
+# ---- optimization/study/e5-optimizer/results/steps.csv:85 (the checker accepted the step (fields: seq,step,finding_id,accepted,reason,fixed_after)) ----
+e5-codex-none-r2,8,P11,True,,5
+# ---- optimization/study/e5-optimizer/runs/e5-codex-none-r2/approve/diff.patch:5-9,436 (the assistant's change) ----
+ plugins {
+     id("com.android.application")
+     id("org.jetbrains.kotlin.plugin.compose")
++    id("androidx.baselineprofile")
+ }
+// …
++    id("androidx.baselineprofile") version "1.4.1" apply false
+# ---- /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/gradle-home/daemon/9.6.0/daemon-205363.out.log:88-90 (the compiler/build error for this trial) ----
+An exception occurred applying plugin request [id: 'androidx.baselineprofile']
+> Failed to apply plugin class 'androidx.baselineprofile.gradle.apptarget.BaselineProfileAppTargetPlugin'.
+   > Module `:app` is not a supported android module.

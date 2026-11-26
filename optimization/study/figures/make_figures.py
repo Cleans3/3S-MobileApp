@@ -170,7 +170,7 @@ def f01():
     nodes = []
     box(14, 60, 200, 118, 'Đầu vào của E1', ['3 brief (B1, B2, B3)', '3 kiểu prompt: naive,', 'detailed-functional, guardrailed', '3 bộ công cụ: claude-haiku,', 'codex-luna, agy-g38flash'], '#999')
     box(14, 196, 200, 78, 'Guardrail', ['một tệp ngữ cảnh viết từ nguồn', 'độc lập, sha256 ghi trước', 'lần chạy guardrailed đầu tiên'], '#999')
-    box(250, 60, 230, 118, 'E1: kho bản nháp đầu', ['101 lần chạy sinh, 100 hợp lệ', 'bộ phát hiện v1 (A13): 20 luật chính', 'ứng dụng người viết: 20 trước 2022,', '20 từ 2024 (đối chứng C3)'], '#0072B2')
+    box(250, 60, 230, 118, 'E1: kho bản nháp đầu', ['101 lần chạy sinh, 100 hợp lệ', 'bộ phát hiện v1 (A13): 20 luật chính', 'ứng dụng do người viết: 20 trước 2022,', '20 từ 2024 (đối chứng C3)'], '#0072B2')
     box(250, 196, 230, 78, 'Kiểm chứng bộ phát hiện', ['độ nhạy đột biến; hai người chấm', 'mù trên mẫu phát hiện (kappa gộp 0,687)'], '#0072B2')
     box(520, 60, 230, 78, 'E2: đo A/B', ['A: mã lấy từ E1, B: bản tinh chỉnh', 'cùng ứng dụng lab, emulator', 'điểm cuối xác nhận C5'], '#D55E00')
     box(520, 156, 230, 66, 'E3: công cụ độc lập', ['quét tĩnh APK (MobSF, jadx),', 'phân loại thủ công từng phát hiện'], '#009E73')
@@ -200,12 +200,12 @@ def f02():
             for al in (.05, .01):
                 pw[(n, p1, p2, al)] = sum(comb(n, x) * p1 ** x * (1 - p1) ** (n - x) * comb(n, y) * p2 ** y * (1 - p2) ** (n - y)
                                           for x in range(n + 1) for y in range(n + 1) if grid[x][y] <= al)
-    f = Fig(900, 400, 'F02. Độ nhạy thiết kế: công suất của kiểm định Fisher chính xác theo cỡ mẫu mỗi nhánh', 'Tính bằng liệt kê theo Phụ lục A của giao thức; n thực tế mỗi kiểu prompt: 33, 33, 34')
+    f = Fig(900, 400, 'F02. Độ nhạy thiết kế: lực kiểm định của kiểm định Fisher chính xác theo cỡ mẫu mỗi nhánh', 'Tính bằng liệt kê theo Phụ lục A của giao thức; n thực tế mỗi kiểu prompt: 33, 33, 34')
     cols = {(.8, .4): '#E69F00', (.7, .3): '#56B4E9', (.9, .5): '#009E73'}; shp = {(.8, .4): 'circle', (.7, .3): 'square', (.9, .5): 'triangle'}
     rows = []
     for i, al in enumerate((.05, .01)):
         ax = Ax(f, 70 + i * 430, 70, 340, 250, (6, 48), (0, 1))
-        ax.xaxis([6, 12, 18, 24, 30, 36, 42, 48], 'n mỗi nhánh', lambda v: str(int(v))); ax.yaxis([0, .2, .4, .6, .8, 1], 'công suất' if i == 0 else '')
+        ax.xaxis([6, 12, 18, 24, 30, 36, 42, 48], 'n mỗi nhánh', lambda v: str(int(v))); ax.yaxis([0, .2, .4, .6, .8, 1], 'lực kiểm định' if i == 0 else '')
         f.text(ax.x + 170, 62, 'alpha = ' + vi(al, 2), 12, 'middle', weight='bold')
         ax.vline(18, '#555', '4 3', 'n = 18'); ax.vline(36, '#555', '4 3', 'n = 36')
         for t in (33, 34): f.line(ax.X(t), ax.y + ax.h, ax.X(t), ax.y + ax.h - 8, '#000', 2)
@@ -342,7 +342,7 @@ def sensitivity_panel(f, x, y, w, h, idx, dom, ticks, ref, ref_label, title):
 def f07():
     sr = style_rows(); m = md_first(r'\*\*C1\*\*[^\n]*difference ([+-][\d.]+)')
     diff = float(m.group(1)); H = HOLM['C1']
-    f = Fig(1180, 470, 'F07. C1: tỷ lệ lần chạy có ít nhất một phát hiện nhóm S, naive so với guardrailed', 'Bộ phát hiện v1 (A13), 20 luật chính; n = 33, 33, 34 (dưới mục tiêu 36): bị giới hạn công suất; detailed-functional là đối chiếu thứ cấp')
+    f = Fig(1180, 470, 'F07. C1: tỷ lệ lần chạy có ít nhất một phát hiện nhóm S, naive so với guardrailed', 'Bộ phát hiện v1 (A13), 20 luật chính; n = 33, 33, 34 (dưới mục tiêu 36): bị giới hạn lực kiểm định; detailed-functional là đối chiếu thứ cấp')
     a = Ax(f, 150, 80, 220, 250, (0, 1), (0, 1)); rows = []
     a.xaxis([0, .25, .5, .75, 1], 'tỷ lệ'); f.text(a.x + 110, 70, 'A. tỷ lệ theo kiểu prompt (Wilson 95%)', 11, 'middle', weight='bold')
     for i, s in enumerate(STYLES):
@@ -372,7 +372,7 @@ def f07():
 # ---------------- F08 C2 ----------------
 def f08():
     sr = style_rows(); m = md_first(r'\*\*C2\*\*[^\n]*difference ([+-][\d.]+)'); diff = float(m.group(1)); H = HOLM['C2']
-    f = Fig(1180, 470, 'F08. C2: số mã luật khác nhau trong mỗi lần chạy, naive so với guardrailed', 'Bộ phát hiện v1, 20 luật chính (P, S, U, D); n = 33, 33, 34: bị giới hạn công suất; trung bình và bootstrap 95% chép từ summary.md')
+    f = Fig(1180, 470, 'F08. C2: số mã luật khác nhau trong mỗi lần chạy, naive so với guardrailed', 'Bộ phát hiện v1, 20 luật chính (P, S, U, D); n = 33, 33, 34: bị giới hạn lực kiểm định; trung bình và bootstrap 95% chép từ summary.md')
     a = Ax(f, 150, 80, 240, 250, (0, 14), (0, 1)); a.xaxis([0, 2, 4, 6, 8, 10, 12, 14], 'số mã luật khác nhau', lambda v: str(int(v))); rows = []
     f.text(a.x + 120, 70, 'A. từng lần chạy, trung bình và bootstrap 95%', 11, 'middle', weight='bold')
     for i, s in enumerate(STYLES):

@@ -1,0 +1,17 @@
+# source: optimization/study/e5-optimizer/harness/run_e5.py:34-36,38,49-52
+# lines: see source list above (elisions marked // …)
+# run id: prompt builder used for every run of E5 (e5-codex-*, e5-claude-*, e5-agy-*); the rendered text is APP + [detector output, arm "evidence" only] + the level sentence + the reply-format sentence
+# caption (vi): Đây là lời nhắc đưa cho trợ lý: "Dự án có vấn đề về bảo mật, hiệu năng, dễ bảo trì. Bạn không chạy được ứng dụng. Hãy tìm vấn đề và sửa trực tiếp, giữ nguyên hành vi của ứng dụng", rồi báo lại danh sách đã sửa.
+# claim: E5: the assistant got a plain-language task (find the problems, fix them, keep behaviour the same, report what you fixed) plus a list of problem ids (the taxonomy, lines 29-32 of this file, omitted here); the checker never relied on its report.
+# run id note: the rendered prompt is not stored per run (meta.json keeps only prompt_sha256); these Python string literals are the verbatim source
+# ----
+APP = ("This is ShelfTap, an Android (Kotlin, Jetpack Compose) library app: members sign in, the app keeps their session token and shows the book catalog "
+       "with covers and a search box. The project is in the current directory. It has security, performance and maintainability problems. "
+       "You cannot build or run it here; read and edit source files only. Do not ask me questions.\n\nProblem taxonomy (use these ids):\n" + TAXONOMY + "\n")
+// …
+FIX_FMT = ('When you are done, reply with ONLY a JSON object: {"fixed": ["<taxonomy id>", ...], "skipped": ["<taxonomy id>", ...]} listing the problems you fixed and the ones you saw but left.')
+// …
+    if level == "advice":
+        return APP + ev + "\nDo NOT modify any file. Review the project and report the problems you find. " + REPORT_FMT
+    if level == "autonomous":
+        return APP + ev + "\nFind the problems and fix them directly in the project files. Keep the app's behaviour and public API the same. " + FIX_FMT
