@@ -1,0 +1,12 @@
+// ID: code-07
+// caption (vi): Quy tắc trong tệp hướng dẫn gửi kèm cho AI: token phải được mã hóa bằng khóa Keystore, không được lưu thô trong SharedPreferences
+// claim: Đây đúng là quy tắc tương ứng với lỗi ở code-01; code-02 là kết quả khi AI làm theo quy tắc này
+//
+// source: optimization/study/guardrail/ANDROID-GUARDRAIL.md
+// lines: 9, 11
+// run id: n/a (guardrail file used in all guardrailed E1 runs, sha256 ae5639033f70ca65...; guardrail rule 4)
+//
+
+## Secrets, tokens and personal data
+// …
+4. Store tokens and personal data (profile, reading history, loan records) only encrypted. Create an AES-256 key in the Android Keystore (its key material is not exportable), encrypt with it before writing, and keep only the ciphertext in app-private storage (DataStore or a file). Never write them in plain `SharedPreferences`, plain DataStore, a plain file, a database column or external storage. [Android Keystore; MASWE-0001, MASWE-0002, MASWE-0003]

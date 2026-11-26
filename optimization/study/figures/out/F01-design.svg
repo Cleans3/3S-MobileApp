@@ -17,7 +17,7 @@
 <text x="258.0" y="78.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">E1: kho bản nháp đầu</text>
 <text x="258.0" y="96.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">101 lần chạy sinh, 100 hợp lệ</text>
 <text x="258.0" y="111.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">bộ phát hiện v1 (A13): 20 luật chính</text>
-<text x="258.0" y="126.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">ứng dụng người viết: 20 trước 2022,</text>
+<text x="258.0" y="126.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">ứng dụng do người viết: 20 trước 2022,</text>
 <text x="258.0" y="141.0" font-size="11" text-anchor="start" font-weight="normal" fill="#222222">20 từ 2024 (đối chứng C3)</text>
 <rect x="250.0" y="196.0" width="230.0" height="78.0" fill="#fff" stroke="#0072B2" stroke-width="2" opacity="1"/>
 <text x="258.0" y="214.0" font-size="12" text-anchor="start" font-weight="bold" fill="#222222">Kiểm chứng bộ phát hiện</text>

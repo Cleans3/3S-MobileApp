@@ -15,7 +15,7 @@ Bài trình bày 10 phút theo kịch bản của đề cương (mục VII): 1 p
 | 5. Demo phiên bản B | 2 phút | S10 | cùng thao tác, bản đã tối ưu, số đo trước và sau |
 | 6. Kết luận | 1 phút | S11 | kết quả, hạn chế, vai trò người kiểm duyệt |
 
-Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao thức đăng ký trước, Holm và công suất; D2 catalogue vấn đề; D3 mối đe dọa; D4 so sánh với nghiên cứu liên quan; D5 H4 bị bác bỏ và sửa tra cứu phụ thuộc (E1).
+Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao thức đăng ký trước, Holm và lực kiểm định; D2 catalogue vấn đề; D3 mối đe dọa; D4 so sánh với nghiên cứu liên quan; D5 H4 bị bác bỏ và sửa tra cứu phụ thuộc (E1).
 
 ## Danh sách slide
 
@@ -37,22 +37,22 @@ Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao th�
 ### S4. Demo UI, phiên bản A (75 giây)
 - Thông điệp: cuộn danh sách bản A; những gì công cụ đo cho thấy.
 - Video: `P09c-A-scroll.mp4` (danh sách P01+P09) rồi `P08c-A-scroll.mp4` (thẻ lưới P08, quay trên swangle_indirect); thay thế: `P06c-A-scroll.mp4`, `P13c-A-search.mp4`.
-- Bảng nhỏ (Bảng 5.13 và 5.15, trung vị các lần lặp được giữ): thẻ lưới P08, CPU khung hình p90 là 62,87 ms và 70,52% khung chậm (đường GPU swangle_indirect); danh sách P01+P09 dựng 2.000 khoản vay, TTID 1.901 ms và 90,05% khung chậm.
+- Bảng nhỏ (Bảng 5.13 và 5.15, trung vị các lần lặp được giữ): thẻ lưới P08, CPU khung hình p90 là 62,87 ms và 70,52% khung chậm (đường GPU swangle_indirect); danh sách P01+P09 dựng 2.000 lượt mượn, TTID 1.901 ms và 90,05% khung chậm.
 
 ### S5. Bản nháp của AI chứa gì (60 giây)
 - Thông điệp: 101 bản nháp, 100 hợp lệ; ít nhất một phát hiện nhóm S ở 31/33 lần chạy naive (0,939) và 29/33 detailed-functional (0,879); mật độ nhóm S trên 1000 dòng, trung vị 2,37 (AI không guardrail) so với 1,02 (người viết trước 30/11/2022); delta Cliff +0,582, ngưỡng 0,33 (C3, được ủng hộ, p hiệu chỉnh 0,00027).
 - Hình: F06 (tần suất theo luật và kiểu prompt) và F10 (C3).
-- Câu bắt buộc: "tỷ lệ của trợ lý so với tỷ lệ nền của người", không nói "AI gây ra". Giới hạn: chỉ 42 trên 100 bản nháp build được; ứng dụng người viết phổ biến và lớn hơn.
+- Câu bắt buộc: "tỷ lệ của trợ lý so với tỷ lệ nền của người", không nói "AI gây ra". Giới hạn: chỉ 42 trên 100 bản nháp build được; ứng dụng do người viết phổ biến và lớn hơn.
 
 ### S6. Công cụ độc lập kiểm tra (60 giây)
 - Thông điệp: không để AI tự kết luận mã đã an toàn. MobSF 103 phát hiện trên 13 APK: 30 đúng, 73 sai, độ chính xác 0,291 [0,212; 0,385]; cả 30 là sự kiện manifest, build hoặc chữ ký, không có điểm yếu ở mức mã; cả 22 cảnh báo exported đều sai; tùy cách đọc nhãn, độ chính xác từ 0,244 đến 0,806.
-- Bộ phát hiện E1 thấy cái MobSF không thấy (token ghi văn bản thường, ghi nhật ký BODY); hai công cụ bổ sung nhau (kappa 0,581 so với mọi cảnh báo, 0,78 so với tp đã phân loại).
+- Bộ phát hiện E1 thấy cái MobSF không thấy (token ghi dạng rõ (plaintext), ghi nhật ký BODY); hai công cụ bổ sung nhau (kappa 0,581 so với mọi cảnh báo, 0,78 so với tp đã phân loại).
 - Hình: F17. [TÀI NGUYÊN: ảnh chụp MobSF và một đoạn mã trước sau, chủ E3.]
 
 ### S7. Guardrail (40 giây)
 - Thông điệp: C1, tỷ lệ có phát hiện S giảm từ 31/33 xuống 17/34 (+0,439, p hiệu chỉnh 0,00016); C2, số mã luật khác nhau mỗi lần từ 5,85 xuống 2,82 (+3,025, p hiệu chỉnh 0,00005); cả hai được ủng hộ.
 - G3: luật bị giữ lại cũng giảm (chênh +0,63 [0,15; 1,14] và +1,30 [0,75; 1,84]): "khái quát hóa hoặc ngẫu nhiên".
-- Giới hạn trên slide: ở các ứng dụng build được C1 là +0,000 (C2 vẫn +3,829); n = 33, 33, 34 dưới mục tiêu 36, bị giới hạn công suất.
+- Giới hạn trên slide: ở các ứng dụng build được C1 là +0,000 (C2 vẫn +3,829); n = 33, 33, 34 dưới mục tiêu 36, bị giới hạn lực kiểm định.
 - Hình: F07, F08, F09.
 
 ### S8. AI sửa lỗi dưới áp lực (30 giây)
@@ -76,7 +76,7 @@ Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao th�
 - Câu chốt: "Không để trợ lý tự xác nhận mã của chính nó."
 
 ## Slide dự phòng
-- **D1** Giao thức đăng ký trước: năm phép kiểm định xác nhận (C1 đến C5), Holm (Bảng 5.27), công suất (Hình 4.2, F02).
+- **D1** Giao thức đăng ký trước: năm phép kiểm định xác nhận (C1 đến C5), Holm (Bảng 5.27), lực kiểm định (Hình 4.2, F02).
 - **D2** Catalogue vấn đề: bảng P, S, U, D rút gọn (ARTICLE.md Chương 3); F04, F05 (kiểm chứng và độ phủ của bộ phát hiện).
 - **D3** Mối đe dọa tới tính hợp lệ (ARTICLE.md §4.10, §5.8).
 - **D4** Nghiên cứu liên quan và khoảng trống (ARTICLE.md §1.2).
@@ -90,7 +90,7 @@ Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao th�
 | Hình | Dùng ở | Tệp |
 |---|---|---|
 | thiết kế nghiên cứu | S3, bài Hình 4.1 | `F01-design.svg` |
-| công suất | D1, bài Hình 4.2 | `F02-power.svg` |
+| lực kiểm định | D1, bài Hình 4.2 | `F02-power.svg` |
 | luồng E1 | S5 (tùy chọn) | `F03-e1-flow.svg` |
 | kiểm chứng bộ phát hiện, độ phủ | D2 | `F04-validation.svg`, `F05-coverage.svg` |
 | tần suất theo luật và kiểu prompt | S5 | `F06-prevalence.svg` |

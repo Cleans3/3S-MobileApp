@@ -1,0 +1,47 @@
+// ID: code-06
+// caption (vi): App ghi lại toàn bộ nội dung gửi/nhận qua mạng (kể cả mật khẩu, mã đăng nhập) vào nhật ký của máy; công cụ quét MobSF không báo gì về lỗi này
+// claim: Lỗi thật mà máy dò nguồn (E1 slop-scan, rule S05) bắt được nhưng MobSF bỏ sót: MobSF (4.6.9) không có luật nào khớp với dòng mã này (xem lệnh kiểm chứng bên dưới)
+//
+// source (code): optimization/study/e1-corpus/runs/agy-g38flash-B3-detailed-functional-r3/src/app/src/main/java/vn/shelftap/app/data/api/NetworkClient.kt
+// lines: 20-23, 27
+// run id: agy-g38flash-B3-detailed-functional-r3 (tool agy, model gemini-3.8-flash, brief B3, detailed-functional prompt, no guardrail)
+// detector row (e1-corpus/results/findings.csv): 1455:agy-g38flash-B3-detailed-functional-r3,S05,app/src/main/java/vn/shelftap/app/data/api/NetworkClient.kt,22,slop-scan,HttpLoggingInterceptor Level.BODY not guarded for release,unk
+// E3 report (e3-security/REPORT.md section 5, "Found by one tool only") lists this exact item as slop-scan only.
+// source (MobSF): optimization/study/e3-security/results/mobsf/agy-g38flash-B3-detailed-functional-r3.json.gz (one-line JSON, so evidence is a command + output)
+//
+
+// ===== the code =====
+    fun createService(authRepository: AuthRepository): ShelfTapApiService {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+            // …
+            .addInterceptor(loggingInterceptor)
+
+// ===== MobSF 4.6.9 on the APK built from the same draft: command run from the repo root =====
+// zcat optimization/study/e3-security/results/mobsf/agy-g38flash-B3-detailed-functional-r3.json.gz | python3 -c "
+// import json,sys
+// d=json.load(sys.stdin)
+// print('code_analysis rules fired:')
+// for k,v in d['code_analysis']['findings'].items(): print(' ',k,v['metadata']['severity'])
+// print('manifest_analysis rules fired:',[f['rule'] for f in d['manifest_analysis']['manifest_findings']])
+// for sec in ['code_analysis','manifest_analysis','network_security','secrets','android_api','niap_analysis']:
+//     s=json.dumps(d[sec]); print(sec,'mentions logging/HttpLogging/BODY:',any(w in s for w in ['HttpLogging','logging','Logging','BODY']))
+// print('dex string-table mentions of HttpLoggingInterceptor:',json.dumps(d['strings']).count('HttpLoggingInterceptor'))
+// "
+
+// ===== its output (verbatim) =====
+// code_analysis rules fired:
+//   android_ssl_pinning good
+//   android_hardcoded warning
+//   android_temp_file warning
+//   android_sql_raw_query warning
+// manifest_analysis rules fired: ['vulnerable_os_version2', 'app_is_debuggable', 'app_allowbackup', 'explicitly_exported', 'explicitly_exported', 'exported_protected_permission_not_defined']
+// code_analysis mentions logging/HttpLogging/BODY: False
+// manifest_analysis mentions logging/HttpLogging/BODY: False
+// network_security mentions logging/HttpLogging/BODY: False
+// secrets mentions logging/HttpLogging/BODY: False
+// android_api mentions logging/HttpLogging/BODY: False
+// niap_analysis mentions logging/HttpLogging/BODY: False
+// dex string-table mentions of HttpLoggingInterceptor: 5
+// (the 5 string-table hits are just the class name HttpLoggingInterceptor listed among the app's strings, not a finding)

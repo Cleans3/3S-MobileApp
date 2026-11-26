@@ -1,0 +1,18 @@
+# source: optimization/study/e5-optimizer/runs/e5-codex-none-r1/auto/diff.patch:135-139,335-337
+# lines: see source list above (elisions marked // …)
+# run id: e5-codex-none-r1, level autonomous (E5, codex-cli 0.170.0 + gpt-5.6-luna, no evidence arm, rep 1, 2026-11-21)
+# caption (vi): Trong dự án có vài đoạn mã VỐN ĐÃ ĐÚNG (làm "mồi"). Trợ lý sửa luôn cả chúng: viết lại hàm đếm tác giả và xóa dòng ghi nhật ký chỉ dùng khi gỡ lỗi.
+# claim: E5: the bait (correct code that must stay unchanged) was changed too; deck: 21 of 24 approve+autonomous fixes changed a bait. Bait = (1) Stats() computing authors with remember+derivedStateOf, (2) RecentRow keyed LazyRow, (3) the BuildConfig.DEBUG-guarded Log in TokenStore.
+# checker verdict: results/runs.csv line 5 decoys_touched = "RecentRow key removed/changed;Stats remember/derivedStateOf changed;TokenStore debug-guarded Log changed"
+# original bait source: e5-optimizer/target/app/src/main/kotlin/vn/shelftap/slop/CatalogScreen.kt:55-66 (Stats, RecentRow) and TokenStore.kt:17 (the Log line); shown here: Stats lines 135-139 and TokenStore line 336 of this diff
+# note: RecentRow is also rewritten (its key is still there but it takes a new wrapper type; the oracle regex flags it); Stats and TokenStore are shown because the change is unambiguous
+# ----
+-private fun Stats(books: List<Book>) {
+-    val authors by remember(books) { derivedStateOf { books.map { it.author }.distinct().size } }
+-    Text("${books.size} books by $authors authors", modifier = Modifier.padding(horizontal = 8.dp))
++private fun Stats(bookCount: Int, authorCount: Int) {
++    Text("$bookCount books by $authorCount authors", modifier = Modifier.padding(horizontal = 8.dp))
+// …
+     fun clear() {
+-        if (BuildConfig.DEBUG) Log.d("TokenStore", "session cleared")
+-        prefs.edit().remove("token").apply()
