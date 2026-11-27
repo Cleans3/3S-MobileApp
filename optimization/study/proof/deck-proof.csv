@@ -296,6 +296,23 @@ slide,value,kind,claim,source,line,quote,formula,note
 14,184,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
 14,45,label,not data,,,,,"speaker-note timing ""~N giây"", not data"
 14,9,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+14,20,derived,"build pass after <=3 repairs, naive: claude 8/12 + codex 5/12 + agy 7/9 (lines 17, 20, 23)",optimization/study/e1-corpus/REPORT.md,17,"| 8/12 = 0.67 [0.39, 0.86] |",8+5+7,
+14,12,derived,"build pass after <=3 repairs, detailed-functional: 3/12 + 2/12 + 7/9 (lines 18, 21, 24)",optimization/study/e1-corpus/REPORT.md,18,"| 3/12 = 0.25 [0.09, 0.53] | 3/12 = 0.25 [0.09, 0.53] |",3+2+7,
+14,10,derived,"build pass after <=3 repairs, guardrailed: 2/12 + 3/12 + 5/10 (lines 19, 22, 25)",optimization/study/e1-corpus/REPORT.md,19,"| 2/12 = 0.17 [0.05, 0.45] | 2/12 = 0.17 [0.05, 0.45] |",2+3+5,
+14,33,derived,naive arm n = 12 + 12 + 9 (also detailed-functional),optimization/study/e1-corpus/REPORT.md,17,"| 8/12 = 0.67 [0.39, 0.86] |",12+12+9,
+14,34,derived,guardrailed arm n = 12 + 12 + 10,optimization/study/e1-corpus/REPORT.md,25,"| 5/10 = 0.50 [0.24, 0.76] |",12+12+10,
+14,8,direct,claude-haiku naive: 8/12 build after <=3 repairs,optimization/study/e1-corpus/REPORT.md,17,"| 8/12 = 0.67 [0.39, 0.86] |",,
+14,12,direct,claude-haiku naive: n = 12,optimization/study/e1-corpus/REPORT.md,17,"| 8/12 = 0.67 [0.39, 0.86] |",,
+14,5,direct,codex-luna naive: 5/12,optimization/study/e1-corpus/REPORT.md,20,"| 5/12 = 0.42 [0.19, 0.68] |",,
+14,7,direct,"agy-g38flash naive: 7/9 (also detailed-functional, line 24)",optimization/study/e1-corpus/REPORT.md,23,"| 7/9 = 0.78 [0.45, 0.94] |",,
+14,9,direct,agy-g38flash naive: n = 9,optimization/study/e1-corpus/REPORT.md,23,"| 7/9 = 0.78 [0.45, 0.94] |",,
+14,3,direct,"claude-haiku detailed-functional: 3/12 (also codex guardrailed 3/12, line 22)",optimization/study/e1-corpus/REPORT.md,18,"| 3/12 = 0.25 [0.09, 0.53] | 3/12 = 0.25 [0.09, 0.53] |",,
+14,3,direct,build pass counted after at most 3 logged repairs,optimization/study/e1-corpus/REPORT.md,7,pass after at most 3 logged table repairs,,
+14,2,direct,"codex-luna detailed-functional: 2/12 (also claude guardrailed 2/12, line 19)",optimization/study/e1-corpus/REPORT.md,21,"| 2/12 = 0.17 [0.05, 0.45] |",,
+14,5,direct,agy-g38flash guardrailed: 5/10,optimization/study/e1-corpus/REPORT.md,25,"| 5/10 = 0.50 [0.24, 0.76] |",,
+14,10,direct,agy-g38flash guardrailed: n = 10,optimization/study/e1-corpus/REPORT.md,25,"| 5/10 = 0.50 [0.24, 0.76] |",,
+14,17,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+14,25,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
 15,17,direct,C4: 17 insecure workarounds,optimization/study/e4-pressure/REPORT.md,52,"Insecure-workaround in 17 of 148 classifiable trials = 11.5% (Wilson 95% [7.3, 17.6]). Exact one-sided binomial test of H0 pi <= 0.10: raw p = 0.311",,
 15,148,direct,of 148 classifiable trials,optimization/study/e4-pressure/REPORT.md,52,"Insecure-workaround in 17 of 148 classifiable trials = 11.5% (Wilson 95% [7.3, 17.6]). Exact one-sided binomial test of H0 pi <= 0.10: raw p = 0.311",,
 15,11.5,direct,17/148 = 11.5%,optimization/study/e4-pressure/REPORT.md,52,"Insecure-workaround in 17 of 148 classifiable trials = 11.5% (Wilson 95% [7.3, 17.6]). Exact one-sided binomial test of H0 pi <= 0.10: raw p = 0.311",,
@@ -400,6 +417,7 @@ slide,value,kind,claim,source,line,quote,formula,note
 19,7,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
 19,74,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
 19,84,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+19,14,label,slide cross-reference,,,,,"slide cross-reference ""(slide 14)"" in the speaker notes, not data"
 20,31,direct,C1 naive 31/33,optimization/study/e1-corpus/REPORT.md,127,"| naive | 33 | 31 | 0.939 | [0.804, 0.983] | 5.85 |",,
 20,33,direct,naive n 33,optimization/study/e1-corpus/REPORT.md,127,"| naive | 33 | 31 | 0.939 | [0.804, 0.983] | 5.85 |",,
 20,17,direct,C1 guardrailed 17/34 (also C4 17/148),optimization/study/e1-corpus/REPORT.md,129,"| guardrailed | 34 | 17 | 0.500 | [0.341, 0.659] | 2.82 |",,
@@ -517,6 +535,10 @@ slide,value,kind,claim,source,line,quote,formula,note
 23,82,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
 23,84,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
 23,95,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+23,20,derived,"build pass after <=3 repairs, naive: 8/12 + 5/12 + 7/9 (lines 17, 20, 23)",optimization/study/e1-corpus/REPORT.md,17,"| 8/12 = 0.67 [0.39, 0.86] |",8+5+7,
+23,10,derived,"build pass after <=3 repairs, guardrailed: 2/12 + 3/12 + 5/10 (lines 19, 22, 25)",optimization/study/e1-corpus/REPORT.md,19,"| 2/12 = 0.17 [0.05, 0.45] | 2/12 = 0.17 [0.05, 0.45] |",2+3+5,
+23,17,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+23,25,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
 24,9,direct,codex 9 of 12 fixed trees do not compile,optimization/study/e5-optimizer/REPORT.md,74,(codex 9 of 12 fixed trees,,
 24,12,direct,12 fixed trees,optimization/study/e5-optimizer/REPORT.md,74,(codex 9 of 12 fixed trees,,
 24,0.291,direct,APK scanner precision 0.291,optimization/study/e3-security/REPORT.md,28,"findings 103 on 13 targets, tp 30, fp 73, precision 0.291",,

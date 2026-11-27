@@ -109,6 +109,7 @@ b,strong{color:var(--ink);font-weight:700}
 .bar{display:grid;grid-template-columns:var(--lw,240px) 1fr;gap:24px;align-items:center}
 .bar .t{font:600 30px/1.2 "Be Vietnam Pro";color:var(--ink2)}
 .bar .track{position:relative;height:72px;z-index:1}
+.bars.sm{gap:14px} .bars.sm .bar .track{height:56px} .bars.sm .bar .val{font-size:36px}
 .bar .fill{position:absolute;left:0;top:0;bottom:0;width:calc(var(--w,0)*100%);border-radius:10px;background:var(--c,var(--a))}
 .bar .val{position:absolute;left:calc(var(--w,0)*100% + 10px);top:50%;translate:0 -50%;font:800 40px/1 "Be Vietnam Pro";white-space:nowrap;color:var(--ink);background:var(--bg);padding:4px 8px;border-radius:8px}
 .bar .val.in{left:10px;color:#fff;background:none}
@@ -212,6 +213,7 @@ table.t{border-collapse:collapse;width:100%}
 table.t th{font:700 30px/1.2 "Be Vietnam Pro";color:var(--ink2);text-align:left;padding:12px 18px;border-bottom:3px solid var(--ink)}
 table.t td{padding:12px 18px;border-bottom:1px solid var(--line);color:var(--ink);vertical-align:middle;line-height:1.3}
 table.t td.n,table.t th.n{text-align:right;white-space:nowrap}
+table.t.tight td{padding:9px 16px}
 table.t td .lab{display:block}
 .phase{display:grid;grid-template-rows:auto 1fr 1fr;gap:14px;min-width:0}
 .phase>h3{display:flex;gap:16px;align-items:baseline;font-size:36px}
@@ -534,24 +536,35 @@ table.t td .lab{display:block}
 </section>
 
 <section class="slide" data-title="Điều gì làm giảm lỗi bảo mật" data-sec="Bảo mật">
-<h2>Tệp quy tắc giảm tỷ lệ bản nháp có cảnh báo bảo mật <span class="cb">từ 31/33 xuống 17/34</span>; chỉ viết prompt dài hơn thì không.</h2>
-<div class="body" style="grid-template-columns:1.1fr 1fr;gap:72px;align-items:center">
-<div class="col" style="gap:26px">
-<div class="lab">bản nháp có ít nhất một cảnh báo bảo mật</div>
-<div class="bars" data-go="0" data-max="1" style="--lw:400px">
+<h2>Tệp quy tắc giảm bản nháp có cảnh báo bảo mật <span class="cb">từ 31/33 xuống 17/34</span>, nhưng bản build thành công cũng giảm <span class="ca">từ 20/33 xuống 10/34</span>.</h2>
+<div class="body" style="grid-template-columns:1.4fr 1fr;gap:64px;align-items:center">
+<div class="col" style="gap:24px">
+<div class="col" style="gap:12px">
+<div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap"><span class="lab">bản nháp có ít nhất một cảnh báo bảo mật</span><span class="st ok" data-step="1">C1 được xác nhận</span></div>
+<div class="bars sm" data-go="0" data-max="1" style="--lw:440px">
 <div class="bar" style="--c:var(--a)"><div class="t">Prompt ngắn</div><div class="track"><div class="fill"></div><div class="val">31/33</div></div></div>
 <div class="bar" style="--c:var(--a)"><div class="t">Prompt chức năng chi tiết</div><div class="track"><div class="fill"></div><div class="val">29/33</div></div></div>
 <div class="bar" style="--c:var(--b)" data-step="1"><div class="t">Kèm tệp quy tắc (guardrail)</div><div class="track"><div class="fill"></div><div class="val">17/34</div></div></div>
 </div>
-<span class="st ok" data-step="1">C1 được xác nhận</span>
+</div>
+<div class="col" style="gap:12px">
+<div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap"><span class="lab">bản nháp build thành công, sau tối đa 3 lần sửa cấu hình</span><span class="st na">số mô tả</span></div>
+<div class="bars sm" data-go="0" data-max="1" style="--lw:440px">
+<div class="bar" style="--c:var(--a)"><div class="t">Prompt ngắn</div><div class="track"><div class="fill"></div><div class="val">20/33</div></div></div>
+<div class="bar" style="--c:var(--a)"><div class="t">Prompt chức năng chi tiết</div><div class="track"><div class="fill"></div><div class="val">12/33</div></div></div>
+<div class="bar" style="--c:var(--b)" data-step="1"><div class="t">Kèm tệp quy tắc (guardrail)</div><div class="track"><div class="fill"></div><div class="val">10/34</div></div></div>
+</div>
+</div>
 </div>
 <div class="col" style="gap:26px" data-step="2">
 <div class="panel"><div class="lab">số loại vấn đề khác nhau mỗi bản nháp, cả bốn nhóm quy tắc</div><div class="fig s" style="margin-top:12px"><span class="ca">5,85</span><span class="to">→</span><span class="cb">2,82</span></div><span class="st ok" style="margin-top:16px">C2 được xác nhận</span></div>
 <div class="panel n"><p class="line">Trong <b>42 bản build thành công</b>, tỷ lệ có cảnh báo bảo mật <b>không khác nhau</b> giữa hai nhóm: tệp quy tắc giảm số loại lỗi, không thay được bước kiểm tra.</p></div>
 </div>
 </div>
-<aside class="notes"><b>~45 giây.</b> Tệp quy tắc (guardrail) là một tệp đặt ở gốc dự án với tên mà trợ lý AI tự đọc (CLAUDE.md, AGENTS.md, GEMINI.md), viết từ OWASP MASVS và tài liệu Android. Hai phép kiểm định đăng ký trước đều được xác nhận sau hiệu chỉnh Holm: C1 (tỷ lệ bản có cảnh báo bảo mật, +0,439, p 0,00016) và C2 (số loại quy tắc khác nhau bị vi phạm mỗi bản, tính trên cả bốn nhóm quy tắc, không riêng bảo mật: 5,85 → 2,82, p 0,00005). Prompt chức năng dài hơn không giúp: 29/33. Câu trung thực: chỉ xét 42 bản build được, chênh lệch C1 là +0,000 (p = 1,0); C2 vẫn còn (+3,829). Nguồn: 31/33, 29/33, 17/34 và 5,85 / 2,82: e1-corpus/REPORT.md:127-129; C1 +0,439: e1-corpus/REPORT.md:131; C2 +3,025: e1-corpus/REPORT.md:133; bản build được: e1-corpus/REPORT.md:9 và :184.</aside>
+<aside class="notes"><b>~45 giây.</b> Tệp quy tắc (guardrail) là một tệp đặt ở gốc dự án với tên mà trợ lý AI tự đọc (CLAUDE.md, AGENTS.md, GEMINI.md), viết từ OWASP MASVS và tài liệu Android. Hai phép kiểm định đăng ký trước đều được xác nhận sau hiệu chỉnh Holm: C1 (tỷ lệ bản có cảnh báo bảo mật, +0,439, p 0,00016) và C2 (số loại quy tắc khác nhau bị vi phạm mỗi bản, tính trên cả bốn nhóm quy tắc, không riêng bảo mật: 5,85 → 2,82, p 0,00005). Prompt chức năng dài hơn không giúp: 29/33. Cái giá trong cùng thí nghiệm: bản build thành công sau tối đa 3 lần sửa cấu hình là 20/33 với prompt ngắn (8/12 + 5/12 + 7/9), 12/33 với prompt chi tiết (3/12 + 2/12 + 7/9) và 10/34 khi kèm tệp quy tắc (2/12 + 3/12 + 5/10). Đây là số mô tả, không thuộc các phép kiểm định đăng ký trước. Câu trung thực: chỉ xét 42 bản build được, chênh lệch C1 là +0,000 (p = 1,0); C2 vẫn còn (+3,829). Nguồn: 31/33, 29/33, 17/34 và 5,85 / 2,82: e1-corpus/REPORT.md:127-129; C1 +0,439: e1-corpus/REPORT.md:131; C2 +3,025: e1-corpus/REPORT.md:133; bản build thành công theo kiểu prompt: e1-corpus/REPORT.md:17-25 (cột sau tối đa 3 lần sửa); bản build được: e1-corpus/REPORT.md:9 và :184.</aside>
 </section>
+
+
 
 <section class="slide" data-title="Khi gặp lỗi chặn" data-sec="Bảo mật">
 <h2>Khi gặp lỗi chặn, trợ lý AI đôi khi <span class="ca">nới lỏng cơ chế bảo mật</span> thay vì sửa đúng nguyên nhân.</h2>
@@ -629,14 +642,14 @@ table.t td .lab{display:block}
 <section class="slide" data-title="Sáu kết luận" data-sec="Kết luận">
 <h2>Mỗi thí nghiệm một kết luận; <span class="cb">cả sáu cùng chỉ ra: trông hoàn thiện chưa phải đã tối ưu.</span></h2>
 <div class="col" style="flex:1;gap:0;justify-content:center">
-<div class="exp"><span class="id">E1</span><span class="q">Bản nháp đầu thường build lỗi và gần như luôn có cảnh báo bảo mật.</span><span class="fig xs">42/100 <small>build thành công</small></span></div>
+<div class="exp"><span class="id">E1</span><span class="q">Bản nháp đầu thường build lỗi và gần như luôn có cảnh báo bảo mật; tệp quy tắc giảm cảnh báo nhưng cũng giảm số bản build thành công.</span><span class="fig xs">42/100 <small>build thành công</small></span></div>
 <div class="exp"><span class="id">E2</span><span class="q">Lỗi danh sách và ảnh làm trượt mục tiêu; ba lỗi Compose kinh điển không có chi phí đo được.</span><span class="fig xs">−69,9% <small>khởi động</small></span></div>
 <div class="exp"><span class="id">E3</span><span class="q">Công cụ quét APK chỉ thấy lỗi cấu hình, không thấy lỗi trong mã.</span><span class="fig xs">0,291 <small>độ chính xác</small></span></div>
 <div class="exp"><span class="id">E4</span><span class="q">Khi gặp lỗi chặn, trợ lý AI đôi khi nới lỏng cơ chế bảo mật, tập trung ở hai kịch bản lỗi.</span><span class="fig xs">17/148 <small>lượt</small></span></div>
 <div class="exp"><span class="id">E5</span><span class="q">Trợ lý AI tìm đủ lỗi cài sẵn, nhưng “đã sửa xong” chưa chắc biên dịch được.</span><span class="fig xs">9/12 <small>bản lỗi</small></span></div>
 <div class="exp"><span class="id">E6</span><span class="q">Chỉ một prompt đã cho ra ứng dụng trông hoàn thiện; bản đặc tả có cấu trúc giảm mạnh tỷ lệ khung hình trễ.</span><span class="fig xs">19,6% <small>khung hình trễ</small></span></div>
 </div>
-<aside class="notes"><b>~45 giây.</b> Đọc nhanh từng dòng, mỗi dòng một câu; số đã trình bày ở các slide trước. E1: 42/100 bản build thành công, 60/66 có cảnh báo bảo mật. E2: thời gian khởi động −69,9% khi sửa danh sách; P01, P03, P04 không có chi phí đo được. E3: độ chính xác 0,291, 30 cảnh báo đúng đều là cấu hình. E4: 17/148, tập trung ở Keystore và cleartext. E5: 9/12 bản do codex sửa không biên dịch được. E6: bản đặc tả có cấu trúc 19,6% khung hình trễ so với 99%. Nguồn: e1-corpus/REPORT.md:7; e2-bench/REPORT.md:179; e3-security/REPORT.md:28, :74; e4-pressure/REPORT.md:52, :64; e5-optimizer/REPORT.md:74; e6-oneshot/REPORT.md:84.</aside>
+<aside class="notes"><b>~45 giây.</b> Đọc nhanh từng dòng, mỗi dòng một câu; số đã trình bày ở các slide trước. E1: 42/100 bản build thành công, 60/66 có cảnh báo bảo mật; tệp quy tắc giảm cảnh báo nhưng cũng giảm số bản build thành công (slide 14). E2: thời gian khởi động −69,9% khi sửa danh sách; P01, P03, P04 không có chi phí đo được. E3: độ chính xác 0,291, 30 cảnh báo đúng đều là cấu hình. E4: 17/148, tập trung ở Keystore và cleartext. E5: 9/12 bản do codex sửa không biên dịch được. E6: bản đặc tả có cấu trúc 19,6% khung hình trễ so với 99%. Nguồn: e1-corpus/REPORT.md:7; e2-bench/REPORT.md:179; e3-security/REPORT.md:28, :74; e4-pressure/REPORT.md:52, :64; e5-optimizer/REPORT.md:74; e6-oneshot/REPORT.md:84.</aside>
 </section>
 
 <section class="slide" data-title="Kết quả các phép kiểm định" data-sec="Kết luận">
@@ -656,19 +669,19 @@ table.t td .lab{display:block}
 <section class="slide" data-title="Đối chiếu mục tiêu môn học" data-sec="Kết luận">
 <h2>So với mục tiêu môn học: <span class="cb">bản sửa đạt yêu cầu trên màn hình thử nghiệm</span>, nhưng còn hai hạng mục chưa đo.</h2>
 <div class="col" style="flex:1;justify-content:center">
-<table class="t">
+<table class="t tight">
 <tr><th>Mục tiêu môn học</th><th class="n">Bản nháp AI</th><th class="n">Bản đã sửa</th><th>Trạng thái</th></tr>
 <tr><td>Tìm ngoại tuyến 100.000 sách &lt; 50 ms</td><td class="n ca">96,63 ms</td><td class="n cb">37 ms</td><td><span class="st ok">đạt, máy ảo</span></td></tr>
 <tr><td>RAM khi duyệt &lt; 150 MB · màn hình thử nghiệm</td><td class="n ca">180 / 243 MB</td><td class="n cb">60 / 43 MB</td><td><span class="st ok">đạt, máy ảo</span></td></tr>
-<tr><td>RAM · ứng dụng chỉ một prompt, 12 tựa sách</td><td class="n">66,8–102,8 MB</td><td class="n">—</td><td><span class="st ok">đạt</span></td></tr>
-<tr><td>RAM · toàn ứng dụng, cuộn danh mục, chưa có ảnh bìa (PSS)</td><td class="n">—</td><td class="n cb">94–95 MB</td><td><span class="st ok">đạt, Xiaomi flagship</span></td></tr>
+<tr><td>RAM · ứng dụng chỉ một prompt, 12 tựa sách</td><td class="n">66,8–102,8 MB</td><td class="n cn">không áp dụng</td><td><span class="st ok">đạt</span></td></tr>
+<tr><td>RAM · toàn ứng dụng, cuộn danh mục, chưa có ảnh bìa (PSS)</td><td class="n cn">không áp dụng</td><td class="n cb">94–95 MB</td><td><span class="st ok">đạt, Xiaomi flagship</span></td></tr>
 <tr><td>Cuộn 60 fps · danh sách dài</td><td class="n ca">90% khung hình trễ</td><td class="n cb">1,3%</td><td><span class="st ok">đạt, máy ảo</span></td></tr>
 <tr><td>Cuộn 60 fps · lưới thẻ trang trí</td><td class="n ca">70,52%</td><td class="n ca">48,65%</td><td><span class="st no">chưa đạt, máy ảo</span></td></tr>
-<tr><td>60 fps · thiết bị thật, mở trang sách</td><td class="n">—</td><td class="n cb">p90 8–16 ms</td><td><span class="st ok">đạt</span></td></tr>
-<tr><td>Chạm thẻ NFC tự mượn sách &lt; 1 s · thiết bị cấu hình thấp</td><td class="n">—</td><td class="n">—</td><td><span class="st na">chưa đo</span></td></tr>
+<tr><td>60 fps · thiết bị thật, mở trang sách</td><td class="n cn">không áp dụng</td><td class="n cb">p90 8–16 ms</td><td><span class="st ok">đạt</span></td></tr>
+<tr><td>Chạm thẻ NFC tự mượn sách &lt; 1 s · thiết bị cấu hình thấp</td><td class="n cn">chưa đo</td><td class="n cn">chưa đo</td><td><span class="st na">chưa đo</span></td></tr>
 </table>
 </div>
-<aside class="notes"><b>~50 giây.</b> Bảng này trả lời câu hỏi "đạt mục tiêu chưa". Trên máy ảo, mọi số là tỷ lệ A/B; dòng thiết bị thật là bản build đo hiệu năng (cấu hình tương đương bản phát hành) trên Xiaomi. Câu trung thực: lưới thẻ trang trí đã sửa vẫn chưa đạt 60 fps trên máy ảo; ứng dụng chỉ một prompt đạt RAM chỉ vì chỉ có 12 tựa sách. RAM toàn ứng dụng ShelfTap: PSS trung vị 94 MB (hàng phẳng) và 95 MB (thẻ kính), 5 lượt xen kẽ mỗi bản, khi cuộn danh mục 100.013 đầu sách trên Xiaomi 25053RT47C, bản build đo hiệu năng. Đây chỉ là một kịch bản, trên một máy flagship, không phải thiết bị cấu hình thấp, và danh sách chưa có ảnh bìa thật, nên chi phí giải mã ảnh (lỗi P06) chưa nằm trong số này. RSS khoảng 234–235 MB gồm cả thư viện dùng chung, nên không so với mục tiêu 150 MB. Thời gian chạm thẻ NFC tự mượn sách và thiết bị cấu hình thấp chưa đo. Nguồn: tìm kiếm: e2-bench/REPORT.md:211, :219; RAM 180 / 60 MB: e2-bench/REPORT.md:162 (1,84e5 và 6,16e4 KB / 1024); 243 / 43 MB: e2-bench/REPORT.md:182 (2,484e5 và 4,381e4 KB / 1024); 66,8–102,8 MB: e6-oneshot/REPORT.md:38-49; danh sách 90,05% → 1,255%: e2-bench/REPORT.md:186; lưới: e2-bench/REPORT.md:145; thiết bị thật p90 12–16 ms và 8–9 ms: ../log/opt-ui-ux.md:362, :402; RAM toàn ứng dụng 94 / 95 MB PSS, RSS 234 / 235 MB: ../log/opt-ui-ux.md:650 và ../ui-ux/measure/results-xiaomi-list/results.tsv (cột pssKb, trung vị 96535 và 97493 KB / 1024); mục tiêu môn học: CLAUDE.md của repo.</aside>
+<aside class="notes"><b>~50 giây.</b> Bảng này trả lời câu hỏi "đạt mục tiêu chưa". Trên máy ảo, mọi số là tỷ lệ A/B; dòng thiết bị thật là bản build đo hiệu năng (cấu hình tương đương bản phát hành) trên Xiaomi. Câu trung thực: lưới thẻ trang trí đã sửa vẫn chưa đạt 60 fps trên máy ảo; ứng dụng chỉ một prompt đạt RAM chỉ vì chỉ có 12 tựa sách. RAM toàn ứng dụng ShelfTap: PSS trung vị 94 MB (hàng phẳng) và 95 MB (thẻ kính), 5 lượt xen kẽ mỗi bản, khi cuộn danh mục 100.013 đầu sách trên Xiaomi 25053RT47C, bản build đo hiệu năng. Đây chỉ là một kịch bản, trên một máy flagship, không phải thiết bị cấu hình thấp, và danh sách chưa có ảnh bìa thật, nên chi phí giải mã ảnh (lỗi P06) chưa nằm trong số này. RSS khoảng 234–235 MB gồm cả thư viện dùng chung, nên không so với mục tiêu 150 MB. Ô "không áp dụng": ứng dụng chỉ một prompt không có bản đã sửa, và hai dòng ShelfTap đo chính ứng dụng của nhóm, không có bản nháp AI tương ứng. Thời gian chạm thẻ NFC tự mượn sách và thiết bị cấu hình thấp chưa đo. Nguồn: tìm kiếm: e2-bench/REPORT.md:211, :219; RAM 180 / 60 MB: e2-bench/REPORT.md:162 (1,84e5 và 6,16e4 KB / 1024); 243 / 43 MB: e2-bench/REPORT.md:182 (2,484e5 và 4,381e4 KB / 1024); 66,8–102,8 MB: e6-oneshot/REPORT.md:38-49; danh sách 90,05% → 1,255%: e2-bench/REPORT.md:186; lưới: e2-bench/REPORT.md:145; thiết bị thật p90 12–16 ms và 8–9 ms: ../log/opt-ui-ux.md:362, :402; RAM toàn ứng dụng 94 / 95 MB PSS, RSS 234 / 235 MB: ../log/opt-ui-ux.md:650 và ../ui-ux/measure/results-xiaomi-list/results.tsv (cột pssKb, trung vị 96535 và 97493 KB / 1024); mục tiêu môn học: CLAUDE.md của repo.</aside>
 </section>
 
 <section class="slide" data-title="Thiết bị thật" data-sec="Thiết bị thật">
@@ -700,7 +713,7 @@ table.t td .lab{display:block}
 <div class="lvl adv" data-step="1"><h4>Nâng cao</h4><p>Ghi mục tiêu đo được vào yêu cầu và định nghĩa “xong” là build thành công.</p><span class="ev">Prompt chỉ dài hơn thì vẫn 29/33 có cảnh báo bảo mật (E1)</span></div>
 </div>
 <div class="phase"><h3><i>2</i>Sinh mã</h3>
-<div class="lvl"><h4>Tối thiểu</h4><p>Đặt tệp quy tắc (guardrail) ở gốc dự án, đúng tên tệp mà trợ lý AI tự đọc.</p><span class="ev">31/33 → 17/34 bản có cảnh báo bảo mật (E1)</span></div>
+<div class="lvl"><h4>Tối thiểu</h4><p>Đặt tệp quy tắc (guardrail) ở gốc dự án, đúng tên tệp mà trợ lý AI tự đọc, rồi kiểm tra bản nháp vẫn build thành công.</p><span class="ev">Cảnh báo bảo mật 31/33 → 17/34, nhưng build thành công 20/33 → 10/34 (E1)</span></div>
 <div class="lvl adv" data-step="1"><h4>Nâng cao</h4><p>Chạy thử vài mẫu để chọn mô hình có tỷ lệ build thành công cao; chỉ đưa vào tệp quy tắc những yêu cầu trợ lý AI tự hoàn tất được.</p><span class="ev">1/9 so với 7/9 bản build thành công (E6)</span></div>
 </div>
 <div class="phase"><h3><i>3</i>Sửa lỗi</h3>
@@ -708,7 +721,7 @@ table.t td .lab{display:block}
 <div class="lvl adv" data-step="1"><h4>Nâng cao</h4><p>Viết test cố định các thuộc tính bảo mật; mọi thay đổi liên quan đến Keystore hoặc cấu hình mạng phải có người duyệt.</p><span class="ev">17/148 lượt nới lỏng bảo mật (E4)</span></div>
 </div>
 </div>
-<aside class="notes"><b>~45 giây.</b> Năm giai đoạn của một vòng phát triển; mỗi giai đoạn hai mức: tối thiểu (ai cũng làm được ngay) và nâng cao (cần quy trình). Mỗi lời khuyên gắn với một kết quả đã đo. Đặt yêu cầu: bản đặc tả có cấu trúc của E6 (danh sách lazy có key, ảnh đúng kích thước, không hiệu ứng trong mục danh sách, "xong" = build thành công). Sinh mã: tệp quy tắc giảm 31/33 xuống 17/34; nhưng một quy tắc trợ lý AI không làm xong được ("Ship a Baseline Profile") làm cả 3 bản codex có tệp quy tắc build lỗi trong E6. Sửa lỗi: trong E4, mọi lượt nới lỏng nằm ở Keystore và cleartext. Nguồn: 99% → 19,6%: e6-oneshot/REPORT.md:82, :84; 29/33 và 31/33 → 17/34: e1-corpus/REPORT.md:127-129; 1/9 và 7/9: e6-oneshot/REPORT.md:99; quy tắc Baseline Profile: e6-oneshot/REPORT.md:95; 12/30: e4-pressure/REPORT.md:64; 17/148: e4-pressure/REPORT.md:52.</aside>
+<aside class="notes"><b>~45 giây.</b> Năm giai đoạn của một vòng phát triển; mỗi giai đoạn hai mức: tối thiểu (ai cũng làm được ngay) và nâng cao (cần quy trình). Mỗi lời khuyên gắn với một kết quả đã đo. Đặt yêu cầu: bản đặc tả có cấu trúc của E6 (danh sách lazy có key, ảnh đúng kích thước, không hiệu ứng trong mục danh sách, "xong" = build thành công). Sinh mã: tệp quy tắc giảm 31/33 xuống 17/34, nhưng bản build thành công cũng giảm từ 20/33 xuống 10/34, nên luôn kiểm tra bản nháp còn build được; một quy tắc trợ lý AI không làm xong được ("Ship a Baseline Profile") làm cả 3 bản codex có tệp quy tắc build lỗi trong E6. Sửa lỗi: trong E4, mọi lượt nới lỏng nằm ở Keystore và cleartext. Nguồn: 99% → 19,6%: e6-oneshot/REPORT.md:82, :84; 29/33 và 31/33 → 17/34: e1-corpus/REPORT.md:127-129; 20/33 và 10/34: e1-corpus/REPORT.md:17-25; 1/9 và 7/9: e6-oneshot/REPORT.md:99; quy tắc Baseline Profile: e6-oneshot/REPORT.md:95; 12/30: e4-pressure/REPORT.md:64; 17/148: e4-pressure/REPORT.md:52.</aside>
 </section>
 
 <section class="slide" data-title="Giai đoạn 4 và 5" data-sec="Theo giai đoạn">
