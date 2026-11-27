@@ -50,26 +50,26 @@ TYPE_QUERY = "input tap 360 190; sleep 1; for c in s i l e n t %s r i v e r; do 
 SCENARIOS = {
     "p09": dict(
         title="Danh sách dài dựng toàn bộ (P09): 2000 lượt mượn trong Column thay vì LazyColumn",
-        slides="S7, S11", factor="P09c", gesture=SWIPES, clip="P09c-AB.mp4",
+        slides="S7, S11, S16", factor="P09c", gesture=SWIPES, clip="P09c-AB.mp4",
         live=["rows", "ttid", "janky", "p90", "heap", "rss"],
         study={"rows": "2000 → 31", "ttid": "1901 → 573 ms", "janky": "90% → 1,3%", "p90": "27,1 → 5,9 ms",
                "heap": "220 MB → 7,6 MB", "rss": "243 MB → 43 MB"},
         say="A dựng cả 2000 mục ngay khi mở; B chỉ dựng phần đang hiện trên màn hình."),
     "p08": dict(
         title="Hiệu ứng trang trí trên từng thẻ sách (P08): bóng 5 dp, gradient, vẽ canvas",
-        slides="S8", factor="P08c", gesture=SWIPES + "; sleep 3", gpu="swangle_indirect", clip="P08c-AB.mp4",
+        slides="S8, S16", factor="P08c", gesture=SWIPES + "; sleep 3", gpu="swangle_indirect", clip="P08c-AB.mp4",
         live=["janky", "p90", "rss"],
         study={"janky": "70,52% → 48,65%", "p90": "62,87 → 49,07 ms", "rss": "45 MB → 42 MB"},
         say="Cùng lưới bìa sách; B bỏ hiệu ứng trang trí. B vẫn chưa đạt 60 fps trên máy ảo."),
     "p06": dict(
         title="Ảnh bìa giải mã ở kích thước gốc 1500x2250 (P06) thay vì đúng ô hiển thị",
-        slides="S10", factor="P06c", gesture=SWIPES, clip="P06c-AB.mp4",
+        slides="S10, S16", factor="P06c", gesture=SWIPES, clip="P06c-AB.mp4",
         live=["decoded", "rss"],
         study={"decoded": "203 MB → 6,2 MB (32 lần)", "rss": "180 MB → 60 MB"},
         say="Cùng 15 ảnh bìa; A giải mã từng ảnh ở kích thước gốc, B giải mã vừa ô 150x210 dp."),
     "p13": dict(
         title="Tìm kiếm trên 100.000 đầu sách không có chỉ mục (P13) thay vì chỉ mục FTS4",
-        slides="S12", factor="P13c", gesture=TYPE_QUERY, clip="P13c-AB.mp4",
+        slides="S12, S16", factor="P13c", gesture=TYPE_QUERY, clip="P13c-AB.mp4",
         live=["qmax", "qsum"],
         study={"qmax": "96,63 → 37 ms (mục tiêu < 50 ms)", "qsum": "634,9 → 85,42 ms"},
         say="Gõ cùng một chuỗi 'silent river'; mỗi phím là một truy vấn."),
@@ -677,7 +677,7 @@ def cmd_start(a):
 def cmd_list(_):
     for k, s in SCENARIOS.items():
         clip = f"evidence/video/{s['clip']}" if s["clip"] else "không có video; dùng bảng số của nghiên cứu"
-        print(f"{k:6} slide {s['slides']:7} {s['title']}\n       dự phòng: {clip}")
+        print(f"{k:6} slide {s['slides']:12} {s['title']}\n       dự phòng: {clip}")
 
 
 def cmd_run(a, record=False):

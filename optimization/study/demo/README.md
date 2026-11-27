@@ -8,6 +8,8 @@ Bộ demo này đặt **bản nháp đầu do trợ lý lập trình AI viết (
 
 Toàn bộ thao tác đi qua một tệp: `demo.py` (Python 3, chỉ dùng thư viện chuẩn, chạy trên Windows và Linux). Hướng dẫn cho trợ lý lập trình của người trình bày nằm ở `AGENT-BRIEF.md` (tiếng Anh).
 
+Số slide trong tài liệu này theo bộ slide 25 trang đã chốt: các slide về từng lỗi là S7 đến S12, **slide 16 "Demo: trước và sau tối ưu" là chỗ chạy demo trực tiếp (120 giây)**, slide 22 là "Thiết bị thật".
+
 Trong tài liệu này lệnh viết cho Windows (`py`). Trên Linux hoặc macOS thay `py` bằng `python3`.
 
 ## 1. Cần chuẩn bị
@@ -61,7 +63,7 @@ Mỗi máy ảo dùng khoảng 3 GB RAM của máy tính (2 GB cho Android, ph�
 
 Cách đọc bảng kết quả: cột **A chưa tối ưu**, **B đã tối ưu** là số đo trực tiếp; cột **Nghiên cứu A → B** là trung vị của ít nhất 12 lần lặp trong nghiên cứu, cùng cấu hình máy ảo. "Đã thấy khi chạy thử" là khoảng giá trị đo được khi chuẩn bị bộ demo (máy Linux 16 nhân, 16 GB RAM), để biết số nào là bình thường.
 
-### p09: Danh sách dài dựng toàn bộ (slide S7, S11)
+### p09: Danh sách dài dựng toàn bộ (slide S7, S11, S16)
 
 - **Lệnh:** `py demo.py run p09`
 - **Khán giả thấy:** màn hình chi tiết sách với 2.000 lượt mượn. A mở chậm và vuốt không mượt; B mở nhanh và vuốt mượt.
@@ -77,7 +79,7 @@ Cách đọc bảng kết quả: cột **A chưa tối ưu**, **B đã tối ưu
 | mức dùng RAM (RSS anon) | 243 MB → 43 MB | 215 đến 224 MB / 41 đến 44 MB |
 | Java heap | 220 MB → 7,6 MB (đỉnh) | 97 MB / 8,1 MB (đo sau khi vuốt, không phải đỉnh) |
 
-### p08: Hiệu ứng trang trí trên thẻ sách (slide S8)
+### p08: Hiệu ứng trang trí trên thẻ sách (slide S8, S16)
 
 - **Lệnh:** `py demo.py run p08`. Kịch bản này cần GPU giả lập khác (`swangle_indirect`, như nghiên cứu), nên lần đầu `demo.py` tự tắt máy ảo và khởi động lại, mất 20 đến 60 giây. Nên để p08 cuối cùng, hoặc nói phần khác trong lúc chờ.
 - **Khán giả thấy:** cùng một lưới bìa sách. A có đổ bóng 5 dp, lớp phủ chuyển sắc (gradient) và bìa vẽ bằng Canvas; B dùng khối bìa phẳng.
@@ -92,7 +94,7 @@ Cách đọc bảng kết quả: cột **A chưa tối ưu**, **B đã tối ưu
 
 Với p08 nên dùng `--single` nếu cần đọc số: ở chế độ hai máy ảo, B bị A làm chậm theo.
 
-### p06: Ảnh bìa giải mã ở kích thước gốc (slide S10)
+### p06: Ảnh bìa giải mã ở kích thước gốc (slide S10, S16)
 
 - **Lệnh:** `py demo.py run p06`
 - **Khán giả thấy:** danh sách sách có ảnh bìa. Hai bên trông giống nhau; khác biệt nằm ở bộ nhớ.
@@ -104,7 +106,7 @@ Với p08 nên dùng `--single` nếu cần đọc số: ở chế độ hai má
 | dung lượng ảnh đã giải mã | 203 MB → 6,2 MB (khoảng 32 lần) | 338 MB / 10 đến 11 MB (vuốt xa hơn nên nhiều ảnh hơn; tỷ lệ vẫn khoảng 32 lần) |
 | mức dùng RAM (RSS anon) | 180 MB → 60 MB | 164 đến 182 MB / 57 đến 62 MB |
 
-### p13: Tìm kiếm trên 100.000 đầu sách (slide S12)
+### p13: Tìm kiếm trên 100.000 đầu sách (slide S12, S16)
 
 - **Lệnh:** `py demo.py run p13`
 - **Khán giả thấy:** ô tìm kiếm tự gõ "silent river" từng phím; mỗi phím là một truy vấn.
@@ -146,6 +148,18 @@ Với p08 nên dùng `--single` nếu cần đọc số: ở chế độ hai má
 
 ## 6. Thứ tự trình bày
 
+**2 phút cho slide 16** ("Demo: trước và sau tối ưu", 120 giây). Chạy hai kịch bản rõ nhất, cùng một GPU nên không phải khởi động lại máy ảo. Điều kiện: đã làm mục 4 trước giờ trình bày (máy ảo đang chạy, đã chạy `run p09` một lần). Gõ sẵn lệnh đầu tiên trong cửa sổ lệnh trước khi tới slide 16.
+
+| Thời điểm | Làm gì | Câu nói |
+|---|---|---|
+| 0:00 | `py demo.py run p09` (chạy 25 đến 50 giây) | "Cùng màn hình 2.000 lượt mượn: bên trái là bản nháp đầu của trợ lý AI, bên phải là bản đã tối ưu. Nhìn bên trái mở chậm và vuốt không mượt." |
+| 0:45 | Chỉ vào dòng "số mục đã dựng" trong bảng kết quả | "Bản nháp dựng cả 2.000 mục, bản đã tối ưu chỉ dựng vài chục mục đang hiện. Nghiên cứu đo khung hình trễ 90% xuống 1,3%." |
+| 1:00 | `py demo.py run p13` (chạy 30 đến 50 giây) | "Gõ cùng một từ khóa trong 100.000 đầu sách: bản nháp quét cả bảng ở mỗi phím, bản đã tối ưu dùng chỉ mục." |
+| 1:45 | Chỉ vào dòng "truy vấn chậm nhất" | "Mục tiêu môn học là dưới 50 ms. Nghiên cứu đo 96,63 ms xuống 37 ms; số trên máy ảo này chỉ để minh họa." |
+| 2:00 | Sang slide tiếp theo | |
+
+Dự phòng cho slide 16: nếu máy ảo chưa sẵn sàng hoặc một lệnh lỗi, không sửa giữa buổi. Quay lại slide 7 (video P09 có sẵn trong slide) rồi mở `optimization/study/evidence/video/P13c-AB.mp4` (video P13 không có trong slide); số cần đọc là số trên các thẻ của slide 16. Nếu chỉ còn thời gian cho một kịch bản, chạy `run p09`.
+
 **5 phút** (ba kịch bản, cùng một GPU, không phải khởi động lại):
 
 | Phút | Lệnh | Slide |
@@ -179,14 +193,14 @@ Mỗi lệnh `run` mất 30 đến 60 giây (một máy ảo lâu hơn hai máy 
 | Máy tính hết RAM, chậm toàn bộ | `py demo.py stop`, rồi `py demo.py start --single`. |
 | p08 làm máy ảo đóng đột ngột | Không nên xảy ra với `swangle_indirect` (nghiên cứu: 8 trên 8 lần mở không lỗi). Nếu xảy ra: mở `P08c-AB.mp4`. |
 
-**Video dự phòng** (không cần máy ảo), trong `optimization/study/evidence/video/`, mỗi video ghép A (trái) và B (phải), cùng thao tác vuốt, 14 giây, quay khi làm nghiên cứu:
+**Video dự phòng** (không cần máy ảo), trong `optimization/study/evidence/video/`, mỗi video ghép A (trái) và B (phải), cùng thao tác vuốt, 14 giây, quay khi làm nghiên cứu. Ba video đã nằm sẵn trong slide: P09 ở slide 7, P08 ở slide 8, P06 ở slide 10.
 
 | Kịch bản | Video | Ghi chú |
 |---|---|---|
-| p09 | `P09c-AB.mp4` | A vuốt không mượt, B mượt |
-| p08 | `P08c-AB.mp4` | quay trên GPU `swangle_indirect` |
-| p06 | `P06c-AB.mp4` | hai bên trông như nhau; nói số RAM |
-| p13 | `P13c-AB.mp4` | gõ "silent river" |
+| p09 | `P09c-AB.mp4` (slide 7) | A vuốt không mượt, B mượt |
+| p08 | `P08c-AB.mp4` (slide 8) | quay trên GPU `swangle_indirect` |
+| p06 | `P06c-AB.mp4` (slide 10) | hai bên trông như nhau; nói số RAM |
+| p13 | `P13c-AB.mp4` (không có trong slide, mở riêng) | gõ "silent river" |
 | p01 | `P01c-AB.mp4` | không thấy khác biệt, đúng như số đo |
 | p10 | không có video | đọc bảng số (dung lượng APK) |
 | p0304 | không có video | đọc bảng số; có thể dùng `P01c-AB.mp4` làm ví dụ "không khác biệt" |
@@ -200,3 +214,35 @@ Muốn có video mới của chính máy mình: `py demo.py record p09` ghi `out
 - **Java heap** được đo một lần sau khi vuốt; nghiên cứu lấy giá trị lớn nhất trong cả lần chạy, nên số của nghiên cứu cao hơn.
 - **Hai máy ảo cùng lúc** tranh CPU với nhau (mục 3).
 - Số đo trên máy ảo là tỷ lệ giữa A và B, không phải số của một điện thoại thật.
+
+## 9. ShelfTap làm đối tượng demo (không bắt buộc)
+
+ShelfTap (`android/app`), ứng dụng thư viện của nhóm, không phải đối tượng của nghiên cứu. Nhóm đã đo trước và sau một số thay đổi của chính ứng dụng này trên một điện thoại thật (Xiaomi 25053RT47C, Android 17, màn 120 Hz) bằng `dumpsys gfxinfo`. Có thể dùng các kết quả này làm ví dụ "trước và sau" trên thiết bị thật, bên cạnh demo trên máy ảo. Đây là số đã đo, không phải số chạy trực tiếp.
+
+**Kết quả đã có** (đường dẫn tính từ thư mục `optimization/`):
+
+| Thay đổi | Trước → sau | Nguồn |
+|---|---|---|
+| Cuộn trang chủ: nhớ các ảnh bìa không tải được để không yêu cầu lại, dựng sẵn thẻ phía trước khi cuộn | tỷ lệ khung hình trễ 7,0–7,2% → 1,5–2,7%; p90 53–57 → 29–36 ms; p99 109–117 → 65–81 ms (3 và 2 lượt xen kẽ) | `log/opt-ui-ux.md:289` |
+| Mở trang sách: bản build debug → bản build đo hiệu năng (`measure`, cấu hình tương đương bản phát hành) | p90 125 / 85 / 61 / 53 ms → 12–16 ms; khung hình trễ 12,7 / 8,5 / 4,7 / 5,2% → 1,5–1,6%; p99 → 29–44 ms (số này cũng nằm ở slide 22) | `log/opt-ui-ux.md:362` |
+| Baseline Profile riêng của ứng dụng, cùng bản build đo | khung hình trễ 1,44–1,49% so với 1,45–1,60%: không khác nhau đo được | `log/opt-ui-ux.md:362` |
+| Mở trang sách sau các thay đổi tiếp theo (trang dựng sẵn, bỏ vòng tròn nền) | khung hình trễ 0,35–0,82%; p90 8–9 ms; p99 13–15 ms | `log/opt-ui-ux.md:402` |
+| Chiều ngược lại, hiệu ứng tốn thêm: menu nền kính mờ, mở và đóng 20 lần | p90 9–11 → 18 ms; khung trễ theo hệ thống 1 → 1 | `log/opt-ui-ux.md:237` |
+| Chiều ngược lại: dải kính mờ ở mép trên khi cuộn (`measure.ps1`, 5 lượt xen kẽ, bản build đo) | p90 cuộn trang chủ 5 → 8 ms, cuộn danh sách 5 → 9 ms; khung hình trễ 0,02% ở cả hai | `log/opt-ui-ux.md:683`, `ui-ux/measure/results-xiaomi-haze/summary.tsv:2-5` |
+| Thẻ kính thay hàng phẳng trong danh sách dài (5 lượt xen kẽ) | p90 5 ms so với 5 ms; mức dùng RAM (PSS) trung vị 94 so với 95 MB | `log/opt-ui-ux.md:650`, `ui-ux/measure/results-xiaomi-list/summary.tsv:2-3` |
+
+Hai dòng "chiều ngược lại" khớp với P08 của nghiên cứu: hiệu ứng trang trí có chi phí đo được. Ngoài hiệu năng còn có số về giao diện (không phải tối ưu): phát hiện accessibility 4 → 2, màn hình vỡ bố cục ở cỡ chữ 2.0 là 5/7 → 0/7, chuỗi viết cứng 51 → 0 (`ui-ux-metrics.md:12-16`).
+
+**Cách trình chiếu:**
+
+1. Rẻ nhất: đọc bảng trên, hoặc dùng slide 22 "Thiết bị thật" đã có số bản build debug so với bản build đo và số ảnh bìa lỗi.
+2. Ảnh: `ui-ux/audit/A/light/` (trước khi làm giao diện, tag `ui-baseline`) cạnh `ui-ux/audit/B/light/` (sau), cùng tên tệp cho mỗi màn hình (ví dụ `catalog.png`). Đây là trước và sau về giao diện, không phải về hiệu năng. Ảnh trong `ui-ux/compare/` là bản thiết kế (trái) cạnh ứng dụng (phải), không phải trước và sau.
+3. Hai bản build trên điện thoại thật: `ui-ux/measure/measure.ps1` (PowerShell) cài lần lượt từng bản, đo 5 lượt xen kẽ và ghi `summary.tsv`. Cách chạy ở `ui-ux/measure/README.md`. Cần bản build `measure` trỏ tới máy chủ dev có khoảng 100.000 đầu sách và chứng chỉ dev cài làm CA người dùng trên điện thoại. Mỗi lần đo mất nhiều phút, nên chạy trước buổi trình bày và chỉ chiếu `summary.tsv`, không chạy trong 120 giây của slide 16.
+
+**Chưa có, nói thẳng nếu được hỏi:**
+
+- Không có video trước và sau của ShelfTap. Ứng dụng đặt `FLAG_SECURE`, nên ảnh chụp và quay màn hình (kể cả `demo.py record` và phản chiếu màn hình) đều ra màn đen (`log/opt-ui-ux.md:153`). Muốn quay thì dùng camera ngoài.
+- `demo.py` không chạy ShelfTap: ứng dụng cần máy chủ dev, chứng chỉ và dữ liệu, và máy ảo không có NFC.
+- Bản build debug và bản build đo dùng cùng tên gói `shelftap.android`, nên không cài song song trên một máy. So sánh tận mắt cần hai điện thoại, hoặc cài lại lần lượt như `measure.ps1` làm.
+- Chưa có bản `ui-baseline` dựng kiểu `measure`, nên chưa có số hiệu năng trước khi làm giao diện (`ui-ux/measure/README.md`, mục Giới hạn).
+- Chưa đo trên máy giá rẻ; mọi số ở trên là của một máy flagship 120 Hz.

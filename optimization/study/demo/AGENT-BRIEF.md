@@ -12,14 +12,16 @@ You are helping a group member set up and run a live demo for a talk. The presen
 
 | scenario | factor | pattern (A) | fix (B) | slide |
 |---|---|---|---|---|
-| p09 | P09c | 2000 loans built eagerly in a Column + verticalScroll | LazyColumn | S7, S11 |
-| p08 | P08c | grid card with 5 dp shadow, gradient overlay, Canvas cover | flat cover box | S8 |
-| p06 | P06c | 1500x2250 covers decoded at full size (decodeStream, no sampling) | Coil, decode sized to the 150x210 dp slot | S10 |
-| p13 | P13c | `LIKE '%q%'` over 100k titles per keystroke | FTS4 index | S12 |
+| p09 | P09c | 2000 loans built eagerly in a Column + verticalScroll | LazyColumn | S7, S11, S16 |
+| p08 | P08c | grid card with 5 dp shadow, gradient overlay, Canvas cover | flat cover box | S8, S16 |
+| p06 | P06c | 1500x2250 covers decoded at full size (decodeStream, no sampling) | Coil, decode sized to the 150x210 dp slot | S10, S16 |
+| p13 | P13c | `LIKE '%q%'` over 100k titles per keystroke | FTS4 index | S12, S16 |
 | p10 | startup | release without R8 / resource shrinking (package `shelftap.optlab.nor8`) | R8 on (`shelftap.optlab`) | S12 |
 | p01 | P01c | list items without `key` (null result) | with key + contentType | S9 |
 | p0304 | P03P04c | unstable params + work in composition (null result) | stable param + remember | S9 |
 
+- The frozen deck has 25 main slides. Slide numbers in this kit refer to it: the pattern slides are S7 to S12, slide 16 "Demo: trước và sau tối ưu" is the 120 s live-demo slot (cards P09, P06, P08, P13; README §6 has its running order), slide 22 is "Thiết bị thật" (real device).
+- The product app ShelfTap has its own measured before/after on a phone (`optimization/log/opt-ui-ux.md`, `optimization/ui-ux/measure/`); README §9 lists what exists and what does not. `demo.py` does not run ShelfTap, and nothing under `android/app` is to be changed for the demo.
 - The rule for the talk: **the study's numbers are the reference; a live run is an illustration.** Emulator numbers are A/B ratios on one machine, never phone numbers. The README says this; keep it that way.
 
 ## Commands
@@ -63,7 +65,7 @@ What each does:
 4. **Two emulators share the host CPU.** In pair mode B slows down while A is busy (seen on a 16-core host: P08 B 27% slow frames single, 80% pair). Counts (rows, bytes, APK size, RSS) are fine in pair mode; for times use `--single`.
 5. **Cold page cache after boot.** The first FTS query after a boot read from disk (146 ms instead of about 25 ms). `provision()` warms P13 A and B after every boot; keep that.
 6. **Typing pace.** P13 debounces at 200 ms. Keystrokes are 0.3 s apart so every key fires a query (13 and 12 queries, like the study's 9 and 8 at its pace). Faster typing merges queries and lowers the counts.
-7. **Release build only.** The screens are measured on the R8 release build, which is profileable (manifest) but not debuggable; atrace app tracing works because of `profileable shell="true"`. A debuggable build changes timings a lot (ShelfTap on a phone, slide S21: debug build p90 125 ms against 12 to 16 ms on a measure build).
+7. **Release build only.** The screens are measured on the R8 release build, which is profileable (manifest) but not debuggable; atrace app tracing works because of `profileable shell="true"`. A debuggable build changes timings a lot (ShelfTap on a phone, slide S22: debug build p90 125 ms against 12 to 16 ms on a measure build).
 8. **Cold starts.** Every `run` force-stops and cold-starts each variant, like the study. TTID from `am start -W` is close to, not identical with, Macrobenchmark's timeToInitialDisplayMs.
 9. **Heap.** The live Java heap is read once after the gesture (`dumpsys meminfo`, Dalvik Heap "Heap Size"); the study reports the maximum over the run, so it is higher (P09 A: 220 MB study, about 97 MB live).
 10. **Gesture distance.** The demo swipes like the fallback clips (8 swipes of 650 px over 250 ms in the clip script; the runner does 6), which scrolls further than the benchmark journey. Absolute counts (P09 B rows, P06 decoded bytes) are larger than the study's; the ratio holds (P06 about 32x in both).
