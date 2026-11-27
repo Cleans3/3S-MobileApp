@@ -275,3 +275,10 @@ All 38 data values of slides 21 and 22 are proven (56 rows, bad rows 0, unproven
    - Also the strata are not named on the slide. Fix: "ứng dụng GitHub trước 2022 (17/20) và từ 2024 (18/20, có thể chứa mã do trợ lý viết)".
 
 7. Table 2a is the first-scan dependency lookup (v1). REPORT.md:597 says the lookup was corrected post hoc. D02 and S11 are the affected rules. The slide numbers match tables 2a and 2b (first-scan lookup) and my recount of results/findings.csv; I did not check the corrected-lookup per-rule D02 counts, which have no per-rule table in REPORT.md. The slide does not say which track it uses. Fix: footnote "nhánh v1, quét lần đầu".
+
+## 7. Slides 5 and 31, "0 dấu vết" is looser than the isolation audit
+
+- Slide 5: "623 bản ghi hội thoại quét lại: 0 dấu vết". Slide 31: "không có dấu vết quy tắc riêng nào".
+- Source: isolation-audit/AUDIT.md:36-50. Zero runs open with "Cleanse", zero use MCP/skills/slash, zero hook events (E1/E4/E5 main rows). But the scan lists 3 strong-marker hits: E1 claude-haiku-B3-naive-r2 (usage-meter UI toast, a UI notice, not model context), E4 c1-agy-B-r4 (home-dir listing, which slide 31 already admits), and the 2 real-home controls (by design). AUDIT.md:14 also says the 207 stub-HOME Claude runs "contain no marker", which the audit's own table does not fully back for the toast run.
+- Proof row 0 on slides 5 and 31 quotes the E1 main row of the audit table and states what the 0 counts. The number is honest only as "0 runs show rule text in the model context"; the strict "0 traces" is not.
+- Fix: slide 5 "0 lần có quy tắc riêng lọt vào hội thoại" (or "0 lần mở bằng quy tắc riêng"), and let slide 31 keep the two admitted exceptions.

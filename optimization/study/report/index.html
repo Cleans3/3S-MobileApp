@@ -113,7 +113,7 @@ s{color:var(--mute)}
 <p>Máy chạy thí nghiệm cũng là máy chúng tôi dùng hằng ngày với trợ lý AI đã cài nhiều quy tắc, plugin và kỹ năng riêng. Nếu những thứ đó lọt vào lần sinh mã, kết quả bị lệch. Chúng tôi kiểm tra lại toàn bộ:</p>
 <ul>
 <li>Mỗi lần sinh mã chạy trong một thư mục nhà giả chỉ chứa tệp đăng nhập, ghi bị khóa ngoài thư mục làm việc.</li>
-<li>Quét <b>623 bản ghi hội thoại</b> (E1, E4, E5, E6 và các lần thử): <b>0</b> dấu vết quy tắc riêng của chúng tôi trong các lần sinh mã.</li>
+<li>Quét <b>623 bản ghi hội thoại</b> (E1, E4, E5, E6 và các lần thử): không lần sinh mã nào nhận quy tắc, kỹ năng hay plugin riêng của chúng tôi (dấu vết duy nhất là một thông báo giao diện của plugin đo đạc, không vào hội thoại).</li>
 <li>Đối chứng dương: chạy thử với cấu hình thật thì dấu vết hiện ra ngay, và lượt đầu tốn 18.244 token thay vì khoảng 7.500. Nghĩa là phép quét bắt được rò rỉ nếu có.</li>
 <li>Kiểm tra “dấu hiệu” (canary) trước E6: 12/12 đạt.</li>
 </ul>
@@ -201,9 +201,9 @@ request [id: 'androidx.baselineprofile']</span></pre><figcaption>9 trên 12 bả
 <div class="who"><div class="vibe"><h4>Nếu bạn “vibe-code”</h4><ul><li>Biết tên sửa đổi để yêu cầu đúng: “dùng LazyColumn”, “tải ảnh đúng kích thước ô”, “bật R8 cho bản phát hành”, “bỏ hiệu ứng nặng trong danh sách”.</li></ul></div><div class="eng"><h4>Nếu bạn là kỹ sư</h4><ul><li>Ưu tiên theo số đo: danh sách và ảnh trước, rồi R8; Baseline Profile và tinh chỉnh Compose sau.</li><li>Hiệu ứng trang trí đặt ở màn hình tĩnh, không đặt trong từng dòng danh sách.</li></ul></div></div>
 
 <h3 id="m7">Mắt xích 7 · Đo đúng cách, trên máy thật</h3>
-<p class="say">Đo nhầm bản thử nghiệm (debug) làm app trông giật gấp nhiều lần. Chúng tôi cũng từng sai ở đây.</p>
+<p class="say">Bản thử nghiệm (debug) làm app trông giật gấp nhiều lần. Hãy đo bản phát hành, trên máy thật.</p>
 <figure class="bars" aria-label="ShelfTap trên Xiaomi: thời gian vẽ khung (9/10 khung không vượt quá) khi mở trang sách"><figcaption class="bt">ShelfTap trên Xiaomi: thời gian vẽ khung (9/10 khung không vượt quá) khi mở trang sách</figcaption><div class="br"><span class="bl">Bản debug, lần mở đầu</span><span class="bw"><span class="bf a" style="width:100.0%" title="Bản debug, lần mở đầu: 125 ms"></span></span><span class="bv">125 ms</span></div><div class="br"><span class="bl">Bản đo đúng cách</span><span class="bw"><span class="bf b" style="width:12.8%" title="Bản đo đúng cách: 12–16 ms"></span></span><span class="bv">12–16 ms</span></div><p class="src">optimization/log/opt-ui-ux.md</p></figure>
-<p>Con số “<s>12,7% → 4,8%</s>” mà chúng tôi từng ghi cho Baseline Profile là đo trên bản debug; đo lại đúng cách thì không có khác biệt đo được. Trên máy thật còn lộ ra lỗi máy ảo không có: mọi ảnh bìa trỏ tới <code>10.0.2.2</code>, địa chỉ chỉ máy ảo tới được, nên trang chủ gọi lại ảnh lỗi mãi. Sửa xong, khung hình giật khi cuộn giảm từ <b>7,0–7,2%</b> xuống <b>1,5–2,7%</b>.</p>
+<p>Ví dụ: trên bản debug, Baseline Profile trông như giảm khung giật từ 12,7% xuống 4,8%; trên bản đo đúng cách, có và không có nó đều quanh 1,5%, không có khác biệt đo được. Trên máy thật còn lộ ra lỗi máy ảo không có: mọi ảnh bìa trỏ tới <code>10.0.2.2</code>, địa chỉ chỉ máy ảo tới được, nên trang chủ gọi lại ảnh lỗi mãi. Sửa xong, khung hình giật khi cuộn giảm từ <b>7,0–7,2%</b> xuống <b>1,5–2,7%</b>.</p>
 <div class="pair">
 <figure class="ev"><img src="../evidence/img/ui-A-font2-catalog.jpg" alt="ShelfTap trước khi sửa, cỡ chữ 2.0: nhãn tab bị ngắt giữa chữ" loading="lazy"><figcaption><b>Trước</b>, cỡ chữ hệ thống 2.0: “Catalo/g”, “Check/out”.<span class="src">optimization/ui-ux/audit/A/font2/catalog.png</span></figcaption></figure>
 <figure class="ev"><img src="../evidence/img/ui-B-font2-catalog.jpg" alt="ShelfTap sau khi sửa, cỡ chữ 2.0: nhãn hiển thị đủ" loading="lazy"><figcaption><b>Sau</b>: màn vỡ bố cục 5/7 → 0/7.<span class="src">optimization/ui-ux/audit/B/font2/catalog.png</span></figcaption></figure>

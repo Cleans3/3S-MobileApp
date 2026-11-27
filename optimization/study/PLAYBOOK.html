@@ -76,21 +76,21 @@ main{max-width:1100px}
 <td>G1: guardrail lowers the share of runs with ≥1 security (S) finding</td>
 <td>E1 primary endpoint 1</td>
 <td>supported</td>
-<td>ARTICLE Table 5.6, 5.26, 5.27 · deck slide 9</td>
+<td>ARTICLE Table 5.6, 5.26, 5.27 · deck slide 10</td>
 </tr>
 <tr>
 <td>C2</td>
 <td>G2: guardrail lowers the number of distinct rules per run</td>
 <td>E1 primary endpoint 2</td>
 <td>supported</td>
-<td>Table 5.6 · slide 9</td>
+<td>Table 5.6 · slide 10</td>
 </tr>
 <tr>
 <td>C3</td>
 <td>B1: assistants emit S findings at a higher density than humans</td>
 <td>S findings per 1000 Kotlin lines vs human apps before 30/11/2022</td>
 <td>supported</td>
-<td>Figure 5.9, Table 5.26 · slide 8</td>
+<td>Figure 5.9, Table 5.26 · backup D2</td>
 </tr>
 <tr>
 <td>C4</td>
@@ -104,11 +104,11 @@ main{max-width:1100px}
 <td>H3: decorative effects cost frame time</td>
 <td>P90 CPU frame time, P08 A vs B</td>
 <td>supported</td>
-<td>Table 5.19 · slide 6</td>
+<td>Table 5.19 · slide 15</td>
 </tr>
 </tbody>
 </table>
-<p>Descriptive results that the talk also uses: H4 (non-existent Gradle coordinates) rejected after we fixed our own lookup bug; H5 (accessibility/state debt) rejected; E3 tool precision; E5 optimiser outcomes. Full list: ARTICLE.md Table 5.26 (line 1197) and Table 5.27 (line 1218).</p>
+<p>Descriptive results that the talk also uses: H4 (non-existent Gradle coordinates) rejected (with the corrected lookup); H5 (accessibility/state debt) rejected; E3 tool precision; E5 optimiser outcomes. Full list: ARTICLE.md Table 5.26 (line 1197) and Table 5.27 (line 1218).</p>
 <h2 id="3-rules-that-make-the-numbers-trustworthy">3. Rules that make the numbers trustworthy</h2>
 <ol>
 <li><strong>No number without a record.</strong> Every number in prose comes from a results CSV, a REPORT.md, the ShelfTap measurement log, or <a href="references.md">references.md</a>. The only computed values in the article are the Holm-adjusted p-values (Table 5.27).</li>
@@ -250,127 +250,184 @@ optimization/log/opt-ui-ux.md ───────────┴────�
 <tbody>
 <tr>
 <td><a href="presentation.html">presentation.html</a></td>
-<td>the deck: 18 slides + 4 backup (D1 Holm, D2 full E2 table, D3 E4 detail, D4 rule prevalence), Vietnamese, offline; needs the <a href="evidence/">evidence/</a> folder next to it for videos and screenshots</td>
+<td>the deck: 21 slides + 11 backup (D1–D11), Vietnamese, offline; same order as <a href="report/index.html">report/index.html</a>; needs <a href="evidence/">evidence/</a> and <a href="e6-oneshot/img/">e6-oneshot/img/</a> next to it</td>
 <td>~14 min</td>
 </tr>
 <tr>
 <td><a href="presentation-script.md">presentation-script.md</a></td>
-<td>speaker script with timing and Q&amp;A</td>
-<td>10 min version</td>
+<td>speaker script with timing and Q&amp;A, one segment per slide</td>
+<td>~14 min</td>
 </tr>
 <tr>
 <td><a href="slides-outline.md">slides-outline.md</a></td>
-<td>the 10-minute outline from the group plan</td>
-<td>10 min</td>
+<td>slide-by-slide outline of the deck</td>
+<td>~14 min</td>
 </tr>
 </tbody>
 </table>
-<p>Design rule for the main slides (audience is not technical): one plain sentence as the headline, one picture of real evidence (A/B video, verbatim code, tool output, screenshot) and at most one or two numbers. Statistics (p, Cliff's delta, intervals, n) go to the speaker notes and backup slides D1–D4. Every evidence item shows its source path on the slide; each one is documented in <a href="evidence/EVIDENCE-code.md">evidence/EVIDENCE-code.md</a> and <a href="evidence/EVIDENCE-agent.md">evidence/EVIDENCE-agent.md</a>.</p>
-<p>Deck order, the evidence each slide shows, and the article section it comes from:</p>
+<p>Design rule for the main slides (audience is not technical): one plain sentence as the headline, one picture of real evidence (A/B video, verbatim code, tool output, screenshot) and at most one or two numbers. Statistics (p, Cliff's delta, intervals, n) go to the speaker notes and backup slides D1–D11. Every evidence item shows its source path on the slide; each one is documented in <a href="evidence/EVIDENCE-code.md">evidence/EVIDENCE-code.md</a> and <a href="evidence/EVIDENCE-agent.md">evidence/EVIDENCE-agent.md</a>.</p>
+<p>Deck order (rebuilt 2026-11-28 to follow the plain-language report), the evidence each slide shows, and where it comes from:</p>
 <table>
 <thead>
 <tr>
 <th>Slide</th>
 <th>Says</th>
 <th>Evidence on the slide</th>
-<th>Article</th>
+<th>Source</th>
 <th>Kind</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1–3</td>
-<td>title, problem, method E1–E5 + pre-registration</td>
+<td>1</td>
+<td>title: &quot;Một câu lệnh, một ứng dụng đẹp?&quot;</td>
 <td>—</td>
-<td>§1, §4</td>
+<td>—</td>
 <td>—</td>
 </tr>
 <tr>
+<td>2</td>
+<td>lead-in: the &quot;vibe coding&quot; hype and the one-shot prompt</td>
+<td>Karpathy, Stack Overflow 2025, Collins, Merriam-Webster; prompts/O.txt verbatim</td>
+<td>references.md §G, report/sources-leadin.md</td>
+<td>cited</td>
+</tr>
+<tr>
+<td>3</td>
+<td>E6: same prompt, four assistants, very different apps (6/12 build, 120–3.702 lines, 74–100% janky)</td>
+<td>four arm-O screenshots</td>
+<td>e6 REPORT §2</td>
+<td>mô tả</td>
+</tr>
+<tr>
 <td>4</td>
-<td>E1: 42/100 drafts build; 60/66 unguarded drafts have a security finding (31/33 with the short prompt)</td>
-<td>code-01: token saved in plain SharedPreferences</td>
-<td>§5.2</td>
+<td>the problem in short: 90% → 1,3%, 203 → 6,2 MB, 60/66; 2,3× vs human apps</td>
+<td>—</td>
+<td>e2 REPORT, e1 REPORT:127–128</td>
 <td>mô tả</td>
 </tr>
 <tr>
 <td>5</td>
-<td>E2 P01+P09 long list (90% → 1,3% slow frames), P06 images</td>
-<td>video P09c A/B</td>
-<td>§5.3 Tables 5.14–5.15</td>
-<td>mô tả</td>
+<td>method E1–E6, and the isolation check (623 transcripts, 0 markers, canary 12/12)</td>
+<td>—</td>
+<td>00-protocol, isolation-audit/AUDIT.md</td>
+<td>—</td>
 </tr>
 <tr>
 <td>6</td>
-<td>C5 decorative card cost (+28%)</td>
-<td>video P08c A/B</td>
-<td>Table 5.19</td>
-<td>xác nhận</td>
+<td>the seven links of the vibe-code chain, one number each</td>
+<td>—</td>
+<td>report/index.html §4</td>
+<td>—</td>
 </tr>
 <tr>
 <td>7</td>
-<td>E2: which optimisations a user feels (P13, R8, Baseline Profile, Compose nulls)</td>
-<td>video P13c A/B</td>
-<td>Tables 5.9, 5.10, 5.16–5.18</td>
+<td>link 1, tool and model: haiku 1/9 vs sonnet 7/9 (E6), E1 build rate per bundle</td>
+<td>—</td>
+<td>e6 REPORT §5, e1 REPORT</td>
 <td>mô tả</td>
 </tr>
 <tr>
 <td>8</td>
-<td>C3 AI vs human density (2,3×)</td>
+<td>link 2, prompt (E1): longer functional prompt is not safer, builds less</td>
 <td>—</td>
-<td>§5.2, Figure 5.9</td>
-<td>xác nhận</td>
-</tr>
-<tr>
-<td>9</td>
-<td>C1/C2 guardrail, buildable subset</td>
-<td>code-02 (same brief with guardrail: Keystore AES-GCM), code-07 rule 4</td>
-<td>Tables 5.6–5.7, Figure 5.8</td>
-<td>xác nhận</td>
-</tr>
-<tr>
-<td>10</td>
-<td>E3: MobSF wrong 7 in 10, misses real issues</td>
-<td>code-05 (exported false positive + triage row), code-06 (Level.BODY logging MobSF missed)</td>
-<td>§5.4, Figure 5.10</td>
+<td>e1 REPORT:127–129, §1</td>
 <td>mô tả</td>
 </tr>
 <tr>
+<td>9</td>
+<td>link 2, prompt (E6): structured spec, janky 99% → 19,6%</td>
+<td>claude-sonnet arm O vs arm S screenshots</td>
+<td>e6 REPORT §4</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>10</td>
+<td>link 3, rules file: C1/C2 plus E6 arm R and the Baseline Profile rule</td>
+<td>code-02, code-07</td>
+<td>Tables 5.6–5.7, e6 REPORT §4</td>
+<td>xác nhận</td>
+</tr>
+<tr>
 <td>11</td>
-<td>C4 fix under pressure (17/148)</td>
-<td>agent-01 (error + diff removing setUserAuthenticationRequired), agent-02 (safe fix)</td>
+<td>link 4, when it errors: C4 17/148</td>
+<td>agent-01, agent-02</td>
 <td>§5.5</td>
 <td>xác nhận (not supported)</td>
 </tr>
 <tr>
 <td>12</td>
-<td>E5: claims &quot;fixed&quot; while the tree does not compile</td>
-<td>agent-06 (claim + runs.csv compiles=0), agent-04, agent-05</td>
+<td>link 5, verify: E5 &quot;fixed&quot; claim vs compile error</td>
+<td>agent-06, agent-04, agent-05</td>
 <td>§5.6</td>
 <td>mô tả</td>
 </tr>
 <tr>
-<td>13–15</td>
-<td>ShelfTap on a Xiaomi phone: debug vs measure build, home scroll fix, UI scorecard</td>
-<td>cover URL 10.0.2.2; screenshots A/B at font scale 2.0</td>
-<td>opt-ui-ux.md (not in ARTICLE)</td>
+<td>13</td>
+<td>link 5, scanners: MobSF wrong 7 in 10, misses real issues</td>
+<td>code-05, code-06</td>
+<td>§5.4</td>
 <td>mô tả</td>
 </tr>
 <tr>
+<td>14</td>
+<td>link 6, lists and images: 90% → 1,3%</td>
+<td>video P09c A/B</td>
+<td>Tables 5.14–5.15</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>15</td>
+<td>link 6, decorative effects: C5 +28%</td>
+<td>video P08c A/B</td>
+<td>Table 5.19</td>
+<td>xác nhận</td>
+</tr>
+<tr>
 <td>16</td>
-<td>verdict board, plain words</td>
+<td>link 6, what the user feels: P13, R8, Baseline Profile, Compose nulls</td>
+<td>video P13c A/B</td>
+<td>Tables 5.9, 5.10, 5.16–5.18</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>17</td>
+<td>link 7, measure the release build: 125 vs 12–16 ms</td>
 <td>—</td>
-<td>Tables 5.26–5.27</td>
+<td>opt-ui-ux.md</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>18</td>
+<td>link 7, bugs only a real phone shows: 10.0.2.2 cover URL</td>
+<td>—</td>
+<td>opt-ui-ux.md</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>19</td>
+<td>link 7, large font: all four E6 apps break at 2.0; ShelfTap 5/7 → 0/7</td>
+<td>e6 img/grid-O-font2.jpg; ShelfTap A/B screenshots</td>
+<td>e6 REPORT §2, opt-ui-ux.md</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>20</td>
+<td>seven habits, vibe coder vs engineer</td>
+<td>—</td>
+<td>report/index.html §5</td>
 <td>—</td>
 </tr>
 <tr>
-<td>17–18</td>
-<td>limitations, three habits, closing line</td>
+<td>21</td>
+<td>closing: three habits, &quot;Không để trợ lý tự xác nhận mã của chính nó.&quot;</td>
 <td>—</td>
-<td>§5.8, §6</td>
+<td>—</td>
 <td>—</td>
 </tr>
 </tbody>
 </table>
+<p>Every solution slide (7, 9–19 except 8 and 18) ends with the two audience boxes: &quot;Nếu bạn vibe-code&quot; (habits and prompts) and &quot;Nếu bạn là kỹ sư&quot; (process, tests, CI, measurement). Backup D1–D11: verdict board, C3 vs human, E1 drafts, limits, Holm table, full E2 table, E4 detail, rule prevalence, E6 build table, isolation check detail, lead-in sources. Framing rule (user, 2026-11-28): never lead with admitting a mistake; a corrected number is told as the lesson (&quot;debug builds mislead, measure the release&quot;), and limits are stated once, plainly, in notes or backup.</p>
 <p>Keys: → / Space next, ← back, P presenter window, O overview, N notes, T light/dark, F fullscreen, B blackout, digits + Enter jump, ? help. Print to PDF renders every slide in its final state. To show it over the tailnet: <code>python3 -m http.server &lt;port&gt; --bind &lt;tailscale-ip&gt; --directory optimization/study</code>.</p>
 <h2 id="6b-the-plain-language-report">6b. The plain-language report</h2>
 <p><a href="report/index.html">report/index.html</a> tells the study to a non-technical reader in the order the user asked for on 2026-11-27: a relatable lead-in (the &quot;vibe coding&quot; hype and the social-media one-shot prompt, with cited sources [Karpathy2025], [Collins2025], [SOSurvey2025], [Veracode2025], [MerriamWebster2025], [Ouyang2023], then our own E6 grid of four tools answering the same prompt), the problem kept short (three numbers and one code excerpt), how we tested (E1 to E6 plus the isolation audit), and the bulk on solutions along seven links of the vibe-code chain:</p>
@@ -514,7 +571,7 @@ python3 optimization/study/proof/check_deck_proof.py --slide 5  # check one slid
 <li>[ ] <code>python3 optimization/study/proof/check_deck_proof.py</code> exits 0.</li>
 <li>[ ] Deck opens offline on the presenting machine (fonts are embedded); presenter window (P) works there.</li>
 <li>[ ] Light theme on a projector; dark only for a dark room.</li>
-<li>[ ] Rehearse to ~14 min, or cut to the 10-minute outline (drop slides 7, 12, 15 and keep them as backup).</li>
+<li>[ ] Rehearse to ~14 min. For 10 minutes, move slides 8, 13 and 16 to backup (each repeats a point another slide already makes).</li>
 <li>[ ] Know the answers in presentation-script.md's Q&amp;A section, especially: emulator vs real phone, apples-to-oranges for C3, why C1 vanishes on buildable apps, why C4 is &quot;not supported&quot;.</li>
 </ul>
 <p><strong>Before submitting the article</strong></p>

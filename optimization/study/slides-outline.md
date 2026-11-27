@@ -1,106 +1,72 @@
-# slides-outline.md — dàn ý slide (số liệu cuối, khớp ARTICLE.md)
+# slides-outline.md — dàn ý slide, bộ slide mới (21 slide chính + D1 đến D11 dự phòng)
 
-Bài trình bày 10 phút theo kịch bản của đề cương (mục VII): 1 phút vấn đề, 2 phút demo UI phiên bản A, 2 phút bảo mật, 2 phút AI phân tích và tối ưu, 2 phút demo phiên bản B, 1 phút kết luận. Nguồn nội dung là `ARTICLE.md` (Chương 5 và 6); kịch bản lời nói ở `presentation-script.md`; hình ở `figures/out/` (SVG, số liệu vẽ trong `.data.csv` cạnh từng hình; kế hoạch và các sai khác ở `figures/PLAN.md` mục 6).
+Khớp `presentation.html`, theo thứ tự của `report/index.html`: mở đầu (lời hứa, câu lệnh một lần, bốn app), vấn đề nói ngắn, phương pháp kèm kiểm tra môi trường, bảy mắt xích giải pháp, tóm tắt, lời kết. Lời nói từng slide: `presentation-script.md`. Chữ trên slide và ghi chú (aside.notes) là nguồn của mọi con số.
 
-**Quy tắc.** (1) Mọi con số trên slide có trong ARTICLE.md và chép từ một REPORT hoặc CSV đã commit; không tính lại, trừ hiệu chỉnh Holm (Bảng 5.27). Người điều phối đối chiếu trước buổi trình bày. (2) Chỗ còn trống chỉ là **tài nguyên** (ảnh chụp, đoạn mã, prompt), ghi `[TÀI NGUYÊN: ...]`, không phải số liệu. (3) Chụp sẵn Profiler, MobSF; video A/B đã có: 12 clip quay cho biến thể A lấy từ mã E1, 14 giây, 720x1280, cùng thao tác ngón tay, trong `3S-study-work/video/` (tên ở mục Video bên dưới; `e2-bench/REPORT.md` mục 9). Không dùng các clip thí điểm `P08-*`, `P06-*`, `P01P09-*`, `P13-*`. (4) Chữ trên slide ngắn, một ý một slide. (5) Nhân quả luôn viết là "giả thuyết"; không viết "AI gây ra". (6) Slide kết quả ghi rõ xác nhận hay mô tả, và nêu một giới hạn chính.
+**Quy tắc.**
+1. Mọi con số trên slide có trong chữ slide hoặc ghi chú của slide đó; kịch bản kiểm lại bằng máy (mục Kiểm số liệu ở `presentation-script.md`).
+2. Mỗi slide giải pháp (6 đến 19, trừ 8 và 18) có hai ô: “Nếu bạn vibe-code” (thói quen và câu lệnh) và “Nếu bạn là kỹ sư” (quy trình, kiểm thử, CI, cách đo).
+3. Nhân quả luôn viết là giả thuyết; “được ủng hộ” nghĩa là điều kiện thống kê đã đăng ký thỏa. Không mở đầu bằng giới hạn hay chỗ còn thiếu: giới hạn nằm ở phần Lưu ý của kịch bản và Hỏi đáp (D4), chỉ nói to khi chính slide in giới hạn đó (slide 3, 7, 11, 18).
+4. Thứ tự phép kiểm định và ngưỡng nằm ở D5; bằng chứng từng slide ở cột “Bằng chứng” bên dưới.
 
-## Phân bổ thời gian (tổng 10 phút)
+## Thời lượng
 
-| Đoạn | Thời lượng | Slide | Nội dung |
-|---|---|---|---|
-| 1. Vấn đề | 1 phút | S1, S2 | AI dựng ứng dụng nhanh, nhưng bản nháp đầu tốn gì và ai kiểm chứng |
-| 2. Demo UI, phiên bản A | 2 phút | S3, S4 | cuộn danh sách ShelfTap bản A, số đo |
-| 3. Bảo mật | 2 phút | S5, S6 | tần suất vấn đề bảo mật trong bản nháp của AI so với người; công cụ độc lập |
-| 4. AI phân tích và tối ưu | 2 phút | S7, S8, S9 | guardrail; AI sửa lỗi dưới áp lực; AI tối ưu |
-| 5. Demo phiên bản B | 2 phút | S10 | cùng thao tác, bản đã tối ưu, số đo trước và sau |
-| 6. Kết luận | 1 phút | S11 | kết quả, hạn chế, vai trò người kiểm duyệt |
+Cột “Kịch bản” là giây trong `presentation-script.md` (số từ chia 130 từ mỗi phút, tổng 14:05). Cột “Ghi chú slide” là số “~giây” trong aside.notes của slide; hai cột phải khớp nhau.
 
-Slide dự phòng (không trình chiếu trừ khi được hỏi): D1 giao thức đăng ký trước, Holm và lực kiểm định; D2 catalogue vấn đề; D3 mối đe dọa; D4 so sánh với nghiên cứu liên quan; D5 H4 bị bác bỏ và sửa tra cứu phụ thuộc (E1).
-
-## Danh sách slide
-
-### S1. Tiêu đề (30 giây)
-- Tên đề tài, nhóm, ứng dụng minh họa (ShelfTap).
-- Hình: ảnh màn hình ShelfTap. [TÀI NGUYÊN: ảnh chụp ShelfTap và optlab do chủ E2 chụp, chưa có trong repo.]
-
-### S2. Vấn đề (30 giây)
-- Thông điệp: trợ lý AI dựng được cả ứng dụng Android từ một mô tả ngắn; bản nháp đầu chưa ai thẩm định.
-- Câu hỏi: bản nháp đó làm ứng dụng tốn thêm gì về giao diện, bộ nhớ, bảo mật; phần nào các kỹ thuật tối ưu quen thuộc không xử lý được.
-- Hình: sơ đồ một dòng "mô tả ngắn → bản nháp đầu → ai kiểm chứng?". Nguồn: ARTICLE.md §1.1, §1.3.
-
-### S3. Thiết lập (45 giây, mở đầu đoạn 2)
-- Thông điệp: hai phiên bản cùng chức năng, cùng dữ liệu; chỉ khác mẫu mã. A là mã mà AI thật sự sinh ra (một ứng viên của E1 cho mỗi nhân tố, chỉ sửa cơ học); B là bản đã tối ưu.
-- Nội dung: bảy nhân tố (hiệu ứng trang trí P08, ảnh P06, danh sách P01 cùng P09, tìm kiếm P13, ổn định kiểu P03 cùng P04, R8 P10, Baseline Profile P11); P10 và P11 là cùng một mã với hai cấu hình.
-- Hình: Hình 4.1 (F01) hoặc Bảng 5.11. Nguồn: ARTICLE.md §5.3.3.
-- Lưu ý bắt buộc trên slide: "chỉ Emulator: số đo tương đối; thẻ lưới P08 đo trên một đường GPU khác (A14)".
-
-### S4. Demo UI, phiên bản A (75 giây)
-- Thông điệp: cuộn danh sách bản A; những gì công cụ đo cho thấy.
-- Video: `P09c-A-scroll.mp4` (danh sách P01+P09) rồi `P08c-A-scroll.mp4` (thẻ lưới P08, quay trên swangle_indirect); thay thế: `P06c-A-scroll.mp4`, `P13c-A-search.mp4`.
-- Bảng nhỏ (Bảng 5.13 và 5.15, trung vị các lần lặp được giữ): thẻ lưới P08, CPU khung hình p90 là 62,87 ms và 70,52% khung chậm (đường GPU swangle_indirect); danh sách P01+P09 dựng 2.000 lượt mượn, TTID 1.901 ms và 90,05% khung chậm.
-
-### S5. Bản nháp của AI chứa gì (60 giây)
-- Thông điệp: 101 bản nháp, 100 hợp lệ; ít nhất một phát hiện nhóm S ở 31/33 lần chạy naive (0,939) và 29/33 detailed-functional (0,879); mật độ nhóm S trên 1000 dòng, trung vị 2,37 (AI không guardrail) so với 1,02 (người viết trước 30/11/2022); delta Cliff +0,582, ngưỡng 0,33 (C3, được ủng hộ, p hiệu chỉnh 0,00027).
-- Hình: F06 (tần suất theo luật và kiểu prompt) và F10 (C3).
-- Câu bắt buộc: "tỷ lệ của trợ lý so với tỷ lệ nền của người", không nói "AI gây ra". Giới hạn: chỉ 42 trên 100 bản nháp build được; ứng dụng do người viết phổ biến và lớn hơn.
-
-### S6. Công cụ độc lập kiểm tra (60 giây)
-- Thông điệp: không để AI tự kết luận mã đã an toàn. MobSF 103 phát hiện trên 13 APK: 30 đúng, 73 sai, độ chính xác 0,291 [0,212; 0,385]; cả 30 là sự kiện manifest, build hoặc chữ ký, không có điểm yếu ở mức mã; cả 22 cảnh báo exported đều sai; tùy cách đọc nhãn, độ chính xác từ 0,244 đến 0,806.
-- Bộ phát hiện E1 thấy cái MobSF không thấy (token ghi dạng rõ (plaintext), ghi nhật ký BODY); hai công cụ bổ sung nhau (kappa 0,581 so với mọi cảnh báo, 0,78 so với tp đã phân loại).
-- Hình: F17. [TÀI NGUYÊN: ảnh chụp MobSF và một đoạn mã trước sau, chủ E3.]
-
-### S7. Guardrail (40 giây)
-- Thông điệp: C1, tỷ lệ có phát hiện S giảm từ 31/33 xuống 17/34 (+0,439, p hiệu chỉnh 0,00016); C2, số mã luật khác nhau mỗi lần từ 5,85 xuống 2,82 (+3,025, p hiệu chỉnh 0,00005); cả hai được ủng hộ.
-- G3: luật bị giữ lại cũng giảm (chênh +0,63 [0,15; 1,14] và +1,30 [0,75; 1,84]): "khái quát hóa hoặc ngẫu nhiên".
-- Giới hạn trên slide: ở các ứng dụng build được C1 là +0,000 (C2 vẫn +3,829); n = 33, 33, 34 dưới mục tiêu 36, bị giới hạn lực kiểm định.
-- Hình: F07, F08, F09.
-
-### S8. AI sửa lỗi dưới áp lực (30 giây)
-- Thông điệp: C4, 17/148 = 0,115 [0,073; 0,176] làm yếu bảo mật, dưới ngưỡng 0,15: **không được ủng hộ**.
-- Tập trung: bỏ yêu cầu xác thực khỏi khóa Keystore 12/30, bật cleartext 5/30, ba lỗi còn lại 0; theo bộ công cụ agy 12/48, codex 5/50, claude 0/50.
-- Hình: F18 (và F19 nếu hỏi).
-
-### S9. AI tối ưu ứng dụng có sẵn (50 giây)
-- Thông điệp: advice tìm đủ 14 vấn đề gieo (168/168); autonomous codex sửa 84/84, claude 76/84; nhưng 9/12 cây codex đã sửa không biên dịch được và mồi bị đổi ở 21/24 lần chạy sửa; cho xem đầu ra của bộ phát hiện không tạo khác biệt đo được. Mô tả, không có kiểm định xác nhận.
-- Hình: F20. [TÀI NGUYÊN: một prompt và một thay đổi quan trọng (diff), chủ E5.]
-
-### S10. Demo phiên bản B (2 phút)
-- Thông điệp: lặp lại đúng thao tác cũ trên bản B; so sánh trước và sau.
-- Video: bản B cạnh bản A, cùng thao tác: `P08c-{A,B}-scroll.mp4` (C5), `P09c-{A,B}-scroll.mp4`, `P06c-{A,B}-scroll.mp4`, `P13c-{A,B}-search.mp4`. Hai cặp `P01c-{A,B}-scroll.mp4` và `P03P04c-{A,B}-scroll.mp4` không có khác biệt nhìn thấy, đúng như số đo (dùng khi được hỏi).
-- C5 (xác nhận): P08 p90 62,87 so với 49,07 ms, delta% +28,13% [13,38; 54,31], p hiệu chỉnh 0,000616: ủng hộ, trên một đường GPU của emulator, bộ nhớ đồ họa không đo (F14).
-- Mô tả (F13, F15): P06 byte giải mã −96,9%; P01+P09 TTID 1.901 xuống 573,1 ms, khung chậm 90,05% xuống 1,255%; P13 tổng thời gian truy vấn 634,9 xuống 85,42 ms nhưng khung hình không cải thiện; P03+P04 và nhân tố con P01: không có chi phí đo được; R8: APK −90,4%; Baseline Profile: TTID −5,88%.
-- Nhắc lại: Emulator, tương đối; khoảng 30% của Baseline Profile là con số của Google [Baseline-Overview], số đo của chúng ta là số đo khác.
-
-### S11. Kết luận (60 giây)
-- Ba ý: (1) C1, C2, C3, C5 được ủng hộ sau Holm, C4 không được ủng hộ (F21, Bảng 5.27); H5 bác bỏ cho U01 (1/66), H4 bác bỏ (0 artifact ảo trong 2105 thể hiện); (2) hạn chế: Emulator, một miền, 42/100 build được, n dưới 36; (3) vai trò người kiểm duyệt: guardrail không thay cho kiểm tra, cổng biên dịch và phân loại thủ công, xem kỹ diff chạm cấu hình mạng và khóa Keystore (ARTICLE.md §6.4).
-- Câu chốt: "Không để trợ lý tự xác nhận mã của chính nó."
-
-## Slide dự phòng
-- **D1** Giao thức đăng ký trước: năm phép kiểm định xác nhận (C1 đến C5), Holm (Bảng 5.27), lực kiểm định (Hình 4.2, F02).
-- **D2** Catalogue vấn đề: bảng P, S, U, D rút gọn (ARTICLE.md Chương 3); F04, F05 (kiểm chứng và độ phủ của bộ phát hiện).
-- **D3** Mối đe dọa tới tính hợp lệ (ARTICLE.md §4.10, §5.8).
-- **D4** Nghiên cứu liên quan và khoảng trống (ARTICLE.md §1.2).
-- **D5** H4 bị bác bỏ: 0 `hallucinated-artifact` trong 2105 thể hiện tọa độ (cận trên theo quy tắc ba 0,14%); `hallucinated-version` 22 ở lần quét đầu, 1 sau sửa tra cứu (21 sai do dấu plugin KSP của `google()` đã cũ). Sửa tra cứu là độ nhạy post hoc: C1 +0,645 (guardrailed 10/34), C2 +3,259, C3 2,33 so với 0,83 trên 1000 dòng, delta +0,513, p thô 0,00055; không kết luận nào đổi (F12, ARTICLE.md §5.2.5 và §5.2.6).
-- **D6** Hỏi: bộ dựng hình có đổi kết quả không? Kiểm soát thăm dò P01+P09 trên swangle_indirect: p90 khung hình −32,3% [−46,8; −11,4] so với −78,2% [−79,1; −76,9] trên swiftshader_indirect, số hàng dựng giống nhau (2.000 → 30 và 31); C5 được đo trên đường cho đối chiếu nhỏ hơn, nên +28,13% không suy ra được cho đường khác (ARTICLE.md §5.3.3).
-
-## Video (12 clip, `3S-study-work/video/`; A = mã E1, B = bản tối ưu, 14 giây)
-`P08c-{A,B}-scroll.mp4` (thẻ lưới, quay trên swangle_indirect), `P06c-{A,B}-scroll.mp4`, `P09c-{A,B}-scroll.mp4` (danh sách P01+P09), `P01c-{A,B}-scroll.mp4`, `P03P04c-{A,B}-scroll.mp4`, `P13c-{A,B}-search.mp4`.
-
-## Hình (đã dựng, `figures/out/`)
-| Hình | Dùng ở | Tệp |
+| Phần | Slide | Kịch bản |
 |---|---|---|
-| thiết kế nghiên cứu | S3, bài Hình 4.1 | `F01-design.svg` |
-| lực kiểm định | D1, bài Hình 4.2 | `F02-power.svg` |
-| luồng E1 | S5 (tùy chọn) | `F03-e1-flow.svg` |
-| kiểm chứng bộ phát hiện, độ phủ | D2 | `F04-validation.svg`, `F05-coverage.svg` |
-| tần suất theo luật và kiểu prompt | S5 | `F06-prevalence.svg` |
-| mật độ hiệu ứng trang trí (E1) | tùy chọn | `F11-decorative-density.svg` |
-| C1, C2 | S7 | `F07-c1.svg`, `F08-c2.svg` |
-| G3 | S7 | `F09-g3.svg` |
-| C3 | S5 | `F10-c3.svg` |
-| H1, tọa độ | D5 | `F12-h1-h4.svg` |
-| E2: hiệu ứng, tuyệt đối, C5, chi phí kỳ vọng | S4, S10 | `F13-e2-effects.svg`, `F15-e2-absolute.svg`, `F14-c5.svg`, `F16-expected-cost.svg` |
-| E3 | S6 | `F17-e3.svg` |
-| C4, E4 theo bộ công cụ | S8 | `F18-c4.svg`, `F19-e4-bundle.svg` |
-| E5 | S9 | `F20-e5.svg` |
-| bảng kết luận | S11 | `F21-verdicts.svg` |
+| Mở đầu: lời hứa và bốn app | 1–3 | 1:50 |
+| Vấn đề, nói ngắn | 4 | 0:45 |
+| Phương pháp và kiểm tra môi trường | 5 | 0:40 |
+| Giải pháp: bảy mắt xích | 6–19 | 9:45 |
+| Tóm tắt | 20 | 0:25 |
+| Lời kết | 21 | 0:40 |
+| **Tổng** | 1–21 | **14:05** |
+
+## Danh sách slide chính
+
+| # | Tiêu đề (data-title) | Phần | Ý chính | Bằng chứng | Kịch bản (giây) | Ghi chú slide (giây) |
+|---|---|---|---|---|---|---|
+| 1 | Mở đầu | Mở đầu | Một câu lệnh, một ứng dụng đẹp? Chúng tôi thử, rồi đo nó. | — (trang tiêu đề) | 25 | 25 |
+| 2 | Lời hứa | Mở đầu | Lời hứa “một câu lệnh” trên mạng; câu lệnh nguyên văn đưa cho bốn trợ lý. | e6-oneshot/prompts/O.txt · report/sources-leadin.md | 45 | 45 |
+| 3 | Thực tế | Mở đầu | Cùng câu lệnh: nhìn giống nhau, bên dưới mỗi app một khác (6/12 biên dịch được; 120 đến 3.702 dòng; giật 74–100%). | e6-oneshot/REPORT.md §2 · results/runs.csv | 40 | 40 |
+| 4 | Vấn đề | Vấn đề | “AI slop”: mã trông xong nhưng mang chi phí ẩn: giật 90% → 1,3%, 203 → 6,2 MB, 60/66 có lỗi bảo mật. | e2-bench/REPORT.md P09, P06 · e1-corpus/REPORT.md:127–128 · references.md §G | 45 | 45 |
+| 5 | Cách kiểm tra | Phương pháp | Sáu thí nghiệm, luật chấm khóa trước; môi trường được kiểm (623 bản ghi: không lần sinh mã nào nhận quy tắc riêng của chúng tôi). | 00-protocol.md · isolation-audit/AUDIT.md · e6-oneshot/results/canary.json | 40 | 45 |
+| 6 | Chuỗi vibe-code | Giải pháp | Bảy mắt xích, mỗi cái một số đo, hai việc: cho người vibe-code, cho kỹ sư. | — (bản đồ bảy mắt xích; số lấy từ slide 7 đến 17) | 30 | 30 |
+| 7 | 1 · Chọn công cụ | Giải pháp | Chỉ đổi mô hình: 1/9 → 7/9 bản biên dịch được. | E6: e6-oneshot/REPORT.md §3, §6 · results/summary.csv · E1: e1-corpus/REPORT.md §1 | 45 | 45 |
+| 8 | 2 · Viết đề bài (E1) | Giải pháp | Đề dài về chức năng không an toàn hơn (31/33 so 29/33) và ít bản biên dịch hơn (20/33 so 12/33). | e1-corpus/REPORT.md:127–129 và §1 | 35 | 35 |
+| 9 | 2 · Bản yêu cầu (E6) | Giải pháp | Viết như bản yêu cầu: khung giật 99% → 19,6%, ít mã hơn (524 so 1.164 dòng). | e6-oneshot/prompts/S.txt · results/summary.csv | 40 | 40 |
+| 10 | 3 · Tệp quy tắc | Giải pháp | Tệp quy tắc: bản có lỗi bảo mật 31/33 → 17/34; loại lỗi 5,85 → 2,82; quy tắc phải làm xong được. | codex-luna-B2-guardrailed-r1/…/SessionStore.kt · guardrail/ANDROID-GUARDRAIL.md · evidence/code-02.kt, code-07.txt | 50 | 55 |
+| 11 | 4 · Khi gặp lỗi | Giải pháp | Bị lỗi chặn, AI gỡ bảo mật 17/148 lần (khoảng 1 trong 9); chưa đủ để kết luận; sửa an toàn là làm được. | e4-pressure/runs/c5-agy-A-r5/diff.patch · results/trials.csv dòng 124 · evidence/agent-01.txt, agent-02.diff | 50 | 50 |
+| 12 | 5 · Đừng tin “đã sửa xong” | Giải pháp | AI tìm đủ lỗi (168/168) nhưng tự nhận “đã sửa xong” khi không biên dịch được (9/12). | e5-optimizer/runs/e5-codex-evidence-r3 · results/runs.csv dòng 28 · evidence/agent-04.txt, agent-05.diff, agent-06.txt | 50 | 50 |
+| 13 | 5 · Công cụ quét | Giải pháp | MobSF mặc định báo nhầm 7/10 và bỏ sót lỗi thật; cần người phân loại. | e3-security/results/findings.csv · e1-corpus/results/findings.csv · evidence/code-05.txt, code-06.txt | 50 | 50 |
+| 14 | 6 · Danh sách và ảnh | Giải pháp | Danh sách 2.000 dòng: khung trễ 90% → 1,3%; ảnh bìa 203 → 6,2 MB. | video P09c-A/B (e2-bench/REPORT.md mục 9) | 40 | 45 |
+| 15 | 6 · Hiệu ứng trang trí | Giải pháp | Hiệu ứng trang trí: mỗi khung chậm hơn 28% (62,87 so 49,07 ms); đã kiểm chứng (C5). | video P08c-A/B (e2-bench/REPORT.md mục 9) | 35 | 40 |
+| 16 | 6 · Thứ người dùng cảm thấy | Giải pháp | Không phải tối ưu nào cũng cảm thấy: R8 −90,4% thấy rõ; Baseline Profile 5,88%; chỉ mục tìm sách ×7 khó thấy. | video P13c-A/B (e2-bench/REPORT.md mục 9) | 45 | 45 |
+| 17 | 7 · Đo bản phát hành | Giải pháp | Bản debug 125 ms, bản đo đúng cách 12–16 ms; Baseline Profile không còn khác biệt đo được. | — (đo trên Xiaomi, ghi chú slide) | 45 | 45 |
+| 18 | 7 · Lỗi chỉ máy thật mới có | Giải pháp | Ảnh bìa không tồn tại (10.0.2.2) làm giật trên máy thật: 7,0–7,2% → 1,5–2,7%. | — (đo trên Xiaomi, ghi chú slide) | 35 | 35 |
+| 19 | 7 · Chữ to | Giải pháp | Chữ to 2.0: cả bốn app “đẹp” vỡ; ShelfTap 5/7 → 0/7 màn vỡ. | e6-oneshot/img/grid-O-font2.jpg · optimization/ui-ux/audit/A, B/font2/catalog.png | 35 | 35 |
+| 20 | Tóm tắt | Tóm tắt | Bảy thói quen, mỗi mắt xích một việc cho mỗi người. | — (tóm tắt slide 7 đến 17) | 25 | 25 |
+| 21 | Lời kết | Lời kết | Ba điều cần nhớ; không để trợ lý tự xác nhận mã của chính nó. | — | 40 | 40 |
+
+## Slide dự phòng (không trình chiếu trừ khi được hỏi)
+
+Mở bằng phím O (lưới) hoặc gõ số slide rồi Enter.
+
+| Mã | Slide số | Nội dung | Bằng chứng |
+|---|---|---|---|
+| D1 | 22 | Kết luận thống kê: bốn trên năm giả thuyết chính xác nhận (C1, C2, C3, C5); C4 17/148 chưa kết luận; H4 0/2105; H5 1/66 | — (slide không ghi nguồn; số kiểm định ở D5) |
+| D2 | 23 | So với người viết: 2,37 so 1,02 cảnh báo trên 1.000 dòng (66 bản, 20 app trước 30/11/2022) | e1-corpus/REPORT.md:127–128 (theo slide 4) |
+| D3 | 24 | 101 bản nháp E1: 42/100 chạy được; 60/66 có lỗi bảo mật; ví dụ SessionStore.kt | e1-corpus/runs/codex-luna-B2-detailed-functional-r4/…/SessionStore.kt · evidence/code-01.kt |
+| D4 | 25 | Giới hạn: máy ảo (−32,3% so −78,2%), mẫu 33–34 mỗi nhóm, bảng mục tiêu môn học | — (slide không ghi nguồn) |
+| D5 | 26 | Bảng hiệu chỉnh Holm cho năm phép kiểm định | — (ghi chú slide: phép tính duy nhất của bài không chép từ REPORT) |
+| D6 | 27 | E2 đầy đủ, B so với A, bảy nhân tố và P01 riêng | e2-bench/REPORT.md (theo slide 4, 14) |
+| D7 | 28 | E4 theo lỗi và bộ công cụ: 12/30, 5/30, 0/88; agy 12/48, codex 5/50, claude 0/50 | e4-pressure/results/trials.csv (theo slide 11) |
+| D8 | 29 | E1 tần suất theo luật: bảy luật × ba kiểu prompt | — (slide không ghi nguồn) |
+| D9 | 30 | E6 chi tiết: số bản biên dịch được theo trợ lý × kiểu câu lệnh | e6-oneshot/REPORT.md §3, §6 · results/summary.csv |
+| D10 | 31 | Kiểm tra môi trường: 623 bản ghi, ba plugin đo đạc, 18.244 token | isolation-audit/AUDIT.md · 00-protocol.md A16 |
+| D11 | 32 | Nguồn của phần mở đầu | report/sources-leadin.md · references.md §G |
+
+## Video và ảnh
+
+- Ba video A/B, 14 giây, cùng thao tác ngón tay, lấy từ `3S-study-work/video` (`e2-bench/REPORT.md` mục 9): P09c-A/B (slide 14), P08c-A/B (slide 15), P13c-A/B (slide 16). Phải mở được không cần mạng.
+- Ảnh bốn app ở slide 3 và slide 19: `e6-oneshot/img/`; ảnh ShelfTap trước và sau ở slide 19: `optimization/ui-ux/audit/A, B/font2/catalog.png`.
