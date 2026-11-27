@@ -228,9 +228,9 @@ Khớp nguyên vẹn với `presentation.html` (25 slide chính + 8 slide dự p
 
 *Kết luận · 50 giây · 105 từ*
 
-**Lời nói.** Đối chiếu mục tiêu môn học: trên màn hình thử nghiệm, bản sửa đạt cả ba phần — tìm kiếm 100.000 sách còn 37 ms so với dưới 50 ms; RAM 60 và 43 MB dưới 150 MB; danh sách dài 1,3% khung hình trễ. Trên thiết bị thật, mở trang sách đạt p90 8 đến 16 ms. Phần chưa đạt hoặc chưa đo: lưới thẻ trang trí trên máy ảo vẫn 48,65%; các ứng dụng chỉ một prompt đạt ngưỡng RAM vì mới có 12 tựa sách; RAM toàn ứng dụng, chạm NFC dưới 1 s và thiết bị cấu hình thấp chưa đo.
+**Lời nói.** Đối chiếu mục tiêu môn học: trên màn hình thử nghiệm, bản sửa đạt yêu cầu — tìm kiếm 100.000 sách còn 37 ms, dưới 50 ms; RAM 60 và 43 MB dưới 150 MB; danh sách dài 1,3% khung hình trễ. Trên Xiaomi, mở trang sách đạt p90 8 đến 16 ms, cuộn danh mục chưa ảnh bìa đạt PSS 94 đến 95 MB. Phần hạn chế: lưới thẻ trang trí trên máy ảo vẫn 48,65%; ứng dụng chỉ một prompt đạt RAM vì có 12 tựa sách; hai hạng mục chạm NFC dưới 1 s và thiết bị cấu hình thấp chưa đo.
 
-**Thao tác.** Lướt dọc cột Trạng thái để phân tách phần đạt và ba hạng mục chưa đo.
+**Thao tác.** Lướt dọc cột Trạng thái để phân tách phần đạt và hai hạng mục chưa đo.
 
 **Lưu ý.** Giữ giọng khách quan, trung thực; nêu hiện trạng đo đạc đúng một lần tại đây.
 

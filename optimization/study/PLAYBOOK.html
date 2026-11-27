@@ -51,13 +51,23 @@ th{background:var(--tbl)}
 code{font:13.5px/1.4 ui-monospace,"JetBrains Mono",monospace;background:var(--tbl);padding:.05rem .25rem;border-radius:3px}
 pre{background:var(--tbl);padding:.8rem 1rem;overflow-x:auto;border-radius:4px}pre code{background:none;padding:0}
 main{max-width:1100px}
+h4{margin-top:1.6rem}
 @media (max-width:900px){body{display:block}.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--rule)}}
 </style></head><body>
-<nav class="toc"><div class="tochead">Contents</div><ol><li class="l2"><a href="#1-the-story-in-one-paragraph">1. The story in one paragraph</a></li><li class="l2"><a href="#2-questions-hypotheses-verdicts">2. Questions, hypotheses, verdicts</a></li><li class="l2"><a href="#3-rules-that-make-the-numbers-trustworthy">3. Rules that make the numbers trustworthy</a></li><li class="l2"><a href="#4-data-pipeline-where-a-number-travels">4. Data pipeline — where a number travels</a></li><li class="l2"><a href="#5-the-article-chapter-by-chapter">5. The article, chapter by chapter</a></li><li class="l2"><a href="#6-the-talk">6. The talk</a></li><li class="l2"><a href="#6b-the-plain-language-report">6b. The plain-language report</a></li><li class="l2"><a href="#7-proof-of-every-number-in-the-deck">7. Proof of every number in the deck</a></li><li class="l2"><a href="#8-language-vietnamese">8. Language (Vietnamese)</a></li><li class="l2"><a href="#9-group-material-how-it-fits">9. Group material — how it fits</a></li><li class="l2"><a href="#10-checklists">10. Checklists</a></li></ol></nav>
+<nav class="toc"><div class="tochead">Contents</div><ol><li class="l2"><a href="#1-the-story-in-one-paragraph">1. The story in one paragraph</a></li><li class="l2"><a href="#2-questions-hypotheses-verdicts">2. Questions, hypotheses, verdicts</a></li><li class="l2"><a href="#3-rules-that-make-the-numbers-trustworthy">3. Rules that make the numbers trustworthy</a></li><li class="l2"><a href="#4-data-pipeline-where-a-number-travels">4. Data pipeline — where a number travels</a></li><li class="l2"><a href="#5-the-article-chapter-by-chapter">5. The article, chapter by chapter</a></li><li class="l2"><a href="#6-the-talk">6. The talk</a></li><li class="l3"><a href="#how-the-talk-is-built">How the talk is built</a></li><li class="l3"><a href="#slides-what-each-one-claims-and-where-its-numbers-are-proven">Slides: what each one claims and where its numbers are proven</a></li><li class="l3"><a href="#script-slide-by-slide">Script, slide by slide</a></li><li class="l2"><a href="#6b-the-plain-language-report">6b. The plain-language report</a></li><li class="l2"><a href="#7-proof-of-every-number-in-the-deck">7. Proof of every number in the deck</a></li><li class="l2"><a href="#8-language-vietnamese">8. Language (Vietnamese)</a></li><li class="l2"><a href="#9-group-material-how-it-fits">9. Group material — how it fits</a></li><li class="l2"><a href="#10-checklists">10. Checklists</a></li></ol></nav>
 <main><h1 id="playbook-the-ai-slop-study-from-protocol-to-talk">PLAYBOOK — the AI-slop study, from protocol to talk</h1>
-<p>How the study's article is built, what each part claims, where every number comes from, and how to check it. Read this before you write, cut, translate or present any part of the study. Folder: <code>optimization/study/</code>. The article itself is <a href="ARTICLE.html">ARTICLE.md</a> (Vietnamese); the talk is <a href="presentation.html">presentation.html</a>.</p>
+<p>How the study is built, what each part claims, where every number comes from, how to check it, and what to say in the talk. Read this before you write, cut, translate or present any part of the study. Folder: <code>optimization/study/</code>. The article is <a href="ARTICLE.html">ARTICLE.md</a> (Vietnamese); the talk is <a href="presentation.html">presentation.html</a>; the spoken script is embedded in section 6.</p>
 <h2 id="1-the-story-in-one-paragraph">1. The story in one paragraph</h2>
-<p>We let AI coding assistants write first drafts of an Android app (ShelfTap, an NFC library app), then measured what those drafts cost in UI performance, memory and security, and which costs the known optimisation techniques do not remove. Five experiments: <strong>E1</strong> a corpus of first drafts scanned by a validated detector and compared with human-written apps; <strong>E2</strong> paired A/B benchmarks (A = code the assistants actually wrote, B = the tuned version) in the <code>android/optlab</code> app; <strong>E3</strong> independent static tools (MobSF, jadx) with manual triage; <strong>E4</strong> assistants asked to fix induced errors, judged by a frozen rubric; <strong>E5</strong> an assistant as the optimiser on an app with known problems. Five pre-registered confirmatory tests (C1–C5, Holm-corrected) carry the conclusions; everything else is descriptive. The talk ends on the rule the whole study follows: <strong>&quot;Không để trợ lý tự xác nhận mã của chính nó.&quot;</strong></p>
+<p>We let AI coding assistants write first drafts of an Android app (ShelfTap, an NFC library app), then measured what those drafts cost in UI performance, memory and security, and which costs the known optimisation techniques do not remove. Six experiments:</p>
+<ul>
+<li><strong>E1</strong>: a corpus of first drafts, scanned by a validated detector and compared with human-written apps.</li>
+<li><strong>E2</strong>: paired A/B benchmarks in the <code>android/optlab</code> app. A is the code the assistants actually wrote; B is the tuned version.</li>
+<li><strong>E3</strong>: independent static tools (MobSF, jadx) with manual triage.</li>
+<li><strong>E4</strong>: assistants asked to fix induced errors, judged by a frozen rubric.</li>
+<li><strong>E5</strong>: an assistant as the optimiser on an app with known problems.</li>
+<li><strong>E6</strong> (exploratory): one hype-style prompt, the same prompt with the rules file, and a structured spec.</li>
+</ul>
+<p>Five pre-registered confirmatory tests (C1–C5, Holm-corrected) carry the conclusions; everything else is descriptive. An exploratory follow-up, <strong>E7</strong>, turns two of the gaps into tool-enforced checks (section 4). The talk opens with the online promise (&quot;one prompt, one app&quot;), ranks the problems by frequency and severity, shows the measured before/after for three pillars (UI rendering, memory, security), and closes on three points: looking finished is not being optimised; frequency is not severity; trust the build and the measurement, not &quot;đã sửa xong&quot;.</p>
 <h2 id="2-questions-hypotheses-verdicts">2. Questions, hypotheses, verdicts</h2>
 <p>Research questions RQ1–RQ6 and hypotheses H1–H6, G1–G3, B1 are defined in <a href="00-protocol.md">00-protocol.md</a> §2–§3 and restated in ARTICLE.md §1.4. Only the five below are confirmatory.</p>
 <table>
@@ -73,60 +83,67 @@ main{max-width:1100px}
 <tbody>
 <tr>
 <td>C1</td>
-<td>G1: guardrail lowers the share of runs with ≥1 security (S) finding</td>
+<td>G1: the rules file lowers the share of runs with ≥1 security (S) finding</td>
 <td>E1 primary endpoint 1</td>
 <td>supported</td>
-<td>ARTICLE Table 5.6, 5.26, 5.27 · deck slide 10</td>
+<td>ARTICLE Tables 5.6, 5.26, 5.27 · slides 14, 20, D2</td>
 </tr>
 <tr>
 <td>C2</td>
-<td>G2: guardrail lowers the number of distinct rules per run</td>
+<td>G2: the rules file lowers the number of distinct rules per run</td>
 <td>E1 primary endpoint 2</td>
 <td>supported</td>
-<td>Table 5.6 · slide 10</td>
+<td>Table 5.6 · slides 14, 20, D2</td>
 </tr>
 <tr>
 <td>C3</td>
 <td>B1: assistants emit S findings at a higher density than humans</td>
 <td>S findings per 1000 Kotlin lines vs human apps before 30/11/2022</td>
 <td>supported</td>
-<td>Figure 5.9, Table 5.26 · backup D2</td>
+<td>Figure 5.9, Table 5.26 · slides 13, 20, D2</td>
 </tr>
 <tr>
 <td>C4</td>
 <td>H2: assistants fix errors by weakening security</td>
 <td>share of E4 trials scored <code>insecure-workaround</code> vs 0,15</td>
 <td><strong>not supported</strong></td>
-<td>Figure 5.16 · slide 11</td>
+<td>Figure 5.16 · slides 15, 20, D2, D4</td>
 </tr>
 <tr>
 <td>C5</td>
 <td>H3: decorative effects cost frame time</td>
 <td>P90 CPU frame time, P08 A vs B</td>
 <td>supported</td>
-<td>Table 5.19 · slide 15</td>
+<td>Table 5.19 · slides 8, 20, D2</td>
 </tr>
 </tbody>
 </table>
-<p>Descriptive results that the talk also uses: H4 (non-existent Gradle coordinates) rejected (with the corrected lookup); H5 (accessibility/state debt) rejected; E3 tool precision; E5 optimiser outcomes. Full list: ARTICLE.md Table 5.26 (line 1197) and Table 5.27 (line 1218).</p>
+<p>Descriptive results the talk also uses:</p>
+<ul>
+<li>H4 (non-existent Gradle coordinates): rejected, using the corrected lookup.</li>
+<li>H5 (accessibility and state debt): rejected.</li>
+<li>E3 tool precision, E5 optimiser outcomes, and E6.</li>
+</ul>
+<p>Full list: ARTICLE.md Table 5.26 (line 1197) and Table 5.27 (line 1218).</p>
 <h2 id="3-rules-that-make-the-numbers-trustworthy">3. Rules that make the numbers trustworthy</h2>
 <ol>
-<li><strong>No number without a record.</strong> Every number in prose comes from a results CSV, a REPORT.md, the ShelfTap measurement log, or <a href="references.md">references.md</a>. The only computed values in the article are the Holm-adjusted p-values (Table 5.27).</li>
-<li><strong>Wording.</strong> &quot;Trợ lý phát ra X với tỷ lệ r so với tỷ lệ nền b của người&quot;, never &quot;AI gây ra X&quot;. Causes are <em>hypothesised</em> unless an experiment arm tests them.</li>
-<li><strong>Every result says what kind it is:</strong> <em>xác nhận</em> (one of C1–C5) or <em>mô tả</em> (estimate with a confidence interval, no interpreted p-value). Negative and inconclusive results get the same space as positive ones.</li>
-<li><strong>Emulator numbers are relative.</strong> E2 runs on the <code>lowend34</code> emulator (software GPU); read A vs B, not absolute milliseconds. Real-device numbers come only from the ShelfTap Xiaomi runs (<code>optimization/log/opt-ui-ux.md</code>).</li>
-<li><strong>An assistant never certifies its own fix.</strong> Detectors, tests and tools judge; this applies to how the study was run too.</li>
-<li><strong>Retractions stay visible.</strong> The first Baseline Profile table (measured on a debug build) and the H4 lookup bug are reported as corrections, not deleted.</li>
+<li><strong>No number without a record.</strong> Every number comes from one of these: a results CSV, a REPORT.md, the ShelfTap measurement log (<code>optimization/log/opt-ui-ux.md</code> and <code>optimization/ui-ux/measure/</code>), or <a href="references.md">references.md</a>. The only computed values are the Holm-adjusted p-values and the unit conversions (MB = KB / 1024; APK bytes / 1 000 000); each has a formula row in the proof table.</li>
+<li><strong>Wording.</strong> Write &quot;bản nháp AI có lỗi X với tỷ lệ r&quot;, never &quot;AI gây ra X&quot;. Causes are <em>hypothesised</em> unless an experiment arm tests them.</li>
+<li><strong>Every result says what kind it is:</strong> <em>được xác nhận</em> or <em>không được xác nhận</em> (one of C1–C5), or <em>mô tả</em> (an estimate with a confidence interval and no interpreted p-value). Negative and inconclusive results get the same space as positive ones.</li>
+<li><strong>Emulator numbers are relative.</strong> E2 runs on the <code>lowend34</code> emulator (software GPU); read A against B, not absolute milliseconds. Real-device numbers come only from the ShelfTap Xiaomi runs.</li>
+<li><strong>An assistant never certifies its own fix.</strong> Detectors, tests and tools judge. This applies to how the study itself was run.</li>
+<li><strong>Limits are stated once, plainly.</strong> They go in the notes or on a backup slide. A corrected number is told as the lesson (&quot;measure the measure build, not debug&quot;), never as an apology. Retractions in the article (the first Baseline Profile table, the H4 lookup bug) stay visible as corrections.</li>
 </ol>
 <h2 id="4-data-pipeline-where-a-number-travels">4. Data pipeline — where a number travels</h2>
 <pre><code>00-protocol.md (frozen, sha256)          guardrail/ANDROID-GUARDRAIL.md (frozen)
         │
         ▼
 runs ──► e*/results/*.csv ──► e*/REPORT.md ──► ARTICLE.md (tables, prose) ──► figures/out/F01..F21 (.svg + .data.csv)
-                                         │                               └──► slides-outline.md, presentation-script.md
-optimization/log/opt-ui-ux.md ───────────┴──────────────────────────────────► presentation.html
-                                                                                   │
-                                                          proof/deck-proof.csv ◄───┘ (one row per number, checked)
+                                         │
+optimization/log/opt-ui-ux.md ───────────┼──► presentation.html (frozen deck) ──► presentation-script.md, slides-outline.md
+optimization/ui-ux/measure/*/            │            │                           report/index.html, PLAYBOOK.md §6
+                                         │            └──► proof/deck-proof.csv (one row per number, checked)
+                                         └──► demo/demo.py (live A/B, study numbers as the reference)
 </code></pre>
 <table>
 <thead>
@@ -138,7 +155,7 @@ optimization/log/opt-ui-ux.md ───────────┴────�
 </thead>
 <tbody>
 <tr>
-<td>E1 corpus, detector, human control, guardrail</td>
+<td>E1 corpus, detector, human control, rules file</td>
 <td><code>e1-corpus/results/</code> (main analysis <code>results/analysis/primary-v1/</code>, sensitivity <code>sensitivity-v2/</code>, dependency fix <code>*-deps-corrected/</code>, <code>results/depfix/</code>)</td>
 <td><a href="e1-corpus/REPORT.md">e1-corpus/REPORT.md</a></td>
 </tr>
@@ -154,7 +171,7 @@ optimization/log/opt-ui-ux.md ───────────┴────�
 </tr>
 <tr>
 <td>E4 fix under pressure</td>
-<td><code>e4-pressure/results/</code>, rubric <a href="e4-pressure/RUBRIC.md">e4-pressure/RUBRIC.md</a></td>
+<td><code>e4-pressure/results/</code> (<code>c4_confirmatory.csv</code>, <code>kappa.txt</code>), rubric <a href="e4-pressure/RUBRIC.md">e4-pressure/RUBRIC.md</a></td>
 <td><a href="e4-pressure/REPORT.md">e4-pressure/REPORT.md</a></td>
 </tr>
 <tr>
@@ -163,9 +180,24 @@ optimization/log/opt-ui-ux.md ───────────┴────�
 <td><a href="e5-optimizer/REPORT.md">e5-optimizer/REPORT.md</a></td>
 </tr>
 <tr>
+<td>E6 one-shot prompt (exploratory)</td>
+<td><code>e6-oneshot/results/</code> (<code>findings.csv</code>, <code>canary.json</code>), screenshots <code>e6-oneshot/img/</code></td>
+<td><a href="e6-oneshot/REPORT.md">e6-oneshot/REPORT.md</a>, plan <a href="e6-oneshot/AMENDMENT.md">e6-oneshot/AMENDMENT.md</a></td>
+</tr>
+<tr>
+<td>Isolation of the generation runs</td>
+<td><code>isolation-audit/</code> (623 transcripts)</td>
+<td><a href="isolation-audit/AUDIT.md">isolation-audit/AUDIT.md</a></td>
+</tr>
+<tr>
 <td>ShelfTap on a real phone</td>
-<td><code>optimization/log/opt-ui-ux.md</code>, <code>optimization/ui-ux-metrics.md</code></td>
+<td><code>optimization/log/opt-ui-ux.md</code>, <code>optimization/ui-ux-metrics.md</code>, <code>optimization/ui-ux/measure/results-*/</code></td>
 <td>same files</td>
+</tr>
+<tr>
+<td>E7 new problems and gates (exploratory, desk phase)</td>
+<td><code>e7-novel/results/</code>, prototypes <code>scale_probe.py</code>, <code>diffguard.py</code>, <code>ScaleBudgetGate.kt</code></td>
+<td><a href="e7-novel/NOTE.md">e7-novel/NOTE.md</a></td>
 </tr>
 <tr>
 <td>External figures</td>
@@ -175,6 +207,12 @@ optimization/log/opt-ui-ux.md ───────────┴────�
 </tbody>
 </table>
 <p>Heavy state (generated apps, APKs, videos, traces) lives outside the repo; each REPORT names its path.</p>
+<p><strong>E7 (not in the talk).</strong> <a href="e7-novel/NOTE.md">e7-novel/NOTE.md</a> goes one step past measuring known problems. It names six gaps the E1–E6 data exposes, lists eight candidate new problems or solutions, and builds two prototypes:</p>
+<ul>
+<li>a scale probe: run a generated app at realistic data sizes, because toy data hides P06, P09 and P13;</li>
+<li>a diff guard: a tool, not the assistant, judges an error fix for weakened security.</li>
+</ul>
+<p>Both prototypes are unit-tested (<code>test_prototypes.py</code>) and evaluated retrospectively on the E1, E4, E5 and E6 corpora. The emulator phase (E7a, E7b) is planned in §6 of the note and not yet run. Quote E7 only as exploratory desk work.</p>
 <h2 id="5-the-article-chapter-by-chapter">5. The article, chapter by chapter</h2>
 <p>Line numbers are ARTICLE.md lines at the time of writing; search the heading if they drift.</p>
 <table>
@@ -237,7 +275,17 @@ optimization/log/opt-ui-ux.md ───────────┴────�
 </tr>
 </tbody>
 </table>
-<p><strong>Figures:</strong> every figure caption names its data file <code>figures/out/Fxx-*.data.csv</code>; <code>figures/make_figures.py</code> (stdlib) rebuilds all of them and <code>figures/out/manifest.json</code>. Plan and deviations: <a href="figures/PLAN.md">figures/PLAN.md</a>.</p>
+<p><strong>Figures:</strong> every figure caption names its data file <code>figures/out/Fxx-*.data.csv</code>. <code>figures/make_figures.py</code> (stdlib) rebuilds all of them and <code>figures/out/manifest.json</code>. Plan and deviations: <a href="figures/PLAN.md">figures/PLAN.md</a>. The figures are frozen. Where a figure prints an older term (for example &quot;luật&quot;, &quot;guardrail&quot; or &quot;đường GPU&quot;), the caption ends with one sentence that glosses it with the current term.</p>
+<p><strong>Wording rules (changed 2026-11-28).</strong> The article went through two language passes, both with an invariant check: same numbers, IDs, headings, tables, citations and links as the baseline.</p>
+<ul>
+<li>Pass 1 rewrote it to the binding glossary of section 8: &quot;nhóm&quot; instead of &quot;chúng tôi&quot;, &quot;quy tắc&quot; instead of &quot;luật&quot;, no dangling &quot;nó&quot;.</li>
+<li>Pass 2 replaced the literal calques the reviewer found, about 200 replacements. Examples: &quot;chấm ẩn nhãn&quot;, &quot;chốt chặn kiểm tra tự động&quot;, &quot;tiêu chí xác nhận&quot;, &quot;báo cáo tự đánh giá&quot;, &quot;trợ lý sửa mã&quot;, &quot;cấu hình kết xuất GPU&quot;.</li>
+</ul>
+<p>Details: <a href="proof/LANGUAGE-REVIEW.md">proof/LANGUAGE-REVIEW.md</a> §3. Rebuild the HTML with:</p>
+<pre><code>cd optimization/study
+uv run --no-project --with markdown python article-build/build_html.py ARTICLE.md ARTICLE.html article-build/article.css
+</code></pre>
+<p>(The system <code>python3</code> has no <code>markdown</code> module; <code>build_html.py</code> needs all three arguments.)</p>
 <h2 id="6-the-talk">6. The talk</h2>
 <table>
 <thead>
@@ -250,294 +298,844 @@ optimization/log/opt-ui-ux.md ───────────┴────�
 <tbody>
 <tr>
 <td><a href="presentation.html">presentation.html</a></td>
-<td>the deck: 21 slides + 11 backup (D1–D11), Vietnamese, offline; same order as <a href="report/index.html">report/index.html</a>; needs <a href="evidence/">evidence/</a> and <a href="e6-oneshot/img/">e6-oneshot/img/</a> next to it</td>
-<td>~14 min</td>
+<td>the deck: 25 main slides + 8 backup (D1–D8), Vietnamese, one offline HTML with embedded fonts. It needs <a href="evidence/">evidence/</a> (videos, hype thumbnails, screenshots) and <a href="e6-oneshot/img/">e6-oneshot/img/</a> next to it</td>
+<td>speaker notes sum to 19:30</td>
 </tr>
 <tr>
 <td><a href="presentation-script.md">presentation-script.md</a></td>
-<td>speaker script with timing and Q&amp;A, one segment per slide</td>
-<td>~14 min</td>
+<td>the spoken script, one section per main slide (Lời nói, Thao tác, Lưu ý), a timing table, Q&amp;A mapped to D1–D8, a preparation checklist and a number check. The per-slide sections are copied below</td>
+<td>19:15 at 130 words/min</td>
 </tr>
 <tr>
 <td><a href="slides-outline.md">slides-outline.md</a></td>
-<td>slide-by-slide outline of the deck</td>
-<td>~14 min</td>
+<td>slide-by-slide outline: message, evidence, source</td>
+<td>—</td>
+</tr>
+<tr>
+<td><a href="demo/README.md">demo/README.md</a></td>
+<td>the live demo kit for slide 16 (Vietnamese)</td>
+<td>120 s slot</td>
 </tr>
 </tbody>
 </table>
-<p>Design rule for the main slides (audience is not technical): one plain sentence as the headline, one picture of real evidence (A/B video, verbatim code, tool output, screenshot) and at most one or two numbers. Statistics (p, Cliff's delta, intervals, n) go to the speaker notes and backup slides D1–D11. Every evidence item shows its source path on the slide; each one is documented in <a href="evidence/EVIDENCE-code.md">evidence/EVIDENCE-code.md</a> and <a href="evidence/EVIDENCE-agent.md">evidence/EVIDENCE-agent.md</a>.</p>
-<p>Deck order (rebuilt 2026-11-28 to follow the plain-language report), the evidence each slide shows, and where it comes from:</p>
+<h3 id="how-the-talk-is-built">How the talk is built</h3>
+<p>The talk is 15 to 20 minutes for lecturers and classmates. It runs in nine blocks:</p>
 <table>
 <thead>
 <tr>
-<th>Slide</th>
-<th>Says</th>
-<th>Evidence on the slide</th>
-<th>Source</th>
-<th>Kind</th>
+<th>Block</th>
+<th>Slides</th>
+<th>Job</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook</td>
+<td>1–3</td>
+<td>the question, the online promise, and what the same prompt really produces</td>
+</tr>
+<tr>
+<td>Classification</td>
+<td>4–5</td>
+<td>the centrepiece: problems ranked by frequency and marked by severity, then three lessons</td>
+</tr>
+<tr>
+<td>Method</td>
+<td>6</td>
+<td>six experiments, criteria fixed before data, the isolation check, the emulator caveat (said once)</td>
+</tr>
+<tr>
+<td>Pillar 1, UI rendering</td>
+<td>7–9</td>
+<td>P09 eager list, P08 decorative effects (C5), rules with no measurable cost</td>
+</tr>
+<tr>
+<td>Pillar 2, memory and resources</td>
+<td>10–12</td>
+<td>P06 full-size covers, P09 memory, R8 size and P13 search</td>
+</tr>
+<tr>
+<td>Pillar 3, security</td>
+<td>13–15</td>
+<td>prevalence and density (C3), what lowers it (C1, C2), behaviour under a blocking error (C4) and APK scanners</td>
+</tr>
+<tr>
+<td>Demo</td>
+<td>16</td>
+<td>A next to B live, by another group member</td>
+</tr>
+<tr>
+<td>Build and fix</td>
+<td>17–18</td>
+<td>drafts that do not build; &quot;đã sửa xong&quot; that does not compile</td>
+</tr>
+<tr>
+<td>Conclusions</td>
+<td>19–21</td>
+<td>six conclusions, the test verdicts, the course-target scoreboard</td>
+</tr>
+<tr>
+<td>Practice</td>
+<td>22–25</td>
+<td>real device; advice per development phase at two levels, Tối thiểu and Nâng cao; three points</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The classification rules (frozen, slide 4).</strong> These are the rules the slide uses:</p>
+<ul>
+<li><strong>Frequency</strong> is the share of the 66 E1 drafts written without the rules file that show the problem at least once, counted at source level. Drafts that do not build are included, and the notes say so. The build row is counted on the 100 valid drafts.</li>
+<li><strong>Validated counts</strong> are used where the detector has them: P10 63/66 and P09 2/66, both from the v2 table. A count whose detector precision is not validated carries the label &quot;chưa kiểm định độ chính xác&quot; (P06).</li>
+<li><strong>Bins:</strong> Phổ biến ≥ 50%; Ít gặp 10% to under 50%; Hiếm under 10%. With n = 66, items near 10% (P06, P08, S05) could fall on either side. The notes say so.</li>
+<li><strong>Severity is marked separately from frequency:</strong>
+<ul>
+<li>Nghiêm trọng: credentials or personal data leak, or a security control is switched off (S01, S02, S05; under error pressure S03, X01). It also applies when fixing the problem alone moves a lab screen from missing to meeting a course target (P06, P09 memory; P09 frames; P13 search).</li>
+<li>Đáng kể: a large measured cost that does not decide a target (P10 size; P08 frame time).</li>
+<li>Không đo được chi phí: P01, P03, P04.</li>
+<li>Nhẹ: P11.</li>
+</ul>
+</li>
+<li><strong>Context counts stay outside the bins.</strong> E4 X01 12/30 and S03 5/30, and E6 P08 11/12, are context rows. Accessibility, layout and dependency rules are on backup D5 only.</li>
+</ul>
+<p><strong>Framing rules.</strong> The earlier framing is retired; do not bring it back. That framing told the study as a numbered chain of habits and split the advice by type of reader. &quot;vibe coding&quot; now appears only as the name of the phenomenon, on slide 2. Phase advice has exactly two levels, &quot;Tối thiểu&quot; and &quot;Nâng cao&quot;. Slides show no source captions, and the hype examples get no source list. Sources live in each slide's <code>aside.notes</code> as <code>path:line</code> and in the proof table. Limits are stated once: slide 6, slide 21 and D1.</p>
+<p><strong>Design rules.</strong> The canvas is 1920 × 1080, scaled to the window. A headline is a full sentence that makes the claim. Body text is at least 20 px at a 1280 px window, and nothing may be clipped or leave the canvas. Each main slide carries one picture of evidence (an A/B video, a chart, verbatim code or a screenshot) and few numbers. Statistics such as p, Cliff's delta and intervals go to the notes and to D1–D8.</p>
+<p><strong>Hype images (slide 2).</strong> There are six 1280 × 720 YouTube thumbnails, <code>evidence/img/hype/hype-01.jpg</code> … <code>hype-06.jpg</code>. Their origin (title, channel, video id, fetch date) is recorded in <a href="evidence/img/hype/README.md">evidence/img/hype/README.md</a> and never shown on a slide. The digits they contain are inside the images, so they need no proof rows.</p>
+<p><strong>Live demo kit (slide 16).</strong> <a href="demo/README.md">demo/</a> runs A (the AI first draft) next to B (the tuned version) of the same screen, on the emulator. It uses one stdlib Python file, <code>demo.py</code>, and works on Windows (<code>py</code>) and Linux (<code>python3</code>):</p>
+<ul>
+<li><code>setup</code> and <code>doctor</code> check the machine before the talk.</li>
+<li><code>start</code> and <code>stop</code> handle the emulators.</li>
+<li><code>list</code> and <code>run p09|p08|p06|p13|p10|p01|p0304</code> run the scenarios; <code>record</code> captures a run.</li>
+</ul>
+<p>For the 120-second slot, run <code>run p09</code> at 0:00 and <code>run p13</code> at 1:00. Both run on the same GPU setting, so no emulator reboot is needed. The fallback is the slide-7 video plus <code>evidence/video/P13c-AB.mp4</code>, reading the numbers printed on the slide-16 cards. Live numbers are an illustration only; the study numbers on the slide are the reference. <a href="demo/AGENT-BRIEF.md">demo/AGENT-BRIEF.md</a> briefs a presenter's coding assistant (English).</p>
+<p><strong>Keys.</strong></p>
+<ul>
+<li>Navigation: → or Space next, ← back, digits + Enter jump.</li>
+<li>Views: P presenter window, O overview, N notes, T light/dark, B blackout, ? help.</li>
+<li>Print to PDF gives one page per slide, in final state.</li>
+</ul>
+<p>The presenter clock target is the sum of the &quot;~N giây&quot; notes of the main slides, so it follows the deck when a slide changes. The same goes for the overrun warning and the &quot;backup from slide N&quot; help text. To show the deck over the tailnet: <code>python3 -m http.server &lt;port&gt; --bind &lt;tailscale-ip&gt; --directory optimization/study</code>.</p>
+<h3 id="slides-what-each-one-claims-and-where-its-numbers-are-proven">Slides: what each one claims and where its numbers are proven</h3>
+<p>The data-title column is exactly the slide's <code>data-title</code> in the deck. Script, outline, report and proof key on slide number plus data-title.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>data-title</th>
+<th>What the slide claims</th>
+<th>Experiment</th>
+<th>Proof (rows in proof/deck-proof.csv; main sources)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>1</td>
-<td>title: &quot;Một câu lệnh, một ứng dụng đẹp?&quot;</td>
-<td>—</td>
-<td>—</td>
-<td>—</td>
+<td>Tối ưu giao diện, bộ nhớ và bảo mật</td>
+<td>Opening question: where is the un-optimised part of an AI first draft, and what does it cost; three pillars and the three study-size chips</td>
+<td>E1, E6</td>
+<td>7 rows; <code>e1-corpus/REPORT.md</code>, <code>e6-oneshot/REPORT.md</code></td>
 </tr>
 <tr>
 <td>2</td>
-<td>lead-in: the &quot;vibe coding&quot; hype and the one-shot prompt</td>
-<td>Karpathy, Stack Overflow 2025, Collins, Merriam-Webster; prompts/O.txt verbatim</td>
-<td>references.md §G, report/sources-leadin.md</td>
-<td>cited</td>
+<td>Lời hứa trên mạng</td>
+<td>Six real thumbnails promise a whole app from one prompt; names the phenomenon (vibe coding) once</td>
+<td>hype images</td>
+<td>1 row (labels only)</td>
 </tr>
 <tr>
 <td>3</td>
-<td>E6: same prompt, four assistants, very different apps (6/12 build, 120–3.702 lines, 74–100% janky)</td>
-<td>four arm-O screenshots</td>
-<td>e6 REPORT §2</td>
-<td>mô tả</td>
+<td>Chạy đúng prompt đó</td>
+<td>The same hype prompt gives four finished-looking apps that are not optimised: 6/12 build, 74–100% janky, 1.195–2.576 ms launch; RAM passes only because the data is 12 sample titles</td>
+<td>E6</td>
+<td>26 rows; <code>e6-oneshot/REPORT.md</code>, <code>e2-bench/REPORT.md</code></td>
 </tr>
 <tr>
 <td>4</td>
-<td>the problem in short: 90% → 1,3%, 203 → 6,2 MB, 60/66; 2,3× vs human apps</td>
-<td>—</td>
-<td>e2 REPORT, e1 REPORT:127–128</td>
-<td>mô tả</td>
+<td>Phân loại lỗi</td>
+<td>Classification matrix: frequency on the 66 drafts without a rules file vs severity; the most frequent problem is not the most dangerous one</td>
+<td>E1 (context row E4, note E6)</td>
+<td>35 rows; <code>e1-corpus/REPORT.md</code>, <code>e4-pressure/REPORT.md</code></td>
 </tr>
 <tr>
 <td>5</td>
-<td>method E1–E6, and the isolation check (623 transcripts, 0 markers, canary 12/12)</td>
-<td>—</td>
-<td>00-protocol, isolation-audit/AUDIT.md</td>
-<td>—</td>
+<td>Ba điều rút ra</td>
+<td>Three lessons: build first, turn on R8, check the rare but critical problems on purpose; human apps break many UI rules too</td>
+<td>E1, E2, E6</td>
+<td>25 rows; <code>e1-corpus/REPORT.md</code>, <code>e6-oneshot/REPORT.md</code></td>
 </tr>
 <tr>
 <td>6</td>
-<td>the seven links of the vibe-code chain, one number each</td>
-<td>—</td>
-<td>report/index.html §4</td>
-<td>—</td>
+<td>Sáu thí nghiệm</td>
+<td>Six experiments, criteria fixed before data, isolation check, emulator numbers read as A/B only</td>
+<td>E1–E6, isolation audit</td>
+<td>20 rows; <code>isolation-audit/AUDIT.md</code>, <code>e1-corpus/REPORT.md</code></td>
 </tr>
 <tr>
 <td>7</td>
-<td>link 1, tool and model: haiku 1/9 vs sonnet 7/9 (E6), E1 build rate per bundle</td>
-<td>—</td>
-<td>e6 REPORT §5, e1 REPORT</td>
-<td>mô tả</td>
+<td>Danh sách dài dựng toàn bộ</td>
+<td>A long list composed eagerly (P09): janky 90% → 1,3%, rows composed 2.000 → 31</td>
+<td>E2</td>
+<td>16 rows; <code>e2-bench/REPORT.md</code>, <code>e1-corpus/REPORT.md</code></td>
 </tr>
 <tr>
 <td>8</td>
-<td>link 2, prompt (E1): longer functional prompt is not safer, builds less</td>
-<td>—</td>
-<td>e1 REPORT:127–129, §1</td>
-<td>mô tả</td>
+<td>Hiệu ứng trang trí</td>
+<td>Shadows and gradients per card (P08): frame time +28% (C5 confirmed); the tuned card still misses 60 fps; 8/66 drafts, 11/12 hype runs</td>
+<td>E2, E1, E6</td>
+<td>25 rows; <code>e2-bench/REPORT.md</code>, <code>e1-corpus/REPORT.md</code></td>
 </tr>
 <tr>
 <td>9</td>
-<td>link 2, prompt (E6): structured spec, janky 99% → 19,6%</td>
-<td>claude-sonnet arm O vs arm S screenshots</td>
-<td>e6 REPORT §4</td>
-<td>mô tả</td>
+<td>Lỗi không có chi phí đo được</td>
+<td>Rules with no measurable cost here (P01, P03+P04); Baseline Profile small on the emulator, nothing on the phone: measure before fixing</td>
+<td>E2, ShelfTap log</td>
+<td>28 rows; <code>e2-bench/REPORT.md</code>, <code>../log/opt-ui-ux.md</code></td>
 </tr>
 <tr>
 <td>10</td>
-<td>link 3, rules file: C1/C2 plus E6 arm R and the Baseline Profile rule</td>
-<td>code-02, code-07</td>
-<td>Tables 5.6–5.7, e6 REPORT §4</td>
-<td>xác nhận</td>
+<td>Ảnh giải mã ở kích thước gốc</td>
+<td>Covers decoded at full size (P06): RSS 180 → 60 MB against the 150 MB target</td>
+<td>E2</td>
+<td>23 rows; <code>e2-bench/REPORT.md</code>, <code>e1-corpus/REPORT.md</code></td>
 </tr>
 <tr>
 <td>11</td>
-<td>link 4, when it errors: C4 17/148</td>
-<td>agent-01, agent-02</td>
-<td>§5.5</td>
-<td>xác nhận (not supported)</td>
+<td>Danh sách dài và bộ nhớ</td>
+<td>The same eager list seen as memory: RSS 243 → 43 MB, heap 220 → 7,6 MB, TTID 1.901 → 573,1 ms</td>
+<td>E2</td>
+<td>23 rows; <code>e2-bench/REPORT.md</code></td>
 </tr>
 <tr>
 <td>12</td>
-<td>link 5, verify: E5 &quot;fixed&quot; claim vs compile error</td>
-<td>agent-06, agent-04, agent-05</td>
-<td>§5.6</td>
-<td>mô tả</td>
+<td>Dung lượng và tìm kiếm</td>
+<td>R8 cuts the APK by 90%; an FTS4 index brings the slowest query under 50 ms (96,63 → 37 ms)</td>
+<td>E2</td>
+<td>27 rows; <code>e2-bench/REPORT.md</code>, <code>e2-bench/results/p13_equivalence.csv</code></td>
 </tr>
 <tr>
 <td>13</td>
-<td>link 5, scanners: MobSF wrong 7 in 10, misses real issues</td>
-<td>code-05, code-06</td>
-<td>§5.4</td>
-<td>mô tả</td>
+<td>Lỗi bảo mật phổ biến đến mức nào</td>
+<td>60 of 66 drafts carry a security finding; density 2,3× the human apps (C3 confirmed)</td>
+<td>E1</td>
+<td>20 rows; <code>e1-corpus/REPORT.md</code></td>
 </tr>
 <tr>
 <td>14</td>
-<td>link 6, lists and images: 90% → 1,3%</td>
-<td>video P09c A/B</td>
-<td>Tables 5.14–5.15</td>
-<td>mô tả</td>
+<td>Điều gì làm giảm lỗi bảo mật</td>
+<td>The rules file lowers the share 31/33 → 17/34 (C1) and the rule count 5,85 → 2,82 (C2); a longer prompt does not; no difference among drafts that build</td>
+<td>E1</td>
+<td>22 rows; <code>e1-corpus/REPORT.md</code></td>
 </tr>
 <tr>
 <td>15</td>
-<td>link 6, decorative effects: C5 +28%</td>
-<td>video P08c A/B</td>
-<td>Table 5.19</td>
-<td>xác nhận</td>
+<td>Khi gặp lỗi chặn</td>
+<td>Under a blocking error assistants weaken security in 17/148 trials (C4 not confirmed), only Keystore and cleartext; APK scanner precision 0,291</td>
+<td>E4, E3</td>
+<td>28 rows; <code>e4-pressure/REPORT.md</code>, <code>e3-security/REPORT.md</code></td>
 </tr>
 <tr>
 <td>16</td>
-<td>link 6, what the user feels: P13, R8, Baseline Profile, Compose nulls</td>
-<td>video P13c A/B</td>
-<td>Tables 5.9, 5.10, 5.16–5.18</td>
-<td>mô tả</td>
+<td>Demo: trước và sau tối ưu</td>
+<td>Live demo, A next to B on the emulator (P09, P06, P08, P13); the study numbers on the cards are the reference</td>
+<td>demo kit, E2</td>
+<td>25 rows; <code>e2-bench/REPORT.md</code></td>
 </tr>
 <tr>
 <td>17</td>
-<td>link 7, measure the release build: 125 vs 12–16 ms</td>
-<td>—</td>
-<td>opt-ui-ux.md</td>
-<td>mô tả</td>
+<td>Bản nháp build lỗi</td>
+<td>Drafts often fail to build (42/100); model choice (1/9 vs 7/9) and a structured spec (janky 99% → 19,6%) matter most</td>
+<td>E1, E6</td>
+<td>17 rows; <code>e6-oneshot/REPORT.md</code>, <code>e1-corpus/REPORT.md</code></td>
 </tr>
 <tr>
 <td>18</td>
-<td>link 7, bugs only a real phone shows: 10.0.2.2 cover URL</td>
-<td>—</td>
-<td>opt-ui-ux.md</td>
-<td>mô tả</td>
+<td>“Đã sửa xong” chưa phải kết quả</td>
+<td>&quot;Đã sửa xong&quot; is not a test result: all 168 seeded issues found in suggest-only mode, but 9/12 codex fixes do not compile</td>
+<td>E5</td>
+<td>13 rows; <code>e5-optimizer/REPORT.md</code></td>
 </tr>
 <tr>
 <td>19</td>
-<td>link 7, large font: all four E6 apps break at 2.0; ShelfTap 5/7 → 0/7</td>
-<td>e6 img/grid-O-font2.jpg; ShelfTap A/B screenshots</td>
-<td>e6 REPORT §2, opt-ui-ux.md</td>
-<td>mô tả</td>
+<td>Sáu kết luận</td>
+<td>One conclusion per experiment</td>
+<td>E1–E6</td>
+<td>21 rows; <code>e1-corpus/REPORT.md</code>, <code>e3-security/REPORT.md</code></td>
 </tr>
 <tr>
 <td>20</td>
-<td>seven habits, vibe coder vs engineer</td>
-<td>—</td>
-<td>report/index.html §5</td>
-<td>—</td>
+<td>Kết quả các phép kiểm định</td>
+<td>Four of the five pre-registered tests confirmed, C4 not; H4 and H5 rejected</td>
+<td>C1–C5, H4, H5</td>
+<td>31 rows; <code>e1-corpus/REPORT.md</code>, <code>00-protocol.md</code></td>
 </tr>
 <tr>
 <td>21</td>
-<td>closing: three habits, &quot;Không để trợ lý tự xác nhận mã của chính nó.&quot;</td>
+<td>Đối chiếu mục tiêu môn học</td>
+<td>Course-target scoreboard: the fixed lab screens meet the targets (emulator); whole-app RAM 94–95 MB PSS on one Xiaomi scenario without covers; two items not measured</td>
+<td>E2, E6, ShelfTap log</td>
+<td>48 rows; <code>e2-bench/REPORT.md</code>, <code>../log/opt-ui-ux.md</code></td>
+</tr>
+<tr>
+<td>22</td>
+<td>Thiết bị thật</td>
+<td>Measure the measure build, not debug (125 vs 12–16 ms p90); a cover-URL bug that only a real phone shows</td>
+<td>ShelfTap log</td>
+<td>25 rows; <code>../log/opt-ui-ux.md</code>, <code>e2-bench/REPORT.md</code></td>
+</tr>
+<tr>
+<td>23</td>
+<td>Giai đoạn 1 đến 3</td>
+<td>Phases 1–3 (set requirements, generate, fix errors), each with Tối thiểu and Nâng cao advice tied to a measured result</td>
+<td>E6, E1, E4</td>
+<td>24 rows; <code>e6-oneshot/REPORT.md</code>, <code>e1-corpus/REPORT.md</code></td>
+</tr>
+<tr>
+<td>24</td>
+<td>Giai đoạn 4 và 5</td>
+<td>Phases 4–5 (verify, measure and release), same two levels</td>
+<td>E5, E3, E2, ShelfTap log</td>
+<td>24 rows; <code>e2-bench/REPORT.md</code>, <code>../log/opt-ui-ux.md</code></td>
+</tr>
+<tr>
+<td>25</td>
+<td>Ba điều cần nhớ</td>
+<td>Three points to remember; no new numbers</td>
 <td>—</td>
-<td>—</td>
-<td>—</td>
+<td>6 rows (labels only)</td>
+</tr>
+<tr>
+<td>D1</td>
+<td>D1 · Giới hạn</td>
+<td>Limits: emulator, sample sizes, what is not measured</td>
+<td>E2, E1</td>
+<td>10 rows; <code>e2-bench/REPORT.md</code>, <code>e1-corpus/REPORT.md</code></td>
+</tr>
+<tr>
+<td>D2</td>
+<td>D2 · Bảng Holm</td>
+<td>Holm table for C1–C5</td>
+<td>C1–C5</td>
+<td>36 rows; <code>e1-corpus/REPORT.md</code>, <code>00-protocol.md</code></td>
+</tr>
+<tr>
+<td>D3</td>
+<td>D3 · Bảng E2 đầy đủ</td>
+<td>Full E2 table, seven factors plus the P01 contrast</td>
+<td>E2</td>
+<td>49 rows; <code>e2-bench/REPORT.md</code>, <code>e2-bench/results/c5_confirmatory.csv</code></td>
+</tr>
+<tr>
+<td>D4</td>
+<td>D4 · E4 chi tiết</td>
+<td>E4 detail per case and per assistant, Stack Overflow baseline</td>
+<td>E4</td>
+<td>26 rows; <code>e4-pressure/REPORT.md</code></td>
+</tr>
+<tr>
+<td>D5</td>
+<td>D5 · Tần suất theo quy tắc</td>
+<td>Frequency per rule and prompt style next to human apps</td>
+<td>E1</td>
+<td>29 rows; <code>e1-corpus/REPORT.md</code></td>
+</tr>
+<tr>
+<td>D6</td>
+<td>D6 · E6 chi tiết</td>
+<td>E6 builds per assistant and prompt arm</td>
+<td>E6</td>
+<td>10 rows; <code>e6-oneshot/REPORT.md</code></td>
+</tr>
+<tr>
+<td>D7</td>
+<td>D7 · Kiểm tra môi trường</td>
+<td>Isolation check of the generation runs</td>
+<td>isolation audit, E6</td>
+<td>7 rows; <code>isolation-audit/AUDIT.md</code></td>
+</tr>
+<tr>
+<td>D8</td>
+<td>D8 · Cỡ chữ lớn và bố cục</td>
+<td>Large font scale 2.0: the one-prompt apps break; ShelfTap 5/7 → 0/7</td>
+<td>E6, ShelfTap metrics</td>
+<td>14 rows; <code>../ui-ux-metrics.md</code>, <code>../log/opt-ui-ux.md</code></td>
 </tr>
 </tbody>
 </table>
-<p>Every solution slide (7, 9–19 except 8 and 18) ends with the two audience boxes: &quot;Nếu bạn vibe-code&quot; (habits and prompts) and &quot;Nếu bạn là kỹ sư&quot; (process, tests, CI, measurement). Backup D1–D11: verdict board, C3 vs human, E1 drafts, limits, Holm table, full E2 table, E4 detail, rule prevalence, E6 build table, isolation check detail, lead-in sources. Framing rule (user, 2026-11-28): never lead with admitting a mistake; a corrected number is told as the lesson (&quot;debug builds mislead, measure the release&quot;), and limits are stated once, plainly, in notes or backup.</p>
-<p>Keys: → / Space next, ← back, P presenter window, O overview, N notes, T light/dark, F fullscreen, B blackout, digits + Enter jump, ? help. Print to PDF renders every slide in its final state. To show it over the tailnet: <code>python3 -m http.server &lt;port&gt; --bind &lt;tailscale-ip&gt; --directory optimization/study</code>.</p>
+<h3 id="script-slide-by-slide">Script, slide by slide</h3>
+<p>Copied from <a href="presentation-script.md">presentation-script.md</a> by <code>build_playbook_html.py</code>. Edit the script file, then rebuild; never edit this block by hand. The timing table, the Q&amp;A table (<a href="presentation-script.md">Hỏi đáp dự kiến</a>), the preparation checklist and the number check stay in the script file.</p>
+<!-- SCRIPT:START -->
+<!-- filled by build_playbook_html.py from presentation-script.md; edit the script, not this block -->
+<h4>1. Tối ưu giao diện, bộ nhớ và bảo mật (0:00 đến 0:30) — slide 1</h4>
+<p><em>Mở đầu · 30 giây · 61 từ</em></p>
+<p><strong>Lời nói.</strong> Kính chào thầy cô và các bạn. Hôm nay nhóm em trình bày về tối ưu giao diện, bộ nhớ và bảo mật trên Android với bối cảnh ShelfTap — ứng dụng thư viện NFC. Trợ lý lập trình AI viết bản nháp đầu rất nhanh, nhưng phần chưa tối ưu nằm ở đâu và gây tổn hao đến mức nào?</p>
+<p><strong>Thao tác.</strong> Dừng một nhịp sau câu hỏi rồi chuyển sang slide 2.</p>
+<p><strong>Lưu ý.</strong> Con số trên slide: 6 thí nghiệm, 101 bản nháp đầu, 36 lần chạy với chỉ một prompt (tức lời nhắc giao cho AI).</p>
+<h4>2. Lời hứa trên mạng (0:30 đến 1:10) — slide 2</h4>
+<p><em>Mở đầu · 40 giây · 82 từ</em></p>
+<p><strong>Lời nói.</strong> Thầy cô và các bạn chắc hẳn đã quen với những bài đăng kiểu này: ảnh giao diện bóng bẩy kèm lời hứa chỉ một prompt — tức lời nhắc giao cho AI — là có ngay ứng dụng hoàn chỉnh. Hiện tượng đó gọi là vibe coding: mô tả bằng lời, nhận mã từ trợ lý AI rồi dùng ngay mà không kiểm tra lại. Nếu làm đúng theo cách đó trên Android thì kết quả thực tế sẽ ra sao?</p>
+<p><strong>Thao tác.</strong> Lướt tay qua lưới sáu ảnh minh họa, không đọc từng ảnh.</p>
+<p><strong>Lưu ý.</strong> Không nhắc tên nguồn hay đường dẫn ảnh trên sân khấu; nguồn lưu riêng trong evidence/img/hype/README.md.</p>
+<h4>3. Chạy đúng prompt đó (1:10 đến 1:55) — slide 3</h4>
+<p><em>Mở đầu · 45 giây · 98 từ</em></p>
+<p><strong>Lời nói.</strong> Nhóm em đã thử chạy đúng kiểu prompt đó trên bốn trợ lý AI. Nhìn bề ngoài, cả bốn ứng dụng trông khá hoàn thiện. Nhưng khi đo trên máy ảo, chỉ có 6 trên 12 lần chạy build thành công. Tỷ lệ khung hình trễ khi cuộn lên tới 74 đến 100%, còn thời gian khởi động mất 1.195 đến 2.576 ms. Công bằng mà nói, mức dùng RAM chỉ từ 66,8 đến 102,8 MB vì trợ lý AI mới tự tạo 12 tựa sách mẫu; vấn đề bộ nhớ chỉ lộ ra ở dữ liệu thật.</p>
+<p><strong>Thao tác.</strong> Chỉ lần lượt bốn màn hình trên slide khi nhắc dải 74 đến 100%, rồi nhấn mạnh câu cuối về 12 tựa sách.</p>
+<p><strong>Lưu ý.</strong> Mỗi ảnh là lần chạy có tỷ lệ khung hình trễ thấp nhất trong 3 lần của từng trợ lý AI; số đo trên máy ảo chỉ so sánh trong thí nghiệm này.</p>
+<h4>4. Phân loại lỗi (1:55 đến 2:55) — slide 4</h4>
+<p><em>Mở đầu · 60 giây · 129 từ</em></p>
+<p><strong>Lời nói.</strong> Bảng này cho thấy bức tranh tổng thể về các lỗi trong bản nháp đầu. Thầy cô và các bạn có thể đọc nhanh theo hai chiều: từ trái sang phải là tần suất trên 66 bản nháp không kèm tệp quy tắc (guardrail), gồm phổ biến từ 50% trở lên, ít gặp từ 10% đến dưới 50%, và hiếm dưới 10%. Chấm đỏ đánh dấu lỗi nghiêm trọng. Điều đáng chú ý nằm ngay đây: cột bên trái là lỗi hay gặp nhất như build lỗi 58/100 hay thiếu R8 63/66, nhưng phần lớn chấm đỏ lại rơi vào hai cột sau — lưu token dạng rõ 19/66, tìm kiếm thiếu chỉ mục 15/66, dựng toàn bộ danh sách 2/66, giải mã ảnh ở kích thước gốc 5/66.</p>
+<p><strong>Thao tác.</strong> Chỉ từ trái sang phải qua ba cột Phổ biến, Ít gặp, Hiếm, rồi khoanh vào các chấm đỏ và dòng bối cảnh E4 phía dưới.</p>
+<p><strong>Lưu ý.</strong> P06 (5/66) chưa kiểm định độ chính xác; dòng khi gặp lỗi chặn (12/30 bỏ xác thực khóa Keystore, 5/30 bật cleartext) thuộc bối cảnh E4, không gộp vào ba cột E1.</p>
+<h4>5. Ba điều rút ra (2:55 đến 3:45) — slide 5</h4>
+<p><em>Mở đầu · 50 giây · 106 từ</em></p>
+<p><strong>Lời nói.</strong> Từ bảng phân loại, nhóm em rút ra ba điều. Trước khi nói đến tối ưu, lỗi phổ biến nhất là bản nháp build lỗi: 58/100 ở E1 và 6/12 ở E6. Thứ hai, lỗi tài nguyên hay gặp nhất lại dễ sửa nhất: 63/66 bản thiếu R8, bật R8 lên là APK giảm từ 24,7 MB xuống 2,4 MB. Thứ ba, lỗi nghiêm trọng nhất lại hiếm, cần chủ động rà soát. Công bằng mà nói, ứng dụng do người viết cũng mắc nhiều lỗi giao diện như thiếu key 14/20; chỉ mật độ cảnh báo bảo mật mới là khác biệt được kiểm định.</p>
+<p><strong>Thao tác.</strong> Đếm lần lượt ba thẻ lớn rồi dừng ngắn ở dòng lưu ý so với ứng dụng do người viết.</p>
+<p><strong>Lưu ý.</strong> Chuyển mượt sang slide 6: giới thiệu sáu thí nghiệm tạo ra các con số trên.</p>
+<h4>6. Sáu thí nghiệm (3:45 đến 4:25) — slide 6</h4>
+<p><em>Phương pháp · 40 giây · 90 từ</em></p>
+<p><strong>Lời nói.</strong> Số liệu hôm nay đến từ sáu thí nghiệm với tiêu chí chốt trước khi thu thập dữ liệu: E1 đo tần suất trên 101 bản nháp; E2 đối chứng A/B trên cùng màn hình; E3 quét 13 APK; E4 thử 148 lượt sửa lỗi chặn; E5 kiểm tra 14 lỗi cài sẵn; E6 chạy prompt kiểu trào lưu. Quét lại 623 bản ghi, nhóm em xác nhận không lọt cấu hình riêng. Số đo máy ảo chỉ so tỷ lệ A/B, không phải tốc độ trên thiết bị thật.</p>
+<p><strong>Thao tác.</strong> Chỉ nhanh hai khung ở đáy slide: Môi trường sạch và Máy ảo.</p>
+<p><strong>Lưu ý.</strong> Giới hạn máy ảo nói một lần ở đây; câu hỏi sâu về cô lập môi trường mở D7, về giới hạn mở D1.</p>
+<h4>7. Danh sách dài dựng toàn bộ (4:25 đến 5:10) — slide 7</h4>
+<p><em>Trụ cột 1: Giao diện · 45 giây · 101 từ</em></p>
+<p><strong>Lời nói.</strong> Đi vào trụ cột thứ nhất: hiệu năng hiển thị. Đây là cùng một màn hình danh sách 2.000 lượt mượn với cùng thao tác cuộn. Bên trái là mã giữ nguyên từ bản nháp AI dùng Column với forEach, dựng hết 2.000 mục dù màn hình chỉ hiện vài mục, khiến 90% khung hình bị trễ. Bên phải chỉ đổi sang LazyColumn: số mục được dựng giảm từ 2.000 xuống 31, tỷ lệ khung hình trễ giảm mạnh từ 90% xuống 1,3%. Chỉ thay đổi vài dòng mã nhưng lại quyết định màn hình có đạt 60 fps hay không.</p>
+<p><strong>Thao tác.</strong> Phát video P09c-AB.mp4, dừng ngắn ở đoạn bên trái bị khựng khi cuộn.</p>
+<p><strong>Lưu ý.</strong> Trung vị từ ít nhất 12 lần lặp xen kẽ A/B trên máy ảo; số đầy đủ 90,05% xuống 1,255%, lỗi hiếm 2/66 nhưng nghiêm trọng.</p>
+<h4>8. Hiệu ứng trang trí (5:10 đến 5:50) — slide 8</h4>
+<p><em>Trụ cột 1: Giao diện · 40 giây · 91 từ</em></p>
+<p><strong>Lời nói.</strong> Lỗi thứ hai hay gặp khi dùng prompt kiểu trào lưu là dồn đổ bóng, chuyển sắc (gradient) và vẽ Canvas lên từng thẻ sách. Khi đổi bìa thành khối phẳng, thời gian xử lý khung hình p90 giảm từ 62,87 ms xuống 49,07 ms — mã AI chậm hơn 28%, qua đó xác nhận phép kiểm định C5. Tỷ lệ khung hình trễ giảm từ 70,52% xuống 48,65%, dù chưa đạt 60 fps trên máy ảo. Lỗi gặp ở 8/66 bản E1 nhưng vọt lên 11/12 lần chạy ở E6.</p>
+<p><strong>Thao tác.</strong> Phát video P08c-AB.mp4; nhấn cặp số 8/66 so với 11/12.</p>
+<p><strong>Lưu ý.</strong> P08 đo trên cấu hình kết xuất GPU swangle_indirect nên chỉ so trong nội bộ nhân tố này; bộ nhớ đồ họa chưa đo.</p>
+<h4>9. Lỗi không có chi phí đo được (5:50 đến 6:35) — slide 9</h4>
+<p><em>Trụ cột 1: Giao diện · 45 giây · 97 từ</em></p>
+<p><strong>Lời nói.</strong> Ngược lại, không phải quy tắc nào cũng tạo khác biệt đo được. Trên biểu đồ, chấm lệch trái vạch 0 nghĩa là bản sửa nhanh hơn: sửa danh sách giảm 69,9% thời gian khởi động. Nhưng thêm key danh sách (P01) và ổn định tham số (P03, P04) đều có khoảng tin cậy cắt qua 0. Baseline Profile giảm 5,88% khởi động trên máy ảo, còn trên thiết bị thật ở bản build đo hiệu năng (cấu hình tương đương bản phát hành) thì không có khác biệt đo được. Hãy đo trước khi tối ưu.</p>
+<p><strong>Thao tác.</strong> Chỉ dọc theo vạch 0 từ trên xuống dưới để đối chiếu hai dòng trên và hai dòng dưới.</p>
+<p><strong>Lưu ý.</strong> Khoảng tin cậy cắt qua 0 nghĩa là chưa ghi nhận chi phí trong kịch bản này (danh sách tĩnh, strong skipping mặc định), không phải luôn miễn phí.</p>
+<h4>10. Ảnh giải mã ở kích thước gốc (6:35 đến 7:15) — slide 10</h4>
+<p><em>Trụ cột 2: Bộ nhớ · 40 giây · 83 từ</em></p>
+<p><strong>Lời nói.</strong> Sang trụ cột thứ hai: bộ nhớ. Với 15 ảnh bìa, bản nháp AI giải mã ở kích thước gốc 1500×2250 cho từng ô nhỏ, không thu nhỏ và không dùng bộ nhớ đệm. Riêng ảnh chiếm 203 MB, đẩy RAM cao nhất lên 180 MB — vượt ngưỡng dưới 150 MB. Khi đổi sang Coil AsyncImage để giải mã đúng kích thước ô và có bộ nhớ đệm, dung lượng ảnh còn 6,2 MB và mức dùng RAM giảm xuống 60 MB.</p>
+<p><strong>Thao tác.</strong> Phát video P06c-AB.mp4, chỉ đường mốc mục tiêu dưới 150 MB.</p>
+<p><strong>Lưu ý.</strong> Lỗi hiếm (5/66, chưa kiểm định độ chính xác) nhưng nghiêm trọng vì chỉ riêng lỗi này đã vượt ngưỡng 150 MB.</p>
+<h4>11. Danh sách dài và bộ nhớ (7:15 đến 7:55) — slide 11</h4>
+<p><em>Trụ cột 2: Bộ nhớ · 40 giây · 85 từ</em></p>
+<p><strong>Lời nói.</strong> Nhóm em nhìn lại danh sách 2.000 lượt mượn ở slide 7 dưới góc độ bộ nhớ. Vì bản nháp AI dựng đủ 2.000 mục trước khung hình đầu tiên, mức dùng RAM vọt lên 243 MB, Java heap 220 MB, thời gian khởi động mất 1.901 ms. Khi chuyển sang LazyColumn, mức dùng RAM giảm xuống 43 MB, Java heap còn 7,6 MB và thời gian khởi động giảm xuống 573,1 ms. Một lỗi danh sách làm trượt cả khung hình lẫn bộ nhớ.</p>
+<p><strong>Thao tác.</strong> Chỉ ba cụm chỉ số: RSS 243 xuống 43 MB, Java heap 220 xuống 7,6 MB, TTID 1.901 xuống 573,1 ms.</p>
+<p><strong>Lưu ý.</strong> Số MB ít phụ thuộc máy ảo hơn số ms; bản nháp AI vượt ngưỡng 150 MB còn bản sửa đạt.</p>
+<h4>12. Dung lượng và tìm kiếm (7:55 đến 8:35) — slide 12</h4>
+<p><em>Trụ cột 2: Bộ nhớ · 40 giây · 91 từ</em></p>
+<p><strong>Lời nói.</strong> Tiếp theo là dung lượng và tìm kiếm. Bật R8 thu nhỏ APK tới 90%, từ 24,7 MB còn 2,4 MB, và giảm thêm 8,7% thời gian khởi động. Với tìm kiếm ngoại tuyến 100.000 tựa sách, truy vấn LIKE chậm nhất mất 96,63 ms, vượt 50 ms; đổi sang chỉ mục FTS4 đưa mức chậm nhất xuống 37 ms và tổng thời gian truy vấn giảm từ 634,9 ms xuống 85,42 ms. Tuy nhiên, khung hình khi gõ không cải thiện vì nút thắt nằm ở danh sách kết quả.</p>
+<p><strong>Thao tác.</strong> Chỉ cột trái R8 rồi chuyển sang cột phải FTS4 và mốc 50 ms.</p>
+<p><strong>Lưu ý.</strong> LIKE khớp chuỗi con còn FTS4 khớp tiền tố từ nên khác tập kết quả ở 4/12 tiền tố.</p>
+<h4>13. Lỗi bảo mật phổ biến đến mức nào (8:35 đến 9:20) — slide 13</h4>
+<p><em>Trụ cột 3: Bảo mật · 45 giây · 100 từ</em></p>
+<p><strong>Lời nói.</strong> Sang trụ cột thứ ba: bảo mật — nơi bản nháp AI khác biệt rõ nhất so với ứng dụng do người viết. Trong 66 bản nháp không kèm tệp quy tắc ở E1, có tới 60 bản chứa ít nhất một cảnh báo bảo mật. Trên 1.000 dòng mã, bản nháp AI có trung vị 2,37 cảnh báo, gấp 2,3 lần mức 1,02 ở ứng dụng do người viết trước năm 2022; phép kiểm định C3 xác nhận mức chênh này. Phía dưới là đoạn mã nguyên văn: token đăng nhập được ghi thẳng ở dạng rõ vào SharedPreferences.</p>
+<p><strong>Thao tác.</strong> Chỉ hai dòng <code>putString</code> trong khung mã <code>SessionStore.kt</code> ở phần dưới slide.</p>
+<p><strong>Lưu ý.</strong> Nói trung lập: bản nháp AI có mật độ cảnh báo bảo mật cao hơn, không nói AI gây ra; đối chứng gồm 20 ứng dụng trước 30/11/2022.</p>
+<h4>14. Điều gì làm giảm lỗi bảo mật (9:20 đến 10:05) — slide 14</h4>
+<p><em>Trụ cột 3: Bảo mật · 45 giây · 100 từ</em></p>
+<p><strong>Lời nói.</strong> Vậy cách nào làm giảm cảnh báo bảo mật ngay lúc sinh mã? E1 cho thấy viết prompt chức năng dài hơn gần như không giúp ích: vẫn 29/33 bản có cảnh báo so với 31/33 của prompt ngắn. Ngược lại, tệp quy tắc ở gốc dự án kéo tỷ lệ đó xuống 17/34 và giảm số loại vấn đề trên cả bốn nhóm từ 5,85 xuống 2,82 — cả C1, C2 đều được xác nhận. Nhưng riêng trong 42 bản build thành công, tỷ lệ có cảnh báo không đổi: tệp quy tắc không thay được bước kiểm tra.</p>
+<p><strong>Thao tác.</strong> Chỉ ba thanh biểu đồ rồi nhấn vào khung lưu ý 42 bản build thành công ở đáy slide.</p>
+<p><strong>Lưu ý.</strong> C2 tính trên cả bốn nhóm quy tắc, không riêng bảo mật; trong 42 bản build thành công, chênh lệch C1 bằng 0,000 còn C2 vẫn còn (+3,829).</p>
+<h4>15. Khi gặp lỗi chặn (10:05 đến 10:50) — slide 15</h4>
+<p><em>Trụ cột 3: Bảo mật · 45 giây · 93 từ</em></p>
+<p><strong>Lời nói.</strong> Rủi ro bảo mật còn lộ ra khi sửa lỗi chặn. Ở E4, gặp UserNotAuthenticatedException của Android Keystore (kho khóa của hệ thống), trợ lý AI có thể xóa yêu cầu xác thực — đổi true thành false — để lỗi biến mất. Trên 148 lượt sửa có 17 lượt nới lỏng cơ chế bảo mật, dưới ngưỡng 15% nên C4 không được xác nhận; tất cả rơi vào Keystore 12/30 và cleartext 5/30. Ở E3, công cụ quét APK đạt độ chính xác 0,291 và không phát hiện lỗi trong mã nguồn.</p>
+<p><strong>Thao tác.</strong> Chỉ dòng đỏ bị xóa và dòng xanh thêm vào trong diff <code>TokenVault.kt</code>.</p>
+<p><strong>Lưu ý.</strong> Không xếp hạng trợ lý AI theo 12/48, 5/50, 0/50 vì công cụ và mô hình bị lẫn (mở D4 nếu được hỏi).</p>
+<h4>16. Demo: trước và sau tối ưu (10:50 đến 12:50) — slide 16</h4>
+<p><em>Demo trực tiếp · 120 giây (chuyển và nhận lại lượt: ~25 giây, 54 từ; phần demo trực tiếp: ~95 giây)</em></p>
+<p><strong>Lời nói.</strong> <em>[Chuyển lượt]</em> Để thầy cô và các bạn quan sát trực tiếp chứ không chỉ nhìn bảng số, thành viên nhóm em sẽ chạy demo song song bản nháp AI và bản tối ưu trên máy ảo. Xin mời bạn. <em>[Nhận lại lượt]</em> Cảm ơn phần demo. Sự khác biệt khi cuộn và tìm kiếm thể hiện rất rõ.</p>
+<p><strong>Thao tác.</strong> Chuyển micro cho thành viên demo (thứ tự gợi ý: P09 danh sách 2.000 lượt mượn, P06 ảnh bìa, P08 thẻ trang trí, P13 tìm kiếm 100.000 tựa sách); nếu máy ảo lỗi, mở lại video ở slide 7, 8, 10.</p>
+<p><strong>Lưu ý.</strong> Số đo trên máy ảo laptop chỉ để minh họa; số tham chiếu của nghiên cứu là bốn mốc trên slide (90% → 1,3%; 180 → 60 MB; 62,87 → 49,07 ms; 96,63 → 37 ms). Chi tiết chạy demo ở optimization/study/demo/README.md.</p>
+<h4>17. Bản nháp build lỗi (12:50 đến 13:30) — slide 17</h4>
+<p><em>Build và tự sửa lỗi · 40 giây · 89 từ</em></p>
+<p><strong>Lời nói.</strong> Quay lại lỗi phổ biến nhất: bản nháp build lỗi. Ở E1, chỉ 42/100 bản build thành công. Hai yếu tố tạo chênh lệch rõ nhất là mô hình và bản đặc tả. Ở E6, dùng cùng công cụ và chỉ đổi mô hình, số bản build thành công tăng từ 1/9 với claude-haiku lên 7/9 với claude-sonnet. Thay prompt kiểu trào lưu bằng bản đặc tả có cấu trúc kéo tỷ lệ khung hình trễ từ 99% xuống 19,6% và lượng mã Kotlin từ 1.164 xuống 524 dòng.</p>
+<p><strong>Thao tác.</strong> Chỉ lần lượt 42/100, cặp 1/9 với 7/9, rồi cặp 99% xuống 19,6%.</p>
+<p><strong>Lưu ý.</strong> E6 là thí nghiệm khám phá với tối đa 3 lần chạy mỗi ô, không có kiểm định p; chi phí claude-haiku 0,11 USD so với claude-sonnet 0,48 USD.</p>
+<h4>18. “Đã sửa xong” chưa phải kết quả (13:30 đến 14:10) — slide 18</h4>
+<p><em>Build và tự sửa lỗi · 40 giây · 86 từ</em></p>
+<p><strong>Lời nói.</strong> Một rủi ro khác là tin vào lời “đã sửa xong”. Ở E5, khi ở chế độ chỉ đề xuất mà không sửa mã, trợ lý AI tìm đủ 168/168 lượt lỗi cài sẵn. Nhưng khi tự sửa, codex tuyên bố đã xong trong khi chạy biên dịch thật thì 9/12 bản lỗi do tự thêm plugin baselineprofile không dùng được. Đồng thời 21/24 lượt làm đổi cả mẫu đối chứng vốn đúng. Rõ ràng lời trợ lý AI không thể thay kết quả kiểm thử.</p>
+<p><strong>Thao tác.</strong> Chỉ hộp lời trả lời của codex ở trên và dòng lỗi biên dịch thật bên dưới.</p>
+<p><strong>Lưu ý.</strong> Nhấn mạnh: biên dịch và kiểm thử độc lập mới là căn cứ xác nhận, không phải lời của trợ lý AI.</p>
+<h4>19. Sáu kết luận (14:10 đến 14:50) — slide 19</h4>
+<p><em>Kết luận · 40 giây · 90 từ</em></p>
+<p><strong>Lời nói.</strong> Tổng kết lại, sáu thí nghiệm cho sáu kết luận. E1: chỉ 42/100 bản build thành công và hầu hết có cảnh báo bảo mật. E2: danh sách và giải mã ảnh làm trượt mục tiêu; ba lỗi Compose kinh điển không có chi phí đo được. E3: công cụ quét APK đạt 0,291 và không thấy lỗi mã nguồn. E4: 17/148 lượt nới lỏng cơ chế bảo mật. E5: 9/12 bản codex sửa không biên dịch được. E6: bản đặc tả đưa tỷ lệ khung hình trễ xuống 19,6%.</p>
+<p><strong>Thao tác.</strong> Lướt nhanh sáu hàng từ E1 đến E6 với nhịp dứt khoát.</p>
+<p><strong>Lưu ý.</strong> Không diễn giải lại chi tiết; dùng slide này gom toàn cảnh trước khi chốt kiểm định.</p>
+<h4>20. Kết quả các phép kiểm định (14:50 đến 15:30) — slide 20</h4>
+<p><em>Kết luận · 40 giây · 87 từ</em></p>
+<p><strong>Lời nói.</strong> Về thống kê, trong năm phép kiểm định đăng ký trước sau hiệu chỉnh Holm, bốn phép được xác nhận là C1, C2, C3 và C5 — khẳng định hiệu quả tệp quy tắc, mật độ cảnh báo bảo mật cao hơn ứng dụng do người viết và chi phí hiệu ứng trang trí. C4 không được xác nhận vì 17/148 dưới 15%. Hai giả thuyết mô tả — H4 bịa thư viện (0/2.105) và H5 thiếu mô tả trợ năng (1/66) — đều bị bác bỏ.</p>
+<p><strong>Thao tác.</strong> Chỉ nhóm bốn hàng xanh phía trên, tách khỏi C4 và hai hàng H4, H5.</p>
+<p><strong>Lưu ý.</strong> “Được xác nhận” nghĩa là thỏa mãn điều kiện thống kê đã đăng ký; bảng hiệu chỉnh Holm đầy đủ ở D2.</p>
+<h4>21. Đối chiếu mục tiêu môn học (15:30 đến 16:20) — slide 21</h4>
+<p><em>Kết luận · 50 giây · 105 từ</em></p>
+<p><strong>Lời nói.</strong> Đối chiếu mục tiêu môn học: trên màn hình thử nghiệm, bản sửa đạt yêu cầu — tìm kiếm 100.000 sách còn 37 ms, dưới 50 ms; RAM 60 và 43 MB dưới 150 MB; danh sách dài 1,3% khung hình trễ. Trên Xiaomi, mở trang sách đạt p90 8 đến 16 ms, cuộn danh mục chưa ảnh bìa đạt PSS 94 đến 95 MB. Phần hạn chế: lưới thẻ trang trí trên máy ảo vẫn 48,65%; ứng dụng chỉ một prompt đạt RAM vì có 12 tựa sách; hai hạng mục chạm NFC dưới 1 s và thiết bị cấu hình thấp chưa đo.</p>
+<p><strong>Thao tác.</strong> Lướt dọc cột Trạng thái để phân tách phần đạt và hai hạng mục chưa đo.</p>
+<p><strong>Lưu ý.</strong> Giữ giọng khách quan, trung thực; nêu hiện trạng đo đạc đúng một lần tại đây.</p>
+<h4>22. Thiết bị thật (16:20 đến 17:05) — slide 22</h4>
+<p><em>Thiết bị thật · 45 giây · 102 từ</em></p>
+<p><strong>Lời nói.</strong> Trên thiết bị thật Xiaomi, ShelfTap cho thấy hai bài học máy ảo không lộ ra. Thứ nhất, đo bằng bản debug là đo sai đối tượng: mở trang sách ở bản debug lên tới 125 ms p90, còn bản build đo hiệu năng (cấu hình tương đương bản phát hành) chỉ 12 đến 16 ms, nằm gọn trong ngưỡng 16,67 ms của 60 fps. Thứ hai, địa chỉ ảnh bìa 10.0.2.2 chỉ truy cập được từ máy ảo, khiến thiết bị thật gọi lại liên tục; khi khắc phục, tỷ lệ khung hình trễ khi cuộn giảm từ 7,0–7,2% xuống 1,5–2,7%.</p>
+<p><strong>Thao tác.</strong> Chỉ bên trái (125 ms so với 12–16 ms) rồi sang bên phải (10.0.2.2).</p>
+<p><strong>Lưu ý.</strong> Số liệu trang chủ 7,0–7,2% xuống 1,5–2,7% đo trên bản debug; thiết bị cấu hình thấp chưa đo.</p>
+<h4>23. Giai đoạn 1 đến 3 (17:05 đến 17:55) — slide 23</h4>
+<p><em>Khuyến nghị · 50 giây · 105 từ</em></p>
+<p><strong>Lời nói.</strong> Nhóm em đúc kết quy trình năm giai đoạn, mỗi giai đoạn có mức tối thiểu và nâng cao. Giai đoạn 1 đặt yêu cầu: tối thiểu viết bản đặc tả có cấu trúc; nâng cao gắn tiêu chí đo được và định nghĩa xong bằng build thành công. Giai đoạn 2 sinh mã: đặt tệp quy tắc ở gốc dự án, chọn mô hình build thành công cao và bỏ yêu cầu trợ lý AI không tự hoàn tất được. Giai đoạn 3 sửa lỗi: yêu cầu rõ không nới lỏng cơ chế bảo mật, đọc dòng bị xóa và khóa bằng kiểm thử.</p>
+<p><strong>Thao tác.</strong> Dẫn khán giả đi theo ba hàng 1, 2, 3 mà không đọc các ô số nhỏ.</p>
+<p><strong>Lưu ý.</strong> Mọi khuyến nghị đều gắn với một kết quả đo đã nêu (99% → 19,6%, 31/33 → 17/34, 12/30 Keystore).</p>
+<h4>24. Giai đoạn 4 và 5 (17:55 đến 18:40) — slide 24</h4>
+<p><em>Khuyến nghị · 45 giây · 100 từ</em></p>
+<p><strong>Lời nói.</strong> Sang hai giai đoạn cuối, ở giai đoạn 4 kiểm tra: tối thiểu là tự build, tự mở ứng dụng và thử lại đúng chỗ vừa sửa; nâng cao là chạy build, kiểm thử và bộ quét mã nguồn trong CI, kết hợp công cụ quét APK cho phần cấu hình. Giai đoạn 5 đo và phát hành: tối thiểu là bật R8 và đo trên thiết bị thật bằng bản build đo hiệu năng; nâng cao là đo A/B xen kẽ bằng Macrobenchmark, ưu tiên sửa danh sách và giải mã ảnh trước khi đầu tư vào Baseline Profile.</p>
+<p><strong>Thao tác.</strong> Chỉ hai hàng 4 và 5, nhấn tiêu đề: tin bản build và số đo, không tin lời trợ lý AI.</p>
+<p><strong>Lưu ý.</strong> Chuyển trực tiếp sang slide chốt cuối cùng.</p>
+<h4>25. Ba điều cần nhớ (18:40 đến 19:15) — slide 25</h4>
+<p><em>Kết thúc · 35 giây · 76 từ</em></p>
+<p><strong>Lời nói.</strong> Khép lại bài trình bày, nhóm em xin đúc kết ba điều cần nhớ. Một là trông hoàn thiện chưa phải đã tối ưu: hãy đo với dữ liệu thật. Hai là lỗi hay gặp không phải lỗi nguy hiểm nhất: cần rà riêng lỗi bộ nhớ và bảo mật. Ba là tin bản build và số đo, không tin lời “đã sửa xong”. Xin cảm ơn, mời thầy cô và các bạn đặt câu hỏi.</p>
+<p><strong>Thao tác.</strong> Giữ slide 25 khi hỏi đáp; nhấn phím O để chọn nhanh slide dự phòng D1 đến D8.</p>
+<p><strong>Lưu ý.</strong> Không đưa số mới ở slide kết. Các slide dự phòng D1 đến D8 nằm ngay sau slide 25.</p>
+<!-- SCRIPT:END -->
 <h2 id="6b-the-plain-language-report">6b. The plain-language report</h2>
-<p><a href="report/index.html">report/index.html</a> tells the study to a non-technical reader in the order the user asked for on 2026-11-27: a relatable lead-in (the &quot;vibe coding&quot; hype and the social-media one-shot prompt, with cited sources [Karpathy2025], [Collins2025], [SOSurvey2025], [Veracode2025], [MerriamWebster2025], [Ouyang2023], then our own E6 grid of four tools answering the same prompt), the problem kept short (three numbers and one code excerpt), how we tested (E1 to E6 plus the isolation audit), and the bulk on solutions along seven links of the vibe-code chain:</p>
+<p><a href="report/index.html">report/index.html</a> is one Vietnamese web page for readers without a presenter. It follows the deck's order and says more than a slide can:</p>
+<ul>
+<li>For each pillar: the problem, the measured before/after, why it happens, and the fix.</li>
+<li>A short paragraph per experiment, E1 to E6.</li>
+<li>The classification table with its rules.</li>
+<li>The verdict table of the pre-registered tests, including C4.</li>
+<li>The full E2 table, the course-target scoreboard (synced with slide 21), and the real-device lessons.</li>
+<li>The five-phase advice at the Tối thiểu and Nâng cao levels.</li>
+<li>Three points and the limits.</li>
+</ul>
+<p>Every number in it is a number of the deck. Its owner checks it by a set difference against the deck and by rendering at 1280 and 390 px. The framing rules of section 6 apply: no advice addressed to a type of reader, and no sources section; the old lead-in sources stay in <a href="report/sources-leadin.md">report/sources-leadin.md</a> as a record.</p>
 <table>
 <thead>
 <tr>
-<th>Link</th>
-<th>Evidence in the report</th>
-<th>Source</th>
+<th>Report section (h2)</th>
+<th>Deck slides</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1 Choose tool and model</td>
-<td>E1 build rate per bundle; E6 haiku 1/9 vs sonnet 7/9 builds, same launcher</td>
-<td>e1 REPORT §1, e6 REPORT §5</td>
+<td>Lời hứa trên mạng và thực tế khi chạy đúng prompt đó</td>
+<td>2–3</td>
 </tr>
 <tr>
-<td>2 Write the prompt</td>
-<td>E1 S-class share by prompt style (31/33, 29/33, 17/34) and build rate by style (20/33, 12/33, 10/34); E6 arm S janky median 19,6% vs 99%</td>
-<td>e1 REPORT:127-129 and §1, e6 REPORT §4</td>
+<td>Phân loại lỗi theo tần suất và mức độ nghiêm trọng</td>
+<td>4–5</td>
 </tr>
 <tr>
-<td>3 Rules file</td>
-<td>code-01 vs code-02; C1/C2; builders-only caveat; E6 arm R and the Baseline Profile rule that broke codex</td>
-<td>e1 REPORT, e6 REPORT §4</td>
+<td>Phương pháp nghiên cứu và kiểm tra môi trường</td>
+<td>6, D7</td>
 </tr>
 <tr>
-<td>4 When it errors</td>
-<td>E4 diff removing setUserAuthenticationRequired, 17/148</td>
-<td>agent-01, agent-02</td>
+<td>Trụ cột giao diện và hiệu năng hiển thị</td>
+<td>7–9</td>
 </tr>
 <tr>
-<td>5 Verify before trusting</td>
-<td>E5 claim vs compile error; MobSF false positive vs missed Level.BODY</td>
-<td>agent-06, agent-04, code-05, code-06</td>
+<td>Trụ cột bộ nhớ, dung lượng và tìm kiếm</td>
+<td>10–12</td>
 </tr>
 <tr>
-<td>6 Engineering fixes</td>
-<td>P09c and P08c A/B videos, table of measured effects</td>
-<td>e2 REPORT</td>
+<td>Trụ cột bảo mật trong bản nháp đầu và khi sửa lỗi</td>
+<td>13–15</td>
 </tr>
 <tr>
-<td>7 Measure right</td>
-<td>ShelfTap debug vs release, cover URL bug, font-scale screenshots, E6 font 2.0 grid</td>
-<td>opt-ui-ux.md, e6 img/grid-O-font2.jpg</td>
+<td>Đối chiếu trực tiếp bốn kịch bản trước và sau tối ưu</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Bản nháp build lỗi và giới hạn của báo cáo “đã sửa xong”</td>
+<td>17–18</td>
+</tr>
+<tr>
+<td>Tổng hợp sáu thí nghiệm, kết quả kiểm định và đối chiếu mục tiêu môn học</td>
+<td>19–21, D2, D3</td>
+</tr>
+<tr>
+<td>Bài học từ thiết bị thật và kiểm thử ở tỷ lệ cỡ chữ lớn</td>
+<td>22, D8</td>
+</tr>
+<tr>
+<td>Khuyến nghị thực hành theo năm giai đoạn phát triển</td>
+<td>23–24</td>
+</tr>
+<tr>
+<td>Ba điểm cốt lõi cần nhớ và giới hạn của nghiên cứu</td>
+<td>25, D1</td>
 </tr>
 </tbody>
 </table>
-<p>Each link ends with two boxes: what a vibe coder does, what an engineer does. Design: one column, plain sans, two chart colours (orange = AI-written, blue = fixed; validated with the dataviz palette checker), every figure with a source line. E6 numbers are descriptive (exploratory, n = 3 per cell, software-GPU emulator) and the report says so.</p>
 <h2 id="7-proof-of-every-number-in-the-deck">7. Proof of every number in the deck</h2>
 <ul>
-<li><a href="proof/deck-proof.csv">proof/deck-proof.csv</a>: one row per distinct number per slide (visible text, speaker notes, chart data attributes, bar lengths). Columns: <code>slide,value,kind,claim,source,line,quote,formula,note</code>.
+<li><a href="proof/deck-proof.csv">proof/deck-proof.csv</a> has 741 rows: 415 direct, 92 derived, 234 label. There is one row per distinct number per slide, covering visible text, speaker notes, chart data attributes and bar lengths, for all 33 slides. Columns: <code>slide,value,kind,claim,source,line,quote,formula,note</code>.
 <ul>
 <li><code>direct</code>: the number is on <code>source:line</code>, inside the verbatim <code>quote</code>.</li>
-<li><code>cited</code>: same, from an external source recorded in references.md.</li>
-<li><code>derived</code>: <code>formula</code> recomputes it from proven inputs (percent changes, bar lengths).</li>
-<li><code>label</code>: not data (slide counts, talk minutes, an address); <code>note</code> says what it is.</li>
+<li><code>cited</code>: the same, from an external source recorded in references.md (not used by the current deck).</li>
+<li><code>derived</code>: <code>formula</code> recomputes the shown value from proven inputs. Examples: k/66 as naive + detailed (<code>8+11</code>); MB as KB / 1024; APK bytes / 1 000 000; Holm as raw p × (5 − rank + 1); &quot;gấp 2,3 lần&quot; as <code>2.37/1.02</code>; P08 11/12 counted from <code>e6-oneshot/results/findings.csv</code>.</li>
+<li><code>label</code>: not data, and <code>note</code> says what it is. Examples: a line number in a notes source pointer, a &quot;~N giây&quot; timing, a file name, a slide cross-reference, an axis tick, a version, an address. A value that is also data anywhere on that slide gets a sourced row instead of a label.</li>
 </ul>
 </li>
-<li><a href="proof/check_deck_proof.py">proof/check_deck_proof.py</a> (stdlib): reads the deck, lists every number, and fails unless each has a row whose quote is really on that line and contains the number (after rounding), and each formula reproduces the shown value.</li>
+<li><a href="proof/check_deck_proof.py">proof/check_deck_proof.py</a> (stdlib) reads the deck and lists every number on every slide. It fails unless each number has a row whose quote is really on that line and contains the number (after rounding), and each formula reproduces the shown value. It also fails on any row whose number is no longer on its slide (stale).</li>
 </ul>
-<pre><code>python3 optimization/study/proof/check_deck_proof.py            # whole deck, exit 0 = all proven
-python3 optimization/study/proof/check_deck_proof.py --list 5   # numbers on slide 5 that need a row
-python3 optimization/study/proof/check_deck_proof.py --slide 5  # check one slide
+<pre><code>python3 -I optimization/study/proof/check_deck_proof.py            # whole deck; exit 0 = 0 bad, 0 stale, 0 unproven
+python3 -I optimization/study/proof/check_deck_proof.py --list 5   # numbers on slide 5 that need a row
+python3 -I optimization/study/proof/check_deck_proof.py --slide 5  # check one slide
 </code></pre>
 <ul>
-<li><a href="proof/ISSUES.md">proof/ISSUES.md</a>: numbers that did <strong>not</strong> match their source, what was changed, and why.</li>
-<li>Adding or changing a number on a slide = add or fix its row in the same change, then run the checker.</li>
-<li>Primary records first (results CSV, REPORT, measurement log). ARTICLE.md is a valid source only for values computed there (Holm p-values), and the row says so.</li>
+<li><a href="proof/ISSUES.md">proof/ISSUES.md</a> records what each proof pass found and changed. The 2026-11-28 pass found no wrong number. It changed one piece of markup: the slide-4 columns are now <code>div</code>, because a nested <code>&lt;/section&gt;</code> hid most of that slide from the checker. It also records the slide-21 update, whole-app RAM 94–95 MB PSS on the Xiaomi.</li>
+<li><strong>Checker limits to keep in mind:</strong>
+<ul>
+<li>Never nest a <code>&lt;section&gt;</code> inside a slide.</li>
+<li>Scientific notation in notes (<code>1,84e5</code>) is cut at the &quot;e&quot;; its leading digit gets a label row that points to the proving row.</li>
+<li>A quote taken from a CSV line must isolate the value between commas, because <code>numbers_in</code> reads <code>148,17,0.1149</code> as one number.</li>
+<li>The matcher accepts ×100, ×0.01, ×1000, ×0.001, a sign flip and rounding. Keep every quote to the narrowest fragment that holds the claimed number.</li>
+</ul>
+</li>
+<li>Adding or changing a number on a slide means adding or fixing its row in the same change, then running the checker.</li>
+<li>Use primary records first: a results CSV, a REPORT.md, or the measurement log. Never use the orchestrator's inventory. ARTICLE.md is a valid source only for values computed there, and the row says so.</li>
+<li>The script has its own number check, the &quot;Kiểm số liệu&quot; heredoc at the end of presentation-script.md. It checks that every spoken number is on that slide's face or in its notes: <code>python3 -I - presentation.html presentation-script.md</code>, run from <code>optimization/study</code> with the heredoc as stdin.</li>
 </ul>
 <h2 id="8-language-vietnamese">8. Language (Vietnamese)</h2>
-<p>Terms fixed for the whole study; use them in the article, the deck, the script and any group material.</p>
+<p>The deck, script, outline, report and article share one binding glossary and register. Use it in any group material too. PLAYBOOK and README prose stays English; the embedded script is Vietnamese.</p>
+<table>
+<thead>
+<tr>
+<th>concept</th>
+<th>use</th>
+<th>never</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prompt</td>
+<td>prompt (first use: &quot;prompt, tức lời nhắc giao cho AI&quot;)</td>
+<td>câu lệnh, đề bài (for prompt)</td>
+</tr>
+<tr>
+<td>one-shot prompt</td>
+<td>chỉ một prompt (one-shot prompt)</td>
+<td>câu lệnh một lần</td>
+</tr>
+<tr>
+<td>AI coding assistant</td>
+<td>trợ lý lập trình AI, then &quot;trợ lý AI&quot;</td>
+<td>&quot;nó&quot; for the assistant</td>
+</tr>
+<tr>
+<td>first draft</td>
+<td>bản nháp đầu</td>
+<td></td>
+</tr>
+<tr>
+<td>un-optimized</td>
+<td>chưa tối ưu</td>
+<td></td>
+</tr>
+<tr>
+<td>slow frame / jank</td>
+<td>khung hình trễ (jank); tỷ lệ khung hình trễ</td>
+<td>giật 89%, mắt thấy giật</td>
+</tr>
+<tr>
+<td>frame time p90</td>
+<td>thời gian xử lý khung hình (p90)</td>
+<td>thời gian dựng khung hình</td>
+</tr>
+<tr>
+<td>startup</td>
+<td>thời gian khởi động (TTID)</td>
+<td></td>
+</tr>
+<tr>
+<td>memory</td>
+<td>mức dùng RAM (RSS); Java heap</td>
+<td>bộ nhớ chiếm dụng</td>
+</tr>
+<tr>
+<td>build (noun, result)</td>
+<td>bản build; build thành công / build lỗi</td>
+<td>&quot;biên dịch&quot; for the whole Gradle build</td>
+</tr>
+<tr>
+<td>compile (step)</td>
+<td>biên dịch</td>
+<td></td>
+</tr>
+<tr>
+<td>app</td>
+<td>ứng dụng</td>
+<td>&quot;app&quot; in running text</td>
+</tr>
+<tr>
+<td>rules file</td>
+<td>tệp quy tắc (guardrail)</td>
+<td>tệp hướng dẫn bảo mật as a second name</td>
+</tr>
+<tr>
+<td>our detector</td>
+<td>bộ quét tĩnh của nhóm ... ghi nhận</td>
+<td>bộ dò ... bắt được</td>
+</tr>
+<tr>
+<td>finding</td>
+<td>cảnh báo</td>
+<td></td>
+</tr>
+<tr>
+<td>rule (of the detector/taxonomy)</td>
+<td>quy tắc</td>
+<td>luật</td>
+</tr>
+<tr>
+<td>pre-registered</td>
+<td>đăng ký trước; &quot;tiêu chí đánh giá được chốt trước khi thu thập dữ liệu&quot;</td>
+<td>luật chấm khóa</td>
+</tr>
+<tr>
+<td>supported / not supported / inconclusive</td>
+<td>được xác nhận / không được xác nhận / chưa đủ cơ sở kết luận</td>
+<td></td>
+</tr>
+<tr>
+<td>Android Keystore</td>
+<td>Android Keystore (kho khóa của hệ thống)</td>
+<td>két bảo mật</td>
+</tr>
+<tr>
+<td>weaken security</td>
+<td>nới lỏng cơ chế bảo mật</td>
+<td>gỡ bảo mật cho hết lỗi</td>
+</tr>
+<tr>
+<td>measure build</td>
+<td>bản build đo hiệu năng (cấu hình tương đương bản phát hành)</td>
+<td>bản đo đúng cách</td>
+</tr>
+<tr>
+<td>list items</td>
+<td>mục</td>
+<td>dòng (for list items)</td>
+</tr>
+<tr>
+<td>loan</td>
+<td>lượt mượn</td>
+<td></td>
+</tr>
+<tr>
+<td>seeded issue / decoy</td>
+<td>lỗi cài sẵn / mẫu đối chứng</td>
+<td>gieo, mồi</td>
+</tr>
+<tr>
+<td>human-written app</td>
+<td>ứng dụng do người viết</td>
+<td></td>
+</tr>
+<tr>
+<td>unvalidated precision</td>
+<td>chưa kiểm định độ chính xác</td>
+<td></td>
+</tr>
+<tr>
+<td>common / uncommon / rare / critical / notable</td>
+<td>phổ biến / ít gặp / hiếm / nghiêm trọng / đáng kể</td>
+<td></td>
+</tr>
+<tr>
+<td>emulator / real device</td>
+<td>máy ảo / thiết bị thật</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Register: slides, report, article = neutral written Vietnamese (&quot;nhóm&quot;, &quot;nghiên cứu này&quot;), full sentences where a claim is made, no dangling &quot;nó&quot;. Script = spoken, polite student register (&quot;nhóm em&quot;, &quot;thầy cô và các bạn&quot;), short sentences. English names developers use (LazyColumn, R8, Baseline Profile) are kept and glossed once. In the article, terms printed inside the frozen figures (for example &quot;guardrail&quot;) keep a matching gloss.</p>
+<p><strong>Term decisions from the review rounds (2026-11-28).</strong> These hold everywhere the concept appears:</p>
 <table>
 <thead>
 <tr>
 <th>Concept</th>
 <th>Use</th>
-<th>Avoid</th>
+<th>Replaced</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>a book loan / borrowing record</td>
-<td><strong>lượt mượn</strong> (one borrowing), <strong>phiếu mượn</strong> (the slip)</td>
-<td>khoản vay (means a money loan)</td>
+<td>hype prompt</td>
+<td>prompt kiểu trào lưu</td>
+<td>the &quot;quảng cáo&quot; wording</td>
 </tr>
 <tr>
-<td>first draft from an assistant</td>
-<td>bản nháp đầu</td>
-<td>bản thảo AI</td>
+<td>slow frame (short form)</td>
+<td>khung hình trễ, never shortened</td>
+<td>&quot;khung trễ&quot;</td>
 </tr>
 <tr>
-<td>AI coding assistant</td>
-<td>trợ lý (lập trình) AI</td>
-<td>&quot;AI&quot; alone as the subject of a causal verb</td>
+<td>assistant</td>
+<td>trợ lý AI (bare &quot;trợ lý&quot; only in fixed names such as &quot;trợ lý agy&quot;)</td>
+<td>bare &quot;trợ lý&quot;</td>
 </tr>
 <tr>
-<td>confirmatory / descriptive result</td>
-<td>xác nhận / mô tả</td>
-<td>&quot;chứng minh&quot; for a descriptive estimate</td>
+<td>error case of E4</td>
+<td>kịch bản lỗi</td>
+<td>&quot;ca&quot;, &quot;ca lỗi&quot;</td>
 </tr>
 <tr>
-<td>human-written app</td>
-<td>ứng dụng do người viết</td>
-<td>ứng dụng &quot;thật&quot;</td>
+<td>E5 suggest-only control level</td>
+<td>chế độ chỉ đề xuất</td>
+<td>the shortened &quot;mức chỉ …&quot; form</td>
+</tr>
+<tr>
+<td>the assistant that applies the fix</td>
+<td>trợ lý sửa mã</td>
+<td>&quot;bên sửa&quot;</td>
+</tr>
+<tr>
+<td>self-checkout target</td>
+<td>Chạm thẻ NFC tự mượn sách · thiết bị cấu hình thấp</td>
+<td>short and colloquial forms</td>
+</tr>
+<tr>
+<td>stub home directory</td>
+<td>thư mục HOME giả lập</td>
+<td>the literal &quot;nhà giả&quot;</td>
+</tr>
+<tr>
+<td>GPU path of the emulator</td>
+<td>cấu hình kết xuất GPU</td>
+<td>&quot;đường GPU&quot;, &quot;cấu hình GPU&quot;</td>
+</tr>
+<tr>
+<td>blind raters, blind re-read</td>
+<td>hai người chấm độc lập (ẩn nhãn); chấm lại ẩn nhãn</td>
+<td>&quot;chấm mù&quot;</td>
+</tr>
+<tr>
+<td>regression guardrail (G7)</td>
+<td>chốt chặn kiểm tra (hồi quy) tự động</td>
+<td>the literal &quot;lan can&quot;</td>
+</tr>
+<tr>
+<td>statistical endpoint</td>
+<td>tiêu chí xác nhận</td>
+<td>&quot;điểm cuối&quot;</td>
+</tr>
+<tr>
+<td>fixer self-report</td>
+<td>báo cáo tự đánh giá</td>
+<td>the literal &quot;tự khai&quot;</td>
+</tr>
+<tr>
+<td>mechanical repair rule</td>
+<td>cấu hình theo quy tắc cố định</td>
+<td>&quot;cơ học&quot;</td>
+</tr>
+<tr>
+<td>hallucinated dependency (H4)</td>
+<td>tham chiếu thư viện không tồn tại</td>
+<td>&quot;tọa độ&quot; calques</td>
+</tr>
+<tr>
+<td>closing slide</td>
+<td>Ba điểm cốt lõi cần nhớ</td>
+<td>earlier takeaway wording</td>
 </tr>
 </tbody>
 </table>
-<p><a href="proof/LANGUAGE-REVIEW.md">proof/LANGUAGE-REVIEW.md</a> holds the full language review of the deck and what was applied.</p>
+<p>Figures that still print an older term are glossed in their captions (section 5). <a href="proof/LANGUAGE-REVIEW.md">proof/LANGUAGE-REVIEW.md</a> records the three review rounds: reviewer, counts, what was applied and what was rejected, and why.</p>
 <h2 id="9-group-material-how-it-fits">9. Group material — how it fits</h2>
 <table>
 <thead>
@@ -555,8 +1153,13 @@ python3 optimization/study/proof/check_deck_proof.py --slide 5  # check one slid
 </tr>
 <tr>
 <td><code>optimization/TieuLuan-ToiUu-Android.docx</code>, <code>optimization/Script-ThuyetTrinh.docx</code> (Huy, commit e4259e1)</td>
-<td>a technique-by-technique essay and a 25-minute script; numbers are the B (tuned) side of E2 plus the ShelfTap MobSF rows of E3 and the product's security design</td>
-<td>fits as the baseline layer (ARTICLE Chapter 2) and as product security; needs the A (before) numbers next to each B number, and must not present P03+P04, Baseline Profile or card effects as wins the A/B data does not show (see §2, slide 7, slide 6). Offline FTS search exists only in <code>android/optlab</code>, not in the member app</td>
+<td>a technique-by-technique essay and a 25-minute script. Their numbers are the B (tuned) side of E2, plus the ShelfTap MobSF rows of E3 and the product's security design</td>
+<td>fits as the baseline layer (ARTICLE Chapter 2) and as product security. Each B number needs its A (before) number next to it. It must not present P03+P04, Baseline Profile or card effects as wins the A/B data does not show (slides 8 and 9). Offline FTS search exists only in <code>android/optlab</code>, not in the member app</td>
+</tr>
+<tr>
+<td>ShelfTap UI/UX log (teammate PR, merged 2026-11-28)</td>
+<td>real-phone measurements in <code>optimization/log/opt-ui-ux.md</code> and <code>optimization/ui-ux/measure/</code></td>
+<td>source of slides 9, 21, 22 and D8; re-locate line numbers after each merge</td>
 </tr>
 <tr>
 <td>Canva deck (group)</td>
@@ -568,11 +1171,24 @@ python3 optimization/study/proof/check_deck_proof.py --slide 5  # check one slid
 <h2 id="10-checklists">10. Checklists</h2>
 <p><strong>Before presenting</strong></p>
 <ul>
-<li>[ ] <code>python3 optimization/study/proof/check_deck_proof.py</code> exits 0.</li>
-<li>[ ] Deck opens offline on the presenting machine (fonts are embedded); presenter window (P) works there.</li>
-<li>[ ] Light theme on a projector; dark only for a dark room.</li>
-<li>[ ] Rehearse to ~14 min. For 10 minutes, move slides 8, 13 and 16 to backup (each repeats a point another slide already makes).</li>
-<li>[ ] Know the answers in presentation-script.md's Q&amp;A section, especially: emulator vs real phone, apples-to-oranges for C3, why C1 vanishes on buildable apps, why C4 is &quot;not supported&quot;.</li>
+<li>[ ] <code>python3 -I optimization/study/proof/check_deck_proof.py</code> exits 0.</li>
+<li>[ ] The script's &quot;Kiểm số liệu&quot; check exits 0, and the timing table total stays between 15:00 and 20:00.</li>
+<li>[ ] Demo machine: <code>py demo.py doctor</code> passes; the emulator is started and <code>run p09</code> has run once (demo/README.md §4). The fallback video for slide 16 is at hand.</li>
+<li>[ ] The deck opens offline on the presenting machine (fonts are embedded). The presenter window (P) works there and its clock shows the 19:30 target.</li>
+<li>[ ] Light theme on a projector; dark only in a dark room.</li>
+<li>[ ] Rehearse to 19:30 or less (the script times itself at 19:15).</li>
+<li>[ ] Know the Q&amp;A answers in presentation-script.md, each mapped to a backup slide: emulator vs real phone (D1), Holm (D2), +28,13% vs −22% (D3), E4 raters and per-assistant counts (D4), human apps (D5, slide 13), E6 per assistant (D6), isolation (D7).</li>
+</ul>
+<p><strong>Before changing the deck</strong></p>
+<ul>
+<li>[ ] Every changed number has its proof row; the checker exits 0.</li>
+<li>[ ] Script, outline, report and this playbook follow the change, keyed on slide number and data-title.</li>
+<li>[ ] Run the headless layout check at 1280 and 1920 px: nothing outside the canvas, content bottom at most 980 px, smallest text 20 px at 1280.</li>
+</ul>
+<p><strong>After editing the script or this playbook</strong></p>
+<ul>
+<li>[ ] <code>python3 build_playbook_html.py</code> (in <code>optimization/study</code>) rewrites the script block and PLAYBOOK.html. <code>python3 build_playbook_html.py --check</code> exits 0. It needs <code>markdown-it-py</code>; if missing, run <code>uv run --no-project --with markdown-it-py python3 build_playbook_html.py</code>.</li>
+<li>[ ] Banned-word grep is empty for PLAYBOOK.md, README.md and the talk files (list in the task contract, Framing).</li>
 </ul>
 <p><strong>Before submitting the article</strong></p>
 <ul>
