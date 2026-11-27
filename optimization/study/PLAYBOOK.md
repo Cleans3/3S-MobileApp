@@ -144,7 +144,7 @@ The talk is 15 to 20 minutes for lecturers and classmates. It runs in nine block
   - Nhẹ: P11.
 - **Context counts stay outside the bins.** E4 X01 12/30 and S03 5/30, and E6 P08 11/12, are context rows. Accessibility, layout and dependency rules are on backup D5 only.
 
-**Framing rules.** The earlier framing is retired; do not bring it back. That framing told the study as a numbered chain of habits and split the advice by type of reader. "vibe coding" now appears only as the name of the phenomenon, on slide 2. Phase advice has exactly two levels, "Tối thiểu" and "Nâng cao". Slides show no source captions, and the hype examples get no source list. Sources live in each slide's `aside.notes` as `path:line` and in the proof table. Limits are stated once: slide 6, slide 21 and D1.
+**Framing rules.** Advice is organised by the five development phases, with two levels per phase: "Tối thiểu" and "Nâng cao", each tied to a measured result. "vibe coding" appears only as the name of the phenomenon, on slide 2. Slides show no source captions, and the hype examples get no source list. Sources live in each slide's `aside.notes` as `path:line` and in the proof table. Limits are stated once: slide 6, slide 21 and D1.
 
 **Design rules.** The canvas is 1920 × 1080, scaled to the window. A headline is a full sentence that makes the claim. Body text is at least 20 px at a 1280 px window, and nothing may be clipped or leave the canvas. Each main slide carries one picture of evidence (an A/B video, a chart, verbatim code or a screenshot) and few numbers. Statistics such as p, Cliff's delta and intervals go to the notes and to D1–D8.
 
@@ -183,16 +183,16 @@ The data-title column is exactly the slide's `data-title` in the deck. Script, o
 | 11 | Danh sách dài và bộ nhớ | The same eager list seen as memory: RSS 243 → 43 MB, heap 220 → 7,6 MB, TTID 1.901 → 573,1 ms | E2 | 23 rows; `e2-bench/REPORT.md` |
 | 12 | Dung lượng và tìm kiếm | R8 cuts the APK by 90%; an FTS4 index brings the slowest query under 50 ms (96,63 → 37 ms) | E2 | 27 rows; `e2-bench/REPORT.md`, `e2-bench/results/p13_equivalence.csv` |
 | 13 | Lỗi bảo mật phổ biến đến mức nào | 60 of 66 drafts carry a security finding; density 2,3× the human apps (C3 confirmed) | E1 | 20 rows; `e1-corpus/REPORT.md` |
-| 14 | Điều gì làm giảm lỗi bảo mật | The rules file lowers the share 31/33 → 17/34 (C1) and the rule count 5,85 → 2,82 (C2); a longer prompt does not; no difference among drafts that build | E1 | 22 rows; `e1-corpus/REPORT.md` |
+| 14 | Điều gì làm giảm lỗi bảo mật | The rules file lowers the share 31/33 → 17/34 (C1) and the rule count 5,85 → 2,82 (C2), but drafts that build also fall 20/33 → 10/34 (detailed prompt 12/33, descriptive); a longer prompt does not lower warnings (29/33); no difference among the 42 drafts that build | E1 | 39 rows; `e1-corpus/REPORT.md` |
 | 15 | Khi gặp lỗi chặn | Under a blocking error assistants weaken security in 17/148 trials (C4 not confirmed), only Keystore and cleartext; APK scanner precision 0,291 | E4, E3 | 28 rows; `e4-pressure/REPORT.md`, `e3-security/REPORT.md` |
 | 16 | Demo: trước và sau tối ưu | Live demo, A next to B on the emulator (P09, P06, P08, P13); the study numbers on the cards are the reference | demo kit, E2 | 25 rows; `e2-bench/REPORT.md` |
 | 17 | Bản nháp build lỗi | Drafts often fail to build (42/100); model choice (1/9 vs 7/9) and a structured spec (janky 99% → 19,6%) matter most | E1, E6 | 17 rows; `e6-oneshot/REPORT.md`, `e1-corpus/REPORT.md` |
 | 18 | “Đã sửa xong” chưa phải kết quả | "Đã sửa xong" is not a test result: all 168 seeded issues found in suggest-only mode, but 9/12 codex fixes do not compile | E5 | 13 rows; `e5-optimizer/REPORT.md` |
-| 19 | Sáu kết luận | One conclusion per experiment | E1–E6 | 21 rows; `e1-corpus/REPORT.md`, `e3-security/REPORT.md` |
+| 19 | Sáu kết luận | One conclusion per experiment (E1 notes the rules-file trade-off between fewer warnings and fewer builds) | E1–E6 | 22 rows; `e1-corpus/REPORT.md`, `e3-security/REPORT.md` |
 | 20 | Kết quả các phép kiểm định | Four of the five pre-registered tests confirmed, C4 not; H4 and H5 rejected | C1–C5, H4, H5 | 31 rows; `e1-corpus/REPORT.md`, `00-protocol.md` |
-| 21 | Đối chiếu mục tiêu môn học | Course-target scoreboard: the fixed lab screens meet the targets (emulator); whole-app RAM 94–95 MB PSS on one Xiaomi scenario without covers; two items not measured | E2, E6, ShelfTap log | 48 rows; `e2-bench/REPORT.md`, `../log/opt-ui-ux.md` |
+| 21 | Đối chiếu mục tiêu môn học | Course-target scoreboard: the fixed lab screens meet the targets (emulator); whole-app RAM 94–95 MB PSS on one Xiaomi scenario without covers; cells without a paired measurement say "không áp dụng" and the two unmeasured items say "chưa đo" | E2, E6, ShelfTap log | 48 rows; `e2-bench/REPORT.md`, `../log/opt-ui-ux.md` |
 | 22 | Thiết bị thật | Measure the measure build, not debug (125 vs 12–16 ms p90); a cover-URL bug that only a real phone shows | ShelfTap log | 25 rows; `../log/opt-ui-ux.md`, `e2-bench/REPORT.md` |
-| 23 | Giai đoạn 1 đến 3 | Phases 1–3 (set requirements, generate, fix errors), each with Tối thiểu and Nâng cao advice tied to a measured result | E6, E1, E4 | 24 rows; `e6-oneshot/REPORT.md`, `e1-corpus/REPORT.md` |
+| 23 | Giai đoạn 1 đến 3 | Phases 1–3 (set requirements, generate, fix errors), each with Tối thiểu and Nâng cao advice tied to a measured result (Phase 2 Tối thiểu notes the rules-file trade-off: warnings 31/33 → 17/34, builds 20/33 → 10/34) | E6, E1, E4 | 28 rows; `e6-oneshot/REPORT.md`, `e1-corpus/REPORT.md` |
 | 24 | Giai đoạn 4 và 5 | Phases 4–5 (verify, measure and release), same two levels | E5, E3, E2, ShelfTap log | 24 rows; `e2-bench/REPORT.md`, `../log/opt-ui-ux.md` |
 | 25 | Ba điều cần nhớ | Three points to remember; no new numbers | — | 6 rows (labels only) |
 | D1 | D1 · Giới hạn | Limits: emulator, sample sizes, what is not measured | E2, E1 | 10 rows; `e2-bench/REPORT.md`, `e1-corpus/REPORT.md` |
@@ -345,11 +345,11 @@ Copied from [presentation-script.md](presentation-script.md) by `build_playbook_
 
 *Trụ cột 3: Bảo mật · 45 giây · 100 từ*
 
-**Lời nói.** Vậy cách nào làm giảm cảnh báo bảo mật ngay lúc sinh mã? E1 cho thấy viết prompt chức năng dài hơn gần như không giúp ích: vẫn 29/33 bản có cảnh báo so với 31/33 của prompt ngắn. Ngược lại, tệp quy tắc ở gốc dự án kéo tỷ lệ đó xuống 17/34 và giảm số loại vấn đề trên cả bốn nhóm từ 5,85 xuống 2,82 — cả C1, C2 đều được xác nhận. Nhưng riêng trong 42 bản build thành công, tỷ lệ có cảnh báo không đổi: tệp quy tắc không thay được bước kiểm tra.
+**Lời nói.** Vậy cách nào làm giảm cảnh báo bảo mật lúc sinh mã? Ở E1, prompt chức năng chi tiết vẫn có 29/33 bản bị cảnh báo so với 31/33 ở prompt ngắn. Tệp quy tắc kéo tỷ lệ này xuống 17/34 và giảm số loại vấn đề từ 5,85 xuống 2,82, xác nhận C1, C2. Nhưng đánh đổi là bản build thành công sau tối đa 3 lần sửa cũng giảm từ 20/33 xuống 10/34, còn prompt chi tiết là 12/33. Xét riêng 42 bản build thành công, tỷ lệ có cảnh báo không đổi: vẫn cần bước kiểm tra.
 
-**Thao tác.** Chỉ ba thanh biểu đồ rồi nhấn vào khung lưu ý 42 bản build thành công ở đáy slide.
+**Thao tác.** Chỉ hai cụm biểu đồ bên trái (cảnh báo bảo mật và bản build thành công) rồi sang hai khung bên phải.
 
-**Lưu ý.** C2 tính trên cả bốn nhóm quy tắc, không riêng bảo mật; trong 42 bản build thành công, chênh lệch C1 bằng 0,000 còn C2 vẫn còn (+3,829).
+**Lưu ý.** Tỷ lệ build thành công (20/33, 12/33, 10/34) là số mô tả; C2 tính trên cả bốn nhóm quy tắc; trong 42 bản build thành công, chênh lệch C1 bằng 0,000 còn C2 vẫn còn (+3,829).
 
 #### 15. Khi gặp lỗi chặn (10:05 đến 10:50) — slide 15
 
@@ -395,7 +395,7 @@ Copied from [presentation-script.md](presentation-script.md) by `build_playbook_
 
 *Kết luận · 40 giây · 90 từ*
 
-**Lời nói.** Tổng kết lại, sáu thí nghiệm cho sáu kết luận. E1: chỉ 42/100 bản build thành công và hầu hết có cảnh báo bảo mật. E2: danh sách và giải mã ảnh làm trượt mục tiêu; ba lỗi Compose kinh điển không có chi phí đo được. E3: công cụ quét APK đạt 0,291 và không thấy lỗi mã nguồn. E4: 17/148 lượt nới lỏng cơ chế bảo mật. E5: 9/12 bản codex sửa không biên dịch được. E6: bản đặc tả đưa tỷ lệ khung hình trễ xuống 19,6%.
+**Lời nói.** Sáu thí nghiệm cho sáu kết luận. E1: 42/100 bản build thành công, hầu hết có cảnh báo bảo mật; tệp quy tắc giảm cảnh báo nhưng cũng giảm bản build thành công. E2: danh sách và ảnh làm trượt mục tiêu; ba lỗi Compose kinh điển không có chi phí đo được. E3: quét APK đạt 0,291, bỏ sót lỗi mã. E4: 17/148 lượt nới lỏng cơ chế bảo mật. E5: 9/12 bản codex sửa không biên dịch được. E6: bản đặc tả đưa khung hình trễ xuống 19,6%.
 
 **Thao tác.** Lướt nhanh sáu hàng từ E1 đến E6 với nhịp dứt khoát.
 
@@ -415,11 +415,11 @@ Copied from [presentation-script.md](presentation-script.md) by `build_playbook_
 
 *Kết luận · 50 giây · 105 từ*
 
-**Lời nói.** Đối chiếu mục tiêu môn học: trên màn hình thử nghiệm, bản sửa đạt yêu cầu — tìm kiếm 100.000 sách còn 37 ms, dưới 50 ms; RAM 60 và 43 MB dưới 150 MB; danh sách dài 1,3% khung hình trễ. Trên Xiaomi, mở trang sách đạt p90 8 đến 16 ms, cuộn danh mục chưa ảnh bìa đạt PSS 94 đến 95 MB. Phần hạn chế: lưới thẻ trang trí trên máy ảo vẫn 48,65%; ứng dụng chỉ một prompt đạt RAM vì có 12 tựa sách; hai hạng mục chạm NFC dưới 1 s và thiết bị cấu hình thấp chưa đo.
+**Lời nói.** Đối chiếu mục tiêu môn học: trên màn hình thử nghiệm, bản sửa đạt yêu cầu — tìm 100.000 sách còn 37 ms, dưới 50 ms; RAM 60 và 43 MB dưới 150 MB; danh sách dài 1,3% khung hình trễ. Trên Xiaomi, mở trang sách đạt p90 8 đến 16 ms, cuộn danh mục đạt PSS 94 đến 95 MB. Các ô không có cặp đối chiếu được ghi rõ không áp dụng. Lưới thẻ trên máy ảo vẫn 48,65%; ứng dụng chỉ một prompt có 12 tựa sách; chạm NFC dưới 1 s và thiết bị cấu hình thấp ghi rõ chưa đo.
 
 **Thao tác.** Lướt dọc cột Trạng thái để phân tách phần đạt và hai hạng mục chưa đo.
 
-**Lưu ý.** Giữ giọng khách quan, trung thực; nêu hiện trạng đo đạc đúng một lần tại đây.
+**Lưu ý.** Ô “không áp dụng” là nơi chỉ một prompt không có bản đã sửa hoặc phép đo ShelfTap trên Xiaomi không có bản nháp AI tương ứng; hai hạng mục cuối ghi rõ “chưa đo”.
 
 #### 22. Thiết bị thật (16:20 đến 17:05) — slide 22
 
@@ -435,11 +435,11 @@ Copied from [presentation-script.md](presentation-script.md) by `build_playbook_
 
 *Khuyến nghị · 50 giây · 105 từ*
 
-**Lời nói.** Nhóm em đúc kết quy trình năm giai đoạn, mỗi giai đoạn có mức tối thiểu và nâng cao. Giai đoạn 1 đặt yêu cầu: tối thiểu viết bản đặc tả có cấu trúc; nâng cao gắn tiêu chí đo được và định nghĩa xong bằng build thành công. Giai đoạn 2 sinh mã: đặt tệp quy tắc ở gốc dự án, chọn mô hình build thành công cao và bỏ yêu cầu trợ lý AI không tự hoàn tất được. Giai đoạn 3 sửa lỗi: yêu cầu rõ không nới lỏng cơ chế bảo mật, đọc dòng bị xóa và khóa bằng kiểm thử.
+**Lời nói.** Nhóm em đúc kết quy trình năm giai đoạn, mỗi giai đoạn có mức tối thiểu và nâng cao. Giai đoạn 1 đặt yêu cầu: tối thiểu viết bản đặc tả có cấu trúc; nâng cao gắn mục tiêu đo được và định nghĩa xong là build thành công. Giai đoạn 2 sinh mã: tối thiểu đặt tệp quy tắc ở gốc dự án rồi kiểm tra bản nháp vẫn build thành công; nâng cao chọn mô hình build tốt và bỏ yêu cầu quá sức. Giai đoạn 3 sửa lỗi: cấm nới lỏng cơ chế bảo mật, đọc dòng xóa và khóa bằng test.
 
 **Thao tác.** Dẫn khán giả đi theo ba hàng 1, 2, 3 mà không đọc các ô số nhỏ.
 
-**Lưu ý.** Mọi khuyến nghị đều gắn với một kết quả đo đã nêu (99% → 19,6%, 31/33 → 17/34, 12/30 Keystore).
+**Lưu ý.** Mọi khuyến nghị đều gắn với một kết quả đo đã nêu (99% → 19,6%; cảnh báo bảo mật 31/33 → 17/34 nhưng build thành công 20/33 → 10/34; 12/30 Keystore).
 
 #### 24. Giai đoạn 4 và 5 (17:55 đến 18:40) — slide 24
 
@@ -474,7 +474,7 @@ Copied from [presentation-script.md](presentation-script.md) by `build_playbook_
 - The five-phase advice at the Tối thiểu and Nâng cao levels.
 - Three points and the limits.
 
-Every number in it is a number of the deck. Its owner checks it by a set difference against the deck and by rendering at 1280 and 390 px. The framing rules of section 6 apply: no advice addressed to a type of reader, and no sources section; the old lead-in sources stay in [report/sources-leadin.md](report/sources-leadin.md) as a record.
+Every number in it is a number of the deck. Its owner checks it by a set difference against the deck and by rendering at 1280 and 390 px. The framing rules of section 6 apply: advice is organised by the five development phases with two levels ("Tối thiểu" and "Nâng cao"), and there is no sources section; the lead-in sources stay in [report/sources-leadin.md](report/sources-leadin.md) as a record.
 
 | Report section (h2) | Deck slides |
 |---|---|
@@ -493,7 +493,7 @@ Every number in it is a number of the deck. Its owner checks it by a set differe
 
 ## 7. Proof of every number in the deck
 
-- [proof/deck-proof.csv](proof/deck-proof.csv) has 741 rows: 415 direct, 92 derived, 234 label. There is one row per distinct number per slide, covering visible text, speaker notes, chart data attributes and bar lengths, for all 33 slides. Columns: `slide,value,kind,claim,source,line,quote,formula,note`.
+- [proof/deck-proof.csv](proof/deck-proof.csv) has 763 rows (425 direct, 99 derived, 239 label) covering 741 values across all 33 slides (visible text, speaker notes, chart data attributes and bar lengths). Columns: `slide,value,kind,claim,source,line,quote,formula,note`.
   - `direct`: the number is on `source:line`, inside the verbatim `quote`.
   - `cited`: the same, from an external source recorded in references.md (not used by the current deck).
   - `derived`: `formula` recomputes the shown value from proven inputs. Examples: k/66 as naive + detailed (`8+11`); MB as KB / 1024; APK bytes / 1 000 000; Holm as raw p × (5 − rank + 1); "gấp 2,3 lần" as `2.37/1.02`; P08 11/12 counted from `e6-oneshot/results/findings.csv`.

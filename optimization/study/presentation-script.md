@@ -158,11 +158,11 @@ Khớp nguyên vẹn với `presentation.html` (25 slide chính + 8 slide dự p
 
 *Trụ cột 3: Bảo mật · 45 giây · 100 từ*
 
-**Lời nói.** Vậy cách nào làm giảm cảnh báo bảo mật ngay lúc sinh mã? E1 cho thấy viết prompt chức năng dài hơn gần như không giúp ích: vẫn 29/33 bản có cảnh báo so với 31/33 của prompt ngắn. Ngược lại, tệp quy tắc ở gốc dự án kéo tỷ lệ đó xuống 17/34 và giảm số loại vấn đề trên cả bốn nhóm từ 5,85 xuống 2,82 — cả C1, C2 đều được xác nhận. Nhưng riêng trong 42 bản build thành công, tỷ lệ có cảnh báo không đổi: tệp quy tắc không thay được bước kiểm tra.
+**Lời nói.** Vậy cách nào làm giảm cảnh báo bảo mật lúc sinh mã? Ở E1, prompt chức năng chi tiết vẫn có 29/33 bản bị cảnh báo so với 31/33 ở prompt ngắn. Tệp quy tắc kéo tỷ lệ này xuống 17/34 và giảm số loại vấn đề từ 5,85 xuống 2,82, xác nhận C1, C2. Nhưng đánh đổi là bản build thành công sau tối đa 3 lần sửa cũng giảm từ 20/33 xuống 10/34, còn prompt chi tiết là 12/33. Xét riêng 42 bản build thành công, tỷ lệ có cảnh báo không đổi: vẫn cần bước kiểm tra.
 
-**Thao tác.** Chỉ ba thanh biểu đồ rồi nhấn vào khung lưu ý 42 bản build thành công ở đáy slide.
+**Thao tác.** Chỉ hai cụm biểu đồ bên trái (cảnh báo bảo mật và bản build thành công) rồi sang hai khung bên phải.
 
-**Lưu ý.** C2 tính trên cả bốn nhóm quy tắc, không riêng bảo mật; trong 42 bản build thành công, chênh lệch C1 bằng 0,000 còn C2 vẫn còn (+3,829).
+**Lưu ý.** Tỷ lệ build thành công (20/33, 12/33, 10/34) là số mô tả; C2 tính trên cả bốn nhóm quy tắc; trong 42 bản build thành công, chênh lệch C1 bằng 0,000 còn C2 vẫn còn (+3,829).
 
 ## 15. Khi gặp lỗi chặn (10:05 đến 10:50) — slide 15
 
@@ -208,7 +208,7 @@ Khớp nguyên vẹn với `presentation.html` (25 slide chính + 8 slide dự p
 
 *Kết luận · 40 giây · 90 từ*
 
-**Lời nói.** Tổng kết lại, sáu thí nghiệm cho sáu kết luận. E1: chỉ 42/100 bản build thành công và hầu hết có cảnh báo bảo mật. E2: danh sách và giải mã ảnh làm trượt mục tiêu; ba lỗi Compose kinh điển không có chi phí đo được. E3: công cụ quét APK đạt 0,291 và không thấy lỗi mã nguồn. E4: 17/148 lượt nới lỏng cơ chế bảo mật. E5: 9/12 bản codex sửa không biên dịch được. E6: bản đặc tả đưa tỷ lệ khung hình trễ xuống 19,6%.
+**Lời nói.** Sáu thí nghiệm cho sáu kết luận. E1: 42/100 bản build thành công, hầu hết có cảnh báo bảo mật; tệp quy tắc giảm cảnh báo nhưng cũng giảm bản build thành công. E2: danh sách và ảnh làm trượt mục tiêu; ba lỗi Compose kinh điển không có chi phí đo được. E3: quét APK đạt 0,291, bỏ sót lỗi mã. E4: 17/148 lượt nới lỏng cơ chế bảo mật. E5: 9/12 bản codex sửa không biên dịch được. E6: bản đặc tả đưa khung hình trễ xuống 19,6%.
 
 **Thao tác.** Lướt nhanh sáu hàng từ E1 đến E6 với nhịp dứt khoát.
 
@@ -228,11 +228,11 @@ Khớp nguyên vẹn với `presentation.html` (25 slide chính + 8 slide dự p
 
 *Kết luận · 50 giây · 105 từ*
 
-**Lời nói.** Đối chiếu mục tiêu môn học: trên màn hình thử nghiệm, bản sửa đạt yêu cầu — tìm kiếm 100.000 sách còn 37 ms, dưới 50 ms; RAM 60 và 43 MB dưới 150 MB; danh sách dài 1,3% khung hình trễ. Trên Xiaomi, mở trang sách đạt p90 8 đến 16 ms, cuộn danh mục chưa ảnh bìa đạt PSS 94 đến 95 MB. Phần hạn chế: lưới thẻ trang trí trên máy ảo vẫn 48,65%; ứng dụng chỉ một prompt đạt RAM vì có 12 tựa sách; hai hạng mục chạm NFC dưới 1 s và thiết bị cấu hình thấp chưa đo.
+**Lời nói.** Đối chiếu mục tiêu môn học: trên màn hình thử nghiệm, bản sửa đạt yêu cầu — tìm 100.000 sách còn 37 ms, dưới 50 ms; RAM 60 và 43 MB dưới 150 MB; danh sách dài 1,3% khung hình trễ. Trên Xiaomi, mở trang sách đạt p90 8 đến 16 ms, cuộn danh mục đạt PSS 94 đến 95 MB. Các ô không có cặp đối chiếu được ghi rõ không áp dụng. Lưới thẻ trên máy ảo vẫn 48,65%; ứng dụng chỉ một prompt có 12 tựa sách; chạm NFC dưới 1 s và thiết bị cấu hình thấp ghi rõ chưa đo.
 
 **Thao tác.** Lướt dọc cột Trạng thái để phân tách phần đạt và hai hạng mục chưa đo.
 
-**Lưu ý.** Giữ giọng khách quan, trung thực; nêu hiện trạng đo đạc đúng một lần tại đây.
+**Lưu ý.** Ô “không áp dụng” là nơi chỉ một prompt không có bản đã sửa hoặc phép đo ShelfTap trên Xiaomi không có bản nháp AI tương ứng; hai hạng mục cuối ghi rõ “chưa đo”.
 
 ## 22. Thiết bị thật (16:20 đến 17:05) — slide 22
 
@@ -248,11 +248,11 @@ Khớp nguyên vẹn với `presentation.html` (25 slide chính + 8 slide dự p
 
 *Khuyến nghị · 50 giây · 105 từ*
 
-**Lời nói.** Nhóm em đúc kết quy trình năm giai đoạn, mỗi giai đoạn có mức tối thiểu và nâng cao. Giai đoạn 1 đặt yêu cầu: tối thiểu viết bản đặc tả có cấu trúc; nâng cao gắn tiêu chí đo được và định nghĩa xong bằng build thành công. Giai đoạn 2 sinh mã: đặt tệp quy tắc ở gốc dự án, chọn mô hình build thành công cao và bỏ yêu cầu trợ lý AI không tự hoàn tất được. Giai đoạn 3 sửa lỗi: yêu cầu rõ không nới lỏng cơ chế bảo mật, đọc dòng bị xóa và khóa bằng kiểm thử.
+**Lời nói.** Nhóm em đúc kết quy trình năm giai đoạn, mỗi giai đoạn có mức tối thiểu và nâng cao. Giai đoạn 1 đặt yêu cầu: tối thiểu viết bản đặc tả có cấu trúc; nâng cao gắn mục tiêu đo được và định nghĩa xong là build thành công. Giai đoạn 2 sinh mã: tối thiểu đặt tệp quy tắc ở gốc dự án rồi kiểm tra bản nháp vẫn build thành công; nâng cao chọn mô hình build tốt và bỏ yêu cầu quá sức. Giai đoạn 3 sửa lỗi: cấm nới lỏng cơ chế bảo mật, đọc dòng xóa và khóa bằng test.
 
 **Thao tác.** Dẫn khán giả đi theo ba hàng 1, 2, 3 mà không đọc các ô số nhỏ.
 
-**Lưu ý.** Mọi khuyến nghị đều gắn với một kết quả đo đã nêu (99% → 19,6%, 31/33 → 17/34, 12/30 Keystore).
+**Lưu ý.** Mọi khuyến nghị đều gắn với một kết quả đo đã nêu (99% → 19,6%; cảnh báo bảo mật 31/33 → 17/34 nhưng build thành công 20/33 → 10/34; 12/30 Keystore).
 
 ## 24. Giai đoạn 4 và 5 (17:55 đến 18:40) — slide 24
 
@@ -288,7 +288,7 @@ Khớp nguyên vẹn với `presentation.html` (25 slide chính + 8 slide dự p
 | Các trợ lý AI khác nhau thế nào trong thí nghiệm E6? | Mỗi ô trong E6 có 3 lần chạy. Với chỉ một prompt, agy-g38flash build thành công 3/3 còn ba trợ lý còn lại chỉ đạt 1/3; nhưng khi chuyển sang tệp quy tắc và bản đặc tả, claude-sonnet đạt 3/3 ở cả hai, trong khi claude-haiku là 0/3. Riêng agy-g38flash ở bản đặc tả không sinh được bản nháp ở cả 3 lần do chế độ chạy không giao diện từ chối một lệnh trước khi ghi tệp. | D6 |
 | Cấu hình AI cá nhân trên máy thí nghiệm có làm nhiễu kết quả không? | Mỗi lần sinh mã chạy trong thư mục HOME giả lập chỉ chứa tệp xác thực và bị khóa ghi ra ngoài. Quét lại 623 bản ghi hội thoại không thấy dấu vết cấu hình riêng; mẫu đối chứng chạy với thư mục HOME thật lộ ngay ở lượt đầu với 18.244 token so với khoảng 7.500. Nhóm em cũng công khai rằng cấu hình hệ thống tự nạp ba plugin đo đạc vào Claude; khi đọc mã nguồn không thấy chúng chèn chữ vào hội thoại nhưng chưa thử A/B khi tắt chúng. | D7 |
 | Còn vấn đề cỡ chữ lớn 2.0 và trợ năng thì sao? | Nhóm em xếp cỡ chữ lớn và bố cục sang phần chất lượng giao diện ở D8 để bài chính tập trung vào ba trụ cột tối ưu. Ở tỷ lệ cỡ chữ 2.0, cả bốn ứng dụng sinh từ chỉ một prompt đều vỡ bố cục; trên ShelfTap, nhóm em giảm số màn hình vỡ bố cục từ 5/7 xuống 0/7 và cảnh báo ATF từ 4 xuống 2. | D8 |
-| Tệp quy tắc có đảm bảo hết lỗi bảo mật khi ứng dụng build thành công không? | Không. Trên toàn bộ tập E1, tỷ lệ có cảnh báo bảo mật giảm từ 31/33 xuống 17/34, nhưng nếu chỉ xét 42 bản build thành công thì chênh lệch C1 bằng +0,000, trong khi số loại lỗi C2 vẫn giảm (+3,829). Vì vậy tệp quy tắc chỉ là lớp phòng ngừa ở khâu sinh mã, vẫn cần kiểm tra độc lập ở giai đoạn 4. | slide 14, D2 |
+| Tệp quy tắc có đảm bảo hết lỗi bảo mật khi ứng dụng build thành công không? | Không. Trên toàn bộ tập E1, tỷ lệ có cảnh báo bảo mật giảm từ 31/33 xuống 17/34, nhưng số bản build thành công sau tối đa 3 lần sửa cũng giảm từ 20/33 xuống 10/34 (prompt chi tiết là 12/33), và nếu chỉ xét 42 bản build thành công thì chênh lệch C1 bằng +0,000 trong khi số loại lỗi C2 vẫn giảm (+3,829). Vì vậy tệp quy tắc chỉ là lớp phòng ngừa ở khâu sinh mã, vẫn cần kiểm tra bản build và quét bảo mật độc lập ở giai đoạn 4. | slide 14, D2 |
 | Vì sao Baseline Profile không còn tác dụng rõ trên thiết bị thật? | Trên máy ảo E2, Baseline Profile giảm thời gian khởi động từ 462 ms xuống 434,8 ms (−5,88%). Khi đo trên thiết bị thật Xiaomi bằng bản build đo hiệu năng, tỷ lệ khung hình trễ có và không có Baseline Profile lần lượt là 1,44–1,49% và 1,45–1,60%, không có khác biệt đo được. Điều này nhắc lại nguyên tắc đo đúng bản build và ưu tiên sửa danh sách, giải mã ảnh trước. | slide 9, slide 22, D3 |
 
 ## Chuẩn bị trước buổi trình bày

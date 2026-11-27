@@ -906,23 +906,31 @@ td.num, th.num {
   <figcaption>Đoạn mã nguyên văn từ một bản nháp E1: token đăng nhập và refresh token được ghi thẳng vào <code>SharedPreferences</code> ở dạng văn bản rõ, không mã hóa (<code>S01</code>, xuất hiện ở <b>19/66</b> bản nháp).</figcaption>
 </figure>
 
-<h3>Điều gì làm giảm lỗi bảo mật: tệp quy tắc (<code>guardrail</code>) so với prompt dài hơn</h3>
-<p>Khi nhóm chỉ mở rộng prompt ngắn thành một prompt mô tả chức năng chi tiết hơn, tỷ lệ bản nháp có cảnh báo bảo mật gần như không đổi (từ <b>31/33</b> sang <b>29/33</b>). Ngược lại, khi đặt một <b>tệp quy tắc (guardrail)</b> biên soạn từ OWASP MASVS và tài liệu Android ở thư mục gốc dự án theo đúng tên tệp mà trợ lý AI tự động nạp (<code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>GEMINI.md</code>), hai phép kiểm định đăng ký trước đều được xác nhận:</p>
+<h3>Điều gì làm giảm lỗi bảo mật: tệp quy tắc (<code>guardrail</code>), hiệu quả bảo mật và đánh đổi về tỷ lệ build</h3>
+<p>Khi nhóm chỉ mở rộng prompt ngắn thành một prompt mô tả chức năng chi tiết hơn, tỷ lệ bản nháp có cảnh báo bảo mật gần như không đổi (từ <b>31/33</b> sang <b>29/33</b>). Ngược lại, khi đặt một <b>tệp quy tắc (guardrail)</b> biên soạn từ OWASP MASVS và tài liệu Android ở thư mục gốc dự án theo đúng tên tệp mà trợ lý AI tự động nạp (<code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>GEMINI.md</code>), hai phép kiểm định đăng ký trước đều được xác nhận, đồng thời lộ rõ một đánh đổi về số bản build thành công:</p>
 
 <figure class="bars" aria-label="Tỷ lệ bản nháp có ít nhất một cảnh báo bảo mật theo kiểu prompt">
-  <figcaption class="bt">Tỷ lệ bản nháp có ít nhất một cảnh báo bảo mật trong thí nghiệm E1 (<code>C1</code> được xác nhận)</figcaption>
+  <figcaption class="bt">Bản nháp có ít nhất một cảnh báo bảo mật trong thí nghiệm E1 (<code>C1</code> được xác nhận)</figcaption>
   <div class="br"><span class="bl">Prompt ngắn</span><span class="bw"><span class="bf a" style="width:93.9%"></span></span><span class="bv">31/33</span></div>
   <div class="br"><span class="bl">Prompt chức năng chi tiết</span><span class="bw"><span class="bf a" style="width:87.9%"></span></span><span class="bv">29/33</span></div>
   <div class="br"><span class="bl">Kèm tệp quy tắc (guardrail)</span><span class="bw"><span class="bf b" style="width:50.0%"></span></span><span class="bv">17/34</span></div>
 </figure>
 
+<figure class="bars" aria-label="Bản nháp build thành công sau tối đa 3 lần sửa cấu hình theo kiểu prompt">
+  <figcaption class="bt">Bản nháp build thành công sau tối đa 3 lần sửa cấu hình trong thí nghiệm E1 (số mô tả)</figcaption>
+  <div class="br"><span class="bl">Prompt ngắn</span><span class="bw"><span class="bf a" style="width:60%"></span></span><span class="bv">20/33</span></div>
+  <div class="br"><span class="bl">Prompt chức năng chi tiết</span><span class="bw"><span class="bf a" style="width:36%"></span></span><span class="bv">12/33</span></div>
+  <div class="br"><span class="bl">Kèm tệp quy tắc (guardrail)</span><span class="bw"><span class="bf b" style="width:29%"></span></span><span class="bv">10/34</span></div>
+</figure>
+
 <ul>
   <li><b>Giảm tỷ lệ bản nháp có cảnh báo bảo mật (<code>C1</code> được xác nhận):</b> Tỷ lệ giảm từ <b>31/33</b> xuống <b>17/34</b> (chênh lệch <b>+0,439</b> ≥ <b>0,15</b>, <i>p</i> hiệu chỉnh Holm <b>0,00016</b>).</li>
   <li><b>Giảm số loại vấn đề khác nhau mỗi bản nháp (<code>C2</code> được xác nhận):</b> Trung bình số loại quy tắc khác nhau bị vi phạm mỗi bản nháp (tính trên cả bốn nhóm quy tắc, không riêng bảo mật) giảm hơn một nửa, từ <b>5,85</b> xuống <b>2,82</b> (chênh lệch <b>+3,025</b> ≥ <b>2,0</b>, <i>p</i> hiệu chỉnh Holm <b>0,00005</b>).</li>
+  <li><b>Đánh đổi về số bản build thành công (số mô tả):</b> Trong cùng thí nghiệm, số bản nháp build thành công sau tối đa <b>3</b> lần sửa cấu hình giảm từ <b>20/33</b> ở prompt ngắn (<b>8/12</b> + <b>5/12</b> + <b>7/9</b>) và <b>12/33</b> ở prompt chức năng chi tiết (<b>3/12</b> + <b>2/12</b> + <b>7/9</b>) xuống còn <b>10/34</b> khi kèm tệp quy tắc (<b>2/12</b> + <b>3/12</b> + <b>5/10</b>). Đây là số mô tả, không thuộc các phép kiểm định đăng ký trước.</li>
 </ul>
 
 <div class="box soft-n">
-  <p><b>Giới hạn quan trọng của tệp quy tắc:</b> Nếu chỉ xét riêng <b>42</b> bản nháp build thành công trong E1, tỷ lệ bản nháp có ít nhất một cảnh báo bảo mật <b>không khác nhau</b> giữa nhóm có và không có tệp quy tắc (chênh lệch <code>C1</code> là <b>+0,000</b>, <i>p</i> = <b>1,0</b>), dù số loại quy tắc bị vi phạm trên mỗi bản nháp vẫn giảm mạnh (chênh lệch <b>+3,829</b>). Tệp quy tắc giúp thu hẹp đáng kể số loại lỗi nhưng không thể thay thế bước kiểm tra bảo mật.</p>
+  <p><b>Giới hạn quan trọng của tệp quy tắc:</b> Nếu chỉ xét riêng <b>42</b> bản nháp build thành công trong E1, tỷ lệ bản nháp có ít nhất một cảnh báo bảo mật <b>không khác nhau</b> giữa nhóm có và không có tệp quy tắc (chênh lệch <code>C1</code> là <b>+0,000</b>, <i>p</i> = <b>1,0</b>), dù số loại quy tắc bị vi phạm trên mỗi bản nháp vẫn giảm mạnh (chênh lệch <b>+3,829</b>). Tệp quy tắc giúp thu hẹp đáng kể số loại lỗi nhưng đi kèm rủi ro giảm tỷ lệ build thành công và không thể thay thế bước kiểm tra bảo mật.</p>
 </div>
 
 <h3>Khi gặp lỗi chặn (E4) và giới hạn của công cụ quét APK (E3)</h3>
@@ -1079,7 +1087,7 @@ td.num, th.num {
 <p>Mỗi thí nghiệm trong nghiên cứu trả lời một câu hỏi thực nghiệm riêng biệt, nhưng cả sáu đều hội tụ về một nhận định chung: <b>trông hoàn thiện chưa phải đã tối ưu</b>.</p>
 
 <div class="box">
-  <p><b>E1 · Tần suất lỗi trong bản nháp đầu:</b> <i>Thiết kế:</i> Sinh <b>101</b> bản nháp đầu (<b>100</b> bản hợp lệ) từ <b>3</b> trợ lý AI với <b>3</b> kiểu prompt (<b>33</b> prompt ngắn, <b>33</b> prompt chức năng chi tiết, <b>34</b> kèm tệp quy tắc), quét bằng bộ quét tĩnh của nhóm và đối chiếu với <b>20</b> ứng dụng mã nguồn mở do người viết trước ngày <b>30/11/2022</b>. <i>Dữ liệu:</i> Chỉ <b>42/100</b> bản nháp build thành công; <b>60/66</b> bản không kèm tệp quy tắc có cảnh báo bảo mật với mật độ trung vị <b>2,37</b> so với <b>1,02</b> trên <b>1.000</b> dòng mã ở ứng dụng do người viết; tệp quy tắc giảm tỷ lệ bản có cảnh báo bảo mật từ <b>31/33</b> xuống <b>17/34</b> và giảm số loại vấn đề mỗi bản từ <b>5,85</b> xuống <b>2,82</b>. <i>Kết luận:</i> Bản nháp đầu thường build lỗi và gần như luôn có cảnh báo bảo mật; tệp quy tắc giảm mạnh số loại lỗi nhưng không thay thế được bước kiểm tra trên các bản build thành công.</p>
+  <p><b>E1 · Tần suất lỗi trong bản nháp đầu:</b> <i>Thiết kế:</i> Sinh <b>101</b> bản nháp đầu (<b>100</b> bản hợp lệ) từ <b>3</b> trợ lý AI với <b>3</b> kiểu prompt (<b>33</b> prompt ngắn, <b>33</b> prompt chức năng chi tiết, <b>34</b> kèm tệp quy tắc), quét bằng bộ quét tĩnh của nhóm và đối chiếu với <b>20</b> ứng dụng mã nguồn mở do người viết trước ngày <b>30/11/2022</b>. <i>Dữ liệu:</i> Chỉ <b>42/100</b> bản nháp build thành công; <b>60/66</b> bản không kèm tệp quy tắc có cảnh báo bảo mật với mật độ trung vị <b>2,37</b> so với <b>1,02</b> trên <b>1.000</b> dòng mã ở ứng dụng do người viết; tệp quy tắc giảm tỷ lệ bản có cảnh báo bảo mật từ <b>31/33</b> xuống <b>17/34</b> và giảm số loại vấn đề mỗi bản từ <b>5,85</b> xuống <b>2,82</b>, nhưng số bản build thành công sau tối đa <b>3</b> lần sửa cấu hình cũng giảm từ <b>20/33</b> (prompt ngắn) và <b>12/33</b> (prompt chức năng chi tiết) xuống <b>10/34</b>. <i>Kết luận:</i> Bản nháp đầu thường build lỗi và gần như luôn có cảnh báo bảo mật; tệp quy tắc giảm cảnh báo bảo mật và số loại lỗi nhưng cũng giảm số bản build thành công, đồng thời không thay thế được bước kiểm tra trên các bản build thành công.</p>
   <p><b>E2 · Mức tổn hao hiệu năng và bộ nhớ khi chạy (đối chiếu A/B):</b> <i>Thiết kế:</i> Đo A/B xen kẽ (ít nhất <b>12</b> lần lặp, khởi động nguội) trên máy ảo giữa đoạn mã từ bản nháp AI (A) và bản sửa (B) trên cùng màn hình cho <b>7</b> nhân tố chính và <b>1</b> đối chiếu phụ. <i>Dữ liệu:</i> Sửa danh sách dựng toàn bộ (<code>P09</code>) giúp thời gian khởi động có mức thay đổi <b>−69,9%</b> (<b>1.901</b> → <b>573,1 ms</b>), giảm khung hình trễ từ <b>90%</b> xuống <b>1,3%</b> và giảm mức dùng RAM từ <b>243 MB</b> xuống <b>43 MB</b>; giải mã ảnh đúng kích thước ô (<code>P06</code>) giảm dung lượng ảnh đã giải mã từ <b>203 MB</b> xuống <b>6,2 MB</b> và RAM từ <b>180 MB</b> xuống <b>60 MB</b>; hiệu ứng trang trí (<code>P08</code>) làm thời gian xử lý khung hình p90 tăng thêm <b>+28,1%</b> (<b>62,87</b> so với <b>49,07 ms</b>); R8 (<code>P10</code>) giảm APK từ <b>24,7 MB</b> xuống <b>2,4 MB</b>; chỉ mục FTS4 (<code>P13</code>) giảm thời gian truy vấn chậm nhất từ <b>96,63 ms</b> xuống <b>37 ms</b>; trong khi đó <code>P01</code> (<b>+0,471%</b>) và <code>P03, P04</code> (<b>+1,49%</b>) có khoảng tin cậy chứa giá trị <b>0</b>. <i>Kết luận:</i> Lỗi danh sách và ảnh làm màn hình thử nghiệm không đạt mục tiêu môn học, còn ba lỗi Compose kinh điển không có tổn hao đo được ở kịch bản thử nghiệm.</p>
   <p><b>E3 · Độ chính xác của công cụ quét bảo mật APK:</b> <i>Thiết kế:</i> Chạy MobSF và jadx trên <b>13</b> APK, phân loại đúng/sai từng cảnh báo và đối chiếu với bộ quét tĩnh mã nguồn của nhóm. <i>Dữ liệu:</i> Trong <b>103</b> cảnh báo phát sinh chỉ có <b>30</b> cảnh báo đúng (độ chính xác <b>0,291</b>), và cả <b>30</b> cảnh báo đúng đều là thông tin cấu hình manifest hoặc build. <i>Kết luận:</i> Công cụ quét APK chỉ thấy lỗi cấu hình, không thấy các lỗi bảo mật nằm trong mã nguồn.</p>
   <p><b>E4 · Hành vi nới lỏng cơ chế bảo mật khi gặp lỗi chặn:</b> <i>Thiết kế:</i> Đưa <b>5</b> kịch bản lỗi chặn cho <b>3</b> trợ lý AI với <b>2</b> biến thể prompt × <b>5</b> lần chạy (<b>148</b> lượt đủ điều kiện phân loại), chấm độc lập ẩn nhãn (kappa <b>0,909</b>). <i>Dữ liệu:</i> Có <b>17/148</b> lượt (<b>11,5%</b>) nới lỏng cơ chế bảo mật, tập trung hoàn toàn ở kịch bản bỏ xác thực khóa Android Keystore (<b>12/30</b>) và bật lưu lượng cleartext (<b>5/30</b>). <i>Kết luận:</i> Khi gặp lỗi chặn, trợ lý AI đôi khi nới lỏng cơ chế bảo mật ở hai kịch bản lỗi đặc thù, dù tỷ lệ tổng thể thấp hơn ngưỡng <b>15%</b> đã đăng ký trước.</p>
@@ -1276,12 +1284,12 @@ td.num, th.num {
     <tr>
       <td>RAM · ứng dụng tạo từ chỉ một prompt, 12 tựa sách</td>
       <td class="num">66,8–102,8 MB</td>
-      <td class="num">—</td>
+      <td class="num" style="color:var(--mute)">không áp dụng</td>
       <td><span class="badge ok">đạt</span></td>
     </tr>
     <tr>
       <td>RAM · toàn ứng dụng, cuộn danh mục, chưa có ảnh bìa (PSS)</td>
-      <td class="num">—</td>
+      <td class="num" style="color:var(--mute)">không áp dụng</td>
       <td class="num" style="color:var(--fix);font-weight:700">94–95 MB</td>
       <td><span class="badge ok">đạt, Xiaomi flagship</span></td>
     </tr>
@@ -1299,20 +1307,20 @@ td.num, th.num {
     </tr>
     <tr>
       <td>60 fps · thiết bị thật, mở trang sách</td>
-      <td class="num">—</td>
+      <td class="num" style="color:var(--mute)">không áp dụng</td>
       <td class="num" style="color:var(--fix);font-weight:700">p90 8–16 ms</td>
       <td><span class="badge ok">đạt</span></td>
     </tr>
     <tr>
       <td>Chạm thẻ NFC tự mượn sách &lt; 1 s · thiết bị cấu hình thấp</td>
-      <td class="num">—</td>
-      <td class="num">—</td>
+      <td class="num" style="color:var(--mute)">chưa đo</td>
+      <td class="num" style="color:var(--mute)">chưa đo</td>
       <td><span class="badge na">chưa đo</span></td>
     </tr>
   </tbody>
 </table>
 
-<p class="note"><b>Ghi chú về phép đo RAM toàn ứng dụng ShelfTap:</b> Trên thiết bị thật Xiaomi (bản build đo hiệu năng), khi cuộn danh mục <b>100.013</b> đầu sách qua <b>5</b> lượt đo xen kẽ mỗi bản, mức PSS trung vị đạt <b>94 MB</b> (hàng phẳng) và <b>95 MB</b> (thẻ kính); mức RSS khoảng <b>234–235 MB</b> do bao gồm cả thư viện dùng chung của hệ thống nên không đối chiếu trực tiếp với ngưỡng <b>150 MB</b>. Phép đo này thực hiện trên máy flagship và danh mục chưa tải ảnh bìa thật (nên tổn hao giải mã ảnh của lỗi <code>P06</code> chưa nằm trong con số này). Hai hạng mục chưa đo là thời gian chạm thẻ NFC tự mượn sách dưới <b>1 s</b> và vận hành trên thiết bị cấu hình thấp.</p>
+<p class="note"><b>Ghi chú về phép đo RAM toàn ứng dụng ShelfTap và các ô trong bảng:</b> Trên thiết bị thật Xiaomi (bản build đo hiệu năng), khi cuộn danh mục <b>100.013</b> đầu sách qua <b>5</b> lượt đo xen kẽ mỗi bản, mức PSS trung vị đạt <b>94 MB</b> (hàng phẳng) và <b>95 MB</b> (thẻ kính); mức RSS khoảng <b>234–235 MB</b> do bao gồm cả thư viện dùng chung của hệ thống nên không đối chiếu trực tiếp với ngưỡng <b>150 MB</b>. Phép đo này thực hiện trên máy flagship và danh mục chưa tải ảnh bìa thật (nên tổn hao giải mã ảnh của lỗi <code>P06</code> chưa nằm trong con số này). Các ô “không áp dụng” tương ứng với ứng dụng chỉ một prompt (không có bản đã sửa) và hai phép đo trực tiếp trên ứng dụng ShelfTap của nhóm (không có bản nháp AI tương ứng). Hai hạng mục ghi “chưa đo” là thời gian chạm thẻ NFC tự mượn sách dưới <b>1 s</b> và vận hành trên thiết bị cấu hình thấp.</p>
 
 <!-- ============ THIẾT BỊ THẬT ============ -->
 <h2 id="thiet-bi-that">Bài học từ thiết bị thật và kiểm thử ở tỷ lệ cỡ chữ lớn</h2>
@@ -1370,8 +1378,8 @@ td.num, th.num {
 <div class="phase-grid">
   <div class="lvl-card">
     <h4>Tối thiểu</h4>
-    <p>Đặt tệp quy tắc (guardrail) ở thư mục gốc dự án, theo đúng tên tệp mà trợ lý AI tự động nạp (<code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>GEMINI.md</code>).</p>
-    <span class="ev-line">Bằng chứng: Tỷ lệ bản nháp có cảnh báo bảo mật giảm từ 31/33 xuống 17/34 (E1, C1)</span>
+    <p>Đặt tệp quy tắc (guardrail) ở thư mục gốc dự án theo đúng tên tệp mà trợ lý AI tự động nạp (<code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>GEMINI.md</code>), rồi kiểm tra bản nháp vẫn build thành công.</p>
+    <span class="ev-line">Bằng chứng: Cảnh báo bảo mật giảm từ 31/33 xuống 17/34 (C1), nhưng bản build thành công cũng giảm từ 20/33 xuống 10/34 (E1)</span>
   </div>
   <div class="lvl-card adv">
     <h4>Nâng cao</h4>
