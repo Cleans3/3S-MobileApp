@@ -1,0 +1,196 @@
+{
+  "scale_probe": {
+    "audit_summary": {
+      "E1-detailed-functional": {
+        "n": 33,
+        "verdict_FAIL": 12,
+        "SCALE-SEARCH": 7,
+        "verdict_PASS": 21,
+        "SCALE-IMAGE": 5
+      },
+      "E1-guardrailed": {
+        "n": 34,
+        "verdict_PASS": 29,
+        "verdict_FAIL": 5,
+        "SCALE-IMAGE": 4,
+        "toy_data_illusion": 1,
+        "SCALE-TOY": 1
+      },
+      "E1-naive": {
+        "n": 33,
+        "verdict_FAIL": 16,
+        "SCALE-SEARCH": 8,
+        "SCALE-FX-ITEM": 3,
+        "verdict_PASS": 17,
+        "toy_data_illusion": 13,
+        "SCALE-EAGER-LIST": 1,
+        "SCALE-TOY": 13
+      },
+      "E6-O": {
+        "n": 12,
+        "verdict_FAIL": 11,
+        "toy_data_illusion": 11,
+        "SCALE-EAGER-LIST": 1,
+        "SCALE-SEARCH": 10,
+        "SCALE-TOY": 11,
+        "verdict_PASS": 1,
+        "SCALE-FX-ITEM": 8
+      },
+      "E6-R": {
+        "n": 12,
+        "verdict_FAIL": 8,
+        "SCALE-FX-ITEM": 5,
+        "verdict_PASS": 4,
+        "toy_data_illusion": 4,
+        "SCALE-SEARCH": 4,
+        "SCALE-TOY": 4
+      },
+      "E6-S": {
+        "n": 9,
+        "verdict_FAIL": 6,
+        "SCALE-SEARCH": 6,
+        "verdict_PASS": 3
+      }
+    },
+    "amplifier_smoke": [
+      {
+        "run_id": "claude-sonnet-O-r3",
+        "status": "AMPLIFIED",
+        "modified_file": "app/src/main/java/com/lumen/library/data/Books.kt",
+        "model": "Book",
+        "original_n": 12,
+        "target_n": 100000,
+        "copy_expr": "_b.copy(id = _idx + 1, title = \"${_b.title} #${_idx + 1}\")",
+        "brackets_balanced": true
+      },
+      {
+        "run_id": "claude-haiku-O-r1",
+        "status": "AMPLIFIED",
+        "modified_file": "app/src/main/java/com/lumen/library/data/Book.kt",
+        "model": "Book",
+        "original_n": 12,
+        "target_n": 100000,
+        "copy_expr": "_b.copy(id = \"${_b.id}-${_idx + 1}\", title = \"${_b.title} #${_idx + 1}\")",
+        "brackets_balanced": true
+      },
+      {
+        "run_id": "codex-luna-O-r3",
+        "status": "AMPLIFIED",
+        "modified_file": "app/src/main/java/com/lumen/library/MainActivity.kt",
+        "model": "Book",
+        "original_n": 8,
+        "target_n": 100000,
+        "copy_expr": "_b.copy(title = \"${_b.title} #${_idx + 1}\")",
+        "brackets_balanced": true
+      },
+      {
+        "run_id": "agy-g38flash-O-r1",
+        "status": "AMPLIFIED",
+        "modified_file": "app/src/main/java/com/lumina/library/data/BookRepository.kt",
+        "model": "Book",
+        "original_n": 10,
+        "target_n": 100000,
+        "copy_expr": "_b.copy(id = \"${_b.id}-${_idx + 1}\", title = \"${_b.title} #${_idx + 1}\", isbn = \"978-${100000000 + _idx}\")",
+        "brackets_balanced": true
+      },
+      {
+        "run_id": "agy-g38flash-O-r2",
+        "status": "AMPLIFIED",
+        "modified_file": "app/src/main/java/com/lumina/library/data/SampleData.kt",
+        "model": "Book",
+        "original_n": 8,
+        "target_n": 100000,
+        "copy_expr": "_b.copy(id = \"${_b.id}-${_idx + 1}\", title = \"${_b.title} #${_idx + 1}\")",
+        "brackets_balanced": true
+      }
+    ]
+  },
+  "diffguard_e4": {
+    "unique_primary_diffs": 115,
+    "unique_metrics_block": {
+      "tp": 10,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "tn": 105
+    },
+    "trial_weighted_metrics_block": {
+      "tp": 17,
+      "fp": 0,
+      "fn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "tn": 131
+    },
+    "false_positives": [],
+    "false_negatives": []
+  },
+  "diffguard_e5": {
+    "total": 24,
+    "verdict_WARN": 18,
+    "DG-GUARD-ERODE": 17,
+    "DG-S03": 3,
+    "verdict_PASS": 6
+  },
+  "diffguard_corpora": {
+    "E1-guardrailed": {
+      "n": 34,
+      "verdict_WARN": 9,
+      "DG-BROADKEEP": 9,
+      "DG-CANCEL-SWALLOW": 13,
+      "verdict_BLOCK": 4,
+      "DG-DEBUGSIGN": 4,
+      "verdict_PASS": 21
+    },
+    "E1-unguardrailed": {
+      "n": 66,
+      "verdict_WARN": 21,
+      "DG-CANCEL-SWALLOW": 21,
+      "verdict_PASS": 41,
+      "DG-BROADKEEP": 10,
+      "verdict_BLOCK": 4,
+      "DG-FAILOPEN": 4,
+      "DG-INVENTED-URL": 4,
+      "DG-MOCKMAIN": 3
+    },
+    "E6-O": {
+      "n": 12,
+      "verdict_PASS": 11,
+      "verdict_WARN": 1,
+      "DG-BROADKEEP": 1
+    },
+    "E6-R": {
+      "n": 12,
+      "verdict_PASS": 9,
+      "verdict_BLOCK": 3,
+      "DG-BROADKEEP": 2,
+      "DG-CANCEL-SWALLOW": 2,
+      "DG-DEBUGSIGN": 3
+    },
+    "E6-S": {
+      "n": 9,
+      "verdict_PASS": 9
+    },
+    "human-post": {
+      "n": 20,
+      "verdict_WARN": 15,
+      "DG-CANCEL-SWALLOW": 15,
+      "DG-BROADKEEP": 8,
+      "verdict_PASS": 4,
+      "verdict_BLOCK": 1,
+      "DG-DEBUGSIGN": 1,
+      "DG-INVENTED-URL": 1
+    },
+    "human-pre": {
+      "n": 20,
+      "verdict_WARN": 13,
+      "DG-CANCEL-SWALLOW": 11,
+      "verdict_PASS": 7,
+      "DG-BROADKEEP": 1,
+      "DG-INVENTED-URL": 1
+    }
+  }
+}
