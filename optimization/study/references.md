@@ -541,6 +541,41 @@ compose-lints: Lint checks for Compose (Slack).
 OWASP/mastg repository.
 - Link: https://github.com/OWASP/mastg
 
+## G. Lead-in sources for the plain-language report (added 2026-11-27)
+
+Verified 2026-11-27 by beta-fg-3 (each quote matched by script as an exact substring of the fetched page; full quotes in report/sources-leadin.md); alpha re-fetched the Stack Overflow, Veracode and arXiv pages and re-matched five quotes. Used only in report/index.html section 1. *Secondary* = the publisher's own page returned HTTP 403 to automated clients, so a named news outlet quoting it is cited instead.
+
+### [Karpathy2025]
+Karpathy, A. Post on X introducing "vibe coding", 2 February 2025. Social media post (I).
+- Link: https://x.com/karpathy/status/1886192184808149383
+- Verified: x.com page text (first quote); full text via https://api.fxtwitter.com/karpathy/status/1886192184808149383
+- Figure used: none; quoted phrases "vibe coding", "Accept All", "throwaway weekend projects"
+
+### [Collins2025]
+Collins Dictionary, Word of the Year 2025 "vibe coding", announced 6 November 2025. *Secondary*: Irish Examiner, https://www.irishexaminer.com/news/arid-41737758.html ; Gulf News.
+- Verified: news pages fetched (HTTP 200); collinsdictionary.com/woty returned HTTP 403, not read
+- Figure used: none
+
+### [SOSurvey2025]
+Stack Overflow, 2025 Developer Survey, section AI. https://survey.stackoverflow.co/2025/ai (no exact date on the page).
+- Verified: page fetched (HTTP 200), quotes matched
+- Figure used: 84% of respondents use or plan to use AI tools (76% the year before)
+- Figure used: 46% distrust the accuracy of AI tools, 33% trust it
+- Figure used: 66% cite "AI solutions that are almost right, but not quite" as the biggest frustration
+
+### [MerriamWebster2025]
+Merriam-Webster, Word of the Year 2025 "slop". *Secondary*: PBS NewsHour (AP), 15 December 2025, https://www.pbs.org/newshour/nation/merriam-websters-word-of-the-year-for-2025-is-ais-slop
+- Verified: PBS page fetched (HTTP 200); merriam-webster.com returned HTTP 403, not read
+- Figure used: none; definition quoted
+
+### [Ouyang2023]
+Ouyang, S., Zhang, J. M., Harman, M., Wang, M. "An Empirical Study of the Non-determinism of ChatGPT in Code Generation." arXiv:2308.02828 (2023, v2 2024). Preprint (P).
+- Link: https://arxiv.org/abs/2308.02828
+- Verified: abstract read on arXiv
+- Figure used: none in the report (qualitative: the same prompt can return very different code; temperature 0 does not guarantee determinism)
+
+[Veracode2025] (section B) is also cited in the report lead-in with its existing figure (45 percent).
+
 ## F. Candidates examined and NOT used (verification failed or incomplete)
 
 | Candidate | Why it is not used |

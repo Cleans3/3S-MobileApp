@@ -1,0 +1,10 @@
+run_id,step,kind,detail
+codex-luna-O-r3,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+codex-luna-O-r1,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+claude-haiku-O-r2,1,missing-import,1 imports: BookCover.kt:aspectRatio
+codex-luna-O-r2,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+claude-haiku-O-r1,1,missing-import,1 imports: BookTile.kt:fillMaxWidth
+codex-luna-S-r3,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+agy-g38flash-R-r2,1,gradle-properties,"android.useAndroidX=true (androidx dependencies declared, flag missing)"
+codex-luna-S-r2,1,jvm-target-validation,kotlin.jvm.target.validation.mode=warning (Kotlin and Java targets differ)
+claude-haiku-S-r3,1,missing-import,"2 imports: BookComponents.kt:fillMaxWidth, CatalogueScreen.kt:size"

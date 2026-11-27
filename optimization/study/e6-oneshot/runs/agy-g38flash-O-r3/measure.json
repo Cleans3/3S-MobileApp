@@ -1,0 +1,13 @@
+{
+ "installed": "yes",
+ "package": "com.lumina.library",
+ "apk_mb": 15.65,
+ "component": "com.lumina.library/.MainActivity",
+ "launch_ms": "",
+ "start_status": "ok",
+ "f1_crash": "yes",
+ "f1_fatal": "yes",
+ "f2_crash": "yes",
+ "f2_fatal": "yes",
+ "measured_at": "2026-11-27T18:47:13+0700"
+}

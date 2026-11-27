@@ -1,0 +1,251 @@
+{
+ "date": "2026-11-27 17:35",
+ "runs": [
+  {
+   "name": "agy-g38flash-A",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "1.5.18",
+   "exit_code": 0,
+   "duration_s": 11.4,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE CANARY-7Q\n",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "run_at": "2026-11-27 17:35"
+  },
+  {
+   "name": "agy-g38flash-B",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "1.5.18",
+   "exit_code": 0,
+   "duration_s": 8.5,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE\n",
+   "hello_written": true,
+   "stderr_head": [],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": null,
+   "run_at": "2026-11-27 17:35"
+  },
+  {
+   "name": "agy-g38flash-C-GEMINI.md",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "C",
+   "ctxfile": "GEMINI.md",
+   "cli_version": "1.5.18",
+   "exit_code": 0,
+   "duration_s": 9.6,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE\n",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ],
+   "run_at": "2026-11-27 17:35"
+  },
+  {
+   "name": "claude-haiku-A",
+   "tool": "claude",
+   "model": "haiku",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "2.1.332 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 5.2,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE\n\nCANARY-7Q",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "run_at": "2026-11-27 17:34"
+  },
+  {
+   "name": "claude-haiku-B",
+   "tool": "claude",
+   "model": "haiku",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "2.1.332 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 5.3,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": [
+    "compact-pilot",
+    "model-gate",
+    "usage-meter",
+    "cc-plugin-sec-default",
+    "cc-plugin-agents-md",
+    "cc-plugin-telemetry",
+    "cc-plugin-privacy",
+    "cc-plugin-plugin-authoring"
+   ],
+   "factory_mods_loaded": [
+    "compact-pilot",
+    "model-gate",
+    "usage-meter"
+   ],
+   "run_at": "2026-11-27 17:34"
+  },
+  {
+   "name": "claude-haiku-C-CLAUDE.md",
+   "tool": "claude",
+   "model": "haiku",
+   "kind": "C",
+   "ctxfile": "CLAUDE.md",
+   "cli_version": "2.1.332 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 5.2,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ],
+   "run_at": "2026-11-27 17:34"
+  },
+  {
+   "name": "claude-sonnet-A",
+   "tool": "claude",
+   "model": "claude-sonnet-5-5",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "2.1.332 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 4.4,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE\n\nCANARY-7Q",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "run_at": "2026-11-27 17:34"
+  },
+  {
+   "name": "claude-sonnet-B",
+   "tool": "claude",
+   "model": "claude-sonnet-5-5",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "2.1.332 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 4.7,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": [
+    "compact-pilot",
+    "model-gate",
+    "usage-meter",
+    "cc-plugin-sec-default",
+    "cc-plugin-agents-md",
+    "cc-plugin-telemetry",
+    "cc-plugin-privacy",
+    "cc-plugin-plugin-authoring"
+   ],
+   "factory_mods_loaded": [
+    "compact-pilot",
+    "model-gate",
+    "usage-meter"
+   ],
+   "run_at": "2026-11-27 17:34"
+  },
+  {
+   "name": "claude-sonnet-C-CLAUDE.md",
+   "tool": "claude",
+   "model": "claude-sonnet-5-5",
+   "kind": "C",
+   "ctxfile": "CLAUDE.md",
+   "cli_version": "2.1.332 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 4.7,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ],
+   "run_at": "2026-11-27 17:34"
+  },
+  {
+   "name": "codex-luna-A",
+   "tool": "codex",
+   "model": "gpt-5.6-luna",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "codex-cli 0.171.0",
+   "exit_code": 0,
+   "duration_s": 10.8,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE CANARY-7Q",
+   "hello_written": true,
+   "stderr_head": [
+    "Reading additional input from stdin..."
+   ],
+   "pass": true,
+   "run_at": "2026-11-27 17:34"
+  },
+  {
+   "name": "codex-luna-B",
+   "tool": "codex",
+   "model": "gpt-5.6-luna",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "codex-cli 0.171.0",
+   "exit_code": 0,
+   "duration_s": 7.2,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [
+    "Reading additional input from stdin..."
+   ],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": null,
+   "run_at": "2026-11-27 17:34"
+  },
+  {
+   "name": "codex-luna-C-AGENTS.md",
+   "tool": "codex",
+   "model": "gpt-5.6-luna",
+   "kind": "C",
+   "ctxfile": "AGENTS.md",
+   "cli_version": "codex-cli 0.171.0",
+   "exit_code": 0,
+   "duration_s": 7.9,
+   "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [
+    "Reading additional input from stdin..."
+   ],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ],
+   "run_at": "2026-11-27 17:34"
+  }
+ ]
+}

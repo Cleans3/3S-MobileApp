@@ -1,0 +1,266 @@
+{
+ "date": "2026-11-27 17:31",
+ "stub_config_hash_now": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+ "workdir": "/mnt/01DC198BE9192500/github/Schooldev/3S-study-work/canary-audit-rerun-2026-11-27",
+ "cli_versions": {
+  "claude": "2.1.332 (Claude Code)",
+  "codex": "codex-cli 0.171.0",
+  "agy": "1.5.18",
+  "opencode": "1.18.33"
+ },
+ "runs": [
+  {
+   "name": "agy-A",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "1.5.18",
+   "exit_code": 1,
+   "duration_s": 60.7,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "",
+   "hello_written": false,
+   "stderr_head": [
+    "Authentication required. Please visit the URL to log in:",
+    "  https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=1071006060591-tmhssin2h21lcre235vtolojh4g403ep.apps.googleusercontent.com&code_challenge=j9Zyp1Slv3QDMgXagXMnCKRQFZGX8W-QsmYuHKNEfm4&code_challenge_method=S256&prompt=consent&redirect_uri=https%3A%2F%2Fantigravity.google%2Foauth-callback&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcclog+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fexperimentsandconfigs+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faicode+openid&state=Jfs9uGBdVUJoSQUyNeJ-yQ",
+    "",
+    "Waiting for authentication (timeout 60s)...",
+    "Or, paste the authorization code here and press Enter:"
+   ],
+   "pass": false
+  },
+  {
+   "name": "agy-B",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "1.5.18",
+   "exit_code": 1,
+   "duration_s": 60.7,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "",
+   "hello_written": false,
+   "stderr_head": [
+    "Authentication required. Please visit the URL to log in:",
+    "  https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=1071006060591-tmhssin2h21lcre235vtolojh4g403ep.apps.googleusercontent.com&code_challenge=vWoxW22YhXVcVLbEoVabk8Dt_3Oi-mfFkqmIrhVHjN4&code_challenge_method=S256&prompt=consent&redirect_uri=https%3A%2F%2Fantigravity.google%2Foauth-callback&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcclog+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fexperimentsandconfigs+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faicode+openid&state=B1sMMkQXsn-ykTWbPfQsvQ",
+    "",
+    "Waiting for authentication (timeout 60s)...",
+    "Or, paste the authorization code here and press Enter:"
+   ],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": null
+  },
+  {
+   "name": "agy-C-AGENTS.md",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "C",
+   "ctxfile": "AGENTS.md",
+   "cli_version": "1.5.18",
+   "exit_code": 1,
+   "duration_s": 60.7,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "",
+   "hello_written": false,
+   "stderr_head": [
+    "Authentication required. Please visit the URL to log in:",
+    "  https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=1071006060591-tmhssin2h21lcre235vtolojh4g403ep.apps.googleusercontent.com&code_challenge=gr2PdE0EhAI8T--XwqtnusunrefZ-WHgeok3hzGntjQ&code_challenge_method=S256&prompt=consent&redirect_uri=https%3A%2F%2Fantigravity.google%2Foauth-callback&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcclog+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fexperimentsandconfigs+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faicode+openid&state=sVw97ZW6bW2-n_syqhbmJA",
+    "",
+    "Waiting for authentication (timeout 60s)...",
+    "Or, paste the authorization code here and press Enter:"
+   ],
+   "pass": false,
+   "hello_tail": null
+  },
+  {
+   "name": "agy-C-GEMINI.md",
+   "tool": "agy",
+   "model": "gemini-3.8-flash-medium",
+   "kind": "C",
+   "ctxfile": "GEMINI.md",
+   "cli_version": "1.5.18",
+   "exit_code": 1,
+   "duration_s": 60.6,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "",
+   "hello_written": false,
+   "stderr_head": [
+    "Authentication required. Please visit the URL to log in:",
+    "  https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=1071006060591-tmhssin2h21lcre235vtolojh4g403ep.apps.googleusercontent.com&code_challenge=58S5H457TaBWtw2uUsycXW2BmhAviH-L3EzFALb-oZw&code_challenge_method=S256&prompt=consent&redirect_uri=https%3A%2F%2Fantigravity.google%2Foauth-callback&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcclog+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fexperimentsandconfigs+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faicode+openid&state=P_O2j4_lZQHEb7wMlYPbVw",
+    "",
+    "Waiting for authentication (timeout 60s)...",
+    "Or, paste the authorization code here and press Enter:"
+   ],
+   "pass": false,
+   "hello_tail": null
+  },
+  {
+   "name": "claude-A",
+   "tool": "claude",
+   "model": "haiku",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "2.1.332 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 4.9,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE\n\nCANARY-7Q",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true
+  },
+  {
+   "name": "claude-B",
+   "tool": "claude",
+   "model": "haiku",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "2.1.332 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 4.8,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": [
+    "compact-pilot",
+    "model-gate",
+    "usage-meter",
+    "cc-plugin-sec-default",
+    "cc-plugin-agents-md",
+    "cc-plugin-telemetry",
+    "cc-plugin-privacy",
+    "cc-plugin-plugin-authoring"
+   ]
+  },
+  {
+   "name": "claude-C-CLAUDE.md",
+   "tool": "claude",
+   "model": "haiku",
+   "kind": "C",
+   "ctxfile": "CLAUDE.md",
+   "cli_version": "2.1.332 (Claude Code)",
+   "exit_code": 0,
+   "duration_s": 5.7,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ]
+  },
+  {
+   "name": "codex-A",
+   "tool": "codex",
+   "model": "gpt-5.6-luna",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "codex-cli 0.171.0",
+   "exit_code": 0,
+   "duration_s": 13.7,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE CANARY-7Q",
+   "hello_written": true,
+   "stderr_head": [
+    "Reading additional input from stdin..."
+   ],
+   "pass": true
+  },
+  {
+   "name": "codex-B",
+   "tool": "codex",
+   "model": "gpt-5.6-luna",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "codex-cli 0.171.0",
+   "exit_code": 0,
+   "duration_s": 8.8,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [
+    "Reading additional input from stdin..."
+   ],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": null
+  },
+  {
+   "name": "codex-C-AGENTS.md",
+   "tool": "codex",
+   "model": "gpt-5.6-luna",
+   "kind": "C",
+   "ctxfile": "AGENTS.md",
+   "cli_version": "codex-cli 0.171.0",
+   "exit_code": 0,
+   "duration_s": 12.6,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [
+    "Reading additional input from stdin..."
+   ],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ]
+  },
+  {
+   "name": "opencode-A",
+   "tool": "opencode",
+   "model": "opencode/big-pickle",
+   "kind": "A",
+   "ctxfile": null,
+   "cli_version": "1.18.33",
+   "exit_code": 0,
+   "duration_s": 11.1,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE CANARY-7Q",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true
+  },
+  {
+   "name": "opencode-B",
+   "tool": "opencode",
+   "model": "opencode/big-pickle",
+   "kind": "B",
+   "ctxfile": null,
+   "cli_version": "1.18.33",
+   "exit_code": 0,
+   "duration_s": 9.4,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "leak_markers": [],
+   "pass": true,
+   "plugins_loaded": null
+  },
+  {
+   "name": "opencode-C-AGENTS.md",
+   "tool": "opencode",
+   "model": "opencode/big-pickle",
+   "kind": "C",
+   "ctxfile": "AGENTS.md",
+   "cli_version": "1.18.33",
+   "exit_code": 0,
+   "duration_s": 16.5,
+   "harness_config_hash": "0b805af84ebaf12194c880898703c5cc1b323901979d787788c240c82b8420aa",
+   "final_text": "DONE",
+   "hello_written": true,
+   "stderr_head": [],
+   "pass": true,
+   "hello_tail": [
+    "// CANARY-CTX"
+   ]
+  }
+ ]
+}

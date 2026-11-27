@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLAYBOOK — the AI-slop study, from protocol to talk</title><style>
+:root{--ink:#1d1d1f;--mute:#5b5b60;--rule:#d9d6cf;--paper:#fbfaf7;--accent:#7a2e1f;--tbl:#f2efe8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:1.5rem}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.68 "Source Serif 4","Noto Serif","Georgia",serif;display:grid;grid-template-columns:300px minmax(0,1fr)}
+main{max-width:860px;padding:3rem 3.5rem 6rem;margin:0 auto;width:100%}
+.toc{position:sticky;top:0;height:100vh;overflow:auto;padding:2rem 1.2rem 2rem 1.6rem;border-right:1px solid var(--rule);font:13.5px/1.45 "Inter","Noto Sans",system-ui,sans-serif;background:#f5f3ee}
+.tochead{font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:11.5px;color:var(--mute);margin-bottom:.8rem}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc li{margin:.15rem 0}.toc li.l2{margin-top:.7rem;font-weight:600}.toc li.l3{padding-left:.9rem}
+.toc a{color:var(--ink);text-decoration:none}.toc a:hover{color:var(--accent)}
+header.paper{border-bottom:2px solid var(--ink);padding-bottom:1.6rem;margin-bottom:2rem}
+.kicker{font:600 12px/1.4 "Inter","Noto Sans",system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:2.05rem;line-height:1.22;margin:.6rem 0 .8rem;font-weight:700}
+.subtitle{font-style:italic;color:var(--mute);margin:.2rem 0 .8rem;font-size:1.05rem}
+.scope,.meta{margin:.2rem 0;color:var(--mute);font-size:.95rem}
+.subtitle,.scope,.meta,blockquote p,td p{text-align:left}
+h2{font-size:1.5rem;margin:3.2rem 0 1rem;padding-top:1rem;border-top:1px solid var(--rule)}
+h3{font-size:1.18rem;margin:2.2rem 0 .6rem}
+h4{font-size:1.02rem;margin:1.6rem 0 .4rem;font-style:italic}
+h2#tom-tat{border:0;font-size:1.05rem;text-transform:uppercase;letter-spacing:.1em;font-family:"Inter","Noto Sans",system-ui,sans-serif}
+h2#tom-tat + p, h2#tom-tat + p + p{background:#f3efe6;margin:0;padding:.9rem 1.2rem;border-left:3px solid var(--accent)}
+h2#tom-tat + p + p{padding-top:0}
+p{margin:.75rem 0;text-align:justify;hyphens:auto}
+a{color:var(--accent)}a.cite{text-decoration:none;font-size:.92em}a.cite:hover{text-decoration:underline}
+blockquote{margin:1.2rem 0;padding:.6rem 1.1rem;border-left:3px solid var(--rule);background:#f4f2ec;color:#38383c;font-size:.93rem}
+code{font:.84em/1.4 "JetBrains Mono","DejaVu Sans Mono",monospace;background:#efece4;padding:.08em .3em;border-radius:3px}
+pre{background:#f0ede5;padding:1rem;overflow:auto;border-radius:4px}pre code{background:none;padding:0}
+hr{border:0;border-top:1px solid var(--rule);margin:2rem 0}
+.tablewrap{overflow-x:auto;margin:.4rem 0 1.6rem}
+table{border-collapse:collapse;width:100%;font:13.5px/1.4 "Inter","Noto Sans",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+thead th{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);text-align:left;padding:.45rem .55rem;font-weight:600;background:var(--tbl)}
+td{padding:.38rem .55rem;border-bottom:1px solid var(--rule);vertical-align:top}
+tbody tr:last-child td{border-bottom:2px solid var(--ink)}
+p.tcap{font:13.5px/1.45 "Inter","Noto Sans",system-ui,sans-serif;margin:1.8rem 0 .3rem;text-align:left;color:#2b2b2f}
+figure{margin:2rem 0;padding:0}
+.svgwrap{background:#fff;border:1px solid var(--rule);padding:.8rem;border-radius:4px;overflow-x:auto}
+.svgwrap svg{max-width:100%;height:auto;display:block;margin:0 auto}
+figcaption{font:13.5px/1.45 "Inter","Noto Sans",system-ui,sans-serif;margin-top:.55rem;color:#2b2b2f}
+.refkey{font-weight:600;scroll-margin-top:2rem}
+:target{background:#fff3c4}
+ul,ol{padding-left:1.4rem}li{margin:.25rem 0}
+@media (max-width:1050px){body{display:block}.toc{display:none}main{padding:1.6rem 1.2rem 4rem}}
+@media print{body{display:block;background:#fff;font-size:11pt}.toc{display:none}main{max-width:none;padding:0}h2{break-before:page}figure,table{break-inside:avoid}a{color:inherit}}
+
+table{border-collapse:collapse;width:100%;font-size:14.5px;margin:1rem 0;display:block;overflow-x:auto}
+th,td{border:1px solid var(--rule);padding:.35rem .55rem;vertical-align:top;text-align:left}
+th{background:var(--tbl)}
+code{font:13.5px/1.4 ui-monospace,"JetBrains Mono",monospace;background:var(--tbl);padding:.05rem .25rem;border-radius:3px}
+pre{background:var(--tbl);padding:.8rem 1rem;overflow-x:auto;border-radius:4px}pre code{background:none;padding:0}
+main{max-width:1100px}
+@media (max-width:900px){body{display:block}.toc{position:static;height:auto;border-right:0;border-bottom:1px solid var(--rule)}}
+</style></head><body>
+<nav class="toc"><div class="tochead">Contents</div><ol><li class="l2"><a href="#1-the-story-in-one-paragraph">1. The story in one paragraph</a></li><li class="l2"><a href="#2-questions-hypotheses-verdicts">2. Questions, hypotheses, verdicts</a></li><li class="l2"><a href="#3-rules-that-make-the-numbers-trustworthy">3. Rules that make the numbers trustworthy</a></li><li class="l2"><a href="#4-data-pipeline-where-a-number-travels">4. Data pipeline — where a number travels</a></li><li class="l2"><a href="#5-the-article-chapter-by-chapter">5. The article, chapter by chapter</a></li><li class="l2"><a href="#6-the-talk">6. The talk</a></li><li class="l2"><a href="#6b-the-plain-language-report">6b. The plain-language report</a></li><li class="l2"><a href="#7-proof-of-every-number-in-the-deck">7. Proof of every number in the deck</a></li><li class="l2"><a href="#8-language-vietnamese">8. Language (Vietnamese)</a></li><li class="l2"><a href="#9-group-material-how-it-fits">9. Group material — how it fits</a></li><li class="l2"><a href="#10-checklists">10. Checklists</a></li></ol></nav>
+<main><h1 id="playbook-the-ai-slop-study-from-protocol-to-talk">PLAYBOOK — the AI-slop study, from protocol to talk</h1>
+<p>How the study's article is built, what each part claims, where every number comes from, and how to check it. Read this before you write, cut, translate or present any part of the study. Folder: <code>optimization/study/</code>. The article itself is <a href="ARTICLE.html">ARTICLE.md</a> (Vietnamese); the talk is <a href="presentation.html">presentation.html</a>.</p>
+<h2 id="1-the-story-in-one-paragraph">1. The story in one paragraph</h2>
+<p>We let AI coding assistants write first drafts of an Android app (ShelfTap, an NFC library app), then measured what those drafts cost in UI performance, memory and security, and which costs the known optimisation techniques do not remove. Five experiments: <strong>E1</strong> a corpus of first drafts scanned by a validated detector and compared with human-written apps; <strong>E2</strong> paired A/B benchmarks (A = code the assistants actually wrote, B = the tuned version) in the <code>android/optlab</code> app; <strong>E3</strong> independent static tools (MobSF, jadx) with manual triage; <strong>E4</strong> assistants asked to fix induced errors, judged by a frozen rubric; <strong>E5</strong> an assistant as the optimiser on an app with known problems. Five pre-registered confirmatory tests (C1–C5, Holm-corrected) carry the conclusions; everything else is descriptive. The talk ends on the rule the whole study follows: <strong>&quot;Không để trợ lý tự xác nhận mã của chính nó.&quot;</strong></p>
+<h2 id="2-questions-hypotheses-verdicts">2. Questions, hypotheses, verdicts</h2>
+<p>Research questions RQ1–RQ6 and hypotheses H1–H6, G1–G3, B1 are defined in <a href="00-protocol.md">00-protocol.md</a> §2–§3 and restated in ARTICLE.md §1.4. Only the five below are confirmatory.</p>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Hypothesis</th>
+<th>Measure</th>
+<th>Verdict</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C1</td>
+<td>G1: guardrail lowers the share of runs with ≥1 security (S) finding</td>
+<td>E1 primary endpoint 1</td>
+<td>supported</td>
+<td>ARTICLE Table 5.6, 5.26, 5.27 · deck slide 9</td>
+</tr>
+<tr>
+<td>C2</td>
+<td>G2: guardrail lowers the number of distinct rules per run</td>
+<td>E1 primary endpoint 2</td>
+<td>supported</td>
+<td>Table 5.6 · slide 9</td>
+</tr>
+<tr>
+<td>C3</td>
+<td>B1: assistants emit S findings at a higher density than humans</td>
+<td>S findings per 1000 Kotlin lines vs human apps before 30/11/2022</td>
+<td>supported</td>
+<td>Figure 5.9, Table 5.26 · slide 8</td>
+</tr>
+<tr>
+<td>C4</td>
+<td>H2: assistants fix errors by weakening security</td>
+<td>share of E4 trials scored <code>insecure-workaround</code> vs 0,15</td>
+<td><strong>not supported</strong></td>
+<td>Figure 5.16 · slide 11</td>
+</tr>
+<tr>
+<td>C5</td>
+<td>H3: decorative effects cost frame time</td>
+<td>P90 CPU frame time, P08 A vs B</td>
+<td>supported</td>
+<td>Table 5.19 · slide 6</td>
+</tr>
+</tbody>
+</table>
+<p>Descriptive results that the talk also uses: H4 (non-existent Gradle coordinates) rejected after we fixed our own lookup bug; H5 (accessibility/state debt) rejected; E3 tool precision; E5 optimiser outcomes. Full list: ARTICLE.md Table 5.26 (line 1197) and Table 5.27 (line 1218).</p>
+<h2 id="3-rules-that-make-the-numbers-trustworthy">3. Rules that make the numbers trustworthy</h2>
+<ol>
+<li><strong>No number without a record.</strong> Every number in prose comes from a results CSV, a REPORT.md, the ShelfTap measurement log, or <a href="references.md">references.md</a>. The only computed values in the article are the Holm-adjusted p-values (Table 5.27).</li>
+<li><strong>Wording.</strong> &quot;Trợ lý phát ra X với tỷ lệ r so với tỷ lệ nền b của người&quot;, never &quot;AI gây ra X&quot;. Causes are <em>hypothesised</em> unless an experiment arm tests them.</li>
+<li><strong>Every result says what kind it is:</strong> <em>xác nhận</em> (one of C1–C5) or <em>mô tả</em> (estimate with a confidence interval, no interpreted p-value). Negative and inconclusive results get the same space as positive ones.</li>
+<li><strong>Emulator numbers are relative.</strong> E2 runs on the <code>lowend34</code> emulator (software GPU); read A vs B, not absolute milliseconds. Real-device numbers come only from the ShelfTap Xiaomi runs (<code>optimization/log/opt-ui-ux.md</code>).</li>
+<li><strong>An assistant never certifies its own fix.</strong> Detectors, tests and tools judge; this applies to how the study was run too.</li>
+<li><strong>Retractions stay visible.</strong> The first Baseline Profile table (measured on a debug build) and the H4 lookup bug are reported as corrections, not deleted.</li>
+</ol>
+<h2 id="4-data-pipeline-where-a-number-travels">4. Data pipeline — where a number travels</h2>
+<pre><code>00-protocol.md (frozen, sha256)          guardrail/ANDROID-GUARDRAIL.md (frozen)
+        │
+        ▼
+runs ──► e*/results/*.csv ──► e*/REPORT.md ──► ARTICLE.md (tables, prose) ──► figures/out/F01..F21 (.svg + .data.csv)
+                                         │                               └──► slides-outline.md, presentation-script.md
+optimization/log/opt-ui-ux.md ───────────┴──────────────────────────────────► presentation.html
+                                                                                   │
+                                                          proof/deck-proof.csv ◄───┘ (one row per number, checked)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Experiment</th>
+<th>Primary record</th>
+<th>Report</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E1 corpus, detector, human control, guardrail</td>
+<td><code>e1-corpus/results/</code> (main analysis <code>results/analysis/primary-v1/</code>, sensitivity <code>sensitivity-v2/</code>, dependency fix <code>*-deps-corrected/</code>, <code>results/depfix/</code>)</td>
+<td><a href="e1-corpus/REPORT.md">e1-corpus/REPORT.md</a></td>
+</tr>
+<tr>
+<td>E2 A/B benchmarks</td>
+<td><code>e2-bench/results/summary.csv</code>, <code>raw.csv</code>, <code>c5_confirmatory.csv</code>, <code>build_facts.csv</code>, <code>p13_equivalence.csv</code></td>
+<td><a href="e2-bench/REPORT.md">e2-bench/REPORT.md</a></td>
+</tr>
+<tr>
+<td>E3 static tools</td>
+<td><code>e3-security/results/findings.csv</code> (103 triaged findings)</td>
+<td><a href="e3-security/REPORT.md">e3-security/REPORT.md</a></td>
+</tr>
+<tr>
+<td>E4 fix under pressure</td>
+<td><code>e4-pressure/results/</code>, rubric <a href="e4-pressure/RUBRIC.md">e4-pressure/RUBRIC.md</a></td>
+<td><a href="e4-pressure/REPORT.md">e4-pressure/REPORT.md</a></td>
+</tr>
+<tr>
+<td>E5 assistant as optimiser</td>
+<td><code>e5-optimizer/results/</code></td>
+<td><a href="e5-optimizer/REPORT.md">e5-optimizer/REPORT.md</a></td>
+</tr>
+<tr>
+<td>ShelfTap on a real phone</td>
+<td><code>optimization/log/opt-ui-ux.md</code>, <code>optimization/ui-ux-metrics.md</code></td>
+<td>same files</td>
+</tr>
+<tr>
+<td>External figures</td>
+<td><a href="references.md">references.md</a> (how each source was verified)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Heavy state (generated apps, APKs, videos, traces) lives outside the repo; each REPORT names its path.</p>
+<h2 id="5-the-article-chapter-by-chapter">5. The article, chapter by chapter</h2>
+<p>Line numbers are ARTICLE.md lines at the time of writing; search the heading if they drift.</p>
+<table>
+<thead>
+<tr>
+<th>Chapter (line)</th>
+<th>Job</th>
+<th>Holds</th>
+<th>Main sources</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tóm tắt (11)</td>
+<td>the whole result in one page</td>
+<td>headline numbers of C1–C5</td>
+<td>Tables 5.26–5.27</td>
+</tr>
+<tr>
+<td>1 Tổng quan (21)</td>
+<td>context, related work and the gap, the &quot;AI slop&quot; definition, RQs and hypotheses (§1.4), contributions and what we do <strong>not</strong> claim (§1.5), relation to the group outline (§1.6)</td>
+<td>RQ and hypothesis tables</td>
+<td>00-protocol.md §1–§3, 01-related-work.md</td>
+</tr>
+<tr>
+<td>2 Cơ sở lý thuyết (109)</td>
+<td>the <strong>baseline layer</strong>: what the known techniques do (Compose lists, images, threading, R8, Baseline Profile, Keystore, TLS, logging, accessibility, staleness)</td>
+<td>mechanisms, official guidance</td>
+<td>references.md</td>
+</tr>
+<tr>
+<td>3 Phân tích vấn đề (244)</td>
+<td>the catalogue as problem → cause → fix: P01–P13, S01–S12 + X01, U01–U06, D01–D02; §3.6 separates AI-caused from spec-caused and integration-caused; §3.7 maps the group outline's catalogue</td>
+<td>catalogue tables</td>
+<td>02-taxonomy.md</td>
+</tr>
+<tr>
+<td>4 Phương pháp (364)</td>
+<td>pre-registration, ShelfTap briefs B1–B3 and prompt styles, E1–E5 designs, statistics (§4.8), independence and number checks (§4.9), threats (§4.10), amendments (§4.11)</td>
+<td>Figures 4.1–4.2</td>
+<td>00-protocol.md (incl. §15 amendments)</td>
+</tr>
+<tr>
+<td>5 Thực nghiệm (557)</td>
+<td>results: E1 §5.2 (Tables 5.1–5.7, Figures 5.1–5.10), E2 §5.3 (Tables 5.9–5.20, Figures 5.11–5.14), E3 §5.4 (Tables 5.21–5.23, Figure 5.15), E4 §5.5 (Figures 5.16–5.17), E5 §5.6 (Tables 5.24–5.25, Figure 5.18), verdicts §5.7 (Tables 5.26–5.27, Figure 5.19), practical limits §5.8</td>
+<td>27 tables, 19 figures</td>
+<td>e1…e5 results + REPORTs</td>
+</tr>
+<tr>
+<td>6 Kết luận (1252)</td>
+<td>what AI coding is good for, limits of letting AI optimise, the reviewer's role, a workflow proposal, future work</td>
+<td>recommendations</td>
+<td>Chapter 5 only (no new numbers)</td>
+</tr>
+<tr>
+<td>Tài liệu tham khảo (1292)</td>
+<td>every cited source</td>
+<td>—</td>
+<td>references.md</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Figures:</strong> every figure caption names its data file <code>figures/out/Fxx-*.data.csv</code>; <code>figures/make_figures.py</code> (stdlib) rebuilds all of them and <code>figures/out/manifest.json</code>. Plan and deviations: <a href="figures/PLAN.md">figures/PLAN.md</a>.</p>
+<h2 id="6-the-talk">6. The talk</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What</th>
+<th>Length</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="presentation.html">presentation.html</a></td>
+<td>the deck: 18 slides + 4 backup (D1 Holm, D2 full E2 table, D3 E4 detail, D4 rule prevalence), Vietnamese, offline; needs the <a href="evidence/">evidence/</a> folder next to it for videos and screenshots</td>
+<td>~14 min</td>
+</tr>
+<tr>
+<td><a href="presentation-script.md">presentation-script.md</a></td>
+<td>speaker script with timing and Q&amp;A</td>
+<td>10 min version</td>
+</tr>
+<tr>
+<td><a href="slides-outline.md">slides-outline.md</a></td>
+<td>the 10-minute outline from the group plan</td>
+<td>10 min</td>
+</tr>
+</tbody>
+</table>
+<p>Design rule for the main slides (audience is not technical): one plain sentence as the headline, one picture of real evidence (A/B video, verbatim code, tool output, screenshot) and at most one or two numbers. Statistics (p, Cliff's delta, intervals, n) go to the speaker notes and backup slides D1–D4. Every evidence item shows its source path on the slide; each one is documented in <a href="evidence/EVIDENCE-code.md">evidence/EVIDENCE-code.md</a> and <a href="evidence/EVIDENCE-agent.md">evidence/EVIDENCE-agent.md</a>.</p>
+<p>Deck order, the evidence each slide shows, and the article section it comes from:</p>
+<table>
+<thead>
+<tr>
+<th>Slide</th>
+<th>Says</th>
+<th>Evidence on the slide</th>
+<th>Article</th>
+<th>Kind</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1–3</td>
+<td>title, problem, method E1–E5 + pre-registration</td>
+<td>—</td>
+<td>§1, §4</td>
+<td>—</td>
+</tr>
+<tr>
+<td>4</td>
+<td>E1: 42/100 drafts build; 60/66 unguarded drafts have a security finding (31/33 with the short prompt)</td>
+<td>code-01: token saved in plain SharedPreferences</td>
+<td>§5.2</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>5</td>
+<td>E2 P01+P09 long list (90% → 1,3% slow frames), P06 images</td>
+<td>video P09c A/B</td>
+<td>§5.3 Tables 5.14–5.15</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>6</td>
+<td>C5 decorative card cost (+28%)</td>
+<td>video P08c A/B</td>
+<td>Table 5.19</td>
+<td>xác nhận</td>
+</tr>
+<tr>
+<td>7</td>
+<td>E2: which optimisations a user feels (P13, R8, Baseline Profile, Compose nulls)</td>
+<td>video P13c A/B</td>
+<td>Tables 5.9, 5.10, 5.16–5.18</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>8</td>
+<td>C3 AI vs human density (2,3×)</td>
+<td>—</td>
+<td>§5.2, Figure 5.9</td>
+<td>xác nhận</td>
+</tr>
+<tr>
+<td>9</td>
+<td>C1/C2 guardrail, buildable subset</td>
+<td>code-02 (same brief with guardrail: Keystore AES-GCM), code-07 rule 4</td>
+<td>Tables 5.6–5.7, Figure 5.8</td>
+<td>xác nhận</td>
+</tr>
+<tr>
+<td>10</td>
+<td>E3: MobSF wrong 7 in 10, misses real issues</td>
+<td>code-05 (exported false positive + triage row), code-06 (Level.BODY logging MobSF missed)</td>
+<td>§5.4, Figure 5.10</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>11</td>
+<td>C4 fix under pressure (17/148)</td>
+<td>agent-01 (error + diff removing setUserAuthenticationRequired), agent-02 (safe fix)</td>
+<td>§5.5</td>
+<td>xác nhận (not supported)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>E5: claims &quot;fixed&quot; while the tree does not compile</td>
+<td>agent-06 (claim + runs.csv compiles=0), agent-04, agent-05</td>
+<td>§5.6</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>13–15</td>
+<td>ShelfTap on a Xiaomi phone: debug vs measure build, home scroll fix, UI scorecard</td>
+<td>cover URL 10.0.2.2; screenshots A/B at font scale 2.0</td>
+<td>opt-ui-ux.md (not in ARTICLE)</td>
+<td>mô tả</td>
+</tr>
+<tr>
+<td>16</td>
+<td>verdict board, plain words</td>
+<td>—</td>
+<td>Tables 5.26–5.27</td>
+<td>—</td>
+</tr>
+<tr>
+<td>17–18</td>
+<td>limitations, three habits, closing line</td>
+<td>—</td>
+<td>§5.8, §6</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Keys: → / Space next, ← back, P presenter window, O overview, N notes, T light/dark, F fullscreen, B blackout, digits + Enter jump, ? help. Print to PDF renders every slide in its final state. To show it over the tailnet: <code>python3 -m http.server &lt;port&gt; --bind &lt;tailscale-ip&gt; --directory optimization/study</code>.</p>
+<h2 id="6b-the-plain-language-report">6b. The plain-language report</h2>
+<p><a href="report/index.html">report/index.html</a> tells the study to a non-technical reader in the order the user asked for on 2026-11-27: a relatable lead-in (the &quot;vibe coding&quot; hype and the social-media one-shot prompt, with cited sources [Karpathy2025], [Collins2025], [SOSurvey2025], [Veracode2025], [MerriamWebster2025], [Ouyang2023], then our own E6 grid of four tools answering the same prompt), the problem kept short (three numbers and one code excerpt), how we tested (E1 to E6 plus the isolation audit), and the bulk on solutions along seven links of the vibe-code chain:</p>
+<table>
+<thead>
+<tr>
+<th>Link</th>
+<th>Evidence in the report</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 Choose tool and model</td>
+<td>E1 build rate per bundle; E6 haiku 1/9 vs sonnet 7/9 builds, same launcher</td>
+<td>e1 REPORT §1, e6 REPORT §5</td>
+</tr>
+<tr>
+<td>2 Write the prompt</td>
+<td>E1 S-class share by prompt style (31/33, 29/33, 17/34) and build rate by style (20/33, 12/33, 10/34); E6 arm S janky median 19,6% vs 99%</td>
+<td>e1 REPORT:127-129 and §1, e6 REPORT §4</td>
+</tr>
+<tr>
+<td>3 Rules file</td>
+<td>code-01 vs code-02; C1/C2; builders-only caveat; E6 arm R and the Baseline Profile rule that broke codex</td>
+<td>e1 REPORT, e6 REPORT §4</td>
+</tr>
+<tr>
+<td>4 When it errors</td>
+<td>E4 diff removing setUserAuthenticationRequired, 17/148</td>
+<td>agent-01, agent-02</td>
+</tr>
+<tr>
+<td>5 Verify before trusting</td>
+<td>E5 claim vs compile error; MobSF false positive vs missed Level.BODY</td>
+<td>agent-06, agent-04, code-05, code-06</td>
+</tr>
+<tr>
+<td>6 Engineering fixes</td>
+<td>P09c and P08c A/B videos, table of measured effects</td>
+<td>e2 REPORT</td>
+</tr>
+<tr>
+<td>7 Measure right</td>
+<td>ShelfTap debug vs release, cover URL bug, font-scale screenshots, E6 font 2.0 grid</td>
+<td>opt-ui-ux.md, e6 img/grid-O-font2.jpg</td>
+</tr>
+</tbody>
+</table>
+<p>Each link ends with two boxes: what a vibe coder does, what an engineer does. Design: one column, plain sans, two chart colours (orange = AI-written, blue = fixed; validated with the dataviz palette checker), every figure with a source line. E6 numbers are descriptive (exploratory, n = 3 per cell, software-GPU emulator) and the report says so.</p>
+<h2 id="7-proof-of-every-number-in-the-deck">7. Proof of every number in the deck</h2>
+<ul>
+<li><a href="proof/deck-proof.csv">proof/deck-proof.csv</a>: one row per distinct number per slide (visible text, speaker notes, chart data attributes, bar lengths). Columns: <code>slide,value,kind,claim,source,line,quote,formula,note</code>.
+<ul>
+<li><code>direct</code>: the number is on <code>source:line</code>, inside the verbatim <code>quote</code>.</li>
+<li><code>cited</code>: same, from an external source recorded in references.md.</li>
+<li><code>derived</code>: <code>formula</code> recomputes it from proven inputs (percent changes, bar lengths).</li>
+<li><code>label</code>: not data (slide counts, talk minutes, an address); <code>note</code> says what it is.</li>
+</ul>
+</li>
+<li><a href="proof/check_deck_proof.py">proof/check_deck_proof.py</a> (stdlib): reads the deck, lists every number, and fails unless each has a row whose quote is really on that line and contains the number (after rounding), and each formula reproduces the shown value.</li>
+</ul>
+<pre><code>python3 optimization/study/proof/check_deck_proof.py            # whole deck, exit 0 = all proven
+python3 optimization/study/proof/check_deck_proof.py --list 5   # numbers on slide 5 that need a row
+python3 optimization/study/proof/check_deck_proof.py --slide 5  # check one slide
+</code></pre>
+<ul>
+<li><a href="proof/ISSUES.md">proof/ISSUES.md</a>: numbers that did <strong>not</strong> match their source, what was changed, and why.</li>
+<li>Adding or changing a number on a slide = add or fix its row in the same change, then run the checker.</li>
+<li>Primary records first (results CSV, REPORT, measurement log). ARTICLE.md is a valid source only for values computed there (Holm p-values), and the row says so.</li>
+</ul>
+<h2 id="8-language-vietnamese">8. Language (Vietnamese)</h2>
+<p>Terms fixed for the whole study; use them in the article, the deck, the script and any group material.</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Use</th>
+<th>Avoid</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a book loan / borrowing record</td>
+<td><strong>lượt mượn</strong> (one borrowing), <strong>phiếu mượn</strong> (the slip)</td>
+<td>khoản vay (means a money loan)</td>
+</tr>
+<tr>
+<td>first draft from an assistant</td>
+<td>bản nháp đầu</td>
+<td>bản thảo AI</td>
+</tr>
+<tr>
+<td>AI coding assistant</td>
+<td>trợ lý (lập trình) AI</td>
+<td>&quot;AI&quot; alone as the subject of a causal verb</td>
+</tr>
+<tr>
+<td>confirmatory / descriptive result</td>
+<td>xác nhận / mô tả</td>
+<td>&quot;chứng minh&quot; for a descriptive estimate</td>
+</tr>
+<tr>
+<td>human-written app</td>
+<td>ứng dụng do người viết</td>
+<td>ứng dụng &quot;thật&quot;</td>
+</tr>
+</tbody>
+</table>
+<p><a href="proof/LANGUAGE-REVIEW.md">proof/LANGUAGE-REVIEW.md</a> holds the full language review of the deck and what was applied.</p>
+<h2 id="9-group-material-how-it-fits">9. Group material — how it fits</h2>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th>Status</th>
+<th>How to use it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Group outline <code>De_cuong_AI_Coding_UI_UX_Hieu_nang_Bao_mat_ban_mo_rong.docx</code> (Cuong)</td>
+<td>the plan the study implements; ARTICLE.md §1.6 and §3.7 map it</td>
+<td>source of the four original questions</td>
+</tr>
+<tr>
+<td><code>optimization/TieuLuan-ToiUu-Android.docx</code>, <code>optimization/Script-ThuyetTrinh.docx</code> (Huy, commit e4259e1)</td>
+<td>a technique-by-technique essay and a 25-minute script; numbers are the B (tuned) side of E2 plus the ShelfTap MobSF rows of E3 and the product's security design</td>
+<td>fits as the baseline layer (ARTICLE Chapter 2) and as product security; needs the A (before) numbers next to each B number, and must not present P03+P04, Baseline Profile or card effects as wins the A/B data does not show (see §2, slide 7, slide 6). Offline FTS search exists only in <code>android/optlab</code>, not in the member app</td>
+</tr>
+<tr>
+<td>Canva deck (group)</td>
+<td>not reviewed: Canva blocks automated browsers</td>
+<td>export to PDF into the repo to review</td>
+</tr>
+</tbody>
+</table>
+<h2 id="10-checklists">10. Checklists</h2>
+<p><strong>Before presenting</strong></p>
+<ul>
+<li>[ ] <code>python3 optimization/study/proof/check_deck_proof.py</code> exits 0.</li>
+<li>[ ] Deck opens offline on the presenting machine (fonts are embedded); presenter window (P) works there.</li>
+<li>[ ] Light theme on a projector; dark only for a dark room.</li>
+<li>[ ] Rehearse to ~14 min, or cut to the 10-minute outline (drop slides 7, 12, 15 and keep them as backup).</li>
+<li>[ ] Know the answers in presentation-script.md's Q&amp;A section, especially: emulator vs real phone, apples-to-oranges for C3, why C1 vanishes on buildable apps, why C4 is &quot;not supported&quot;.</li>
+</ul>
+<p><strong>Before submitting the article</strong></p>
+<ul>
+<li>[ ] Every number in ARTICLE.md still matches its CSV (orchestrator check, README.md &quot;Rules&quot;).</li>
+<li>[ ] <code>python3 optimization/study/figures/make_figures.py</code> rebuilds all figures without change.</li>
+<li>[ ] Literature searches re-run (README.md open item); two exploratory E2 runs settled.</li>
+<li>[ ] Protocol sha256 still matches 00-protocol.sha256.</li>
+</ul>
+</main></body></html>

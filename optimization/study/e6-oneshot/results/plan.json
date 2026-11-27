@@ -1,0 +1,326 @@
+{
+"seed": 20261127,
+"bundles": {
+"claude-haiku": [
+"claude",
+"haiku"
+],
+"codex-luna": [
+"codex",
+"gpt-5.6-luna"
+],
+"agy-g38flash": [
+"agy",
+"gemini-3.8-flash-medium"
+],
+"claude-sonnet": [
+"claude",
+"claude-sonnet-5-5"
+]
+},
+"arms": {
+"O": [
+"O.txt",
+false
+],
+"R": [
+"O.txt",
+true
+],
+"S": [
+"S.txt",
+false
+]
+},
+"reps": 3,
+"cells": [
+{
+"order": 1,
+"tier": 1,
+"bundle": "codex-luna",
+"arm": "O",
+"rep": 3,
+"run_id": "codex-luna-O-r3"
+},
+{
+"order": 2,
+"tier": 1,
+"bundle": "claude-sonnet",
+"arm": "O",
+"rep": 3,
+"run_id": "claude-sonnet-O-r3"
+},
+{
+"order": 3,
+"tier": 1,
+"bundle": "agy-g38flash",
+"arm": "O",
+"rep": 3,
+"run_id": "agy-g38flash-O-r3"
+},
+{
+"order": 4,
+"tier": 1,
+"bundle": "agy-g38flash",
+"arm": "O",
+"rep": 1,
+"run_id": "agy-g38flash-O-r1"
+},
+{
+"order": 5,
+"tier": 1,
+"bundle": "codex-luna",
+"arm": "O",
+"rep": 1,
+"run_id": "codex-luna-O-r1"
+},
+{
+"order": 6,
+"tier": 1,
+"bundle": "agy-g38flash",
+"arm": "O",
+"rep": 2,
+"run_id": "agy-g38flash-O-r2"
+},
+{
+"order": 7,
+"tier": 1,
+"bundle": "claude-haiku",
+"arm": "O",
+"rep": 2,
+"run_id": "claude-haiku-O-r2"
+},
+{
+"order": 8,
+"tier": 1,
+"bundle": "claude-haiku",
+"arm": "O",
+"rep": 3,
+"run_id": "claude-haiku-O-r3"
+},
+{
+"order": 9,
+"tier": 1,
+"bundle": "claude-sonnet",
+"arm": "O",
+"rep": 2,
+"run_id": "claude-sonnet-O-r2"
+},
+{
+"order": 10,
+"tier": 1,
+"bundle": "codex-luna",
+"arm": "O",
+"rep": 2,
+"run_id": "codex-luna-O-r2"
+},
+{
+"order": 11,
+"tier": 1,
+"bundle": "claude-sonnet",
+"arm": "O",
+"rep": 1,
+"run_id": "claude-sonnet-O-r1"
+},
+{
+"order": 12,
+"tier": 1,
+"bundle": "claude-haiku",
+"arm": "O",
+"rep": 1,
+"run_id": "claude-haiku-O-r1"
+},
+{
+"order": 13,
+"tier": 2,
+"bundle": "claude-haiku",
+"arm": "R",
+"rep": 3,
+"run_id": "claude-haiku-R-r3"
+},
+{
+"order": 14,
+"tier": 2,
+"bundle": "claude-haiku",
+"arm": "S",
+"rep": 1,
+"run_id": "claude-haiku-S-r1"
+},
+{
+"order": 15,
+"tier": 2,
+"bundle": "claude-sonnet",
+"arm": "R",
+"rep": 1,
+"run_id": "claude-sonnet-R-r1"
+},
+{
+"order": 16,
+"tier": 2,
+"bundle": "claude-sonnet",
+"arm": "R",
+"rep": 2,
+"run_id": "claude-sonnet-R-r2"
+},
+{
+"order": 17,
+"tier": 2,
+"bundle": "codex-luna",
+"arm": "S",
+"rep": 3,
+"run_id": "codex-luna-S-r3"
+},
+{
+"order": 18,
+"tier": 2,
+"bundle": "claude-sonnet",
+"arm": "S",
+"rep": 2,
+"run_id": "claude-sonnet-S-r2"
+},
+{
+"order": 19,
+"tier": 2,
+"bundle": "claude-sonnet",
+"arm": "R",
+"rep": 3,
+"run_id": "claude-sonnet-R-r3"
+},
+{
+"order": 20,
+"tier": 2,
+"bundle": "agy-g38flash",
+"arm": "R",
+"rep": 2,
+"run_id": "agy-g38flash-R-r2"
+},
+{
+"order": 21,
+"tier": 2,
+"bundle": "agy-g38flash",
+"arm": "S",
+"rep": 2,
+"run_id": "agy-g38flash-S-r2"
+},
+{
+"order": 22,
+"tier": 2,
+"bundle": "agy-g38flash",
+"arm": "R",
+"rep": 1,
+"run_id": "agy-g38flash-R-r1"
+},
+{
+"order": 23,
+"tier": 2,
+"bundle": "codex-luna",
+"arm": "S",
+"rep": 2,
+"run_id": "codex-luna-S-r2"
+},
+{
+"order": 24,
+"tier": 2,
+"bundle": "codex-luna",
+"arm": "S",
+"rep": 1,
+"run_id": "codex-luna-S-r1"
+},
+{
+"order": 25,
+"tier": 2,
+"bundle": "codex-luna",
+"arm": "R",
+"rep": 3,
+"run_id": "codex-luna-R-r3"
+},
+{
+"order": 26,
+"tier": 2,
+"bundle": "codex-luna",
+"arm": "R",
+"rep": 2,
+"run_id": "codex-luna-R-r2"
+},
+{
+"order": 27,
+"tier": 2,
+"bundle": "agy-g38flash",
+"arm": "S",
+"rep": 3,
+"run_id": "agy-g38flash-S-r3"
+},
+{
+"order": 28,
+"tier": 2,
+"bundle": "claude-haiku",
+"arm": "R",
+"rep": 1,
+"run_id": "claude-haiku-R-r1"
+},
+{
+"order": 29,
+"tier": 2,
+"bundle": "claude-haiku",
+"arm": "S",
+"rep": 2,
+"run_id": "claude-haiku-S-r2"
+},
+{
+"order": 30,
+"tier": 2,
+"bundle": "agy-g38flash",
+"arm": "S",
+"rep": 1,
+"run_id": "agy-g38flash-S-r1"
+},
+{
+"order": 31,
+"tier": 2,
+"bundle": "claude-sonnet",
+"arm": "S",
+"rep": 1,
+"run_id": "claude-sonnet-S-r1"
+},
+{
+"order": 32,
+"tier": 2,
+"bundle": "codex-luna",
+"arm": "R",
+"rep": 1,
+"run_id": "codex-luna-R-r1"
+},
+{
+"order": 33,
+"tier": 2,
+"bundle": "claude-sonnet",
+"arm": "S",
+"rep": 3,
+"run_id": "claude-sonnet-S-r3"
+},
+{
+"order": 34,
+"tier": 2,
+"bundle": "claude-haiku",
+"arm": "R",
+"rep": 2,
+"run_id": "claude-haiku-R-r2"
+},
+{
+"order": 35,
+"tier": 2,
+"bundle": "agy-g38flash",
+"arm": "R",
+"rep": 3,
+"run_id": "agy-g38flash-R-r3"
+},
+{
+"order": 36,
+"tier": 2,
+"bundle": "claude-haiku",
+"arm": "S",
+"rep": 3,
+"run_id": "claude-haiku-S-r3"
+}
+]
+}

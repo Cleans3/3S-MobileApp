@@ -1,0 +1,6 @@
+== P08 p08/BookCover.kt (src lines 238, port lines 237): -/+ 9 | pkg/import 9 | probe 0 | blank 0 | residual 0
+== P08 p08/BookCard.kt (src lines 122, port lines 119): -/+ 5 | pkg/import 5 | probe 0 | blank 0 | residual 0
+== P06 p06/CoverBitmap.kt (src lines 41, port lines 51): -/+ 66 | pkg/import 32 | probe 4 | blank 2 | residual 28
+== P01 p01/HistoryList.kt (src lines 124, port lines 66): -/+ 102 | pkg/import 20 | probe 1 | blank 4 | residual 77
+== P09/P03P04 p09/BookDetailSheet.kt (src lines 346, port lines 324): -/+ 30 | pkg/import 20 | probe 1 | blank 0 | residual 9
+== P13 p13/TitleSearch.kt (src lines 31, port lines 38): -/+ 55 | pkg/import 16 | probe 0 | blank 1 | residual 38

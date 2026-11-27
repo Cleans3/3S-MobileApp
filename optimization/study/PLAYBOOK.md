@@ -86,7 +86,7 @@ Deck order, the evidence each slide shows, and the article section it comes from
 | Slide | Says | Evidence on the slide | Article | Kind |
 |---|---|---|---|---|
 | 1–3 | title, problem, method E1–E5 + pre-registration | — | §1, §4 | — |
-| 4 | E1: 42/100 drafts build; 31/33 unguarded drafts have a security finding | code-01: token saved in plain SharedPreferences | §5.2 | mô tả |
+| 4 | E1: 42/100 drafts build; 60/66 unguarded drafts have a security finding (31/33 with the short prompt) | code-01: token saved in plain SharedPreferences | §5.2 | mô tả |
 | 5 | E2 P01+P09 long list (90% → 1,3% slow frames), P06 images | video P09c A/B | §5.3 Tables 5.14–5.15 | mô tả |
 | 6 | C5 decorative card cost (+28%) | video P08c A/B | Table 5.19 | xác nhận |
 | 7 | E2: which optimisations a user feels (P13, R8, Baseline Profile, Compose nulls) | video P13c A/B | Tables 5.9, 5.10, 5.16–5.18 | mô tả |
@@ -100,6 +100,23 @@ Deck order, the evidence each slide shows, and the article section it comes from
 | 17–18 | limitations, three habits, closing line | — | §5.8, §6 | — |
 
 Keys: → / Space next, ← back, P presenter window, O overview, N notes, T light/dark, F fullscreen, B blackout, digits + Enter jump, ? help. Print to PDF renders every slide in its final state. To show it over the tailnet: `python3 -m http.server <port> --bind <tailscale-ip> --directory optimization/study`.
+
+
+## 6b. The plain-language report
+
+[report/index.html](report/index.html) tells the study to a non-technical reader in the order the user asked for on 2026-11-27: a relatable lead-in (the "vibe coding" hype and the social-media one-shot prompt, with cited sources [Karpathy2025], [Collins2025], [SOSurvey2025], [Veracode2025], [MerriamWebster2025], [Ouyang2023], then our own E6 grid of four tools answering the same prompt), the problem kept short (three numbers and one code excerpt), how we tested (E1 to E6 plus the isolation audit), and the bulk on solutions along seven links of the vibe-code chain:
+
+| Link | Evidence in the report | Source |
+|---|---|---|
+| 1 Choose tool and model | E1 build rate per bundle; E6 haiku 1/9 vs sonnet 7/9 builds, same launcher | e1 REPORT §1, e6 REPORT §5 |
+| 2 Write the prompt | E1 S-class share by prompt style (31/33, 29/33, 17/34) and build rate by style (20/33, 12/33, 10/34); E6 arm S janky median 19,6% vs 99% | e1 REPORT:127-129 and §1, e6 REPORT §4 |
+| 3 Rules file | code-01 vs code-02; C1/C2; builders-only caveat; E6 arm R and the Baseline Profile rule that broke codex | e1 REPORT, e6 REPORT §4 |
+| 4 When it errors | E4 diff removing setUserAuthenticationRequired, 17/148 | agent-01, agent-02 |
+| 5 Verify before trusting | E5 claim vs compile error; MobSF false positive vs missed Level.BODY | agent-06, agent-04, code-05, code-06 |
+| 6 Engineering fixes | P09c and P08c A/B videos, table of measured effects | e2 REPORT |
+| 7 Measure right | ShelfTap debug vs release, cover URL bug, font-scale screenshots, E6 font 2.0 grid | opt-ui-ux.md, e6 img/grid-O-font2.jpg |
+
+Each link ends with two boxes: what a vibe coder does, what an engineer does. Design: one column, plain sans, two chart colours (orange = AI-written, blue = fixed; validated with the dataviz palette checker), every figure with a source line. E6 numbers are descriptive (exploratory, n = 3 per cell, software-GPU emulator) and the report says so.
 
 ## 7. Proof of every number in the deck
 

@@ -1,0 +1,45 @@
+== P06 p06/CoverBitmap.kt: 51 port lines, 17 lines not found verbatim in corpus source(s)
+  p06/CoverBitmap.kt:28: // Ported from codex-luna-B3-detailed-functional-r1 app/src/main/java/vn/shelftap/app/MainActivity.kt:39 (DetailScreen, one minified line):
+  p06/CoverBitmap.kt:29: // the cover-loading fragment, reformatted, with d?.coverUrl bound to the parameter. The cover URL is a file: URL of the local 1500x2250 cover,
+  p06/CoverBitmap.kt:30: // so URL(url).openStream() is unchanged. Probe.count lines are instrumentation (same hooks as B).
+  p06/CoverBitmap.kt:31: private val green = Color(0xFF315F51)
+  p06/CoverBitmap.kt:33: @Composable
+  p06/CoverBitmap.kt:34: fun CoverBitmap(coverUrl: String?) {
+  p06/CoverBitmap.kt:35: var bitmap by remember(coverUrl) { mutableStateOf<Bitmap?>(null) }
+  p06/CoverBitmap.kt:36: LaunchedEffect(coverUrl) {
+  p06/CoverBitmap.kt:37: val url = coverUrl
+  p06/CoverBitmap.kt:38: if (url != null) bitmap = withContext(Dispatchers.IO) {
+  p06/CoverBitmap.kt:39: Probe.section("img.decode") {
+  p06/CoverBitmap.kt:40: runCatching { BitmapFactory.decodeStream(URL(url).openStream()) }.getOrNull()?.also {
+  p06/CoverBitmap.kt:41: Probe.count("decodedBytes", it.allocationByteCount.toLong())
+  p06/CoverBitmap.kt:42: Probe.count("decodes")
+  p06/CoverBitmap.kt:47: if (bitmap != null) Image(bitmap!!.asImageBitmap(), "Cover", Modifier.size(150.dp, 210.dp))
+  p06/CoverBitmap.kt:48: else Box(Modifier.size(150.dp, 210.dp).background(Color(0xFFDDE8E1)), contentAlignment = Alignment.Center) {
+  p06/CoverBitmap.kt:49: Icon(Icons.Default.Info, "Book", Modifier.size(64.dp), tint = green)  // MenuBook is an extended icon
+== P01 p01/HistoryList.kt: 66 port lines, 9 lines not found verbatim in corpus source(s)
+  p01/HistoryList.kt:21: // Ported from claude-haiku-B3-detailed-functional-r1 app/src/main/java/vn/shelftap/app/ui/history/HistoryScreen.kt: the LazyColumn of
+  p01/HistoryList.kt:22: // HistoryScreen (its items(state.items) call is the P01 finding, no key) and HistoryCard. The ViewModel, switch and dialog around it are
+  p01/HistoryList.kt:23: // not part of the construct and are left out; HistoryItem and formatDate come from Shims.kt (copied from data/Models.kt and ui/Common.kt).
+  p01/HistoryList.kt:26: fun HistoryListA(items: List<HistoryItem>, onOpenTitle: (String) -> Unit) {
+  p01/HistoryList.kt:32: items(items) { item ->
+  p01/HistoryList.kt:38: /** B of P01 (tuned): the same list and the same HistoryCard, with a stable key and a content type. */
+  p01/HistoryList.kt:40: fun HistoryListB(items: List<HistoryItem>, onOpenTitle: (String) -> Unit) {
+  p01/HistoryList.kt:46: items(items, key = { it.titleId }, contentType = { "history" }) { item ->
+  p01/HistoryList.kt:54: RecompositionProbe("rc.row")
+== P09 p09/BookDetailSheet.kt: 324 port lines, 2 lines not found verbatim in corpus source(s)
+  p09/BookDetailSheet.kt:51: Box(modifier = Modifier.fillMaxWidth()) {  // was ModalBottomSheet(...): inline so TTID and frames see the content
+  p09/BookDetailSheet.kt:278: RecompositionProbe("rc.row")
+== P13 p13/TitleSearch.kt: 38 port lines, 13 lines not found verbatim in corpus source(s)
+  p13/TitleSearch.kt:14: // Ported from claude-haiku-B1-detailed-functional-r1 (app/src/main/java/vn/shelftap/app/...):
+  p13/TitleSearch.kt:15: //   data/local/TitleDao.kt  pagingSearch: the SQL below, unindexed LIKE '%pattern%' on searchText (the P13 finding); Room's :pattern is a ? placehold
+  p13/TitleSearch.kt:16: //   data/CatalogueRepository.kt  likePattern: unchanged.
+  p13/TitleSearch.kt:17: //   ui/SearchScreen.kt  SearchViewModel.results: debounce(200).distinctUntilChanged().flatMapLatest, unchanged except that the Pager/Room
+  p13/TitleSearch.kt:18: //   PagingSource is replaced by a query on Dispatchers.IO (Room runs on its query executor) returning the first page (Paging initial load = 3 x pageS
+  p13/TitleSearch.kt:20: /** SQLite LIKE is case-sensitive for non-ASCII, so the pattern is lowercased; wildcard characters are escaped with '!'. */
+  p13/TitleSearch.kt:27: const val PAGING_SEARCH_SQL =
+  p13/TitleSearch.kt:28: "SELECT * FROM titles WHERE searchText LIKE '%' || ? || '%' ESCAPE '!' " +
+  p13/TitleSearch.kt:31: /** First page of Paging: PagingConfig(pageSize = 40) loads 3 x 40 on the first call. */
+  p13/TitleSearch.kt:32: const val FIRST_PAGE = 120
+  p13/TitleSearch.kt:34: @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
+  p13/TitleSearch.kt:35: fun corpusResults(query: Flow<String>, run: (pattern: String) -> List<Book>): Flow<List<Book>> = query
+  p13/TitleSearch.kt:38: .flatMapLatest { text -> flow { emit(withContext(Dispatchers.IO) { run(likePattern(text)) }) } }

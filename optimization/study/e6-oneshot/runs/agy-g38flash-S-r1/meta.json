@@ -1,0 +1,55 @@
+{
+  "tool": "agy",
+  "model_arg": "gemini-3.8-flash-medium",
+  "cli_version": "1.5.18",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 47.2,
+  "date": "2026-11-27",
+  "real_home": false,
+  "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+  "canary_planted": false,
+  "prompt_sha256": "3c4c1236cef77859cf4c7662a3b7279042fc1dcc254afb959bca14417d5af090",
+  "cli_flags": "--print <PROMPT> --model gemini-3.8-flash-medium --output-format stream-json --mode accept-edits --settings {\"permissions\": {\"allow\": [\"command(ls)\", \"command(cat)\", \"command(find)\", \"command(grep)\", \"command(head)\", \"command(tail)\", \"command(sed)\", \"command(wc)\", \"command(tree)\", \"command(git)\", \"command(pwd)\", \"command(echo)\", \"command(stat)\", \"command(file)\", \"command(awk)\", \"command(sort)\", \"command(uniq)\", \"command(diff)\", \"command(cut)\", \"command(xargs)\", \"command(basename)\", \"command(dirname)\", \"command(realpath)\", \"command(which)\", \"command(openssl)\", \"command(keytool)\", \"command(jq)\", \"command(du)\", \"command(readlink)\", \"command(xxd)\", \"command(strings)\", \"command(unzip)\", \"command(tr)\", \"command(ls)\", \"command(mkdir)\", \"command(touch)\", \"command(chmod)\", \"command(cp)\", \"command(mv)\", \"command(rm)\", \"command(java)\", \"command(javac)\", \"command(kotlinc)\", \"command(uname)\", \"command(date)\", \"command(whoami)\"], \"deny\": [\"search_web(*)\", \"read_url(*)\", \"execute_url(*)\"]}}",
+  "model_reported": null,
+  "tokens_in": 35824,
+  "tokens_out": 1633,
+  "cost_usd": null,
+  "final_text": "",
+  "stderr_head": [
+    "jetski: no output produced \u2014 a tool required the \"command\" permission that headless mode cannot prompt for, so it was auto-denied. Add an allow-rule under permissions.allow in settings.json (e.g. command(<target>)). Alternatively, re-run with --dangerously-skip-permissions to auto-approve all tools."
+  ],
+  "run_id": "agy-g38flash-S-r1",
+  "bundle": "agy-g38flash",
+  "arm": "S",
+  "rep": 1,
+  "tier": 2,
+  "files": 0,
+  "kotlin_loc": 0,
+  "valid": false,
+  "context_file": null,
+  "guardrail_sha256": null,
+  "attempts": [
+    {
+      "attempt": 1,
+      "files": 0,
+      "exit_code": 0,
+      "infra_failure": true,
+      "denied_actions": 1
+    },
+    {
+      "attempt": 2,
+      "files": 0,
+      "exit_code": 0,
+      "infra_failure": true,
+      "denied_actions": 1
+    }
+  ],
+  "net_audit": "none",
+  "n_commands": 18,
+  "denied_actions": 1,
+  "web_tool_calls": 0,
+  "web_tools": "",
+  "generated_at": "2026-11-27T18:28:54+0700",
+  "invalid_reason": "agy headless denied a command before any file was written"
+}

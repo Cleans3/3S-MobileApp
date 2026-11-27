@@ -1,0 +1,26 @@
+absent e4-pressure/prompts
+e4-pressure/harness/gen_launch.py:132: HERDR | X", "GEMINI", "OPENCODE", "ANTHROPIC", "OPENAI", "HERDR"))}     env["PATH"] = os.environ["PATH"]     env[
+e4-pressure/harness/run_trials.py:34: .agents |  ".claude", "-x", ".codex", "-x", ".agy*", "-x", ".agents", "-x", "*.orig"]     r = subprocess.run(["diff",
+e5-optimizer/harness/run_e5.py:64: .agents | .claude", "-x", ".codex", "-x", ".gemini", "-x", ".agents"]     r = subprocess.run(["diff", "-ruN", *ex, a.
+absent e5-optimizer/cases
+e1-corpus/harness/build_run.py:96: HERDR | s.environ.items() if not k.startswith(("CLAUDE", "HERDR", "CODEX", "GEMINI"))}     e.update({"JAVA_HOME":
+e1-corpus/harness/canary.py:8: CAVEMAN |              (reply opening with the user's name, CAVEMAN/PONYTAIL/context-mode/jcodemunch strings in the e
+e1-corpus/harness/canary.py:8: PONYTAIL |      (reply opening with the user's name, CAVEMAN/PONYTAIL/context-mode/jcodemunch strings in the event stre
+e1-corpus/harness/canary.py:8: context-mode | ly opening with the user's name, CAVEMAN/PONYTAIL/context-mode/jcodemunch strings in the event stream)   C ctx-f
+e1-corpus/harness/canary.py:8: jcodemunch | th the user's name, CAVEMAN/PONYTAIL/context-mode/jcodemunch strings in the event stream)   C ctx-file      pr
+e1-corpus/harness/canary.py:21: CAVEMAN |  done, reply with the single word DONE." LEAK = ("CAVEMAN", "PONYTAIL", "context-mode", "jcodemunch", "Clea
+e1-corpus/harness/canary.py:21: PONYTAIL | y with the single word DONE." LEAK = ("CAVEMAN", "PONYTAIL", "context-mode", "jcodemunch", "Cleanse") CTX_CA
+e1-corpus/harness/canary.py:21: context-mode | ingle word DONE." LEAK = ("CAVEMAN", "PONYTAIL", "context-mode", "jcodemunch", "Cleanse") CTX_CANARY = "Always e
+e1-corpus/harness/canary.py:21: jcodemunch | " LEAK = ("CAVEMAN", "PONYTAIL", "context-mode", "jcodemunch", "Cleanse") CTX_CANARY = "Always end every Kotli
+e1-corpus/harness/canary.py:21: Cleanse | EMAN", "PONYTAIL", "context-mode", "jcodemunch", "Cleanse") CTX_CANARY = "Always end every Kotlin file you 
+e1-corpus/harness/canary.py:22: CTX_CANARY | NYTAIL", "context-mode", "jcodemunch", "Cleanse") CTX_CANARY = "Always end every Kotlin file you create with t
+e1-corpus/harness/canary.py:27: CTX_CANARY | if kind == "C":         (wd / ctxfile).write_text(CTX_CANARY + "\n")     with open(generate.BENCH_LOCK, "a") a
+e1-corpus/harness/canary.py:43: Cleanse |  and not leaks and not final.lstrip().startswith("Cleanse")         m = re.search(r'"plugins":\[(.*?)\],"ca
+e1-corpus/harness/canary.py:56: CTX_FILE | : ["GEMINI.md", "AGENTS.md"]}.get(t) or [generate.CTX_FILE[t]]):             jobs.append((f"{t}-C-{cf_name}"
+e1-corpus/harness/generate.py:48: CTX_FILE | igpickle": ("opencode", "opencode/big-pickle"), } CTX_FILE = {"claude": "CLAUDE.md", "codex": "AGENTS.md", "
+e1-corpus/harness/generate.py:165: CTX_FILE | )     prompt = prompt_for(brief, style)     ctx = CTX_FILE[tool] if style == "guardrailed" else None     att
+e1-corpus/harness/report.py:236: compact-pilot | ation: the claude launcher loads three user mods (compact-pilot, model-gate, usage-meter) and five built-in plugi
+e1-corpus/harness/report.py:236: model-gate | de launcher loads three user mods (compact-pilot, model-gate, usage-meter) and five built-in plugins from the 
+e1-corpus/harness/report.py:236: usage-meter | loads three user mods (compact-pilot, model-gate, usage-meter) and five built-in plugins from the real ~/.agent
+e1-corpus/harness/report.py:236: .agents | -meter) and five built-in plugins from the real ~/.agents/mods because the home directory is resolved throu
+files 43 hits 23

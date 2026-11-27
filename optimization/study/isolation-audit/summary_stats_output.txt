@@ -1,0 +1,32 @@
+R:e1-corpus/runs/claude-haiku-B3-naive-r2 row 64
+R:e4-pressure/runs/c1-agy-B-r4 row 182
+REAL W:trials/pilot/real/claude/_out row 617 claude CAVEMAN:44;Cleanse:2;PONYTAIL:18;YAGNI:4;context-mode:64;ctx_tool:4;factory(weak):2 hooks 18 1 Cleanse-open True
+REAL W:trials/pilot/real/codex/_out row 618 codex Cleanse:1 hooks 0 0 Cleanse-open True
+gen rows 565
+('E1', 'main', 'agy') [29, 0, 0, 0, 0]
+('E1', 'main', 'claude') [36, 1, 0, 0, 0]
+('E1', 'main', 'codex') [36, 0, 0, 0, 0]
+('E1', 'pilot', 'agy') [2, 0, 0, 0, 0]
+('E1', 'pilot', 'claude') [2, 0, 0, 0, 0]
+('E1', 'pilot', 'codex') [2, 0, 0, 0, 0]
+('E1(infra-failed)', 'infra-failed', 'agy') [7, 0, 0, 0, 0]
+('E4', 'main', 'agy') [50, 1, 0, 0, 0]
+('E4', 'main', 'claude') [50, 0, 0, 0, 0]
+('E4', 'main', 'codex') [50, 0, 0, 0, 0]
+('E4', 'pilot', 'agy') [5, 0, 0, 0, 0]
+('E4', 'pilot', 'claude') [5, 0, 0, 0, 0]
+('E4', 'pilot', 'codex') [5, 0, 0, 0, 0]
+('E4', 'websearch-variant', 'agy-web') [50, 0, 0, 0, 0]
+('E5', 'main', 'agy') [6, 0, 0, 0, 0]
+('E5', 'main', 'claude') [114, 0, 0, 0, 0]
+('E5', 'main', 'codex') [116, 0, 0, 0, 0]
+articles/100w agy 77 median 3.12 p10 0.0
+articles/100w claude 207 median 4.55 p10 0.0
+articles/100w codex 209 median 9.84 p10 5.88
+REAL articles claude 0.0
+REAL articles codex 0.0
+claude tools sets Counter({'Edit|Glob|Grep|Read|Write': 207})
+opens_with_Cleanse total in gen 0
+config hashes in gen Counter({'0b805af84eba': 565})
+real_home flag in gen Counter({'False': 565}) canary_planted Counter({'False': 565})
+cli versions Counter({('codex', 'codex-cli 0.170.0'): 209, ('claude', '2.1.330 (Claude Code)'): 178, ('agy', '1.5.13'): 99, ('agy-web', '1.5.13'): 50, ('claude', '2.1.329 (Claude Code)'): 29})

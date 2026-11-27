@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "",
+ "repairs": 0,
+ "gradle_s_first": 23.7,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/codex-luna-R-r2/baselineprofile/build.gradle.kts:15:5: Unresolved reference 'androidTestImplementation'.",
+ "lint": "no-report"
+}
