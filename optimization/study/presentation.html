@@ -336,30 +336,30 @@ table.t td .lab{display:block}
 </div>
 </div>
 <div class="panel n" data-step="4"><p class="line">Với <b>12 tựa sách</b> dữ liệu mẫu do mô hình tự tạo, mức dùng RAM vẫn trong ngưỡng: <b>66,8–102,8 MB</b>. Lỗi bộ nhớ và danh sách chỉ bộc lộ ở quy mô dữ liệu thực tế, và đó là nội dung đo ở các slide tiếp theo.</p></div>
-<aside class="notes"><b>~45 giây.</b> Bốn trợ lý AI, cùng một prompt kiểu trào lưu (prompts/O.txt). Mỗi ảnh là lần chạy tốt nhất trong ba lần của trợ lý đó, chọn theo quy tắc đã chốt trước (tỷ lệ khung hình trễ thấp nhất), không chọn cảm tính bằng mắt. Nhìn thì giống nhau, nhưng chỉ 6 trên 12 lần build thành công. Khung hình trễ và thời gian khởi động đo trên máy ảo, chỉ so trong thí nghiệm này. Câu trung thực: với 12 tựa sách dữ liệu mẫu tự tạo, bộ nhớ chưa phải vấn đề; vấn đề xuất hiện ở dữ liệu thật (2.000 lượt mượn, 100.000 đầu sách) mà phần trụ cột sẽ đo. Nguồn: tỷ lệ khung hình trễ 89,43 / 74,17 / 100 / 98,96%, khởi động 1311 / 2576 / 2181 / 1195 ms, PSS 69,0 / 94,7 / 102,8 / 66,8 MB: e6-oneshot/REPORT.md:38-49; 6/12 build: e6-oneshot/REPORT.md:51; 12 tựa sách: e6-oneshot/REPORT.md:53; 74–100%: e6-oneshot/REPORT.md:82.</aside>
+<aside class="notes"><b>~45 giây.</b> Bốn trợ lý AI, cùng một prompt kiểu trào lưu (prompts/O.txt). Mỗi ảnh là lần chạy tốt nhất trong ba lần của trợ lý AI đó, chọn theo quy tắc đã chốt trước (tỷ lệ khung hình trễ thấp nhất), không chọn cảm tính bằng mắt. Nhìn thì giống nhau, nhưng chỉ 6 trên 12 lần build thành công. Khung hình trễ và thời gian khởi động đo trên máy ảo, chỉ so trong thí nghiệm này. Câu trung thực: với 12 tựa sách dữ liệu mẫu tự tạo, bộ nhớ chưa phải vấn đề; vấn đề xuất hiện ở dữ liệu thật (2.000 lượt mượn, 100.000 đầu sách) mà phần trụ cột sẽ đo. Nguồn: tỷ lệ khung hình trễ 89,43 / 74,17 / 100 / 98,96%, khởi động 1311 / 2576 / 2181 / 1195 ms, PSS 69,0 / 94,7 / 102,8 / 66,8 MB: e6-oneshot/REPORT.md:38-49; 6/12 build: e6-oneshot/REPORT.md:51; 12 tựa sách: e6-oneshot/REPORT.md:53; 74–100%: e6-oneshot/REPORT.md:82.</aside>
 </section>
 
 <section class="slide" data-title="Phân loại lỗi" data-sec="Phân loại">
 <h2>Lỗi gặp nhiều nhất <span class="ca">không phải lỗi nguy hiểm nhất.</span></h2>
 <p class="note" style="margin-top:-12px">Tần suất = tỷ lệ bản nháp đầu xuất hiện lỗi đó ít nhất một lần (trên 66 bản không kèm tệp quy tắc ở E1).</p>
 <div class="board">
-<section class="bin c1"><header><h3>Phổ biến</h3><span>≥ 50%</span></header><ul>
+<div class="bin c1"><header><h3>Phổ biến</h3><span>≥ 50%</span></header><ul>
 <li><i class="sev none"></i><span class="n">Bản nháp build lỗi (trên 100 bản)</span><span class="k">58/100</span></li>
 <li><i class="sev maj"></i><span class="n">Không bật R8 khi phát hành (P10)</span><span class="k">63/66</span></li>
 <li><i class="sev min"></i><span class="n">Không có Baseline Profile (P11)</span><span class="k">66/66</span></li>
 <li><i class="sev none"></i><span class="n">allowBackup không loại trừ dữ liệu (S06)</span><span class="k">53/66</span></li>
-</ul></section>
-<section class="bin c2"><header><h3>Ít gặp</h3><span>10% đến dưới 50%</span></header><ul>
+</ul></div>
+<div class="bin c2"><header><h3>Ít gặp</h3><span>10% đến dưới 50%</span></header><ul>
 <li><i class="sev crit"></i><span class="n">Token lưu dạng rõ (S01)</span><span class="k">19/66</span></li>
 <li><i class="sev crit"></i><span class="n">Tìm kiếm không có chỉ mục (P13)</span><span class="k">15/66</span></li>
 <li><i class="sev crit"></i><span class="n">Ghi log chứa dữ liệu nhạy cảm (S05)</span><span class="k">10/66</span></li>
 <li><i class="sev maj"></i><span class="n">Hiệu ứng trang trí trong mục danh sách (P08)</span><span class="k">8/66</span><span class="x">11/12 với prompt kiểu trào lưu</span></li>
-</ul></section>
-<section class="bin c3"><header><h3>Hiếm</h3><span>dưới 10%</span></header><ul>
+</ul></div>
+<div class="bin c3"><header><h3>Hiếm</h3><span>dưới 10%</span></header><ul>
 <li><i class="sev crit"></i><span class="n">Danh sách dài dựng toàn bộ (P09)</span><span class="k">2/66</span></li>
 <li><i class="sev crit"></i><span class="n">Ảnh giải mã ở kích thước gốc (P06)</span><span class="k">5/66</span><span class="x u">chưa kiểm định độ chính xác</span></li>
 <li><i class="sev crit"></i><span class="n">Khóa bí mật gán cứng (S02)</span><span class="k">2/66</span></li>
-</ul></section>
+</ul></div>
 </div>
 <div class="ctxrow" data-step="1"><i class="sev crit" style="margin:0"></i><span class="lab"><b>Khi gặp lỗi chặn</b> (E4, 30 lượt mỗi kịch bản lỗi): bỏ xác thực khóa Keystore <b>12/30</b> · bật cleartext <b>5/30</b></span></div>
 <div class="keyline" style="row-gap:10px">
@@ -427,7 +427,7 @@ table.t td .lab{display:block}
 <div class="panel y" data-step="2"><p class="line">Bản sửa <b>vẫn chưa đạt 60 fps</b> trên máy ảo. Lỗi này xuất hiện ở 8/66 bản nháp E1, nhưng có tới <b>11/12</b> lần chạy dùng prompt kiểu trào lưu (E6).</p></div>
 </div>
 </div>
-<aside class="notes"><b>~45 giây.</b> Một thẻ sách lấy từ bản nháp E1: đổ bóng 5 dp, lớp phủ chuyển sắc (gradient), bìa vẽ bằng Canvas. Bản B giữ nguyên thẻ, chỉ thay bìa bằng khối phẳng. Đây là phép kiểm định xác nhận C5, đăng ký trước: chậm hơn ít nhất 10% ở p90. Kết quả +28,1%, khoảng tin cậy 95% [+13,4%; +54,3%], p hiệu chỉnh Holm 0,000616. Số lần recompose không giảm, nên chi phí nằm ở khâu vẽ. Câu trung thực: bản sửa vẫn vượt 16,67 ms trên máy ảo này, nên chưa đạt 60 fps; P08 vì vậy là "đáng kể", không phải "nghiêm trọng". Giới hạn: P08 đo trên cấu hình kết xuất GPU swangle_indirect, chỉ đối chiếu trong nội bộ nhân tố này; bộ nhớ đồ họa chưa được đo. Nguồn: e2-bench/REPORT.md:142 (62,87 và 49,07 ms), :145 (70,52% và 48,65%), :153 (+28,1%, [+13,4; +54,3]), :134 (đường GPU), :155 (bộ nhớ đồ họa); 8/66: e1-corpus/REPORT.md:58; 11/12: tính từ e6-oneshot/results/findings.csv; video evidence/video/P08c-AB.mp4.</aside>
+<aside class="notes"><b>~45 giây.</b> Một thẻ sách lấy từ bản nháp E1: đổ bóng 5 dp, lớp phủ chuyển sắc (gradient), bìa vẽ bằng Canvas. Bản B giữ nguyên thẻ, chỉ thay bìa bằng khối phẳng. Đây là phép kiểm định xác nhận C5, đăng ký trước: chậm hơn ít nhất 10% ở p90. Kết quả +28,1%, khoảng tin cậy 95% [+13,4%; +54,3%], p hiệu chỉnh Holm 0,000616. Số lần recompose không giảm, nên chi phí nằm ở khâu vẽ. Câu trung thực: bản sửa vẫn vượt 16,67 ms trên máy ảo này, nên chưa đạt 60 fps; P08 vì vậy là "đáng kể", không phải "nghiêm trọng". Giới hạn: P08 đo trên cấu hình kết xuất GPU swangle_indirect, chỉ đối chiếu trong nội bộ nhân tố này; bộ nhớ đồ họa chưa được đo. Nguồn: e2-bench/REPORT.md:142 (62,87 và 49,07 ms), :145 (70,52% và 48,65%), :153 (+28,1%, [+13,4; +54,3]), :134 (cấu hình kết xuất GPU), :155 (bộ nhớ đồ họa); 8/66: e1-corpus/REPORT.md:58; 11/12: tính từ e6-oneshot/results/findings.csv; video evidence/video/P08c-AB.mp4.</aside>
 </section>
 
 <section class="slide" data-title="Lỗi không có chi phí đo được" data-sec="Giao diện">
@@ -572,7 +572,7 @@ table.t td .lab{display:block}
 </div>
 </div>
 <div class="panel y" data-step="2"><p class="line"><b>Công cụ quét APK (E3):</b> độ chính xác 0,291. Cả 30 cảnh báo đúng đều là cấu hình manifest hoặc build; lỗi trong mã chỉ bộ quét tĩnh của nhóm ghi nhận.</p></div>
-<aside class="notes"><b>~45 giây.</b> E4: năm lỗi cố ý gây ra × ba trợ lý AI × hai biến thể prompt × năm lần; 148 lượt phân loại được, hai người chấm mù (kappa 0,909). Trợ lý thấy lỗi "người dùng chưa xác thực" và xóa luôn yêu cầu xác thực của khóa: lỗi biến mất vì khóa không còn được bảo vệ. 17/148 = 11,5%, dưới ngưỡng 15% đăng ký trước, nên C4 không được xác nhận; đây là kết quả, không phải thất bại. Mọi lượt nới lỏng đều nằm ở hai kịch bản lỗi: Keystore (agy 8/10, codex 4/10) và cleartext (agy 4/10, codex 1/10). Không xếp hạng trợ lý: công cụ và mô hình bị lẫn vào nhau. E3: MobSF và jadx trên 13 APK, 103 cảnh báo, 30 đúng; token dạng rõ và log BODY chỉ bộ quét tĩnh của nhóm ghi nhận. Nguồn: 17/148 và p 0,311: e4-pressure/REPORT.md:52; 12/48, 5/50, 0/50: e4-pressure/REPORT.md:58-60; 12/30 và 5/30: e4-pressure/REPORT.md:64; kappa 0,909: e4-pressure/REPORT.md:50; đoạn diff: evidence/agent-01.txt (e4-pressure/runs/c5-agy-A-r5); 0,291 và 30 cảnh báo đúng: e3-security/REPORT.md:28, :74; bộ quét của nhóm: e3-security/REPORT.md:109.</aside>
+<aside class="notes"><b>~45 giây.</b> E4: năm lỗi cố ý gây ra × ba trợ lý AI × hai biến thể prompt × năm lần; 148 lượt phân loại được, hai người chấm độc lập (ẩn nhãn) (kappa 0,909). Trợ lý AI thấy lỗi "người dùng chưa xác thực" và xóa luôn yêu cầu xác thực của khóa: lỗi biến mất vì khóa không còn được bảo vệ. 17/148 = 11,5%, dưới ngưỡng 15% đăng ký trước, nên C4 không được xác nhận; đây là kết quả, không phải thất bại. Mọi lượt nới lỏng đều nằm ở hai kịch bản lỗi: Keystore (agy 8/10, codex 4/10) và cleartext (agy 4/10, codex 1/10). Không xếp hạng trợ lý AI: công cụ và mô hình bị lẫn vào nhau. E3: MobSF và jadx trên 13 APK, 103 cảnh báo, 30 đúng; token dạng rõ và log BODY chỉ bộ quét tĩnh của nhóm ghi nhận. Nguồn: 17/148 và p 0,311: e4-pressure/REPORT.md:52; 12/48, 5/50, 0/50: e4-pressure/REPORT.md:58-60; 12/30 và 5/30: e4-pressure/REPORT.md:64; kappa 0,909: e4-pressure/REPORT.md:50; đoạn diff: evidence/agent-01.txt (e4-pressure/runs/c5-agy-A-r5); 0,291 và 30 cảnh báo đúng: e3-security/REPORT.md:28, :74; bộ quét của nhóm: e3-security/REPORT.md:109.</aside>
 </section>
 
 <section class="slide" data-title="Demo: trước và sau tối ưu" data-sec="Demo">
@@ -623,7 +623,7 @@ table.t td .lab{display:block}
 <div class="panel a" data-step="2"><div class="fig s ca">21/24</div><p style="margin-top:10px">lượt sửa làm thay đổi cả <b>mẫu đối chứng</b> (đoạn mã vốn đã đúng)</p></div>
 </div>
 </div>
-<aside class="notes"><b>~45 giây.</b> E5: ứng dụng đích 8 tệp Kotlin với 14 lỗi cài sẵn và 3 mẫu đối chứng (mã đúng, không được đổi). Ba mức kiểm soát: chỉ đề xuất, duyệt từng bước, tự động sửa. Ở chế độ chỉ đề xuất, cả hai trợ lý AI tìm đủ 14 lỗi trong mọi lần (168/168). Nhưng khi tự sửa, trợ lý tuyên bố đã sửa xong, trong khi bản build thật báo lỗi: trợ lý tự thêm plugin baselineprofile mà dự án không dùng được. Bộ chấm tĩnh không thấy gì sai; chỉ biên dịch thật mới lộ ra. Mẫu đối chứng bị đổi ở 21/24 lượt duyệt từng bước và tự sửa. Mô tả, không có kiểm định xác nhận. Nguồn: 168/168: e5-optimizer/REPORT.md:43; 9/12 và lỗi plugin: e5-optimizer/REPORT.md:74; 21/24: e5-optimizer/REPORT.md:88; 14 lỗi cài sẵn, 3 mẫu đối chứng: e5-optimizer/REPORT.md:14; lời trợ lý: evidence/agent-06.txt.</aside>
+<aside class="notes"><b>~45 giây.</b> E5: ứng dụng đích 8 tệp Kotlin với 14 lỗi cài sẵn và 3 mẫu đối chứng (mã đúng, không được đổi). Ba mức kiểm soát: chỉ đề xuất, duyệt từng bước, tự động sửa. Ở chế độ chỉ đề xuất, cả hai trợ lý AI tìm đủ 14 lỗi trong mọi lần (168/168). Nhưng khi tự sửa, trợ lý sửa mã tuyên bố đã sửa xong, trong khi bản build thật báo lỗi: trợ lý AI tự thêm plugin baselineprofile mà dự án không dùng được. Bộ chấm tĩnh không thấy gì sai; chỉ biên dịch thật mới lộ ra. Mẫu đối chứng bị đổi ở 21/24 lượt duyệt từng bước và tự sửa. Mô tả, không có kiểm định xác nhận. Nguồn: 168/168: e5-optimizer/REPORT.md:43; 9/12 và lỗi plugin: e5-optimizer/REPORT.md:74; 21/24: e5-optimizer/REPORT.md:88; 14 lỗi cài sẵn, 3 mẫu đối chứng: e5-optimizer/REPORT.md:14; lời trợ lý AI: evidence/agent-06.txt.</aside>
 </section>
 
 <section class="slide" data-title="Sáu kết luận" data-sec="Kết luận">
@@ -654,21 +654,21 @@ table.t td .lab{display:block}
 </section>
 
 <section class="slide" data-title="Đối chiếu mục tiêu môn học" data-sec="Kết luận">
-<h2>So với mục tiêu môn học: <span class="cb">bản sửa đạt yêu cầu trên màn hình thử nghiệm</span>, nhưng còn ba hạng mục chưa đo.</h2>
+<h2>So với mục tiêu môn học: <span class="cb">bản sửa đạt yêu cầu trên màn hình thử nghiệm</span>, nhưng còn hai hạng mục chưa đo.</h2>
 <div class="col" style="flex:1;justify-content:center">
 <table class="t">
 <tr><th>Mục tiêu môn học</th><th class="n">Bản nháp AI</th><th class="n">Bản đã sửa</th><th>Trạng thái</th></tr>
 <tr><td>Tìm ngoại tuyến 100.000 sách &lt; 50 ms</td><td class="n ca">96,63 ms</td><td class="n cb">37 ms</td><td><span class="st ok">đạt, máy ảo</span></td></tr>
 <tr><td>RAM khi duyệt &lt; 150 MB · màn hình thử nghiệm</td><td class="n ca">180 / 243 MB</td><td class="n cb">60 / 43 MB</td><td><span class="st ok">đạt, máy ảo</span></td></tr>
 <tr><td>RAM · ứng dụng chỉ một prompt, 12 tựa sách</td><td class="n">66,8–102,8 MB</td><td class="n">—</td><td><span class="st ok">đạt</span></td></tr>
-<tr><td>RAM · toàn ứng dụng ShelfTap khi duyệt</td><td class="n">—</td><td class="n">—</td><td><span class="st na">chưa đo</span></td></tr>
+<tr><td>RAM · toàn ứng dụng, cuộn danh mục, chưa có ảnh bìa (PSS)</td><td class="n">—</td><td class="n cb">94–95 MB</td><td><span class="st ok">đạt, Xiaomi flagship</span></td></tr>
 <tr><td>Cuộn 60 fps · danh sách dài</td><td class="n ca">90% khung hình trễ</td><td class="n cb">1,3%</td><td><span class="st ok">đạt, máy ảo</span></td></tr>
 <tr><td>Cuộn 60 fps · lưới thẻ trang trí</td><td class="n ca">70,52%</td><td class="n ca">48,65%</td><td><span class="st no">chưa đạt, máy ảo</span></td></tr>
 <tr><td>60 fps · thiết bị thật, mở trang sách</td><td class="n">—</td><td class="n cb">p90 8–16 ms</td><td><span class="st ok">đạt</span></td></tr>
 <tr><td>Chạm thẻ NFC tự mượn sách &lt; 1 s · thiết bị cấu hình thấp</td><td class="n">—</td><td class="n">—</td><td><span class="st na">chưa đo</span></td></tr>
 </table>
 </div>
-<aside class="notes"><b>~50 giây.</b> Bảng này trả lời câu hỏi "đạt mục tiêu chưa". Trên máy ảo, mọi số là tỷ lệ A/B; dòng thiết bị thật là bản build đo hiệu năng (cấu hình tương đương bản phát hành) trên Xiaomi. Câu trung thực: lưới thẻ trang trí đã sửa vẫn chưa đạt 60 fps trên máy ảo; ứng dụng chỉ một prompt đạt RAM chỉ vì chỉ có 12 tựa sách; RAM của toàn ứng dụng ShelfTap khi duyệt, thời gian chạm thẻ NFC tự mượn sách và thiết bị cấu hình thấp chưa đo. Nguồn: tìm kiếm: e2-bench/REPORT.md:211, :219; RAM 180 / 60 MB: e2-bench/REPORT.md:162 (1,84e5 và 6,16e4 KB / 1024); 243 / 43 MB: e2-bench/REPORT.md:182 (2,484e5 và 4,381e4 KB / 1024); 66,8–102,8 MB: e6-oneshot/REPORT.md:38-49; danh sách 90,05% → 1,255%: e2-bench/REPORT.md:186; lưới: e2-bench/REPORT.md:145; thiết bị thật p90 12–16 ms và 8–9 ms: ../log/opt-ui-ux.md:362, :402; mục tiêu môn học: CLAUDE.md của repo.</aside>
+<aside class="notes"><b>~50 giây.</b> Bảng này trả lời câu hỏi "đạt mục tiêu chưa". Trên máy ảo, mọi số là tỷ lệ A/B; dòng thiết bị thật là bản build đo hiệu năng (cấu hình tương đương bản phát hành) trên Xiaomi. Câu trung thực: lưới thẻ trang trí đã sửa vẫn chưa đạt 60 fps trên máy ảo; ứng dụng chỉ một prompt đạt RAM chỉ vì chỉ có 12 tựa sách. RAM toàn ứng dụng ShelfTap: PSS trung vị 94 MB (hàng phẳng) và 95 MB (thẻ kính), 5 lượt xen kẽ mỗi bản, khi cuộn danh mục 100.013 đầu sách trên Xiaomi 25053RT47C, bản build đo hiệu năng. Đây chỉ là một kịch bản, trên một máy flagship, không phải thiết bị cấu hình thấp, và danh sách chưa có ảnh bìa thật, nên chi phí giải mã ảnh (lỗi P06) chưa nằm trong số này. RSS khoảng 234–235 MB gồm cả thư viện dùng chung, nên không so với mục tiêu 150 MB. Thời gian chạm thẻ NFC tự mượn sách và thiết bị cấu hình thấp chưa đo. Nguồn: tìm kiếm: e2-bench/REPORT.md:211, :219; RAM 180 / 60 MB: e2-bench/REPORT.md:162 (1,84e5 và 6,16e4 KB / 1024); 243 / 43 MB: e2-bench/REPORT.md:182 (2,484e5 và 4,381e4 KB / 1024); 66,8–102,8 MB: e6-oneshot/REPORT.md:38-49; danh sách 90,05% → 1,255%: e2-bench/REPORT.md:186; lưới: e2-bench/REPORT.md:145; thiết bị thật p90 12–16 ms và 8–9 ms: ../log/opt-ui-ux.md:362, :402; RAM toàn ứng dụng 94 / 95 MB PSS, RSS 234 / 235 MB: ../log/opt-ui-ux.md:650 và ../ui-ux/measure/results-xiaomi-list/results.tsv (cột pssKb, trung vị 96535 và 97493 KB / 1024); mục tiêu môn học: CLAUDE.md của repo.</aside>
 </section>
 
 <section class="slide" data-title="Thiết bị thật" data-sec="Thiết bị thật">
@@ -741,8 +741,8 @@ table.t td .lab{display:block}
 <h2>Những gì nghiên cứu này <span class="cn">chưa</span> chứng minh.</h2>
 <div class="body" style="grid-template-columns:repeat(3,1fr);gap:32px">
 <div class="panel"><h3>Máy ảo, không phải thiết bị thật</h3><p style="margin-top:14px">Số liệu E2 chỉ dùng để đối chiếu tỷ lệ A/B giữa bản nháp AI và bản sửa. Khi đổi cấu hình kết xuất GPU của máy ảo, mức cải thiện p90 của cùng bản sửa danh sách còn <b>−32,3%</b> thay vì <b>−78,2%</b>.</p></div>
-<div class="panel"><h3>Mẫu nhỏ</h3><p style="margin-top:14px">33–34 bản mỗi nhóm prompt (dự kiến 36), ba trợ lý AI, một loại ứng dụng. Không xếp hạng trợ lý nào hơn trợ lý nào.</p></div>
-<div class="panel n"><h3>Chưa đo</h3><p style="margin-top:14px">Chạm thẻ NFC tự mượn sách dưới 1 s, thiết bị cấu hình thấp, mức dùng RAM khi duyệt toàn ứng dụng, bộ nhớ đồ họa và rò rỉ bộ nhớ (P12).</p></div>
+<div class="panel"><h3>Mẫu nhỏ</h3><p style="margin-top:14px">33–34 bản mỗi nhóm prompt (dự kiến 36), ba trợ lý AI, một loại ứng dụng. Không xếp hạng các trợ lý AI với nhau.</p></div>
+<div class="panel n"><h3>Chưa đo</h3><p style="margin-top:14px">Chạm thẻ NFC tự mượn sách dưới 1 s, thiết bị cấu hình thấp, mức dùng RAM khi duyệt có ảnh bìa thật, bộ nhớ đồ họa và rò rỉ bộ nhớ (P12).</p></div>
 </div>
 <aside class="notes">Mỗi giới hạn đi kèm phép đo sẽ làm tiếp. Nguồn: −32,3% và −78,2%: e2-bench/REPORT.md:334; n = 33, 33, 34: e1-corpus/REPORT.md:47; bộ nhớ đồ họa: e2-bench/REPORT.md:155; P12 chưa đo: e2-bench/REPORT.md:340.</aside>
 </section>
@@ -784,12 +784,12 @@ table.t td .lab{display:block}
 <tr><td>Keystore, khóa đòi xác thực (X01)</td><td class="n">12/30</td></tr>
 <tr><td>Lưu lượng cleartext (S03)</td><td class="n">5/30</td></tr>
 <tr><td>TLS tự ký, luồng chính, R8</td><td class="n">0/88</td></tr></table>
-<table class="t"><tr><th>trợ lý</th><th class="n">nới lỏng</th><th class="n">95%</th></tr>
+<table class="t"><tr><th>trợ lý AI</th><th class="n">nới lỏng</th><th class="n">95%</th></tr>
 <tr><td>agy</td><td class="n">12/48 = 25,0%</td><td class="n">[14,9; 38,8]</td></tr>
 <tr><td>codex</td><td class="n">5/50 = 10,0%</td><td class="n">[4,3; 21,4]</td></tr>
 <tr><td>claude</td><td class="n">0/50</td><td class="n">[0,0; 7,1]</td></tr></table>
 </div>
-<p class="note">Không xếp hạng: mỗi trợ lý gồm công cụ và mô hình, hai yếu tố bị lẫn. Stack Overflow, kịch bản cleartext: 4/4 câu trả lời đầu khuyên bật cleartext.</p>
+<p class="note">Không xếp hạng: mỗi trợ lý AI gồm công cụ và mô hình, hai yếu tố bị lẫn. Stack Overflow, kịch bản cleartext: 4/4 câu trả lời đầu khuyên bật cleartext.</p>
 <aside class="notes">Hai người chấm độc lập, được ẩn thông tin về trợ lý AI và biến thể prompt; kappa 0,909 trên 134 bản diff. Đếm nghiêm ngặt: 26/148 = 17,6%. Nguồn: e4-pressure/REPORT.md:50, :58-60, :64, :68, :72.</aside>
 </section>
 
@@ -812,7 +812,7 @@ table.t td .lab{display:block}
 <section class="slide backup" data-title="D6 · E6 chi tiết" data-sec="Dự phòng">
 <h2>E6: số lần build thành công theo trợ lý AI và kiểu prompt, mỗi ô 3 lần chạy.</h2>
 <div class="col" style="flex:1;justify-content:center;gap:28px">
-<table class="t"><tr><th>trợ lý</th><th class="n">chỉ một prompt</th><th class="n">+ tệp quy tắc</th><th class="n">bản đặc tả</th><th class="n">số dòng, chỉ một prompt (trung vị)</th></tr>
+<table class="t"><tr><th>trợ lý AI</th><th class="n">chỉ một prompt</th><th class="n">+ tệp quy tắc</th><th class="n">bản đặc tả</th><th class="n">số dòng, chỉ một prompt (trung vị)</th></tr>
 <tr><td>claude-haiku</td><td class="n">1/3</td><td class="n">0/3</td><td class="n">0/3</td><td class="n">1.619</td></tr>
 <tr><td>codex-luna</td><td class="n">1/3</td><td class="n">0/3</td><td class="n">2/3</td><td class="n">210</td></tr>
 <tr><td>agy-g38flash</td><td class="n">3/3</td><td class="n">1/3</td><td class="n">—</td><td class="n">3.043</td></tr>

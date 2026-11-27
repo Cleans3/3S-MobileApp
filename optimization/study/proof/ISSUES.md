@@ -282,3 +282,58 @@ All 38 data values of slides 21 and 22 are proven (56 rows, bad rows 0, unproven
 - Source: isolation-audit/AUDIT.md:36-50. Zero runs open with "Cleanse", zero use MCP/skills/slash, zero hook events (E1/E4/E5 main rows). But the scan lists 3 strong-marker hits: E1 claude-haiku-B3-naive-r2 (usage-meter UI toast, a UI notice, not model context), E4 c1-agy-B-r4 (home-dir listing, which slide 31 already admits), and the 2 real-home controls (by design). AUDIT.md:14 also says the 207 stub-HOME Claude runs "contain no marker", which the audit's own table does not fully back for the toast run.
 - Proof row 0 on slides 5 and 31 quotes the E1 main row of the audit table and states what the 0 counts. The number is honest only as "0 runs show rule text in the model context"; the strict "0 traces" is not.
 - Fix: slide 5 "0 lần có quy tắc riêng lọt vào hội thoại" (or "0 lần mở bằng quy tắc riêng"), and let slide 31 keep the two admitted exceptions.
+
+## 2026-11-28 — proof pass for the frozen 33-slide deck (25 main + D1–D8)
+
+The deck was rebuilt (24 → 25 main slides, new D1–D8), so every row from the 21-slide deck was stale. All rows were deleted and the table was written again from primary sources: the experiment REPORT.md files, the results CSVs, isolation-audit/AUDIT.md, 00-protocol.md, optimization/log/opt-ui-ux.md, optimization/ui-ux-metrics.md and the repo CLAUDE.md for the course targets. The ~/work inventory was not used. Result: `check_deck_proof.py` exit 0, 730 rows (407 direct, 90 derived, 233 label), 14 source files, 719 data values on 33 slides, 0 bad, 0 stale, 0 unproven.
+
+**No number in the deck is wrong.** Every displayed value matched its source or a computation from it, so presentation.html got no number change.
+
+### One markup change, needed so the check covers slide 4
+
+The checker takes each slide as `<section class="slide">…</section>` with a non-greedy match, and slide 4 (the classification matrix) used `<section class="bin">` for its three columns. The match stopped at the first column's closing tag. Only the "Phổ biến" column was checked; the Ít gặp and Hiếm columns, the E4 line and all of the slide-4 notes were invisible to the check. The three bins are now `<div class="bin">`. No CSS targets `section.bin`; the headless layout check renders slide 4 the same at 1280 and 1920 (0 elements outside the canvas, content bottom 980). Slide 4 went from 6 checked values to 33.
+
+### How the computed values are proven (kind = derived)
+
+- **k/66 prevalence** (slides 4, 5, 7, 8, 10, 13, 19): the naive and detailed-functional counts on the same e1-corpus/REPORT.md rule line are summed, e.g. S01 `8+11` = 19. P10 and P09 use the v2 table (2b, lines 94 and 93: 30+33 = 63, 1+1 = 2), as the deck notes say. The other rules use table 2a (lines 49–77). The percentages on slide 4 are the k/66 share of those sums (`(30+33)/66*100` = 95, etc.).
+- **58/100** = `100-42` (e1-corpus/REPORT.md:7).
+- **MB**: RSS and heap are KB / 1024 (`184000/1024` = 179.7 → 180; `248400/1024` = 242.6 → 243; `7734/1024` = 7.55 → 7,6). APK bytes are / 1 000 000, as the slide-5 and slide-12 notes say (`24740000/1000000` = 24.7).
+- **Holm-adjusted p**: raw p × (5 − rank + 1), with raw p from e1-corpus/REPORT.md:131, :133, :135, e2-bench/REPORT.md:153 and e4-pressure/results/c4_confirmatory.csv:2. C2 `0.00001*5`, C1 `0.00004*4`, C3 `0.00009*3`, C5 `0.000308*2`. For C4, 0.3106 is the raw p, and the multiplier is 1. The thresholds on D2 are 0.05/5 … 0.05/1.
+- **"gấp 2,3 lần"** = `2.37/1.02` (e1-corpus/REPORT.md:135).
+- **P08 11/12** = `12-1`: 11 distinct arm-O run_ids have rule_id P08 in e6-oneshot/results/findings.csv. The only arm-O run without P08 is agy-g38flash-O-r3, the run that crashed at launch.
+- **60 fps** = `1000/16.67` (e2-bench/REPORT.md:45). **"gần 2 giây"** = `1901/1000`.
+- **P13 "4 trong 12 tiền tố"** comes from e2-bench/results/p13_equivalence.csv. The 4 rows whose 120-row pages differ are s, si, "silent r" and "silent ri"; i runs 1..12.
+
+### Label rows (not data), and why there are many
+
+The checker reads the speaker notes too. These are the label rows:
+- Every line number in a notes source pointer (`REPORT.md:58`).
+- Every "~N giây" timing.
+- File names (`00-protocol.md`, `code-01.kt`, `agent-06.txt`).
+- Slide cross-references ("slide 7").
+- The stage and takeaway numbers on slides 23–25.
+- Forest-plot axis ticks (slide 9) and the Holm ranks (D2).
+- The Kotlin version (2.4.21) and the emulator host address 10.0.2.2.
+
+A label is used only where the value has no data reading anywhere on that slide. If the value is also data, it gets a sourced row instead. For example, 60 on slide 4 is both "~60 giây" and 60 fps, and its row cites the CLAUDE.md target.
+
+### Checker limitations found (not deck errors; the checker was not changed)
+
+1. **Nested `<section>`.** Any `</section>` inside a slide silently ends that slide for the checker (fixed in the deck as above). A slide checked this way only looks green.
+2. **Scientific notation.** `1,84e5 KB` in the notes becomes the token "1", because the number regex refuses a digit glued to "e". Those fragments are label rows that name the full value and the row that proves it.
+3. **CSV quotes.** `numbers_in` reads `148,17,0.1149` as one number, so a quote taken from a CSV line has to isolate the value between its commas (`,0.1149,`).
+4. **matches() is lenient.** It accepts ×100, ×0.01, ×1000, ×0.001, a sign flip and rounding, so a long quote can pass for the wrong reason. Every quote in this table is the narrowest fragment that carries the claimed number.
+
+### Addendum (same day): whole-app browsing RAM on slide 21 is now measured
+
+alpha allowed one factual update to the frozen deck. The teammate's PR measured whole-app memory on a real phone: optimization/log/opt-ui-ux.md:650 and optimization/ui-ux/measure/results-xiaomi-list/results.tsv. The Xiaomi 25053RT47C ran the `measure` build through `scrollList` on 100,013 books, 5 interleaved runs per build. PSS median was 94 MB for the flat build and 95 MB for the cards build: the pssKb medians 96535 and 97493 KB, divided by 1024. RSS was about 234–235 MB. It includes shared libraries, and the log itself says not to compare RSS with the 150 MB target.
+
+The source supports a qualified claim. The row "RAM · toàn ứng dụng ShelfTap khi duyệt — — chưa đo" became "RAM · toàn ứng dụng, cuộn danh mục, chưa có ảnh bìa (PSS) | — | 94–95 MB | đạt, Xiaomi flagship". The qualifiers are stated in the deck:
+- one scenario on one flagship phone, not a low-cost device;
+- the sample data has no cover images (opt-ui-ux.md:650), so the image-decode cost, the main memory risk of P06, is not in the number.
+
+Two consistency edits follow from it:
+- The slide-21 headline changed from "ba hạng mục chưa đo" to "hai hạng mục chưa đo".
+- D1 "Chưa đo" changed from "mức dùng RAM khi duyệt toàn ứng dụng" to "mức dùng RAM khi duyệt có ảnh bìa thật".
+
+The slide-21 notes carry the new path:line. 11 proof rows were added. Check: exit 0, 741 rows, 728 data values, 0 unproven. Headless check of slides 21 and 26 at 1280 and 1920: nothing outside the canvas, content bottom 980.
