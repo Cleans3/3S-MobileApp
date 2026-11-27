@@ -1,6 +1,6 @@
 # E7 Research Note: New Problems and Engineering Gates Grounded in E1–E6 Data
 
-**Status:** Desk phase complete (prototypes built, unit-tested, and retrospectively evaluated on E1, E4, E5, E6, and human-control corpora; no emulator or connected Gradle tests run yet).  
+**Status:** Phase-1 desk prototypes + retrospective evaluation complete; Phase-2 E7a emulator measurement complete (§8, AVD `lowend34`, 75 cold-start runs, emulator stopped). E7b not run (out of scope for current quota).  
 **Scope:** Strictly additive under `optimization/study/e7-novel/`. No frozen study files or `android/optlab` sources were modified.
 
 ---
@@ -173,3 +173,75 @@ Decision rules below are **fixed before any Phase-2 data is collected**.
 3. **Amplifier scope:** `scale_probe.py amplify` targets hardcoded Kotlin `listOf(...)` literals of `data class` constructors. Apps that seed small datasets via JSON assets (`assets/*.json`) or Room `RoomDatabase.Callback.onCreate` SQL inserts need a companion asset/SQL seeder in Phase 2.
 4. **No emulator execution yet:** Syntactic balance (`brackets_balanced = true`) proves the amplified Kotlin files are well-formed, not that Gradle compiles every amplified app or that RSS/search crosses `150 MB` / `50 ms` at runtime; that proof waits on Phase-2 E7a.
 5. **Small `n` in E6 and E1 blind-spot strata:** `DG-FAILOPEN` (`4/66`) and `DG-DEBUGSIGN` (`4/34` E1, `3/12` E6-R) have wide Wilson intervals and come from a single domain family (library apps). They establish existence and direction, not universal population rates.
+
+---
+
+## 8. Results E7a (Emulator Phase 2: Scale Amplification on AVD `lowend34`)
+
+Executed 2026-11-28 with `optimization/study/e7-novel/run_e7a.py` on AVD `lowend34` (`-gpu swangle_indirect`, `MemorySwapMax=0`, 2 cores, 2 GB RAM, 720×1280@280). Heavy build trees and APKs live outside the repo in `3S-study-work/e7/`. All raw rows and summaries are committed under `optimization/study/e7-novel/results/e7a_{builds,raw,summary}.csv`. Emulator numbers are **relative A/B ratios** (not phone speeds); failed/frozen runs are reported as outcomes, never excluded.
+
+### 8.1 Amplifier Build Preservation (`results/e7a_builds.csv`)
+
+All 5 launching E6 arm-O apps were amplified by `scale_probe.py amplify` at both `N = 2,000` and `N = 100,000` (`10` amplified builds total) with zero edits beyond the automated rewrite:
+
+| Run ID | Original E6 build | `N = 2,000` build | `N = 100,000` build | Repair applied (identical to E6 R7 table) |
+|---|---|---|---|---|
+| `claude-sonnet-O-r3` | pass (0 repairs) | pass (0) | pass (0) | none (zero-touch) |
+| `claude-haiku-O-r1` | pass (1 repair) | pass (1) | pass (1) | `missing-import: BookTile.kt:fillMaxWidth` |
+| `codex-luna-O-r3` | pass (1 repair) | pass (1) | pass (1) | `kotlin.jvm.target.validation.mode=warning` |
+| `agy-g38flash-O-r1` | pass (0 repairs) | pass (0) | pass (0) | none (zero-touch) |
+| `agy-g38flash-O-r2` | pass (0 repairs) | pass (0) | pass (0) | none (zero-touch) |
+
+- **Build-preserved rate:** **`5/5` apps (`10/10` builds = 100%)**; zero amplifier-introduced compile failures. Strictly zero-touch without E6's R7 repair: `3/5` apps (identical to the `3/5` zero-touch rate of the unmodified E6 originals).
+
+### 8.2 Per-App Emulator Measurements (`n = 5` cold-start iterations per variant; medians from `results/e7a_summary.csv`)
+
+| Run ID | Scale (`N`) | ok / n | Cold `launch_ms` (ratio vs `N0`) | Peak `PSS` MB (Δ%) | `Java Heap` MB (ratio) | `VmHWM` MB | Scroll `jank %` | Search `p90 ms` (ratio) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `claude-sonnet-O-r3` | `orig` (12) | 5/5 | 1,168.0 | 74.0 | 15.6 | 157.3 | 99.3% | 187.0 |
+| `claude-sonnet-O-r3` | `n2000` (2,000) | 5/5 | 1,167.0 (1.00×) | 77.5 (+4.7%) | 17.4 (1.12×) | 162.5 | 99.4% | 246.9 (1.32×) |
+| `claude-sonnet-O-r3` | `n100000` (100,000) | 5/5 | **2,514.0** (**2.15×**) | 93.1 (+25.8%) | 39.1 (2.51×) | 188.2 | 99.5% | **560.0** (**3.00×**) |
+| `claude-haiku-O-r1` | `orig` (12) | 5/5 | 1,185.0 | 75.4 | 14.8 | 161.3 | 96.0% | 116.8 |
+| `claude-haiku-O-r1` | `n2000` (2,000) | 5/5 | 1,206.0 (1.02×) | 77.2 (+2.4%) | 15.8 (1.07×) | 162.7 | 97.9% | 129.3 (1.11×) |
+| `claude-haiku-O-r1` | `n100000` (100,000) | 5/5 | **2,828.0** (**2.39×**) | 103.8 (+37.7%) | 48.5 (3.28×) | 198.6 | 98.0% | **233.4** (**2.00×**) |
+| `codex-luna-O-r3` | `orig` (8) | 5/5 | 1,061.0 | 107.0 | 15.5 | 189.3 | 77.6% | — |
+| `codex-luna-O-r3` | `n2000` (2,000) | 5/5 | **8,069.0** (**7.61×**) | **343.2** (**+220.7%**) | **113.4** (**7.32×**) | **505.2** | 79.5% | — |
+| `codex-luna-O-r3` | `n100000` (100,000) | 5/5* | **hung >10,123 ms*** | **265.9** (**+148.5%**) | **188.6** (**12.17×**) | **435.0** | **0 frames*** | — |
+| `agy-g38flash-O-r1` | `orig` (10) | 5/5 | 1,699.0 | 106.6 | 14.7 | 194.0 | 100.0% | — |
+| `agy-g38flash-O-r1` | `n2000` (2,000) | 5/5 | 1,764.0 (1.04×) | 111.5 (+4.6%) | 19.0 (1.29×) | 195.7 | 100.0% | — |
+| `agy-g38flash-O-r1` | `n100000` (100,000) | 5/5 | 3,028.0 (1.78×) | 137.7 (+29.2%) | 44.7 (3.04×) | 247.7 | 100.0% | — |
+| `agy-g38flash-O-r2` | `orig` (8) | 5/5 | 1,165.0 | 106.6 | 13.8 | 190.5 | 100.0% | — |
+| `agy-g38flash-O-r2` | `n2000` (2,000) | 5/5 | 1,173.0 (1.01×) | 106.3 (−0.3%) | 13.7 (0.99×) | 191.3 | 100.0% | — |
+| `agy-g38flash-O-r2` | `n100000` (100,000) | 5/5 | **2,146.0** (**1.84×**) | 134.2 (+25.9%) | 49.6 (3.59×) | 230.0 | 100.0% | — |
+
+*\*`codex-luna-O-r3` at `N = 100,000` stayed alive without throwing `OutOfMemoryError`, so `am start -W` timed out of `WaitForLaunch` after `10.1 s` (median wall `10,123 ms`, no `TotalTime:` emitted) and rendered `0` frames during scroll while holding `188.6 MB` Java heap (`265.9 MB` PSS, `435.0 MB` `VmHWM`). Search was exercised on the `2/5` apps with an on-screen `EditText` (`claude-sonnet-O-r3`, `claude-haiku-O-r1`).*
+
+### 8.3 Pre-Stated Decision Rules Applied
+
+1. **Amplifier compilation validity (`>= 4/5` apps build-preserved):** **SUPPORTED** (`5/5` apps / `10/10` builds pass with zero amplifier-induced errors; `3/5` strictly zero-touch, `2/5` using the exact 1 E6 R7 repair their originals required).
+2. **Toy-Data Illusion confirmed dynamically (`>= 3/5` apps cross a pre-stated ceiling at `N = 100,000` from below `N0`):** **SUPPORTED (`4/5` apps cross a ceiling they passed at `N0`):**
+   - `claude-sonnet-O-r3`: crosses `(b)` `launch_ms > 1,500 ms` (`1,168 → 2,514 ms`, `2.15×`).
+   - `claude-haiku-O-r1`: crosses `(b)` `launch_ms > 1,500 ms` (`1,185 → 2,828 ms`, `2.39×`).
+   - `codex-luna-O-r3`: crosses **both** `(a)` `PSS > 150 MB` (`107.0 → 343.2 MB` already at `N = 2,000`, `265.9 MB` frozen at `100,000`) **and** `(b)` `launch_ms > 1,500 ms` / frozen UI (`1,061 → 8,069 ms` at `2,000`; `> 10,123 ms` with `0` rendered frames at `100,000`).
+   - `agy-g38flash-O-r2`: crosses `(b)` `launch_ms > 1,500 ms` (`1,165 → 2,146 ms`, `1.84×`).
+   - `agy-g38flash-O-r1`: did **not** cross a new ceiling from below (its `N0` launch was already `1,699 ms > 1,500 ms` and grew `+78.2%` to `3,028 ms`; PSS stayed `137.7 < 150 MB`).
+3. **Important engineering nuance (why the static + dynamic two-stage gate matters):**
+   - Only **`1/5` apps (`codex-luna-O-r3`)** crossed the `150 MB` PSS ceiling—and it is the **exact app `scale_probe.py audit` flagged with `SCALE-EAGER-LIST` (P09)** (`Column` + `verticalScroll` + `forEach`). The `4/5` apps that used lazy grids stayed under `150 MB` PSS (`93.1–137.7 MB`) even at `100,000` rows, though their Java heap grew `2.5×–3.6×` (`13.8–15.6 → 39.1–49.6 MB`), cold startup doubled (`1.78×–2.39×` due to main-thread `List(100000)` initialization), and live search-typing frame p90 grew `2.0×–3.0×` (`116.8 → 233.4 ms`, `187.0 → 560.0 ms`).
+   - Scroll jank on `swangle_indirect` was already saturated (`96–100%`) at `N0` for 4 of 5 apps because of decorative effects (`P08`), so `janky_pct` did not separate `N0` from `N = 100,000`—validating why device-independent counters (`PSS`, `Java Heap`, `launch_ms` ratio, and `0`-frame hang detection) are the informative emulator gates.
+
+### 8.4 Deviations from Section 6.1 (Recorded Explicitly)
+
+- **D1 (Harness):** Used `adb shell am start -W`, `dumpsys meminfo`, `/proc/<pid>/status` `VmHWM`, and `dumpsys gfxinfo` (matching E6's harness) instead of `ScaleBudgetGate.kt` Macrobenchmark, because E6 arm-O apps are debug APKs without a `macrobenchmark` module or `st_search_query` trace probes.
+- **D2 (Baseline APKs & R7 repairs):** Original (`N0`) measurements reused the exact E6 APKs (`3S-study-work/apk-corpus/<run_id>.apk`); amplified APKs were built through `build_run.py`'s R7 mechanical repair table so the two apps that needed 1 repair in E6 were not unfairly excluded.
+- **D3 (Search metric):** Without injecting `Trace.beginSection` into app code (forbidden by the zero-edit amplifier rule), live search was measured on the `2/5` apps with an on-screen `EditText` via `uiautomator` tap + `input text "Orchard"` + `dumpsys gfxinfo` p90 (reported as relative A/B ratios `2.00×` and `3.00×`, not compared against the `50 ms` pure-query ceiling).
+- **D4 (PSS vs TOTAL RSS):** `dumpsys meminfo TOTAL RSS` includes shared system libraries (`156–189 MB` even at `N0 = 8–12`); `TOTAL PSS` (the E6 memory metric) governs the `< 150 MB` check while `RSS`, `VmHWM`, and `Java Heap` are all recorded in `results/e7a_summary.csv`.
+- **D5 (Freeze outcome):** `codex-luna-O-r3` at `N = 100,000` hung initial composition beyond `am start -W`'s `~10 s` wait without crashing with `OutOfMemoryError`, producing empty `TotalTime:` and `0` rendered frames; this is reported as a startup-freeze outcome, not excluded.
+
+### 8.5 Reproduce E7a
+
+```bash
+python3 optimization/study/e7-novel/run_e7a.py build          # builds 10 amplified APKs in 3S-study-work/e7/apks/
+python3 optimization/study/e7-novel/run_e7a.py measure --iters 5   # boots lowend34, runs 75 cold starts, shuts emulator down
+python3 optimization/study/e7-novel/run_e7a.py summarize      # regenerates results/e7a_summary.csv
+```
+
