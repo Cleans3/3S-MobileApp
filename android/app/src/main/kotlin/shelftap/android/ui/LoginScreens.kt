@@ -15,6 +15,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import shelftap.android.ui.theme.AdaptiveSize
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -49,6 +52,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
@@ -76,14 +80,9 @@ import shelftap.android.ui.theme.okFill
 import shelftap.android.ui.theme.pressScale
 import shelftap.android.ui.theme.shelfTap
 
-@StringRes
-private fun LogoutReason.message() = when (this) {
-    LogoutReason.SESSION_EXPIRED -> R.string.logout_session_expired
-    LogoutReason.TOKEN_REUSED -> R.string.logout_token_reused
-    LogoutReason.INACTIVITY -> R.string.logout_inactivity
-    LogoutReason.LOCK_KEY_INVALIDATED -> R.string.logout_lock_key_invalidated
-}
-
+private const val BLUR_FORM_FILL = 0.68f // the board's value, used when the form blurs what is behind it
+private val FORM_BLUR = 24.dp
+private const val FORM_SATURATION = 1.2f
 private const val FORM_FILL = 0.92f // the board's 0.68 sits on a blur; with none the form must stay readable over the books
 private const val FORM_EDGE = 0.9f
 private const val OR_RULE_ALPHA = 0.12f
@@ -93,10 +92,10 @@ private const val TOP_VEIL = 0.85f
 private const val TOP_VEIL_END = 0.3f // of the backdrop's height: about the bar
 
 // The books on the shelves of the login: widths and heights in dp and a palette, from the board (so every run draws the same shelves).
-private val BOOK_COLORS = listOf(0xFF8E5A3C, 0xFF2F4A44, 0xFFC9A66B, 0xFF6B6F7A, 0xFFB5452B, 0xFF3E3A36, 0xFFD8C9A8, 0xFF556B5A, 0xFFA3633F, 0xFF41506B).map { Color(it) }
-private val BOOK_WIDTHS = intArrayOf(22, 30, 18, 26, 34, 20, 28, 24, 16, 30, 22, 26)
-private val BOOK_HEIGHTS = intArrayOf(130, 112, 140, 100, 126, 144, 108, 132, 120, 104, 138, 116)
-private val PLANK = Color(0xFF8A7461)
+internal val BOOK_COLORS = listOf(0xFF8E5A3C, 0xFF2F4A44, 0xFFC9A66B, 0xFF6B6F7A, 0xFFB5452B, 0xFF3E3A36, 0xFFD8C9A8, 0xFF556B5A, 0xFFA3633F, 0xFF41506B).map { Color(it) }
+internal val BOOK_WIDTHS = intArrayOf(22, 30, 18, 26, 34, 20, 28, 24, 16, 30, 22, 26)
+internal val BOOK_HEIGHTS = intArrayOf(130, 112, 140, 100, 126, 144, 108, 132, 120, 104, 138, 116)
+internal val PLANK = Color(0xFF8A7461)
 
 /** Two shelves of books behind the top of the login, fading into the page; decorative (nothing in it is read out). */
 @Composable
@@ -125,13 +124,60 @@ private fun ShelfBackdrop(modifier: Modifier = Modifier) {
     }
 }
 
+/** The dark column of shelves on the left of a sign-in screen in a wide window (the boards `Mid*` and `Wide*` sign-in): rows of books to its full height. */
+@Composable
+internal fun ShelfColumn(modifier: Modifier = Modifier) {
+    Canvas(modifier.clearAndSetSemantics {}) {
+        drawRect(SHELF_DARK)
+        val dp = density
+        val rowHeight = 150f * dp
+        val gap = 24f * dp
+        var top = 40f * dp
+        var shelf = 0
+        while (top < size.height) {
+            var x = 28f * dp
+            var i = 0
+            while (x < size.width - 28f * dp) {
+                val w = BOOK_WIDTHS[(i + shelf * 3) % 12] * dp
+                val h = BOOK_HEIGHTS[(i * 5 + shelf) % 12] * dp
+                if (x + w > size.width - 28f * dp) break
+                drawRoundRect(BOOK_COLORS[(i * 3 + shelf * 7) % 10], Offset(x, top + rowHeight - h), Size(w, h), CornerRadius(2f * dp))
+                x += w + 4f * dp
+                i++
+            }
+            drawRect(PLANK, Offset(28f * dp, top + rowHeight), Size(size.width - 56f * dp, 9f * dp))
+            top += rowHeight + 9f * dp + gap
+            shelf++
+        }
+    }
+}
+
+private val SHELF_DARK = Color(0xFF2A1F18)
+
+/** The share of a wide sign-in screen that the column of shelves takes. */
+private const val SIGN_IN_SHELF_SHARE = 0.45f
+
+/**
+ * The frame of a sign-in screen in a window from [shelf] wide: shelves of books on the left and, centred on the right, [content] at most
+ * [AdaptiveSize.signInFormMax] wide (the boards `Mid*` and `Wide*` sign-in).
+ */
+@Composable
+internal fun SignInSplitFrame(content: @Composable () -> Unit) {
+    Row(Modifier.fillMaxSize()) {
+        ShelfColumn(Modifier.weight(SIGN_IN_SHELF_SHARE).fillMaxHeight())
+        Box(Modifier.weight(1f - SIGN_IN_SHELF_SHARE).fillMaxHeight(), contentAlignment = Alignment.Center) {
+            Box(Modifier.widthIn(max = AdaptiveSize.signInFormMax)) { content() }
+        }
+    }
+}
+
 /**
  * The login, built to the board `Login`: shelves of books at the top, a glass form over them (email, password with the eye, the
  * login button, "or", the card button) and a line about how to get an account. [reason] says why the member was signed out.
  * The password lives in memory only: it is not saved with the screen's state. (The board's blur behind the form is not drawn.)
  */
 @Composable
-fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
+fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit, split: Boolean = false, onGuest: (() -> Unit)? = null) {
     val vm = appViewModel { AuthViewModel(it.session) }
     val state by vm.state.collectAsStateWithLifecycle()
     var email by rememberSaveable { mutableStateOf("") }
@@ -139,23 +185,37 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
     val c = MaterialTheme.shelfTap
     val formShape = RoundedCornerShape(Radius.result)
 
+    // On the full tier the form blurs the shelves behind it, as the board's glass does. In a wide window ([split]) the shelves are a column of their own beside it.
+    val glass = if (split) null else rememberGateGlass()
+    val blurPx = with(LocalDensity.current) { FORM_BLUR.toPx() }
     Box(Modifier.fillMaxSize()) {
-        ShelfBackdrop(Modifier.fillMaxWidth().height(LoginSize.backdrop))
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding(0.dp, 0.dp))) {
-            Spacer(Modifier.height(LoginSize.formTop))
+        if (!split) ShelfBackdrop(Modifier.fillMaxWidth().height(LoginSize.backdrop).then(if (glass != null) Modifier.recordBackdrop(glass) else Modifier))
+        Column(
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding(0.dp, 0.dp)),
+            verticalArrangement = if (split) Arrangement.Center else Arrangement.Top,
+        ) {
+            if (reason != null) {
+                // Signed out: the notice for the reason first, then the form, which follows it (so a larger font moves the form down, not over the notice).
+                if (!split) Spacer(Modifier.height(LoginSize.noticeTop))
+                SignedOutNotice(reason, Modifier.padding(horizontal = Spacing.l))
+                Spacer(Modifier.height(Spacing.xl))
+            } else if (!split) {
+                Spacer(Modifier.height(LoginSize.formTop))
+            }
             Column(
                 Modifier.padding(horizontal = Spacing.l).fillMaxWidth()
                     .shadow(Spacing.xl, formShape, ambientColor = c.ink.copy(alpha = 0.18f), spotColor = c.ink.copy(alpha = 0.18f))
-                    .clip(formShape).background(c.glass.copy(alpha = FORM_FILL)).border(BorderStroke(Radius.hairline, c.edge.copy(alpha = FORM_EDGE)), formShape)
+                    .clip(formShape)
+                    .then(if (glass != null) Modifier.backdropBlur(glass, blurPx, FORM_SATURATION, Color.Transparent) else Modifier)
+                    .background(c.glass.copy(alpha = if (glass != null) BLUR_FORM_FILL else FORM_FILL)).border(BorderStroke(Radius.hairline, c.edge.copy(alpha = FORM_EDGE)), formShape)
                     .padding(start = Spacing.l + Spacing.xs, end = Spacing.l + Spacing.xs, top = Spacing.xl, bottom = Spacing.l + Spacing.xs),
                 verticalArrangement = Arrangement.spacedBy(Spacing.l),
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                    Text(stringResource(R.string.login_action), style = ShelfTapText.detailTitle)
-                    Text(stringResource(R.string.login_subtitle), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
+                    Text(stringResource(if (reason != null) R.string.login_again else R.string.login_action), style = ShelfTapText.detailTitle)
+                    if (reason == null) Text(stringResource(R.string.login_subtitle), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
                 }
                 IntegrityBanner()
-                reason?.let { Text(stringResource(it.message()), style = MaterialTheme.typography.bodyMedium, color = c.danger) }
                 LabeledField(stringResource(R.string.login_email), email, { email = it }, keyboardType = KeyboardType.Email, enabled = !state.busy)
                 LabeledField(stringResource(R.string.login_password), password, { password = it }, keyboardType = KeyboardType.Password, password = true, enabled = !state.busy)
                 ErrorText(state.error)
@@ -173,8 +233,10 @@ fun LoginScreen(reason: LogoutReason?, onCard: () -> Unit) {
             }
             Text(
                 stringResource(R.string.login_footer), style = MaterialTheme.typography.bodySmall, color = c.ink2, textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(start = Spacing.xl, end = Spacing.xl, top = Spacing.xl, bottom = Spacing.xl * 2),
+                modifier = Modifier.fillMaxWidth().padding(start = Spacing.xl, end = Spacing.xl, top = Spacing.xl, bottom = if (split && onGuest != null) Spacing.s else Spacing.xl * 2),
             )
+            // With no menu beside the screen (a wide window), the way back to the catalog is here.
+            if (split && onGuest != null) TextAction(stringResource(R.string.welcome_guest), onClick = onGuest, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
     }
 }
@@ -236,7 +298,7 @@ private fun CardStage(active: Boolean) {
                 .size(LoginSize.cardWidth, LoginSize.cardHeight).clip(RoundedCornerShape(Radius.tile)).background(CARD_TEAL)
                 .padding(Spacing.m),
         ) {
-            Text("ShelfTap", color = Color.White, style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold), modifier = Modifier.align(Alignment.TopStart))
+            Text(stringResource(R.string.app_name), color = Color.White, style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold), modifier = Modifier.align(Alignment.TopStart))
             Box(Modifier.align(Alignment.BottomStart).size(30.dp, 22.dp).clip(RoundedCornerShape(5.dp)).background(CARD_CHIP))
             Text(stringResource(R.string.card_illustration_name), color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.labelSmall, modifier = Modifier.align(Alignment.BottomEnd))
         }
@@ -251,7 +313,8 @@ private fun CardStage(active: Boolean) {
 fun CardLoginScreen(onBack: () -> Unit) {
     val vm = appViewModel { AuthViewModel(it.session) }
     val state by vm.state.collectAsStateWithLifecycle()
-    NfcGate {
+    // With no NFC (or NFC off) the gate shows only its message, so the way back to the password login is offered there too.
+    NfcGate(leave = { TextAction(stringResource(R.string.card_use_password), onClick = onBack) }) {
         NfcReaderEffect(TagReader.CARD_FLAGS) { vm.cardTapped(it) }
         CardLoginContent(busy = state.busy, error = state.error, onBack = onBack)
     }

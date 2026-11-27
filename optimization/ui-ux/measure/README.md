@@ -12,7 +12,7 @@
    ```
 
    Kiểu build `measure` giống `release` (R8, nhận Baseline Profile) nhưng ký bằng khoá debug và tin chứng chỉ dev của máy chủ để đo được với máy chủ dev. **Không bao giờ phát hành.** Chứng chỉ dev phải được cài làm CA người dùng trên máy đo.
-2. Máy đã mở khóa, đang ở màn Danh mục, có mạng tới máy chủ dev (khoảng 100.000 đầu sách để `scrollList` có việc làm).
+2. Máy đã mở khóa, có mạng tới máy chủ dev (khoảng 100.000 đầu sách để `scrollList` có việc làm). App mở bằng màn chào khi chưa đăng nhập; script tự bấm "Xem sách mà không cần đăng nhập" sau mỗi lần khởi động. Chứng chỉ dev phải đã cài làm CA người dùng, nếu không danh sách trống và số đo vô nghĩa.
 3. Chạy:
 
    ```

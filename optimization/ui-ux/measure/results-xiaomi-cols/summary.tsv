@@ -1,0 +1,3 @@
+scenario	label	runs	jankMedian	jankMin	jankMax	p90Median	p90Min	p90Max	rssMedianMb
+scrollList	before	5	0.02	0.02	0.02	13	13	13	233
+scrollList	after	5	0.02	0.02	0.02	13	13	13	238

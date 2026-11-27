@@ -180,19 +180,13 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
     val cancelLabel = stringResource(R.string.action_cancel)
     var confirmLogout by rememberSaveable { mutableStateOf(false) }
 
+    var section by rememberSaveable { mutableStateOf(AccountSection.PRIVACY) }
     LoadView(state.me, onRetry = vm::load) { me ->
-        Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding(GlassSize.page, Spacing.s)),
-            verticalArrangement = Arrangement.spacedBy(Spacing.m),
-        ) {
-            ProfileCard(me.fullName, me.email)
-            IntegrityBanner()
-            ErrorText(state.error)
-            if (state.stepUpFor != null) {
-                StepUpDialog(defaultEmail = me.email, onDismiss = vm::stepUpDismissed, onDone = vm::stepUpDone)
-            }
-
-            SectionLabel(stringResource(R.string.account_privacy))
+        if (state.stepUpFor != null) {
+            StepUpDialog(defaultEmail = me.email, onDismiss = vm::stepUpDismissed, onDone = vm::stepUpDone)
+        }
+        // The three groups of settings: one page of them on a narrow window, and one at a time in the pane beside the list on a wide one.
+        val privacy: @Composable () -> Unit = {
             GlassGroup {
                 SwitchItem(
                     stringResource(R.string.account_history_keep), stringResource(R.string.account_history_keep_caption),
@@ -201,8 +195,8 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
                 GroupDivider()
                 LinkItem(stringResource(R.string.account_history), onClick = onHistory)
             }
-
-            SectionLabel(stringResource(R.string.account_security))
+        }
+        val security: @Composable () -> Unit = {
             GlassGroup {
                 SwitchItem(
                     stringResource(R.string.account_bio), stringResource(if (biometricAvailable) R.string.account_bio_caption else R.string.account_bio_none),
@@ -219,16 +213,49 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
                 InfoItem(stringResource(R.string.account_auto_logout, BuildConfig.INACTIVITY_LIMIT_MS / 60_000))
                 InfoItem(stringResource(R.string.account_session_key, state.keyProtection))
             }
-
-            SectionLabel(stringResource(R.string.account_theme))
+        }
+        val theme: @Composable () -> Unit = {
             ThemeSegments(themeMode, onChange = { scope.launch { themeStore.set(it) } })
-
             if (BuildConfig.DEBUG) {
                 GlassGroup { DebugEffectChoice(onChange = { name -> scope.launch { themeStore.setForcedEffect(name) } }) }
             }
-
-            DangerOutlineButton(stringResource(R.string.action_logout), onClick = { confirmLogout = true })
         }
+        val top: @Composable () -> Unit = {
+            ProfileCard(me.fullName, me.email)
+            IntegrityBanner()
+            ErrorText(state.error)
+        }
+        val logout: @Composable () -> Unit = { DangerOutlineButton(stringResource(R.string.action_logout), onClick = { confirmLogout = true }) }
+        TwoPane(
+            detailTitle = stringResource(section.label),
+            list = { twoPane ->
+                Column(
+                    Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding(GlassSize.page, Spacing.s)),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.m),
+                ) {
+                    top()
+                    if (twoPane) {
+                        // Beside a detail pane the list holds the sections, as the board's account: choose one, read and change it in the pane.
+                        AccountSection.entries.forEach { sec -> SectionRow(stringResource(sec.label), selected = sec == section, onClick = { section = sec }) }
+                    } else {
+                        SectionLabel(stringResource(R.string.account_privacy))
+                        privacy()
+                        SectionLabel(stringResource(R.string.account_security))
+                        security()
+                        SectionLabel(stringResource(R.string.account_theme))
+                        theme()
+                    }
+                    logout()
+                }
+            },
+            detail = {
+                when (section) {
+                    AccountSection.PRIVACY -> privacy()
+                    AccountSection.SECURITY -> security()
+                    AccountSection.THEME -> theme()
+                }
+            },
+        )
     }
 
     if (confirmLogout) {
@@ -254,6 +281,27 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
                 ) { Text(stringResource(R.string.logout_stay), style = MaterialTheme.typography.titleSmall) }
             }
         }
+    }
+}
+
+/** The groups of settings of the account page. */
+private enum class AccountSection(@androidx.annotation.StringRes val label: Int) {
+    PRIVACY(R.string.account_privacy), SECURITY(R.string.account_security), THEME(R.string.account_theme),
+}
+
+/** A section in the list beside the detail pane: a glass row, outlined when it is the one shown. */
+@Composable
+private fun SectionRow(title: String, selected: Boolean, onClick: () -> Unit) {
+    val c = MaterialTheme.shelfTap
+    val shape = RoundedCornerShape(Radius.group)
+    Row(
+        Modifier.fillMaxWidth().heightIn(min = AccountSize.rowTall).clip(shape).background(c.glass.copy(alpha = GROUP_FILL))
+            .then(if (selected) Modifier.border(BorderStroke(Radius.hairline * 2, c.ink3), shape) else Modifier)
+            .selectable(selected = selected, role = Role.Tab, onClick = onClick).padding(horizontal = Spacing.l),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(title, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+        LucideIcon(LucideIcons.ChevronRight, tint = c.ink3)
     }
 }
 

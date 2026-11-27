@@ -26,6 +26,9 @@ object Motion {
     const val PANEL_OUT_MS = 90
     const val PULSE_MS = 1200
 
+    /** The start screen stays at least this long on a cold start, so its entrance (pop 380 ms, rise 80 + 420 ms) is seen to the end. */
+    const val SPLASH_MIN_MS = 700L
+
     /** Close to `cubic-bezier(0.2, 0.8, 0.2, 1)` in the mockup: fast start, soft landing. */
     val decelerate = CubicBezierEasing(0.2f, 0.8f, 0.2f, 1f)
 

@@ -141,8 +141,10 @@ fun SectionHeader(title: String, actionLabel: String?, onAction: () -> Unit, mod
     Row(modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(title, style = ShelfTapText.sectionTitle, modifier = Modifier.weight(1f, fill = false))
         if (actionLabel != null) {
-            Box(Modifier.height(GlassSize.round).pressable(RoundedCornerShape(Radius.tile), onAction, shrink = false).padding(start = Spacing.m), contentAlignment = Alignment.CenterEnd) {
-                Text(actionLabel, style = ShelfTapText.link, color = MaterialTheme.shelfTap.ink3)
+            // Several strips each have a "See all": a screen reader says whose ("See all, Children"), not the same words again and again.
+            val spoken = "$actionLabel, $title"
+            Box(Modifier.height(GlassSize.round).pressable(RoundedCornerShape(Radius.tile), onAction, shrink = false).semantics { contentDescription = spoken }.padding(start = Spacing.m), contentAlignment = Alignment.CenterEnd) {
+                Text(actionLabel, style = ShelfTapText.link, color = MaterialTheme.shelfTap.ink3, modifier = Modifier.clearAndSetSemantics {})
             }
         }
     }

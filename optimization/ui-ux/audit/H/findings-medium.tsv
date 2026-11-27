@@ -1,0 +1,3 @@
+config	screen	check	type	element	bounds	message
+medium	guest	DuplicateSpeakableTextCheck	WARNING	View	Rect(1013, 809 - 1141, 893)	This clickable item's speakable text: "Xem tất cả" is identical to that of 1 other item(s).
+medium	catalog	DuplicateSpeakableTextCheck	WARNING	View	Rect(1013, 809 - 1141, 893)	This clickable item's speakable text: "Xem tất cả" is identical to that of 1 other item(s).

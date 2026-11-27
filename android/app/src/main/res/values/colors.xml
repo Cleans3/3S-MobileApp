@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The background of the board `Splash` (#2F4A44), the same in the light and dark themes. -->
+    <color name="splash_background">#2F4A44</color>
+</resources>

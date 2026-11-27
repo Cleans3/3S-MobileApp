@@ -30,6 +30,9 @@ import shelftap.android.api.TokenPair
 object AuditData {
     const val EMAIL = "thanhvien.thu@example.vn"
 
+    /** A few subjects, so the list shows a row of chips of different lengths (declared first: the titles below use it while the object is built). */
+    private val SUBJECTS = listOf("Văn học Việt Nam", "Thiếu nhi", "Khoa học", "Lịch sử", "Kinh tế")
+
     val titles = listOf(
         title("t-1", "9786041234567", "Dế Mèn phiêu lưu ký", listOf("Tô Hoài"), 3),
         title("t-2", "9786041234574", "Số đỏ", listOf("Vũ Trọng Phụng"), 0),
@@ -66,7 +69,7 @@ object AuditData {
     )
 
     private fun title(id: String, isbn: String, name: String, authors: List<String>, available: Int) =
-        TitleSummary(id, isbn, name, authors, listOf("Văn học Việt Nam"), null, available)
+        TitleSummary(id, isbn, name, authors, listOf(SUBJECTS[(id.filter { it.isDigit() }.toIntOrNull() ?: 0) % SUBJECTS.size]), null, available)
 
     object ApiFake : ShelfTapApi {
         override suspend fun titles(q: String, page: Int, size: Int): Page<TitleSummary> {

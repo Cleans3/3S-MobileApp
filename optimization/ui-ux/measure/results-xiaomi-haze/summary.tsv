@@ -1,0 +1,5 @@
+scenario	label	runs	jankMedian	jankMin	jankMax	p90Median	p90Min	p90Max	rssMedianMb
+scrollHome	nohaze	5	0.02	0.02	0.02	5	5	5	211
+scrollHome	haze	5	0.02	0.02	0.02	8	8	8	215
+scrollList	nohaze	5	0.02	0.02	0.02	5	5	6	236
+scrollList	haze	5	0.02	0.02	0.02	9	9	9	239

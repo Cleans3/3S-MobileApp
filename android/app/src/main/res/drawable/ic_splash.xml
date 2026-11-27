@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The icon of the system's starting window, fully transparent on purpose: that window is only the teal of the start screen. The app's own
+     StartupScreen draws the book, the name and the motion right after it, so the system's window must not show a different picture first.
+     (A drawable with nothing in it is replaced by the system with the launcher icon, so this one has a transparent shape.) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="288dp"
+    android:height="288dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,0h24v24h-24z" />
+</vector>

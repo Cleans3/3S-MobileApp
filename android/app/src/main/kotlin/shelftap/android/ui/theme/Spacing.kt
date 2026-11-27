@@ -49,6 +49,19 @@ object AdaptiveSize {
     /** One pane of content never grows wider than this on a medium window, so lines stay readable. */
     val contentMax = 528.dp
 
+    /** The catalog on a medium window takes nearly the whole pane next to the rail (the board's page is 584 dp): its rows run in two columns. */
+    val contentMaxCatalog = 600.dp
+
+    /** A list of books runs in two columns where the pane is at least this wide. */
+    val twoColumnMin = 520.dp
+
+    /** From this width a sign-in screen is two columns: shelves on the left, the form on the right (up to [signInFormMax] wide). */
+    val signInSplitMin = 600.dp
+
+    /** A list and the detail of its chosen item are side by side in a pane at least this wide. */
+    val twoPaneMin = 700.dp
+    val signInFormMax = 480.dp
+
     /** On a wide window, screens other than the catalog are not stretched past this. */
     val contentMaxWide = 720.dp
 
@@ -91,6 +104,8 @@ object Radius {
 object GlassSize {
     val round = 48.dp
     val search = 52.dp
+    /** The blur of the glass bands under the top bar and the floating button. */
+    val bandBlur = 14.dp
     val bannerHeight = 200.dp
     val bannerCoverWidth = 104.dp
     val bannerCoverHeight = 150.dp
@@ -130,6 +145,8 @@ object NfcSize {
 object LoginSize {
     val backdrop = 360.dp
     val formTop = 250.dp
+    /** The notice of a signed-out login starts this far from the top (under the app bar). */
+    val noticeTop = 64.dp
     val button = 54.dp
     val field = 50.dp
     val stage = 300.dp

@@ -14,7 +14,10 @@ param(
     # Which device configurations to run. On a physical phone use 'light','dark': font2 and w320 change the phone's font and display size.
     [string[]] $Configs = @('light', 'dark', 'font2', 'w320', 'tall', 'land', 'medium', 'expanded'),
     # App language for the run (per-app locale, Android 13+), for example 'vi' to compare with the Vietnamese mockup. Default: leave as the device has it.
-    [string] $Locale = ''
+    [string] $Locale = '',
+    # The effect tier to run at (FULL, MEDIUM or LIGHT): a debug build forces it. Default: what the device would pick (an Android 16 emulator picks MEDIUM,
+    # so the full-tier effects, the blurred glass, are only seen with -Tier FULL).
+    [string] $Tier = ''
 )
 $ErrorActionPreference = 'Stop'
 $adb = Join-Path $env:LOCALAPPDATA 'Android\Sdk\platform-tools\adb.exe'
@@ -30,9 +33,9 @@ if ($origFont -eq 'null' -or $origFont -eq '') { $origFont = '1.0' }
 $nightNow = Get 'cmd uimode night'
 $origNight = if ($nightNow -match 'auto') { 'auto' } elseif ($nightNow -match 'yes') { 'yes' } else { 'no' }
 $origSize = if ((Get 'wm size') -match 'Override size: (\S+)') { $Matches[1] } else { 'reset' }
-function ApplyBase { Sh "wm size $origSize"; Sh "settings put system font_scale $origFont"; Sh "cmd uimode night $origNight" }
+function ApplyBase { Sh "wm size $origSize"; Sh 'wm density reset'; Sh "settings put system font_scale $origFont"; Sh "cmd uimode night $origNight" }
 # Each configuration starts from light, 1.0 font and the physical size; 'dark' etc. then change one thing.
-function ResetDevice { Sh 'wm size reset'; Sh 'settings put system font_scale 1.0'; Sh 'cmd uimode night no' }
+function ResetDevice { Sh 'wm size reset'; Sh 'wm density reset'; Sh 'settings put system font_scale 1.0'; Sh 'cmd uimode night no' }
 
 if ((& $adb -s $Serial shell getprop sys.boot_completed).Trim() -ne '1') { throw "$Serial is not booted" }
 $size = (& $adb -s $Serial shell wm size) -join ' '
@@ -44,11 +47,16 @@ New-Item -ItemType Directory -Force $out | Out-Null
 Sh "rm -rf $remote"
 $env:ANDROID_SERIAL = $Serial
 Sh 'input keyevent KEYCODE_WAKEUP'; Sh 'wm dismiss-keyguard'
+# The app language is set for the installed app: with the app not installed (another test run took it off the phone) that call does nothing
+# and the first configuration would be drawn in the phone's language. So install it first.
+if ($Locale) { Push-Location (Join-Path $repo 'android'); try { & .\gradlew.bat :app:installDebug --console=plain -q | Out-Null } finally { Pop-Location } }
 
 foreach ($config in $Configs) {
     ResetDevice
     switch ($config) {
         'dark'  { Sh 'cmd uimode night yes' }
+        'ref'     { Sh 'wm size 1170x2532'; Sh 'wm density 480' } # 390 dp x 844 dp at 480 dpi: the size of the boards (390 x 844)
+        'refdark' { Sh 'wm size 1170x2532'; Sh 'wm density 480'; Sh 'cmd uimode night yes' } # the same, in the dark theme
         'font2' { Sh 'settings put system font_scale 2.0' }
         'w320'  { Sh 'wm size 560x1120' } # 320 dp x 640 dp at 280 dpi
         'medium'   { Sh 'wm size 1260x1470' } # 720 dp x 840 dp at 280 dpi: a folded-open phone, nearly square
@@ -58,13 +66,15 @@ foreach ($config in $Configs) {
     }
     if ($Locale) { Sh "cmd locale set-app-locales shelftap.android --locales $Locale" }
     Write-Host "== $config"
+    $tierArgs = @(); if ($Tier) { $tierArgs += "-Pandroid.testInstrumentationRunnerArguments.tier=$Tier" }
     Push-Location (Join-Path $repo 'android')
     try {
         & .\gradlew.bat :app:connectedDebugAndroidTest --console=plain `
             "-Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true" `
             "-Pandroid.testInstrumentationRunnerArguments.class=shelftap.android.uiaudit.UiAuditTest" `
             "-Pandroid.testInstrumentationRunnerArguments.uiAudit=$Label" `
-            "-Pandroid.testInstrumentationRunnerArguments.config=$config"
+            "-Pandroid.testInstrumentationRunnerArguments.config=$config" `
+            @tierArgs
         if ($LASTEXITCODE -ne 0) { throw "audit run '$config' failed" }
     } finally { Pop-Location }
     & $adb -s $Serial pull "$remote/." $out | Out-Null

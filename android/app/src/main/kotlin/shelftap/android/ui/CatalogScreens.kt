@@ -5,12 +5,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.IntrinsicSize
+import shelftap.android.ui.theme.AdaptiveSize
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.Alignment
@@ -24,6 +27,14 @@ import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.Motion
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.layout
+import shelftap.android.ui.icons.LucideIcons
+import shelftap.android.ui.icons.LucideIcon
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -154,6 +165,7 @@ private const val SEARCH_DEBOUNCE_MS = 300L
 private const val STRIP_BOOKS = 8
 private const val STRIPS = 2
 private const val BANNER_BOOKS = 3
+private const val BANNER_MAX_BOOKS = 5
 private const val BANNER_SCRIM_ALPHA = 0.75f
 
 /** Above this system font scale the banner stacks its text under the covers. */
@@ -173,8 +185,14 @@ private fun stripsOf(items: List<TitleSummary>): List<Strip> {
     return strips.ifEmpty { listOf(Strip(null, items.take(STRIP_BOOKS))) }
 }
 
+/** The subjects of the books on screen, the most frequent first, as many as fit a row of chips. */
+private fun subjectsOf(items: List<TitleSummary>): List<String> =
+    items.flatMap { it.subjects }.groupingBy { it }.eachCount().entries.sortedByDescending { it.value }.take(CHIPS).map { it.key }
+
+private const val CHIPS = 8
+
 @Composable
-fun CatalogScreen(onOpen: (String) -> Unit) {
+fun CatalogScreen(onOpen: (String) -> Unit, guest: Boolean = false) {
     val vm = appViewModel { CatalogViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
     var input by rememberSaveable { mutableStateOf("") }
@@ -192,8 +210,20 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
             vm.search(input)
         }
     }
-    // Typing or "see all" turns the home into the list of results; back returns to the home.
+    // The subjects offered as chips come from the catalog as it shows with no search; they stay while a search narrows the results.
+    var chipSubjects by rememberSaveable { mutableStateOf(emptyList<String>()) }
+    LaunchedEffect(state.items, state.query) {
+        if (state.query.isBlank() && state.items.isNotEmpty()) chipSubjects = subjectsOf(state.items)
+    }
     val showList = listAll || input.isNotBlank()
+    // While the list is on screen, the top bar shows ← and the list's name; ← closes the list (the same as the back gesture).
+    val listPage = LocalListPage.current
+    val listTitle = if (input.isBlank()) R.string.list_title else R.string.list_results
+    DisposableEffect(showList, listTitle) {
+        if (showList) listPage?.value = ListPage(listTitle) { input = ""; listAll = false }
+        onDispose { if (showList) listPage?.value = null }
+    }
+    // Typing or "see all" turns the home into the list of results; back returns to the home.
     BackHandler(enabled = showList) {
         input = ""
         listAll = false
@@ -214,7 +244,7 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
         // It changes state after a short run in one direction (no following the finger), then plays a 260 ms animation read in the draw phase.
         // With a screen reader on it stays. Folded away, it is not on screen, not touchable and not read out.
         val insets = LocalPageInsets.current
-        val searchBlock = GlassSize.search + Spacing.s * 2
+        val searchBlock = GlassSize.search + Spacing.s * 2 + Spacing.touch
         val slopPx = with(LocalDensity.current) { Spacing.xl.toPx() }
         val screenReader = rememberTouchExploration()
         val tier = LocalEffectTier.current
@@ -246,9 +276,26 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
                         Modifier.padding(top = insets.top, start = GlassSize.page, end = GlassSize.page)
                             .drawWithContent {
                                 val side = size.width * (1f - open.value) / 2f
-                                clipRect(left = side, right = size.width - side) { this@drawWithContent.drawContent() }
+                                // Open, nothing is clipped (the chips run out to the screen's edges); folding, the band narrows to its middle.
+                                if (side <= 0f) drawContent() else clipRect(left = side, right = size.width - side) { this@drawWithContent.drawContent() }
                             },
-                    ) { search() }
+                    ) {
+                        Column {
+                            search()
+                            // The chip of the current search is selected; a subject searched from a book page is added when it is not among the first ones.
+                            val current = input.trim().ifEmpty { null }
+                            SubjectChipRow(
+                                subjects = if (current != null && chipSubjects.none { it.equals(current, true) }) listOf(current) + chipSubjects else chipSubjects,
+                                selected = current, allLabel = stringResource(R.string.catalog_chip_all),
+                                onAll = { input = ""; listAll = true }, onSubject = { input = it; listAll = false },
+                                modifier = Modifier.layout { m, c -> // the chips run to both edges of the page, past the search field's gutter
+                                    val extra = (GlassSize.page * 2).roundToPx()
+                                    val p = m.measure(c.copy(maxWidth = c.maxWidth + extra))
+                                    layout(c.maxWidth, p.height) { p.place(-GlassSize.page.roundToPx(), 0) }
+                                },
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -256,10 +303,12 @@ fun CatalogScreen(onOpen: (String) -> Unit) {
         // The home: greeting and search scroll with the page, so everything passes under the top bar as in the mockup.
         val header: @Composable () -> Unit = {
             Column(Modifier.padding(top = Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                Text(stringResource(R.string.catalog_hello), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.shelfTap.ink3)
-                Text(stringResource(R.string.catalog_headline), style = ShelfTapText.greeting)
+                // A guest is told so, and what the page is for (the board `Guest`); a member is greeted.
+                Text(stringResource(if (guest) R.string.guest_banner else R.string.catalog_hello), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.shelfTap.ink3)
+                Text(stringResource(if (guest) R.string.guest_headline else R.string.catalog_headline), style = ShelfTapText.greeting)
             }
             search()
+            if (guest) GuestNote(Modifier.padding(bottom = Spacing.xs))
         }
         CatalogHome(state, onOpen, onSubject = { input = it }, onAll = { listAll = true }, onRetry = vm::retry, header = header)
     }
@@ -282,7 +331,7 @@ private fun CatalogHome(
                 item { Column { header() } }
                 item {
                     val first = strips.first()
-                    Banner(first.subject, first.books.take(BANNER_BOOKS), onClick = { first.subject?.let(onSubject) ?: onAll() })
+                    Banner(first.subject, first.books.take(BANNER_MAX_BOOKS), onClick = { first.subject?.let(onSubject) ?: onAll() })
                 }
                 items(strips, key = { it.subject ?: "" }) { strip ->
                     Column(verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
@@ -319,11 +368,15 @@ private fun Banner(subject: String?, books: List<TitleSummary>, onClick: () -> U
     val theme = stringResource(R.string.catalog_theme)
     val name = subject ?: stringResource(R.string.catalog_library_strip)
     val stacked = LocalDensity.current.fontScale > STACK_FONT_SCALE
+    BoxWithConstraints {
+    // The covers fill the banner's width: three where it is narrow, up to BANNER_MAX_BOOKS where the pane is wide (a medium window).
+    val fit = ((maxWidth - Spacing.xl * 2 + Spacing.m) / (GlassSize.bannerCoverWidth + Spacing.m)).toInt()
+    val shown = books.take(fit.coerceIn(BANNER_BOOKS, BANNER_MAX_BOOKS))
     val frame = Modifier.fillMaxWidth().pressable(RoundedCornerShape(Radius.banner), onClick, row = true).background(bannerBackground)
         .semantics(mergeDescendants = true) { contentDescription = "$theme: $name" }
     val covers: @Composable () -> Unit = {
         Row(Modifier.padding(start = Spacing.xl, top = Spacing.xl), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-            books.forEach { book ->
+            shown.forEach { book ->
                 Cover(
                     book.coverUrl, book.title,
                     Modifier.size(GlassSize.bannerCoverWidth, GlassSize.bannerCoverHeight).shadow(GlassSize.shadow, RoundedCornerShape(Radius.cover)),
@@ -357,6 +410,7 @@ private fun Banner(subject: String?, books: List<TitleSummary>, onClick: () -> U
             label(Modifier.align(Alignment.BottomCenter))
         }
     }
+    }
 }
 
 /** Every book of the search, one row each, with paging. Rows are solid and carry no blur (plan section 7). */
@@ -365,11 +419,38 @@ private fun CatalogList(
     state: CatalogViewModel.UiState, onOpen: (String) -> Unit, rise: Boolean, onLoadMore: () -> Unit, onRetry: () -> Unit, topExtra: Dp,
 ) {
     val insets = LocalPageInsets.current
-    LazyColumn(Modifier.fillMaxSize(), state = rememberPreparedListState(), contentPadding = PaddingValues(top = insets.top + topExtra, bottom = insets.bottom)) {
-        itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
-            TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.riseIn(index, rise))
-            HorizontalDivider()
-            if (index == state.items.lastIndex) LaunchedEffect(state.items.size) { onLoadMore() }
+    // Where the pane is wide enough (a medium window, a phone on its side) the rows run in two columns, as the board's list does.
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+    val columns = if (maxWidth >= AdaptiveSize.twoColumnMin) 2 else 1
+    val gap = Spacing.s + Spacing.xs / 2
+    LazyColumn(
+        Modifier.fillMaxSize(), state = rememberPreparedListState(),
+        contentPadding = PaddingValues(start = GlassSize.page, end = GlassSize.page, top = insets.top + topExtra, bottom = insets.bottom),
+        verticalArrangement = Arrangement.spacedBy(gap),
+    ) {
+        if (state.total > 0) {
+            item(key = "count") {
+                Text(
+                    stringResource(R.string.list_count, state.total), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.shelfTap.ink3,
+                    modifier = Modifier.padding(horizontal = Spacing.xs).semantics { liveRegion = LiveRegionMode.Polite },
+                )
+            }
+        }
+        if (columns == 1) {
+            itemsIndexed(state.items, key = { _, item -> item.titleId }) { index, item ->
+                TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.riseIn(index, rise))
+                if (index == state.items.lastIndex) LaunchedEffect(state.items.size) { onLoadMore() }
+            }
+        } else {
+            val rows = state.items.chunked(columns)
+            itemsIndexed(rows, key = { _, row -> row.first().titleId }) { index, row ->
+                // The two cards of a row are as high as the taller one.
+                Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(gap)) {
+                    row.forEachIndexed { i, item -> TitleRow(item, onClick = { onOpen(item.titleId) }, modifier = Modifier.weight(1f).fillMaxHeight().riseIn(index * columns + i, rise)) }
+                    repeat(columns - row.size) { Spacer(Modifier.weight(1f)) } // the last row may be short: its book keeps the width of one column
+                }
+                if (index == rows.lastIndex) LaunchedEffect(state.items.size) { onLoadMore() }
+            }
         }
         item {
             when {
@@ -379,22 +460,40 @@ private fun CatalogList(
             }
         }
     }
-}
-
-@Composable
-private fun TitleRow(item: TitleSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Row(modifier.fillMaxWidth().pressable(RectangleShape, onClick, role = null, row = true).padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-        Cover(item.coverUrl, item.title, Modifier.size(width = CoverSize.rowWidth, height = CoverSize.rowHeight), shape = RoundedCornerShape(Radius.tile))
-        Column(Modifier.weight(1f)) {
-            Text(item.title, style = MaterialTheme.typography.titleMedium)
-            Text(item.authors.joinToString(", "), style = MaterialTheme.typography.bodyMedium)
-            Text(
-                if (item.copiesAvailable > 0) stringResource(R.string.catalog_available, item.copiesAvailable) else stringResource(R.string.catalog_all_on_loan),
-                style = MaterialTheme.typography.bodySmall,
-            )
-        }
     }
 }
+
+/**
+ * One book of the list, as a glass card (the board `List`): the cover, the title, the authors and how many copies are in, and an arrow.
+ * (The board also says the shelf; the API does not give it yet, plan section 11 item 13.)
+ */
+@Composable
+private fun TitleRow(item: TitleSummary, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val c = MaterialTheme.shelfTap
+    val shape = RoundedCornerShape(Radius.card)
+    val available = item.copiesAvailable > 0
+    Row(
+        modifier.fillMaxWidth().pressable(shape, onClick, role = null, row = true).background(c.glass.copy(alpha = ROW_FILL)).padding(Spacing.m),
+        horizontalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs / 2), verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Cover(item.coverUrl, item.title, Modifier.size(width = CoverSize.rowWidth, height = CoverSize.rowHeight), shape = RoundedCornerShape(Radius.cover - Spacing.xs))
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs - 1.dp)) {
+            Text(item.title, style = MaterialTheme.typography.titleMedium)
+            Text(item.authors.joinToString(", "), style = MaterialTheme.typography.bodyMedium, color = c.ink2, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            // The state as a pill: green for copies in, red for all on loan (the words carry the meaning, the colour only helps).
+            Text(
+                if (available) stringResource(R.string.catalog_available, item.copiesAvailable) else stringResource(R.string.catalog_all_on_loan),
+                style = MaterialTheme.typography.labelMedium, color = if (available) c.ok else c.danger,
+                modifier = Modifier.padding(top = Spacing.xs).clip(CircleShape).background((if (available) c.ok else c.danger).copy(alpha = PILL_FILL))
+                    .padding(horizontal = Spacing.m - Spacing.xs / 2, vertical = Spacing.xs),
+            )
+        }
+        LucideIcon(LucideIcons.ChevronRight, tint = c.ink3, size = Spacing.l + Spacing.xs)
+    }
+}
+
+private const val ROW_FILL = 0.72f
+private const val PILL_FILL = 0.12f
 
 /** Cover addresses that failed to load in this run: asked for again only after the app restarts, not every time a card scrolls back into view. */
 private val failedCovers: MutableSet<String> = java.util.Collections.newSetFromMap(java.util.concurrent.ConcurrentHashMap())

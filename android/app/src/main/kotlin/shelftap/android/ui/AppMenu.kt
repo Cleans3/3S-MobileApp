@@ -24,6 +24,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -122,7 +125,7 @@ data class MenuItem(val route: String, @StringRes val label: Int, val icon: Stri
 fun AppTopBar(
     @StringRes title: Int, menuOpen: Boolean, onMenu: () -> Unit,
     centred: Boolean = false, accountDescription: String? = null, onAccount: (() -> Unit)? = null,
-    back: Boolean = false, onBack: () -> Unit = {},
+    back: Boolean = false, onBack: () -> Unit = {}, @StringRes backTitle: Int? = null, loginLabel: String? = null, onLogin: (() -> Unit)? = null,
 ) {
     if (centred) {
         val tier = LocalEffectTier.current
@@ -146,12 +149,26 @@ fun AppTopBar(
                     }
                 }
             }
-            Text(
-                stringResource(title), style = ShelfTapText.barTitle, color = MaterialTheme.shelfTap.ink2, textAlign = TextAlign.Center,
-                modifier = Modifier.weight(1f).graphicsLayer { alpha = 1f - toBack.value }
-                    .then(if (menuOpen || back) Modifier.clearAndSetSemantics {} else Modifier),
-            )
-            if (onAccount != null && accountDescription != null && accountShown) {
+            Box(Modifier.weight(1f)) {
+                Text(
+                    stringResource(title), style = ShelfTapText.barTitle, color = MaterialTheme.shelfTap.ink2, textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().graphicsLayer { alpha = 1f - toBack.value }
+                        .then(if (menuOpen || back) Modifier.clearAndSetSemantics {} else Modifier),
+                )
+                // A page of its own (the catalog's list) names itself beside the back button, left-aligned, as in the mockup.
+                if (backTitle != null) {
+                    Text(
+                        stringResource(backTitle), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.shelfTap.ink,
+                        maxLines = 1, overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.align(Alignment.CenterStart).padding(start = Spacing.s).graphicsLayer { alpha = toBack.value }
+                            .then(if (menuOpen || !back) Modifier.clearAndSetSemantics {} else Modifier.semantics { heading() }),
+                    )
+                }
+            }
+            if (loginLabel != null && onLogin != null) {
+                // A guest: the "Log in" pill in the place of the account button (it goes with the page; on a book's page the back button takes the bar).
+                if (accountShown) LoginPill(loginLabel, onLogin, Modifier.graphicsLayer { alpha = 1f - toBack.value }) else Spacer(Modifier.size(GlassSize.round))
+            } else if (onAccount != null && accountDescription != null && accountShown) {
                 GlassCircleButton(
                     onClick = onAccount, description = accountDescription,
                     modifier = Modifier.graphicsLayer { alpha = 1f - toBack.value }.then(if (back) Modifier.clearAndSetSemantics {} else Modifier),

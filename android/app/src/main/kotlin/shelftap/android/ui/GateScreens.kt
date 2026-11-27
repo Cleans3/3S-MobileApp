@@ -7,6 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import shelftap.android.ui.theme.AdaptiveSize
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -60,6 +62,11 @@ import shelftap.android.data.Repository
 import shelftap.android.security.BiometricLock
 import shelftap.android.ui.icons.LucideIcon
 import shelftap.android.ui.icons.LucideIcons
+import androidx.compose.ui.graphics.BlurEffect
+import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.graphicsLayer
+import shelftap.android.ui.theme.EffectTier
+import shelftap.android.ui.theme.LocalEffectTier
 import shelftap.android.ui.theme.GateSize
 import shelftap.android.ui.theme.LoginSize
 import shelftap.android.ui.theme.Radius
@@ -69,6 +76,25 @@ import shelftap.android.ui.theme.okFill
 import shelftap.android.ui.theme.shelfTap
 
 private const val CARD_FILL = 0.92f // the board's 0.62 to 0.7 sits on a blur; with none the card must stay readable
+private const val BLUR_CARD_FILL = 0.66f // the card's fill when it blurs what is behind it (the board's value)
+private const val LOCK_BLUR_CARD_FILL = 0.55f
+private const val LOCK_VEIL_BLURRED = 0.35f // the board veils the blurred blocks at 0.35
+private val CARD_BLUR = 24.dp // `blur(24px)` of the boards' glass cards
+private val BLOCKS_BLUR = 18.dp // the lock's blocks behind the card
+private const val CARD_SATURATION = 1.2f
+
+/**
+ * The glass of the gate cards. On the full tier (Android 17 and later) a card blurs what is behind it, as the boards' `backdrop-filter` does: the
+ * screen's decorative backdrop records itself into the returned [BackdropState] and the card draws that recording again, blurred, under its fill.
+ * On the other tiers this is null and the card keeps its nearly opaque fill (plan section 7: no screen-sized blur on the medium and light tiers).
+ */
+@Composable
+internal fun rememberGateGlass(): BackdropState? {
+    val blurs = LocalEffectTier.current == EffectTier.FULL && android.os.Build.VERSION.SDK_INT >= 31
+    val state = rememberBackdrop()
+    state.enabled = blurs
+    return if (blurs) state else null
+}
 private const val CARD_EDGE = 0.9f
 private const val CHIP_FILL = 0.7f
 private const val DARK_BLOB_ALPHA = 0.35f
@@ -94,12 +120,15 @@ private fun SoftBackdrop(modifier: Modifier = Modifier) {
 
 /** The glass card the three screens share: rounded 34 dp, an edge, a soft shadow. */
 @Composable
-private fun GateCard(modifier: Modifier = Modifier, fill: Float = CARD_FILL, content: @Composable () -> Unit) {
+private fun GateCard(modifier: Modifier = Modifier, fill: Float = CARD_FILL, backdrop: BackdropState? = null, content: @Composable () -> Unit) {
     val c = MaterialTheme.shelfTap
     val shape = RoundedCornerShape(Radius.sheet)
+    val blurPx = with(androidx.compose.ui.platform.LocalDensity.current) { CARD_BLUR.toPx() }
     Column(
         modifier.fillMaxWidth().shadow(Spacing.xl, shape, ambientColor = c.ink.copy(alpha = 0.16f), spotColor = c.ink.copy(alpha = 0.16f))
-            .clip(shape).background(c.glass.copy(alpha = fill)).border(BorderStroke(Radius.hairline, c.edge.copy(alpha = CARD_EDGE)), shape)
+            .clip(shape)
+            .then(if (backdrop != null) Modifier.backdropBlur(backdrop, blurPx, CARD_SATURATION, Color.Transparent) else Modifier)
+            .background(c.glass.copy(alpha = if (backdrop != null) fill.coerceAtMost(BLUR_CARD_FILL) else fill)).border(BorderStroke(Radius.hairline, c.edge.copy(alpha = CARD_EDGE)), shape)
             .padding(horizontal = Spacing.l + Spacing.xs + Spacing.xs / 2, vertical = Spacing.xl + Spacing.xs),
         verticalArrangement = Arrangement.spacedBy(Spacing.m + Spacing.xs / 2),
     ) { content() }
@@ -107,10 +136,10 @@ private fun GateCard(modifier: Modifier = Modifier, fill: Float = CARD_FILL, con
 
 /** The round white badge with an icon on top of a status card. */
 @Composable
-private fun GateBadge(icon: String) {
+private fun GateBadge(icon: String, tint: androidx.compose.ui.graphics.Color? = null) {
     val c = MaterialTheme.shelfTap
     Box(Modifier.size(GateSize.badge).shadow(Spacing.m, CircleShape).clip(CircleShape).background(c.surface).clearAndSetSemantics {}, contentAlignment = Alignment.Center) {
-        LucideIcon(icon, tint = c.ink, size = GateSize.badgeIcon)
+        LucideIcon(icon, tint = tint ?: c.ink, size = GateSize.badgeIcon)
     }
 }
 
@@ -149,12 +178,19 @@ fun ChangePasswordScreen(forced: Boolean, onDone: () -> Unit) {
     val session = LocalContainer.current.session
     val scope = rememberCoroutineScope()
     LaunchedEffect(state.done) { if (state.done) onDone() }
-    ChangePasswordContent(forced, state.busy, state.error, onSave = vm::change, onLogout = { scope.launch { session.logout() } })
+    // The first-login password change is a sign-in screen: in a wide window it is the form beside the shelves, like the login.
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val split = forced && maxWidth >= AdaptiveSize.signInSplitMin
+        val content: @Composable () -> Unit = {
+            ChangePasswordContent(forced, state.busy, state.error, onSave = vm::change, onLogout = { scope.launch { session.logout() } }, split = split)
+        }
+        if (split) SignInSplitFrame(content) else content()
+    }
 }
 
 /** What the password screen draws and the three fields it keeps (in memory only), apart from the model that saves: [onSave] gets current and new. */
 @Composable
-internal fun ChangePasswordContent(forced: Boolean, busy: Boolean, error: UiText?, onSave: (String, String) -> Unit, onLogout: () -> Unit) {
+internal fun ChangePasswordContent(forced: Boolean, busy: Boolean, error: UiText?, onSave: (String, String) -> Unit, onLogout: () -> Unit, split: Boolean = false) {
     var current by remember { mutableStateOf("") }
     var new by remember { mutableStateOf("") }
     var again by remember { mutableStateOf("") }
@@ -165,9 +201,13 @@ internal fun ChangePasswordContent(forced: Boolean, busy: Boolean, error: UiText
     val same = new.isNotEmpty() && new == again
     val valid = current.isNotEmpty() && longEnough && differs && same
 
+    val glass = if (split) null else rememberGateGlass() // beside the shelves ([split]) the card has no backdrop of its own to blur
     Box(Modifier.fillMaxSize()) {
-        SoftBackdrop(Modifier.fillMaxWidth().height(GateSize.backdrop))
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding()).padding(horizontal = Spacing.l)) {
+        if (!split) SoftBackdrop(Modifier.fillMaxWidth().height(GateSize.backdrop).then(if (glass != null) Modifier.recordBackdrop(glass) else Modifier))
+        Column(
+            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding()).padding(horizontal = Spacing.l),
+            verticalArrangement = if (split) Arrangement.Center else Arrangement.Top,
+        ) {
             Column(Modifier.padding(horizontal = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.m - Spacing.xs / 2)) {
                 if (forced) {
                     Text(
@@ -178,8 +218,8 @@ internal fun ChangePasswordContent(forced: Boolean, busy: Boolean, error: UiText
                 Text(stringResource(if (forced) R.string.pw_forced_title else R.string.pw_title), style = ShelfTapText.detailTitle)
                 Text(stringResource(if (forced) R.string.pw_forced_body else R.string.pw_body), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
             }
-            Spacer(Modifier.height(Spacing.xl + Spacing.m))
-            GateCard {
+            Spacer(Modifier.height(if (split) Spacing.l else Spacing.xl + Spacing.m))
+            GateCard(backdrop = glass) {
                 LabeledField(stringResource(if (forced) R.string.pw_current_issued else R.string.pw_current), current, { current = it }, keyboardType = KeyboardType.Password, password = true, enabled = !busy)
                 LabeledField(stringResource(R.string.pw_new), new, { new = it }, keyboardType = KeyboardType.Password, password = true, enabled = !busy, placeholder = stringResource(R.string.pw_new_hint))
                 LabeledField(stringResource(R.string.pw_again), again, { again = it }, keyboardType = KeyboardType.Password, password = true, enabled = !busy, placeholder = stringResource(R.string.pw_again_hint))
@@ -252,15 +292,23 @@ fun LockScreen() {
 @Composable
 internal fun LockContent(onUnlock: () -> Unit, onLogout: () -> Unit) {
     val c = MaterialTheme.shelfTap
+    val glass = rememberGateGlass()
+    val blocksBlurPx = with(androidx.compose.ui.platform.LocalDensity.current) { BLOCKS_BLUR.toPx() }
     Box(Modifier.fillMaxSize()) {
-        LockedBackdrop(Modifier.fillMaxSize())
-        Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background.copy(alpha = LOCK_VEIL)))
+        if (glass != null) {
+            // The blocks are blurred where they show (as the board blurs them) and recorded sharp, so the card blurs them its own way.
+            Box(Modifier.fillMaxSize().graphicsLayer { renderEffect = BlurEffect(blocksBlurPx, blocksBlurPx, TileMode.Clamp) }.recordBackdrop(glass)) { LockedBackdrop(Modifier.fillMaxSize()) }
+            Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background.copy(alpha = LOCK_VEIL_BLURRED)))
+        } else {
+            LockedBackdrop(Modifier.fillMaxSize())
+            Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background.copy(alpha = LOCK_VEIL)))
+        }
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding()).padding(horizontal = Spacing.xl), verticalArrangement = Arrangement.Center) {
-            GateCard(fill = LOCK_CARD_FILL) {
+            GateCard(fill = if (glass != null) LOCK_BLUR_CARD_FILL else LOCK_CARD_FILL, backdrop = glass) {
                 GateBadge(LucideIcons.Lock)
                 Text(stringResource(R.string.lock_locked_title), style = MaterialTheme.typography.headlineSmall)
                 Text(stringResource(R.string.lock_body), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
-                PillAction(stringResource(R.string.lock_unlock), onClick = onUnlock, container = c.primary, ink = c.onPrimary, height = LoginSize.button)
+                PillAction(stringResource(R.string.lock_unlock), onClick = onUnlock, container = c.primary, ink = c.onPrimary, height = LoginSize.button, icon = LucideIcons.Fingerprint)
                 TextAction(stringResource(R.string.action_logout), onClick = onLogout, modifier = Modifier.align(Alignment.CenterHorizontally), ink = c.ink2)
             }
             Text(
@@ -299,11 +347,12 @@ fun OfflineScreen() {
 @Composable
 internal fun OfflineContent(busy: Boolean, tries: Int, onRetry: () -> Unit, onLogout: () -> Unit) {
     val c = MaterialTheme.shelfTap
+    val glass = rememberGateGlass()
     Box(Modifier.fillMaxSize()) {
-        SoftBackdrop(Modifier.fillMaxWidth().height(GateSize.backdrop))
+        SoftBackdrop(Modifier.fillMaxWidth().height(GateSize.backdrop).then(if (glass != null) Modifier.recordBackdrop(glass) else Modifier))
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(pagePadding()).padding(horizontal = Spacing.l), verticalArrangement = Arrangement.Center) {
-            GateCard {
-                GateBadge(LucideIcons.CircleAlert)
+            GateCard(backdrop = glass) {
+                GateBadge(LucideIcons.WifiOff, tint = c.danger)
                 Text(stringResource(R.string.offline_title), style = MaterialTheme.typography.headlineSmall)
                 Text(stringResource(R.string.offline_body), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
                 if (tries > 0) {
