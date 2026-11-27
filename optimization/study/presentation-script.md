@@ -1,6 +1,6 @@
-# presentation-script.md — kịch bản trình bày 19:15 (25 slide chính + D1 đến D8 dự phòng)
+# presentation-script.md — kịch bản trình bày 19:15 (25 slide chính + D1 đến D9 dự phòng)
 
-Khớp nguyên vẹn với `presentation.html` (25 slide chính + 8 slide dự phòng D1 đến D8). Dàn ý và bằng chứng từng slide nằm trong `slides-outline.md`. Kịch bản viết theo văn phong thuyết trình học thuật tự nhiên của sinh viên (“nhóm em”, “thầy cô và các bạn”), câu ngắn gọn dễ nói trên sân khấu, không đọc lại nguyên văn chữ trên slide mà giải thích ý nghĩa và nối mượt sang slide kế tiếp.
+Khớp nguyên vẹn với `presentation.html` (25 slide chính + 9 slide dự phòng D1 đến D9). Dàn ý và bằng chứng từng slide nằm trong `slides-outline.md`. Kịch bản viết theo văn phong thuyết trình học thuật tự nhiên của sinh viên (“nhóm em”, “thầy cô và các bạn”), câu ngắn gọn dễ nói trên sân khấu, không đọc lại nguyên văn chữ trên slide mà giải thích ý nghĩa và nối mượt sang slide kế tiếp.
 
 **Quy tắc của bản này.**
 - Mọi con số trong các dòng **Lời nói**, **Thao tác**, **Lưu ý** và bảng **Hỏi đáp dự kiến** đều khớp nguyên văn với chữ hiển thị hoặc ghi chú (`aside.notes`) của `presentation.html`, viết theo định dạng số Việt (dấu phẩy thập phân, dấu chấm phân tách hàng nghìn). Kiểm chứng tự động bằng đoạn lệnh ở mục **Kiểm số liệu** cuối tệp.
@@ -270,9 +270,9 @@ Khớp nguyên vẹn với `presentation.html` (25 slide chính + 8 slide dự p
 
 **Lời nói.** Khép lại bài trình bày, nhóm em xin đúc kết ba điều cần nhớ. Một là trông hoàn thiện chưa phải đã tối ưu: hãy đo với dữ liệu thật. Hai là lỗi hay gặp không phải lỗi nguy hiểm nhất: cần rà riêng lỗi bộ nhớ và bảo mật. Ba là tin bản build và số đo, không tin lời “đã sửa xong”. Xin cảm ơn, mời thầy cô và các bạn đặt câu hỏi.
 
-**Thao tác.** Giữ slide 25 khi hỏi đáp; nhấn phím O để chọn nhanh slide dự phòng D1 đến D8.
+**Thao tác.** Giữ slide 25 khi hỏi đáp; nhấn phím O để chọn nhanh slide dự phòng D1 đến D9.
 
-**Lưu ý.** Không đưa số mới ở slide kết. Các slide dự phòng D1 đến D8 nằm ngay sau slide 25.
+**Lưu ý.** Không đưa số mới ở slide kết. Các slide dự phòng D1 đến D9 nằm ngay sau slide 25.
 
 ---
 
@@ -290,13 +290,14 @@ Khớp nguyên vẹn với `presentation.html` (25 slide chính + 8 slide dự p
 | Còn vấn đề cỡ chữ lớn 2.0 và trợ năng thì sao? | Nhóm em xếp cỡ chữ lớn và bố cục sang phần chất lượng giao diện ở D8 để bài chính tập trung vào ba trụ cột tối ưu. Ở tỷ lệ cỡ chữ 2.0, cả bốn ứng dụng sinh từ chỉ một prompt đều vỡ bố cục; trên ShelfTap, nhóm em giảm số màn hình vỡ bố cục từ 5/7 xuống 0/7 và cảnh báo ATF từ 4 xuống 2. | D8 |
 | Tệp quy tắc có đảm bảo hết lỗi bảo mật khi ứng dụng build thành công không? | Không. Trên toàn bộ tập E1, tỷ lệ có cảnh báo bảo mật giảm từ 31/33 xuống 17/34, nhưng số bản build thành công sau tối đa 3 lần sửa cũng giảm từ 20/33 xuống 10/34 (prompt chi tiết là 12/33), và nếu chỉ xét 42 bản build thành công thì chênh lệch C1 bằng +0,000 trong khi số loại lỗi C2 vẫn giảm (+3,829). Vì vậy tệp quy tắc chỉ là lớp phòng ngừa ở khâu sinh mã, vẫn cần kiểm tra bản build và quét bảo mật độc lập ở giai đoạn 4. | slide 14, D2 |
 | Vì sao Baseline Profile không còn tác dụng rõ trên thiết bị thật? | Trên máy ảo E2, Baseline Profile giảm thời gian khởi động từ 462 ms xuống 434,8 ms (−5,88%). Khi đo trên thiết bị thật Xiaomi bằng bản build đo hiệu năng, tỷ lệ khung hình trễ có và không có Baseline Profile lần lượt là 1,44–1,49% và 1,45–1,60%, không có khác biệt đo được. Điều này nhắc lại nguyên tắc đo đúng bản build và ưu tiên sửa danh sách, giải mã ảnh trước. | slide 9, slide 22, D3 |
+| Nhóm có đóng góp gì mới ngoài việc đo các lỗi đã biết? | Có một kết quả thăm dò, không thuộc các phép kiểm định đăng ký trước. Ở slide 3, các ứng dụng chỉ một prompt chỉ có 8 đến 12 tựa sách mẫu nên bộ nhớ trông ổn. Nhóm em viết công cụ tự động phóng dữ liệu mẫu đó lên 2.000 và 100.000 mục, rồi để ngưỡng mục tiêu quyết định đạt hay chưa; cả 10 bản phóng to vẫn build thành công. Ứng dụng duy nhất dựng danh sách toàn bộ tăng từ 107,0 MB lên 343,2 MB ngay ở 2.000 mục, vượt mục tiêu 150 MB, và treo ở 100.000 mục. Bốn ứng dụng còn lại vẫn dưới 150 MB, nhưng ở 100.000 mục không ứng dụng nào khởi động dưới 1.500 ms, ví dụ từ 1.168 lên 2.514 ms. Đây là số đo trên máy ảo, mỗi ô 5 lần, và danh sách phóng to được tạo trong bộ nhớ lúc khởi động nên một phần thời gian tăng thêm đến từ chính cách phóng to. | D9 |
 
 ## Chuẩn bị trước buổi trình bày
 - [ ] Chạy thử bấm giờ toàn bài (gồm cả 120 giây demo trực tiếp ở slide 16); mục tiêu tổng thời lượng 15 đến 20 phút. Nếu cần rút gọn 1 phút, đọc gọn slide 19 và slide 20.
 - [ ] Phân công rõ người thuyết trình chính và thành viên phụ trách demo trực tiếp ở slide 16; khớp trước câu chuyển lượt và câu nhận lại lượt.
 - [ ] Kiểm tra ba video A/B chạy mượt không cần mạng: `evidence/video/P09c-AB.mp4` (slide 7), `P08c-AB.mp4` (slide 8), `P06c-AB.mp4` (slide 10); kiểm tra ảnh ở slide 2, slide 3 và D8.
 - [ ] Kiểm tra sẵn môi trường demo theo `optimization/study/demo/README.md` và sẵn sàng chuyển sang video A/B nếu máy ảo gặp sự cố.
-- [ ] Nhớ phím tắt điều hướng trong `presentation.html`: `P` (cửa sổ người trình bày), `O` (lưới chọn slide), `N` (ghi chú), `T` (sáng/tối). Slide dự phòng D1 đến D8 tương ứng số thứ tự 26 đến 33.
+- [ ] Nhớ phím tắt điều hướng trong `presentation.html`: `P` (cửa sổ người trình bày), `O` (lưới chọn slide), `N` (ghi chú), `T` (sáng/tối). Slide dự phòng D1 đến D9 tương ứng số thứ tự 26 đến 34.
 
 ## Kiểm số liệu
 

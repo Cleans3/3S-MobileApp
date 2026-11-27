@@ -2,8 +2,8 @@
 
 ## Current deck
 
-This record is for the deck rebuilt on 2026-11-28: 25 main slides plus backup slides D1..D8 (33 slides) in [../presentation.html](../presentation.html).
-Current counts from `python3 -I optimization/study/proof/check_deck_proof.py`, run from the repo root (exit 0): 763 rows checked, 0 bad, 0 stale, 741 data values, 0 unproven.
+This record is for the deck rebuilt on 2026-11-28: 25 main slides plus backup slides D1..D9 (34 slides) in [../presentation.html](../presentation.html).
+Current counts from `python3 -I optimization/study/proof/check_deck_proof.py`, run from the repo root (exit 0): 827 rows checked, 0 bad, 0 stale, 799 data values, 0 unproven.
 Slide numbers and quoted wording in this part refer to the current deck. Earlier passes are kept below under "History".
 
 ## 2026-11-28 — proof pass for the frozen 33-slide deck (25 main + D1–D8)
@@ -64,6 +64,10 @@ The slide-21 notes carry the new path:line. 11 proof rows were added. Check: exi
 ### Addendum (2026-11-28): build-pass cost of the rules file on slides 14, 19, 23; no bare dashes on slide 21
 
 Validator findings F1 and F3. Slide 14 now shows, beside the warning bars and at the same size, the share of drafts that build after at most 3 logged repairs per prompt style (e1-corpus/REPORT.md:17-25, last column): naive 8/12 + 5/12 + 7/9 = 20/33, detailed-functional 3/12 + 2/12 + 7/9 = 12/33, rules file 2/12 + 3/12 + 5/10 = 10/34. These are descriptive counts, not one of the pre-registered tests; the slide tags them "số mô tả" and the notes say so. Each sum has a derived row with the formula; each term has a direct row on its table line. Slides 19 (E1 line) and 23 (phase 2, Tối thiểu) carry the trade-off in words; slide 23 adds the 20/33 → 10/34 evidence with the same rows. Slide 21: empty cells read "không áp dụng" (the one-prompt apps have no tuned version; the two ShelfTap rows measure the team's own app, with no matching AI draft) or "chưa đo" (NFC tap on a low-cost device); the table got a tighter cell padding so the last row stays above the footer. Notes timings unchanged (sum 1170 s). Check: exit 0, 763 rows, 741 data values, 0 bad, 0 stale, 0 unproven. Headless layout check of slides 14, 19, 21, 23 at 1280x720 and 1920x1080: 0 elements outside the canvas, content bottom at most 970 (footer at 1016), smallest text 20 px at 1280.
+
+### Addendum (2026-11-28): backup slide D9, the exploratory E7a result
+
+New backup slide 34 "D9 · Phép thử quy mô (E7, thăm dò)" after D8; main slides 1–25 are unchanged. Every value on its face and in its notes is a direct row on e7-novel/results/e7a_summary.csv (one line per app and size; the quote isolates the value between commas, e.g. `,343.2,`, see checker limitation 3) or on e7-novel/NOTE.md (the §6.1 rule on line 154, §8 lines 181–238); the 150 MB target cites CLAUDE.md:17. Values with several readings on the slide (1, 2, 4, 10) get one row per reading. No derived rows: medians are shown as in the CSV (1168.0 → 1.168) and the ratio range 1,78–2,39 is copied from NOTE.md:229. 64 rows added (54 direct, 10 label). Check: exit 0, 827 rows, 799 data values, 0 bad, 0 stale, 0 unproven. Headless check of slide 34 at 1280x720 and 1920x1080: 0 elements outside the canvas, nothing clipped, content bottom 980, smallest text 20 px at 1280.
 
 ## History: proof passes for earlier decks
 

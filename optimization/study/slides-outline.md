@@ -1,6 +1,6 @@
-# slides-outline.md — dàn ý slide (25 slide chính + D1 đến D8 dự phòng)
+# slides-outline.md — dàn ý slide (25 slide chính + D1 đến D9 dự phòng)
 
-Khớp nguyên vẹn với `presentation.html` (25 slide chính theo mạch: mở đầu và bảng phân loại lỗi, phương pháp, ba trụ cột tối ưu giao diện / bộ nhớ / bảo mật, demo trực tiếp, build và tự sửa lỗi, kết luận và đối chiếu mục tiêu môn học, thiết bị thật, khuyến nghị theo 5 giai đoạn; cộng 8 slide dự phòng D1 đến D8). Kịch bản lời nói đầy đủ nằm trong `presentation-script.md`.
+Khớp nguyên vẹn với `presentation.html` (25 slide chính theo mạch: mở đầu và bảng phân loại lỗi, phương pháp, ba trụ cột tối ưu giao diện / bộ nhớ / bảo mật, demo trực tiếp, build và tự sửa lỗi, kết luận và đối chiếu mục tiêu môn học, thiết bị thật, khuyến nghị theo 5 giai đoạn; cộng 9 slide dự phòng D1 đến D9). Kịch bản lời nói đầy đủ nằm trong `presentation-script.md`.
 
 **Quy tắc.**
 1. Mọi con số trên slide đều đến từ nguồn sơ cấp ghi trong cột “Bằng chứng” hoặc ghi chú (`aside.notes`) của `presentation.html`; số liệu trong kịch bản được kiểm lại bằng máy qua mục **Kiểm số liệu** ở `presentation-script.md`.
@@ -69,6 +69,7 @@ Mở bằng phím `O` (lưới) hoặc gõ số slide rồi `Enter`.
 | D6 | 31 | D6 · E6 chi tiết | Bảng số lần build thành công theo 4 trợ lý AI × 3 kiểu prompt (mỗi ô 3 lần chạy) và trung vị dòng mã Kotlin; ghi chú lý do agy-g38flash không sinh được bản nháp khi dùng bản đặc tả. | e6-oneshot/REPORT.md:59–70 · e6-oneshot/AMENDMENT.md |
 | D7 | 32 | D7 · Kiểm tra môi trường | Kiểm tra cô lập môi trường (HOME giả lập, khóa ghi, 623 bản ghi hội thoại, mẫu đối chứng 18.244 so với khoảng 7.500 token) và công khai 3 plugin đo đạc tự nạp vào Claude. | isolation-audit/AUDIT.md:14, :32, :58 · e6-oneshot/REPORT.md:24 |
 | D8 | 33 | D8 · Cỡ chữ lớn và bố cục | Chất lượng giao diện ở tỷ lệ cỡ chữ 2.0: 4/4 ứng dụng sinh từ chỉ một prompt đều vỡ bố cục; ShelfTap giảm 5/7 → 0/7 màn hình vỡ và ATF 4 → 2; chi phí hiệu ứng kính mờ trên Xiaomi làm p90 tăng 9–11 → 18 ms. | e6-oneshot/REPORT.md:53 · ../ui-ux-metrics.md:12–16 · ../log/opt-ui-ux.md:237 · e6-oneshot/img/grid-O-font2.jpg · evidence/img/ui-A|B-font2-catalog.jpg |
+| D9 | 34 | D9 · Phép thử quy mô (E7, thăm dò) | Kết quả thăm dò E7a: phóng dữ liệu mẫu của 5 ứng dụng chỉ một prompt từ 8–12 lên 2.000 và 100.000 mục. Ứng dụng duy nhất dựng danh sách toàn bộ vượt 150 MB từ 2.000 mục (107,0 → 343,2 MB) và treo ở 100.000 mục; ở 100.000 mục không ứng dụng nào khởi động dưới 1.500 ms (ví dụ 1.168 → 2.514 ms); cả 10 bản phóng to build thành công. Máy ảo, n = 5 mỗi ô, ngoài các phép kiểm định đăng ký trước. | e7-novel/NOTE.md:154, :195, :201–217, :222–229, :234–238 · e7-novel/results/e7a_summary.csv · e7-novel/results/e7a_builds.csv |
 
 ## Video, hình ảnh và demo
 

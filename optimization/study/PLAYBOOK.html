@@ -207,12 +207,12 @@ optimization/ui-ux/measure/*/            │            │                     
 </tbody>
 </table>
 <p>Heavy state (generated apps, APKs, videos, traces) lives outside the repo; each REPORT names its path.</p>
-<p><strong>E7 (not in the talk).</strong> <a href="e7-novel/NOTE.md">e7-novel/NOTE.md</a> goes one step past measuring known problems. It names six gaps the E1–E6 data exposes, lists eight candidate new problems or solutions, and builds two prototypes:</p>
+<p><strong>E7 (backup D9 only).</strong> <a href="e7-novel/NOTE.md">e7-novel/NOTE.md</a> goes one step past measuring known problems. It names six gaps the E1–E6 data exposes, lists eight candidate new problems or solutions, and builds two prototypes:</p>
 <ul>
 <li>a scale probe: run a generated app at realistic data sizes, because toy data hides P06, P09 and P13;</li>
 <li>a diff guard: a tool, not the assistant, judges an error fix for weakened security.</li>
 </ul>
-<p>Both prototypes are unit-tested (<code>test_prototypes.py</code>) and evaluated retrospectively on the E1, E4, E5 and E6 corpora. The emulator phase (E7a, E7b) is planned in §6 of the note and not yet run. Quote E7 only as exploratory desk work.</p>
+<p>Both prototypes are unit-tested (<code>test_prototypes.py</code>) and evaluated retrospectively on the E1, E4, E5 and E6 corpora. The emulator phase E7a ran on 2026-11-28 (§8 of the note) and is shown on backup D9, labelled exploratory; E7b is not run. Quote E7 only as exploratory work, outside the pre-registered tests.</p>
 <h2 id="5-the-article-chapter-by-chapter">5. The article, chapter by chapter</h2>
 <p>Line numbers are ARTICLE.md lines at the time of writing; search the heading if they drift.</p>
 <table>
@@ -298,12 +298,12 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 <tbody>
 <tr>
 <td><a href="presentation.html">presentation.html</a></td>
-<td>the deck: 25 main slides + 8 backup (D1–D8), Vietnamese, one offline HTML with embedded fonts. It needs <a href="evidence/">evidence/</a> (videos, hype thumbnails, screenshots) and <a href="e6-oneshot/img/">e6-oneshot/img/</a> next to it</td>
+<td>the deck: 25 main slides + 9 backup (D1–D9), Vietnamese, one offline HTML with embedded fonts. It needs <a href="evidence/">evidence/</a> (videos, hype thumbnails, screenshots) and <a href="e6-oneshot/img/">e6-oneshot/img/</a> next to it</td>
 <td>speaker notes sum to 19:30</td>
 </tr>
 <tr>
 <td><a href="presentation-script.md">presentation-script.md</a></td>
-<td>the spoken script, one section per main slide (Lời nói, Thao tác, Lưu ý), a timing table, Q&amp;A mapped to D1–D8, a preparation checklist and a number check. The per-slide sections are copied below</td>
+<td>the spoken script, one section per main slide (Lời nói, Thao tác, Lưu ý), a timing table, Q&amp;A mapped to D1–D9, a preparation checklist and a number check. The per-slide sections are copied below</td>
 <td>19:15 at 130 words/min</td>
 </tr>
 <tr>
@@ -657,6 +657,13 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 <td>E6, ShelfTap metrics</td>
 <td>14 rows; <code>../ui-ux-metrics.md</code>, <code>../log/opt-ui-ux.md</code></td>
 </tr>
+<tr>
+<td>D9</td>
+<td>D9 · Phép thử quy mô (E7, thăm dò)</td>
+<td>Exploratory E7a: the one-prompt apps with their sample data amplified to 2.000 and 100.000 items; the only eagerly built list passes 150 MB at 2.000 (107,0 → 343,2 MB) and hangs at 100.000; no app starts under 1.500 ms at 100.000; all 10 amplified builds build</td>
+<td>E7a</td>
+<td>64 rows; <code>e7-novel/NOTE.md</code>, <code>e7-novel/results/e7a_summary.csv</code></td>
+</tr>
 </tbody>
 </table>
 <h3 id="script-slide-by-slide">Script, slide by slide</h3>
@@ -786,8 +793,8 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 <h4>25. Ba điều cần nhớ (18:40 đến 19:15) — slide 25</h4>
 <p><em>Kết thúc · 35 giây · 76 từ</em></p>
 <p><strong>Lời nói.</strong> Khép lại bài trình bày, nhóm em xin đúc kết ba điều cần nhớ. Một là trông hoàn thiện chưa phải đã tối ưu: hãy đo với dữ liệu thật. Hai là lỗi hay gặp không phải lỗi nguy hiểm nhất: cần rà riêng lỗi bộ nhớ và bảo mật. Ba là tin bản build và số đo, không tin lời “đã sửa xong”. Xin cảm ơn, mời thầy cô và các bạn đặt câu hỏi.</p>
-<p><strong>Thao tác.</strong> Giữ slide 25 khi hỏi đáp; nhấn phím O để chọn nhanh slide dự phòng D1 đến D8.</p>
-<p><strong>Lưu ý.</strong> Không đưa số mới ở slide kết. Các slide dự phòng D1 đến D8 nằm ngay sau slide 25.</p>
+<p><strong>Thao tác.</strong> Giữ slide 25 khi hỏi đáp; nhấn phím O để chọn nhanh slide dự phòng D1 đến D9.</p>
+<p><strong>Lưu ý.</strong> Không đưa số mới ở slide kết. Các slide dự phòng D1 đến D9 nằm ngay sau slide 25.</p>
 <!-- SCRIPT:END -->
 <h2 id="6b-the-plain-language-report">6b. The plain-language report</h2>
 <p><a href="report/index.html">report/index.html</a> is one Vietnamese web page for readers without a presenter. It follows the deck's order and says more than a slide can:</p>
@@ -861,7 +868,7 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 </table>
 <h2 id="7-proof-of-every-number-in-the-deck">7. Proof of every number in the deck</h2>
 <ul>
-<li><a href="proof/deck-proof.csv">proof/deck-proof.csv</a> has 763 rows (425 direct, 99 derived, 239 label) covering 741 values across all 33 slides (visible text, speaker notes, chart data attributes and bar lengths). Columns: <code>slide,value,kind,claim,source,line,quote,formula,note</code>.
+<li><a href="proof/deck-proof.csv">proof/deck-proof.csv</a> has 827 rows (479 direct, 99 derived, 249 label) covering 799 values across all 34 slides (visible text, speaker notes, chart data attributes and bar lengths). Columns: <code>slide,value,kind,claim,source,line,quote,formula,note</code>.
 <ul>
 <li><code>direct</code>: the number is on <code>source:line</code>, inside the verbatim <code>quote</code>.</li>
 <li><code>cited</code>: the same, from an external source recorded in references.md (not used by the current deck).</li>
@@ -1177,7 +1184,7 @@ python3 -I optimization/study/proof/check_deck_proof.py --slide 5  # check one s
 <li>[ ] The deck opens offline on the presenting machine (fonts are embedded). The presenter window (P) works there and its clock shows the 19:30 target.</li>
 <li>[ ] Light theme on a projector; dark only in a dark room.</li>
 <li>[ ] Rehearse to 19:30 or less (the script times itself at 19:15).</li>
-<li>[ ] Know the Q&amp;A answers in presentation-script.md, each mapped to a backup slide: emulator vs real phone (D1), Holm (D2), +28,13% vs −22% (D3), E4 raters and per-assistant counts (D4), human apps (D5, slide 13), E6 per assistant (D6), isolation (D7).</li>
+<li>[ ] Know the Q&amp;A answers in presentation-script.md, each mapped to a backup slide: emulator vs real phone (D1), Holm (D2), +28,13% vs −22% (D3), E4 raters and per-assistant counts (D4), human apps (D5, slide 13), E6 per assistant (D6), isolation (D7), what is new: the one-prompt apps at real data size (D9).</li>
 </ul>
 <p><strong>Before changing the deck</strong></p>
 <ul>

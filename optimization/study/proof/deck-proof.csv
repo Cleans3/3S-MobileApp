@@ -762,3 +762,67 @@ slide,value,kind,claim,source,line,quote,formula,note
 21,94,derived,PSS median flat 96535 KB / 1024 = 94.3 MB,,,,96535/1024,"medians computed from results.tsv column pssKb, 5 rows per label"
 21,95,derived,PSS median cards 97493 KB / 1024 = 95.2 MB,,,,97493/1024,"medians computed from results.tsv column pssKb, 5 rows per label"
 21,650,label,not data,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+34,150,direct,"course memory target: under 150 MB while browsing (the PSS ceiling of E7a, NOTE.md:154)",CLAUDE.md,17,memory under 150 MB while browsing,,
+34,2000,direct,E7a amplified size N = 2.000 items,optimization/study/e7-novel/NOTE.md,147,"`N = 2,000`",,
+34,100000,direct,E7a amplified size N = 100.000 items,optimization/study/e7-novel/NOTE.md,147,"`N = 100,000`",,
+34,1500,direct,E7a pre-stated cold-start ceiling 1.500 ms TTID,optimization/study/e7-novel/NOTE.md,154,"exceed `1,500 ms` TTID",,
+34,50,direct,E7a pre-stated search ceiling 50 ms (notes),optimization/study/e7-novel/NOTE.md,154,exceed `50 ms` search,,
+34,3,direct,"pre-stated rule: at least 3/5 apps cross a ceiling at N = 100.000 (also ""slide 3"" cross-reference in notes)",optimization/study/e7-novel/NOTE.md,154,at least `3/5`,,
+34,4,direct,result: 4/5 apps cross a ceiling they passed at the original size,optimization/study/e7-novel/NOTE.md,222,`4/5` apps cross,,
+34,4,direct,slow-frame share already saturated in 4 of 5 apps at the original size (notes),optimization/study/e7-novel/NOTE.md,230,for 4 of 5 apps,,
+34,5,direct,"n = 5 cold starts per cell (also the denominator in 3/5, 4/5)",optimization/study/e7-novel/NOTE.md,197,`n = 5` cold-start iterations,,
+34,10,direct,all 10 amplified builds build (10/10),optimization/study/e7-novel/NOTE.md,195,`10/10` builds,,
+34,10,direct,"""treo"": no frame after the ~10 s wait of am start -W (codex-luna, N = 100.000)",optimization/study/e7-novel/NOTE.md,238,`~10 s` wait,,
+34,10,direct,agy-g38flash run 1: original data size 10 items (target_n),optimization/study/e7-novel/results/e7a_summary.csv,11,"agy-g38flash-O-r1,orig,10,",,
+34,1,direct,the two apps needing a repair need exactly the 1 repair their E6 originals needed,optimization/study/e7-novel/NOTE.md,221,the exact 1 E6 R7 repair,,
+34,1,direct,"""agy-g38flash, lần 1"" = run r1",optimization/study/e7-novel/results/e7a_summary.csv,11,"agy-g38flash-O-r1,",,
+34,2,direct,2 apps (2/5) built with the 1 E6 repair,optimization/study/e7-novel/NOTE.md,221,`2/5` using the exact 1,,
+34,2,direct,"emulator lowend34: 2 cores, 2 GB RAM (notes)",optimization/study/e7-novel/NOTE.md,181,"2 cores, 2 GB RAM",,
+34,2,direct,"""agy-g38flash, lần 2"" = run r2",optimization/study/e7-novel/results/e7a_summary.csv,14,"agy-g38flash-O-r2,",,
+34,8,direct,"codex-luna original data size 8 items (also agy-g38flash r2, e7a_summary.csv:14; range 8 to 12 in notes)",optimization/study/e7-novel/results/e7a_summary.csv,8,"codex-luna-O-r3,orig,8,",,
+34,12,direct,"claude-sonnet original data size 12 items (also claude-haiku, e7a_summary.csv:5; range 8 to 12 in notes)",optimization/study/e7-novel/results/e7a_summary.csv,2,"claude-sonnet-O-r3,orig,12,",,
+34,107,direct,"codex-luna PSS at original size 107,0 MB",optimization/study/e7-novel/results/e7a_summary.csv,8,",107.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,343.2,direct,"codex-luna PSS at N = 2.000: 343,2 MB",optimization/study/e7-novel/results/e7a_summary.csv,9,",343.2,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,265.9,direct,"codex-luna PSS at N = 100.000: 265,9 MB (also in notes)",optimization/study/e7-novel/results/e7a_summary.csv,10,",265.9,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,1061,direct,codex-luna cold start at original size 1.061 ms,optimization/study/e7-novel/results/e7a_summary.csv,8,",1061.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,8069,direct,codex-luna cold start at N = 2.000: 8.069 ms,optimization/study/e7-novel/results/e7a_summary.csv,9,",8069.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,74,direct,"claude-sonnet PSS original 74,0 MB",optimization/study/e7-novel/results/e7a_summary.csv,2,",74.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,77.5,direct,"claude-sonnet PSS N = 2.000: 77,5 MB",optimization/study/e7-novel/results/e7a_summary.csv,3,",77.5,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,93.1,direct,"claude-sonnet PSS N = 100.000: 93,1 MB (lower end of 93,1–137,7 in notes)",optimization/study/e7-novel/results/e7a_summary.csv,4,",93.1,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,1168,direct,claude-sonnet cold start original 1.168 ms,optimization/study/e7-novel/results/e7a_summary.csv,2,",1168.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,1167,direct,claude-sonnet cold start N = 2.000: 1.167 ms,optimization/study/e7-novel/results/e7a_summary.csv,3,",1167.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,2514,direct,claude-sonnet cold start N = 100.000: 2.514 ms,optimization/study/e7-novel/results/e7a_summary.csv,4,",2514.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,75.4,direct,"claude-haiku PSS original 75,4 MB",optimization/study/e7-novel/results/e7a_summary.csv,5,",75.4,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,77.2,direct,"claude-haiku PSS N = 2.000: 77,2 MB",optimization/study/e7-novel/results/e7a_summary.csv,6,",77.2,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,103.8,direct,"claude-haiku PSS N = 100.000: 103,8 MB",optimization/study/e7-novel/results/e7a_summary.csv,7,",103.8,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,1185,direct,claude-haiku cold start original 1.185 ms,optimization/study/e7-novel/results/e7a_summary.csv,5,",1185.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,1206,direct,claude-haiku cold start N = 2.000: 1.206 ms,optimization/study/e7-novel/results/e7a_summary.csv,6,",1206.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,2828,direct,claude-haiku cold start N = 100.000: 2.828 ms,optimization/study/e7-novel/results/e7a_summary.csv,7,",2828.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,106.6,direct,"agy-g38flash r1 PSS original 106,6 MB (r2 also 106,6, e7a_summary.csv:14)",optimization/study/e7-novel/results/e7a_summary.csv,11,",106.6,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,111.5,direct,"agy-g38flash r1 PSS N = 2.000: 111,5 MB",optimization/study/e7-novel/results/e7a_summary.csv,12,",111.5,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,137.7,direct,"agy-g38flash r1 PSS N = 100.000: 137,7 MB (upper end of 93,1–137,7 in notes)",optimization/study/e7-novel/results/e7a_summary.csv,13,",137.7,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,1699,direct,agy-g38flash r1 cold start original 1.699 ms (already above 1.500),optimization/study/e7-novel/results/e7a_summary.csv,11,",1699.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,1764,direct,agy-g38flash r1 cold start N = 2.000: 1.764 ms,optimization/study/e7-novel/results/e7a_summary.csv,12,",1764.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,3028,direct,agy-g38flash r1 cold start N = 100.000: 3.028 ms,optimization/study/e7-novel/results/e7a_summary.csv,13,",3028.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,106.3,direct,"agy-g38flash r2 PSS N = 2.000: 106,3 MB",optimization/study/e7-novel/results/e7a_summary.csv,15,",106.3,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,134.2,direct,"agy-g38flash r2 PSS N = 100.000: 134,2 MB",optimization/study/e7-novel/results/e7a_summary.csv,16,",134.2,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,1165,direct,agy-g38flash r2 cold start original 1.165 ms,optimization/study/e7-novel/results/e7a_summary.csv,14,",1165.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,1173,direct,agy-g38flash r2 cold start N = 2.000: 1.173 ms,optimization/study/e7-novel/results/e7a_summary.csv,15,",1173.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,2146,direct,agy-g38flash r2 cold start N = 100.000: 2.146 ms,optimization/study/e7-novel/results/e7a_summary.csv,16,",2146.0,",,"column pss_mb_med or launch_ms_med, median of 5 cold starts"
+34,188.6,direct,"codex-luna Java heap at N = 100.000: 188,6 MB (notes)",optimization/study/e7-novel/NOTE.md,217,`188.6 MB` Java heap,,
+34,1.78,direct,"lazy-grid apps: cold start 1,78 to 2,39 times slower at N = 100.000 (notes)",optimization/study/e7-novel/NOTE.md,229,`1.78×–2.39×`,,
+34,2.39,direct,"lazy-grid apps: cold start 1,78 to 2,39 times slower at N = 100.000 (notes)",optimization/study/e7-novel/NOTE.md,229,`1.78×–2.39×`,,
+34,156,direct,RSS includes shared libraries: 156 to 189 MB at the original size (notes),optimization/study/e7-novel/NOTE.md,237,`156–189 MB`,,
+34,189,direct,RSS includes shared libraries: 156 to 189 MB at the original size (notes),optimization/study/e7-novel/NOTE.md,237,`156–189 MB`,,
+34,96,direct,slow-frame share 96 to 100% already at the original size (notes),optimization/study/e7-novel/NOTE.md,230,(`96–100%`),,
+34,100,direct,slow-frame share 96 to 100% already at the original size (notes),optimization/study/e7-novel/NOTE.md,230,(`96–100%`),,
+34,60,label,not data,,,,,"speaker-note timing ""~N giây"", not data (backup slide, not in the talk total)"
+34,16,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+34,154,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+34,195,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+34,201,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+34,217,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+34,222,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+34,229,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+34,234,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"
+34,238,label,source pointer,,,,,"line number or range in a source pointer in the speaker notes (path:line), not data"

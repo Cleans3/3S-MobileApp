@@ -71,11 +71,11 @@ optimization/ui-ux/measure/*/            │            │                     
 
 Heavy state (generated apps, APKs, videos, traces) lives outside the repo; each REPORT names its path.
 
-**E7 (not in the talk).** [e7-novel/NOTE.md](e7-novel/NOTE.md) goes one step past measuring known problems. It names six gaps the E1–E6 data exposes, lists eight candidate new problems or solutions, and builds two prototypes:
+**E7 (backup D9 only).** [e7-novel/NOTE.md](e7-novel/NOTE.md) goes one step past measuring known problems. It names six gaps the E1–E6 data exposes, lists eight candidate new problems or solutions, and builds two prototypes:
 - a scale probe: run a generated app at realistic data sizes, because toy data hides P06, P09 and P13;
 - a diff guard: a tool, not the assistant, judges an error fix for weakened security.
 
-Both prototypes are unit-tested (`test_prototypes.py`) and evaluated retrospectively on the E1, E4, E5 and E6 corpora. The emulator phase (E7a, E7b) is planned in §6 of the note and not yet run. Quote E7 only as exploratory desk work.
+Both prototypes are unit-tested (`test_prototypes.py`) and evaluated retrospectively on the E1, E4, E5 and E6 corpora. The emulator phase E7a ran on 2026-11-28 (§8 of the note) and is shown on backup D9, labelled exploratory; E7b is not run. Quote E7 only as exploratory work, outside the pre-registered tests.
 
 ## 5. The article, chapter by chapter
 
@@ -111,8 +111,8 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 
 | File | What | Length |
 |---|---|---|
-| [presentation.html](presentation.html) | the deck: 25 main slides + 8 backup (D1–D8), Vietnamese, one offline HTML with embedded fonts. It needs [evidence/](evidence/) (videos, hype thumbnails, screenshots) and [e6-oneshot/img/](e6-oneshot/img/) next to it | speaker notes sum to 19:30 |
-| [presentation-script.md](presentation-script.md) | the spoken script, one section per main slide (Lời nói, Thao tác, Lưu ý), a timing table, Q&A mapped to D1–D8, a preparation checklist and a number check. The per-slide sections are copied below | 19:15 at 130 words/min |
+| [presentation.html](presentation.html) | the deck: 25 main slides + 9 backup (D1–D9), Vietnamese, one offline HTML with embedded fonts. It needs [evidence/](evidence/) (videos, hype thumbnails, screenshots) and [e6-oneshot/img/](e6-oneshot/img/) next to it | speaker notes sum to 19:30 |
+| [presentation-script.md](presentation-script.md) | the spoken script, one section per main slide (Lời nói, Thao tác, Lưu ý), a timing table, Q&A mapped to D1–D9, a preparation checklist and a number check. The per-slide sections are copied below | 19:15 at 130 words/min |
 | [slides-outline.md](slides-outline.md) | slide-by-slide outline: message, evidence, source | — |
 | [demo/README.md](demo/README.md) | the live demo kit for slide 16 (Vietnamese) | 120 s slot |
 
@@ -203,6 +203,7 @@ The data-title column is exactly the slide's `data-title` in the deck. Script, o
 | D6 | D6 · E6 chi tiết | E6 builds per assistant and prompt arm | E6 | 10 rows; `e6-oneshot/REPORT.md` |
 | D7 | D7 · Kiểm tra môi trường | Isolation check of the generation runs | isolation audit, E6 | 7 rows; `isolation-audit/AUDIT.md` |
 | D8 | D8 · Cỡ chữ lớn và bố cục | Large font scale 2.0: the one-prompt apps break; ShelfTap 5/7 → 0/7 | E6, ShelfTap metrics | 14 rows; `../ui-ux-metrics.md`, `../log/opt-ui-ux.md` |
+| D9 | D9 · Phép thử quy mô (E7, thăm dò) | Exploratory E7a: the one-prompt apps with their sample data amplified to 2.000 and 100.000 items; the only eagerly built list passes 150 MB at 2.000 (107,0 → 343,2 MB) and hangs at 100.000; no app starts under 1.500 ms at 100.000; all 10 amplified builds build | E7a | 64 rows; `e7-novel/NOTE.md`, `e7-novel/results/e7a_summary.csv` |
 
 ### Script, slide by slide
 
@@ -457,9 +458,9 @@ Copied from [presentation-script.md](presentation-script.md) by `build_playbook_
 
 **Lời nói.** Khép lại bài trình bày, nhóm em xin đúc kết ba điều cần nhớ. Một là trông hoàn thiện chưa phải đã tối ưu: hãy đo với dữ liệu thật. Hai là lỗi hay gặp không phải lỗi nguy hiểm nhất: cần rà riêng lỗi bộ nhớ và bảo mật. Ba là tin bản build và số đo, không tin lời “đã sửa xong”. Xin cảm ơn, mời thầy cô và các bạn đặt câu hỏi.
 
-**Thao tác.** Giữ slide 25 khi hỏi đáp; nhấn phím O để chọn nhanh slide dự phòng D1 đến D8.
+**Thao tác.** Giữ slide 25 khi hỏi đáp; nhấn phím O để chọn nhanh slide dự phòng D1 đến D9.
 
-**Lưu ý.** Không đưa số mới ở slide kết. Các slide dự phòng D1 đến D8 nằm ngay sau slide 25.
+**Lưu ý.** Không đưa số mới ở slide kết. Các slide dự phòng D1 đến D9 nằm ngay sau slide 25.
 
 <!-- SCRIPT:END -->
 
@@ -493,7 +494,7 @@ Every number in it is a number of the deck. Its owner checks it by a set differe
 
 ## 7. Proof of every number in the deck
 
-- [proof/deck-proof.csv](proof/deck-proof.csv) has 763 rows (425 direct, 99 derived, 239 label) covering 741 values across all 33 slides (visible text, speaker notes, chart data attributes and bar lengths). Columns: `slide,value,kind,claim,source,line,quote,formula,note`.
+- [proof/deck-proof.csv](proof/deck-proof.csv) has 827 rows (479 direct, 99 derived, 249 label) covering 799 values across all 34 slides (visible text, speaker notes, chart data attributes and bar lengths). Columns: `slide,value,kind,claim,source,line,quote,formula,note`.
   - `direct`: the number is on `source:line`, inside the verbatim `quote`.
   - `cited`: the same, from an external source recorded in references.md (not used by the current deck).
   - `derived`: `formula` recomputes the shown value from proven inputs. Examples: k/66 as naive + detailed (`8+11`); MB as KB / 1024; APK bytes / 1 000 000; Holm as raw p × (5 − rank + 1); "gấp 2,3 lần" as `2.37/1.02`; P08 11/12 counted from `e6-oneshot/results/findings.csv`.
@@ -594,7 +595,7 @@ Figures that still print an older term are glossed in their captions (section 5)
 - [ ] The deck opens offline on the presenting machine (fonts are embedded). The presenter window (P) works there and its clock shows the 19:30 target.
 - [ ] Light theme on a projector; dark only in a dark room.
 - [ ] Rehearse to 19:30 or less (the script times itself at 19:15).
-- [ ] Know the Q&A answers in presentation-script.md, each mapped to a backup slide: emulator vs real phone (D1), Holm (D2), +28,13% vs −22% (D3), E4 raters and per-assistant counts (D4), human apps (D5, slide 13), E6 per assistant (D6), isolation (D7).
+- [ ] Know the Q&A answers in presentation-script.md, each mapped to a backup slide: emulator vs real phone (D1), Holm (D2), +28,13% vs −22% (D3), E4 raters and per-assistant counts (D4), human apps (D5, slide 13), E6 per assistant (D6), isolation (D7), what is new: the one-prompt apps at real data size (D9).
 
 **Before changing the deck**
 - [ ] Every changed number has its proof row; the checker exits 0.
