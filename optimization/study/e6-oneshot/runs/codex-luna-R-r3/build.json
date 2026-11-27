@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "",
+ "repairs": 0,
+ "gradle_s_first": 23.4,
+ "build": "fail",
+ "build_error_first_line": "A problem occurred configuring project ':baselineprofile'.",
+ "lint": "no-report"
+}

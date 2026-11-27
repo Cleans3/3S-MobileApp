@@ -12,13 +12,13 @@ Research questions RQ1–RQ6 and hypotheses H1–H6, G1–G3, B1 are defined in 
 
 | Test | Hypothesis | Measure | Verdict | Where |
 |---|---|---|---|---|
-| C1 | G1: guardrail lowers the share of runs with ≥1 security (S) finding | E1 primary endpoint 1 | supported | ARTICLE Table 5.6, 5.26, 5.27 · deck slide 9 |
-| C2 | G2: guardrail lowers the number of distinct rules per run | E1 primary endpoint 2 | supported | Table 5.6 · slide 9 |
-| C3 | B1: assistants emit S findings at a higher density than humans | S findings per 1000 Kotlin lines vs human apps before 30/11/2022 | supported | Figure 5.9, Table 5.26 · slide 8 |
+| C1 | G1: guardrail lowers the share of runs with ≥1 security (S) finding | E1 primary endpoint 1 | supported | ARTICLE Table 5.6, 5.26, 5.27 · deck slide 10 |
+| C2 | G2: guardrail lowers the number of distinct rules per run | E1 primary endpoint 2 | supported | Table 5.6 · slide 10 |
+| C3 | B1: assistants emit S findings at a higher density than humans | S findings per 1000 Kotlin lines vs human apps before 30/11/2022 | supported | Figure 5.9, Table 5.26 · backup D2 |
 | C4 | H2: assistants fix errors by weakening security | share of E4 trials scored `insecure-workaround` vs 0,15 | **not supported** | Figure 5.16 · slide 11 |
-| C5 | H3: decorative effects cost frame time | P90 CPU frame time, P08 A vs B | supported | Table 5.19 · slide 6 |
+| C5 | H3: decorative effects cost frame time | P90 CPU frame time, P08 A vs B | supported | Table 5.19 · slide 15 |
 
-Descriptive results that the talk also uses: H4 (non-existent Gradle coordinates) rejected after we fixed our own lookup bug; H5 (accessibility/state debt) rejected; E3 tool precision; E5 optimiser outcomes. Full list: ARTICLE.md Table 5.26 (line 1197) and Table 5.27 (line 1218).
+Descriptive results that the talk also uses: H4 (non-existent Gradle coordinates) rejected (with the corrected lookup); H5 (accessibility/state debt) rejected; E3 tool precision; E5 optimiser outcomes. Full list: ARTICLE.md Table 5.26 (line 1197) and Table 5.27 (line 1218).
 
 ## 3. Rules that make the numbers trustworthy
 
@@ -75,31 +75,58 @@ Line numbers are ARTICLE.md lines at the time of writing; search the heading if 
 
 | File | What | Length |
 |---|---|---|
-| [presentation.html](presentation.html) | the deck: 18 slides + 4 backup (D1 Holm, D2 full E2 table, D3 E4 detail, D4 rule prevalence), Vietnamese, offline; needs the [evidence/](evidence/) folder next to it for videos and screenshots | ~14 min |
-| [presentation-script.md](presentation-script.md) | speaker script with timing and Q&A | 10 min version |
-| [slides-outline.md](slides-outline.md) | the 10-minute outline from the group plan | 10 min |
+| [presentation.html](presentation.html) | the deck: 21 slides + 11 backup (D1–D11), Vietnamese, offline; same order as [report/index.html](report/index.html); needs [evidence/](evidence/) and [e6-oneshot/img/](e6-oneshot/img/) next to it | ~14 min |
+| [presentation-script.md](presentation-script.md) | speaker script with timing and Q&A, one segment per slide | ~14 min |
+| [slides-outline.md](slides-outline.md) | slide-by-slide outline of the deck | ~14 min |
 
-Design rule for the main slides (audience is not technical): one plain sentence as the headline, one picture of real evidence (A/B video, verbatim code, tool output, screenshot) and at most one or two numbers. Statistics (p, Cliff's delta, intervals, n) go to the speaker notes and backup slides D1–D4. Every evidence item shows its source path on the slide; each one is documented in [evidence/EVIDENCE-code.md](evidence/EVIDENCE-code.md) and [evidence/EVIDENCE-agent.md](evidence/EVIDENCE-agent.md).
+Design rule for the main slides (audience is not technical): one plain sentence as the headline, one picture of real evidence (A/B video, verbatim code, tool output, screenshot) and at most one or two numbers. Statistics (p, Cliff's delta, intervals, n) go to the speaker notes and backup slides D1–D11. Every evidence item shows its source path on the slide; each one is documented in [evidence/EVIDENCE-code.md](evidence/EVIDENCE-code.md) and [evidence/EVIDENCE-agent.md](evidence/EVIDENCE-agent.md).
 
-Deck order, the evidence each slide shows, and the article section it comes from:
+Deck order (rebuilt 2026-11-28 to follow the plain-language report), the evidence each slide shows, and where it comes from:
 
-| Slide | Says | Evidence on the slide | Article | Kind |
+| Slide | Says | Evidence on the slide | Source | Kind |
 |---|---|---|---|---|
-| 1–3 | title, problem, method E1–E5 + pre-registration | — | §1, §4 | — |
-| 4 | E1: 42/100 drafts build; 31/33 unguarded drafts have a security finding | code-01: token saved in plain SharedPreferences | §5.2 | mô tả |
-| 5 | E2 P01+P09 long list (90% → 1,3% slow frames), P06 images | video P09c A/B | §5.3 Tables 5.14–5.15 | mô tả |
-| 6 | C5 decorative card cost (+28%) | video P08c A/B | Table 5.19 | xác nhận |
-| 7 | E2: which optimisations a user feels (P13, R8, Baseline Profile, Compose nulls) | video P13c A/B | Tables 5.9, 5.10, 5.16–5.18 | mô tả |
-| 8 | C3 AI vs human density (2,3×) | — | §5.2, Figure 5.9 | xác nhận |
-| 9 | C1/C2 guardrail, buildable subset | code-02 (same brief with guardrail: Keystore AES-GCM), code-07 rule 4 | Tables 5.6–5.7, Figure 5.8 | xác nhận |
-| 10 | E3: MobSF wrong 7 in 10, misses real issues | code-05 (exported false positive + triage row), code-06 (Level.BODY logging MobSF missed) | §5.4, Figure 5.10 | mô tả |
-| 11 | C4 fix under pressure (17/148) | agent-01 (error + diff removing setUserAuthenticationRequired), agent-02 (safe fix) | §5.5 | xác nhận (not supported) |
-| 12 | E5: claims "fixed" while the tree does not compile | agent-06 (claim + runs.csv compiles=0), agent-04, agent-05 | §5.6 | mô tả |
-| 13–15 | ShelfTap on a Xiaomi phone: debug vs measure build, home scroll fix, UI scorecard | cover URL 10.0.2.2; screenshots A/B at font scale 2.0 | opt-ui-ux.md (not in ARTICLE) | mô tả |
-| 16 | verdict board, plain words | — | Tables 5.26–5.27 | — |
-| 17–18 | limitations, three habits, closing line | — | §5.8, §6 | — |
+| 1 | title: "Một câu lệnh, một ứng dụng đẹp?" | — | — | — |
+| 2 | lead-in: the "vibe coding" hype and the one-shot prompt | Karpathy, Stack Overflow 2025, Collins, Merriam-Webster; prompts/O.txt verbatim | references.md §G, report/sources-leadin.md | cited |
+| 3 | E6: same prompt, four assistants, very different apps (6/12 build, 120–3.702 lines, 74–100% janky) | four arm-O screenshots | e6 REPORT §2 | mô tả |
+| 4 | the problem in short: 90% → 1,3%, 203 → 6,2 MB, 60/66; 2,3× vs human apps | — | e2 REPORT, e1 REPORT:127–128 | mô tả |
+| 5 | method E1–E6, and the isolation check (623 transcripts, 0 markers, canary 12/12) | — | 00-protocol, isolation-audit/AUDIT.md | — |
+| 6 | the seven links of the vibe-code chain, one number each | — | report/index.html §4 | — |
+| 7 | link 1, tool and model: haiku 1/9 vs sonnet 7/9 (E6), E1 build rate per bundle | — | e6 REPORT §5, e1 REPORT | mô tả |
+| 8 | link 2, prompt (E1): longer functional prompt is not safer, builds less | — | e1 REPORT:127–129, §1 | mô tả |
+| 9 | link 2, prompt (E6): structured spec, janky 99% → 19,6% | claude-sonnet arm O vs arm S screenshots | e6 REPORT §4 | mô tả |
+| 10 | link 3, rules file: C1/C2 plus E6 arm R and the Baseline Profile rule | code-02, code-07 | Tables 5.6–5.7, e6 REPORT §4 | xác nhận |
+| 11 | link 4, when it errors: C4 17/148 | agent-01, agent-02 | §5.5 | xác nhận (not supported) |
+| 12 | link 5, verify: E5 "fixed" claim vs compile error | agent-06, agent-04, agent-05 | §5.6 | mô tả |
+| 13 | link 5, scanners: MobSF wrong 7 in 10, misses real issues | code-05, code-06 | §5.4 | mô tả |
+| 14 | link 6, lists and images: 90% → 1,3% | video P09c A/B | Tables 5.14–5.15 | mô tả |
+| 15 | link 6, decorative effects: C5 +28% | video P08c A/B | Table 5.19 | xác nhận |
+| 16 | link 6, what the user feels: P13, R8, Baseline Profile, Compose nulls | video P13c A/B | Tables 5.9, 5.10, 5.16–5.18 | mô tả |
+| 17 | link 7, measure the release build: 125 vs 12–16 ms | — | opt-ui-ux.md | mô tả |
+| 18 | link 7, bugs only a real phone shows: 10.0.2.2 cover URL | — | opt-ui-ux.md | mô tả |
+| 19 | link 7, large font: all four E6 apps break at 2.0; ShelfTap 5/7 → 0/7 | e6 img/grid-O-font2.jpg; ShelfTap A/B screenshots | e6 REPORT §2, opt-ui-ux.md | mô tả |
+| 20 | seven habits, vibe coder vs engineer | — | report/index.html §5 | — |
+| 21 | closing: three habits, "Không để trợ lý tự xác nhận mã của chính nó." | — | — | — |
+
+Every solution slide (7, 9–19 except 8 and 18) ends with the two audience boxes: "Nếu bạn vibe-code" (habits and prompts) and "Nếu bạn là kỹ sư" (process, tests, CI, measurement). Backup D1–D11: verdict board, C3 vs human, E1 drafts, limits, Holm table, full E2 table, E4 detail, rule prevalence, E6 build table, isolation check detail, lead-in sources. Framing rule (user, 2026-11-28): never lead with admitting a mistake; a corrected number is told as the lesson ("debug builds mislead, measure the release"), and limits are stated once, plainly, in notes or backup.
 
 Keys: → / Space next, ← back, P presenter window, O overview, N notes, T light/dark, F fullscreen, B blackout, digits + Enter jump, ? help. Print to PDF renders every slide in its final state. To show it over the tailnet: `python3 -m http.server <port> --bind <tailscale-ip> --directory optimization/study`.
+
+
+## 6b. The plain-language report
+
+[report/index.html](report/index.html) tells the study to a non-technical reader in the order the user asked for on 2026-11-27: a relatable lead-in (the "vibe coding" hype and the social-media one-shot prompt, with cited sources [Karpathy2025], [Collins2025], [SOSurvey2025], [Veracode2025], [MerriamWebster2025], [Ouyang2023], then our own E6 grid of four tools answering the same prompt), the problem kept short (three numbers and one code excerpt), how we tested (E1 to E6 plus the isolation audit), and the bulk on solutions along seven links of the vibe-code chain:
+
+| Link | Evidence in the report | Source |
+|---|---|---|
+| 1 Choose tool and model | E1 build rate per bundle; E6 haiku 1/9 vs sonnet 7/9 builds, same launcher | e1 REPORT §1, e6 REPORT §5 |
+| 2 Write the prompt | E1 S-class share by prompt style (31/33, 29/33, 17/34) and build rate by style (20/33, 12/33, 10/34); E6 arm S janky median 19,6% vs 99% | e1 REPORT:127-129 and §1, e6 REPORT §4 |
+| 3 Rules file | code-01 vs code-02; C1/C2; builders-only caveat; E6 arm R and the Baseline Profile rule that broke codex | e1 REPORT, e6 REPORT §4 |
+| 4 When it errors | E4 diff removing setUserAuthenticationRequired, 17/148 | agent-01, agent-02 |
+| 5 Verify before trusting | E5 claim vs compile error; MobSF false positive vs missed Level.BODY | agent-06, agent-04, code-05, code-06 |
+| 6 Engineering fixes | P09c and P08c A/B videos, table of measured effects | e2 REPORT |
+| 7 Measure right | ShelfTap debug vs release, cover URL bug, font-scale screenshots, E6 font 2.0 grid | opt-ui-ux.md, e6 img/grid-O-font2.jpg |
+
+Each link ends with two boxes: what a vibe coder does, what an engineer does. Design: one column, plain sans, two chart colours (orange = AI-written, blue = fixed; validated with the dataviz palette checker), every figure with a source line. E6 numbers are descriptive (exploratory, n = 3 per cell, software-GPU emulator) and the report says so.
 
 ## 7. Proof of every number in the deck
 
@@ -148,7 +175,7 @@ Terms fixed for the whole study; use them in the article, the deck, the script a
 - [ ] `python3 optimization/study/proof/check_deck_proof.py` exits 0.
 - [ ] Deck opens offline on the presenting machine (fonts are embedded); presenter window (P) works there.
 - [ ] Light theme on a projector; dark only for a dark room.
-- [ ] Rehearse to ~14 min, or cut to the 10-minute outline (drop slides 7, 12, 15 and keep them as backup).
+- [ ] Rehearse to ~14 min. For 10 minutes, move slides 8, 13 and 16 to backup (each repeats a point another slide already makes).
 - [ ] Know the answers in presentation-script.md's Q&A section, especially: emulator vs real phone, apples-to-oranges for C3, why C1 vanishes on buildable apps, why C4 is "not supported".
 
 **Before submitting the article**

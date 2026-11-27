@@ -1,0 +1,33 @@
+pkg com.lumina.library
+alive_after_25s False
+--------- beginning of crash
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: FATAL EXCEPTION: main
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: Process: com.lumina.library, PID: 3466
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: java.lang.RuntimeException: Unable to instantiate activity ComponentInfo{com.lumina.library/com.lumina.library.MainActivity}: java.lang.ClassNotFoundException: Didn't find class "com.lumina.library.MainActivity" on path: DexPathList[[zip file "/data/app/~~J2iwF8rYrbWjQuqzfktGeA==/com.lumina.library-J5CSJ92SD2movOPB-99ytQ==/base.apk"],nativeLibraryDirectories=[/data/app/~~J2iwF8rYrbWjQuqzfktGeA==/com.lumina.library-J5CSJ92SD2movOPB-99ytQ==/lib/x86_64, /system/lib64, /system_ext/lib64]]
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3689)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3922)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:103)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:139)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:96)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2443)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.os.Looper.loopOnce(Looper.java:205)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.os.Looper.loop(Looper.java:294)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.app.ActivityThread.main(ActivityThread.java:8177)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at java.lang.reflect.Method.invoke(Native Method)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:552)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:971)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: Caused by: java.lang.ClassNotFoundException: Didn't find class "com.lumina.library.MainActivity" on path: DexPathList[[zip file "/data/app/~~J2iwF8rYrbWjQuqzfktGeA==/com.lumina.library-J5CSJ92SD2movOPB-99ytQ==/base.apk"],nativeLibraryDirectories=[/data/app/~~J2iwF8rYrbWjQuqzfktGeA==/com.lumina.library-J5CSJ92SD2movOPB-99ytQ==/lib/x86_64, /system/lib64, /system_ext/lib64]]
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at dalvik.system.BaseDexClassLoader.findClass(BaseDexClassLoader.java:259)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at java.lang.ClassLoader.loadClass(ClassLoader.java:379)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at java.lang.ClassLoader.loadClass(ClassLoader.java:312)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.app.AppComponentFactory.instantiateActivity(AppComponentFactory.java:95)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at androidx.core.app.CoreComponentFactory.instantiateActivity(CoreComponentFactory.java:44)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.app.Instrumentation.newActivity(Instrumentation.java:1378)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3676)
+11-27 18:54:37.450  3466  3466 E AndroidRuntime: 	... 12 more
+
+--- main (AndroidRuntime/ANR/pkg errors) ---
+11-27 18:54:36.495  3466  3466 W ziparchive: Unable to open '/data/app/~~J2iwF8rYrbWjQuqzfktGeA==/com.lumina.library-J5CSJ92SD2movOPB-99ytQ==/base.dm': No such file or directory
+11-27 18:54:36.498  3466  3466 W ziparchive: Unable to open '/data/app/~~J2iwF8rYrbWjQuqzfktGeA==/com.lumina.library-J5CSJ92SD2movOPB-99ytQ==/base.dm': No such file or directory
+11-27 18:54:37.861   517  2744 W InputManager-JNI: Input channel object '11fbfe3 Splash Screen com.lumina.library (client)' was disposed without first being removed with the input manager!

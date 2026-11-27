@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 122.7,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/codex-luna-S-r3/app/src/main/java/vn/shelftap/app/ui/ShelfTapApp.kt:199:81 Unresolved reference 'textSize'.",
+ "lint": "no-report"
+}

@@ -1,0 +1,23 @@
+Work in the current empty directory. Create the complete Android project for the app described below by writing its files here: Gradle build files, the manifest, Kotlin sources and resources. Do not run any commands that use the network, do not install anything, do not ask me questions: decide anything that is not specified yourself. When the project is complete, stop and reply with the single word DONE.
+
+Platform: Android phone app, Kotlin, Jetpack Compose with Material 3, minSdk 26, a single Gradle module named app, package vn.shelftap.app. Use only stable, released versions of AGP, Kotlin, the Compose BOM and every library; do not guess a version you are not sure exists.
+
+App: ShelfTap catalogue, for library members to browse and search the books of a library. Visual direction: modern and polished, a gradient hero header, a grid of book covers, a light and a dark theme that follow the system setting, rounded semi-transparent cards (a static translucent fill, no blur), restrained motion.
+
+Data (there is no server): a local read-only catalogue of 5,000 generated titles, produced by a deterministic generator in code (fixed seed) at first use, never on the main thread. A title has id (string), isbn (string), title (string), authors (list of strings), year (integer), subjects (list of strings), copiesAvailable (integer). A cover is drawn locally from the title id (a gradient tile with the title initials); no image is downloaded.
+
+Screens:
+1. Catalogue: a hero header, then a grid of covers with title and author under each, and an "Available" or "All copies out" badge (copiesAvailable > 0). It scrolls through all titles.
+2. Search: a search field above the grid. The grid updates as the member types, matching title, author, ISBN or subject; the filtering runs off the main thread and is debounced. An empty result shows "No books found".
+3. Title detail: opened from a cover. Shows the large cover, all fields, the subjects as chips, and a back button.
+Navigation: a bottom bar with Catalogue and Search, and the detail screen on top.
+
+Constraints:
+- Lists and grids are lazy (LazyVerticalGrid or LazyColumn) with a stable key per item. No Column with verticalScroll over the catalogue.
+- Covers have a fixed size in dp; no image or bitmap is larger than the slot it is drawn in.
+- No blur, no shadow, and no infinite or per-frame animation on list or grid items. Motion is limited to the screen transition and a short tap response.
+- Text sizes are in sp and no text container has a fixed height, so the app stays usable at the largest system font scale (2.0).
+- Every clickable element has a content description or visible text and a touch target of at least 48dp.
+- The app uses no network and no internet permission. android:allowBackup is false. No secrets, keys or tokens appear in the source.
+- State survives rotation (rememberSaveable or a ViewModel); the heavy list state is kept in a ViewModel.
+- Definition of done: the project builds with ./gradlew assembleDebug and launches to the Catalogue screen without a crash. Include a Gradle wrapper properties file.

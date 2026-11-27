@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 85.2,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/codex-luna-O-r2/app/src/main/java/com/luma/library/MainActivity.kt:247:76 Unresolved reference 'graphicsLayer'.",
+ "lint": "no-report"
+}

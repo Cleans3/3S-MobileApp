@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "",
+ "repairs": 0,
+ "gradle_s_first": 55.7,
+ "build": "fail",
+ "build_error_first_line": "e: [ksp] /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/claude-haiku-R-r3/app/src/main/java/com/example/library/data/BookDao.kt:18: The columns returned by the query does not have the fiel",
+ "lint": "no-report"
+}

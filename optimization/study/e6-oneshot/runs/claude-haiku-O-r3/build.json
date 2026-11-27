@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "",
+ "repairs": 0,
+ "gradle_s_first": 50.4,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/claude-haiku-O-r3/app/src/main/java/com/lumen/library/MainActivity.kt:22:29 Type 'androidx.compose.runtime.State<kotlin.Boolean?>' ",
+ "lint": "no-report"
+}

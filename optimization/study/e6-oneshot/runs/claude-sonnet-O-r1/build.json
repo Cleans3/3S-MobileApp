@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "",
+ "repairs": 0,
+ "gradle_s_first": 100.2,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/claude-sonnet-O-r1/app/src/main/java/com/lumina/library/ui/screens/HomeScreen.kt:43:34 Unresolved reference 'LocalFocusManager'.",
+ "lint": "no-report"
+}

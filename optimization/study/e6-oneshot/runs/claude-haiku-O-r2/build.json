@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "fail",
+ "repairs": 1,
+ "gradle_s_first": 63.7,
+ "build": "fail",
+ "build_error_first_line": "e: file:///mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/claude-haiku-O-r2/app/src/main/java/com/lumen/library/ui/components/BookCover.kt:24:43 Unresolved reference 'matchParentSize'.",
+ "lint": "no-report"
+}

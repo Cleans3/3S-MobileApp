@@ -1,0 +1,28 @@
+iterlog cols ['time', 'factor_id', 'phase', 'variant', 'iteration', 'mem_avail_mb', 'loadavg1', 'swapin_pages', 'emu_majflt', 'emu_swap_delta_kb', 'status'] 516
+status Counter({'kept': 463, 'dropped:swapin': 52, 'dropped:no-sample': 1})
+loadavg1 n 515 min/med/p95/max 0.38 4.95 12.67 33.92
+mem_avail min/med 1416.0 4863.0
+swapin>0 510
+('P01+P09', 'A') 27 load med 2.83 max 6.39
+('P01+P09', 'B') 27 load med 2.87 max 7.23
+('P01+P09/P01', 'A') 18 load med 6.41 max 8.93
+('P01+P09/P01', 'B') 18 load med 7.56 max 13.43
+('P01+P09@swangle', 'A') 30 load med 10.18 max 13.18
+('P01+P09@swangle', 'B') 30 load med 9.46 max 15.76
+('P03+P04', 'A') 33 load med 4.69 max 11.74
+('P03+P04', 'B') 33 load med 4.81 max 13.4
+('P06', 'A') 33 load med 4.32 max 12.67
+('P06', 'B') 33 load med 4.49 max 8.19
+('P08', 'A') 30 load med 9.11 max 13.3
+('P08', 'B') 30 load med 9.21 max 12.6
+('P10', 'A') 30 load med 3.56 max 18.63
+('P10', 'B') 30 load med 2.95 max 12.2
+('P11', 'A') 27 load med 2.34 max 4.97
+('P11', 'B') 27 load med 2.23 max 7.19
+('P13', 'A') 30 load med 4.44 max 33.92
+('P13', 'B') 30 load med 5.52 max 28.72
+runlog rows 189 lock_wait>0: 2 max 1235.0 sum 1376.0 results Counter({'ok': 172, 'yield': 17})
+exclusions rows 34
+host_limited Counter({'no': 34})
+dropped_total sum 53 mem 0 swapin 52
+[('P08', 'primary', 'A', '4', 'no'), ('P08', 'primary', 'B', '1', 'no'), ('P06', 'frames', 'A', '1', 'no'), ('P06', 'frames', 'B', '1', 'no'), ('P06', 'primary', 'A', '2', 'no'), ('P06', 'primary', 'B', '6', 'no'), ('P01+P09', 'frames', 'A', '2', 'no'), ('P01+P09', 'frames', 'B', '2', 'no'), ('P13', 'frames', 'A', '2', 'no'), ('P13', 'frames', 'B', '3', 'no'), ('P13', 'primary', 'A', '1', 'no'), ('P13', 'primary', 'B', '3', 'no'), ('P03+P04', 'frames', 'A', '2', 'no'), ('P03+P04', 'primary', 'A', '1', 'no'), ('P03+P04', 'primary', 'B', '5', 'no'), ('P10', 'frames', 'A', '1', 'no'), ('P10', 'frames', 'B', '1', 'no'), ('P10', 'primary', 'A', '1', 'no'), ('P11', 'primary', 'A', '2', 'no'), ('P01+P09/P01', 'primary', 'A', '6', 'no'), ('P01+P09/P01', 'primary', 'B', '2', 'no'), ('P01+P09@swangle', 'frames', 'B', '1', 'no'), ('P01+P09@swangle', 'primary', 'A', '1', 'no'), ('P01+P09@swangle', 'primary', 'B', '2', 'no')]

@@ -1,0 +1,52 @@
+{
+  "tool": "codex",
+  "model_arg": "gpt-5.6-luna",
+  "cli_version": "codex-cli 0.171.0",
+  "exit_code": 0,
+  "timeout": false,
+  "duration_s": 214.0,
+  "date": "2026-11-27",
+  "real_home": false,
+  "harness_config_hash": "e340232d0489f311ad7f4d810aadd99cf800ac0c946f624417d43a8a15e99d27",
+  "canary_planted": false,
+  "prompt_sha256": "3c4c1236cef77859cf4c7662a3b7279042fc1dcc254afb959bca14417d5af090",
+  "cli_flags": "exec --json -s danger-full-access --skip-git-repo-check --ephemeral -C /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/e6/corpus/codex-luna-S-r3 -m gpt-5.6-luna -c model_reasoning_effort=\"medium\" -c web_search=\"disabled\" --disable apps --disable browser_use --disable browser_use_external --disable computer_use --disable plugins --disable in_app_browser <PROMPT>",
+  "model_reported": null,
+  "tokens_in": 250233,
+  "tokens_out": 10154,
+  "cost_usd": null,
+  "final_text": "DONE",
+  "stderr_head": [
+    "Reading additional input from stdin...",
+    "2026-11-27T11:15:24.755621Z ERROR codex_core::tools::router: error=apply_patch verification failed: Failed to find expected lines in /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/e6/corpus/codex-luna-S-r3/app/src/main/java/vn/shelftap/app/ui/ShelfTapApp.kt:",
+    "import androidx.compose.ui.text.input.TextFieldValue",
+    "import androidx.compose.runtime.Composable",
+    "import androidx.compose.runtime.getValue"
+  ],
+  "run_id": "codex-luna-S-r3",
+  "bundle": "codex-luna",
+  "arm": "S",
+  "rep": 3,
+  "tier": 2,
+  "files": 16,
+  "kotlin_loc": 338,
+  "valid": true,
+  "context_file": null,
+  "guardrail_sha256": null,
+  "attempts": [
+    {
+      "attempt": 1,
+      "files": 16,
+      "exit_code": 0,
+      "infra_failure": false,
+      "denied_actions": 0
+    }
+  ],
+  "net_audit": "none",
+  "n_commands": 12,
+  "denied_actions": 0,
+  "web_tool_calls": 0,
+  "web_tools": "",
+  "generated_at": "2026-11-27T18:15:37+0700",
+  "invalid_reason": ""
+}

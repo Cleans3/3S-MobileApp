@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Một câu lệnh, một ứng dụng đẹp? Mã do AI viết trên Android và cách xử lý ở từng mắt xích</title>
+<style>
+:root{--ink:#1d1d1f;--mute:#5d5d63;--rule:#e2dfd8;--paper:#fcfbf8;--card:#f4f2ec;--ai:#c4622d;--fix:#2f6fd0}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:1rem}
+body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.65 "Inter","Noto Sans",system-ui,sans-serif}
+main{max-width:920px;margin:0 auto;padding:3rem 1.5rem 6rem}
+h1{font-size:2.3rem;line-height:1.2;margin:.4rem 0 1rem;letter-spacing:-.01em}
+h2{font-size:1.6rem;margin:4rem 0 .6rem;padding-top:1rem;border-top:2px solid var(--ink)}
+h3{font-size:1.25rem;margin:2.6rem 0 .4rem}
+h4{margin:0 0 .4rem;font-size:.95rem;letter-spacing:.02em}
+p{margin:.7rem 0}
+.kicker{font-size:.8rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.lede{font-size:1.2rem;color:#333}
+.say{font-size:1.2rem;font-weight:600;margin:.4rem 0 1rem}
+.src{display:block;font-size:.78rem;color:var(--mute);margin-top:.35rem;font-family:ui-monospace,"JetBrains Mono",monospace;word-break:break-word}
+.src::before{content:"nguồn: "}
+figure{margin:1.4rem 0}
+figure.ev figcaption{font-size:.95rem;color:#333;margin-top:.4rem}
+video,img{max-width:100%;max-height:560px;width:auto;margin:0 auto;display:block;border:1px solid var(--rule);border-radius:6px;background:#000}
+img{background:#fff}
+img.wide{max-height:none;width:100%}
+.prompt{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:.8rem 1rem;font-size:.95rem;font-style:italic;margin-bottom:.8rem}.prompt .hd{display:block;font-style:normal;font-size:.8rem;color:var(--mute);margin-bottom:.3rem}
+.box ul{padding-left:1.2rem}
+.ab{display:flex;font-size:.82rem;font-weight:600;margin-bottom:.3rem}
+.ab span{flex:1}.tagA{color:#9c4818}.tagB{color:#2459b0;text-align:right}
+.chain{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none;padding:0;margin:1.2rem 0;counter-reset:c}
+.chain li{counter-increment:c;flex:1 1 120px}
+.chain a{display:block;height:100%;padding:.55rem .7rem;border:1px solid var(--rule);border-radius:8px;background:#fff;color:var(--ink);text-decoration:none;font-size:.88rem;line-height:1.3}
+.chain a::before{content:counter(c);display:block;font-weight:700;color:var(--fix);font-size:1.1rem}
+.chain a:hover{border-color:var(--fix)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin:1.2rem 0}
+.card{background:var(--card);border-radius:8px;padding:1rem 1.1rem}
+.card .n{font-size:1.7rem;font-weight:700;line-height:1.1}
+.card p{margin:.4rem 0 0;font-size:.95rem}
+.who{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.2rem 0 .5rem}
+.who>div{border-radius:8px;padding:.9rem 1.1rem;font-size:.95rem}
+.who ul{margin:.2rem 0;padding-left:1.1rem}.who li{margin:.25rem 0}
+.vibe{background:#fbf1ea}.vibe h4{color:#9c4818}
+.eng{background:#edf2fb}.eng h4{color:#2459b0}
+.bars{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:.9rem 1.1rem}
+.bt{font-weight:600;font-size:.95rem;margin-bottom:.5rem}
+.br{display:grid;grid-template-columns:minmax(120px,30%) 1fr 7.5rem;align-items:center;gap:.6rem;margin:.35rem 0;font-size:.92rem}
+.bw{background:#f1efea;border-radius:4px;height:22px;overflow:hidden}
+.bf{display:block;height:100%;border-radius:0 4px 4px 0}
+.bf.a{background:var(--ai)}.bf.b{background:var(--fix)}.bf.n{background:#77746d}
+.bv{font-weight:600;font-variant-numeric:tabular-nums}
+pre.code{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:.8rem 1rem;overflow-x:auto;font:14px/1.5 ui-monospace,"JetBrains Mono",monospace;margin:0}
+.code .hd{display:block;color:var(--mute);font-size:12.5px;margin-bottom:.3rem}
+.code .bad{background:#fbe6dc}.code .good{background:#e3ecfb}.code .del{color:#a33}.code .add{color:#1f5fbf}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+table{border-collapse:collapse;width:100%;font-size:.93rem;margin:1rem 0}
+th,td{border-bottom:1px solid var(--rule);padding:.45rem .5rem;text-align:left;vertical-align:top}
+th{font-size:.82rem;color:var(--mute);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.note{font-size:.9rem;color:var(--mute);border-left:3px solid var(--rule);padding-left:.8rem}
+.box{border:1px solid var(--rule);background:#fff;border-radius:8px;padding:1rem 1.2rem;margin:1.2rem 0}
+.pending{border:2px dashed var(--rule);border-radius:8px;padding:2rem;text-align:center;color:var(--mute)}
+s{color:var(--mute)}
+.ref{font-size:.72em;vertical-align:super;text-decoration:none;color:#2459b0;margin-left:1px}
+.refs{font-size:.85rem;color:#333;word-break:break-word}.refs li{margin:.3rem 0}
+@media (max-width:720px){.who,.pair{grid-template-columns:1fr}.br{grid-template-columns:1fr;gap:.15rem}}
+</style></head><body><main>
+
+<p class="kicker">Nghiên cứu môn Tối ưu ứng dụng di động · ShelfTap</p>
+<h1>Một câu lệnh, một ứng dụng đẹp?</h1>
+<p class="lede">Mã do AI viết trên Android trông xong rất nhanh. Chúng tôi đo xem nó tốn gì ở giao diện, bộ nhớ và bảo mật, rồi thử cách xử lý ở <b>từng mắt xích</b> của quá trình “vibe-code”: từ chọn công cụ, viết đề bài, đến đo trên máy thật.</p>
+
+<!-- ============ 1 LEAD-IN ============ -->
+<h2 id="mo-dau">1. Mở đầu: lời hứa “một câu lệnh”</h2>
+<p>Tháng 2/2025, Andrej Karpathy đặt tên cho một cách lập trình mới: <i>“vibe coding”</i>, khi người viết “quên rằng mã nguồn tồn tại” và bấm “Accept All” mà không đọc thay đổi<a class="ref" href="#l1">[1]</a>. Cuối năm, “vibe coding” thành từ của năm của từ điển Collins<a class="ref" href="#l2">[2]</a>, và 84% lập trình viên trả lời khảo sát Stack Overflow 2025 đang hoặc sắp dùng công cụ AI<a class="ref" href="#l3">[3]</a>.</p>
+<p>Trên mạng xã hội, một kiểu bài đăng rất quen: ảnh chụp một ứng dụng đẹp, kính mờ, dải màu, hiệu ứng mượt, kèm theo <b>“câu lệnh một lần”</b> (one-shot prompt) và lời hứa: dán vào là ra y như vậy. Ít ai nhắc rằng chính Karpathy giới hạn cách làm này cho <i>“throwaway weekend projects”</i> (dự án cuối tuần dùng xong bỏ)<a class="ref" href="#l1">[1]</a>.</p>
+<div class="cards">
+ <div class="card"><div class="n">46% / 33%</div><p>lập trình viên <b>không tin</b> / tin độ chính xác của công cụ AI; 66% khó chịu nhất vì kết quả “gần đúng nhưng chưa đúng”.<a class="ref" href="#l3">[3]</a></p></div>
+ <div class="card"><div class="n">45%</div><p>số bài kiểm tra mà mã AI sinh ra có lỗ hổng bảo mật, trên hơn 100 mô hình; mô hình lớn hơn, mới hơn không an toàn hơn.<a class="ref" href="#l4">[4]</a></p></div>
+ <div class="card"><div class="n">“slop”</div><p>từ của năm 2025 của Merriam-Webster: nội dung chất lượng thấp, sinh hàng loạt bằng AI.<a class="ref" href="#l5">[5]</a></p></div>
+</div>
+<p>Chúng tôi làm đúng việc đó: viết một câu lệnh theo kiểu ấy cho ứng dụng thư viện ShelfTap, đưa nguyên văn cho nhiều trợ lý AI khác nhau trong môi trường sạch, rồi chụp màn hình thứ mà mỗi trợ lý thật sự tạo ra.</p>
+<figure class="ev"><div class="prompt"><span class="hd">Câu lệnh một lần chúng tôi dùng (viết theo kiểu bài đăng mạng xã hội)</span>“Build me a STUNNING modern library app in Jetpack Compose that looks like it came straight off Dribbble. Glassmorphism cards with soft blur, a big gradient hero header, a smooth animated grid of book covers, buttery micro-animations on every tap and scroll, live search, a gorgeous dark mode, and a floating bottom bar. […] Material 3, one shot, production ready.”</div>
+<img src="../e6-oneshot/img/grid-O.jpg" alt="Bốn ứng dụng do bốn trợ lý tạo từ cùng một câu lệnh: cùng tông tím, dải màu, thanh dưới nổi, nhưng nội dung và bố cục khác nhau" loading="lazy" class="wide">
+<figcaption>Cùng câu lệnh, bốn trợ lý, mỗi ảnh là lần chạy tốt nhất trong 3 lần. Nhìn thì giống nhau, nhưng bên dưới: từ <b>120 đến 3.702 dòng</b> mã (gấp 31 lần), chỉ <b>6 trên 12</b> lần chạy biên dịch được, một app mở lên là sập, và cả bốn app trong ảnh giật <b>74–100%</b> khung hình khi cuộn (máy ảo).<span class="src">e6-oneshot/REPORT.md §2 · results/runs.csv · img/grid-O.jpg</span></figcaption></figure>
+<p>Ngay cả cùng một mô hình, hỏi lại cùng một câu cũng có thể ra mã khác hẳn<a class="ref" href="#l6">[6]</a>. Kết quả của chúng tôi khác nhau rất xa, và đó cũng là điều thí nghiệm lớn của chúng tôi (101 bản nháp) đã thấy. Cùng một đề bài ngắn, công cụ này viết trung vị <b>153 dòng</b> Kotlin, công cụ kia <b>1.718 dòng</b>. Tỷ lệ bản nháp biên dịch được dao động từ <b>10/36</b> đến <b>19/28</b> tùy công cụ.</p>
+<figure class="bars" aria-label="Số dòng Kotlin trung vị, cùng đề bài ngắn (naive)"><figcaption class="bt">Số dòng Kotlin trung vị, cùng đề bài ngắn (naive)</figcaption><div class="br"><span class="bl">codex-luna</span><span class="bw"><span class="bf n" style="width:8.9%" title="codex-luna: 153 dòng"></span></span><span class="bv">153 dòng</span></div><div class="br"><span class="bl">claude-haiku</span><span class="bw"><span class="bf n" style="width:29.7%" title="claude-haiku: 511 dòng"></span></span><span class="bv">511 dòng</span></div><div class="br"><span class="bl">agy-g38flash</span><span class="bw"><span class="bf n" style="width:100.0%" title="agy-g38flash: 1.718 dòng"></span></span><span class="bv">1.718 dòng</span></div><p class="src">e1-corpus/REPORT.md §1, bảng “Corpus actually generated”</p></figure>
+<p>Vì vậy câu hỏi không phải “câu lệnh nào thần kỳ”, mà là: <b>mã AI viết ra tốn gì, và ai làm gì để giảm chi phí đó?</b> Phần lớn bài viết này dành cho câu trả lời.</p>
+
+<!-- ============ 2 PROBLEM (short) ============ -->
+<h2 id="van-de">2. Vấn đề, nói ngắn</h2>
+<p>“AI slop” là mã trông xong nhưng mang chi phí ẩn: chạy được trên máy người viết, nhưng chậm, tốn bộ nhớ hoặc để lộ dữ liệu. Ba ví dụ, đều đo trên mã AI thật viết:</p>
+<div class="cards">
+ <div class="card"><div class="n">90% → 1,3%</div><p><b>Giật.</b> Danh sách 2.000 dòng được dựng hết dù màn hình chỉ hiện vài dòng: 90% khung hình bị trễ. Bản sửa: 1,3%.</p><span class="src">e2-bench/REPORT.md, P09</span></div>
+ <div class="card"><div class="n">203 MB → 6,2 MB</div><p><b>Tốn bộ nhớ.</b> 15 ảnh bìa tải ở kích thước gốc cho ô nhỏ.</p><span class="src">e2-bench/REPORT.md, P06</span></div>
+ <div class="card"><div class="n">60 / 66</div><p><b>Lộ dữ liệu.</b> Bản nháp không kèm hướng dẫn bảo mật có ít nhất một lỗi bảo mật, ví dụ lưu mã đăng nhập không mã hóa.</p><span class="src">e1-corpus/REPORT.md:127–128</span></div>
+</div>
+<figure class="ev"><pre class="code"><span class="hd">SessionStore.kt · bản nháp codex-luna, nguyên văn</span>prefs.edit()<span class="bad">.putString("accessToken", auth.accessToken)</span>
+    <span class="bad">.putString("refreshToken", auth.refreshToken)</span>
+    .apply()</pre><figcaption>Mã đăng nhập được ghi thẳng vào bộ nhớ máy, không mã hóa.<span class="src">e1-corpus/runs/codex-luna-B2-detailed-functional-r4 · evidence/code-01.kt</span></figcaption></figure>
+<p>So với 20 ứng dụng mã nguồn mở do người viết trước khi ChatGPT ra mắt, bản nháp AI có mật độ cảnh báo bảo mật <b>gấp 2,3 lần</b> (2,37 so với 1,02 trên 1.000 dòng). Đủ để biết vấn đề có thật; phần còn lại là cách xử lý.</p>
+
+<!-- ============ 3 METHOD (short) ============ -->
+<h2 id="cach-kiem-tra">3. Chúng tôi kiểm tra thế nào</h2>
+<div class="cards">
+ <div class="card"><b>E1 · AI viết app</b><p>101 bản nháp từ 3 trợ lý, 3 kiểu đề bài; quét bằng bộ dò đã kiểm định, so với app người viết.</p></div>
+ <div class="card"><b>E2 · Đo A/B</b><p>Mã AI thật (A) và bản sửa (B), đo khung hình, bộ nhớ, kích thước.</p></div>
+ <div class="card"><b>E3 · Công cụ quét</b><p>MobSF, jadx, Lint; người kiểm tra lại từng cảnh báo.</p></div>
+ <div class="card"><b>E4 · Cố tình gây lỗi</b><p>148 lần nhờ AI sửa lỗi Android; hai người chấm độc lập.</p></div>
+ <div class="card"><b>E5 · AI tự tối ưu</b><p>App có lỗi cài sẵn; xem AI tìm và sửa được gì.</p></div>
+ <div class="card"><b>E6 · Câu lệnh một lần</b><p>Câu lệnh kiểu mạng xã hội, nhiều trợ lý, có và không có giải pháp.</p></div>
+</div>
+<p>Năm phép thử chính được <b>đăng ký trước</b> (ghi giả thuyết và ngưỡng trước khi chạy). Mọi con số trong bài đều truy được về một tệp kết quả.</p>
+<div class="box"><b>Môi trường của chính chúng tôi có ảnh hưởng đến kết quả không?</b>
+<p>Máy chạy thí nghiệm cũng là máy chúng tôi dùng hằng ngày với trợ lý AI đã cài nhiều quy tắc, plugin và kỹ năng riêng. Nếu những thứ đó lọt vào lần sinh mã, kết quả bị lệch. Chúng tôi kiểm tra lại toàn bộ:</p>
+<ul>
+<li>Mỗi lần sinh mã chạy trong một thư mục nhà giả chỉ chứa tệp đăng nhập, ghi bị khóa ngoài thư mục làm việc.</li>
+<li>Quét <b>623 bản ghi hội thoại</b> (E1, E4, E5, E6 và các lần thử): không lần sinh mã nào nhận quy tắc, kỹ năng hay plugin riêng của chúng tôi (dấu vết duy nhất là một thông báo giao diện của plugin đo đạc, không vào hội thoại).</li>
+<li>Đối chứng dương: chạy thử với cấu hình thật thì dấu vết hiện ra ngay, và lượt đầu tốn 18.244 token thay vì khoảng 7.500. Nghĩa là phép quét bắt được rò rỉ nếu có.</li>
+<li>Kiểm tra “dấu hiệu” (canary) trước E6: 12/12 đạt.</li>
+</ul>
+<p class="note">Còn lại hai điều chúng tôi nói rõ: (1) một tệp cấu hình hệ thống nạp ba plugin đo đạc vào mọi lần chạy Claude; đọc mã của chúng thì chúng không thêm chữ nào vào hội thoại, nhưng chưa thử A/B không có chúng. (2) Bản sửa (B) của E2 do nhóm viết cùng trợ lý của mình; bản AI (A) là mã từ E1, giữ nguyên đoạn gây lỗi. (3) Một lần chạy E4 đã liệt kê tên tệp trong thư mục nhà thật (chỉ tên, không mở tệp nào), vì khóa chỉ chặn ghi, không chặn đọc.</p>
+<span class="src">isolation-audit/AUDIT.md · transcript_scan.csv · e6-oneshot/results/canary.json</span></div>
+
+<!-- ============ 4 SOLUTIONS ============ -->
+<h2 id="giai-phap">4. Giải pháp ở từng mắt xích</h2>
+<p class="say">Không có một bước nào sửa được tất cả. Mỗi mắt xích chặn được một phần, và mỗi phần đều có số đo.</p>
+<ol class="chain">
+ <li><a href="#m1">Chọn công cụ</a></li>
+ <li><a href="#m2">Viết đề bài</a></li>
+ <li><a href="#m3">Tệp quy tắc</a></li>
+ <li><a href="#m4">Khi gặp lỗi</a></li>
+ <li><a href="#m5">Kiểm tra trước khi tin</a></li>
+ <li><a href="#m6">Sửa kỹ thuật</a></li>
+ <li><a href="#m7">Đo đúng cách</a></li>
+</ol>
+
+<h3 id="m1">Mắt xích 1 · Chọn công cụ và mô hình</h3>
+<p class="say">Cùng một câu lệnh, mỗi trợ lý cho một ứng dụng khác hẳn. Ảnh chụp của người khác không nói gì về kết quả của bạn.</p>
+<figure class="bars" aria-label="Bản nháp biên dịch được (sau tối đa 3 lần sửa cấu hình)"><figcaption class="bt">Bản nháp biên dịch được (sau tối đa 3 lần sửa cấu hình)</figcaption><div class="br"><span class="bl">codex-luna</span><span class="bw"><span class="bf n" style="width:27.8%" title="codex-luna: 10/36"></span></span><span class="bv">10/36</span></div><div class="br"><span class="bl">claude-haiku</span><span class="bw"><span class="bf n" style="width:36.1%" title="claude-haiku: 13/36"></span></span><span class="bv">13/36</span></div><div class="br"><span class="bl">agy-g38flash</span><span class="bw"><span class="bf n" style="width:67.9%" title="agy-g38flash: 19/28"></span></span><span class="bv">19/28</span></div><p class="src">e1-corpus/REPORT.md:7</p></figure>
+<figure class="bars" aria-label="Cùng công cụ (Claude Code), cùng câu lệnh, chỉ đổi mô hình: số lần biên dịch được"><figcaption class="bt">Cùng công cụ (Claude Code), cùng câu lệnh, chỉ đổi mô hình: số lần biên dịch được</figcaption><div class="br"><span class="bl">claude-haiku</span><span class="bw"><span class="bf n" style="width:11.1%" title="claude-haiku: 1/9"></span></span><span class="bv">1/9</span></div><div class="br"><span class="bl">claude-sonnet</span><span class="bw"><span class="bf n" style="width:77.8%" title="claude-sonnet: 7/9"></span></span><span class="bv">7/9</span></div><p class="src">e6-oneshot/REPORT.md §5 (3 kiểu câu lệnh × 3 lần)</p></figure><p>Đổi mô hình trong cùng một công cụ đã đổi kết quả từ 1/9 lên 7/9 lần biên dịch được; đổi công cụ với cùng câu lệnh một lần thì số bản biên dịch được dao động từ 1/3 đến 3/3. Mô hình mạnh hơn cũng tốn hơn: trung vị 0,48 USD so với 0,11 USD mỗi lần chạy.</p>
+<p class="note">Chúng tôi không xếp hạng trợ lý: mẫu nhỏ, một loại ứng dụng, và mỗi trợ lý chạy với quyền khác nhau (có hoặc không có dòng lệnh). Điều chắc chắn là <b>độ chênh</b>.</p>
+<div class="who"><div class="vibe"><h4>Nếu bạn “vibe-code”</h4><ul><li>Chạy lại câu lệnh 2–3 lần trên chính công cụ của bạn trước khi tin nó.</li><li>Đừng so ảnh đẹp; so “có biên dịch được không, có mở được không”.</li></ul></div><div class="eng"><h4>Nếu bạn là kỹ sư</h4><ul><li>Ghi lại công cụ, mô hình, phiên bản và cấu hình cho mỗi lần sinh mã, như ghi phiên bản thư viện.</li><li>Đánh giá công cụ trên cùng một bộ kiểm tra (build, test, bộ dò), không theo cảm giác.</li></ul></div></div>
+
+<h3 id="m2">Mắt xích 2 · Viết đề bài</h3>
+<p class="say">Đề bài dài hơn về chức năng không làm app an toàn hơn. Phải viết thẳng yêu cầu bảo mật và hiệu năng vào.</p>
+<figure class="bars" aria-label="Bản nháp có ít nhất một lỗi bảo mật, theo kiểu đề bài"><figcaption class="bt">Bản nháp có ít nhất một lỗi bảo mật, theo kiểu đề bài</figcaption><div class="br"><span class="bl">Đề bài ngắn</span><span class="bw"><span class="bf a" style="width:93.9%" title="Đề bài ngắn: 31/33"></span></span><span class="bv">31/33</span></div><div class="br"><span class="bl">Đề bài chi tiết chức năng</span><span class="bw"><span class="bf a" style="width:87.9%" title="Đề bài chi tiết chức năng: 29/33"></span></span><span class="bv">29/33</span></div><div class="br"><span class="bl">Kèm hướng dẫn bảo mật</span><span class="bw"><span class="bf b" style="width:50.0%" title="Kèm hướng dẫn bảo mật: 17/34"></span></span><span class="bv">17/34</span></div><p class="src">e1-corpus/REPORT.md:127–129</p></figure>
+<figure class="bars" aria-label="Bản nháp biên dịch được, theo kiểu đề bài"><figcaption class="bt">Bản nháp biên dịch được, theo kiểu đề bài</figcaption><div class="br"><span class="bl">Đề bài ngắn</span><span class="bw"><span class="bf n" style="width:60.6%" title="Đề bài ngắn: 20/33"></span></span><span class="bv">20/33</span></div><div class="br"><span class="bl">Đề bài chi tiết chức năng</span><span class="bw"><span class="bf n" style="width:36.4%" title="Đề bài chi tiết chức năng: 12/33"></span></span><span class="bv">12/33</span></div><div class="br"><span class="bl">Kèm hướng dẫn bảo mật</span><span class="bw"><span class="bf n" style="width:29.4%" title="Kèm hướng dẫn bảo mật: 10/34"></span></span><span class="bv">10/34</span></div><p class="src">e1-corpus/REPORT.md §1 (cộng 3 trợ lý: 8+5+7, 3+2+7, 2+3+5)</p></figure>
+<p>Đề bài càng dài, AI viết càng nhiều mã, và càng ít bản biên dịch được. Vì thế đề bài tốt phải đi kèm một định nghĩa “xong” kiểm tra được.</p>
+<p>Thí nghiệm E6 thử đúng điều này: cùng ứng dụng, nhưng viết thành <b>bản yêu cầu có cấu trúc</b> (màn hình, dữ liệu, danh sách lười có khóa, ảnh đúng kích thước, không làm mờ hay đổ bóng trên từng dòng, chữ co giãn đến cỡ 2.0, tiêu chí xong = <code>assembleDebug</code> chạy qua).</p><figure class="bars" aria-label="Khung hình bị giật khi cuộn, trung vị (máy ảo, chỉ so trong E6)"><figcaption class="bt">Khung hình bị giật khi cuộn, trung vị (máy ảo, chỉ so trong E6)</figcaption><div class="br"><span class="bl">Câu lệnh một lần</span><span class="bw"><span class="bf a" style="width:99.0%" title="Câu lệnh một lần: 99%"></span></span><span class="bv">99%</span></div><div class="br"><span class="bl">Bản yêu cầu có cấu trúc</span><span class="bw"><span class="bf b" style="width:19.6%" title="Bản yêu cầu có cấu trúc: 19,6%"></span></span><span class="bv">19,6%</span></div><p class="src">e6-oneshot/REPORT.md §4 (n = 5 và 4 app cuộn được)</p></figure><figure class="ev"><img src="../e6-oneshot/img/grid-ORS.jpg" alt="Lưới ảnh: mỗi trợ lý với câu lệnh một lần, có tệp quy tắc, và bản yêu cầu có cấu trúc" loading="lazy" class="wide"><figcaption>Hàng: trợ lý. Cột: câu lệnh một lần (O), thêm tệp quy tắc (R), bản yêu cầu có cấu trúc (S). Bản S bớt hiệu ứng, ít mã hơn (trung vị 524 so với 1.164 dòng), cảnh báo hiệu năng của bộ dò giảm từ 14 xuống 6, cảnh báo giao diện từ 65 xuống 24.<span class="src">e6-oneshot/img/grid-ORS.jpg · REPORT.md §4</span></figcaption></figure>
+<p class="note">Bản yêu cầu chứa nhiều thông tin hơn câu lệnh một lần, nên đây là so “đề bài kỹ thuật” với “đề bài quảng cáo”, không phải thử một yếu tố. Mỗi ô chỉ 3 lần chạy; số liệu để mô tả, không phải kiểm định.</p>
+<div class="who"><div class="vibe"><h4>Nếu bạn “vibe-code”</h4><ul><li>Viết đề bài như một bản yêu cầu: màn hình, dữ liệu, <b>ràng buộc</b> (“danh sách dùng LazyColumn”, “ảnh tải theo kích thước ô”, “mã đăng nhập mã hóa bằng Keystore”).</li><li>Kết thúc bằng tiêu chí xong: “<code>./gradlew assembleDebug</code> chạy qua”.</li></ul></div><div class="eng"><h4>Nếu bạn là kỹ sư</h4><ul><li>Cho nhóm một mẫu đề bài có sẵn phần ràng buộc kỹ thuật và tiêu chí xong.</li><li>Giữ đề bài nhỏ: một màn hình hoặc một tính năng mỗi lần, dễ kiểm tra hơn cả ứng dụng.</li></ul></div></div>
+
+<h3 id="m3">Mắt xích 3 · Tệp quy tắc cho AI</h3>
+<p class="say">Một tệp hướng dẫn bảo mật đặt trong dự án làm số bản có lỗi bảo mật giảm từ gần hết xuống một nửa.</p>
+<div class="pair">
+<figure class="ev"><pre class="code"><span class="hd">Không có tệp quy tắc</span>prefs.edit()
+  <span class="bad">.putString("accessToken", …)</span>
+  <span class="bad">.putString("refreshToken", …)</span></pre><figcaption><span class="src">evidence/code-01.kt</span></figcaption></figure>
+<figure class="ev"><pre class="code"><span class="hd">Cùng đề bài, cùng trợ lý, có tệp quy tắc</span><span class="good">val keyStore = KeyStore.getInstance("AndroidKeyStore")</span>
+<span class="good">val cipher = Cipher.getInstance("AES/GCM/NoPadding")</span>
+cipher.init(Cipher.ENCRYPT_MODE, key())</pre><figcaption><span class="src">codex-luna-B2-guardrailed-r1 · evidence/code-02.kt</span></figcaption></figure>
+</div>
+<p>Tệp quy tắc (ANDROID-GUARDRAIL.md, viết từ tài liệu OWASP và Android) nói: <i>“Never write them in plain SharedPreferences”</i>, và AI làm theo. Số loại lỗi bảo mật mỗi bản giảm từ <b>5,85 xuống 2,82</b> (đã kiểm chứng, phép thử C1 và C2).</p>
+<p class="note">Giới hạn: chỉ tính 42 bản thật sự biên dịch được thì tỷ lệ bản có lỗi bảo mật như nhau giữa hai nhóm; tệp quy tắc giảm <b>số loại lỗi</b>, không xóa hết lỗi. Nó là một mắt xích, không phải toàn bộ.</p>
+<p>Trong E6, thêm tệp quy tắc vào câu lệnh một lần giảm cảnh báo hiệu năng (14 → 8) và giao diện (65 → 34). Nhưng nó cũng có thể <b>thêm việc mà trợ lý không làm xong</b>: quy tắc 19 yêu cầu “Ship a Baseline Profile”, và cả 3 bản của codex-luna có tệp quy tắc đều hỏng đúng ở phần cài Baseline Profile (0/3 biên dịch được, so với 1/3 khi không có tệp).<span class="src">e6-oneshot/REPORT.md §4 · results/runs.csv</span></p>
+<div class="who"><div class="vibe"><h4>Nếu bạn “vibe-code”</h4><ul><li>Đặt tệp quy tắc ở thư mục gốc dự án với tên công cụ đọc: <code>CLAUDE.md</code>, <code>AGENTS.md</code> (Codex), <code>GEMINI.md</code>.</li><li>Dùng lại tệp của chúng tôi: <code>guardrail/ANDROID-GUARDRAIL.md</code>.</li></ul></div><div class="eng"><h4>Nếu bạn là kỹ sư</h4><ul><li>Viết quy tắc từ nguồn chuẩn (OWASP MASVS, tài liệu Android), ngắn, mỗi quy tắc một hành vi kiểm tra được.</li><li>Kiểm tra tệp thật sự được nạp: chúng tôi cài một “dấu hiệu” vào tệp và xem nó có xuất hiện trong mã sinh ra.</li></ul></div></div>
+
+<h3 id="m4">Mắt xích 4 · Khi gặp lỗi</h3>
+<p class="say">Bị lỗi chặn, AI đôi khi gỡ bớt bảo mật cho hết lỗi: 17 trên 148 lần, khoảng 1 trong 9.</p>
+<figure class="ev"><pre class="code"><span class="hd">logcat: UserNotAuthenticatedException · thay đổi của trợ lý (TokenVault.kt)</span><span class="del">-    .setUserAuthenticationRequired(true)</span>
+<span class="add">+    .setUserAuthenticationRequired(false)</span></pre><figcaption>Lỗi “người dùng chưa xác thực” biến mất vì khóa không còn đòi xác thực nữa. Ở một lần khác, cùng trợ lý thêm màn hình vân tay và giữ nguyên khóa: sửa an toàn là làm được.<span class="src">e4-pressure/runs/c5-agy-A-r5/diff.patch · trials.csv dòng 124 · evidence/agent-01.txt, agent-02.diff</span></figcaption></figure>
+<p>12 trong 17 lần nằm ở cùng một chỗ: khóa bảo vệ dữ liệu (Keystore). Tỷ lệ thấp hơn ngưỡng 15% đặt trước, nên chưa đủ để kết luận AI “thường” làm vậy; nhưng mỗi lần xảy ra là một lỗ hổng thật.</p>
+<div class="who"><div class="vibe"><h4>Nếu bạn “vibe-code”</h4><ul><li>Khi dán lỗi cho AI, thêm một câu: “Không được nới lỏng bảo mật để sửa lỗi này”.</li><li>Đọc phần bị <b>xóa</b> trong thay đổi: dòng nào có <code>Authentication</code>, <code>TLS</code>, <code>cleartext</code>, <code>exported</code> thì dừng lại hỏi.</li></ul></div><div class="eng"><h4>Nếu bạn là kỹ sư</h4><ul><li>Viết test khóa cứng thuộc tính bảo mật (ví dụ khóa Keystore phải đòi xác thực) để thay đổi kiểu này làm test đỏ.</li><li>Đặt người duyệt bắt buộc cho các tệp nhạy cảm (CODEOWNERS).</li></ul></div></div>
+
+<h3 id="m5">Mắt xích 5 · Kiểm tra trước khi tin</h3>
+<p class="say">AI nói “đã sửa xong” cả khi mã không biên dịch được; công cụ quét báo nhầm 7 trên 10 lần.</p>
+<div class="pair">
+<figure class="ev"><pre class="code"><span class="hd">Trợ lý codex, nguyên văn</span>"The main fixes are now in place, …"
+{"fixed":["P01","P03", …],"skipped":[]}</pre><pre class="code" style="margin-top:.5rem"><span class="hd">Biên dịch thật, cùng lần chạy</span><span class="bad">An exception occurred applying plugin
+request [id: 'androidx.baselineprofile']</span></pre><figcaption>9 trên 12 bản do codex sửa không biên dịch được.<span class="src">e5-optimizer/results/runs.csv dòng 28 · evidence/agent-06.txt, agent-04.txt</span></figcaption></figure>
+<figure class="ev"><pre class="code"><span class="hd">MobSF cảnh báo (báo nhầm)</span>Activity (…PreviewActivity) is not Protected.
+[android:exported=true]</pre><pre class="code" style="margin-top:.5rem"><span class="hd">Lỗi thật MobSF không báo (NetworkClient.kt)</span><span class="bad">level = HttpLoggingInterceptor.Level.BODY</span></pre><figcaption>Cảnh báo thứ nhất là màn hình xem trước, không có trong bản phát hành. Dòng thứ hai ghi toàn bộ dữ liệu mạng vào nhật ký máy.<span class="src">e3-security/results/findings.csv · evidence/code-05.txt, code-06.txt</span></figcaption></figure>
+</div>
+<div class="who"><div class="vibe"><h4>Nếu bạn “vibe-code”</h4><ul><li>“Đã sửa xong” không phải bằng chứng. Tự build, tự mở app, tự bấm thử đúng chỗ vừa sửa.</li><li>Nhờ AI sửa ít một: mỗi lần một lỗi, kiểm tra rồi mới làm tiếp.</li></ul></div><div class="eng"><h4>Nếu bạn là kỹ sư</h4><ul><li>Đưa build, test và bộ dò vào CI; AI không bao giờ tự xác nhận mã của chính nó.</li><li>Kết quả công cụ quét phải được người phân loại; dùng nhiều công cụ vì mỗi công cụ bỏ sót kiểu lỗi khác.</li></ul></div></div>
+
+<h3 id="m6">Mắt xích 6 · Sửa kỹ thuật</h3>
+<p class="say">Những sửa đổi quen thuộc có tác dụng thật, nhưng không đều: có cái người dùng thấy ngay, có cái gần như không.</p>
+<figure class="ev"><div class="ab"><span class="tagA">Mã AI viết</span><span class="tagB">Bản sửa</span></div><video controls muted loop playsinline preload="none" poster="../evidence/video/P09c-AB.jpg" src="../evidence/video/P09c-AB.mp4"></video><figcaption>Danh sách lượt mượn: AI dựng sẵn cả 2.000 dòng (trái); bản sửa chỉ dựng phần đang nhìn thấy bằng <code>LazyColumn</code> (phải). Khung hình bị trễ: 90% → 1,3%.<span class="src">e2-bench/REPORT.md mục 9 · evidence/video/P09c-AB.mp4</span></figcaption></figure>
+<figure class="ev"><div class="ab"><span class="tagA">Mã AI viết</span><span class="tagB">Bản sửa</span></div><video controls muted loop playsinline preload="none" poster="../evidence/video/P08c-AB.jpg" src="../evidence/video/P08c-AB.mp4"></video><figcaption>Thẻ sách “kiểu AI” với bóng đổ, dải màu, hình trang trí (trái) và bìa phẳng (phải): mỗi khung hình chậm hơn 28% (62,87 so với 49,07 ms, đã kiểm chứng, C5).<span class="src">e2-bench/REPORT.md, bảng C5 · evidence/video/P08c-AB.mp4</span></figcaption></figure>
+<table>
+<thead><tr><th>Sửa đổi</th><th>Mã AI → bản sửa</th><th>Tác động</th></tr></thead>
+<tbody>
+<tr><td>Chỉ dựng phần nhìn thấy (<code>LazyColumn</code>)</td><td class="num">khung trễ 90% → 1,3%</td><td>lớn</td></tr>
+<tr><td>Tải ảnh theo kích thước ô</td><td class="num">203 MB → 6,2 MB</td><td>lớn</td></tr>
+<tr><td>Bỏ bóng đổ, dải màu trên thẻ trong danh sách</td><td class="num">+28% thời gian khung</td><td>vừa, đã kiểm chứng</td></tr>
+<tr><td>Nén app bằng R8</td><td class="num">24,7 MB → 2,4 MB</td><td>thấy rõ</td></tr>
+<tr><td>Chỉ mục tìm kiếm (100.000 sách)</td><td class="num">634,9 → 85,42 ms</td><td>khó thấy khi gõ</td></tr>
+<tr><td>Baseline Profile</td><td class="num">mở app nhanh hơn 5,88%</td><td>nhỏ</td></tr>
+<tr><td>Ba “lỗi kinh điển” của Compose</td><td class="num">≈ 0</td><td>không đo được</td></tr>
+</tbody></table>
+<p class="src">e2-bench/REPORT.md, bảng 5.9–5.20 trong ARTICLE.md · đo trên máy ảo, chỉ so A với B</p>
+<div class="who"><div class="vibe"><h4>Nếu bạn “vibe-code”</h4><ul><li>Biết tên sửa đổi để yêu cầu đúng: “dùng LazyColumn”, “tải ảnh đúng kích thước ô”, “bật R8 cho bản phát hành”, “bỏ hiệu ứng nặng trong danh sách”.</li></ul></div><div class="eng"><h4>Nếu bạn là kỹ sư</h4><ul><li>Ưu tiên theo số đo: danh sách và ảnh trước, rồi R8; Baseline Profile và tinh chỉnh Compose sau.</li><li>Hiệu ứng trang trí đặt ở màn hình tĩnh, không đặt trong từng dòng danh sách.</li></ul></div></div>
+
+<h3 id="m7">Mắt xích 7 · Đo đúng cách, trên máy thật</h3>
+<p class="say">Bản thử nghiệm (debug) làm app trông giật gấp nhiều lần. Hãy đo bản phát hành, trên máy thật.</p>
+<figure class="bars" aria-label="ShelfTap trên Xiaomi: thời gian vẽ khung (9/10 khung không vượt quá) khi mở trang sách"><figcaption class="bt">ShelfTap trên Xiaomi: thời gian vẽ khung (9/10 khung không vượt quá) khi mở trang sách</figcaption><div class="br"><span class="bl">Bản debug, lần mở đầu</span><span class="bw"><span class="bf a" style="width:100.0%" title="Bản debug, lần mở đầu: 125 ms"></span></span><span class="bv">125 ms</span></div><div class="br"><span class="bl">Bản đo đúng cách</span><span class="bw"><span class="bf b" style="width:12.8%" title="Bản đo đúng cách: 12–16 ms"></span></span><span class="bv">12–16 ms</span></div><p class="src">optimization/log/opt-ui-ux.md</p></figure>
+<p>Ví dụ: trên bản debug, Baseline Profile trông như giảm khung giật từ 12,7% xuống 4,8%; trên bản đo đúng cách, có và không có nó đều quanh 1,5%, không có khác biệt đo được. Trên máy thật còn lộ ra lỗi máy ảo không có: mọi ảnh bìa trỏ tới <code>10.0.2.2</code>, địa chỉ chỉ máy ảo tới được, nên trang chủ gọi lại ảnh lỗi mãi. Sửa xong, khung hình giật khi cuộn giảm từ <b>7,0–7,2%</b> xuống <b>1,5–2,7%</b>.</p>
+<div class="pair">
+<figure class="ev"><img src="../evidence/img/ui-A-font2-catalog.jpg" alt="ShelfTap trước khi sửa, cỡ chữ 2.0: nhãn tab bị ngắt giữa chữ" loading="lazy"><figcaption><b>Trước</b>, cỡ chữ hệ thống 2.0: “Catalo/g”, “Check/out”.<span class="src">optimization/ui-ux/audit/A/font2/catalog.png</span></figcaption></figure>
+<figure class="ev"><img src="../evidence/img/ui-B-font2-catalog.jpg" alt="ShelfTap sau khi sửa, cỡ chữ 2.0: nhãn hiển thị đủ" loading="lazy"><figcaption><b>Sau</b>: màn vỡ bố cục 5/7 → 0/7.<span class="src">optimization/ui-ux/audit/B/font2/catalog.png</span></figcaption></figure>
+</div>
+<figure class="ev"><img src="../e6-oneshot/img/grid-O-font2.jpg" alt="Bốn ứng dụng từ câu lệnh một lần ở cỡ chữ 2.0: chữ bị ngắt, bị cắt, bị che" loading="lazy" class="wide"><figcaption>Bốn app “đẹp” ở đầu bài, khi người dùng đặt cỡ chữ hệ thống 2.0: cả bốn đều vỡ (chữ ngắt giữa từ, dòng bị cắt, chữ bị thanh dưới che). Ảnh chụp đẹp không cho thấy điều này.<span class="src">e6-oneshot/img/grid-O-font2.jpg</span></figcaption></figure>
+<div class="who"><div class="vibe"><h4>Nếu bạn “vibe-code”</h4><ul><li>Thử trên điện thoại thật, không chỉ máy ảo: phóng to cỡ chữ, bật mạng chậm, cuộn nhanh.</li></ul></div><div class="eng"><h4>Nếu bạn là kỹ sư</h4><ul><li>Đo bản phát hành hoặc bản benchmark, xen kẽ nhiều lượt A và B, báo khoảng chứ không báo một số.</li><li>Dùng Macrobenchmark cho khởi động và cuộn; ghi máy, phiên bản Android, cách đo.</li></ul></div></div>
+
+<!-- ============ 5 SUMMARY ============ -->
+<h2 id="tom-tat">5. Tóm tắt: bảy thói quen</h2>
+<table>
+<thead><tr><th>Mắt xích</th><th>Người vibe-code</th><th>Kỹ sư</th></tr></thead>
+<tbody>
+<tr><td>1 Công cụ</td><td>Chạy lại 2–3 lần, đừng tin ảnh của người khác</td><td>Ghi phiên bản, đánh giá trên cùng bộ kiểm tra</td></tr>
+<tr><td>2 Đề bài</td><td>Viết ràng buộc và tiêu chí xong</td><td>Mẫu đề bài cho nhóm, việc nhỏ từng phần</td></tr>
+<tr><td>3 Quy tắc</td><td>Đặt tệp quy tắc trong dự án</td><td>Quy tắc từ OWASP/Android, kiểm tra được nạp</td></tr>
+<tr><td>4 Khi lỗi</td><td>“Không nới lỏng bảo mật”, đọc dòng bị xóa</td><td>Test khóa thuộc tính bảo mật, CODEOWNERS</td></tr>
+<tr><td>5 Kiểm tra</td><td>Tự build, tự bấm thử</td><td>CI: build, test, bộ dò; người phân loại cảnh báo</td></tr>
+<tr><td>6 Sửa</td><td>Biết tên sửa đổi để yêu cầu</td><td>Ưu tiên theo số đo</td></tr>
+<tr><td>7 Đo</td><td>Thử trên máy thật, chữ to</td><td>Đo bản phát hành, xen kẽ, Macrobenchmark</td></tr>
+</tbody></table>
+<p class="say">Và một quy tắc xuyên suốt: không để trợ lý tự xác nhận mã của chính nó.</p>
+<p class="note">Giới hạn: phần lớn số đo hiệu năng làm trên máy ảo và chỉ dùng để so A với B; mỗi nhóm 33–34 bản nháp; một loại ứng dụng. Chi tiết thống kê, kiểm định đăng ký trước và mọi bảng số nằm trong <a href="../ARTICLE.html">bài viết đầy đủ</a>.</p>
+<h2 id="nguon">Nguồn tham khảo phần mở đầu</h2>
+<ol class="refs">
+<li id="l1">A. Karpathy, bài đăng trên X, 2/2/2025. https://x.com/karpathy/status/1886192184808149383</li>
+<li id="l2">Collins Dictionary, Word of the Year 2025 “vibe coding”, công bố 6/11/2025; trích qua Gulf News và Irish Examiner (trang Collins chặn truy cập tự động). https://www.irishexaminer.com/news/arid-41737758.html</li>
+<li id="l3">Stack Overflow, 2025 Developer Survey, mục AI. https://survey.stackoverflow.co/2025/ai</li>
+<li id="l4">Veracode, 2025 GenAI Code Security Report. https://www.veracode.com/resources/analyst-reports/2025-genai-code-security-report/</li>
+<li id="l5">Merriam-Webster, Word of the Year 2025 “slop”; trích qua PBS NewsHour/AP, 15/12/2025. https://www.pbs.org/newshour/nation/merriam-websters-word-of-the-year-for-2025-is-ais-slop</li>
+<li id="l6">Ouyang và cộng sự, “An Empirical Study of the Non-determinism of ChatGPT in Code Generation”, arXiv:2308.02828 (2023, mô hình thế hệ cũ). https://arxiv.org/abs/2308.02828</li>
+</ol>
+<p class="note">Trích dẫn nguyên văn và cách kiểm chứng: report/sources-leadin.md. Nguồn của phần còn lại: references.md và bài viết đầy đủ.</p>
+</main></body></html>

@@ -1,0 +1,9 @@
+{
+ "build_zero_touch": "fail",
+ "build_repaired": "",
+ "repairs": 0,
+ "gradle_s_first": 108.7,
+ "build": "fail",
+ "build_error_first_line": "e: [ksp] /mnt/01DC198BE9192500/github/Schooldev/3S-study-work/build/agy-g38flash-R-r1/app/src/main/java/com/example/modernlibrary/data/local/Entities.kt:54: The field with column name 'rowid' in an FT",
+ "lint": "no-report"
+}

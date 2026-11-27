@@ -1,0 +1,17 @@
+pkg vn.shelftap.app
+alive_after_25s True
+
+--- main (AndroidRuntime/ANR/pkg errors) ---
+11-27 18:55:05.245  4113  4113 W vn.shelftap.app: Unexpected CPU variant for x86: x86_64.
+11-27 18:55:05.245  4113  4113 W vn.shelftap.app: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+11-27 18:55:05.333  4113  4113 W ziparchive: Unable to open '/data/app/~~Ayd1MbGnR6vffqdWD4wZtg==/vn.shelftap.app-zYi_05-dIppt1vJBZFLrzA==/base.dm': No such file or directory
+11-27 18:55:05.333  4113  4113 W ziparchive: Unable to open '/data/app/~~Ayd1MbGnR6vffqdWD4wZtg==/vn.shelftap.app-zYi_05-dIppt1vJBZFLrzA==/base.dm': No such file or directory
+11-27 18:55:06.218  4113  4113 W vn.shelftap.app: Method boolean androidx.compose.runtime.snapshots.SnapshotStateList.conditionalUpdate(boolean, kotlin.jvm.functions.Function1) failed lock verification and will run slower.
+11-27 18:55:06.218  4113  4113 W vn.shelftap.app: Common causes for lock verification issues are non-optimized dex code
+11-27 18:55:06.218  4113  4113 W vn.shelftap.app: and incorrect proguard optimizations.
+11-27 18:55:06.218  4113  4113 W vn.shelftap.app: Method boolean androidx.compose.runtime.snapshots.SnapshotStateList.conditionalUpdate$default(androidx.compose.runtime.snapshots.SnapshotStateList, boolean, kotlin.jvm.functions.Function1, int, java.lang.Object) failed lock verification and will run slower.
+11-27 18:55:06.218  4113  4113 W vn.shelftap.app: Method java.lang.Object androidx.compose.runtime.snapshots.SnapshotStateList.mutate(kotlin.jvm.functions.Function1) failed lock verification and will run slower.
+11-27 18:55:06.218  4113  4113 W vn.shelftap.app: Method void androidx.compose.runtime.snapshots.SnapshotStateList.update(boolean, kotlin.jvm.functions.Function1) failed lock verification and will run slower.
+11-27 18:55:06.218  4113  4113 W vn.shelftap.app: Method void androidx.compose.runtime.snapshots.SnapshotStateList.update$default(androidx.compose.runtime.snapshots.SnapshotStateList, boolean, kotlin.jvm.functions.Function1, int, java.lang.Object) failed lock verification and will run slower.
+11-27 18:55:06.680   517   534 W ziparchive: Unable to open '/data/app/~~Ayd1MbGnR6vffqdWD4wZtg==/vn.shelftap.app-zYi_05-dIppt1vJBZFLrzA==/base.dm': No such file or directory
+11-27 18:55:07.112   517  1108 W InputManager-JNI: Input channel object 'b04baef Splash Screen vn.shelftap.app (client)' was disposed without first being removed with the input manager!

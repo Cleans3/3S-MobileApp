@@ -1,0 +1,45 @@
+(False, 'R:e1-corpus') 38 first-turn input tokens min/med/max (7107, 7803.0, 10668) | plugin sets 1 | cli ['2.1.330']
+(False, 'R:e4-pressure') 55 first-turn input tokens min/med/max (7247, 7453, 7592) | plugin sets 1 | cli ['2.1.329', '2.1.330']
+(False, 'R:e5-optimizer') 114 first-turn input tokens min/med/max (7765, 7800.5, 9596) | plugin sets 1 | cli ['2.1.330']
+(False, 'W:canary-audit-rerun-202') 3 first-turn input tokens min/med/max (6989, 7170, 7202) | plugin sets 1 | cli ['2.1.332']
+(False, 'W:canary/claude-A.raw') 1 first-turn input tokens min/med/max (7145, 7145, 7145) | plugin sets 1 | cli ['2.1.330']
+(False, 'W:canary/claude-B.raw') 1 first-turn input tokens min/med/max (6963, 6963, 6963) | plugin sets 1 | cli ['2.1.330']
+(False, 'W:canary/claude-C-CLAUDE') 1 first-turn input tokens min/med/max (7162, 7162, 7162) | plugin sets 1 | cli ['2.1.330']
+(False, 'W:e6/canary/claude-haiku') 3 first-turn input tokens min/med/max (6975, 7156, 7181) | plugin sets 1 | cli ['2.1.332']
+(False, 'W:e6/canary/claude-sonne') 3 first-turn input tokens min/med/max (6153, 6334, 6360) | plugin sets 1 | cli ['2.1.332']
+(False, 'W:trials/pilot/canary/cl') 1 first-turn input tokens min/med/max (7132, 7132, 7132) | plugin sets 1 | cli ['2.1.329']
+(False, 'W:trials/pilot/cl9/_out') 1 first-turn input tokens min/med/max (7126, 7126, 7126) | plugin sets 1 | cli ['2.1.330']
+(False, 'W:trials/pilot/iso/claud') 1 first-turn input tokens min/med/max (6950, 6950, 6950) | plugin sets 1 | cli ['2.1.329']
+(True, 'W:trials/pilot/real/clau') 1 first-turn input tokens min/med/max (18244, 18244, 18244) | plugin sets 1 | cli ['2.1.329']
+model-gate 0.4.0 runs: ['W:canary-audit-rerun-2026-11-27/claude-A.raw', 'W:canary-audit-rerun-2026-11-27/claude-B.raw', 'W:canary-audit-rerun-2026-11-27/claude-C-CLAUDE.md.raw', 'W:e6/canary/claude-haiku-A.raw', 'W:e6/canary/claude-haiku-B.raw', 'W:e6/canary/claude-haiku-C-CLAUDE.md.raw', 'W:e6/canary/claude-sonnet-A.raw', 'W:e6/canary/claude-sonnet-B.raw', 'W:e6/canary/claude-sonnet-C-CLAUDE.md.raw']
+plugin version sets:
+213 compact-pilot@0.5.0|model-gate@0.3.0|usage-meter@0.3.0|cc-plugin-sec-default@builtin|cc-plugin-agents-md@builtin|cc-plugin-telemetry@builtin|cc-plugin-privacy@builtin|cc-plugin-plugin-authoring@builtin
+9 compact-pilot@0.5.0|model-gate@0.4.0|usage-meter@0.3.0|cc-plugin-sec-default@builtin|cc-plugin-agents-md@builtin|cc-plugin-telemetry@builtin|cc-plugin-privacy@builtin|cc-plugin-plugin-authoring@builtin
+1 context-mode@1.0.169|playwright@builtin|ponytail@4.8.3|skill-creator@builtin|understand-anything@2.8.1|compact-pilot@0.5.0|model-gate@0.3.0|usage-meter@0.3.0|equity-research@0.1.2|remotion@4.0.528|marketing@1.2.0|bigdata-com@1.2.2|cc-plugin-sec-default@builtin
+system subtypes (by experiment):
+('R:e1-corpus', 'dev_intent') 36
+('R:e1-corpus', 'init') 36
+('R:e1-corpus', 'permission_denied') 33
+('R:e1-corpus', 'thinking_tokens') 5207
+('R:e1-corpus', 'ui_toast') 1
+('R:e1-corpus/pilot', 'dev_intent') 2
+('R:e1-corpus/pilot', 'init') 2
+('R:e1-corpus/pilot', 'permission_denied') 2
+('R:e1-corpus/pilot', 'thinking_tokens') 305
+('R:e4-pressure', 'dev_intent') 10
+('R:e4-pressure', 'init') 50
+('R:e4-pressure', 'thinking_tokens') 335
+('R:e4-pressure/pilot', 'init') 5
+('R:e4-pressure/pilot', 'thinking_tokens') 25
+('R:e5-optimizer', 'dev_intent') 27
+('R:e5-optimizer', 'init') 114
+('R:e5-optimizer', 'thinking_tokens') 777
+('W:canary', 'init') 3
+('W:canary', 'thinking_tokens') 2
+('W:canary-audit-rerun-2026-11-27', 'init') 3
+('W:canary-audit-rerun-2026-11-27', 'thinking_tokens') 2
+('W:e6', 'init') 6
+('W:trials/pilot', 'hook_response') 9
+('W:trials/pilot', 'hook_started') 9
+('W:trials/pilot', 'init') 4
+('W:trials/pilot', 'thinking_tokens') 2
