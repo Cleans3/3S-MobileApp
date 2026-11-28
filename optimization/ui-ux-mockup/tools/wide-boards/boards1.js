@@ -83,14 +83,14 @@ out['WideReservations.dc.html'] = S.head('Đặt trước ở cửa sổ rộng'
           <div style="font-size: 14px; line-height: 1.5; color: var(--ink2b)">Bạn sẽ được báo khi có sách.</div>
         </div>
         <sc-if value="{{notAsking}}" hint-placeholder-val="{{ true }}">
-          <button type="button" onClick="{{ask}}" class="st-press" style="align-self: flex-start; min-height: 48px; padding: 6px 20px; border-radius: 999px; border: 1px solid var(--danger); background:  transparent; color: var(--danger); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Hủy đặt trước</button>
+          <button type="button" onClick="{{ask}}" class="st-press" style="align-self: flex-start; min-height: 48px; padding: 6px 20px; border-radius: 999px; border: 1px solid var(--danger); background:  transparent; color: var(--danger); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Hủy đặt</button>
         </sc-if>
         <sc-if value="{{asking}}" hint-placeholder-val="{{ false }}">
           <div role="alertdialog" aria-label="Xác nhận hủy đặt trước" class="st-fade" style="padding: 16px; border-radius: 22px; background: var(--dialog); border: 1px solid rgba(var(--ink-rgb),0.5); display: flex; flex-direction: column; gap: 12px">
             <div style="font-size: 16px; font-weight: 700">Hủy đặt trước Clean Code?</div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap">
               <button type="button" onClick="{{keep}}" style="${S.btnGlass}; flex: 1">Giữ lại</button>
-              <button type="button" onClick="{{cancel}}" style="flex: 1; min-height: 52px; padding: 6px 16px; border-radius: 999px; border: 0; background:  #7a3420; color: #ffffff; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Hủy đặt trước</button>
+              <button type="button" onClick="{{cancel}}" style="flex: 1; min-height: 52px; padding: 6px 16px; border-radius: 999px; border: 0; background:  #7a3420; color: #ffffff; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Hủy đặt</button>
             </div>
           </div>
         </sc-if>
@@ -132,7 +132,7 @@ out['WideHistory.dc.html'] = S.head('Lịch sử đọc ở cửa sổ rộng', 
           <input type="password" autocomplete="current-password" style="height: 50px; padding: 0 16px; border-radius: 16px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); font: inherit; font-size: 15px; font-weight: 400">
         </label>
         <button type="button" onClick="{{confirm}}" class="st-press" style="${S.btnPrimary}">Xác nhận</button>
-        <a href="WideSignIn.dc.html" style="align-self: center; font-size: 14px; font-weight: 600; padding: 12px">Đăng nhập bằng mật khẩu</a>
+        <a href="WideSignIn.dc.html" style="align-self: center; font-size: 14px; font-weight: 600; padding: 12px">Nhập mật khẩu</a>
       </section>
     </div>
   </sc-if>
@@ -152,7 +152,7 @@ out['WideHistory.dc.html'] = S.head('Lịch sử đọc ở cửa sổ rộng', 
         </sc-for>
       </ul>
       <a href="WideAccount.dc.html" style="display: flex; align-items: center; min-height: 56px; padding: 0 18px; border-radius: 24px; background: var(--surface); text-decoration: none; font-size: 15px; font-weight: 500">
-        <span style="flex: 1">Bật hoặc tắt lưu lịch sử trong Tài khoản</span>
+        <span style="flex: 1">Cài đặt lịch sử đọc</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
       </a>
     </section>` + `
@@ -221,7 +221,7 @@ const RECO_MID = `
     <h1 style="margin: 0; padding: 36px 0 0; font-size: 22px; font-weight: 600; color: var(--ink2b)">Gợi ý cho bạn</h1>
     <p style="margin: 0; padding: 0 4px; font-size: 14px; line-height: 1.45; color: var(--ink2)">{{subtitle}}</p>
     <sc-if value="{{isCard}}" hint-placeholder-val="{{ false }}">
-      <a href="MidHistory.dc.html" style="display: flex; align-items: center; min-height: 52px; padding: 0 18px; border-radius: 20px; background: var(--surface); text-decoration: none; font-size: 14px; font-weight: 600">Nhập mật khẩu để có gợi ý chính xác hơn</a>
+      <a href="MidHistory.dc.html" style="display: flex; align-items: center; min-height: 52px; padding: 0 18px; border-radius: 20px; background: var(--surface); text-decoration: none; font-size: 14px; font-weight: 600">Nhập mật khẩu để gợi ý đúng hơn</a>
     </sc-if>
     <sc-if value="{{hasRecs}}" hint-placeholder-val="{{ true }}">
       <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
@@ -258,7 +258,7 @@ out['WideRecommend.dc.html'] = S.head('Gợi ý cho bạn ở cửa sổ rộng'
   (S.isMid() ? RECO_MID : S.listPane('Sách gợi ý', 'Gợi ý cho bạn', `
     <div style="font-size: 14px; color: var(--ink2b); padding: 0 4px">{{subtitle}}</div>
     <sc-if value="{{isCard}}" hint-placeholder-val="{{ false }}">
-      <a href="WideHistory.dc.html" style="padding: 10px 14px; border-radius: 18px; background: var(--surface); font-size: 13px; font-weight: 600; text-decoration: none">Nhập mật khẩu để có gợi ý chính xác hơn</a>
+      <a href="WideHistory.dc.html" style="padding: 10px 14px; border-radius: 18px; background: var(--surface); font-size: 13px; font-weight: 600; text-decoration: none">Nhập mật khẩu để gợi ý đúng hơn</a>
     </sc-if>`, 'rows', `
       <sc-if value="{{noRecs}}" hint-placeholder-val="{{ false }}">
         <li style="padding: 16px 8px; display: flex; flex-direction: column; gap: 8px">
@@ -345,7 +345,7 @@ out[S.isMid() ? 'WideCatalog.dc.html' : 'WideList.dc.html'] = S.head('Danh sách
     ${S.SEARCH_JS}
     var sel = hits.filter(function (b) { return b.isbn === (st.sel || '9780990000020'); })[0] || hits[0] || null;
     var out = sel && sel.n === 0;
-    var rb = ui.phaseBtn(phase, { idle: 'Đặt trước sách này', sending: 'Đang gửi yêu cầu…', done: 'Đã đặt trước · thư viện xác nhận' });
+    var rb = ui.phaseBtn(phase, { idle: 'Đặt trước', sending: 'Đang gửi yêu cầu…', done: 'Đã đặt trước · thư viện xác nhận' });
     ${S.DOCK_JS()}
     return Object.assign(this.__theme(), search, dock, {
       rows: hits.map(function (b, i) {

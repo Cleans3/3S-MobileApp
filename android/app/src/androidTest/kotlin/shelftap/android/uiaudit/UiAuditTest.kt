@@ -19,6 +19,8 @@ import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.filter
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
@@ -251,12 +253,13 @@ class UiAuditTest {
             tab(R.string.tab_account); waitFor(AuditData.me.fullName)
             audit("account", activity)
             // The notifications group: its switches, and the explanation that comes before Android's own question (on a wide window the group is a section: open it first).
-            compose.onAllNodesWithText(str(R.string.account_notifications)).onFirst().performClick()
+            openAccountSection(R.string.account_notifications)
             compose.waitForIdle()
             compose.onNode(hasScrollAction() and hasAnyDescendant(hasText(str(R.string.account_notif_due)))).performScrollToNode(hasText(str(R.string.account_notif_due)))
             compose.waitForIdle()
             audit("account-notifications", activity)
-            compose.onNodeWithText(str(R.string.account_notif_due)).performClick()
+            // By the semantic action, not a touch: with large text the row can sit under the floating button, which would take the touch.
+            compose.onNodeWithText(str(R.string.account_notif_due)).performSemanticsAction(SemanticsActions.OnClick)
             waitFor(str(R.string.notif_ask_title))
             audit("notifications-ask", activity)
             compose.onNodeWithText(str(R.string.notif_ask_later)).performClick()
@@ -270,8 +273,7 @@ class UiAuditTest {
             compose.waitForIdle()
             audit("account-bottom", activity)
             // (on a wide window the history link is in the pane beside the list, not in the list: open the privacy section first)
-            compose.onAllNodesWithText(str(R.string.account_privacy)).onFirst().performClick()
-            compose.waitForIdle()
+            openAccountSection(R.string.account_privacy)
             compose.onNode(hasScrollAction() and hasAnyDescendant(hasText(str(R.string.account_history)))).performScrollToNode(hasText(str(R.string.account_history)))
             compose.waitForIdle()
             compose.onNodeWithText(str(R.string.account_history)).performClick(); waitFor(AuditData.history.first().title)
@@ -411,6 +413,16 @@ class UiAuditTest {
             // The always-visible navigation reads each entry as "Go to <name>".
             compose.onNodeWithContentDescription(str(R.string.nav_go_to, str(id))).performClick()
         }
+        compose.waitForIdle()
+    }
+
+    /**
+     * On a wide window the groups of the account are rows to choose from, and the chosen one shows in the pane beside; on a narrow one they are only
+     * labels over one page (not clickable, and a click on a label could land on the floating button): then there is nothing to open.
+     */
+    private fun openAccountSection(label: Int) {
+        val rows = compose.onAllNodesWithText(str(label)).filter(hasClickAction())
+        if (rows.fetchSemanticsNodes().isNotEmpty()) rows[0].performClick()
         compose.waitForIdle()
     }
 

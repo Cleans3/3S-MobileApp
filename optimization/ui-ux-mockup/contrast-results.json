@@ -2984,7 +2984,7 @@
  {
   "file": "Detail.dc.html",
   "theme": "light",
-  "text": "Đặt trước sách này",
+  "text": "Đặt trước",
   "ratio": 17.2,
   "need": 4.5,
   "pass": true,
@@ -3124,7 +3124,7 @@
  {
   "file": "Detail.dc.html",
   "theme": "dark",
-  "text": "Đặt trước sách này",
+  "text": "Đặt trước",
   "ratio": 14.89,
   "need": 4.5,
   "pass": true,
@@ -4020,7 +4020,7 @@
  {
   "file": "History.dc.html",
   "theme": "light",
-  "text": "Đăng nhập bằng mật khẩu",
+  "text": "Nhập mật khẩu",
   "ratio": 17.2,
   "need": 4.5,
   "pass": true,
@@ -4090,7 +4090,7 @@
  {
   "file": "History.dc.html",
   "theme": "dark",
-  "text": "Đăng nhập bằng mật khẩu",
+  "text": "Nhập mật khẩu",
   "ratio": 14.89,
   "need": 4.5,
   "pass": true,
@@ -10586,7 +10586,7 @@
  {
   "file": "MidHistory.dc.html",
   "theme": "light",
-  "text": "Bật hoặc tắt lưu lịch sử trong Tài khoản",
+  "text": "Cài đặt lịch sử đọc",
   "ratio": 17.2,
   "need": 4.5,
   "pass": true,
@@ -10838,7 +10838,7 @@
  {
   "file": "MidHistory.dc.html",
   "theme": "dark",
-  "text": "Bật hoặc tắt lưu lịch sử trong Tài khoản",
+  "text": "Cài đặt lịch sử đọc",
   "ratio": 12.87,
   "need": 4.5,
   "pass": true,
@@ -19924,7 +19924,7 @@
  {
   "file": "Reservations.dc.html",
   "theme": "light",
-  "text": "Hủy đặt trước",
+  "text": "Hủy đặt",
   "ratio": 16.52,
   "need": 4.5,
   "pass": true,
@@ -20078,7 +20078,7 @@
  {
   "file": "Reservations.dc.html",
   "theme": "dark",
-  "text": "Hủy đặt trước",
+  "text": "Hủy đặt",
   "ratio": 13.35,
   "need": 4.5,
   "pass": true,
@@ -24390,7 +24390,7 @@
  {
   "file": "WideHistory.dc.html",
   "theme": "light",
-  "text": "Bật hoặc tắt lưu lịch sử trong Tài khoản",
+  "text": "Cài đặt lịch sử đọc",
   "ratio": 17.2,
   "need": 4.5,
   "pass": true,
@@ -24642,7 +24642,7 @@
  {
   "file": "WideHistory.dc.html",
   "theme": "dark",
-  "text": "Bật hoặc tắt lưu lịch sử trong Tài khoản",
+  "text": "Cài đặt lịch sử đọc",
   "ratio": 12.87,
   "need": 4.5,
   "pass": true,
@@ -25538,7 +25538,7 @@
  {
   "file": "WideList.dc.html",
   "theme": "light",
-  "text": "Đặt trước sách này",
+  "text": "Đặt trước",
   "ratio": 17.2,
   "need": 4.5,
   "pass": true,
@@ -26434,7 +26434,7 @@
  {
   "file": "WideList.dc.html",
   "theme": "dark",
-  "text": "Đặt trước sách này",
+  "text": "Đặt trước",
   "ratio": 14.89,
   "need": 4.5,
   "pass": true,
@@ -30522,7 +30522,7 @@
  {
   "file": "WideReservations.dc.html",
   "theme": "light",
-  "text": "Hủy đặt trước",
+  "text": "Hủy đặt",
   "ratio": 8.2,
   "need": 4.5,
   "pass": true,
@@ -30802,7 +30802,7 @@
  {
   "file": "WideReservations.dc.html",
   "theme": "dark",
-  "text": "Hủy đặt trước",
+  "text": "Hủy đặt",
   "ratio": 8.19,
   "need": 4.5,
   "pass": true,

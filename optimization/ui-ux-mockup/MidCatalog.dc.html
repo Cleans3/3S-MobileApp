@@ -354,7 +354,7 @@ class Component extends DCLogic {
     };
     var sel = hits.filter(function (b) { return b.isbn === (st.sel || '9780990000020'); })[0] || hits[0] || null;
     var out = sel && sel.n === 0;
-    var rb = ui.phaseBtn(phase, { idle: 'Đặt trước sách này', sending: 'Đang gửi yêu cầu…', done: 'Đã đặt trước · thư viện xác nhận' });
+    var rb = ui.phaseBtn(phase, { idle: 'Đặt trước', sending: 'Đang gửi yêu cầu…', done: 'Đã đặt trước · thư viện xác nhận' });
     
     var dkOpen = true ? (st.view === 'detail') : true, dkN = (st.swapN || 0);
     var dkW = true ? 360 : 336;

@@ -150,7 +150,7 @@
     <string name="reservations_cancel_for">Cancel reservation of %1$s</string>
     <string name="res_chip_ready">Ready to collect</string>
     <string name="res_chip_waiting">Waiting</string>
-    <string name="reservations_cancel">Cancel reservation</string>
+    <string name="reservations_cancel">Cancel it</string>
     <string name="reservations_cancel_ask">Cancel the reservation for %1$s?</string>
     <string name="reservations_keep">Keep it</string>
     <string name="reservations_cancelled_notice">Reservation for %1$s cancelled.</string>
@@ -161,9 +161,9 @@
     <string name="res_cancelled">Cancelled</string>
     <string name="res_expired">Expired</string>
     <string name="history_step_title">A password is needed to see this</string>
-    <string name="history_manage">Turn saving your history on or off in Account</string>
+    <string name="history_manage">Reading history settings</string>
     <string name="history_needs_password">Reading history needs your password. You logged in with your card.</string>
-    <string name="history_login_password">Log in with password</string>
+    <string name="history_login_password">Enter password</string>
     <string name="history_empty">Nothing here. Reading history is empty, or switched off in Account.</string>
     <string name="history_returned">Out %1$s · returned %2$s</string>
     <string name="history_not_returned">Out %1$s · not returned</string>
@@ -197,7 +197,7 @@
     <string name="title_copies">%1$d of %2$d copies available</string>
     <string name="title_reserved">Reserved. You will see it under Reserved when it is ready.</string>
     <string name="title_reserving">Sending the request…</string>
-    <string name="title_reserve">Reserve this title</string>
+    <string name="title_reserve">Reserve</string>
     <!-- Trạng thái màn hình -->
     <string name="state_loading">Loading…</string>
     <string name="state_offline_title">No connection</string>
@@ -222,8 +222,8 @@
     <string name="checkout_read">Tag read</string>
     <string name="checkout_sending_note">The library checks that the book can be lent, how many you have and any fine. Only when it agrees is the book recorded as borrowed.</string>
     <string name="checkout_failed_title">Could not borrow</string>
-    <string name="checkout_view_loans">See my loans</string>
-    <string name="checkout_view_fines">See the fine</string>
+    <string name="checkout_view_loans">My loans</string>
+    <string name="checkout_view_fines">The fine</string>
     <string name="checkout_try_other">Try another book</string>
     <plurals name="checkout_due_days">
         <item quantity="one">Due %1$s · %2$d day</item>
@@ -279,7 +279,7 @@
     <string name="recommend_sub_full">Based on the books you have borrowed and are borrowing.</string>
     <string name="recommend_sub_card">Card login: based only on the books you are borrowing.</string>
     <string name="recommend_sub_off">Reading history is off: based only on the books you are borrowing.</string>
-    <string name="recommend_more_accurate">Enter your password for better suggestions</string>
+    <string name="recommend_more_accurate">Password for better picks</string>
     <string name="recommend_reason_author">Because you borrowed a book by %1$s</string>
     <string name="recommend_reason_subject">Same subject: %1$s</string>
     <string name="recommend_dismiss">Not interested</string>

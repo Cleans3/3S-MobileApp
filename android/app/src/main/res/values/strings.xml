@@ -149,7 +149,7 @@
     <string name="reservations_cancel_for">Hủy đặt trước %1$s</string>
     <string name="res_chip_ready">Sẵn sàng nhận</string>
     <string name="res_chip_waiting">Đang chờ</string>
-    <string name="reservations_cancel">Hủy đặt trước</string>
+    <string name="reservations_cancel">Hủy đặt</string>
     <string name="reservations_cancel_ask">Hủy đặt trước %1$s?</string>
     <string name="reservations_keep">Giữ lại</string>
     <string name="reservations_cancelled_notice">Đã hủy đặt trước %1$s.</string>
@@ -160,9 +160,9 @@
     <string name="res_cancelled">Đã hủy</string>
     <string name="res_expired">Đã hết hạn</string>
     <string name="history_step_title">Cần mật khẩu để xem</string>
-    <string name="history_manage">Bật hoặc tắt lưu lịch sử trong Tài khoản</string>
+    <string name="history_manage">Cài đặt lịch sử đọc</string>
     <string name="history_needs_password">Bạn đang đăng nhập bằng thẻ. Lịch sử đọc là dữ liệu cá nhân, nên cần thêm mật khẩu.</string>
-    <string name="history_login_password">Đăng nhập bằng mật khẩu</string>
+    <string name="history_login_password">Nhập mật khẩu</string>
     <string name="history_empty">Chưa có gì ở đây. Lịch sử đọc đang trống, hoặc đã tắt trong Tài khoản.</string>
     <string name="history_returned">Mượn %1$s · trả %2$s</string>
     <string name="history_not_returned">Mượn %1$s · chưa trả</string>
@@ -196,7 +196,7 @@
     <string name="title_copies">Còn %1$d trên %2$d bản</string>
     <string name="title_reserved">Đã đặt trước. Sách sẽ hiện trong mục Đặt trước khi sẵn sàng.</string>
     <string name="title_reserving">Đang gửi yêu cầu…</string>
-    <string name="title_reserve">Đặt trước sách này</string>
+    <string name="title_reserve">Đặt trước</string>
     <!-- Trạng thái màn hình -->
     <string name="state_loading">Đang tải…</string>
     <string name="state_offline_title">Không có kết nối</string>
@@ -220,8 +220,8 @@
     <string name="checkout_read">Đã đọc nhãn sách</string>
     <string name="checkout_sending_note">Thư viện kiểm tra sách còn cho mượn, số sách bạn đang mượn và tiền phạt. Chỉ khi thư viện đồng ý, sách mới được ghi là đã mượn.</string>
     <string name="checkout_failed_title">Chưa mượn được</string>
-    <string name="checkout_view_loans">Xem sách đang mượn</string>
-    <string name="checkout_view_fines">Xem khoản phạt</string>
+    <string name="checkout_view_loans">Sách đang mượn</string>
+    <string name="checkout_view_fines">Khoản phạt</string>
     <string name="checkout_try_other">Thử sách khác</string>
     <plurals name="checkout_due_days">
         <item quantity="other">Hạn trả %1$s · %2$d ngày</item>
@@ -276,7 +276,7 @@
     <string name="recommend_sub_full">Theo sách bạn đã mượn và đang mượn.</string>
     <string name="recommend_sub_card">Đăng nhập bằng thẻ: chỉ theo sách bạn đang mượn.</string>
     <string name="recommend_sub_off">Lịch sử đọc đang tắt: chỉ theo sách bạn đang mượn.</string>
-    <string name="recommend_more_accurate">Nhập mật khẩu để có gợi ý chính xác hơn</string>
+    <string name="recommend_more_accurate">Nhập mật khẩu để gợi ý đúng hơn</string>
     <string name="recommend_reason_author">Vì bạn đã mượn sách của %1$s</string>
     <string name="recommend_reason_subject">Cùng chủ đề %1$s</string>
     <string name="recommend_dismiss">Không quan tâm</string>

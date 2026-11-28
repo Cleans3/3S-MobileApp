@@ -85,12 +85,12 @@ a{color:var(--ink)}a:hover{opacity:.85}
             <div style="font-size: 14px; font-weight: 600">Hủy đặt trước Clean Code?</div>
             <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
               <button type="button" onClick="{{keep}}" style="height: 44px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.2); background: var(--surface); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Giữ lại</button>
-              <button type="button" onClick="{{cancel}}" class="st-press" style="height: 44px; border-radius: 999px; border: 0; background:  #7a3420; color: #ffffff; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Hủy đặt trước</button>
+              <button type="button" onClick="{{cancel}}" class="st-press" style="height: 44px; border-radius: 999px; border: 0; background:  #7a3420; color: #ffffff; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Hủy đặt</button>
             </div>
           </div>
         </sc-if>
         <sc-if value="{{notAsking}}" hint-placeholder-val="{{ true }}">
-          <button type="button" onClick="{{ask}}" style="align-self: flex-start; height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.2); background:  transparent; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Hủy đặt trước</button>
+          <button type="button" onClick="{{ask}}" style="align-self: flex-start; height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.2); background:  transparent; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Hủy đặt</button>
         </sc-if>
       </article>
     </sc-if>

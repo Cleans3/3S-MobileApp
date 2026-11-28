@@ -188,14 +188,14 @@ div.st-root{container-type:size}
           <div style="font-size: 14px; line-height: 1.5; color: var(--ink2b)">Bạn sẽ được báo khi có sách.</div>
         </div>
         <sc-if value="{{notAsking}}" hint-placeholder-val="{{ true }}">
-          <button type="button" onClick="{{ask}}" class="st-press" style="align-self: flex-start; min-height: 48px; padding: 6px 20px; border-radius: 999px; border: 1px solid var(--danger); background:  transparent; color: var(--danger); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Hủy đặt trước</button>
+          <button type="button" onClick="{{ask}}" class="st-press" style="align-self: flex-start; min-height: 48px; padding: 6px 20px; border-radius: 999px; border: 1px solid var(--danger); background:  transparent; color: var(--danger); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Hủy đặt</button>
         </sc-if>
         <sc-if value="{{asking}}" hint-placeholder-val="{{ false }}">
           <div role="alertdialog" aria-label="Xác nhận hủy đặt trước" class="st-fade" style="padding: 16px; border-radius: 22px; background: var(--dialog); border: 1px solid rgba(var(--ink-rgb),0.5); display: flex; flex-direction: column; gap: 12px">
             <div style="font-size: 16px; font-weight: 700">Hủy đặt trước Clean Code?</div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap">
               <button type="button" onClick="{{keep}}" style="min-height: 52px; padding: 6px 20px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font: inherit; font-size: 15px; font-weight: 600; line-height: 1.2; cursor: pointer; box-sizing: border-box; flex: 1">Giữ lại</button>
-              <button type="button" onClick="{{cancel}}" style="flex: 1; min-height: 52px; padding: 6px 16px; border-radius: 999px; border: 0; background:  #7a3420; color: #ffffff; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Hủy đặt trước</button>
+              <button type="button" onClick="{{cancel}}" style="flex: 1; min-height: 52px; padding: 6px 16px; border-radius: 999px; border: 0; background:  #7a3420; color: #ffffff; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Hủy đặt</button>
             </div>
           </div>
         </sc-if>

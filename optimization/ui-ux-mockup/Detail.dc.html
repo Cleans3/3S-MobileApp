@@ -165,7 +165,7 @@ class Component extends DCLogic {
   renderVals() {
     var self = this;
     var phase = (this.state && this.state.phase) || 'idle';
-    var labels = { idle: 'Đặt trước sách này', sending: 'Đang gửi yêu cầu…', done: 'Đã đặt trước · thư viện xác nhận' };
+    var labels = { idle: 'Đặt trước', sending: 'Đang gửi yêu cầu…', done: 'Đã đặt trước · thư viện xác nhận' };
     var bg = { idle: 'var(--primary)', sending: '#5c554e', done: '#2f5b3a' };
     return Object.assign(this.__theme(), {
       morphCls: ((this.state && this.state.morphN) || 0) % 2 ? 'st-pm-b' : 'st-pm-a',

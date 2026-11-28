@@ -465,12 +465,12 @@ out['WideCheckout.dc.html'] = S.head('Tự mượn sách ở cửa sổ rộng',
         <div style="font-size: 22px; font-weight: 700">Đã mượn: Số đỏ</div>
         <div style="font-size: 15px; color: var(--ink2b)">Hạn trả 07/12/2026 · 14 ngày</div>
         <button type="button" onClick="{{toWait}}" class="st-press" style="${S.btnPrimary}">Mượn cuốn khác</button>
-        <a href="WideLoans.dc.html" style="${S.btnGlass}">Xem sách đang mượn</a>
+        <a href="WideLoans.dc.html" style="${S.btnGlass}">Sách đang mượn</a>
       </sc-if>
       <sc-if value="{{isError}}" hint-placeholder-val="{{ false }}">
         <div style="font-size: 22px; font-weight: 700; color: var(--danger)">Chưa mượn được</div>
         <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2b)">Bạn còn 2.000 ₫ tiền phạt chưa trả. Thư viện không cho mượn thêm cho tới khi thanh toán tại quầy.</p>
-        <a href="WideLoans.dc.html" style="${S.btnPrimary}">Xem khoản phạt</a>
+        <a href="WideLoans.dc.html" style="${S.btnPrimary}">Khoản phạt</a>
         <button type="button" onClick="{{toWait}}" class="st-press" style="${S.btnGlass}">Thử sách khác</button>
       </sc-if>
     </div>
