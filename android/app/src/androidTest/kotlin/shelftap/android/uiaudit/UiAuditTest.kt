@@ -147,6 +147,9 @@ class UiAuditTest {
 
             runBlocking { session.login(AuditData.EMAIL, "audit-only") }
             waitFor(str(R.string.catalog_theme)) // the banner: always on screen, unlike the strips below it at a large font
+            // The "Suggestions for you" strip is worked out after the home is drawn and pushes the strips below it down: wait for it, or a tap
+            // aimed at a button lands on whatever moved under it. (With a very large font it is below the screen and is not waited for.)
+            runCatching { waitFor(str(R.string.recommend_strip_note)) }
             audit("catalog", activity)
             // Mid-scroll: the page passes under the top bar and the floating button.
             compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() }
@@ -160,8 +163,9 @@ class UiAuditTest {
             // "See all books" opens the list: the search field and the row of subject chips on glass over the rows.
             // The button is the last item of a lazy column, so it exists only once scrolled to: scroll the list to that item.
             compose.onAllNodes(hasScrollToNodeAction()).onFirst().performScrollToNode(hasText(str(R.string.catalog_see_all_books)))
-            compose.waitForIdle()
-            compose.onNodeWithText(str(R.string.catalog_see_all_books)).performScrollTo().performClick()
+            // Clicked through its semantics: at the end of the page the button can sit partly under the floating button, and a tap at its
+            // centre would land on that.
+            compose.onNodeWithText(str(R.string.catalog_see_all_books)).performScrollTo().performSemanticsAction(SemanticsActions.OnClick)
             waitFor(str(R.string.catalog_chip_all))
             audit("list", activity)
             // A chip searches its subject (the second chip is the first subject).
@@ -191,6 +195,10 @@ class UiAuditTest {
             } else {
                 scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
             }
+
+            // "Suggestions for you": worked out on the phone from the fake loans, reservations and history; the fixtures give it something to suggest.
+            tab(R.string.tab_recommend); waitFor(str(R.string.recommend_note))
+            audit("recommend", activity)
 
             tab(R.string.tab_loans); waitFor(AuditData.loans.first().title)
             audit("loans", activity)

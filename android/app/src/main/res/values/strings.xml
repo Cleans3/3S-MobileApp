@@ -269,4 +269,28 @@
     <string name="title_status">Tình trạng</string>
     <string name="title_reserve_confirmed">Đã đặt trước · thư viện xác nhận</string>
     <string name="title_borrow_by_tap">Mượn bằng cách chạm điện thoại vào sách</string>
+
+    <!-- Gợi ý cho bạn: tính ngay trên máy từ sách đang mượn, đặt trước và lịch sử đọc -->
+    <string name="tab_recommend">Gợi ý cho bạn</string>
+    <string name="tab_recommend_menu">Gợi ý</string>
+    <string name="recommend_sub_full">Theo sách bạn đã mượn và đang mượn.</string>
+    <string name="recommend_sub_card">Đăng nhập bằng thẻ: chỉ theo sách bạn đang mượn.</string>
+    <string name="recommend_sub_off">Lịch sử đọc đang tắt: chỉ theo sách bạn đang mượn.</string>
+    <string name="recommend_more_accurate">Nhập mật khẩu để có gợi ý chính xác hơn</string>
+    <string name="recommend_reason_author">Vì bạn đã mượn sách của %1$s</string>
+    <string name="recommend_reason_subject">Cùng chủ đề %1$s</string>
+    <string name="recommend_dismiss">Không quan tâm</string>
+    <string name="recommend_dismiss_for">Không quan tâm: %1$s</string>
+    <string name="recommend_empty_title">Chưa có gì để gợi ý</string>
+    <string name="recommend_empty_hint">ShelfTap chưa có dữ liệu để gợi ý: bạn chưa mượn cuốn nào, hoặc đã tắt lưu lịch sử đọc và hiện không mượn cuốn nào. Bạn vẫn xem sách theo chủ đề được.</string>
+    <string name="recommend_by_subject">Xem theo chủ đề</string>
+    <string name="recommend_history_settings">Cài đặt lịch sử đọc</string>
+    <string name="recommend_note">Gợi ý được tính ngay trên máy, theo tác giả và chủ đề của sách bạn mượn. Lịch sử không được gửi đi đâu.</string>
+    <string name="recommend_strip_note">Tính trên máy từ sách bạn đã mượn. Tắt trong Tài khoản.</string>
+    <string name="recommend_why_title">Vì sao gợi ý</string>
+    <string name="recommend_open_book">Xem chi tiết sách</string>
+    <string name="recommend_status_on_loan">Đang được mượn · đặt trước</string>
+    <string name="recommend_loading">Đang tính gợi ý trên máy…</string>
+    <string name="account_recommend">Gợi ý theo lịch sử đọc</string>
+    <string name="account_recommend_caption">Tính ngay trên máy, không gửi đi đâu. Tắt thì Gợi ý chỉ theo sách đang mượn.</string>
 </resources>

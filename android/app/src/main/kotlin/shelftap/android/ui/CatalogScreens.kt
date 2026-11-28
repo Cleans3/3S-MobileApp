@@ -97,6 +97,8 @@ import shelftap.android.api.ErrorCode
 import shelftap.android.api.TitleDetail
 import shelftap.android.api.TitleSummary
 import shelftap.android.data.Repository
+import shelftap.android.recommend.Recommendation
+import shelftap.android.recommend.RecommendationService
 import shelftap.android.ui.theme.CoverSize
 import shelftap.android.ui.theme.GlassSize
 import shelftap.android.ui.theme.ShelfTapText
@@ -192,9 +194,14 @@ private fun subjectsOf(items: List<TitleSummary>): List<String> =
 private const val CHIPS = 8
 
 @Composable
-fun CatalogScreen(onOpen: (String) -> Unit, guest: Boolean = false) {
+fun CatalogScreen(onOpen: (String) -> Unit, guest: Boolean = false, onRecommend: (() -> Unit)? = null) {
     val vm = appViewModel { CatalogViewModel(it.repository) }
     val state by vm.state.collectAsStateWithLifecycle()
+    // A member also gets the strip "Suggestions for you" (worked out on the phone; absent for a guest and while there is nothing to suggest).
+    val recommender = if (onRecommend != null && !guest) LocalContainer.current.recommender else null
+    LaunchedEffect(recommender) { recommender?.ensureLoaded() }
+    val recState = recommender?.state?.collectAsStateWithLifecycle()
+    val recommendations = (recState?.value as? RecommendationService.State.Ready)?.items.orEmpty().take(RECOMMEND_STRIP)
     var input by rememberSaveable { mutableStateOf("") }
     var listAll by rememberSaveable { mutableStateOf(false) }
     // A subject tapped on a book's page arrives here as a search (and is used once).
@@ -310,7 +317,7 @@ fun CatalogScreen(onOpen: (String) -> Unit, guest: Boolean = false) {
             search()
             if (guest) GuestNote(Modifier.padding(bottom = Spacing.xs))
         }
-        CatalogHome(state, onOpen, onSubject = { input = it }, onAll = { listAll = true }, onRetry = vm::retry, header = header)
+        CatalogHome(state, onOpen, onSubject = { input = it }, onAll = { listAll = true }, onRetry = vm::retry, header = header, recommendations = recommendations, onRecommend = onRecommend)
     }
 }
 
@@ -318,7 +325,7 @@ fun CatalogScreen(onOpen: (String) -> Unit, guest: Boolean = false) {
 @Composable
 private fun CatalogHome(
     state: CatalogViewModel.UiState, onOpen: (String) -> Unit, onSubject: (String) -> Unit, onAll: () -> Unit, onRetry: () -> Unit,
-    header: @Composable () -> Unit,
+    header: @Composable () -> Unit, recommendations: List<Recommendation> = emptyList(), onRecommend: (() -> Unit)? = null,
 ) {
     val top = LocalPageInsets.current.top
     when {
@@ -333,6 +340,7 @@ private fun CatalogHome(
                     val first = strips.first()
                     Banner(first.subject, first.books.take(BANNER_MAX_BOOKS), onClick = { first.subject?.let(onSubject) ?: onAll() })
                 }
+                if (recommendations.isNotEmpty() && onRecommend != null) item(key = "recommend") { RecommendStrip(recommendations, onOpen, onAll = onRecommend) }
                 items(strips, key = { it.subject ?: "" }) { strip ->
                     Column(verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
                         SectionHeader(

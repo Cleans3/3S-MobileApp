@@ -45,6 +45,11 @@ object AuditData {
         title("t-6", "9786041234611", "Nhà giả kim", listOf("Paulo Coelho"), 0),
         title("t-7", "9786041234628", "Tắt đèn", listOf("Ngô Tất Tố"), 4),
         title("t-8", "9786041234635", "Cấu trúc dữ liệu và giải thuật", listOf("Lê Minh Hoàng"), 1),
+        // The next four share a subject or an author with books the member has, so "Suggestions for you" has something to suggest.
+        title("t-9", "9786041234642", "Tôi thấy hoa vàng trên cỏ xanh", listOf("Nguyễn Nhật Ánh"), 2, "Thiếu nhi"),
+        title("t-10", "9786041234659", "Cho tôi xin một vé đi tuổi thơ", listOf("Nguyễn Nhật Ánh"), 0, "Thiếu nhi"),
+        title("t-11", "9786041234666", "Vũ trụ trong vỏ hạt dẻ", listOf("Stephen Hawking"), 3, "Khoa học"),
+        title("t-12", "9786041234673", "Lịch sử Việt Nam bằng tranh", listOf("Trần Bạch Đằng"), 1, "Lịch sử"),
     )
 
     val me = Me("m-1", "Phạm Thị Thu Hường", EMAIL, "STUDENT", "ACTIVE", historyEnabled = true, mustChangePassword = false)
@@ -68,12 +73,13 @@ object AuditData {
         Reservation("r-2", "t-6", "Nhà giả kim", "2026-11-10T02:00:00Z", "2026-11-21T02:00:00Z", ReservationStatus.READY),
     )
 
-    private fun title(id: String, isbn: String, name: String, authors: List<String>, available: Int) =
-        TitleSummary(id, isbn, name, authors, listOf(SUBJECTS[(id.filter { it.isDigit() }.toIntOrNull() ?: 0) % SUBJECTS.size]), null, available)
+    private fun title(id: String, isbn: String, name: String, authors: List<String>, available: Int, subject: String? = null) =
+        TitleSummary(id, isbn, name, authors, listOf(subject ?: SUBJECTS[(id.filter { it.isDigit() }.toIntOrNull() ?: 0) % SUBJECTS.size]), null, available)
 
     object ApiFake : ShelfTapApi {
         override suspend fun titles(q: String, page: Int, size: Int): Page<TitleSummary> {
-            val hits = titles.filter { q.isBlank() || it.title.contains(q, ignoreCase = true) }
+            // like the server: the words are looked for in the title, the authors and the subjects
+            val hits = titles.filter { q.isBlank() || it.title.contains(q, ignoreCase = true) || it.authors.any { a -> a.contains(q, ignoreCase = true) } || it.subjects.any { s -> s.contains(q, ignoreCase = true) } }
             val items = hits.drop(page * size).take(size)
             return Page(items, page, size, hits.size.toLong())
         }

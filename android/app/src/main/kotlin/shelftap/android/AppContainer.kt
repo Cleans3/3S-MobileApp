@@ -6,15 +6,19 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.map
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import shelftap.android.api.AuthApi
 import shelftap.android.api.Net
 import shelftap.android.api.ShelfTapApi
 import shelftap.android.data.DeviceIdStore
+import shelftap.android.data.RecommendPrefs
 import shelftap.android.data.Repository
+import shelftap.android.data.RepositoryRecommendSource
 import shelftap.android.data.ThemeStore
 import shelftap.android.security.IntegrityChecker
 import shelftap.android.security.KeystoreRefreshTokenVault
+import shelftap.android.recommend.RecommendationService
 import shelftap.android.security.RefreshTokenVault
 import shelftap.android.session.InactivityTracker
 import shelftap.android.session.SessionManager
@@ -28,6 +32,7 @@ class AppContainer(context: Context) {
     val vault: RefreshTokenVault = KeystoreRefreshTokenVault(dataStore)
     val integrity = IntegrityChecker(context)
     val themeStore = ThemeStore(dataStore)
+    val recommendPrefs = RecommendPrefs(dataStore)
 
     val baseClient = Net.baseClient(baseUrl, BuildConfig.API_PINS.split(',').filter { it.isNotBlank() })
     val session = SessionManager(
@@ -40,6 +45,16 @@ class AppContainer(context: Context) {
         Net.retrofit(Net.authedClient(baseClient, session), baseUrl).create(ShelfTapApi::class.java),
         session,
     )
+
+    /**
+     * The suggestions for the signed-in member (computed on the phone, kept in memory, dropped when the session ends). Built on first use,
+     * from whatever repository the container holds then.
+     */
+    val recommender: RecommendationService by lazy {
+        RecommendationService(RepositoryRecommendSource(repository), recommendPrefs.useHistory).also { service ->
+            service.bind(appScope, session.state.map { it is shelftap.android.session.SessionState.Active })
+        }
+    }
 
     /** A subject picked on a book's page: the catalog takes it as its search the next time it is on screen, then clears it. */
     val subjectSearch = kotlinx.coroutines.flow.MutableStateFlow<String?>(null)

@@ -174,6 +174,9 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
     val scope = rememberCoroutineScope()
     val biometricAvailable = BiometricLock.available(context)
     val themeStore = LocalContainer.current.themeStore
+    val recommendPrefs = LocalContainer.current.recommendPrefs
+    val recommender = LocalContainer.current.recommender
+    val useHistoryForSuggestions by recommendPrefs.useHistory.collectAsStateWithLifecycle(true)
     val themeMode by themeStore.mode.collectAsStateWithLifecycle(ThemeMode.SYSTEM)
     val bioTurnOn = stringResource(R.string.account_bio_turn_on)
     val bioConfirm = stringResource(R.string.account_bio_confirm)
@@ -191,6 +194,13 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
                 SwitchItem(
                     stringResource(R.string.account_history_keep), stringResource(R.string.account_history_keep_caption),
                     checked = me.historyEnabled, enabled = !state.busy, onChange = vm::setHistoryEnabled,
+                )
+                GroupDivider()
+                // The suggestions are worked out on the phone; this switch only says whether they may read the history (kept on this phone).
+                SwitchItem(
+                    stringResource(R.string.account_recommend), stringResource(R.string.account_recommend_caption),
+                    checked = useHistoryForSuggestions, enabled = true,
+                    onChange = { on -> scope.launch { recommendPrefs.setUseHistory(on); recommender.invalidate() } },
                 )
                 GroupDivider()
                 LinkItem(stringResource(R.string.account_history), onClick = onHistory)

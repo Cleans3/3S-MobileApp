@@ -161,15 +161,17 @@ private fun LoggedOutHost(reason: LogoutReason?, startWithCard: Boolean = false,
 private const val CATALOG = "catalog"
 private const val CHECKOUT = "checkout"
 private const val LOGIN = "login"
+private const val RECOMMEND = "recommend"
 
 /** The screens that show a list and the detail of its chosen item side by side in a wide window (they take the whole page, not 720 dp of it). */
-private val TWO_PANE_ROUTES = setOf("loans", "reservations", "account")
+private val TWO_PANE_ROUTES = setOf("loans", "reservations", "account", RECOMMEND)
 
 /** Where a signed-out member goes from the welcome screen. */
 private enum class Entry { CATALOG, LOGIN, CARD }
 
 private val memberMenu = listOf(
-    MenuItem(CATALOG, R.string.tab_catalog, LucideIcons.MockupCatalog), MenuItem("loans", R.string.tab_loans, LucideIcons.MockupLoans),
+    MenuItem(CATALOG, R.string.tab_catalog, LucideIcons.MockupCatalog), MenuItem(RECOMMEND, R.string.tab_recommend_menu, LucideIcons.MockupRecommend),
+    MenuItem("loans", R.string.tab_loans, LucideIcons.MockupLoans),
     MenuItem("reservations", R.string.tab_reservations, LucideIcons.MockupReservations),
     MenuItem("history", R.string.account_history, LucideIcons.MockupHistory), MenuItem("account", R.string.tab_account, LucideIcons.MockupAccount),
 )
@@ -180,6 +182,7 @@ private val guestMenu = listOf(MenuItem(CATALOG, R.string.tab_catalog, LucideIco
 private fun titleOf(route: String?): Int? = when (route) {
     CATALOG -> R.string.tab_catalog
     "loans" -> R.string.tab_loans
+    RECOMMEND -> R.string.tab_recommend
     CHECKOUT -> R.string.tab_checkout
     "reservations" -> R.string.tab_reservations
     "history" -> R.string.account_history
@@ -363,9 +366,9 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                                 Screen {
                                     val onLogin = if (guest) ({ nav.navigate(LOGIN) }) else null
                                     if (layout == NavLayout.SIDE) {
-                                        CatalogTwoPane(onLogin, onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }))
+                                        CatalogTwoPane(onLogin, onCheckout = if (guest) null else ({ nav.goTo(CHECKOUT) }), onRecommend = if (guest) null else ({ nav.goTo(RECOMMEND) }))
                                     } else {
-                                        CatalogScreen(onOpen = { nav.navigate("title/$it") }, guest = guest)
+                                        CatalogScreen(onOpen = { nav.navigate("title/$it") }, guest = guest, onRecommend = if (guest) null else ({ nav.goTo(RECOMMEND) }))
                                     }
                                 }
                             }
@@ -385,7 +388,8 @@ private fun MainNav(guest: Boolean, reason: LogoutReason?, entry: Entry = Entry.
                                 }
                             }
                             composable(LOGIN) { Screen { LoggedOutHost(reason, startWithCard = entry == Entry.CARD, onGuest = { nav.goTo(CATALOG) }) } }
-                            composable("loans") { Screen { LoansScreen() } }
+                            composable(RECOMMEND) { Screen { RecommendScreen(onOpen = { nav.navigate("title/$it") }, onCatalog = { nav.goTo(CATALOG) }, onAccount = { nav.goTo("account") }) } }
+            composable("loans") { Screen { LoansScreen() } }
                             composable(CHECKOUT) { Screen { CheckoutScreen(onLoans = { nav.goTo("loans") }) } }
                             composable("reservations") { Screen { ReservationsScreen() } }
                             composable("account") { Screen { AccountScreen(onHistory = { nav.navigate("history") }, onChangePassword = { nav.navigate("password") }) } }
@@ -478,7 +482,7 @@ private const val SIDE_PANE_SHARE = 1.3f / 2.3f // the weights 1 and 1.3 (PANE_W
 
 /** A wide window shows the catalog and the chosen book side by side, so picking a book does not leave the list. */
 @Composable
-private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
+private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?, onRecommend: (() -> Unit)? = null) {
     val subjectSearch = LocalContainer.current.subjectSearch
     val tier = LocalEffectTier.current
     var selected by rememberSaveable { mutableStateOf<String?>(null) }
@@ -489,7 +493,7 @@ private fun CatalogTwoPane(onLogin: (() -> Unit)?, onCheckout: (() -> Unit)?) {
     var shown by remember { mutableStateOf(selected) } // the last book, kept on screen while the pane closes
     if (selected != null) shown = selected
     Row(Modifier.fillMaxSize()) {
-        Box(Modifier.weight(1f).fillMaxHeight()) { CatalogScreen(onOpen = { selected = it }, guest = onLogin != null) }
+        Box(Modifier.weight(1f).fillMaxHeight()) { CatalogScreen(onOpen = { selected = it }, guest = onLogin != null, onRecommend = onRecommend) }
         val id = shown
         if (id != null && share > 0.01f) {
             VerticalDivider()

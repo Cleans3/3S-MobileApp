@@ -272,4 +272,28 @@
     <string name="title_status">Availability</string>
     <string name="title_reserve_confirmed">Reserved · the library confirmed</string>
     <string name="title_borrow_by_tap">Borrow by tapping the phone on the book</string>
+
+    <!-- Suggestions for you: computed on the phone from loans, reservations and the reading history -->
+    <string name="tab_recommend">For you</string>
+    <string name="tab_recommend_menu">For you</string>
+    <string name="recommend_sub_full">Based on the books you have borrowed and are borrowing.</string>
+    <string name="recommend_sub_card">Card login: based only on the books you are borrowing.</string>
+    <string name="recommend_sub_off">Reading history is off: based only on the books you are borrowing.</string>
+    <string name="recommend_more_accurate">Enter your password for better suggestions</string>
+    <string name="recommend_reason_author">Because you borrowed a book by %1$s</string>
+    <string name="recommend_reason_subject">Same subject: %1$s</string>
+    <string name="recommend_dismiss">Not interested</string>
+    <string name="recommend_dismiss_for">Not interested: %1$s</string>
+    <string name="recommend_empty_title">Nothing to suggest yet</string>
+    <string name="recommend_empty_hint">ShelfTap has nothing to base suggestions on: you have not borrowed a book yet, or you turned saving your reading history off and are not borrowing any. You can still browse by subject.</string>
+    <string name="recommend_by_subject">Browse by subject</string>
+    <string name="recommend_history_settings">Reading history settings</string>
+    <string name="recommend_note">Suggestions are worked out on this phone from the authors and subjects of your books. Your history is not sent anywhere.</string>
+    <string name="recommend_strip_note">Worked out on this phone from the books you borrowed. Turn off in Account.</string>
+    <string name="recommend_why_title">Why this suggestion</string>
+    <string name="recommend_open_book">View book</string>
+    <string name="recommend_status_on_loan">On loan · reserve it</string>
+    <string name="recommend_loading">Working out suggestions on this phone…</string>
+    <string name="account_recommend">Suggestions from reading history</string>
+    <string name="account_recommend_caption">Worked out on this phone, sent nowhere. When off, suggestions use only the books you are borrowing.</string>
 </resources>
