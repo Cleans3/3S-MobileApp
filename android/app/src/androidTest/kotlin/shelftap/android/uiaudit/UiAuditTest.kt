@@ -125,6 +125,57 @@ class UiAuditTest {
     @Before
     fun gate() = assumeTrue("pass -Pandroid.testInstrumentationRunnerArguments.uiAudit=<label> to run the UI audit", label.isNotEmpty())
 
+    /**
+     * The effects of the app at real speed, for a screen recording (`optimization/ui-ux/tools/record_effects.ps1` runs this and pulls the video).
+     * Measurement only: skipped unless the instrumentation argument `uiVideo` is set. The app sets FLAG_SECURE, which also blacks out
+     * `screenrecord`; this test clears the flag on the window of its own run (the product code is not changed and no build ships without
+     * the flag). It goes through the same sequence twice: the first pass warms up the code (an unoptimised debug build is slow the first
+     * time through), and only the second is recorded, started and stopped by the test itself with the system's `screenrecord`.
+     */
+    @Test
+    fun effectsVideo() {
+        assumeTrue("pass -e uiVideo 1 (and uiAudit <label>) to record the effects", args.getString("uiVideo") != null && label.isNotEmpty())
+        val app = instrumentation.targetContext.applicationContext as ShelfTapApp
+        val session = installFakes(app.container)
+        runBlocking { app.container.themeStore.setForcedEffect(args.getString("tier")) }
+        runBlocking { session.restore() }
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            scenario.onActivity { it.window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE) }
+            waitFor(str(R.string.welcome_guest))
+            runBlocking { session.login(AuditData.EMAIL, "audit-only") }
+            waitFor(str(R.string.catalog_theme))
+            runCatching { waitFor(str(R.string.recommend_strip_note)) }
+            effectsPass(scenario)  // warm-up, not recorded
+            val remote = "/data/local/tmp/effects-$label.mp4"
+            uiAutomation.executeShellCommand("screenrecord --bit-rate 3000000 --size 576x1248 --time-limit 170 $remote")
+            Thread.sleep(2500) // the encoder starts
+            // The frame statistics of the recorded pass only (the system counts frames per process): reset now, read after it.
+            uiAutomation.executeShellCommand("dumpsys gfxinfo ${instrumentation.targetContext.packageName} reset").use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() }
+            effectsPass(scenario)
+            Thread.sleep(800)
+            File(outDir, "gfxinfo.txt").writeBytes(uiAutomation.executeShellCommand("dumpsys gfxinfo ${instrumentation.targetContext.packageName}").use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() })
+            uiAutomation.executeShellCommand("pkill -INT screenrecord").use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() }
+            Thread.sleep(3000) // the file is finished
+        }
+    }
+
+    private fun pause(ms: Long) = Thread.sleep(ms)
+
+    /** What a person would do to see the effects: scroll, open and close the menu, open a book and go back, switch screens. */
+    private fun effectsPass(scenario: ActivityScenario<MainActivity>) {
+        pause(1200)
+        compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() }; pause(1000)
+        compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeDown() }; pause(1000)
+        openMenu(); pause(1300)
+        compose.onAllNodesWithContentDescription(str(R.string.menu_close))[0].performClick(); pause(1100)
+        openFirstTitle(); waitFor(AuditData.titles.first().isbn); pause(2200)
+        scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+        waitFor(str(R.string.catalog_theme)); pause(1400)
+        tab(R.string.tab_loans); waitFor(AuditData.loans.first().title); pause(1600)
+        tab(R.string.tab_reservations); waitFor(AuditData.reservations.first().title); pause(1600)
+        tab(R.string.tab_catalog); waitFor(str(R.string.catalog_theme)); pause(1400)
+    }
+
     @Test
     fun tour() {
         val app = instrumentation.targetContext.applicationContext as ShelfTapApp
@@ -183,7 +234,16 @@ class UiAuditTest {
             }
             waitFor(str(R.string.catalog_theme))
 
-            openFirstTitle()
+            if (config == "ref") {
+                // The reference size also records the opening of the book page frame by frame (screen slide, the floating button turning into the bar).
+                compose.mainClock.autoAdvance = false
+                openFirstTitle()
+                recordFrames(activity, "detail-open", listOf(20, 20, 20, 20, 30, 30, 40, 40, 60))
+                compose.mainClock.autoAdvance = true
+                compose.waitForIdle()
+            } else {
+                openFirstTitle()
+            }
             waitFor(AuditData.titles.first().isbn) // the ISBN tile of the book page
             audit("detail", activity)
             // On a wide window the detail is a pane beside the list, not a screen to go back from.
@@ -194,6 +254,12 @@ class UiAuditTest {
                 compose.onNodeWithContentDescription(str(R.string.nav_expand)).performClick(); compose.waitForIdle()
                 compose.onNodeWithContentDescription(str(R.string.title_close_pane)).performClick(); compose.waitForIdle()
                 audit("pane-closed", activity)
+            } else if (config == "ref") {
+                compose.mainClock.autoAdvance = false
+                scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+                recordFrames(activity, "detail-close", listOf(20, 20, 20, 20, 30, 30, 40, 40, 60))
+                compose.mainClock.autoAdvance = true
+                compose.waitForIdle()
             } else {
                 scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
             }
@@ -346,6 +412,18 @@ class UiAuditTest {
         }
         compose.mainClock.autoAdvance = true
         compose.waitForIdle()
+    }
+
+    /**
+     * The compose clock is stopped (the caller did that): advance it by each step and save the window as `<config>/<name>-<elapsed ms>-hw.png`.
+     * The frames are what the tool `optimization/ui-ux/tools/frames_to_anim.py` turns into an animation.
+     */
+    private fun recordFrames(activity: MainActivity, name: String, steps: List<Int>) {
+        var at = 0
+        for (d in steps) {
+            compose.mainClock.advanceTimeBy(d.toLong()); at += d
+            captureHardware(activity.window.decorView)?.let { bmp -> File(outDir, "$config/$name-$at-hw.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) } }
+        }
     }
 
     /** A control held down: the pressed state, drawn by the GPU renderer, saved as `<config>/<name>-hw.png`. Skipped when the control is not on screen. */

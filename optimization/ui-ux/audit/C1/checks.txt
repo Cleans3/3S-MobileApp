@@ -1,0 +1,13 @@
+SpeakableTextPresentCheck
+EditableContentDescCheck
+TouchTargetSizeCheck
+DuplicateSpeakableTextCheck
+TextContrastCheck
+ClickableSpanCheck
+DuplicateClickableBoundsCheck
+RedundantDescriptionCheck
+ImageContrastCheck
+ClassNameCheck
+TraversalOrderCheck
+LinkPurposeUnclearCheck
+TextSizeCheck

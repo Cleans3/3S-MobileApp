@@ -1,0 +1,47 @@
+// Added to UiAuditTest.kt of the baseline worktree (tag ui-baseline + audit harness of c4280b8). Imports it needs besides those of the harness:
+//   androidx.compose.ui.test.hasScrollAction, androidx.compose.ui.test.performTouchInput, androidx.compose.ui.test.swipeDown, androidx.compose.ui.test.swipeUp
+// Placed before `fun tour()`.
+
+    /**
+     * The same recording test as on the current app (see `UiAuditTest.effectsVideo` there), written for the app as first cloned: the five-tab bar
+     * and no menu, so the sequence is scroll the list, open a book and go back, switch tabs. The recording and the frame statistics are the same.
+     */
+    @Test
+    fun effectsVideo() {
+        assumeTrue("pass -e uiVideo 1 (and uiAudit <label>) to record the effects", args.getString("uiVideo") != null && label.isNotEmpty())
+        val app = instrumentation.targetContext.applicationContext as ShelfTapApp
+        val session = installFakes(app.container)
+        runBlocking { session.restore() }
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            scenario.onActivity { it.window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE) }
+            waitFor("Log in with library card")
+            runBlocking { session.login(AuditData.EMAIL, "audit-only") }
+            waitFor(AuditData.titles.first().title)
+            effectsPass(scenario)  // warm-up, not recorded
+            val remote = "/data/local/tmp/effects-$label.mp4"
+            uiAutomation.executeShellCommand("screenrecord --bit-rate 3000000 --size 576x1248 --time-limit 170 $remote")
+            Thread.sleep(2500)
+            uiAutomation.executeShellCommand("dumpsys gfxinfo ${instrumentation.targetContext.packageName} reset").use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() }
+            effectsPass(scenario)
+            Thread.sleep(800)
+            File(outDir, "gfxinfo.txt").writeBytes(uiAutomation.executeShellCommand("dumpsys gfxinfo ${instrumentation.targetContext.packageName}").use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() })
+            uiAutomation.executeShellCommand("pkill -INT screenrecord").use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() }
+            Thread.sleep(3000)
+        }
+    }
+
+    private fun pause(ms: Long) = Thread.sleep(ms)
+
+    private fun effectsPass(scenario: ActivityScenario<MainActivity>) {
+        pause(1200)
+        compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() }; pause(1000)
+        compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeDown() }; pause(1000)
+        compose.onAllNodesWithText(AuditData.titles.first().title).onFirst().performClick()
+        waitFor("ISBN ${AuditData.titles.first().isbn}"); pause(2200)
+        scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+        waitFor(AuditData.titles.first().title); pause(1400)
+        tab("Loans"); waitFor(AuditData.loans.first().title); pause(1600)
+        tab("Reserved"); waitFor(AuditData.reservations.first().title); pause(1600)
+        tab("Catalog"); waitFor(AuditData.titles.first().title); pause(1400)
+    }
+
