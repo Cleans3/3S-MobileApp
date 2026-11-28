@@ -118,7 +118,7 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 
 ### How the talk is built
 
-The talk is 15 to 20 minutes for lecturers and classmates. It runs in five parts (`data-part` A–E, shown as a strip at the bottom of slides 2–27; slide 1 is a poster without strip or page number):
+The talk is 15 to 20 minutes for lecturers and classmates. It runs in five parts (`data-part` A–E, markup only: the part strip at the bottom of the slides was removed on 2026-11-28 at the owner's request; slide 1 is a poster without page number):
 
 | Part | Slides | Job |
 |---|---|---|
@@ -141,7 +141,7 @@ The talk is 15 to 20 minutes for lecturers and classmates. It runs in five parts
 
 **Framing rules.** Advice is organised as a five-rung technique ladder from least to most technical (Bậc 1–5: AI self-review, rules file and structured spec, tool gates, measurement on a measure build, fixing known fault patterns), where each rung states what you do, what it achieved in our data, and where it stops to motivate the next rung. Never use a chain/links metaphor and never compare reader types. "vibe coding" appears only as the name of the phenomenon, on slide 2. Neither "chưa đo" nor the course-target scoreboard appears in the main talk (the scoreboard is backup D10 and the full unmeasured list is backup D1). Slides show no source captions, and the hype examples get no source list. Sources live in each slide's `aside.notes` as `path:line` and in the proof table. Limits are stated once: slide 4, slide 8 (pointer to D1) and D1.
 
-**Design rules.** The canvas is 1920 × 1080, scaled to the window. A headline is a full sentence that makes the claim. Body text is at least 20 px at a 1280 px window, nothing may be clipped or leave the canvas, and content stays above the bottom part strip (y ≤ 980, strip at 1012; slide 1 is a poster without strip or page number). Each main slide carries one picture of evidence (an A/B video, a chart, verbatim code or a screenshot) and few numbers. Statistics such as p, Cliff's delta and intervals go to the notes and to D1–D12.
+**Design rules.** The canvas is 1920 × 1080, scaled to the window. A headline is a full sentence that makes the claim. Body text is at least 20 px at a 1280 px window, nothing may be clipped or leave the canvas, and content stays at y ≤ 980 (the bottom part strip was removed on 2026-11-28; slide 1 is a poster without page number). Each main slide carries one picture of evidence (an A/B video, a chart, verbatim code or a screenshot) and few numbers. Statistics such as p, Cliff's delta and intervals go to the notes and to D1–D12.
 
 **Hype images (slide 2).** There are six 1280 × 720 YouTube thumbnails, `evidence/img/hype/hype-01.jpg` … `hype-06.jpg`. Their origin (title, channel, video id, fetch date) is recorded in [evidence/img/hype/README.md](evidence/img/hype/README.md) and never shown on a slide. The digits they contain are inside the images, so they need no proof rows.
 
@@ -165,7 +165,7 @@ The data-title column is exactly the slide's `data-title` in the deck. Script, o
 
 | # | data-title | What the slide claims | Experiment | Proof (rows in proof/deck-proof.csv; main sources) |
 |---|---|---|---|---|
-| 1 | Trông hoàn thiện, chưa tối ưu | Poster hook (no strip or page number): four one-prompt E6 apps look finished but are un-optimised; sets the topic (UI, memory, security on Android · ShelfTap) | E6 | 2 rows (labels only) |
+| 1 | Trông hoàn thiện, chưa tối ưu | Poster hook (no page number): four one-prompt E6 apps look finished but are un-optimised; sets the topic (UI, memory, security on Android · ShelfTap) | E6 | 2 rows (labels only) |
 | 2 | Lời hứa trên mạng | Six real thumbnails promise a whole app from one prompt; names the phenomenon (vibe coding) once | hype images | 1 row (labels only) |
 | 3 | Năm con số | Five measured headline numbers, each pointing to its proof slide: 58/100 build fail (5), 60/66 security findings at 2,3× density (17), 90% janky frames on 2.000 items (11), 180 and 243 MB RAM vs 150 MB target (14, 15), 9/12 codex fixes fail to compile (7) | E1, E2, E5 | 31 rows; `e1-corpus/REPORT.md`, `e2-bench/REPORT.md`, `e5-optimizer/REPORT.md`, `CLAUDE.md` |
 | 4 | Sáu thí nghiệm | Six experiments, criteria fixed before data, isolation check (623 transcripts), emulator numbers read as A/B only | E1–E6, isolation audit | 20 rows; `isolation-audit/AUDIT.md`, `e1-corpus/REPORT.md`, `e6-oneshot/REPORT.md`, `e2-bench/REPORT.md` |
@@ -220,7 +220,7 @@ Copied from [presentation-script.md](presentation-script.md) by `build_playbook_
 
 **Thao tác.** Dừng một nhịp ngay sau vế “Trông hoàn thiện, nhưng chưa tối ưu”, để khán giả nhìn bốn màn hình ứng dụng rồi chuyển sang slide 2.
 
-**Lưu ý.** Slide áp phích không hiện thanh phần và số trang. Bốn ảnh nền là bốn ứng dụng E6 (chi tiết ở D11); bối cảnh là ShelfTap, ứng dụng thư viện thông minh dùng NFC của nhóm.
+**Lưu ý.** Slide áp phích không hiện số trang. Bốn ảnh nền là bốn ứng dụng E6 (chi tiết ở D11); bối cảnh là ShelfTap, ứng dụng thư viện thông minh dùng NFC của nhóm.
 
 #### 2. Lời hứa trên mạng (0:15 đến 0:55) — slide 2
 

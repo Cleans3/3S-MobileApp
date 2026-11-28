@@ -28,7 +28,7 @@ Khớp nguyên vẹn với `presentation.html` (27 slide chính theo mạch năm
 
 **Thao tác.** Dừng một nhịp ngay sau vế “Trông hoàn thiện, nhưng chưa tối ưu”, để khán giả nhìn bốn màn hình ứng dụng rồi chuyển sang slide 2.
 
-**Lưu ý.** Slide áp phích không hiện thanh phần và số trang. Bốn ảnh nền là bốn ứng dụng E6 (chi tiết ở D11); bối cảnh là ShelfTap, ứng dụng thư viện thông minh dùng NFC của nhóm.
+**Lưu ý.** Slide áp phích không hiện số trang. Bốn ảnh nền là bốn ứng dụng E6 (chi tiết ở D11); bối cảnh là ShelfTap, ứng dụng thư viện thông minh dùng NFC của nhóm.
 
 ## 2. Lời hứa trên mạng (0:15 đến 0:55) — slide 2
 

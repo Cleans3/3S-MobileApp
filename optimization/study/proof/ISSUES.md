@@ -8,7 +8,7 @@ Slide numbers in this section and in the talk-flow pass below refer to the curre
 
 ## 2026-11-28 — talk-flow rebuild (25 + D1–D9 → 27 + D1–D12)
 
-The owner asked for the order hook → claim → experiments → results → problems behind the results → solutions → close. Every main slide now carries `data-part` (A Mở đầu, B Kết quả, C Nguyên nhân, D Giải pháp, E Kết thúc), shown as a strip at the bottom of the slide; slide 1 is a poster and shows no strip or page number.
+The owner asked for the order hook → claim → experiments → results → problems behind the results → solutions → close. Every main slide now carries `data-part` (A Mở đầu, B Kết quả, C Nguyên nhân, D Giải pháp, E Kết thúc), kept as markup only (the strip that showed them at the bottom of the slide was removed on 2026-11-28 at the owner's request); slide 1 is a poster and shows no page number.
 
 ### Old → new slide map
 
@@ -51,7 +51,7 @@ The owner asked for the order hook → claim → experiments → results → pro
 - **The example prompt on rung 1 is labelled "PROMPT MẪU"** and the notes say it is an illustration, not the E5 prompt. The two quotes on rung 2 are verbatim (guardrail/ANDROID-GUARDRAIL.md:24, e6-oneshot/prompts/S.txt); the R8 lines on rung 3 are the two settings named in rule 18 (guardrail/ANDROID-GUARDRAIL.md:31).
 - **"chưa đo" leaves the main slides.** The scoreboard moved to D10 with its one unmeasured row (NFC tap on a low-cost device) removed; its headline now ends "trừ lưới thẻ trang trí". Slide 8's notes point to D1 instead of saying "chưa đo". D1 keeps the full list of what was not measured. A grep of the 27 main slides for "chưa đo" returns 0.
 - **Notes timing:** 1170 s (19:30), within the 20:00 budget. Trimmed on moved slides: slide 5 60 → 50 s, slide 9 40 → 30 s, slide 10 45 → 35 s. New: slide 1 15 s, slide 3 45 s, slide 21 30 s, slides 22–26 40 s each.
-- **Layout check** (headless Chrome, every main slide at its last build step, `#/N/99`, at 1280×720 and 1920×1080): 0 elements outside the canvas, 0 clipped elements, smallest text 20 px at 1280 (30 px at 1920), content bottom at most 980 on slides 2–27 (the strip starts at 1012). Slide 1 has no strip; its phone fan ends at 1008.
+- **Layout check** (headless Chrome, every main slide at its last build step, `#/N/99`, at 1280×720 and 1920×1080): 0 elements outside the canvas, 0 clipped elements, smallest text 20 px at 1280 (30 px at 1920), content bottom at most 980 on slides 2–27 (the part strip that started at 1012 was removed on 2026-11-28 at the owner's request). Slide 1's phone fan ends at 1008.
 
 ## 2026-11-28 — proof pass for the frozen 33-slide deck (25 main + D1–D8)
 

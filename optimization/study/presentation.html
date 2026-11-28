@@ -250,7 +250,7 @@ table.t td .lab{display:block}
 .ov .slide.cur{outline:12px solid var(--b)}
 .ov .slide.backup{outline-color:color-mix(in oklab,var(--amber) 60%,transparent)}
 .ov [data-step]{opacity:1;translate:none}
-.ov .prog,.ov .pg,.ov .sec,.ov .secbar{display:none}
+.ov .prog,.ov .pg,.ov .sec{display:none}
 
 /* outside-stage UI */
 #notes{position:fixed;left:0;right:0;bottom:0;max-height:38vh;overflow:auto;padding:18px 28px 22px;background:rgba(8,10,18,.94);color:#E8ECF5;
@@ -285,18 +285,10 @@ table.t td .lab{display:block}
   #stage{position:static;translate:none;scale:none;width:auto;height:auto;overflow:visible;background:none}
   .slide{display:flex!important;position:relative;width:1920px;height:1080px;break-after:page;background:var(--bg);overflow:hidden}
   [data-step]{opacity:1!important;translate:none!important}
-  .prog,.pg,.sec,.secbar,#notes,#jump,#help,.backup-badge{display:none!important}
+  .prog,.pg,.sec,#notes,#jump,#help,.backup-badge{display:none!important}
   *{animation:none!important;transition:none!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}
 }
 
-/* section strip (main slides): Mở đầu · Kết quả · Nguyên nhân · Giải pháp · Kết thúc */
-.secbar{position:absolute;left:96px;bottom:22px;display:flex;gap:26px;align-items:flex-end}
-.secbar[hidden]{display:none}
-.secbar span{display:flex;flex-direction:column;gap:10px;min-width:120px;font:600 30px/1 "Be Vietnam Pro";color:var(--ink3);white-space:nowrap}
-.secbar span::before{content:"";height:6px;border-radius:3px;background:var(--line)}
-.secbar span.done{color:var(--ink2)} .secbar span.done::before{background:var(--ink3)}
-.secbar span.on{color:var(--b)} .secbar span.on::before{background:var(--b)}
-.secbar small{font:500 30px/1 "Be Vietnam Pro";color:var(--ink2)}
 .pg[hidden]{display:none}
 
 /* slide 1: poster */
@@ -979,7 +971,7 @@ table.t td .lab{display:block}
 <aside class="notes"><b>~50 giây.</b> Slide dự phòng, mở khi được hỏi nên ưu tiên sửa gì trước. Ba bài học tương ứng ba vùng của bảng. Một: trước mọi tối ưu, bản nháp phải build được. Hai: lỗi phổ biến nhất về hiệu năng lại dễ khắc phục nhất (một dòng cấu hình R8). Ba: những lỗi nghiêm trọng nhất lại ít gặp, nên không thể chờ "thấy nhiều mới sửa"; phải có bước kiểm tra riêng. Lưu ý công bằng: "phổ biến" không có nghĩa "chỉ AI mới mắc"; ứng dụng do người viết có tỷ lệ vi phạm cao hơn bản nháp AI ở nhiều quy tắc giao diện. Phép so sánh duy nhất được kiểm định giữa bản nháp AI và ứng dụng do người viết là mật độ cảnh báo bảo mật (C3, slide 17). Nguồn: 42/100: e1-corpus/REPORT.md:7; 6/12: e6-oneshot/REPORT.md:51; 63/66: e1-corpus/REPORT.md:94; APK 2,474e7 → 2,384e6 byte: e2-bench/REPORT.md:255 (chia 1.000.000); P09 2/66: e1-corpus/REPORT.md:93; P06 5/66: e1-corpus/REPORT.md:56; S01 19/66: e1-corpus/REPORT.md:63; S05 10/66: e1-corpus/REPORT.md:67; P01 người viết 14/20: e1-corpus/REPORT.md:51.</aside>
 </section>
 
-<div class="prog" aria-hidden="true"></div><div class="sec"></div><div class="secbar" aria-hidden="true"></div><div class="pg"></div><div class="backup-badge" hidden>SLIDE DỰ PHÒNG</div>
+<div class="prog" aria-hidden="true"></div><div class="sec"></div><div class="pg"></div><div class="backup-badge" hidden>SLIDE DỰ PHÒNG</div>
 </main>
 <div id="notes"></div><div id="black"></div><div id="jump"></div>
 <div id="help"><div><b>Phím tắt</b><br>
@@ -996,8 +988,6 @@ const root = document.documentElement;
 const stage = document.getElementById('stage');
 const slides = [...stage.querySelectorAll('.slide')];
 const MAIN = slides.filter(s => !s.classList.contains('backup')).length;
-/* the five parts of the talk, shown as the strip at the bottom of every main slide (data-part on the slide) */
-const PARTS = [['A', 'Mở đầu'], ['B', 'Kết quả'], ['C', 'Nguyên nhân'], ['D', 'Giải pháp'], ['E', 'Kết thúc']];
 /* talk length = sum of the "~N giây" marks in the notes of the main slides */
 const TARGET = slides.slice(0, MAIN).reduce((t, s) => t + +((s.querySelector('.notes')?.textContent.match(/~(\d+)\s*giây/) || [0, 0])[1]), 0);
 const mmss = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
@@ -1101,11 +1091,9 @@ function chrome() {
   stage.style.setProperty('--p', Math.min(1, cur / (MAIN - 1)));
   $('.pg', stage).textContent = cur < MAIN ? (cur + 1) + ' / ' + MAIN : 'D' + (cur - MAIN + 1);
   $('.backup-badge', stage).hidden = cur < MAIN;
-  const sl = slides[cur], poster = sl.classList.contains('poster'), pi = PARTS.findIndex(p => p[0] === sl.dataset.part);
+  const sl = slides[cur], poster = sl.classList.contains('poster');
   $('.sec', stage).textContent = cur < MAIN ? '' : sl.dataset.sec || '';
-  const bar = $('.secbar', stage); bar.hidden = pi < 0 || poster; $('.pg', stage).hidden = poster;
-  bar.replaceChildren(...PARTS.map(([, name], j) => { const e = document.createElement('span'); e.className = j < pi ? 'done' : j === pi ? 'on' : ''; e.textContent = name;
-    if (j === pi && sl.dataset.sec && sl.dataset.sec !== name) { const s = document.createElement('small'); s.textContent = ' · ' + sl.dataset.sec; e.append(s); } return e; }));
+  $('.pg', stage).hidden = poster;
   renderNotes(); syncPresenter();
   stage.querySelectorAll('video').forEach(v => { if (!overview && v.closest('.slide') === slides[cur]) { v.play().catch(() => {}); } else v.pause(); });
 }

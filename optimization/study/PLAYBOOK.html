@@ -319,7 +319,7 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 </tbody>
 </table>
 <h3 id="how-the-talk-is-built">How the talk is built</h3>
-<p>The talk is 15 to 20 minutes for lecturers and classmates. It runs in five parts (<code>data-part</code> A–E, shown as a strip at the bottom of slides 2–27; slide 1 is a poster without strip or page number):</p>
+<p>The talk is 15 to 20 minutes for lecturers and classmates. It runs in five parts (<code>data-part</code> A–E, markup only: the part strip at the bottom of the slides was removed on 2026-11-28 at the owner's request; slide 1 is a poster without page number):</p>
 <table>
 <thead>
 <tr>
@@ -372,7 +372,7 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 <li><strong>Context counts stay outside the bins.</strong> E4 X01 12/30 and S03 5/30, and E6 P08 11/12, are context rows. Accessibility, layout and dependency rules are on backup D5 only.</li>
 </ul>
 <p><strong>Framing rules.</strong> Advice is organised as a five-rung technique ladder from least to most technical (Bậc 1–5: AI self-review, rules file and structured spec, tool gates, measurement on a measure build, fixing known fault patterns), where each rung states what you do, what it achieved in our data, and where it stops to motivate the next rung. Never use a chain/links metaphor and never compare reader types. &quot;vibe coding&quot; appears only as the name of the phenomenon, on slide 2. Neither &quot;chưa đo&quot; nor the course-target scoreboard appears in the main talk (the scoreboard is backup D10 and the full unmeasured list is backup D1). Slides show no source captions, and the hype examples get no source list. Sources live in each slide's <code>aside.notes</code> as <code>path:line</code> and in the proof table. Limits are stated once: slide 4, slide 8 (pointer to D1) and D1.</p>
-<p><strong>Design rules.</strong> The canvas is 1920 × 1080, scaled to the window. A headline is a full sentence that makes the claim. Body text is at least 20 px at a 1280 px window, nothing may be clipped or leave the canvas, and content stays above the bottom part strip (y ≤ 980, strip at 1012; slide 1 is a poster without strip or page number). Each main slide carries one picture of evidence (an A/B video, a chart, verbatim code or a screenshot) and few numbers. Statistics such as p, Cliff's delta and intervals go to the notes and to D1–D12.</p>
+<p><strong>Design rules.</strong> The canvas is 1920 × 1080, scaled to the window. A headline is a full sentence that makes the claim. Body text is at least 20 px at a 1280 px window, nothing may be clipped or leave the canvas, and content stays at y ≤ 980 (the bottom part strip was removed on 2026-11-28; slide 1 is a poster without page number). Each main slide carries one picture of evidence (an A/B video, a chart, verbatim code or a screenshot) and few numbers. Statistics such as p, Cliff's delta and intervals go to the notes and to D1–D12.</p>
 <p><strong>Hype images (slide 2).</strong> There are six 1280 × 720 YouTube thumbnails, <code>evidence/img/hype/hype-01.jpg</code> … <code>hype-06.jpg</code>. Their origin (title, channel, video id, fetch date) is recorded in <a href="evidence/img/hype/README.md">evidence/img/hype/README.md</a> and never shown on a slide. The digits they contain are inside the images, so they need no proof rows.</p>
 <p><strong>Live demo kit (slide 20).</strong> <a href="demo/README.md">demo/</a> runs A (the AI first draft) next to B (the tuned version) of the same screen, on the emulator. It uses one stdlib Python file, <code>demo.py</code>, and works on Windows (<code>py</code>) and Linux (<code>python3</code>):</p>
 <ul>
@@ -404,7 +404,7 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 <tr>
 <td>1</td>
 <td>Trông hoàn thiện, chưa tối ưu</td>
-<td>Poster hook (no strip or page number): four one-prompt E6 apps look finished but are un-optimised; sets the topic (UI, memory, security on Android · ShelfTap)</td>
+<td>Poster hook (no page number): four one-prompt E6 apps look finished but are un-optimised; sets the topic (UI, memory, security on Android · ShelfTap)</td>
 <td>E6</td>
 <td>2 rows (labels only)</td>
 </tr>
@@ -684,7 +684,7 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 <p><em>Mở đầu · 15 giây · 35 từ</em></p>
 <p><strong>Lời nói.</strong> Kính chào thầy cô và các bạn. Trông hoàn thiện, nhưng chưa tối ưu — hôm nay nhóm em trình bày về tối ưu giao diện, bộ nhớ và bảo mật trên Android với ShelfTap.</p>
 <p><strong>Thao tác.</strong> Dừng một nhịp ngay sau vế “Trông hoàn thiện, nhưng chưa tối ưu”, để khán giả nhìn bốn màn hình ứng dụng rồi chuyển sang slide 2.</p>
-<p><strong>Lưu ý.</strong> Slide áp phích không hiện thanh phần và số trang. Bốn ảnh nền là bốn ứng dụng E6 (chi tiết ở D11); bối cảnh là ShelfTap, ứng dụng thư viện thông minh dùng NFC của nhóm.</p>
+<p><strong>Lưu ý.</strong> Slide áp phích không hiện số trang. Bốn ảnh nền là bốn ứng dụng E6 (chi tiết ở D11); bối cảnh là ShelfTap, ứng dụng thư viện thông minh dùng NFC của nhóm.</p>
 <h4>2. Lời hứa trên mạng (0:15 đến 0:55) — slide 2</h4>
 <p><em>Mở đầu · 40 giây · 84 từ</em></p>
 <p><strong>Lời nói.</strong> Thầy cô và các bạn chắc hẳn đã quen với những bài đăng kiểu này: ảnh giao diện bóng bẩy kèm lời hứa chỉ một prompt — tức lời nhắc giao cho AI — là có ngay ứng dụng hoàn chỉnh. Hiện tượng đó gọi là vibe coding: mô tả bằng lời, nhận mã từ trợ lý lập trình AI rồi dùng ngay mà không kiểm tra lại. Nếu làm đúng theo cách đó trên Android thì kết quả thực tế sẽ ra sao?</p>

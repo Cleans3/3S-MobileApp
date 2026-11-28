@@ -27,7 +27,7 @@ Thời lượng từng slide trong `presentation-script.md` bám đúng mốc `~
 
 | # | Tiêu đề (`data-title`) | Mục (`data-sec`) | Ý chính | Bằng chứng | Thời lượng (giây) |
 |---|---|---|---|---|---|
-| 1 | Trông hoàn thiện, chưa tối ưu | Mở đầu | Slide áp phích mở đầu (không thanh phần, không số trang): bốn màn hình ứng dụng E6 trông hoàn thiện nhưng chưa tối ưu; giới thiệu bối cảnh giao diện, bộ nhớ, bảo mật trên Android với ShelfTap. | e6-oneshot/img/*-f1.jpg · e6-oneshot/REPORT.md:30 | 15 |
+| 1 | Trông hoàn thiện, chưa tối ưu | Mở đầu | Slide áp phích mở đầu (không số trang): bốn màn hình ứng dụng E6 trông hoàn thiện nhưng chưa tối ưu; giới thiệu bối cảnh giao diện, bộ nhớ, bảo mật trên Android với ShelfTap. | e6-oneshot/img/*-f1.jpg · e6-oneshot/REPORT.md:30 | 15 |
 | 2 | Lời hứa trên mạng | Mở đầu | Sáu ví dụ thật về lời hứa “chỉ một prompt ra ngay ứng dụng đẹp” và định nghĩa hiện tượng vibe coding. | evidence/img/hype/hype-01..06.jpg · evidence/img/hype/README.md | 40 |
 | 3 | Năm con số | Mở đầu | Câu trả lời ngắn qua năm con số đã đo, mỗi con số trỏ tới slide chứng minh phía sau: 58/100 build lỗi (slide 5), 60/66 cảnh báo bảo mật gấp 2,3 lần (slide 17), 90% khung hình trễ ở danh sách 2.000 mục (slide 11), RAM 180 và 243 MB vượt 150 MB (slide 14, 15), 9/12 bản codex sửa không biên dịch được (slide 7). | e1-corpus/REPORT.md:7, :127–128, :135 · e2-bench/REPORT.md:162, :176, :182, :186 · e5-optimizer/REPORT.md:74 · CLAUDE.md:17 | 45 |
 
