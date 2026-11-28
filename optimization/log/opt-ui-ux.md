@@ -789,3 +789,4 @@
 - **Giới hạn:** chưa quay video app để so thời lượng và thứ tự của hiệu ứng; ảnh app của Tự mượn chụp trên emulator không có NFC nên trạng thái có NFC của board chưa có ảnh đối chiếu; chưa vẽ lại Khởi động và Đăng xuất kèm lý do; ba màn chưa dựng (Gợi ý, Thông báo, Tìm khi không có mạng) chưa làm, chờ nhóm chốt các mục ở §4 của kế hoạch 5d.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI viết kế hoạch 5d và chọn làm trước phần mockup khớp app vì không cần quyết định mới; con người chưa duyệt kế hoạch.
 - **Kiểm thử:** `gen.js`, `check-scripts.js`, `contrast.js`, `nontext-contrast.js`, `target-size.js`, `layout-check.js` (trình duyệt), `run_audit.ps1 -Configs ref,refdark,medium,expanded -Locale vi`: chạy hết.
+- **Đăng lên link:** bản 32 (30 màn đổi).
