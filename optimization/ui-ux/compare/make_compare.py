@@ -25,7 +25,7 @@ chrome = os.environ.get('CHROME', r'C:\Program Files\Google\Chrome\Application\c
 PAIRS = {
     'welcome': 'Main', 'splash': 'Splash', 'signedout-token_reused': 'SignedOut', 'login': 'Login', 'login-card': 'CardLogin',
     'guest': 'Guest', 'catalog': 'Catalog', 'list': 'List', 'detail': 'Detail', 'loans': 'Loans', 'checkout': 'Checkout',
-    'reservations': 'Reservations', 'history': 'History', 'account': 'Account', 'password-first': 'ChangePassword', 'lock': 'Lock', 'offline': 'Offline',
+    'reservations': 'Reservations', 'recommend': 'Recommend', 'history': 'History', 'account': 'Account', 'password-first': 'ChangePassword', 'lock': 'Lock', 'offline': 'Offline',
 }
 
 src = open(os.path.join(rendered, 'base.html'), encoding='utf-8').read()

@@ -25,11 +25,11 @@ chrome = os.environ.get('CHROME', r'C:\Program Files\Google\Chrome\Application\c
 SIZES = {
     'mid': ('medium', (720, 840), {
         'catalog': 'RailCatalog', 'list': 'MidCatalog', 'guest': 'MidGuest', 'loans': 'MidLoans', 'reservations': 'MidReservations',
-        'history': 'MidHistory', 'checkout': 'MidCheckout', 'account': 'MidAccount', 'login': 'MidSignIn', 'welcome': 'MidSignIn', 'password-first': 'MidSignIn',
+        'recommend': 'MidRecommend', 'history': 'MidHistory', 'checkout': 'MidCheckout', 'account': 'MidAccount', 'login': 'MidSignIn', 'welcome': 'MidSignIn', 'password-first': 'MidSignIn',
     }),
     'wide': ('expanded', (960, 720), {
         'catalog': 'WideCatalog', 'guest': 'WideGuest', 'loans': 'WideLoans', 'reservations': 'WideReservations',
-        'history': 'WideHistory', 'checkout': 'WideCheckout', 'account': 'WideAccount', 'login': 'WideSignIn', 'welcome': 'WideSignIn', 'password-first': 'WideSignIn',
+        'recommend': 'WideRecommend', 'history': 'WideHistory', 'checkout': 'WideCheckout', 'account': 'WideAccount', 'login': 'WideSignIn', 'welcome': 'WideSignIn', 'password-first': 'WideSignIn',
     }),
 }
 

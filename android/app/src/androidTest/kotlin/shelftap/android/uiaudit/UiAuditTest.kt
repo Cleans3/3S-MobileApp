@@ -197,7 +197,7 @@ class UiAuditTest {
             }
 
             // "Suggestions for you": worked out on the phone from the fake loans, reservations and history; the fixtures give it something to suggest.
-            tab(R.string.tab_recommend); waitFor(str(R.string.recommend_note))
+            tab(R.string.tab_recommend_menu); waitFor(str(R.string.recommend_note))
             audit("recommend", activity)
 
             tab(R.string.tab_loans); waitFor(AuditData.loans.first().title)

@@ -808,3 +808,11 @@
 - **Giới hạn:** chưa sửa 2 chỗ đè chữ; chưa dựng lại ảnh cặp, chưa cập nhật README, chưa đăng lại link (đang bản 32); chưa xem ảnh cặp của màn Gợi ý.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. Con người chưa duyệt.
 - **Kiểm thử:** `gen.js`, `check-scripts.js`, `contrast.js`, `nontext-contrast.js`, `target-size.js`, `layout-check.js` (trình duyệt).
+
+## 2026-11-28: mockup Gợi ý hoàn tất (nối tiếp mục "WIP" ngay trên)
+
+- **Thay đổi:** sửa 2 chỗ chữ đè nhau ở chữ 2.0 trong băng "Gợi ý cho bạn" (`Catalog.dc.html`, `tools/wide-boards/shell.js` rồi `gen.js` sinh lại `RailCatalog`, `WideCatalog`): tấm thông tin dưới thẻ đặt trong luồng thay vì tuyệt đối. Thêm cặp `recommend` vào `compare/make_compare.py` và `make_compare_wide.py`; dựng lại toàn bộ ảnh cặp từ audit `audit/X1/`; sửa `UiAuditTest.kt` (mục menu "Gợi ý" bấm bằng `tab_recommend_menu`, trước đó bấm nhầm tiêu đề của băng); cập nhật hai README.
+- **Đo trước → sau:** kiểm bố cục trong trình duyệt ở 8 kiểu (gốc, chữ 2.0, rộng 320, 320 cùng chữ 2.0, cao, menu thu gọn, 600 × 840, xoay ngang): 0 lỗi ở 7 kiểu (trước: 2 chỗ đè chữ ở chữ 2.0); xoay ngang chỉ có "stretched" ở màn điện thoại như trước. Các kiểu còn lại (rộng, gập, tách đôi, hai cỡ mở gập, chi tiết) chưa chạy lại ở lượt này. Audit ATF `audit/X1/`: ref 3, refdark 3, medium 1, expanded 0 cảnh báo, đều là chữ ở mép dưới trang nằm dưới nút nổi (chữ tương phản khi cuộn), ảnh chụp đã bỏ, chỉ giữ bảng. `check-scripts`, tương phản, vùng chạm không đổi.
+- **Giới hạn:** ảnh cặp chụp ở tầng Vừa trên emulator; chưa đo thời gian gợi ý trên dữ liệu thật, chưa thử máy thật; Thông báo và Tìm khi không có mạng chưa làm.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: "Làm tiếp mockup". Con người chưa duyệt.
+- **Kiểm thử:** `layout-check.js` (trình duyệt, 8 kiểu hiển thị), `run_audit.ps1 -Label X1`, xem từng cặp Gợi ý (điện thoại, Vừa, Rộng) và Danh mục.
