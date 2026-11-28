@@ -66,7 +66,7 @@ div.st-root{container-type:size}
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
   <div class="st-page" style="position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none">
   <div style="position: relative; min-height: max(100%, 844px)">
-  <div style="position: absolute; inset: 0; padding: 56px 20px 0; display: flex; flex-direction: column; gap: 18px">
+  <div style="position: relative; padding: 56px 20px 150px; display: flex; flex-direction: column; gap: 18px">
     <div style="display: flex; align-items: center; justify-content: space-between; height: 48px">
       <div style="width: 48px"></div>
       <div style="font-size: 15px; font-weight: 600; color: var(--ink2b)">Thư viện ShelfTap</div>
@@ -80,28 +80,70 @@ div.st-root{container-type:size}
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink3)"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
       Tên sách, tác giả, ISBN
     </a>
-    <div class="st-rise d2" style="display: flex; gap: 14px; padding: 14px; border-radius: 28px; background:  rgba(var(--glass),0.75)">
-      <div aria-hidden="true" style="width: 96px; height: 138px; flex: none; border-radius: 14px; background:  #c9a66b; padding: 12px 10px; box-sizing: border-box; font-size: 15px; font-weight: 700; line-height: 1.2; box-shadow: 0 8px 20px rgba(0,0,0,0.16); color: #1c1b1a">Dế Mèn phiêu lưu ký</div>
-      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px">
-        <div style="font-size: 17px; font-weight: 700; line-height: 1.25">Dế Mèn phiêu lưu ký</div>
-        <div style="font-size: 13px; color: var(--ink2b)">Tô Hoài</div>
-        <span style="align-self: flex-start; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background:  rgba(47,91,58,0.12); color: var(--ok)">Còn 3 bản</span>
-        <div style="flex: 1"></div>
-        <div style="display: flex; gap: 8px">
-          <a href="Detail.dc.html" style="flex: 1; height: 44px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.16); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 14px; font-weight: 600">Chi tiết</a>
-          <button type="button" onClick="{{askLogin}}" class="st-press" style="flex: 1; height: 44px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Đặt trước</button>
-        </div>
+    <div class="st-rise d2" style="padding: 14px 16px; border-radius: 22px; border: 1px dashed rgba(var(--ink-rgb),0.2); font-size: 13px; line-height: 1.5; color: var(--ink2b)">Khách xem và tìm sách được. Đặt trước, mượn, gia hạn và lịch sử đọc cần tài khoản thư viện.</div>
+
+    <a href="List.dc.html" class="st-rise" style="position: relative; height: 200px; border-radius: 28px; overflow: hidden; display: block; text-decoration: none; background:  #2f4a44">
+      <div aria-hidden="true" style="position: absolute; inset: 0; display: flex; gap: 12px; padding: 22px 0 0 22px">
+        <sc-for list="{{banner}}" as="c" hint-placeholder-count="3">
+          <div class="st-rise" style="{{c.style}}">
+            <div style="font-size: 17px; font-weight: 700; line-height: 1.2">{{c.title}}</div>
+          </div>
+        </sc-for>
       </div>
+      <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 110px; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); mask-image: linear-gradient(to bottom, transparent, #000 40%); -webkit-mask-image: linear-gradient(to bottom, transparent, #000 40%)"></div>
+      <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 110px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); mask-image: linear-gradient(to bottom, transparent 35%, #000 75%); -webkit-mask-image: linear-gradient(to bottom, transparent 35%, #000 75%); background:  linear-gradient(to bottom, rgba(20,30,27,0), rgba(20,30,27,0.55))"></div>
+      <div style="position: absolute; left: 20px; right: 16px; bottom: 16px; display: flex; align-items: flex-end; justify-content: space-between">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.9)">Chủ đề</div>
+          <div style="font-size: 22px; font-weight: 700; color: #ffffff">Thiếu nhi</div>
+        </div>
+        <span style="width: 44px; height: 44px; border-radius: 999px; background:  rgba(var(--glass),0.25); border: 1px solid rgba(var(--edge),0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
+        </span>
+      </div>
+    </a>
+
+    <div style="display: flex; align-items: baseline; justify-content: space-between">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Thiếu nhi</h2>
+      <a href="List.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
     </div>
-    <div class="st-rise d3" style="padding: 14px 16px; border-radius: 22px; border: 1px dashed rgba(var(--ink-rgb),0.2); font-size: 13px; line-height: 1.5; color: var(--ink2b)">Khách xem và tìm sách được. Đặt trước, mượn, gia hạn và lịch sử đọc cần tài khoản thư viện.</div>
+
+    <div style="display: flex; gap: 12px; margin-right: -20px; padding-right: 20px; overflow-x: auto; scrollbar-width: none; flex: none">
+      <sc-for list="{{kids}}" as="c" hint-placeholder-count="4">
+        <a href="Detail.dc.html" class="st-rise" style="{{c.cardStyle}}">
+          <div style="font-size: 15px; font-weight: 700; line-height: 1.2; padding: 14px 12px 124px">{{c.title}}</div>
+          <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 8px 10px; border-radius: 14px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink)">
+            <div style="font-size: 12px; font-weight: 600">{{c.author}}</div>
+            <div style="font-size: 11px; color: var(--ink)">{{c.status}}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; align-items: baseline; justify-content: space-between">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Tiểu thuyết</h2>
+      <a href="List.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
+    </div>
+
+    <div style="display: flex; gap: 12px; margin-right: -20px; padding-right: 20px; overflow-x: auto; scrollbar-width: none; flex: none">
+      <sc-for list="{{row}}" as="c" hint-placeholder-count="4">
+        <a href="Detail.dc.html" class="st-rise" style="{{c.cardStyle}}">
+          <div style="font-size: 15px; font-weight: 700; line-height: 1.2; padding: 14px 12px 124px">{{c.title}}</div>
+          <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 8px 10px; border-radius: 14px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink)">
+            <div style="font-size: 12px; font-weight: 600">{{c.author}}</div>
+            <div style="font-size: 11px; color: var(--ink)">{{c.status}}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
   </div>
   </div>
   </div>
   <div class="st-fab" style="position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%)">
-    <button type="button" onClick="{{askLogin}}" class="st-press" style="min-height: 56px; padding: 0 22px 0 8px; box-sizing: border-box; line-height: 1.2; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 12px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; box-shadow: 0 10px 30px rgba(28,27,26,0.3)">
-      <span style="width: 40px; height: 40px; border-radius: 999px; background:  rgba(var(--glass),0.16); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg></span>
+    <a href="Login.dc.html" class="st-press" style="text-decoration: none; min-height: 56px; padding: 0 22px 0 8px; box-sizing: border-box; line-height: 1.2; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; box-shadow: 0 10px 30px rgba(28,27,26,0.3)">
+      <span style="width: 40px; height: 40px; border-radius: 999px; background:  rgba(var(--glass),0.16); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path></svg></span>
       <span class="st-fab-label">Đăng nhập để mượn sách</span>
-    </button>
+    </a>
   </div>
 
   <sc-if value="{{menuOpen}}" hint-placeholder-val="{{ false }}">
@@ -119,16 +161,6 @@ div.st-root{container-type:size}
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="color: var(--ink)"><path class="st-bar" d="M4 7h16" style="{{bar1}}"></path><path class="st-bar" d="M4 12h16" style="{{bar2}}"></path><path class="st-bar" d="M4 17h16" style="{{bar3}}"></path></svg>
   </button>
 
-  <sc-if value="{{sheet}}" hint-placeholder-val="{{ true }}">
-    <button type="button" class="st-fade" aria-label="Đóng" onClick="{{closeAll}}" style="position: absolute; inset: 0; border: 0; padding: 0; background:  rgba(28,22,16,0.25); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); cursor: pointer"></button>
-    <div role="dialog" aria-label="Cần đăng nhập" class="st-sheet" style="position: absolute; left: 12px; right: 12px; bottom: 16px; padding: 24px 20px 18px; border-radius: 34px; background:  rgba(var(--glass),0.9); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); display: flex; flex-direction: column; gap: 12px">
-      <h2 style="margin: 0; font-size: 20px; font-weight: 700">Đăng nhập để đặt trước</h2>
-      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2)">Đặt trước và mượn sách cần tài khoản thư viện. Sau khi đăng nhập, bạn quay lại đúng cuốn sách này.</p>
-      <a href="Login.dc.html" class="st-press" style="height: 54px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 16px; font-weight: 600">Đăng nhập</a>
-      <a href="CardLogin.dc.html" class="st-press" style="height: 50px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.14); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 600">Đăng nhập bằng thẻ</a>
-      <button type="button" onClick="{{closeAll}}" style="height: 44px; border: 0; background:  transparent; font: inherit; font-size: 15px; font-weight: 600; color: var(--ink2); cursor: pointer">Để sau</button>
-    </div>
-  </sc-if>
   <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 12px; right: 14px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
     <sc-if value="{{themeIsLight}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
     <sc-if value="{{themeIsDark}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
@@ -165,17 +197,34 @@ class Component extends DCLogic {
     var self = this;
     var st = this.state || {};
     var open = !!st.open;
-    var sheet = st.sheet === undefined ? true : !!st.sheet;
+    var ki = 0, ci = 0;
+    var cover = function (bg, fg, w, h) {
+      return 'animation-delay:' + (160 + 90 * ki++) + 'ms;width:' + w + 'px;height:' + h + 'px;flex:none;border-radius:16px;background:' + bg + ';color:' + fg + ';padding:14px 12px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 20px rgba(0,0,0,0.18)';
+    };
+    var card = function (bg, fg) {
+      return 'animation-delay:' + (140 + 70 * ci++) + 'ms;position:relative;display:block;width:132px;min-height:196px;flex:none;border-radius:22px;overflow:hidden;text-decoration:none;background:' + bg + ';color:' + fg;
+    };
     return Object.assign(this.__theme(), {
       menuOpen: open,
       menuLabel: open ? 'Đóng menu' : 'Mở menu',
       bar1: open ? 'transform:rotate(45deg) translateY(5px)' : 'transform:none',
       bar2: open ? 'opacity:0;transform:scaleX(0.2)' : 'opacity:1;transform:none',
       bar3: open ? 'transform:rotate(-45deg) translateY(-5px)' : 'transform:none',
-      toggleMenu: function () { self.setState({ open: !open, sheet: false }); },
-      sheet: sheet,
-      askLogin: function () { self.setState({ sheet: true, open: false }); },
-      closeAll: function () { self.setState({ sheet: false, open: false }); }
+      toggleMenu: function () { self.setState({ open: !open }); },
+      closeAll: function () { self.setState({ open: false }); },
+      banner: [
+        { title: 'Số đỏ', style: cover('#b5452b', '#ffffff', 104, 150) },
+        { title: 'Nhà giả kim', style: cover('#c9a66b', '#1c1b1a', 104, 150) }
+      ],
+      kids: [
+        { title: 'Dế Mèn phiêu lưu ký', author: 'Tô Hoài', status: 'Còn 3 bản', cardStyle: card('#b5452b', '#ffffff') },
+        { title: 'Nhà giả kim', author: 'Paulo Coelho', status: 'Đã cho mượn hết', cardStyle: card('#c9a66b', '#1c1b1a') }
+      ],
+      row: [
+        { title: 'Số đỏ', author: 'Vũ Trọng Phụng', status: 'Còn 2 bản', cardStyle: card('#b5452b', '#ffffff') },
+        { title: 'Tắt đèn', author: 'Ngô Tất Tố', status: 'Đã cho mượn hết', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Chí Phèo', author: 'Nam Cao', status: 'Còn 1 bản', cardStyle: card('#3e3a36', '#ffffff') }
+      ]
     });
   }
 }

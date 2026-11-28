@@ -68,12 +68,11 @@ div.st-root{container-type:size}
       <input type="search" placeholder="Tên sách, tác giả, ISBN" style="flex: 1; border: 0; background:  transparent; font: inherit; font-size: 15px; color: var(--ink); outline: none">
     </label>
 
-    <a href="Detail.dc.html" class="st-rise" style="position: relative; height: 200px; border-radius: 28px; overflow: hidden; display: block; text-decoration: none; background:  #2f4a44">
+    <a href="List.dc.html" class="st-rise" style="position: relative; height: 200px; border-radius: 28px; overflow: hidden; display: block; text-decoration: none; background:  #2f4a44">
       <div aria-hidden="true" style="position: absolute; inset: 0; display: flex; gap: 12px; padding: 22px 0 0 22px">
         <sc-for list="{{banner}}" as="c" hint-placeholder-count="3">
           <div class="st-rise" style="{{c.style}}">
             <div style="font-size: 17px; font-weight: 700; line-height: 1.2">{{c.title}}</div>
-            <div style="font-size: 11px; opacity: 0.85">{{c.author}}</div>
           </div>
         </sc-for>
       </div>
@@ -82,7 +81,7 @@ div.st-root{container-type:size}
       <div style="position: absolute; left: 20px; right: 16px; bottom: 16px; display: flex; align-items: flex-end; justify-content: space-between">
         <div style="display: flex; flex-direction: column; gap: 2px">
           <div style="font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.9)">Chủ đề</div>
-          <div style="font-size: 22px; font-weight: 700; color: #ffffff">Văn học Việt Nam</div>
+          <div style="font-size: 22px; font-weight: 700; color: #ffffff">Thiếu nhi</div>
         </div>
         <span style="width: 44px; height: 44px; border-radius: 999px; background:  rgba(var(--glass),0.25); border: 1px solid rgba(var(--edge),0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
@@ -90,35 +89,35 @@ div.st-root{container-type:size}
       </div>
     </a>
 
-    <section aria-label="Gợi ý cho bạn" style="display: flex; flex-direction: column; gap: 12px; flex: none">
-      <div style="display: flex; align-items: baseline; justify-content: space-between">
-        <h2 style="margin: 0; font-size: 18px; font-weight: 700">Gợi ý cho bạn</h2>
-        <a href="Recommend.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
-      </div>
-      <div style="display: flex; gap: 12px; margin-right: -20px; padding-right: 20px; overflow-x: auto; scrollbar-width: none">
-        <sc-for list="{{recs}}" as="r" hint-placeholder-count="4">
-          <a href="Detail.dc.html" class="st-rise" style="{{r.wrapStyle}}">
-            <div aria-hidden="true" style="{{r.coverStyle}}">{{r.title}}</div>
-            <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">{{r.title}}.</span>
-            <div style="font-size: 12px; font-weight: 700; line-height: 1.35; color: var(--warn2)">{{r.reason}}</div>
-          </a>
-        </sc-for>
-      </div>
-      <div style="font-size: 11px; color: var(--ink3)">Tính trên máy từ sách bạn đã mượn. Tắt trong Tài khoản.</div>
-    </section>
+    <div style="display: flex; align-items: baseline; justify-content: space-between">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Thiếu nhi</h2>
+      <a href="List.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
+    </div>
+
+    <div style="display: flex; gap: 12px; margin-right: -20px; padding-right: 20px; overflow-x: auto; scrollbar-width: none; flex: none">
+      <sc-for list="{{kids}}" as="c" hint-placeholder-count="4">
+        <a href="Detail.dc.html" class="st-rise" style="{{c.cardStyle}}">
+          <div style="font-size: 15px; font-weight: 700; line-height: 1.2; padding: 14px 12px 124px">{{c.title}}</div>
+          <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 8px 10px; border-radius: 14px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink)">
+            <div style="font-size: 12px; font-weight: 600">{{c.author}}</div>
+            <div style="font-size: 11px; color: var(--ink)">{{c.status}}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
 
     <div style="display: flex; align-items: baseline; justify-content: space-between">
-      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Truyện ngắn và tiểu thuyết</h2>
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Tiểu thuyết</h2>
       <a href="List.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
     </div>
 
     <div style="display: flex; gap: 12px; margin-right: -20px; padding-right: 20px; overflow-x: auto; scrollbar-width: none; flex: none">
       <sc-for list="{{row}}" as="c" hint-placeholder-count="4">
         <a href="Detail.dc.html" class="st-rise" style="{{c.cardStyle}}">
-          <div style="font-size: 15px; font-weight: 700; line-height: 1.2; padding: 14px 12px 0">{{c.title}}</div>
+          <div style="font-size: 15px; font-weight: 700; line-height: 1.2; padding: 14px 12px 124px">{{c.title}}</div>
           <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 8px 10px; border-radius: 14px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink)">
             <div style="font-size: 12px; font-weight: 600">{{c.author}}</div>
-            <div style="font-size: 11px; color: var(--ink2)">{{c.status}}</div>
+            <div style="font-size: 11px; color: var(--ink)">{{c.status}}</div>
           </div>
         </a>
       </sc-for>
@@ -192,19 +191,11 @@ class Component extends DCLogic {
     var open = this.state && this.state.open !== undefined ? this.state.open : (this.props.startOpen ?? true);
     var self = this;
     var ki = 0, ci = 0;
-    // recommendation card: typographic cover (decorative, fixed size like cover art) and the reason in text below it
-    var rec = function (title, reason, bg, fg) {
-      return {
-        title: title, reason: reason,
-        wrapStyle: 'animation-delay:' + (140 + 70 * ci++) + 'ms;display:flex;flex-direction:column;gap:8px;width:132px;flex:none;text-decoration:none;color:var(--ink)',
-        coverStyle: 'height:176px;border-radius:22px;overflow:hidden;box-sizing:border-box;padding:14px 12px;font-size:15px;font-weight:700;line-height:1.2;background:' + bg + ';color:' + fg
-      };
-    };
     var cover = function (bg, fg, w, h) {
       return 'animation-delay:' + (160 + 90 * ki++) + 'ms;width:' + w + 'px;height:' + h + 'px;flex:none;border-radius:16px;background:' + bg + ';color:' + fg + ';padding:14px 12px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 20px rgba(0,0,0,0.18)';
     };
     var card = function (bg, fg) {
-      return 'animation-delay:' + (140 + 70 * ci++) + 'ms;position:relative;display:block;width:132px;height:196px;flex:none;border-radius:22px;overflow:hidden;text-decoration:none;background:' + bg + ';color:' + fg;
+      return 'animation-delay:' + (140 + 70 * ci++) + 'ms;position:relative;display:block;width:132px;min-height:196px;flex:none;border-radius:22px;overflow:hidden;text-decoration:none;background:' + bg + ';color:' + fg;
     };
     var n = 0;
     var menuItem = function (label, href, d1, d2, active) {
@@ -225,25 +216,21 @@ class Component extends DCLogic {
       toggleMenu: function () { self.setState({ open: !open }); },
       closeMenu: function () { self.setState({ open: false }); },
       banner: [
-        { title: 'Truyện Kiều', author: 'Nguyễn Du', style: cover('#e7dcc6', '#2f4a44', 104, 150) },
-        { title: 'Tắt đèn', author: 'Ngô Tất Tố', style: cover('#b5452b', '#ffffff', 104, 150) },
-        { title: 'Lão Hạc', author: 'Nam Cao', style: cover('#d8c9a8', '#3e3a36', 104, 150) }
+        { title: 'Số đỏ', style: cover('#b5452b', '#ffffff', 104, 150) },
+        { title: 'Nhà giả kim', style: cover('#c9a66b', '#1c1b1a', 104, 150) }
       ],
-      recs: [
-        rec('Chí Phèo', 'Vì bạn đã mượn sách của Nam Cao', '#3e3a36', '#ffffff'),
-        rec('The Pragmatic Programmer', 'Cùng chủ đề Software engineering', '#c9a66b', '#1c1b1a'),
-        rec('Tắt đèn', 'Cùng chủ đề Tiểu thuyết', '#7a2e1e', '#ffffff'),
-        rec('Truyện Kiều', 'Cùng chủ đề Văn học Việt Nam', '#e7dcc6', '#2f4a44')
+      kids: [
+        { title: 'Dế Mèn phiêu lưu ký', author: 'Tô Hoài', status: 'Còn 3 bản', cardStyle: card('#b5452b', '#ffffff') },
+        { title: 'Nhà giả kim', author: 'Paulo Coelho', status: 'Đã cho mượn hết', cardStyle: card('#c9a66b', '#1c1b1a') }
       ],
       row: [
-        { title: 'Dế Mèn phiêu lưu ký', author: 'Tô Hoài', status: 'Còn sách', cardStyle: card('#c9a66b', '#1c1b1a') },
-        { title: 'Số đỏ', author: 'Vũ Trọng Phụng', status: 'Còn sách', cardStyle: card('#b5452b', '#ffffff') },
-        { title: 'Chí Phèo', author: 'Nam Cao', status: 'Còn sách', cardStyle: card('#3e3a36', '#ffffff') }
+        { title: 'Số đỏ', author: 'Vũ Trọng Phụng', status: 'Còn 2 bản', cardStyle: card('#b5452b', '#ffffff') },
+        { title: 'Tắt đèn', author: 'Ngô Tất Tố', status: 'Đã cho mượn hết', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Chí Phèo', author: 'Nam Cao', status: 'Còn 1 bản', cardStyle: card('#3e3a36', '#ffffff') }
       ],
       menu: [
         menuItem('Danh mục', 'Catalog.dc.html', 'M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z', 'M8 7h7', true),
-        menuItem('Gợi ý cho bạn', 'Recommend.dc.html', 'M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z', '', false),
-        menuItem('Sách đang mượn', 'Loans.dc.html', 'M12 7v5l3 2', 'M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z', false),
+        menuItem('Đang mượn', 'Loans.dc.html', 'M12 7v5l3 2', 'M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z', false),
         menuItem('Đặt trước', 'Reservations.dc.html', 'M6 3h12v18l-6-4-6 4z', 'M9 9h6', false),
         menuItem('Lịch sử đọc', 'History.dc.html', 'M3 12a9 9 0 1 0 3-6.7L3 8', 'M3 3v5h5', false),
         menuItem('Tài khoản', 'Account.dc.html', 'M4 21a8 8 0 0 1 16 0', 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z', false)

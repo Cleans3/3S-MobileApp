@@ -1,5 +1,7 @@
 # Board và app cạnh nhau (kế hoạch §5c, bước "ảnh chụp trên máy đặt cạnh board")
 
+**Cập nhật 2026-11-28:** các board của màn đã dựng được vẽ lại theo app (xem "Vẽ lại theo app" trong `ui-ux-mockup/README.md`), và toàn bộ ảnh cặp dưới đây được dựng lại từ board mới và ảnh app mới (audit `ref`, `refdark`, `medium`, `expanded`, tiếng Việt, emulator `lowend36ui`, tầng Vừa; bảng kết quả ở `audit/V1/`). Công cụ ghép tắt hiệu ứng vào cảnh của board, nên ảnh là bố cục cuối chứ không phải một khung giữa chừng. Các mục "Khác biệt còn lại" bên dưới là bản cũ, viết trước lần vẽ lại: mục nào nói board có nút trong menu, lời chào trong menu, dải "Gợi ý cho bạn", thẻ sách mẫu ở màn Khách, "Kệ", "Hạn mượn" hay nút tìm khi không có mạng thì nay đã khớp app; phần "Khác biệt sau lần vẽ lại" cuối tệp là bản hiện hành.
+
 Mỗi ảnh `light/pair-<màn>.jpg` và `dark/pair-<màn>.jpg` có **board bên trái, app bên phải**, cùng cỡ 390 × 844 dp (ảnh 1170 × 2532 thu nhỏ còn một nửa), 17 màn, hai theme.
 
 - **Lưu ý về ảnh sáng:** bản đầu của công cụ dựng board sáng thành tối (Chrome không giao diện theo chế độ tối của Windows và `data-theme` bị thay cả trong CSS); đã sửa bằng cách chỉ đặt `data-theme` ở phần tử gốc và ép `preferredColorScheme`. Ảnh sáng hiện đã đúng cặp.
@@ -40,3 +42,12 @@ Khác biệt còn lại, do thiết kế hoặc chưa làm (cập nhật sau khi
 - **Thanh dọc khổ Vừa:** nhãn "Danh mục" và "Lịch sử đọc" xuống hai dòng; mục đang chọn là khối trắng thay vì viền quanh biểu tượng.
 - **Chào, Đăng nhập và Đổi mật khẩu lần đầu ở khổ Vừa và Rộng:** cả ba chia đôi (cột giá sách tối bên trái chiếm 45%, nội dung bên phải, không còn menu và thanh tiêu đề). Chào có thêm nút "Đăng nhập bằng thẻ thư viện" (board chỉ có Bắt đầu và liên kết xem sách; app có đường vào bằng thẻ). Đăng nhập có thêm "Xem sách mà không cần đăng nhập" dưới form vì không còn menu để quay lại. Board chỉ vẽ bước "Chào" (các bước Mật khẩu, Thẻ, Đổi mật khẩu bấm trong bản phác), nên ảnh `pair-login` và `pair-password-first` so với cùng một board.
 - Nút chuyển sáng/tối "Tối" của board không có trong app (app theo cài đặt Tài khoản).
+
+
+## Khác biệt sau lần vẽ lại (2026-11-28)
+
+- **Khớp app (đã xem ảnh cặp):** Danh mục và Khách ở khổ điện thoại, Vừa, Rộng (lời chào, ô tìm, banner chủ đề, dải sách có tấm thông tin; khách có ghi chú viền đứt và nút "Đăng nhập"); Đang mượn, Đặt trước, Tài khoản ở khổ điện thoại (tiêu đề ở thanh trên); menu, thanh dọc và nút tròn "Chạm sách để mượn" ở góc dưới phải ở khổ Vừa và Rộng; Đang mượn, Đặt trước và Tài khoản hai khung ở khổ Rộng.
+- **Còn khác, do dữ liệu mẫu:** tên thành viên, tên sách, ngày và khoản phạt của board khác dữ liệu seed; bìa của board có tên sách hoặc chữ viết tắt, bìa của app là tên sách; banner của app ghép bìa theo dữ liệu thật.
+- **Còn khác, có chủ ý hoặc chưa dựng:** Tài khoản ở khổ Vừa: app xếp cả ba nhóm trong một trang, board vẫn là danh sách rồi mới sang nhóm; Lịch sử đọc ở khổ Rộng: app một khung, board hai khung; `WideList` (danh sách cạnh chi tiết) là thiết kế chưa dựng; các màn Gợi ý, Thông báo, Tìm khi không có mạng chưa dựng nên không có ảnh cặp; dòng cảnh báo thiết bị màu đỏ chỉ có trên emulator và bản gỡ lỗi; nút chuyển sáng/tối "Tối" của board không có trong app.
+- **Chưa vẽ lại:** các màn điện thoại Chào, Khởi động, Khóa, Đăng nhập bằng thẻ, Đổi mật khẩu, Tự mượn, Lịch sử đọc (nội dung), Đăng xuất kèm lý do vẫn như trước, và các màn Vừa, Rộng tương ứng ngoài Chào và Đăng nhập; chưa so từng cặp của chúng sau lần vẽ lại.
+- **Audit ATF cùng lượt chụp:** `ref` 3 phát hiện, `refdark` 2, `medium` 1, `expanded` 0. Các phát hiện về chữ ở danh sách ("Còn 2 bản"), nhóm "Bảo mật" và nút "Sáng" nằm dưới thanh trên hoặc dưới nút nổi, nơi lớp phai làm chữ nhạt đi có chủ ý (cột `under_bar`); phát hiện còn lại là vùng chạm 23 dp của hàng giao diện trong Tài khoản, đã được kiểm lại trước đó và không phải lỗi. Không phát hiện nào do phần vẽ lại.

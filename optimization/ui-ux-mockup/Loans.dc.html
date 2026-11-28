@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<title>ShelfTap · Sách đang mượn</title>
+<title>ShelfTap · Đang mượn</title>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -61,14 +61,15 @@ div.st-root{container-type:size}
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
   </a>
 
+  <h1 style="position: absolute; top: 56px; left: 84px; right: 20px; height: 48px; margin: 0; display: flex; align-items: center; font-size: 22px; font-weight: 600; letter-spacing: -0.2px">Đang mượn</h1>
+
   <div class="st-page" style="position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none">
   <div style="position: relative; min-height: max(100%, 844px)">
-  <div class="st-rise" style="position: absolute; top: 124px; left: 20px; right: 20px; display: flex; flex-direction: column; gap: 16px">
-    <h1 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.3px">Sách đang mượn</h1>
+  <div class="st-rise" style="position: absolute; top: 116px; left: 20px; right: 20px; display: flex; flex-direction: column; gap: 16px">
     <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
       <div style="padding: 14px; border-radius: 20px; background: var(--surface); display: flex; flex-direction: column; gap: 2px">
         <div style="font-size: 12px; color: var(--ink3)">Đang mượn</div>
-        <div style="font-size: 20px; font-weight: 700">2 <span style="font-size: 13px; font-weight: 500; color: var(--ink3)">/ tối đa 5</span></div>
+        <div style="font-size: 20px; font-weight: 700">2</div>
       </div>
       <div style="padding: 14px; border-radius: 20px; background: var(--danger-bg); display: flex; flex-direction: column; gap: 2px">
         <div style="font-size: 12px; color: var(--danger)">Tiền phạt chưa trả</div>
@@ -80,7 +81,6 @@ div.st-root{container-type:size}
       <div style="width: 72px; height: 104px; flex: none; border-radius: 12px; background:  #b5452b; color: #ffffff; padding: 10px 8px; box-sizing: border-box; font-size: 12px; font-weight: 700; line-height: 1.2">Số đỏ</div>
       <div style="flex: 1; display: flex; flex-direction: column; gap: 4px">
         <h2 style="margin: 0; font-size: 16px; font-weight: 700">Số đỏ</h2>
-        <div style="font-size: 13px; color: var(--ink2b)">Vũ Trọng Phụng</div>
         <div style="font-size: 13px; color: var(--ink)">{{dueLabel}}</div>
         <div style="flex: 1"></div>
         <button type="button" onClick="{{renew}}" aria-live="polite" class="st-swap st-press" style="{{renewStyle}}">{{renewLabel}}</button>
@@ -91,7 +91,6 @@ div.st-root{container-type:size}
       <div style="width: 72px; height: 104px; flex: none; border-radius: 12px; background:  #3e3a36; color: #ffffff; padding: 10px 8px; box-sizing: border-box; font-size: 12px; font-weight: 700; line-height: 1.2">Chí Phèo</div>
       <div style="flex: 1; display: flex; flex-direction: column; gap: 4px">
         <h2 style="margin: 0; font-size: 16px; font-weight: 700">Chí Phèo</h2>
-        <div style="font-size: 13px; color: var(--ink2b)">Nam Cao</div>
         <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--danger)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--danger)"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6"></path><path d="M12 16.5v.5"></path></svg>
           Quá hạn 2 ngày · phạt 2.000 ₫
@@ -99,7 +98,6 @@ div.st-root{container-type:size}
         <div style="font-size: 12px; line-height: 1.4; color: var(--ink2b)">Không gia hạn được vì đã quá hạn. Hãy trả sách và thanh toán tại quầy.</div>
       </div>
     </article>
-    <p style="margin: 0; font-size: 12px; color: var(--ink3)">[Dữ liệu mẫu cho bản phác: ngày và khoản phạt minh họa theo chính sách mượn mặc định]</p>
   </div>
   </div>
   </div>

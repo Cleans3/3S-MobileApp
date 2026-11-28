@@ -110,6 +110,7 @@ div.st-root{container-type:size}
         <h1 style="margin: 0; font-size: 34px; line-height: 1.12; font-weight: 800; letter-spacing: -0.4px">Mượn sách chỉ bằng một chạm</h1>
         <p style="margin: 0; font-size: 15px; line-height: 1.55; color: var(--ink2b)">Tìm sách trong thư viện, chạm điện thoại vào sách để mượn, gia hạn ngay trên máy.</p>
         <button type="button" onClick="{{toLogin}}" class="st-press" style="min-height: 52px; padding: 6px 20px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font: inherit; font-size: 15px; font-weight: 600; line-height: 1.2; cursor: pointer; box-sizing: border-box">Bắt đầu</button>
+        <button type="button" onClick="{{toCard}}" class="st-press" style="min-height: 52px; padding: 6px 20px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font: inherit; font-size: 15px; font-weight: 600; line-height: 1.2; cursor: pointer; box-sizing: border-box">Đăng nhập bằng thẻ thư viện</button>
         <a href="MidGuest.dc.html" style="align-self: center; padding: 12px; font-size: 14px; font-weight: 600">Xem sách mà không cần đăng nhập</a>
       </sc-if>
       <sc-if value="{{isLogin}}" hint-placeholder-val="{{ false }}">
@@ -132,6 +133,7 @@ div.st-root{container-type:size}
         <div style="text-align: center; font-size: 13px; color: var(--ink3)">hoặc</div>
         <button type="button" onClick="{{toCard}}" class="st-press" style="min-height: 52px; padding: 6px 20px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font: inherit; font-size: 15px; font-weight: 600; line-height: 1.2; cursor: pointer; box-sizing: border-box">Đăng nhập bằng thẻ thư viện</button>
       <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink3); text-align: center">Chưa có tài khoản? Đăng ký tại quầy thủ thư, mang theo CCCD.</p>
+        <a href="MidGuest.dc.html" style="align-self: center; padding: 12px; font-size: 14px; font-weight: 600">Xem sách mà không cần đăng nhập</a>
       </sc-if>
       <sc-if value="{{isCard}}" hint-placeholder-val="{{ false }}">
         <h1 style="margin: 0; font-size: 30px; line-height: 1.15; font-weight: 700">Đăng nhập bằng thẻ</h1>

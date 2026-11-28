@@ -84,55 +84,37 @@ div.st-root{container-type:size}
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 720px; height: 840px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
 
   <nav aria-label="Điều hướng chính" style="position: absolute; left: 0; top: 0; bottom: 0; width: 96px; padding: 48px 8px 12px; box-sizing: border-box; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border-right: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; align-items: center; gap: 4px">
-    <a href="MidCheckout.dc.html" class="st-press" aria-label="Chạm sách để mượn" aria-current="false" style="width: 80px; flex: none; padding: 8px 0 6px; border-radius: 20px; background: var(--primary); color: var(--on-primary); display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; font-size: 12px; font-weight: 700; line-height: 1.2; text-align: center; box-shadow: 0 10px 24px rgba(28,27,26,0.25); margin-bottom: 12px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg>
-      Chạm để mượn
-    </a>
     <div class="st-scroll" style="flex: 1; min-height: 0; width: 100%; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 4px">
-      <a href="RailCatalog.dc.html" class="st-item" aria-label="Danh mục" aria-current="false" style="animation-delay: 40ms; width: 80px; min-height: 56px; padding: 4px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 500">
-        <span style="width: 56px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; background: transparent; box-shadow: none">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z"></path><path d="M8 7h7"></path></svg>
-        </span>
-        Danh mục
+      <a href="RailCatalog.dc.html" class="st-item" aria-label="Danh mục" aria-current="false" style="animation-delay: 40ms; width: 80px; min-height: 64px; padding: 8px 0; box-sizing: border-box; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 500; background: transparent">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z"></path><path d="M8 7h7"></path></svg>
+        <span>Danh mục</span>
       </a>
-      <a href="MidRecommend.dc.html" class="st-item" aria-label="Gợi ý cho bạn" aria-current="false" style="animation-delay: 75ms; width: 80px; min-height: 56px; padding: 4px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 500">
-        <span style="width: 56px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; background: transparent; box-shadow: none">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"></path><path d=""></path></svg>
-        </span>
-        Gợi ý
+      <a href="MidLoans.dc.html" class="st-item" aria-label="Đang mượn" aria-current="page" style="animation-delay: 75ms; width: 80px; min-height: 64px; padding: 8px 0; box-sizing: border-box; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 700; background: var(--surface)">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M12 7v5l3 2"></path><path d="M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z"></path></svg>
+        <span>Đang mượn</span>
       </a>
-      <a href="MidLoans.dc.html" class="st-item" aria-label="Sách đang mượn" aria-current="page" style="animation-delay: 110ms; width: 80px; min-height: 56px; padding: 4px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 700">
-        <span style="width: 56px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; background: var(--surface); box-shadow: 0 0 0 1px rgba(var(--ink-rgb),0.5)">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M12 7v5l3 2"></path><path d="M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z"></path></svg>
-        </span>
-        Đang mượn
+      <a href="MidReservations.dc.html" class="st-item" aria-label="Đặt trước" aria-current="false" style="animation-delay: 110ms; width: 80px; min-height: 64px; padding: 8px 0; box-sizing: border-box; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 500; background: transparent">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M6 3h12v18l-6-4-6 4z"></path><path d="M9 9h6"></path></svg>
+        <span>Đặt trước</span>
       </a>
-      <a href="MidReservations.dc.html" class="st-item" aria-label="Đặt trước" aria-current="false" style="animation-delay: 145ms; width: 80px; min-height: 56px; padding: 4px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 500">
-        <span style="width: 56px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; background: transparent; box-shadow: none">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M6 3h12v18l-6-4-6 4z"></path><path d="M9 9h6"></path></svg>
-        </span>
-        Đặt trước
+      <a href="MidHistory.dc.html" class="st-item" aria-label="Lịch sử đọc" aria-current="false" style="animation-delay: 145ms; width: 80px; min-height: 64px; padding: 8px 0; box-sizing: border-box; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 500; background: transparent">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path></svg>
+        <span>Lịch sử đọc</span>
       </a>
-      <a href="MidHistory.dc.html" class="st-item" aria-label="Lịch sử đọc" aria-current="false" style="animation-delay: 180ms; width: 80px; min-height: 56px; padding: 4px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 500">
-        <span style="width: 56px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; background: transparent; box-shadow: none">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path></svg>
-        </span>
-        Lịch sử
-      </a>
-      <a href="MidAccount.dc.html" class="st-item" aria-label="Tài khoản" aria-current="false" style="animation-delay: 215ms; width: 80px; min-height: 56px; padding: 4px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 500">
-        <span style="width: 56px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; background: transparent; box-shadow: none">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 21a8 8 0 0 1 16 0"></path><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path></svg>
-        </span>
-        Tài khoản
+      <a href="MidAccount.dc.html" class="st-item" aria-label="Tài khoản" aria-current="false" style="animation-delay: 180ms; width: 80px; min-height: 64px; padding: 8px 0; box-sizing: border-box; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: 500; background: transparent">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 21a8 8 0 0 1 16 0"></path><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path></svg>
+        <span>Tài khoản</span>
       </a>
     </div>
   </nav>
+  <a href="MidCheckout.dc.html" class="st-press st-dock" aria-label="Chạm sách để mượn" style="position: absolute; right: 16px; bottom: 16px; z-index: 30; width: 56px; height: 56px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 10px 30px rgba(28,27,26,0.3)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg></a>
   <sc-if value="{{showList}}" hint-placeholder-val="{{ true }}">
   <section aria-label="Danh sách sách đang mượn" class="st-list st-fade" style="animation: {{listAnim}}; position: absolute; left: 112px; right: 16px; max-width: 528px; margin: 0 auto; top: 40px; bottom: 0; display: flex; flex-direction: column; gap: 12px">
-    <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Sách đang mượn</h1>
+    <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Đang mượn</h1>
     <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; flex: none">
       <div style="padding: 12px; border-radius: 18px; background: var(--surface); display: flex; flex-direction: column; gap: 2px">
         <div style="font-size: 11px; color: var(--ink3)">Đang mượn</div>
-        <div style="font-size: 15px; font-weight: 700">2 / tối đa 5</div>
+        <div style="font-size: 15px; font-weight: 700">2</div>
       </div>
       <div style="padding: 12px; border-radius: 18px; background: var(--danger-bg); display: flex; flex-direction: column; gap: 2px">
         <div style="font-size: 11px; color: var(--danger)">Tiền phạt chưa trả</div>
@@ -156,13 +138,12 @@ div.st-root{container-type:size}
           </button>
         </li>
       </sc-for>
-      <li style="padding: 4px; font-size: 12px; line-height: 1.5; color: var(--ink3)">[Dữ liệu mẫu cho bản phác: ngày và khoản phạt minh họa theo chính sách mượn mặc định]</li>
     </ul>
   </section>
   </sc-if>
   <sc-if value="{{showDetail}}" hint-placeholder-val="{{ true }}">
-  <section aria-label="Chi tiết lượt mượn" class="st-pane" style="position: absolute; left: 112px; right: 16px; max-width: 528px; margin: 0 auto; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
-    <div class="st-scroll st-detail" style="animation: {{detailAnim}}; position: absolute; inset: 0; padding: 12px 20px 96px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 16px">
+  <section aria-label="Chi tiết lượt mượn" class="st-pane" style="position: absolute; left: 112px; right: 16px; max-width: 528px; margin: 0 auto; top: 16px; bottom: 88px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
+    <div class="st-scroll st-detail" style="animation: {{detailAnim}}; position: absolute; inset: 0; padding: 12px 20px 24px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 16px">
       <div style="display: flex; align-items: center; gap: 8px; min-height: 48px">
         <button type="button" onClick="{{back}}" aria-label="Quay lại danh sách" style="width: 48px; height: 48px; flex: none; border-radius: 999px; border: 1px solid rgba(var(--edge),0.8); background:  rgba(var(--glass),0.6); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m15 18-6-6 6-6"></path></svg></button>
         <div style="flex: 1; font-size: 13px; font-weight: 600; color: var(--ink3)">Chi tiết lượt mượn</div>
@@ -171,11 +152,11 @@ div.st-root{container-type:size}
       <div style="display: flex; gap: 16px; align-items: flex-start">
         <div aria-hidden="true" style="{{sel.coverStyle}}">
           <div style="font-size: 17px; font-weight: 700; line-height: 1.15">{{sel.title}}</div>
-          <div style="font-size: 11px; opacity: 0.85">{{sel.author}}</div>
+
         </div>
         <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px">
           <h2 style="margin: 0; font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.2px">{{sel.title}}</h2>
-          <div style="font-size: 14px; color: var(--ink2b)">{{sel.author}}</div>
+
         </div>
       </div>
       <sc-if value="{{isDue}}" hint-placeholder-val="{{ true }}">
@@ -189,24 +170,20 @@ div.st-root{container-type:size}
           <div style="font-size: 15px; font-weight: 700; line-height: 1.25">{{dueLeft}}</div>
         </div>
       </div>
-      </sc-if>
-      <sc-if value="{{isOverdue}}" hint-placeholder-val="{{ false }}">
-        <div style="padding: 14px 16px; border-radius: 20px; background: var(--danger-bg); display: flex; flex-direction: column; gap: 4px">
-          <div style="font-size: 15px; font-weight: 700; color: var(--danger)">Quá hạn 2 ngày · phạt 2.000 ₫</div>
-          <div style="font-size: 13px; line-height: 1.5; color: var(--danger)">Không gia hạn được vì đã quá hạn. Hãy trả sách và thanh toán tại quầy.</div>
-        </div>
-      </sc-if>
-      <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink3)">Gia hạn chỉ được ghi nhận khi thư viện trả lời. Lúc chờ, nút hiện "Đang gửi yêu cầu…".</p>
-    </div>
-    <div style="position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 8px; border-radius: 999px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%); border: 1px solid rgba(var(--edge),0.9); display: flex; gap: 8px">
-      <sc-if value="{{isDue}}" hint-placeholder-val="{{ true }}">
-        <button type="button" onClick="{{renew}}" aria-live="polite" class="st-swap st-press" style="{{renewBtn.style}}">
+        <button type="button" onClick="{{renew}}" aria-live="polite" class="st-swap st-press" style="{{renewBtn.style}}; flex: none; align-self: flex-start">
           <sc-if value="{{renewBtn.isDone}}" hint-placeholder-val="{{ false }}"><svg class="st-pop" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="st-draw" d="m5 12 5 5 9-10"></path></svg></sc-if>
           {{renewBtn.label}}
         </button>
       </sc-if>
       <sc-if value="{{isOverdue}}" hint-placeholder-val="{{ false }}">
-        <div style="flex: 1; min-height: 52px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: var(--danger)">Trả sách và nộp phạt tại quầy</div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <div style="padding: 12px; border-radius: 18px; background: var(--surface); display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 11px; color: var(--ink3)">Hạn trả</div>
+          <div style="font-size: 15px; font-weight: 700; line-height: 1.25">{{dueDate}}</div>
+        </div><div style="padding: 12px; border-radius: 18px; background: var(--danger-bg); display: flex; flex-direction: column; gap: 2px"><div style="font-size: 11px; color: var(--danger)">Còn lại</div><div style="font-size: 15px; font-weight: 700; line-height: 1.25; color: var(--danger)">Quá hạn 2 ngày</div></div>
+      </div>
+        <div style="font-size: 15px; font-weight: 700; color: var(--danger)">Quá hạn · phạt 2.000 ₫</div>
+        <div style="font-size: 14px; line-height: 1.5; color: var(--ink2b)">Không gia hạn được vì đã quá hạn. Hãy trả sách và thanh toán tại quầy.</div>
       </sc-if>
     </div>
   </section>
@@ -328,9 +305,9 @@ class Component extends DCLogic {
       }),
       sel: { title: sel.t, author: sel.a, coverStyle: ui.bigCover(sel.bg, sel.fg) },
       isDue: !sel.over, isOverdue: sel.over,
-      dueDate: phase === 'done' ? '21/12/2026 (mới)' : '07/12/2026',
+      dueDate: sel.over ? '05/12/2026' : phase === 'done' ? '21/12/2026 (mới)' : '07/12/2026',
       dueLeft: phase === 'done' ? '28 ngày' : '14 ngày',
-      renewBtn: ui.phaseBtn(phase, { idle: 'Gia hạn 14 ngày', sending: 'Đang gửi yêu cầu…', done: 'Đã gia hạn · thư viện xác nhận' }),
+      renewBtn: ui.phaseBtn(phase, { idle: 'Gia hạn', sending: 'Đang gửi yêu cầu…', done: 'Đã gia hạn · thư viện xác nhận' }),
       renew: function () {
         if (phase === 'sending') return;
         if (phase === 'done') { self.setState({ phase: 'idle' }); return; }

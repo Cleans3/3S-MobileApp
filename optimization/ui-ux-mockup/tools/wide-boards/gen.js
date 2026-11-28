@@ -5,7 +5,7 @@
 // build the boards for the current size. Each board is built twice:
 //   Wide*.dc.html  960 x 720, expanded window (840 dp and up)
 //   Mid*.dc.html   720 x 840, medium window (600-840 dp)
-// WideCatalog and RailCatalog are written by hand and are not generated here (MidCatalog is).
+// Catalog: the home is RailCatalog (medium) and WideCatalog (expanded); the list beside the detail is MidCatalog and WideList.
 const fs = require('fs'), path = require('path');
 const S = require('./shell.js');
 const dir = process.argv[2];
@@ -28,7 +28,7 @@ const place = (name, x, y, w, h, title) => {
 };
 // expanded window (840 dp and up): four rows of three
 const Y1 = 4896, Y2 = Y1 + 720 + 160, Y3 = Y2 + 720 + 160, Y4 = Y3 + 720 + 160;
-place('WideCatalog.dc.html', 0, Y1, 960, 720, 'Rộng: danh mục, danh sách và chi tiết');
+place('WideCatalog.dc.html', 0, Y1, 960, 720, 'Rộng: danh mục');
 place('WideGuest.dc.html', 1040, Y1, 960, 720, 'Rộng: chế độ khách');
 place('WideOfflineSearch.dc.html', 2080, Y1, 960, 720, 'Rộng: tìm khi không có mạng');
 place('WideLoans.dc.html', 0, Y2, 960, 720, 'Rộng: sách đang mượn');
@@ -39,6 +39,7 @@ place('WideCheckout.dc.html', 1040, Y3, 960, 720, 'Rộng: tự mượn sách');
 place('WideAccount.dc.html', 2080, Y3, 960, 720, 'Rộng: tài khoản và thông báo');
 place('WideSignIn.dc.html', 0, Y4, 960, 720, 'Rộng: màn chào, đăng nhập, thẻ, đổi mật khẩu');
 place('WideStatus.dc.html', 1040, Y4, 960, 720, 'Rộng: khởi động, khóa, mất kết nối, đăng xuất');
+place('WideList.dc.html', 2080, Y4, 960, 720, 'Rộng: danh sách và chi tiết sách');
 c.notes.wideRow = { x: 0, y: Y1 - 260, text: 'Cửa sổ rộng từ 840 dp (máy gập cầm ngang, tablet, điện thoại xoay ngang)', kind: 'title1', maxW: 3040 };
 // medium window (600-840 dp): three rows of four
 const M1 = Y4 + 720 + 420, M2 = M1 + 840 + 160, M3 = M2 + 840 + 160, X = i => i * 800;

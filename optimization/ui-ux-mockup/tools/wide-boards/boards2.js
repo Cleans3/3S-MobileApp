@@ -16,53 +16,44 @@ const card = inner => `
         <div style="border-radius: 24px; background:  rgba(var(--glass),0.8); padding: 6px 16px; display: flex; flex-direction: column">${inner}
         </div>`;
 
-// ---------- Tài khoản (gộp Thông báo) ----------
+// ---------- Tài khoản ----------
 out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) + S.nav('WideAccount.dc.html') + `
   <sc-if value="{{showList}}" hint-placeholder-val="{{ true }}">
-  <section aria-label="Mục cài đặt" class="st-list st-fade" style="animation: {{listAnim}}; position: absolute; ${S.listPos(320)}; top: ${S.isMid() ? 40 : 16}px; bottom: 16px; display: flex; flex-direction: column; gap: 12px">
+  <section aria-label="Mục cài đặt" class="st-list st-fade" style="animation: {{listAnim}}; position: absolute; ${S.listPos(320)}; top: ${S.isMid() ? 40 : 16}px; bottom: ${S.BOT}px; display: flex; flex-direction: column; gap: 12px">
     <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Tài khoản</h1>
     <div style="padding: 16px; border-radius: 24px; background:  #2f4a44; color: #ffffff; display: flex; align-items: center; gap: 12px; flex: none">
       <span style="width: 48px; height: 48px; flex: none; border-radius: 999px; background:  rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
       </span>
       <div style="min-width: 0; display: flex; flex-direction: column; gap: 2px">
-        <div style="font-size: 17px; font-weight: 700">[Tên thành viên]</div>
-        <div style="font-size: 13px; color: rgba(255,255,255,0.9); overflow: hidden; text-overflow: ellipsis">member@shelftap.test</div>
+        <div style="font-size: 17px; font-weight: 700">Phạm Thị Thu Hường</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.9); overflow: hidden; text-overflow: ellipsis">thanhvien.thu@example.vn</div>
       </div>
     </div>
     <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 6px">
       <sc-for list="{{cats}}" as="c" hint-placeholder-count="5">
         <button type="button" class="st-pick" aria-current="{{c.current}}" onClick="{{c.pick}}" style="{{c.style}}">
-          <span style="font-size: 15px; font-weight: 700">{{c.label}}</span>
-          <span style="font-size: 12px; line-height: 1.4; color: var(--ink2b)">{{c.desc}}</span>
+          <span style="flex: 1; font-size: 15px; font-weight: 600">{{c.label}}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
         </button>
       </sc-for>
+      <button type="button" class="st-press" aria-current="{{logoutCurrent}}" onClick="{{pickLogout}}" style="width: 100%; min-height: 56px; margin-top: 6px; padding: 12px 14px; border-radius: 999px; border: 1px solid {{logoutEdge}}; background: transparent; color: var(--danger); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Đăng xuất</button>
     </div>
   </section>
   </sc-if>
   <sc-if value="{{showDetail}}" hint-placeholder-val="{{ true }}">
-  <section aria-label="{{catLabel}}" class="st-pane" style="position: absolute; ${S.panePos()}; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
+  <section aria-label="{{catLabel}}" class="st-pane" style="position: absolute; ${S.panePos()}; top: 16px; bottom: ${S.BOT}px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
     <div class="st-scroll st-detail" style="animation: {{detailAnim}}; position: absolute; inset: 0; padding: 12px 20px 24px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 14px">
       <div style="display: flex; align-items: center; gap: 8px; min-height: 48px">${S.backBtn()}
         <h2 style="flex: 1; margin: 0; font-size: 20px; font-weight: 700">{{catLabel}}</h2>
         <div style="width: 84px; flex: none"></div>
       </div>
       <sc-if value="{{isPrivacy}}" hint-placeholder-val="{{ true }}">` +
-  card(sw('Lưu lịch sử đọc', 'Tắt thì sách bạn trả sẽ không còn hiện ở Lịch sử đọc.', 'history', 'toggleHistory', 'historyTrack', 'historyKnob') +
-       sw('Gợi ý theo lịch sử đọc', 'Tính ngay trên máy, không gửi đi đâu. Tắt thì Gợi ý chỉ theo sách đang mượn.', 'recs', 'toggleRecs', 'recsTrack', 'recsKnob')) +
-  S.note('Sách bạn mượn là dữ liệu cá nhân nhạy cảm (Nghị định 13/2023). Sách đã trả quá 1 năm không còn gắn với tên bạn.') + `
-      </sc-if>
-      <sc-if value="{{isNotify}}" hint-placeholder-val="{{ false }}">
-        <sc-if value="{{denied}}" hint-placeholder-val="{{ true }}">
-          <div style="padding: 14px 16px; border-radius: 20px; background: var(--warn-bg); display: flex; align-items: center; gap: 12px">
-            <div style="flex: 1; font-size: 13px; line-height: 1.45; color: var(--warn)">Thông báo của ShelfTap đang bị tắt trong cài đặt của máy.</div>
-            <button type="button" onClick="{{allow}}" style="min-height: 40px; padding: 6px 16px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Bật lại</button>
-          </div>
-        </sc-if>` +
-  card(sw('Nhắc trước hạn trả', 'Một ngày trước hạn, lúc 7:30 sáng.', 'due', 't_due', 'dueTrack', 'dueKnob') +
-       sw('Sách đặt trước đã sẵn sàng', 'Báo khi thư viện giữ sách cho bạn.', 'ready', 't_ready', 'readyTrack', 'readyKnob') +
-       sw('Ẩn tên sách trên màn khóa', 'Chỉ hiện tên sách sau khi mở khóa máy.', 'hide', 't_hide', 'hideTrack', 'hideKnob')) +
-  S.note('Nhắc hạn trả được tính ngay trên máy từ hạn mượn, không cần server gửi. Báo sách đặt trước sẵn sàng thì cần server, API hiện chưa có.') + `
+  card(sw('Lưu lịch sử đọc của tôi', 'Tắt: các lượt mượn đã trả sẽ không được ghi vào lịch sử (Nghị định 13/2023).', 'history', 'toggleHistory', 'historyTrack', 'historyKnob') + `
+          <a href="WideHistory.dc.html" style="display: flex; align-items: center; min-height: 56px; text-decoration: none; font-size: 15px; font-weight: 600; color: var(--ink)">
+            <span style="flex: 1">Lịch sử đọc</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
+          </a>`) + `
       </sc-if>
       <sc-if value="{{isSecurity}}" hint-placeholder-val="{{ false }}">` +
   card(sw('Khóa bằng vân tay', 'Nếu vân tay trên máy thay đổi, ShelfTap yêu cầu đăng nhập lại bằng mật khẩu.', 'bio', 'toggleBio', 'bioTrack', 'bioKnob') + `
@@ -77,7 +68,7 @@ out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) 
           <sc-for list="{{themeOpts}}" as="o" hint-placeholder-count="3">
             <button type="button" onClick="{{o.pick}}" aria-pressed="{{o.on}}" class="st-swap st-press" style="{{o.style}}">{{o.label}}</button>
           </sc-for>
-        </div>` + S.note('"Theo hệ thống" đổi sáng hoặc tối cùng lúc với điện thoại.') + `
+        </div>
       </sc-if>
       <sc-if value="{{isLogout}}" hint-placeholder-val="{{ false }}">
         <div style="padding: 18px; border-radius: 24px; background: var(--dialog); border: 1px solid rgba(var(--ink-rgb),0.5); display: flex; flex-direction: column; gap: 12px">
@@ -97,24 +88,26 @@ out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) 
     var val = function (k, def) { return st[k] === undefined ? def : st[k]; };
     var flip = function (k, def) { return function () { var o = {}; o[k] = !val(k, def); self.setState(o); }; };
     var cats = [
-      ['privacy', 'Quyền riêng tư', 'Lịch sử đọc, gợi ý'],
-      ['notify', 'Thông báo', 'Nhắc hạn trả, sách đặt trước, màn khóa'],
-      ['security', 'Bảo mật', 'Vân tay, mật khẩu, tự đăng xuất'],
-      ['look', 'Giao diện', 'Sáng, tối hoặc theo hệ thống'],
-      ['logout', 'Đăng xuất', 'Xóa phiên trên máy này']
-    ];
+      ['privacy', 'Quyền riêng tư'],
+      ['security', 'Bảo mật'],
+      ['look', 'Giao diện'],
+      ['logout', 'Đăng xuất']
+    ].filter(function (c) { return c[0] !== 'logout'; });
+    var label0 = { privacy: 'Quyền riêng tư', security: 'Bảo mật', look: 'Giao diện', logout: 'Đăng xuất' };
     var v = {};
     ['history', 'recs', 'due', 'ready', 'hide'].forEach(function (k) { v[k] = val(k, true); });
     v.bio = val('bio', false);
-    var label = cats.filter(function (c) { return c[0] === cat; })[0][1];
+    var label = label0[cat];
     return Object.assign(this.__theme(), {
       cats: cats.map(function (c) {
-        var on = c[0] === cat, bad = c[0] === 'logout';
-        return { label: c[1], desc: c[2], current: on ? 'true' : 'false', pick: function () { self.setState({ cat: c[0] }); self.__layout().toDetail(); },
-          style: 'width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px 14px;border-radius:20px;text-align:left;font:inherit;cursor:pointer;min-height:56px;color:' + (bad ? 'var(--danger)' : 'var(--ink)') + ';border:1px solid ' + (on ? 'rgba(var(--ink-rgb),0.5)' : 'transparent') + ';background:' + (on ? 'var(--surface)' : 'rgba(var(--glass),0.72)') };
+        var on = c[0] === cat;
+        return { label: c[1], current: on ? 'true' : 'false', pick: function () { self.setState({ cat: c[0] }); self.__layout().toDetail(); },
+          style: 'width:100%;display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:20px;text-align:left;font:inherit;cursor:pointer;min-height:56px;color:var(--ink);border:' + (on ? '2px solid rgba(var(--ink-rgb),0.8)' : '1px solid transparent') + ';background:' + (on ? 'var(--surface)' : 'rgba(var(--glass),0.72)') };
       }),
+      logoutCurrent: cat === 'logout' ? 'true' : 'false', logoutEdge: cat === 'logout' ? 'var(--danger)' : 'rgba(var(--ink-rgb),0.25)',
+      pickLogout: function () { self.setState({ cat: 'logout' }); self.__layout().toDetail(); },
       catLabel: label,
-      isPrivacy: cat === 'privacy', isNotify: cat === 'notify', isSecurity: cat === 'security', isLook: cat === 'look', isLogout: cat === 'logout',
+      isPrivacy: cat === 'privacy', isSecurity: cat === 'security', isLook: cat === 'look', isLogout: cat === 'logout',
       history: v.history, historyTrack: ui.track(v.history), historyKnob: ui.knob(v.history), toggleHistory: flip('history', true),
       recs: v.recs, recsTrack: ui.track(v.recs), recsKnob: ui.knob(v.recs), toggleRecs: flip('recs', true),
       due: v.due, dueTrack: ui.track(v.due), dueKnob: ui.knob(v.due), t_due: flip('due', true),
@@ -152,6 +145,7 @@ out['WideSignIn.dc.html'] = S.head('Chào và đăng nhập ở cửa sổ rộn
         <h1 style="margin: 0; font-size: 34px; line-height: 1.12; font-weight: 800; letter-spacing: -0.4px">Mượn sách chỉ bằng một chạm</h1>
         <p style="margin: 0; font-size: 15px; line-height: 1.55; color: var(--ink2b)">Tìm sách trong thư viện, chạm điện thoại vào sách để mượn, gia hạn ngay trên máy.</p>
         <button type="button" onClick="{{toLogin}}" class="st-press" style="${S.btnPrimary}">Bắt đầu</button>
+        <button type="button" onClick="{{toCard}}" class="st-press" style="${S.btnGlass}">Đăng nhập bằng thẻ thư viện</button>
         <a href="WideGuest.dc.html" style="align-self: center; padding: 12px; font-size: 14px; font-weight: 600">Xem sách mà không cần đăng nhập</a>
       </sc-if>
       <sc-if value="{{isLogin}}" hint-placeholder-val="{{ false }}">
@@ -171,6 +165,7 @@ out['WideSignIn.dc.html'] = S.head('Chào và đăng nhập ở cửa sổ rộn
         <div style="text-align: center; font-size: 13px; color: var(--ink3)">hoặc</div>
         <button type="button" onClick="{{toCard}}" class="st-press" style="${S.btnGlass}">Đăng nhập bằng thẻ thư viện</button>` +
   S.note('Chưa có tài khoản? Đăng ký tại quầy thủ thư, mang theo CCCD.', '; text-align: center') + `
+        <a href="WideGuest.dc.html" style="align-self: center; padding: 12px; font-size: 14px; font-weight: 600">Xem sách mà không cần đăng nhập</a>
       </sc-if>
       <sc-if value="{{isCard}}" hint-placeholder-val="{{ false }}">
         <h1 style="margin: 0; font-size: 30px; line-height: 1.15; font-weight: 700">Đăng nhập bằng thẻ</h1>
@@ -311,7 +306,6 @@ out['WideStatus.dc.html'] = S.head('Trạng thái hệ thống ở cửa sổ r�
         <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2b)">Kiểm tra Wi-Fi hoặc dữ liệu di động. Mượn, gia hạn và đặt trước cần mạng; tìm sách thì vẫn làm được trong bản lưu trên máy.</p>
         <sc-if value="{{tried}}" hint-placeholder-val="{{ false }}"><div role="status" style="font-size: 13px; font-weight: 600; color: var(--danger)">Vẫn chưa kết nối được (lần thử {{tries}})</div></sc-if>
         <button type="button" onClick="{{retry}}" aria-live="polite" class="st-press" style="${S.btnPrimary}">{{retryLabel}}</button>
-        <a href="WideOfflineSearch.dc.html" style="${S.btnGlass}">Tìm sách khi không có mạng</a>
         <a href="WideSignIn.dc.html" style="align-self: center; padding: 12px; font-size: 14px; font-weight: 600">Đăng xuất</a>` +
   S.note('App không tự thử lại liên tục để đỡ tốn pin; khi mạng có lại, Android báo và app thử lại một lần.') + `
       </sc-if>
@@ -435,51 +429,8 @@ out['WideCheckout.dc.html'] = S.head('Tự mượn sách ở cửa sổ rộng',
   }`);
 
 // ---------- Khách ----------
-out['WideGuest.dc.html'] = S.head('Chế độ khách ở cửa sổ rộng', W, H) + S.nav('WideGuest.dc.html', { guest: true }) +
-  S.listPane('Danh sách sách', 'Danh mục', S.searchAndChips, 'rows', `
-      <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
-        <li style="padding: 24px 8px; font-size: 14px; color: var(--ink3)">Không có sách khớp. Thử bỏ dấu hoặc chọn "Tất cả".</li>
-      </sc-if>`) +
-  S.detailPane('Chi tiết sách', `
-      <sc-if value="{{hasSel}}" hint-placeholder-val="{{ true }}">` + S.bookHead(true) +
-  S.facts([S.fact('Tình trạng', '{{sel.status}}', '{{sel.statusStyle}}'), S.fact('Kệ', '{{sel.shelf}}'), S.fact('Hạn mượn', '14 ngày')]) + `
-        <p style="margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink2b)">[Mô tả sách: chưa có trong dữ liệu danh mục] · ISBN {{sel.isbn}}</p>
-        <sc-if value="{{asking}}" hint-placeholder-val="{{ false }}">
-          <div role="alertdialog" aria-label="Đăng nhập để đặt trước" class="st-fade" style="padding: 16px; border-radius: 22px; background: var(--dialog); border: 1px solid rgba(var(--ink-rgb),0.5); display: flex; flex-direction: column; gap: 10px">
-            <div style="font-size: 17px; font-weight: 700">Đăng nhập để đặt trước</div>
-            <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2)">Đặt trước và mượn sách cần tài khoản thư viện. Sau khi đăng nhập, bạn quay lại đúng cuốn sách này.</p>
-            <a href="WideSignIn.dc.html" style="${S.btnPrimary}">Đăng nhập</a>
-            <a href="WideSignIn.dc.html" style="${S.btnGlass}">Đăng nhập bằng thẻ</a>
-            <button type="button" onClick="{{later}}" style="min-height: 48px; border: 0; background:  transparent; font: inherit; font-size: 15px; font-weight: 600; color: var(--ink); cursor: pointer">Để sau</button>
-          </div>
-        </sc-if>
-      </sc-if>`, `
-      <button type="button" onClick="{{ask}}" class="st-press" style="${S.btnPrimary}; flex: 1">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg>
-        Đặt trước
-      </button>`) +
-  S.foot(W, H, `
-  renderVals() {
-    var self = this, st = this.state || {}, ui = this.__ui();
-    ${S.SEARCH_JS}
-    var sel = hits.filter(function (b) { return b.isbn === (st.sel || '9780990000020'); })[0] || hits[0] || null;
-    var out = sel && sel.n === 0;
-    return Object.assign(this.__theme(), search, {
-      rows: hits.map(function (b, i) {
-        return ui.row({ i: i, title: b.t, author: b.a, bg: b.bg, fg: b.fg, on: sel && b.isbn === sel.isbn,
-          status: b.n ? 'Còn ' + b.n + ' bản' : 'Đang được mượn', pill: ui.pill(b.n ? 'ok' : 'bad'), note: 'Kệ ' + b.shelf,
-          pick: function () { self.setState({ sel: b.isbn, asking: false }); } });
-      }),
-      hasSel: !!sel,
-      sel: sel ? { title: sel.t, author: sel.a, shelf: sel.shelf, isbn: sel.isbn, coverStyle: ui.bigCover(sel.bg, sel.fg),
-        tags: sel.s.split(' · ').map(function (x) { return { label: x }; }),
-        status: out ? 'Đang được mượn' : 'Còn ' + sel.n + ' bản',
-        statusStyle: 'font-size:15px;font-weight:700;line-height:1.25;color:' + (out ? 'var(--danger2)' : 'var(--ok)') } : { tags: [] },
-      asking: st.asking === undefined ? true : !!st.asking,
-      ask: function () { self.setState({ asking: true }); },
-      later: function () { self.setState({ asking: false }); }
-    });
-  }`);
+out['WideGuest.dc.html'] = S.head('Chế độ khách ở cửa sổ ' + (S.isMid() ? 'vừa' : 'rộng'), W, H) + S.nav('WideGuest.dc.html', { guest: true }) +
+  S.home(true, S.isMid() ? 'MidCatalog.dc.html' : 'WideList.dc.html') + S.foot(W, H, S.HOME_JS);
 
 return out;
 };

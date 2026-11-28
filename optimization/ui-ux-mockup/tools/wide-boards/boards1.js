@@ -6,38 +6,33 @@ const out = {};
 
 // ---------- Sách đang mượn ----------
 out['WideLoans.dc.html'] = S.head('Sách đang mượn ở cửa sổ rộng', W, H) + S.nav('WideLoans.dc.html') +
-  S.listPane('Danh sách sách đang mượn', 'Sách đang mượn', `
+  S.listPane('Danh sách sách đang mượn', 'Đang mượn', `
     <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; flex: none">
       <div style="padding: 12px; border-radius: 18px; background: var(--surface); display: flex; flex-direction: column; gap: 2px">
         <div style="font-size: 11px; color: var(--ink3)">Đang mượn</div>
-        <div style="font-size: 15px; font-weight: 700">2 / tối đa 5</div>
+        <div style="font-size: 15px; font-weight: 700">2</div>
       </div>
       <div style="padding: 12px; border-radius: 18px; background: var(--danger-bg); display: flex; flex-direction: column; gap: 2px">
         <div style="font-size: 11px; color: var(--danger)">Tiền phạt chưa trả</div>
         <div style="font-size: 15px; font-weight: 700; color: var(--danger)">2.000 ₫</div>
       </div>
-    </div>`, 'rows', `
-      <li style="padding: 4px; font-size: 12px; line-height: 1.5; color: var(--ink3)">[Dữ liệu mẫu cho bản phác: ngày và khoản phạt minh họa theo chính sách mượn mặc định]</li>`) +
-  S.detailPane('Chi tiết lượt mượn', S.bookHead(false) + `
+    </div>`, 'rows') +
+  S.detailPane('Chi tiết lượt mượn', S.bookHead(false, true) + `
       <sc-if value="{{isDue}}" hint-placeholder-val="{{ true }}">${S.facts([
         S.fact('Hạn trả', '{{dueDate}}'),
         S.fact('Còn lại', '{{dueLeft}}')
       ])}
-      </sc-if>
-      <sc-if value="{{isOverdue}}" hint-placeholder-val="{{ false }}">
-        <div style="padding: 14px 16px; border-radius: 20px; background: var(--danger-bg); display: flex; flex-direction: column; gap: 4px">
-          <div style="font-size: 15px; font-weight: 700; color: var(--danger)">Quá hạn 2 ngày · phạt 2.000 ₫</div>
-          <div style="font-size: 13px; line-height: 1.5; color: var(--danger)">Không gia hạn được vì đã quá hạn. Hãy trả sách và thanh toán tại quầy.</div>
-        </div>
-      </sc-if>` + S.note('Gia hạn chỉ được ghi nhận khi thư viện trả lời. Lúc chờ, nút hiện "Đang gửi yêu cầu…".'), `
-      <sc-if value="{{isDue}}" hint-placeholder-val="{{ true }}">
-        <button type="button" onClick="{{renew}}" aria-live="polite" class="st-swap st-press" style="{{renewBtn.style}}">
+        <button type="button" onClick="{{renew}}" aria-live="polite" class="st-swap st-press" style="{{renewBtn.style}}; flex: none; align-self: flex-start">
           <sc-if value="{{renewBtn.isDone}}" hint-placeholder-val="{{ false }}"><svg class="st-pop" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="st-draw" d="m5 12 5 5 9-10"></path></svg></sc-if>
           {{renewBtn.label}}
         </button>
       </sc-if>
-      <sc-if value="{{isOverdue}}" hint-placeholder-val="{{ false }}">
-        <div style="flex: 1; min-height: 52px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: var(--danger)">Trả sách và nộp phạt tại quầy</div>
+      <sc-if value="{{isOverdue}}" hint-placeholder-val="{{ false }}">${S.facts([
+        S.fact('Hạn trả', '{{dueDate}}'),
+        '<div style="padding: 12px; border-radius: 18px; background: var(--danger-bg); display: flex; flex-direction: column; gap: 2px"><div style="font-size: 11px; color: var(--danger)">Còn lại</div><div style="font-size: 15px; font-weight: 700; line-height: 1.25; color: var(--danger)">Quá hạn 2 ngày</div></div>'
+      ])}
+        <div style="font-size: 15px; font-weight: 700; color: var(--danger)">Quá hạn · phạt 2.000 ₫</div>
+        <div style="font-size: 14px; line-height: 1.5; color: var(--ink2b)">Không gia hạn được vì đã quá hạn. Hãy trả sách và thanh toán tại quầy.</div>
       </sc-if>`) +
   S.foot(W, H, `
   renderVals() {
@@ -57,9 +52,9 @@ out['WideLoans.dc.html'] = S.head('Sách đang mượn ở cửa sổ rộng', W
       }),
       sel: { title: sel.t, author: sel.a, coverStyle: ui.bigCover(sel.bg, sel.fg) },
       isDue: !sel.over, isOverdue: sel.over,
-      dueDate: phase === 'done' ? '21/12/2026 (mới)' : '07/12/2026',
+      dueDate: sel.over ? '05/12/2026' : phase === 'done' ? '21/12/2026 (mới)' : '07/12/2026',
       dueLeft: phase === 'done' ? '28 ngày' : '14 ngày',
-      renewBtn: ui.phaseBtn(phase, { idle: 'Gia hạn 14 ngày', sending: 'Đang gửi yêu cầu…', done: 'Đã gia hạn · thư viện xác nhận' }),
+      renewBtn: ui.phaseBtn(phase, { idle: 'Gia hạn', sending: 'Đang gửi yêu cầu…', done: 'Đã gia hạn · thư viện xác nhận' }),
       renew: function () {
         if (phase === 'sending') return;
         if (phase === 'done') { self.setState({ phase: 'idle' }); return; }
@@ -74,9 +69,8 @@ out['WideReservations.dc.html'] = S.head('Đặt trước ở cửa sổ rộng'
   S.listPane('Danh sách sách đặt trước', 'Đặt trước', `
     <sc-if value="{{cancelled}}" hint-placeholder-val="{{ false }}">
       <div role="status" class="st-fade" style="padding: 12px 14px; border-radius: 18px; background: var(--surface); font-size: 14px; font-weight: 600">Đã hủy đặt trước Clean Code.</div>
-    </sc-if>`, 'rows', `
-      <li style="padding: 4px; font-size: 12px; line-height: 1.5; color: var(--ink3)">[Dữ liệu mẫu cho bản phác; thư viện giữ sách 3 ngày theo chính sách mặc định]</li>`) +
-  S.detailPane('Chi tiết đặt trước', S.bookHead(false) + `
+    </sc-if>`, 'rows') +
+  S.detailPane('Chi tiết đặt trước', S.bookHead(false, true) + `
       <sc-if value="{{isReady}}" hint-placeholder-val="{{ true }}">
         <div style="padding: 14px 16px; border-radius: 20px; background: var(--surface); display: flex; flex-direction: column; gap: 4px">
           <div style="font-size: 15px; font-weight: 700; color: var(--ok)">Sẵn sàng nhận</div>
@@ -269,15 +263,17 @@ out['WideRecommend.dc.html'] = S.head('Gợi ý cho bạn ở cửa sổ rộng'
     });
   }`);
 
-// ---------- Danh mục (generated only for the medium window; the wide one is WideCatalog, written by hand) ----------
-if (S.isMid()) out['WideCatalog.dc.html'] = S.head('Danh mục ở cửa sổ vừa', W, H) + S.nav('WideCatalog.dc.html') +
+// ---------- Danh mục: the home (RailCatalog / WideCatalog) and the list beside the detail (MidCatalog / WideList) ----------
+out[S.isMid() ? 'RailCatalog.dc.html' : 'WideCatalog.dc.html'] = S.head('Danh mục ở cửa sổ ' + (S.isMid() ? 'vừa' : 'rộng'), W, H) +
+  S.nav('WideCatalog.dc.html') + S.home(false, S.isMid() ? 'MidCatalog.dc.html' : 'WideList.dc.html') + S.foot(W, H, S.HOME_JS);
+out[S.isMid() ? 'WideCatalog.dc.html' : 'WideList.dc.html'] = S.head('Danh sách và chi tiết sách ở cửa sổ ' + (S.isMid() ? 'vừa' : 'rộng'), W, H) + S.nav('WideCatalog.dc.html') +
   S.listPane('Danh sách sách', 'Danh mục', S.searchAndChips, 'rows', `
       <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
         <li style="padding: 24px 8px; font-size: 14px; color: var(--ink3)">Không có sách khớp. Thử bỏ dấu hoặc chọn "Tất cả".</li>
       </sc-if>`) +
   S.detailPane('Chi tiết sách', `
       <sc-if value="{{hasSel}}" hint-placeholder-val="{{ true }}">` + S.bookHead(true) +
-  S.facts([S.fact('Tình trạng', '{{sel.status}}', '{{sel.statusStyle}}'), S.fact('Kệ', '{{sel.shelf}}'), S.fact('Hạn mượn', '14 ngày')]) + `
+  S.facts([S.fact('Tình trạng', '{{sel.status}}', '{{sel.statusStyle}}')]) + `
         <p style="margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink2b)">[Mô tả sách: chưa có trong dữ liệu danh mục] · ISBN {{sel.isbn}}</p>
       </sc-if>`, `
       <a href="WideCheckout.dc.html" aria-label="Mượn bằng cách chạm điện thoại vào sách" style="width: 52px; height: 52px; flex: none; border-radius: 999px; background: var(--surface); display: flex; align-items: center; justify-content: center">
@@ -298,7 +294,7 @@ if (S.isMid()) out['WideCatalog.dc.html'] = S.head('Danh mục ở cửa sổ v�
     return Object.assign(this.__theme(), search, {
       rows: hits.map(function (b, i) {
         return ui.row({ i: i, title: b.t, author: b.a, bg: b.bg, fg: b.fg, on: sel && b.isbn === sel.isbn,
-          status: b.n ? 'Còn ' + b.n + ' bản' : 'Đang được mượn · đặt trước', pill: ui.pill(b.n ? 'ok' : 'bad'), note: 'Kệ ' + b.shelf,
+          status: b.n ? 'Còn ' + b.n + ' bản' : 'Đang được mượn · đặt trước', pill: ui.pill(b.n ? 'ok' : 'bad'),
           pick: function () { self.setState({ sel: b.isbn, phase: 'idle' }); } });
       }),
       hasSel: !!sel,

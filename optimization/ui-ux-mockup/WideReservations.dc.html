@@ -84,12 +84,8 @@ div.st-root{container-type:size}
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
 
   <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 14px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
-    <div class="st-navhead" style="display: flex; align-items: center; gap: 4px; padding: 0 0 10px 12px">
-      <div class="st-hide-c" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
-        <div style="font-size: 13px; color: var(--ink3)">Chào bạn,</div>
-        <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
-      </div>
-      <button type="button" class="st-navtoggle st-press" onClick="{{toggleNav}}" aria-label="{{navToggleLabel}}" aria-expanded="{{navOpen}}" style="width: 48px; height: 48px; flex: none; border-radius: 14px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="M9 4v16"></path></svg></button>
+    <div class="st-navhead" style="display: flex; align-items: center; padding: 0 0 10px 4px">
+      <button type="button" class="st-navtoggle st-press" onClick="{{toggleNav}}" aria-label="{{navToggleLabel}}" aria-expanded="{{navOpen}}" style="width: 48px; height: 48px; flex: none; border-radius: 999px; border: 0; background: rgba(var(--glass),0.85); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="M9 4v16"></path></svg></button>
     </div>
     <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">
         <a href="WideCatalog.dc.html" class="st-item" aria-label="Danh mục" aria-current="false" style="animation-delay: 40ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
@@ -98,42 +94,33 @@ div.st-root{container-type:size}
           </span>
           <span class="st-hide-c">Danh mục</span>
         </a>
-        <a href="WideRecommend.dc.html" class="st-item" aria-label="Gợi ý cho bạn" aria-current="false" style="animation-delay: 75ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
-          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(var(--glass),0.5)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"></path><path d=""></path></svg>
-          </span>
-          <span class="st-hide-c">Gợi ý cho bạn</span>
-        </a>
-        <a href="WideLoans.dc.html" class="st-item" aria-label="Sách đang mượn" aria-current="false" style="animation-delay: 110ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
+        <a href="WideLoans.dc.html" class="st-item" aria-label="Đang mượn" aria-current="false" style="animation-delay: 75ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
           <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(var(--glass),0.5)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M12 7v5l3 2"></path><path d="M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z"></path></svg>
           </span>
-          <span class="st-hide-c">Sách đang mượn</span>
+          <span class="st-hide-c">Đang mượn</span>
         </a>
-        <a href="WideReservations.dc.html" class="st-item" aria-label="Đặt trước" aria-current="page" style="animation-delay: 145ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 700; background: rgba(var(--glass),0.85)">
+        <a href="WideReservations.dc.html" class="st-item" aria-label="Đặt trước" aria-current="page" style="animation-delay: 110ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 700; background: rgba(var(--glass),0.85)">
           <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--surface)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M6 3h12v18l-6-4-6 4z"></path><path d="M9 9h6"></path></svg>
           </span>
           <span class="st-hide-c">Đặt trước</span>
         </a>
-        <a href="WideHistory.dc.html" class="st-item" aria-label="Lịch sử đọc" aria-current="false" style="animation-delay: 180ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
+        <a href="WideHistory.dc.html" class="st-item" aria-label="Lịch sử đọc" aria-current="false" style="animation-delay: 145ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
           <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(var(--glass),0.5)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path></svg>
           </span>
           <span class="st-hide-c">Lịch sử đọc</span>
         </a>
-        <a href="WideAccount.dc.html" class="st-item" aria-label="Tài khoản" aria-current="false" style="animation-delay: 215ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
+        <a href="WideAccount.dc.html" class="st-item" aria-label="Tài khoản" aria-current="false" style="animation-delay: 180ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
           <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(var(--glass),0.5)">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 21a8 8 0 0 1 16 0"></path><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path></svg>
           </span>
           <span class="st-hide-c">Tài khoản</span>
         </a>
     </div>
-    <a href="WideCheckout.dc.html" class="st-press" aria-label="Chạm sách để mượn" aria-current="false" style="min-height: 56px; padding: 8px 14px 8px 8px; border-radius: 28px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1.2; box-shadow: 0 10px 30px rgba(28,27,26,0.25)">
-      <span style="width: 40px; height: 40px; flex: none; border-radius: 999px; background:  rgba(var(--glass),0.16); display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg></span>
-      <span class="st-hide-c">Chạm sách để mượn</span>
-    </a>
   </nav>
+  <a href="WideCheckout.dc.html" class="st-press st-dock" aria-label="Chạm sách để mượn" style="position: absolute; right: 16px; bottom: 16px; z-index: 30; width: 56px; height: 56px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 10px 30px rgba(28,27,26,0.3)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg></a>
   <sc-if value="{{showList}}" hint-placeholder-val="{{ true }}">
   <section aria-label="Danh sách sách đặt trước" class="st-list st-fade" style="animation: {{listAnim}}; position: absolute; left: 248px; width: 320px; top: 16px; bottom: 0; display: flex; flex-direction: column; gap: 12px">
     <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Đặt trước</h1>
@@ -157,12 +144,11 @@ div.st-root{container-type:size}
           </button>
         </li>
       </sc-for>
-      <li style="padding: 4px; font-size: 12px; line-height: 1.5; color: var(--ink3)">[Dữ liệu mẫu cho bản phác; thư viện giữ sách 3 ngày theo chính sách mặc định]</li>
     </ul>
   </section>
   </sc-if>
   <sc-if value="{{showDetail}}" hint-placeholder-val="{{ true }}">
-  <section aria-label="Chi tiết đặt trước" class="st-pane" style="position: absolute; left: 584px; right: 16px; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
+  <section aria-label="Chi tiết đặt trước" class="st-pane" style="position: absolute; left: 584px; right: 16px; top: 16px; bottom: 88px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
     <div class="st-scroll st-detail" style="animation: {{detailAnim}}; position: absolute; inset: 0; padding: 12px 20px 24px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 16px">
       <div style="display: flex; align-items: center; gap: 8px; min-height: 48px">
         <div style="flex: 1; font-size: 13px; font-weight: 600; color: var(--ink3)">Chi tiết đặt trước</div>
@@ -171,11 +157,11 @@ div.st-root{container-type:size}
       <div style="display: flex; gap: 16px; align-items: flex-start">
         <div aria-hidden="true" style="{{sel.coverStyle}}">
           <div style="font-size: 17px; font-weight: 700; line-height: 1.15">{{sel.title}}</div>
-          <div style="font-size: 11px; opacity: 0.85">{{sel.author}}</div>
+
         </div>
         <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px">
           <h2 style="margin: 0; font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.2px">{{sel.title}}</h2>
-          <div style="font-size: 14px; color: var(--ink2b)">{{sel.author}}</div>
+
         </div>
       </div>
       <sc-if value="{{isReady}}" hint-placeholder-val="{{ true }}">

@@ -1,6 +1,6 @@
 # Mockup giao diện kính ShelfTap và phép đo tương phản
 
-Mã nguồn của mockup 43 màn (20 màn điện thoại, 11 màn cửa sổ rộng và 12 màn cửa sổ vừa) ở `optimization/ui-ux-plan.md` §5.5, cùng các script đo dùng cho §5.3.
+Mã nguồn của mockup 44 màn (20 màn điện thoại, 12 màn cửa sổ rộng và 12 màn cửa sổ vừa) ở `optimization/ui-ux-plan.md` §5.5, cùng các script đo dùng cho §5.3.
 
 - **Mockup đang xem được:** https://claude.ai/artifact/GMkMmXLY2J2DP2MKf1yiGf. Các file `.dc.html` ở đây là bản 27 (ngày 2026-11-24): bản 14 cộng phần sửa công tắc và viền ô nhập (bản 15), viền của ô tìm kiếm ở màn Khách (bản 16), vùng chạm tối thiểu 48 px và lối vào màn Gợi ý và Thông báo (bản 17), rồi ba lỗi bố cục tìm ra khi thử rộng 320 và chữ 2.0 cùng băng "Gợi ý cho bạn" trên Danh mục và Danh mục cuộn dọc (cả hai đăng chung trong bản 18), và hai màn cửa sổ rộng `WideCatalog`, `RailCatalog` (bản 21; số bản nhảy từ 18 lên 21 dù chỉ đăng một lần, và 23 file đang đăng ở bản 21 trùng từng byte với repo). 10 màn rộng còn lại (`WideLoans` đến `WideStatus`) và phần thu gọn của `WideCatalog` đăng ở bản 23 (số bản lại nhảy từ 21 lên 23 dù chỉ đăng một lần; 33 file đang đăng trùng từng byte với repo). Nút thu gọn menu ở màn rộng và 11 màn cửa sổ vừa `Mid*` đăng ở bản 25 (số bản lại nhảy từ 23 lên 25 dù chỉ đăng một lần; 44 file đang đăng trùng từng byte với repo). Chuyển khung và hiệu ứng nhấn thẻ đăng ở bản 26 (lần này số bản tăng đúng một). Màn điện thoại cuộn dọc và nút nổi thu gọn (mục "Màn thấp và chữ 2.0" bên dưới) đăng ở bản 27; 17 màn vừa đăng trùng từng byte với repo.
 - **Mở trực tiếp không chạy:** mỗi màn cần runtime `support.js` của trình xem artifact, file đó không có trong repo. Các script dưới đây không cần runtime: chúng tự đọc template và chạy phần script của từng màn.
@@ -9,13 +9,13 @@ Mã nguồn của mockup 43 màn (20 màn điện thoại, 11 màn cửa sổ r�
 
 | File | Là gì |
 |---|---|
-| `*.dc.html` | 43 màn: 20 màn điện thoại 390 × 844, 11 màn `Wide*` 960 × 720, `RailCatalog` và 11 màn `Mid*` 720 × 840. Màu viết bằng biến CSS (token) có giá trị sáng và tối, font Nunito |
+| `*.dc.html` | 44 màn: 20 màn điện thoại 390 × 844, 12 màn `Wide*` 960 × 720 (có `WideList`), `RailCatalog` và 11 màn `Mid*` 720 × 840. Màu viết bằng biến CSS (token) có giá trị sáng và tối, font Nunito |
 | `canvas.json` | Vị trí và tên các màn trên canvas |
 | `tools/contrast.js` | Đo tương phản WCAG cho mọi đoạn chữ, ở theme sáng và tối (SC 1.4.3) |
 | `tools/nontext-contrast.js` | Đo tương phản cho icon, viền ô nhập, công tắc và trạng thái đang chọn (SC 1.4.11) |
 | `tools/target-size.js` | Đọc kích thước vẽ và vùng chạm của mọi nút, link và công tắc |
 | `tools/render-static.js` | Dựng các màn thành HTML tĩnh ở 15 biến thể: gốc, rộng 320, chữ 2.0, cả hai, bảy cỡ màn tỷ lệ đặc biệt, và bốn biến thể chỉ cho màn lớn. Màn cửa sổ rộng và vừa giữ kích thước vẽ ở biến thể gốc và chữ 2.0; các màn `Wide*` dựng thêm ở 844 × 390 (`land`) và với menu thu gọn (`navmini`); các màn cỡ vừa dựng thêm ở khung chi tiết (`middetail`), ở 600 × 840 (`mid600`) và cả hai (`mid600d`) |
-| `tools/wide-boards/` | Script sinh 10 màn rộng và 11 màn cỡ vừa từ một khung chung (`node tools/wide-boards/gen.js .`, ghi lại các file `.dc.html` và vị trí trong `canvas.json`). Mỗi màn dựng hai lần: `Wide*` 960 × 720 và `Mid*` 720 × 840. Sửa các màn đó ở đây rồi chạy lại; `WideCatalog` và `RailCatalog` viết tay |
+| `tools/wide-boards/` | Script sinh 12 màn rộng và 12 màn cỡ vừa từ một khung chung (`node tools/wide-boards/gen.js .`, ghi lại các file `.dc.html` và vị trí trong `canvas.json`). Mỗi màn dựng hai lần: `Wide*` 960 × 720 và `Mid*` 720 × 840. Sửa các màn đó ở đây rồi chạy lại; chỉ các màn điện thoại viết tay |
 | `tools/layout-check.js` | Chạy trong trình duyệt trên trang của `render-static.js`, sau khi tắt hiệu ứng động: đếm chữ tràn mép, tràn đáy, chữ đè chữ, chữ bị cắt; trên màn rộng hơn 600 dp đếm thêm dòng quá 80 ký tự và khối bị kéo giãn. Màn nào chưa tải xong font thì có mục `font` ("Nunito chưa tải xong"): số của màn đó không dùng được |
 | `tools/fonts/` | Font Nunito cố định cho phép đo (`Nunito[wght].ttf`, repo `google/fonts` ở commit 6049366) và giấy phép `OFL.txt`. Mockup đăng trên link vẫn tải Nunito từ Google Fonts |
 | `tools/hero-worst-case.js` | Tính riêng chữ trắng trên ảnh ở màn chào, ở trường hợp xấu nhất |
@@ -172,13 +172,28 @@ Số "trước" ở bảng trên đo ngày 2026-11-24 với font cố định tr
 | `WideAccount` | Tài khoản, Thông báo | Cài đặt hai khung: mục bên trái, nội dung bên phải; đăng xuất xác nhận trong khung |
 | `WideSignIn` | Màn chào, Đăng nhập, Đăng nhập bằng thẻ, Đổi mật khẩu | Ảnh kệ sách bên trái, nội dung bên phải |
 | `WideStatus` | Khởi động, Khóa, Mất kết nối, Đăng xuất kèm lý do | Một thẻ ở giữa, rộng 460 dp |
-| `WideGuest` | Chế độ khách | Menu rút gọn, danh sách, chi tiết; "Đặt trước" mở lời mời đăng nhập ngay trong khung |
-| `RailCatalog` | Danh mục ở cửa sổ 600–840 dp | Thanh điều hướng dọc 96 dp, một khung nội dung rộng tối đa 560 dp |
+| `WideGuest` | Chế độ khách | Trang đầu danh mục của khách: menu có "Danh mục" và "Đăng nhập", tiêu đề "Tìm sách trong thư viện", ghi chú viền đứt, banner chủ đề và các dải sách |
+| `WideList` | Danh sách cạnh chi tiết sách | Thiết kế chưa dựng trong app: app hiện mở danh sách rồi mới đến chi tiết (một khung mỗi lúc). Giữ lại làm đích của liên kết "Xem tất cả" |
+| `RailCatalog` | Danh mục ở cửa sổ 600–840 dp | Thanh điều hướng dọc 96 dp, trang đầu danh mục (lời chào, ô tìm, banner chủ đề, các dải sách), rộng tối đa 600 dp |
 | `Mid*` (11 màn) | Mọi chức năng trên, ở cửa sổ 600–840 dp | Xem mục "Cửa sổ vừa" bên dưới |
+
+## Vẽ lại theo app (2026-11-28)
+
+Các màn đã dựng trong app được vẽ lại cho khớp với app hiện tại (so bằng `optimization/ui-ux/compare/`); màn chưa dựng giữ nguyên là thiết kế. Đã đổi:
+
+- **Nút "Chạm sách để mượn":** nút tròn nổi ở góc dưới phải, như app (quyết định của người dùng), không còn nằm trong menu hay thanh dọc. Khách không có nút này; menu của khách có "Danh mục" và "Đăng nhập". Các khung nội dung chừa 88 dp phía dưới cho nút.
+- **Menu và thanh dọc:** bỏ lời chào "Thư viện ShelfTap" ở đầu menu (chỉ còn nút thu gọn tròn); nhãn "Đang mượn" thay "Sách đang mượn"; mục "Gợi ý cho bạn" chỉ còn ở chính màn Gợi ý (chưa dựng). Thanh dọc dùng nhãn đầy đủ ("Lịch sử đọc") và mục đang chọn là khối trắng.
+- **Danh mục và Khách (mọi khổ):** trang đầu là lời chào (hoặc "Tìm sách trong thư viện" cho khách), ô tìm, banner chủ đề với bìa, rồi các dải sách có tấm thông tin (tác giả, số bản). Không còn dải "Gợi ý cho bạn" và thẻ sách mẫu của màn Khách; "Đặt trước" ở màn Khách đi thẳng tới đăng nhập, không còn tờ "Cần đăng nhập".
+- **Đang mượn, Đặt trước, Lịch sử đọc, Tài khoản (điện thoại):** tiêu đề nằm ở thanh trên, cạnh nút menu. Đang mượn: số "2" không còn "/ tối đa 5", không có tên tác giả, nút "Gia hạn" không có số ngày; chi tiết quá hạn có ô "Còn lại" màu đỏ. Tài khoản: nhóm Quyền riêng tư chỉ có công tắc "Lưu lịch sử đọc của tôi" và liên kết "Lịch sử đọc"; không có nhóm Thông báo; "Khóa sinh trắc học".
+- **Tài khoản (cửa sổ rộng và vừa):** danh sách ba nhóm (Quyền riêng tư, Bảo mật, Giao diện) có mũi tên, nút "Đăng xuất" viền đỏ nằm dưới danh sách, đăng xuất vẫn xác nhận trong khung chi tiết.
+- **Chào và Đăng nhập (rộng, vừa):** Chào có thêm nút "Đăng nhập bằng thẻ thư viện"; Đăng nhập có thêm liên kết "Xem sách mà không cần đăng nhập".
+- **Chi tiết và danh sách:** bỏ "Kệ" và "Hạn mượn" (API chưa trả). **Mất kết nối:** bỏ nút "Tìm sách khi không có mạng" (chưa có chỉ mục ngoại tuyến).
+- **Chưa đổi:** các màn chưa dựng (Gợi ý, Thông báo, Tìm khi không có mạng, và phần Thông báo của Tài khoản trong các biến thể khác), màn Chào/Khởi động/Khóa/Đăng nhập bằng thẻ/Đổi mật khẩu/Tự mượn ở khổ điện thoại (khác app nhỏ, đã ghi ở `ui-ux/compare/README.md`), Lịch sử đọc ở cửa sổ rộng (app một khung, board hai khung), và dữ liệu mẫu (tên, sách) vẫn là dữ liệu của mockup.
+- Các tệp `.dc.html` đã đổi so với bản 27 trên link; link chưa đăng lại.
 
 Màn gộp nhiều chức năng có thanh xem trước trạng thái (nền tối), chỉ có trong bản phác. Menu trong các màn rộng trỏ sang màn rộng tương ứng, thanh dọc trong các màn cỡ vừa trỏ sang màn cỡ vừa.
 
-**Nút thu gọn menu.** Đầu menu cố định của 11 màn `Wide*` có một nút 48 × 48 dp (`aria-expanded`, tên "Thu gọn menu" hoặc "Mở rộng menu"). Bấm thì menu thu thành thanh dọc 72 dp chỉ có icon, giống phần thu gọn tự động ở dưới, và hai khung rộng ra. Khi cửa sổ đã tự thu gọn thì nút ẩn đi.
+**Nút thu gọn menu.** Đầu menu cố định của các màn `Wide*` có một nút tròn 48 × 48 dp (`aria-expanded`, tên "Thu gọn menu" hoặc "Mở rộng menu"). Bấm thì menu thu thành thanh dọc 72 dp chỉ có icon, giống phần thu gọn tự động ở dưới, và hai khung rộng ra. Khi cửa sổ đã tự thu gọn thì nút ẩn đi.
 
 **Cửa sổ rộng mà hẹp hoặc thấp.** Điện thoại xoay ngang rộng hơn 840 dp nên cũng dùng bố cục rộng, nhưng chỉ cao khoảng 390 dp. Khi cửa sổ hẹp hơn 900 dp hoặc thấp hơn 480 dp, menu cố định thu thành thanh dọc 72 dp chỉ có icon (tên mục đọc qua `aria-label`), hai khung dịch sang trái. Mockup làm bằng container query trên khung màn, nên `render-static.js` dựng các màn `Wide*` ở 844 × 390 để đo phần này.
 
