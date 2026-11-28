@@ -79,3 +79,12 @@ Sau khi mỗi màn trong B xong: vẽ lại board điện thoại, Vừa, Rộng
 - **Xong:** bước A (mockup khớp app cho phần đã dựng, hiệu ứng đổi hình của nút), link mockup bản 32. B1 (Gợi ý) trong app: thuật toán, dịch vụ, màn hình ba khổ, băng ở Danh mục, công tắc ở Tài khoản, kiểm thử đơn vị, audit ATF (commit `493b53c`).
 - **Đang dở (chưa đăng link):** vẽ lại mockup cho Gợi ý theo app: `Recommend.dc.html` (điện thoại), `MidRecommend` và `WideRecommend` (sinh từ `tools/wide-boards/boards1.js`), băng "Gợi ý cho bạn" ở `Catalog`, `RailCatalog`, `WideCatalog` (`shell.js` `home()`), mục "Gợi ý" trong menu, công tắc ở `Account`, `MidAccount`, `WideAccount`. Đo xong: `check-scripts`, tương phản, vùng chạm như trước; kiểm bố cục trong trình duyệt sạch ở khổ gốc, rộng 320, 320 cùng chữ 2.0, 600, menu thu gọn; **còn 2 chỗ chữ đè nhau ở chữ 2.0** trên `Catalog`, `RailCatalog`, `WideCatalog` (băng "Gợi ý cho bạn": tấm thông tin đè lên tiêu đề, cần tăng chỗ chừa như đã làm cho băng chủ đề).
 - **Chưa làm:** dựng lại ảnh cặp (cần chạy `run_audit.ps1 -Configs ref,refdark,medium,expanded -Locale vi` rồi `make_compare*.py`), cập nhật hai README, nhật ký cho phần mockup, đăng lại link; đo thời gian tính gợi ý trên dữ liệu thật (cần Docker và server dev), thử trên máy thật; B2 (Thông báo) và B3 (Tìm khi không có mạng) chưa bắt đầu, chờ nhóm chốt §4.
+
+## 7. Quyết định của người dùng (2026-11-28) cho các mục ở §4
+
+1. **Nhánh:** tiếp tục trên `opt/ui-ux`, không tạo nhánh mới.
+2. **API tải danh mục:** để sang đợt sau; không sửa `server/API.md`, không làm server. Ý tưởng để lại cho người làm backend ở `optimization/backend-catalog-api-note.md`. Hệ quả: **Tìm khi không có mạng** chưa dựng trong app (không có dữ liệu để tìm); chỉ vẽ mockup theo thiết kế cũ khi nào có API.
+3. **Báo sách đặt trước sẵn sàng:** tạm chỉ hiện trong app, không đẩy từ server, không hỏi server định kỳ. Thông báo chỉ có phần làm được trên máy: nhắc hạn trả và ẩn tên sách trên màn khóa.
+4. **`WideList`:** giữ trong mockup, ghi rõ là thiết kế chưa dựng (như README hiện tại).
+
+Việc tiếp theo: dựng **Thông báo** (nhóm trong Tài khoản) trong app ở ba khổ, rồi vẽ lại mockup theo app.
