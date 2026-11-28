@@ -1,0 +1,2 @@
+config	screen	check	type	element	bounds	message	under_bar
+medium	account-bottom	TextContrastCheck	WARNING	TextView | Bảo mật	Rect(298, 25 - 393, 60)	The item's text contrast ratio is 3.36. This ratio is based on an estimated foreground color of #817C77 and an estimated background color of #ECE7E1. Consider using colors that result in a contrast ratio greater than 4.50 for small text, or 3.00 for large text. This item may be obscured by other on-screen content. Consider manually testing this item's contrast.	yes

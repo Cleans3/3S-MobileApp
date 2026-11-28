@@ -51,14 +51,14 @@ a{color:var(--ink)}a:hover{opacity:.85}
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
 
-  <a href="Catalog.dc.html" aria-label="Quay lại" style="position: absolute; top: 56px; left: 20px; width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.9); background:  rgba(var(--glass),0.62); display: flex; align-items: center; justify-content: center; text-decoration: none">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m15 18-6-6 6-6"></path></svg>
+  <a href="Catalog.dc.html" aria-label="Mở menu" style="position: absolute; top: 56px; left: 20px; width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.9); background:  rgba(var(--glass),0.62); display: flex; align-items: center; justify-content: center; text-decoration: none">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
   </a>
+  <h1 style="position: absolute; top: 56px; left: 84px; right: 20px; height: 48px; margin: 0; display: flex; align-items: center; font-size: 22px; font-weight: 600; letter-spacing: -0.2px">Tự mượn</h1>
 
   <div class="st-page" style="position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none">
   <div style="position: relative; min-height: max(100%, 844px); display: flex; flex-direction: column">
-  <div style="position: relative; flex: none; margin: 124px 24px 0; display: flex; flex-direction: column; gap: 6px">
-    <h1 style="margin: 0; font-size: 30px; font-weight: 700; letter-spacing: -0.3px">Tự mượn sách</h1>
+  <div style="position: relative; flex: none; margin: 116px 24px 0; display: flex; flex-direction: column; gap: 6px">
     <p style="margin: 0; font-size: 14px; color: var(--ink2b)">Xem trước từng trạng thái:</p>
   </div>
 
@@ -93,7 +93,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
       <h2 style="margin: 0; font-size: 22px; font-weight: 700">Đã mượn: Số đỏ</h2>
       <div style="font-size: 15px; color: var(--ink2)">Hạn trả 07/12/2026 · 14 ngày</div>
       <a href="Checkout.dc.html" style="align-self: stretch; height: 52px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 600">Mượn cuốn khác</a>
-      <a href="Loans.dc.html" style="font-size: 14px; font-weight: 500">Xem sách đang mượn</a>
+      <a href="Loans.dc.html" style="font-size: 14px; font-weight: 500">Sách đang mượn</a>
     </div>
   </sc-if>
 
@@ -104,7 +104,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
         Chưa mượn được
       </div>
       <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2)">Bạn còn 2.000 ₫ tiền phạt chưa trả. Thư viện không cho mượn thêm cho tới khi thanh toán tại quầy.</p>
-      <a href="Loans.dc.html" style="height: 50px; border-radius: 999px; background:  #7a3420; color: #ffffff; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 600">Xem khoản phạt</a>
+      <a href="Loans.dc.html" style="height: 50px; border-radius: 999px; background:  #7a3420; color: #ffffff; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 600">Khoản phạt</a>
       <button type="button" onClick="{{toWait}}" style="height: 44px; border: 0; background:  transparent; font: inherit; font-size: 14px; font-weight: 500; color: var(--ink2); cursor: pointer">Thử sách khác</button>
     </div>
   </sc-if>

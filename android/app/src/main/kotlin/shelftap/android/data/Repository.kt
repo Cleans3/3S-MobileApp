@@ -34,8 +34,16 @@ class Repository(private val api: ShelfTapApi, private val session: SessionManag
         override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, TitleSummary>?) = size > SEEN_MAX
     }
 
+    /** How many books the whole catalog has, once an unfiltered list reported it (the suggestions use it to tell a common subject from a rare one). */
+    @Volatile
+    var catalogSize: Long? = null
+        private set
+
     suspend fun titles(query: String, page: Int): Page<TitleSummary> =
-        call { api.titles(query, page, PAGE_SIZE) }.also { result -> synchronized(seen) { result.items.forEach { seen[it.titleId] = it } } }
+        call { api.titles(query, page, PAGE_SIZE) }.also { result ->
+            synchronized(seen) { result.items.forEach { seen[it.titleId] = it } }
+            if (query.isBlank()) catalogSize = result.total
+        }
 
     /** What a list showed of this book, or null when it did not (the page then waits for the server). */
     fun seenTitle(titleId: String): TitleSummary? = synchronized(seen) { seen[titleId] }

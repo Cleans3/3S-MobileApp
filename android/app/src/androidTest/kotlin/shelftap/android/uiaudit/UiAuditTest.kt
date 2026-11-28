@@ -19,6 +19,8 @@ import androidx.compose.ui.test.isSelectable
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.filter
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
@@ -123,6 +125,64 @@ class UiAuditTest {
     @Before
     fun gate() = assumeTrue("pass -Pandroid.testInstrumentationRunnerArguments.uiAudit=<label> to run the UI audit", label.isNotEmpty())
 
+    /**
+     * The effects of the app at real speed, for a screen recording (`optimization/ui-ux/tools/record_effects.ps1` runs this and pulls the video).
+     * Measurement only: skipped unless the instrumentation argument `uiVideo` is set. The app sets FLAG_SECURE, which also blacks out
+     * `screenrecord`; this test clears the flag on the window of its own run (the product code is not changed and no build ships without
+     * the flag). It goes through the same sequence twice: the first pass warms up the code (an unoptimised debug build is slow the first
+     * time through), and only the second is recorded, started and stopped by the test itself with the system's `screenrecord`.
+     */
+    @Test
+    fun effectsVideo() {
+        assumeTrue("pass -e uiVideo 1 (and uiAudit <label>) to record the effects", args.getString("uiVideo") != null && label.isNotEmpty())
+        val app = instrumentation.targetContext.applicationContext as ShelfTapApp
+        val session = installFakes(app.container)
+        runBlocking { app.container.themeStore.setForcedEffect(args.getString("tier")) }
+        runBlocking { session.restore() }
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            scenario.onActivity { it.window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE) }
+            waitFor(str(R.string.welcome_guest))
+            runBlocking { session.login(AuditData.EMAIL, "audit-only") }
+            waitFor(str(R.string.catalog_theme))
+            runCatching { waitFor(str(R.string.recommend_strip_note)) }
+            effectsPass(scenario)  // warm-up, not recorded
+            val remote = "/data/local/tmp/effects-$label.mp4"
+            uiAutomation.executeShellCommand("screenrecord --bit-rate 3000000 --size ${args.getString("videoSize") ?: "576x1248"} --time-limit 170 $remote")
+            Thread.sleep(2500) // the encoder starts
+            // The frame statistics of the recorded pass only (the system counts frames per process): reset now, read after it.
+            uiAutomation.executeShellCommand("dumpsys gfxinfo ${instrumentation.targetContext.packageName} reset").use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() }
+            effectsPass(scenario)
+            Thread.sleep(800)
+            File(outDir, "gfxinfo.txt").writeBytes(uiAutomation.executeShellCommand("dumpsys gfxinfo ${instrumentation.targetContext.packageName}").use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() })
+            uiAutomation.executeShellCommand("pkill -INT screenrecord").use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() }
+            Thread.sleep(3000) // the file is finished
+        }
+    }
+
+    private fun pause(ms: Long) = Thread.sleep(ms)
+
+    /** What a person would do to see the effects: scroll, open and close the menu, open a book and go back, switch screens. */
+    private fun effectsPass(scenario: ActivityScenario<MainActivity>) {
+        pause(1200)
+        compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() }; pause(1000)
+        compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeDown() }; pause(1000)
+        // A window wide enough for a rail or a fixed menu has no ☰ button: nothing to open there.
+        if (hasBurger()) {
+            openMenu(); pause(1300)
+            compose.onAllNodesWithContentDescription(str(R.string.menu_close))[0].performClick(); pause(1100)
+        }
+        // The ISBN tile can lie below the fold of a very short window (the cover screen of a flip phone): then the book is only waited for by its page settling.
+        openFirstTitle(); runCatching { waitFor(AuditData.titles.first().isbn) }; compose.waitForIdle(); pause(2200)
+        // On a wide window the book is a pane beside the list, closed by its own button; elsewhere it is a screen to go back from.
+        val closePane = compose.onAllNodesWithContentDescription(str(R.string.title_close_pane))
+        if (closePane.fetchSemanticsNodes().isNotEmpty()) closePane[0].performClick() else scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+        // The home comes back scrolled to where it was: on a short window its banner may be off screen (a lazy list does not compose it), so do not wait for it.
+        runCatching { waitFor(str(R.string.catalog_theme)) }; compose.waitForIdle(); pause(1400)
+        tab(R.string.tab_loans); waitFor(AuditData.loans.first().title); pause(1600)
+        tab(R.string.tab_reservations); waitFor(AuditData.reservations.first().title); pause(1600)
+        tab(R.string.tab_catalog); runCatching { waitFor(str(R.string.catalog_theme)) }; compose.waitForIdle(); pause(1400)
+    }
+
     @Test
     fun tour() {
         val app = instrumentation.targetContext.applicationContext as ShelfTapApp
@@ -147,6 +207,9 @@ class UiAuditTest {
 
             runBlocking { session.login(AuditData.EMAIL, "audit-only") }
             waitFor(str(R.string.catalog_theme)) // the banner: always on screen, unlike the strips below it at a large font
+            // The "Suggestions for you" strip is worked out after the home is drawn and pushes the strips below it down: wait for it, or a tap
+            // aimed at a button lands on whatever moved under it. (With a very large font it is below the screen and is not waited for.)
+            runCatching { waitFor(str(R.string.recommend_strip_note)) }
             audit("catalog", activity)
             // Mid-scroll: the page passes under the top bar and the floating button.
             compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() }
@@ -160,8 +223,9 @@ class UiAuditTest {
             // "See all books" opens the list: the search field and the row of subject chips on glass over the rows.
             // The button is the last item of a lazy column, so it exists only once scrolled to: scroll the list to that item.
             compose.onAllNodes(hasScrollToNodeAction()).onFirst().performScrollToNode(hasText(str(R.string.catalog_see_all_books)))
-            compose.waitForIdle()
-            compose.onNodeWithText(str(R.string.catalog_see_all_books)).performScrollTo().performClick()
+            // Clicked through its semantics: at the end of the page the button can sit partly under the floating button, and a tap at its
+            // centre would land on that.
+            compose.onNodeWithText(str(R.string.catalog_see_all_books)).performScrollTo().performSemanticsAction(SemanticsActions.OnClick)
             waitFor(str(R.string.catalog_chip_all))
             audit("list", activity)
             // A chip searches its subject (the second chip is the first subject).
@@ -177,7 +241,16 @@ class UiAuditTest {
             }
             waitFor(str(R.string.catalog_theme))
 
-            openFirstTitle()
+            if (config == "ref") {
+                // The reference size also records the opening of the book page frame by frame (screen slide, the floating button turning into the bar).
+                compose.mainClock.autoAdvance = false
+                openFirstTitle()
+                recordFrames(activity, "detail-open", listOf(20, 20, 20, 20, 30, 30, 40, 40, 60))
+                compose.mainClock.autoAdvance = true
+                compose.waitForIdle()
+            } else {
+                openFirstTitle()
+            }
             waitFor(AuditData.titles.first().isbn) // the ISBN tile of the book page
             audit("detail", activity)
             // On a wide window the detail is a pane beside the list, not a screen to go back from.
@@ -188,9 +261,19 @@ class UiAuditTest {
                 compose.onNodeWithContentDescription(str(R.string.nav_expand)).performClick(); compose.waitForIdle()
                 compose.onNodeWithContentDescription(str(R.string.title_close_pane)).performClick(); compose.waitForIdle()
                 audit("pane-closed", activity)
+            } else if (config == "ref") {
+                compose.mainClock.autoAdvance = false
+                scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+                recordFrames(activity, "detail-close", listOf(20, 20, 20, 20, 30, 30, 40, 40, 60))
+                compose.mainClock.autoAdvance = true
+                compose.waitForIdle()
             } else {
                 scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
             }
+
+            // "Suggestions for you": worked out on the phone from the fake loans, reservations and history; the fixtures give it something to suggest.
+            tab(R.string.tab_recommend_menu); waitFor(str(R.string.recommend_note))
+            audit("recommend", activity)
 
             tab(R.string.tab_loans); waitFor(AuditData.loans.first().title)
             audit("loans", activity)
@@ -242,6 +325,18 @@ class UiAuditTest {
 
             tab(R.string.tab_account); waitFor(AuditData.me.fullName)
             audit("account", activity)
+            // The notifications group: its switches, and the explanation that comes before Android's own question (on a wide window the group is a section: open it first).
+            openAccountSection(R.string.account_notifications)
+            compose.waitForIdle()
+            compose.onNode(hasScrollAction() and hasAnyDescendant(hasText(str(R.string.account_notif_due)))).performScrollToNode(hasText(str(R.string.account_notif_due)))
+            compose.waitForIdle()
+            audit("account-notifications", activity)
+            // By the semantic action, not a touch: with large text the row can sit under the floating button, which would take the touch.
+            compose.onNodeWithText(str(R.string.account_notif_due)).performSemanticsAction(SemanticsActions.OnClick)
+            waitFor(str(R.string.notif_ask_title))
+            audit("notifications-ask", activity)
+            compose.onNodeWithText(str(R.string.notif_ask_later)).performClick()
+            compose.waitForIdle()
             // The foot of the page too: its theme choice and the sign-out button sit below the first screen, and the scanner only judges what is on screen.
             // The page is the scrollable that holds the sign-out button, not the first one: on a medium window the navigation rail scrolls too, and comes first.
             val accountPage = hasScrollAction() and hasAnyDescendant(hasText(str(R.string.action_logout)))
@@ -250,7 +345,8 @@ class UiAuditTest {
             repeat(3) { compose.onNode(accountPage).performTouchInput { swipeUp() } }
             compose.waitForIdle()
             audit("account-bottom", activity)
-            // (on a wide window the history link is in the pane beside the list, not in the list)
+            // (on a wide window the history link is in the pane beside the list, not in the list: open the privacy section first)
+            openAccountSection(R.string.account_privacy)
             compose.onNode(hasScrollAction() and hasAnyDescendant(hasText(str(R.string.account_history)))).performScrollToNode(hasText(str(R.string.account_history)))
             compose.waitForIdle()
             compose.onNodeWithText(str(R.string.account_history)).performClick(); waitFor(AuditData.history.first().title)
@@ -325,6 +421,18 @@ class UiAuditTest {
         compose.waitForIdle()
     }
 
+    /**
+     * The compose clock is stopped (the caller did that): advance it by each step and save the window as `<config>/<name>-<elapsed ms>-hw.png`.
+     * The frames are what the tool `optimization/ui-ux/tools/frames_to_anim.py` turns into an animation.
+     */
+    private fun recordFrames(activity: MainActivity, name: String, steps: List<Int>) {
+        var at = 0
+        for (d in steps) {
+            compose.mainClock.advanceTimeBy(d.toLong()); at += d
+            captureHardware(activity.window.decorView)?.let { bmp -> File(outDir, "$config/$name-$at-hw.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) } }
+        }
+    }
+
     /** A control held down: the pressed state, drawn by the GPU renderer, saved as `<config>/<name>-hw.png`. Skipped when the control is not on screen. */
     private fun holdShot(name: String, nodes: androidx.compose.ui.test.SemanticsNodeInteractionCollection, activity: MainActivity, scroll: Boolean = false) {
         if (nodes.fetchSemanticsNodes().isEmpty()) return
@@ -390,6 +498,16 @@ class UiAuditTest {
             // The always-visible navigation reads each entry as "Go to <name>".
             compose.onNodeWithContentDescription(str(R.string.nav_go_to, str(id))).performClick()
         }
+        compose.waitForIdle()
+    }
+
+    /**
+     * On a wide window the groups of the account are rows to choose from, and the chosen one shows in the pane beside; on a narrow one they are only
+     * labels over one page (not clickable, and a click on a label could land on the floating button): then there is nothing to open.
+     */
+    private fun openAccountSection(label: Int) {
+        val rows = compose.onAllNodesWithText(str(label)).filter(hasClickAction())
+        if (rows.fetchSemanticsNodes().isNotEmpty()) rows[0].performClick()
         compose.waitForIdle()
     }
 

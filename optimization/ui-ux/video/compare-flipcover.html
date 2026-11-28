@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ShelfTap: the app as first cloned and now, side by side</title>
+<style>
+body{font:15px/1.5 system-ui,sans-serif;margin:0;padding:16px;background:#1c1b1a;color:#f2eee9}
+h1{font-size:20px;margin:0 0 4px}p{margin:4px 0 12px;max-width:70ch;color:#d3cbc1}
+.pair{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+figure{margin:0}figcaption{margin:0 0 6px;font-weight:600}
+video{height:76vh;max-height:900px;border-radius:12px;background:#000}
+.bar{margin:12px 0;display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;padding:8px 16px;border-radius:999px;border:1px solid #6b655e;background:#2a2723;color:#f2eee9;cursor:pointer}
+table{border-collapse:collapse;margin-top:16px}td,th{border:1px solid #4a453f;padding:6px 12px;text-align:left}
+</style></head><body>
+<h1>First clone and now, window: flipcover</h1>
+<p>Scroll the home, open a book and go back, switch screens. Recorded on the same emulator and window size, debug builds, after a warm-up pass.
+The screens differ because the interface differs: the first clone has a five-tab bar and no menu.</p>
+<div class="bar"><button id="play">Play both</button><button id="pause">Pause</button><button id="restart">Restart</button>
+<button id="slow">Speed 0.25</button><button id="normal">Speed 1</button></div>
+<div class="pair">
+<figure><figcaption>Before: first clone</figcaption><video id="a" src="BASE-flipcover/effects.mp4" muted loop playsinline controls></video></figure>
+<figure><figcaption>After: now</figcaption><video id="b" src="NOW-flipcover/effects.mp4" muted loop playsinline controls></video></figure>
+</div>
+<table><thead><tr><th>Frame statistics of the recorded pass</th><th>First clone</th><th>Now</th></tr></thead><tbody><tr><td>Total frames rendered</td><td>183</td><td>108</td></tr><tr><td>Janky frames</td><td>14</td><td>50</td></tr><tr><td>Janky frames (%)</td><td>7.65</td><td>46.30</td></tr><tr><td>Janky frames, legacy</td><td>62</td><td>93</td></tr><tr><td>50th percentile (ms)</td><td>17</td><td>34</td></tr><tr><td>90th percentile (ms)</td><td>31</td><td>77</td></tr><tr><td>95th percentile (ms)</td><td>32</td><td>129</td></tr><tr><td>99th percentile (ms)</td><td>250</td><td>250</td></tr><tr><td>Missed Vsync</td><td>5</td><td>26</td></tr><tr><td>High input latency</td><td>241</td><td>108</td></tr><tr><td>Slow UI thread</td><td>6</td><td>25</td></tr><tr><td>Slow bitmap uploads</td><td>0</td><td>2</td></tr><tr><td>Slow issue draw commands</td><td>9</td><td>34</td></tr><tr><td>Frame deadline missed</td><td>14</td><td>50</td></tr></tbody></table>
+<script>
+var a=document.getElementById('a'),b=document.getElementById('b');
+function all(f){[a,b].forEach(f)}
+document.getElementById('play').onclick=function(){all(function(v){v.currentTime=Math.min(a.currentTime,b.currentTime);v.play()})};
+document.getElementById('pause').onclick=function(){all(function(v){v.pause()})};
+document.getElementById('restart').onclick=function(){all(function(v){v.currentTime=0;v.play()})};
+document.getElementById('slow').onclick=function(){all(function(v){v.playbackRate=0.25})};
+document.getElementById('normal').onclick=function(){all(function(v){v.playbackRate=1})};
+</script></body></html>

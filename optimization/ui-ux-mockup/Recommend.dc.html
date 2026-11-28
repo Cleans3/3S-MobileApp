@@ -56,60 +56,48 @@ a{color:var(--ink)}a:hover{opacity:.85}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
-  <a href="Catalog.dc.html" aria-label="Quay lại danh mục" class="st-press" style="position: absolute; top: 56px; left: 20px; width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.9); background:  rgba(var(--glass),0.62); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; align-items: center; justify-content: center; text-decoration: none">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m15 18-6-6 6-6"></path></svg>
+  <a href="Catalog.dc.html" aria-label="Mở menu" class="st-press" style="position: absolute; top: 56px; left: 20px; width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.9); background:  rgba(var(--glass),0.62); display: flex; align-items: center; justify-content: center; text-decoration: none">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
   </a>
-  <div class="st-rise" style="position: absolute; top: 120px; left: 20px; right: 20px; display: flex; flex-direction: column; gap: 4px">
-    <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.3px">Gợi ý cho bạn</h1>
-    <p style="margin: 0; font-size: 13px; line-height: 1.45; color: var(--ink2b)">{{subtitle}}</p>
-  </div>
+  <h1 style="position: absolute; top: 56px; left: 84px; right: 20px; height: 48px; margin: 0; display: flex; align-items: center; font-size: 22px; font-weight: 600; letter-spacing: -0.2px">Gợi ý cho bạn</h1>
+  <p class="st-rise" style="position: absolute; top: 116px; left: 24px; right: 24px; margin: 0; font-size: 14px; line-height: 1.45; color: var(--ink2)">{{subtitle}}</p>
 
   <sc-if value="{{hasRecs}}" hint-placeholder-val="{{ true }}">
-    <ul class="st-scroll" style="position: absolute; top: 200px; left: 16px; right: 16px; bottom: 70px; overflow-y: auto; list-style: none; margin: 0; padding: 0 0 12px; display: flex; flex-direction: column; gap: 10px">
+    <ul class="st-scroll" style="position: absolute; top: 152px; left: 16px; right: 16px; bottom: 70px; overflow-y: auto; list-style: none; margin: 0; padding: 0 0 12px; display: flex; flex-direction: column; gap: 10px">
       <sc-if value="{{isCard}}" hint-placeholder-val="{{ false }}">
         <li class="st-fade">
-          <a href="History.dc.html" style="display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 22px; background: var(--primary); color: var(--on-primary); text-decoration: none">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
-            <span style="flex: 1; font-size: 14px; font-weight: 600; line-height: 1.35">Nhập mật khẩu để có gợi ý chính xác hơn</span>
-          </a>
+          <a href="History.dc.html" style="display: flex; align-items: center; min-height: 52px; padding: 0 18px; border-radius: 20px; background: var(--surface); text-decoration: none; font-size: 14px; font-weight: 600">Nhập mật khẩu để gợi ý đúng hơn</a>
         </li>
       </sc-if>
       <sc-for list="{{recs}}" as="b" hint-placeholder-count="4">
         <li class="st-rise" style="{{b.delay}}">
-          <div style="padding: 12px; border-radius: 22px; background:  rgba(var(--glass),0.75); display: flex; flex-direction: column; gap: 10px">
-            <a href="Detail.dc.html" style="display: flex; gap: 14px; align-items: center; text-decoration: none; color: var(--ink); min-height: 48px">
-              <div aria-hidden="true" style="{{b.cover}}">{{b.mono}}</div>
-              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
-                <div style="font-size: 15px; font-weight: 700; line-height: 1.25">{{b.title}}</div>
-                <div style="font-size: 13px; color: var(--ink2b)">{{b.author}}</div>
-                <div style="display: flex; gap: 6px; align-items: center; margin-top: 2px">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--warn3)"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"></path></svg>
-                  <span style="font-size: 12px; font-weight: 600; color: var(--warn2)">{{b.reason}}</span>
-                </div>
+          <div style="border-radius: 28px; background:  rgba(var(--glass),0.8); display: flex; flex-direction: column">
+            <a href="Detail.dc.html" style="display: flex; gap: 14px; padding: 12px 12px 0; text-decoration: none; color: var(--ink); min-height: 48px">
+              <div aria-hidden="true" style="{{b.cover}}">{{b.title}}</div>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <div style="font-size: 15px; font-weight: 600; line-height: 1.25">{{b.title}}</div>
+                <div style="font-size: 13px; color: var(--ink2)">{{b.author}}</div>
+                <div style="font-size: 13px; font-weight: 700; line-height: 1.3; color: var(--warn)">{{b.reason}}</div>
+                <div style="{{b.statusStyle}}">{{b.status}}</div>
               </div>
             </a>
-            <div style="display: flex; gap: 8px; align-items: center">
-              <span style="{{b.pill}}">{{b.status}}</span>
-              <div style="flex: 1"></div>
-              <button type="button" onClick="{{b.hide}}" class="st-press" style="height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.16); background:  transparent; font: inherit; font-size: 12px; font-weight: 600; color: var(--ink2); cursor: pointer">Không quan tâm</button>
-            </div>
+            <button type="button" onClick="{{b.hide}}" class="st-press" aria-label="Không quan tâm: {{b.title}}" style="align-self: flex-start; min-height: 48px; margin: 0 0 4px 4px; padding: 0 16px; border-radius: 999px; border: 0; background: transparent; color: var(--ink2); font: inherit; font-size: 14px; cursor: pointer">Không quan tâm</button>
           </div>
         </li>
       </sc-for>
-      <li style="padding: 4px 8px; font-size: 12px; line-height: 1.5; color: var(--ink3)">Gợi ý được tính ngay trên máy, theo tác giả và chủ đề của sách bạn mượn. Lịch sử không được gửi đi đâu. Tắt trong Tài khoản: "Gợi ý theo lịch sử đọc".</li>
+      <li style="padding: 4px 8px; font-size: 12px; line-height: 1.5; color: var(--ink3)">Gợi ý được tính ngay trên máy, theo tác giả và chủ đề của sách bạn mượn. Lịch sử không được gửi đi đâu.</li>
     </ul>
   </sc-if>
 
   <sc-if value="{{noRecs}}" hint-placeholder-val="{{ false }}">
-    <div class="st-fade" style="position: absolute; top: 240px; left: 28px; right: 28px; display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center">
-      <span style="width: 72px; height: 72px; border-radius: 999px; background: var(--surface); display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#8a8178" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"></path></svg></span>
-      <div style="font-size: 18px; font-weight: 700">Chưa có gì để gợi ý</div>
-      <div style="font-size: 14px; line-height: 1.5; color: var(--ink2b)">Bạn đã tắt lưu lịch sử đọc và hiện không mượn cuốn nào, nên ShelfTap không có dữ liệu để gợi ý. Bạn vẫn xem sách theo chủ đề được.</div>
-      <a href="List.dc.html" class="st-press" style="margin-top: 4px; height: 50px; padding: 0 22px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; text-decoration: none; font-size: 15px; font-weight: 600">Xem theo chủ đề</a>
-      <a href="Account.dc.html" style="font-size: 14px; font-weight: 500; color: var(--ink2); padding: 8px">Cài đặt lịch sử đọc</a>
+    <div class="st-fade" style="position: absolute; top: 160px; left: 24px; right: 24px; display: flex; flex-direction: column; gap: 14px">
+      <div style="font-size: 18px; font-weight: 600">Chưa có gì để gợi ý</div>
+      <div style="font-size: 14px; line-height: 1.5; color: var(--ink2)">ShelfTap chưa có dữ liệu để gợi ý: bạn chưa mượn cuốn nào, hoặc đã tắt lưu lịch sử đọc và hiện không mượn cuốn nào. Bạn vẫn xem sách theo chủ đề được.</div>
+      <a href="List.dc.html" class="st-press" style="min-height: 52px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 600">Xem theo chủ đề</a>
+      <a href="Account.dc.html" class="st-press" style="min-height: 52px; border-radius: 999px; border: 1px solid rgba(var(--ink-rgb),0.25); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 600">Cài đặt lịch sử đọc</a>
     </div>
   </sc-if>
-  <div role="group" aria-label="Trạng thái xem trước (chỉ có trong bản phác)" style="position: absolute; left: 12px; right: 12px; bottom: 14px; padding: 4px; border-radius: 999px; background: rgba(28,27,26,0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px">
+  <div role="group" aria-label="Trạng thái xem trước (chỉ có trong bản phác)" style="position: absolute; left: 12px; right: 12px; bottom: 14px; padding: 4px; border-radius: 999px; background: rgba(28,27,26,0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px">
     <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
       <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" class="st-swap st-press" style="{{t.style}}">{{t.label}}</button>
     </sc-for>
@@ -174,27 +162,32 @@ class Component extends DCLogic {
         [book('Tắt đèn', 'Ngô Tất Tố', '#7a2e1e', '#ffffff', 0), 'Cùng chủ đề Tiểu thuyết với sách bạn đang mượn'],
         [book('Truyện Kiều', 'Nguyễn Du', '#e7dcc6', '#2f4a44', 2), 'Cùng chủ đề Văn học Việt Nam']
       ],
-      off: []
+      off: [
+        [book('Tắt đèn', 'Ngô Tất Tố', '#7a2e1e', '#ffffff', 0), 'Cùng chủ đề Tiểu thuyết'],
+        [book('Truyện Kiều', 'Nguyễn Du', '#e7dcc6', '#2f4a44', 2), 'Cùng chủ đề Văn học Việt Nam']
+      ],
+      none: []
     };
     var mono = function (t) { var w = t.split(/\s+/); return (w[0][0] + (w[1] ? w[1][0] : '')).toUpperCase(); };
     var list = sets[v].filter(function (r) { return !hidden[v + r[0].t]; });
     return Object.assign(this.__theme(), {
       isCard: v === 'card',
-      hasRecs: v !== 'off',
-      noRecs: v === 'off',
-      subtitle: v === 'pw' ? 'Theo sách bạn đã mượn và đang mượn.' : v === 'card' ? 'Đăng nhập bằng thẻ: chỉ theo sách bạn đang mượn.' : 'Lịch sử đọc đang tắt.',
+      hasRecs: v !== 'none',
+      noRecs: v === 'none',
+      subtitle: v === 'pw' ? 'Theo sách bạn đã mượn và đang mượn.' : v === 'card' ? 'Đăng nhập bằng thẻ: chỉ theo sách bạn đang mượn.' : 'Lịch sử đọc đang tắt: chỉ theo sách bạn đang mượn.',
       recs: list.map(function (r, i) {
         var b = r[0], out = b.n === 0;
         return {
           title: b.t, author: b.a, mono: mono(b.t), reason: r[1],
           status: out ? 'Đang được mượn · đặt trước' : 'Còn ' + b.n + ' bản',
           delay: 'animation-delay:' + i * 50 + 'ms',
-          cover: 'width:52px;height:74px;flex:none;border-radius:12px;display:flex;align-items:flex-end;padding:8px;box-sizing:border-box;font-size:15px;font-weight:700;background:' + b.bg + ';color:' + b.fg + ';box-shadow:0 6px 14px rgba(0,0,0,0.14)',
+          cover: 'width:48px;height:72px;flex:none;border-radius:8px;padding:6px;box-sizing:border-box;overflow:hidden;font-size:10px;font-weight:600;line-height:1.2;background:' + b.bg + ';color:' + b.fg,
+          statusStyle: 'font-size:13px;color:' + (out ? 'var(--danger)' : 'var(--ok)'),
           pill: 'font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:' + (out ? 'rgba(181,69,43,0.12)' : 'rgba(47,91,58,0.12)') + ';color:' + (out ? 'var(--danger2)' : 'var(--ok)'),
           hide: function () { var h = Object.assign({}, hidden); h[v + b.t] = true; self.setState({ hidden: h }); }
         };
       }),
-      tabs: tabsOf([['pw', 'Mật khẩu'], ['card', 'Thẻ'], ['off', 'Tắt lịch sử']], v, 'v')
+      tabs: tabsOf([['pw', 'Mật khẩu'], ['card', 'Thẻ'], ['off', 'Tắt lịch sử'], ['none', 'Chưa có gì']], v, 'v')
     });
   }
 }

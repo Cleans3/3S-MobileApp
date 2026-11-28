@@ -46,6 +46,21 @@ ${MINI('.st-root[data-nav="mini"] ')}
   .st-full{left:104px !important}
 }`;
 
+// The dock changes shape as in the app (ActionDock.kt): a 56 dp round icon folds out into the glass bar, the tag circle grows 40 -> 52 dp and
+// turns dark, the reserve button fades in after half way; 260 ms. Only the "from" frame is written: the end frame is the element's own style.
+const DOCK_MS = '260ms cubic-bezier(.2,.8,.2,1) both';
+const DOCK_CSS = ['a', 'b'].map(k => `
+@keyframes st-dko${k}{from{width:56px;height:56px;background-color:var(--primary);box-shadow:0 6px 14px rgba(28,27,26,0.3)}}
+@keyframes st-dkoc${k}{from{width:40px;height:40px;background-color:color-mix(in srgb,var(--on-primary) 16%,transparent)}}
+@keyframes st-dkol${k}{from{opacity:1}to{opacity:0}}
+@keyframes st-dkor${k}{0%,50%{opacity:0}100%{opacity:1}}
+@keyframes st-dkx${k}{from{width:var(--dkw);height:68px;background-color:rgba(var(--glass),0.92);box-shadow:none}}
+@keyframes st-dkxc${k}{from{width:52px;height:52px;background-color:var(--primary)}}
+@keyframes st-dkxr${k}{from{opacity:1}to{opacity:0}}
+.st-dk.dko-${k}{animation:st-dko${k} ${DOCK_MS}}.dko-${k} .st-dkc{animation:st-dkoc${k} ${DOCK_MS}}.dko-${k} .st-dkr{animation:st-dkor${k} ${DOCK_MS}}
+.st-dk.dkc-${k}{animation:st-dkx${k} ${DOCK_MS}}.dkc-${k} .st-dkc{animation:st-dkxc${k} ${DOCK_MS}}.dkc-${k} .st-dkr{animation:st-dkxr${k} 130ms ease-out both}`).join('') + `
+@media (prefers-reduced-motion: reduce){.st-dk,.st-dk .st-dkc,.st-dk .st-dkr{animation:none !important}}`;
+
 const head = (title, w, h) => `<!doctype html>
 <html lang="vi">
 <head>
@@ -108,6 +123,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-scroll{scrollbar-width:none}.st-scroll::-webkit-scrollbar{display:none}
 .st-scroll>*{flex-shrink:0}
 ${COMPACT}
+${DOCK_CSS}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: ${w}px; height: ${h}px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
@@ -164,7 +180,7 @@ class Component extends DCLogic {
       listAnim: mid && st.navDir === 'back' ? 'st-axl' + ease : 'st-fade 260ms ease-out both',
       detailAnim: mid ? 'st-axr' + ease : (n % 2 ? 'st-xb' : 'st-xa') + ' 150ms ease-out both',
       rowsStill: !!st.navDir,
-      back: function () { self.setState({ view: 'list', navDir: 'back' }); },
+      back: function () { self.setState({ view: 'list', navDir: 'back', swapN: n + 1 }); },
       toDetail: function () { var o = { swapN: n + 1, navDir: 'fwd' }; if (mid) o.view = 'detail'; self.setState(o); }
     };
   }
@@ -189,7 +205,7 @@ class Component extends DCLogic {
         var lay = self.__layout();
         return {
           title: o.title, author: o.author || '', mono: mono(o.title),
-          status: o.status || '', pill: o.pill || '',
+          status: o.status || '', hasStatus: !!o.status, pill: o.pill || '',
           hasNote: !!o.note, note: o.note || '', hasReason: !!o.reason, reason: o.reason || '',
           current: o.on ? 'true' : 'false', pick: function () { o.pick(); lay.toDetail(); },
           // rows rise once, on first load; coming back to the list does not replay it
@@ -230,16 +246,21 @@ const ICON = {
   reservations: ['M6 3h12v18l-6-4-6 4z', 'M9 9h6'],
   history: ['M3 12a9 9 0 1 0 3-6.7L3 8', 'M3 3v5h5'],
   account: ['M4 21a8 8 0 0 1 16 0', 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z'],
-  books: ['M4 6h16', 'M4 12h16M4 18h10']
+  books: ['M4 6h16', 'M4 12h16M4 18h10'],
+  login: ['M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4', 'm10 17 5-5-5-5M15 12H3']
 };
+// Same destinations and labels as the app ("Gợi ý" is the short name of the menu; the screen's own title is "Gợi ý cho bạn").
 const MEMBER_MENU = [
   ['Danh mục', 'WideCatalog.dc.html', 'catalog'],
-  ['Gợi ý cho bạn', 'WideRecommend.dc.html', 'recommend'],
-  ['Sách đang mượn', 'WideLoans.dc.html', 'loans'],
+  ['Gợi ý', 'WideRecommend.dc.html', 'recommend'],
+  ['Đang mượn', 'WideLoans.dc.html', 'loans'],
   ['Đặt trước', 'WideReservations.dc.html', 'reservations'],
   ['Lịch sử đọc', 'WideHistory.dc.html', 'history'],
   ['Tài khoản', 'WideAccount.dc.html', 'account']
 ];
+const memberMenu = () => MEMBER_MENU;
+// the guest menu: the catalog and the way to sign in
+const GUEST_MENU = [['Danh mục', 'WideGuest.dc.html', 'catalog'], ['Đăng nhập', 'WideSignIn.dc.html', 'login']];
 const NFC = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg>';
 
 const menuItem = (label, href, icon, active, i) => `
@@ -264,57 +285,70 @@ const preview = (list, label, extraRow, cls, narrow) => `
 
 const LOGIN_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary); flex: none"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><path d="m10 17 5-5-5-5"></path><path d="M15 12H3"></path></svg>';
 const PANEL_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="M9 4v16"></path></svg>';
-// the main action at the bottom of the menu (top of the rail): self-checkout for a member, sign-in for a guest
-const mainAction = (guest, active) => guest
-  ? { href: 'WideSignIn.dc.html', label: 'Đăng nhập để mượn sách', short: 'Đăng nhập', icon: LOGIN_ICON, current: false }
-  : { href: 'WideCheckout.dc.html', label: 'Chạm sách để mượn', short: 'Chạm để mượn', icon: NFC, current: active === 'WideCheckout.dc.html' };
+// Self-checkout is a round floating button at the bottom right, over the content, as in the app: it is not part of the menu or
+// the rail. A guest has no such button (the menu has "Đăng nhập" instead); the checkout board itself does not draw it.
+const dock = (guest, active) => guest || active === 'WideCheckout.dc.html' ? '' : `
+  <a href="WideCheckout.dc.html" class="st-press st-dock" aria-label="Chạm sách để mượn" style="position: absolute; right: 16px; bottom: 16px; z-index: 30; width: 56px; height: 56px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 10px 30px rgba(28,27,26,0.3)">${NFC.replace('width="20" height="20"', 'width="26" height="26"')}</a>`;
+// The same button on a book's page: the round icon at rest, the glass bar (tag circle and reserve button) when a book is open.
+// Needs in renderVals: dockCls, dockStyle, dockW (css width of the bar), reserveBtn (label and colours), reserve (handler), isDone.
+const dockMorph = () => `
+  <div class="st-dk {{dockCls}}" style="{{dockStyle}}">
+    <a href="WideCheckout.dc.html" class="st-dkc" aria-label="{{dockTagLabel}}" style="{{dockCircle}}">${NFC.replace('width="20" height="20"', 'width="22" height="22"').replace('color: var(--on-primary)', 'color: var(--on-primary)')}</a>
+    <button type="button" class="st-dkr st-swap st-press" onClick="{{reserve}}" aria-live="polite" aria-hidden="{{dockHidden}}" tabindex="{{dockTab}}" style="{{dockReserve}}">
+      <sc-if value="{{reserveBtn.isDone}}" hint-placeholder-val="{{ false }}"><svg class="st-pop" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path><path class="st-draw" d="m9 10 2 2 4-4"></path></svg></sc-if>
+      <sc-if value="{{reserveBtn.isIdle}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg></sc-if>
+      {{reserveBtn.label}}
+    </button>
+  </div>`;
+// renderVals code for dockMorph: open = a book is open (always on the expanded window, the detail view on the medium one)
+const DOCK_JS = () => `
+    var dkOpen = ${isMid()} ? (st.view === 'detail') : true, dkN = (st.swapN || 0);
+    var dkW = ${isMid()} ? 360 : 336;
+    var dkKey = (dkOpen ? 'dko-' : 'dkc-') + (dkN % 2 ? 'a' : 'b');
+    var dock = {
+      dockCls: (!dkOpen && dkN === 0) ? '' : dkKey,
+      dockTagLabel: dkOpen ? 'Mượn bằng cách chạm điện thoại vào sách' : 'Chạm sách để mượn',
+      dockTab: dkOpen ? '0' : '-1', dockHidden: dkOpen ? 'false' : 'true',
+      dockStyle: 'position:absolute;right:16px;bottom:16px;z-index:30;--dkw:' + dkW + 'px;display:flex;align-items:center;gap:8px;box-sizing:border-box;padding:8px;border-radius:999px;overflow:hidden;' +
+        (dkOpen ? 'width:' + dkW + 'px;height:68px;background:rgba(var(--glass),0.92);border:1px solid rgba(var(--edge),0.8)' : 'width:56px;height:56px;background:var(--primary);border:1px solid transparent;box-shadow:0 6px 14px rgba(28,27,26,0.3)'),
+      dockCircle: 'flex:none;border-radius:999px;display:flex;align-items:center;justify-content:center;text-decoration:none;' +
+        (dkOpen ? 'width:52px;height:52px;background:var(--primary)' : 'width:40px;height:40px;background:color-mix(in srgb,var(--on-primary) 16%,transparent)'),
+      dockReserve: rb.style + ';min-height:0;height:52px;min-width:0;white-space:normal;line-height:1.15;text-align:center;padding:0 12px;' + (dkOpen ? 'opacity:1' : 'opacity:0;pointer-events:none')
+    };`;
+
+// room kept under the panes for that button (the app keeps the same clearance)
+const BOT = 88;
 
 // navigation; active = href of the current item (or '' for none).
 // opts.preview: state preview group (mockup only); opts.guest: the reduced guest menu
 const nav = (active, opts) => {
   opts = opts || {};
-  const menu = opts.guest ? [['Danh mục', 'WideGuest.dc.html', 'catalog']] : MEMBER_MENU;
-  const act = mainAction(opts.guest, active);
-  if (isMid()) return rail(active, opts, menu, act);
+  const menu = opts.guest ? GUEST_MENU : memberMenu();
+  const own = opts.dock === false ? () => '' : dock;
+  if (isMid()) return rail(active, opts, menu) + own(opts.guest, active);
   const items = menu.map((m, i) => menuItem(m[0], m[1], m[2], m[1] === active, i)).join('');
   return `
   <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 14px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
-    <div class="st-navhead" style="display: flex; align-items: center; gap: 4px; padding: 0 0 10px 12px">
-      <div class="st-hide-c" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
-        <div style="font-size: 13px; color: var(--ink3)">${opts.guest ? 'Bạn đang xem với tư cách khách' : 'Chào bạn,'}</div>
-        <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
-      </div>
-      <button type="button" class="st-navtoggle st-press" onClick="{{toggleNav}}" aria-label="{{navToggleLabel}}" aria-expanded="{{navOpen}}" style="width: 48px; height: 48px; flex: none; border-radius: 14px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">${PANEL_ICON}</button>
+    <div class="st-navhead" style="display: flex; align-items: center; padding: 0 0 10px 4px">
+      <button type="button" class="st-navtoggle st-press" onClick="{{toggleNav}}" aria-label="{{navToggleLabel}}" aria-expanded="{{navOpen}}" style="width: 48px; height: 48px; flex: none; border-radius: 999px; border: 0; background: rgba(var(--glass),0.85); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">${PANEL_ICON}</button>
     </div>
-    <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">${items}${opts.guest ? `
-      <p class="st-hide-c" style="margin: 8px 6px 0; font-size: 12px; line-height: 1.5; color: var(--ink2b)">Khách xem và tìm sách được. Đặt trước, mượn, gia hạn và lịch sử đọc cần tài khoản thư viện.</p>` : ''}
+    <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">${items}
     </div>${opts.preview ? preview(opts.preview[0], opts.preview[1], '', 'st-hide-c') : ''}
-    <a href="${act.href}" class="st-press" aria-label="${act.label}" aria-current="${act.current ? 'page' : 'false'}" style="min-height: 56px; padding: 8px 14px 8px 8px; border-radius: 28px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1.2; box-shadow: 0 10px 30px rgba(28,27,26,0.25)">
-      <span style="width: 40px; height: 40px; flex: none; border-radius: 999px; background:  rgba(var(--glass),0.16); display: flex; align-items: center; justify-content: center">${act.icon}</span>
-      <span class="st-hide-c">${act.label}</span>
-    </a>${opts.guest ? `
-    <p class="st-hide-c" style="margin: 8px 6px 0; font-size: 11px; line-height: 1.45; color: var(--ink3)">Chưa có thẻ? Đăng ký tại quầy thủ thư, mang theo CCCD.</p>` : ''}
-  </nav>`;
+  </nav>` + own(opts.guest, active);
 };
 
-// navigation rail for a medium window: main action on top, then the destinations with short labels
-const RAIL_LABEL = { 'Gợi ý cho bạn': 'Gợi ý', 'Sách đang mượn': 'Đang mượn', 'Lịch sử đọc': 'Lịch sử' };
-const rail = (active, opts, menu, act) => {
+// navigation rail for a medium window: the destinations with short labels, the current one on a filled block
+const rail = (active, opts, menu) => {
   const items = menu.map((m, i) => {
     const on = m[1] === active, href = m[1] === 'WideCatalog.dc.html' ? 'RailCatalog.dc.html' : m[1];
     return `
-      <a href="${href}" class="st-item" aria-label="${m[0]}" aria-current="${on ? 'page' : 'false'}" style="animation-delay: ${40 + 35 * i}ms; width: 80px; min-height: 56px; padding: 4px 0; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: ${on ? 700 : 500}">
-        <span style="width: 56px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center; background: ${on ? 'var(--surface)' : 'transparent'}; box-shadow: ${on ? '0 0 0 1px rgba(var(--ink-rgb),0.5)' : 'none'}">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="${ICON[m[2]][0]}"></path><path d="${ICON[m[2]][1]}"></path></svg>
-        </span>
-        ${RAIL_LABEL[m[0]] || m[0]}
+      <a href="${href}" class="st-item" aria-label="${m[0]}" aria-current="${on ? 'page' : 'false'}" style="animation-delay: ${40 + 35 * i}ms; width: 80px; min-height: 64px; padding: 8px 0; box-sizing: border-box; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; color: var(--ink); font-size: 12px; line-height: 1.2; text-align: center; font-weight: ${on ? 700 : 500}; background: ${on ? 'var(--surface)' : 'transparent'}">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="${ICON[m[2]][0]}"></path><path d="${ICON[m[2]][1]}"></path></svg>
+        <span>${m[0]}</span>
       </a>`;
   }).join('');
   return `
   <nav aria-label="Điều hướng chính" style="position: absolute; left: 0; top: 0; bottom: 0; width: 96px; padding: 48px 8px 12px; box-sizing: border-box; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border-right: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; align-items: center; gap: 4px">
-    <a href="${act.href}" class="st-press" aria-label="${act.label}" aria-current="${act.current ? 'page' : 'false'}" style="width: 80px; flex: none; padding: 8px 0 6px; border-radius: 20px; background: var(--primary); color: var(--on-primary); display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; font-size: 12px; font-weight: 700; line-height: 1.2; text-align: center; box-shadow: 0 10px 24px rgba(28,27,26,0.25); margin-bottom: 12px">${act.icon.replace('width="20" height="20"', 'width="24" height="24"')}
-      ${act.short}
-    </a>
     <div class="st-scroll" style="flex: 1; min-height: 0; width: 100%; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 4px">${items}
     </div>${opts.preview ? preview(opts.preview[0], opts.preview[1], '', '', true) : ''}
   </nav>`;
@@ -334,7 +368,7 @@ const listPane = (label, title, extra, list, after) => `
               <span style="font-size: 15px; font-weight: 700; line-height: 1.25">{{b.title}}</span>
               <span style="font-size: 13px; color: var(--ink2b); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{b.author}}</span>
               <span style="display: flex; gap: 6px; align-items: center; margin-top: 2px; flex-wrap: wrap">
-                <span style="{{b.pill}}">{{b.status}}</span>
+                <sc-if value="{{b.hasStatus}}" hint-placeholder-val="{{ true }}"><span style="{{b.pill}}">{{b.status}}</span></sc-if>
                 <sc-if value="{{b.hasNote}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: var(--ink3)">{{b.note}}</span></sc-if>
               </span>
               <sc-if value="{{b.hasReason}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; font-weight: 700; line-height: 1.35; color: var(--warn2)">{{b.reason}}</span></sc-if>
@@ -349,7 +383,7 @@ const listPane = (label, title, extra, list, after) => `
 // detail pane: header row with a label, scrollable body, optional action bar pinned at the bottom
 const detailPane = (label, body, bar) => `
   <sc-if value="{{showDetail}}" hint-placeholder-val="{{ true }}">
-  <section aria-label="${label}" class="st-pane" style="position: absolute; ${panePos()}; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
+  <section aria-label="${label}" class="st-pane" style="position: absolute; ${panePos()}; top: 16px; bottom: ${BOT}px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
     <div class="st-scroll st-detail" style="animation: {{detailAnim}}; position: absolute; inset: 0; padding: 12px 20px ${bar ? 96 : 24}px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 16px">
       <div style="display: flex; align-items: center; gap: 8px; min-height: 48px">${backBtn()}
         <div style="flex: 1; font-size: 13px; font-weight: 600; color: var(--ink3)">${label}</div>
@@ -362,11 +396,12 @@ const detailPane = (label, body, bar) => `
   </sc-if>`;
 
 // book header used in detail panes: cover + tags + title + author, bound to `sel`
-const bookHead = (tags) => `
+const bookHead = (tags, noAuthor) => `
       <div style="display: flex; gap: 16px; align-items: flex-start">
         <div aria-hidden="true" style="{{sel.coverStyle}}">
           <div style="font-size: 17px; font-weight: 700; line-height: 1.15">{{sel.title}}</div>
-          <div style="font-size: 11px; opacity: 0.85">{{sel.author}}</div>
+${noAuthor ? '' : `
+          <div style="font-size: 11px; opacity: 0.85">{{sel.author}}</div>`}
         </div>
         <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px">${tags ? `
           <div style="display: flex; gap: 6px; flex-wrap: wrap">
@@ -375,7 +410,8 @@ const bookHead = (tags) => `
             </sc-for>
           </div>` : ''}
           <h2 style="margin: 0; font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.2px">{{sel.title}}</h2>
-          <div style="font-size: 14px; color: var(--ink2b)">{{sel.author}}</div>
+${noAuthor ? '' : `
+          <div style="font-size: 14px; color: var(--ink2b)">{{sel.author}}</div>`}
         </div>
       </div>`;
 
@@ -447,5 +483,108 @@ const btnGlass = 'min-height: 52px; padding: 6px 20px; border-radius: 999px; bor
 const note = (text, extra) => `
       <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink3)${extra || ''}">${text}</p>`;
 
-module.exports = { head, foot, nav, preview, listPane, detailPane, bookHead, fact, facts, BOOKS, searchAndChips, SEARCH_JS, btnPrimary, btnGlass, note, NFC, menuItem,
-  setMode, isMid, W, H, listPos, panePos, fullPos, backBtn };
+
+// ---------- Catalog home (member) and guest home, as the app draws them ----------
+// Greeting or guest heading, search, a topic banner with covers, then strips of covers with a plate (author, copies). The page
+// scrolls; the text column is capped (600 dp next to the rail, 720 dp next to the menu). The links "Xem tất cả" and the banner go to the list
+// (a list beside the detail on the expanded window, `list`).
+const home = (guest, list) => `
+  <section aria-label="${guest ? 'Danh mục (khách)' : 'Danh mục'}" class="st-scroll" style="position: absolute; ${fullPos()}; max-width: ${isMid() ? 600 : 720}px; top: 0; bottom: 0; padding: 0 0 ${BOT + 16}px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 18px">
+    <div style="padding: ${isMid() ? 36 : 40}px 0 8px; font-size: 22px; font-weight: 600; color: var(--ink2b)">Danh mục</div>
+    <div class="st-rise" style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 14px; color: var(--ink3)">${guest ? 'Bạn đang xem với tư cách khách' : 'Chào bạn,'}</div>
+      <h1 style="margin: 0; font-size: 32px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">${guest ? 'Tìm sách trong thư viện' : 'Hôm nay đọc gì?'}</h1>
+    </div>
+    <a href="${list}" aria-label="Tìm sách" class="st-rise" style="display: flex; align-items: center; gap: 10px; height: 52px; flex: none; padding: 0 18px; border-radius: 999px; background:  rgba(var(--glass),0.75); border: 1px solid rgba(var(--ink-rgb),0.5); text-decoration: none; color: var(--ink3); font-size: 15px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink3)"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      Tên sách, tác giả, ISBN
+    </a>${guest ? `
+    <p class="st-rise" style="margin: 0; flex: none; padding: 14px 16px; border-radius: 22px; border: 1px dashed rgba(var(--ink-rgb),0.2); font-size: 13px; line-height: 1.5; color: var(--ink2b)">Khách xem và tìm sách được. Đặt trước, mượn, gia hạn và lịch sử đọc cần tài khoản thư viện.</p>` : ''}
+    <a href="${list}" class="st-rise" style="position: relative; height: 200px; flex: none; border-radius: 28px; overflow: hidden; display: block; text-decoration: none; background:  #2f4a44">
+      <div aria-hidden="true" style="position: absolute; inset: 0; display: flex; gap: 12px; padding: 22px 0 0 22px">
+        <sc-for list="{{banner}}" as="c" hint-placeholder-count="2">
+          <div class="st-rise" style="{{c.style}}"><div style="font-size: 17px; font-weight: 700; line-height: 1.2">{{c.title}}</div></div>
+        </sc-for>
+      </div>
+      <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 110px; background:  linear-gradient(to bottom, rgba(20,30,27,0), rgba(20,30,27,0.75))"></div>
+      <div style="position: absolute; left: 20px; right: 16px; bottom: 16px; display: flex; align-items: flex-end; justify-content: space-between">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.9)">Chủ đề</div>
+          <div style="font-size: 22px; font-weight: 700; color: #ffffff">Thiếu nhi</div>
+        </div>
+        <span style="width: 44px; height: 44px; border-radius: 999px; background:  rgba(var(--glass),0.25); border: 1px solid rgba(var(--edge),0.5); display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
+        </span>
+      </div>
+    </a>
+    ${guest ? '' : `
+    <div style="display: flex; align-items: baseline; justify-content: space-between; flex: none">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Gợi ý cho bạn</h2>
+      <a href="${isMid() ? 'MidRecommend.dc.html' : 'WideRecommend.dc.html'}" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
+    </div>
+    <div style="display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; flex: none">
+      <sc-for list="{{recs}}" as="c" hint-placeholder-count="3">
+        <div style="width: 132px; flex: none; display: flex; flex-direction: column; gap: 8px">
+          <a href="${list}" class="st-rise" style="{{c.cardStyle}};display:flex;flex-direction:column">
+            <div style="font-size: 15px; font-weight: 700; line-height: 1.2; flex: 1; padding: 14px 12px 12px">{{c.title}}</div>
+            <div style="position: relative; flex: none; margin: 0 6px 6px; padding: 8px 10px; border-radius: 14px; background:  rgba(var(--glass),0.7); color: var(--ink)">
+              <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.author}}</div>
+              <div style="font-size: 11px; color: var(--ink)">{{c.status}}</div>
+            </div>
+          </a>
+          <div style="font-size: 12px; font-weight: 700; line-height: 1.3; color: var(--warn)">{{c.reason}}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font-size: 11px; color: var(--ink3); flex: none">Tính trên máy từ sách bạn đã mượn. Tắt trong Tài khoản.</div>`}
+    ${['Thiếu nhi', 'Tiểu thuyết'].map((t, i) => `
+    <div style="display: flex; align-items: baseline; justify-content: space-between; flex: none">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">${t}</h2>
+      <a href="${list}" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
+    </div>
+    <div style="display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; flex: none">
+      <sc-for list="{{${i ? 'row' : 'kids'}}}" as="c" hint-placeholder-count="3">
+        <a href="${list}" class="st-rise" style="{{c.cardStyle}}">
+          <div style="font-size: 15px; font-weight: 700; line-height: 1.2; padding: 14px 12px 124px">{{c.title}}</div>
+          <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 8px 10px; border-radius: 14px; background:  rgba(var(--glass),0.7); color: var(--ink)">
+            <div style="font-size: 12px; font-weight: 600">{{c.author}}</div>
+            <div style="font-size: 11px; color: var(--ink)">{{c.status}}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>`).join('')}
+  </section>`;
+const HOME_JS = `
+  renderVals() {
+    var ki = 0, ci = 0;
+    var cover = function (bg, fg) {
+      return 'animation-delay:' + (160 + 90 * ki++) + 'ms;width:104px;height:150px;flex:none;border-radius:16px;background:' + bg + ';color:' + fg + ';padding:14px 12px;box-sizing:border-box;box-shadow:0 8px 20px rgba(0,0,0,0.18)';
+    };
+    var card = function (bg, fg) {
+      return 'animation-delay:' + (140 + 70 * ci++) + 'ms;position:relative;display:block;width:132px;min-height:196px;flex:none;border-radius:22px;overflow:hidden;text-decoration:none;background:' + bg + ';color:' + fg;
+    };
+    return Object.assign(this.__theme(), {
+      banner: [
+        { title: 'Số đỏ', style: cover('#b5452b', '#ffffff') },
+        { title: 'Nhà giả kim', style: cover('#c9a66b', '#1c1b1a') }
+      ],
+      kids: [
+        { title: 'Dế Mèn phiêu lưu ký', author: 'Tô Hoài', status: 'Còn 3 bản', cardStyle: card('#b5452b', '#ffffff') },
+        { title: 'Nhà giả kim', author: 'Paulo Coelho', status: 'Đã cho mượn hết', cardStyle: card('#c9a66b', '#1c1b1a') }
+      ],
+      recs: [
+        { title: 'Vũ trụ trong vỏ hạt dẻ', author: 'Stephen Hawking', status: 'Còn 3 bản', reason: 'Cùng chủ đề Khoa học', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Tôi thấy hoa vàng trên cỏ xanh', author: 'Nguyễn Nhật Ánh', status: 'Còn 2 bản', reason: 'Cùng chủ đề Thiếu nhi', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Cho tôi xin một vé đi tuổi thơ', author: 'Nguyễn Nhật Ánh', status: 'Đang được mượn · đặt trước', reason: 'Cùng chủ đề Thiếu nhi', cardStyle: card('#b5452b', '#ffffff') }
+      ],
+      row: [
+        { title: 'Số đỏ', author: 'Vũ Trọng Phụng', status: 'Còn 2 bản', cardStyle: card('#b5452b', '#ffffff') },
+        { title: 'Tắt đèn', author: 'Ngô Tất Tố', status: 'Đã cho mượn hết', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Chí Phèo', author: 'Nam Cao', status: 'Còn 1 bản', cardStyle: card('#3e3a36', '#ffffff') },
+        { title: 'Lão Hạc', author: 'Nam Cao', status: 'Còn 1 bản', cardStyle: card('#d8c9a8', '#3e3a36') }
+      ]
+    });
+  }`;
+
+module.exports = { home, HOME_JS, head, foot, nav, preview, listPane, detailPane, bookHead, fact, facts, BOOKS, searchAndChips, SEARCH_JS, btnPrimary, btnGlass, note, NFC, menuItem,
+  setMode, isMid, W, H, listPos, panePos, fullPos, backBtn, BOT, dock, dockMorph, DOCK_JS };

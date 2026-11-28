@@ -149,7 +149,7 @@
     <string name="reservations_cancel_for">Hủy đặt trước %1$s</string>
     <string name="res_chip_ready">Sẵn sàng nhận</string>
     <string name="res_chip_waiting">Đang chờ</string>
-    <string name="reservations_cancel">Hủy đặt trước</string>
+    <string name="reservations_cancel">Hủy đặt</string>
     <string name="reservations_cancel_ask">Hủy đặt trước %1$s?</string>
     <string name="reservations_keep">Giữ lại</string>
     <string name="reservations_cancelled_notice">Đã hủy đặt trước %1$s.</string>
@@ -160,9 +160,9 @@
     <string name="res_cancelled">Đã hủy</string>
     <string name="res_expired">Đã hết hạn</string>
     <string name="history_step_title">Cần mật khẩu để xem</string>
-    <string name="history_manage">Bật hoặc tắt lưu lịch sử trong Tài khoản</string>
+    <string name="history_manage">Cài đặt lịch sử đọc</string>
     <string name="history_needs_password">Bạn đang đăng nhập bằng thẻ. Lịch sử đọc là dữ liệu cá nhân, nên cần thêm mật khẩu.</string>
-    <string name="history_login_password">Đăng nhập bằng mật khẩu</string>
+    <string name="history_login_password">Nhập mật khẩu</string>
     <string name="history_empty">Chưa có gì ở đây. Lịch sử đọc đang trống, hoặc đã tắt trong Tài khoản.</string>
     <string name="history_returned">Mượn %1$s · trả %2$s</string>
     <string name="history_not_returned">Mượn %1$s · chưa trả</string>
@@ -196,7 +196,7 @@
     <string name="title_copies">Còn %1$d trên %2$d bản</string>
     <string name="title_reserved">Đã đặt trước. Sách sẽ hiện trong mục Đặt trước khi sẵn sàng.</string>
     <string name="title_reserving">Đang gửi yêu cầu…</string>
-    <string name="title_reserve">Đặt trước sách này</string>
+    <string name="title_reserve">Đặt trước</string>
     <!-- Trạng thái màn hình -->
     <string name="state_loading">Đang tải…</string>
     <string name="state_offline_title">Không có kết nối</string>
@@ -220,8 +220,8 @@
     <string name="checkout_read">Đã đọc nhãn sách</string>
     <string name="checkout_sending_note">Thư viện kiểm tra sách còn cho mượn, số sách bạn đang mượn và tiền phạt. Chỉ khi thư viện đồng ý, sách mới được ghi là đã mượn.</string>
     <string name="checkout_failed_title">Chưa mượn được</string>
-    <string name="checkout_view_loans">Xem sách đang mượn</string>
-    <string name="checkout_view_fines">Xem khoản phạt</string>
+    <string name="checkout_view_loans">Sách đang mượn</string>
+    <string name="checkout_view_fines">Khoản phạt</string>
     <string name="checkout_try_other">Thử sách khác</string>
     <plurals name="checkout_due_days">
         <item quantity="other">Hạn trả %1$s · %2$d ngày</item>
@@ -269,4 +269,49 @@
     <string name="title_status">Tình trạng</string>
     <string name="title_reserve_confirmed">Đã đặt trước · thư viện xác nhận</string>
     <string name="title_borrow_by_tap">Mượn bằng cách chạm điện thoại vào sách</string>
+
+    <!-- Gợi ý cho bạn: tính ngay trên máy từ sách đang mượn, đặt trước và lịch sử đọc -->
+    <string name="tab_recommend">Gợi ý cho bạn</string>
+    <string name="tab_recommend_menu">Gợi ý</string>
+    <string name="recommend_sub_full">Theo sách bạn đã mượn và đang mượn.</string>
+    <string name="recommend_sub_card">Đăng nhập bằng thẻ: chỉ theo sách bạn đang mượn.</string>
+    <string name="recommend_sub_off">Lịch sử đọc đang tắt: chỉ theo sách bạn đang mượn.</string>
+    <string name="recommend_more_accurate">Nhập mật khẩu để gợi ý đúng hơn</string>
+    <string name="recommend_reason_author">Vì bạn đã mượn sách của %1$s</string>
+    <string name="recommend_reason_subject">Cùng chủ đề %1$s</string>
+    <string name="recommend_dismiss">Không quan tâm</string>
+    <string name="recommend_dismiss_for">Không quan tâm: %1$s</string>
+    <string name="recommend_empty_title">Chưa có gì để gợi ý</string>
+    <string name="recommend_empty_hint">ShelfTap chưa có dữ liệu để gợi ý: bạn chưa mượn cuốn nào, hoặc đã tắt lưu lịch sử đọc và hiện không mượn cuốn nào. Bạn vẫn xem sách theo chủ đề được.</string>
+    <string name="recommend_by_subject">Xem theo chủ đề</string>
+    <string name="recommend_history_settings">Cài đặt lịch sử đọc</string>
+    <string name="recommend_note">Gợi ý được tính ngay trên máy, theo tác giả và chủ đề của sách bạn mượn. Lịch sử không được gửi đi đâu.</string>
+    <string name="recommend_strip_note">Tính trên máy từ sách bạn đã mượn. Tắt trong Tài khoản.</string>
+    <string name="recommend_why_title">Vì sao gợi ý</string>
+    <string name="recommend_open_book">Xem chi tiết sách</string>
+    <string name="recommend_status_on_loan">Đang được mượn · đặt trước</string>
+    <string name="recommend_loading">Đang tính gợi ý trên máy…</string>
+    <string name="account_recommend">Gợi ý theo lịch sử đọc</string>
+    <string name="account_recommend_caption">Tính ngay trên máy, không gửi đi đâu. Tắt thì Gợi ý chỉ theo sách đang mượn.</string>
+
+    <!-- Notifications: due-date reminders, worked out on the phone -->
+    <string name="account_notifications">Thông báo</string>
+    <string name="account_notif_due">Nhắc trước hạn trả</string>
+    <string name="account_notif_due_caption">Một ngày trước hạn, lúc 7:30 sáng. Tính ngay trên máy.</string>
+    <string name="account_notif_hide">Ẩn tên sách trên màn khóa</string>
+    <string name="account_notif_hide_caption">Chỉ hiện tên sách sau khi mở khóa máy.</string>
+    <string name="account_notif_ready_note">Sách đặt trước sẵn sàng thì xem ở mục Đặt trước trong app; ShelfTap chưa gửi thông báo cho việc này.</string>
+    <string name="notif_ask_title">Nhắc bạn trước hạn trả?</string>
+    <string name="notif_ask_body">ShelfTap nhắc một ngày trước hạn trả, tính ngay trên máy. Không có quảng cáo. Mặc định màn khóa không hiện tên sách.</string>
+    <string name="notif_ask_allow">Cho phép thông báo</string>
+    <string name="notif_ask_later">Để sau</string>
+    <string name="notif_off">Thông báo của ShelfTap đang bị tắt trong cài đặt của máy.</string>
+    <string name="notif_off_action">Bật lại</string>
+    <string name="notif_channel_due">Nhắc hạn trả</string>
+    <string name="notif_due_public_title">Sắp đến hạn trả</string>
+    <string name="notif_due_body">Mở ShelfTap để xem và gia hạn.</string>
+    <string name="notif_due_one">%1$s đến hạn ngày mai (%2$s)</string>
+    <plurals name="notif_due_many">
+        <item quantity="other">%1$d cuốn sách đến hạn ngày mai</item>
+    </plurals>
 </resources>

@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.NFC" />
+    <!-- Android 13 and up: asked only after the member turns on a reminder, with a short explanation first. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-feature android:name="android.hardware.nfc" android:required="false" />
 
     <!-- Package visibility for the root-app check in IntegrityChecker. -->
@@ -39,6 +41,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Fired by this app's own alarms only (due-date reminders). -->
+        <receiver
+            android:name=".reminder.DueReminderReceiver"
+            android:exported="false" />
 
         <!-- Compose pulls in androidx.profileinstaller, whose receiver is exported. Not needed here. -->
         <receiver

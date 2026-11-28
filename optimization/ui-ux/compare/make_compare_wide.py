@@ -17,17 +17,19 @@ from PIL import Image, ImageDraw
 if len(sys.argv) != 4:
     raise SystemExit(__doc__)
 rendered, audit, out = sys.argv[1:4]
+# the entrance animations are switched off: the screenshot is of the final layout, not of a frame of the animation
+STILL = '<style>*,*::before,*::after{animation:none!important;transition:none!important}</style>'
 chrome = os.environ.get('CHROME', r'C:\Program Files\Google\Chrome\Application\chrome.exe')
 
 # size -> (audit configuration, board width x height in dp, {app screen (the audit's name): board})
 SIZES = {
     'mid': ('medium', (720, 840), {
         'catalog': 'RailCatalog', 'list': 'MidCatalog', 'guest': 'MidGuest', 'loans': 'MidLoans', 'reservations': 'MidReservations',
-        'history': 'MidHistory', 'checkout': 'MidCheckout', 'account': 'MidAccount', 'login': 'MidSignIn', 'welcome': 'MidSignIn', 'password-first': 'MidSignIn',
+        'recommend': 'MidRecommend', 'history': 'MidHistory', 'checkout': 'MidCheckout', 'account': 'MidAccount', 'login': 'MidSignIn', 'welcome': 'MidSignIn', 'password-first': 'MidSignIn',
     }),
     'wide': ('expanded', (960, 720), {
         'catalog': 'WideCatalog', 'guest': 'WideGuest', 'loans': 'WideLoans', 'reservations': 'WideReservations',
-        'history': 'WideHistory', 'checkout': 'WideCheckout', 'account': 'WideAccount', 'login': 'WideSignIn', 'welcome': 'WideSignIn', 'password-first': 'WideSignIn',
+        'recommend': 'WideRecommend', 'history': 'WideHistory', 'checkout': 'WideCheckout', 'account': 'WideAccount', 'login': 'WideSignIn', 'welcome': 'WideSignIn', 'password-first': 'WideSignIn',
     }),
 }
 
@@ -45,7 +47,7 @@ for size, (cfg, (bw, bh), pairs) in SIZES.items():
             print('no board', board)
             continue
         page = os.path.join(rendered, '%s_light.html' % board)
-        open(page, 'w', encoding='utf-8').write(re.sub(r'(class="st-root"\s+data-theme=")[a-z]*"', r'\g<1>light"', boards[board]))
+        open(page, 'w', encoding='utf-8').write(STILL + re.sub(r'(class="st-root"\s+data-theme=")[a-z]*"', r'\g<1>light"', boards[board]))
         png = os.path.join(tmp, '%s_light.png' % board)
         subprocess.run([chrome, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--window-size=%d,%d' % (bw, bh), '--force-device-scale-factor=2',
                         '--blink-settings=preferredColorScheme=0', '--virtual-time-budget=5000', '--screenshot=' + png, 'file:///' + page.replace('\\', '/')], capture_output=True, timeout=120)

@@ -1,0 +1,11 @@
+label	round	scenario	tier	frames	janky	jankPct	p50	p90	p95	p99	rssKb	pssKb	batteryC
+base	1	openBook	auto	4030	2	0.05	5	5	9	10	241616	99293	32.4
+base	1	scrollHome	auto	6602	0	0	5	5	5	5	224832	86794	32.4
+base	2	openBook	auto	4034	2	0.05	5	9	9	10	225648	85635	32.4
+base	2	scrollHome	auto	6636	0	0	5	5	5	5	225088	85594	32.3
+base	3	openBook	auto	4034	2	0.05	5	5	9	10	225252	85378	32.4
+base	3	scrollHome	auto	6596	0	0	5	5	5	5	224396	84928	32.4
+base	4	openBook	auto	4032	2	0.05	5	5	5	10	225324	85441	32.4
+base	4	scrollHome	auto	6614	0	0	5	5	5	5	224880	85467	32.4
+base	5	openBook	auto	4032	2	0.05	5	5	9	10	225124	85296	32.4
+base	5	scrollHome	auto	6608	0	0	5	5	5	5	224932	85385	32.4

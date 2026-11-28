@@ -1,0 +1,5 @@
+scenario	label	runs	jankMedian	jankMin	jankMax	p90Median	p90Min	p90Max	rssMedianMb
+openBook	now	5	0.94	0.89	1	14	14	14	228
+openMenu	now	5	0.02	0.02	0.02	11	10	11	224
+scrollHome	now	5	0.02	0.02	0.02	10	10	10	215
+scrollList	now	5	0.02	0.01	0.02	11	11	11	242

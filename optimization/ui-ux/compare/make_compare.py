@@ -17,13 +17,15 @@ from PIL import Image, ImageDraw
 if len(sys.argv) != 4:
     raise SystemExit(__doc__)
 rendered, audit, out = sys.argv[1:4]
+# the entrance animations are switched off: the screenshot is of the final layout, not of a frame of the animation
+STILL = '<style>*,*::before,*::after{animation:none!important;transition:none!important}</style>'
 chrome = os.environ.get('CHROME', r'C:\Program Files\Google\Chrome\Application\chrome.exe')
 
 # app screen (the audit's name for it) -> board
 PAIRS = {
     'welcome': 'Main', 'splash': 'Splash', 'signedout-token_reused': 'SignedOut', 'login': 'Login', 'login-card': 'CardLogin',
     'guest': 'Guest', 'catalog': 'Catalog', 'list': 'List', 'detail': 'Detail', 'loans': 'Loans', 'checkout': 'Checkout',
-    'reservations': 'Reservations', 'history': 'History', 'account': 'Account', 'password-first': 'ChangePassword', 'lock': 'Lock', 'offline': 'Offline',
+    'reservations': 'Reservations', 'recommend': 'Recommend', 'history': 'History', 'account': 'Account', 'password-first': 'ChangePassword', 'lock': 'Lock', 'offline': 'Offline',
 }
 
 src = open(os.path.join(rendered, 'base.html'), encoding='utf-8').read()
@@ -42,7 +44,7 @@ for theme in ('light', 'dark'):
         # the page sits next to fonts/ of the rendered folder, so the Nunito files load
         page = os.path.join(rendered, '%s_%s.html' % (board, theme))
         # only the root element's attribute: the same text appears in the CSS selectors of the themes
-        open(page, 'w', encoding='utf-8').write(re.sub(r'(class="st-root"\s+data-theme=")[a-z]*"', r'\g<1>%s"' % theme, boards[board]))
+        open(page, 'w', encoding='utf-8').write(STILL + re.sub(r'(class="st-root"\s+data-theme=")[a-z]*"', r'\g<1>%s"' % theme, boards[board]))
         png = os.path.join(tmp, '%s_%s.png' % (board, theme))
         subprocess.run([chrome, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--window-size=390,844', '--force-device-scale-factor=3',
                         '--blink-settings=preferredColorScheme=%d' % (0 if theme == 'light' else 1), '--virtual-time-budget=5000', '--screenshot=' + png, 'file:///' + page.replace('\\', '/')], capture_output=True, timeout=120)

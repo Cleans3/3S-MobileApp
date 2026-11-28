@@ -150,7 +150,7 @@
     <string name="reservations_cancel_for">Cancel reservation of %1$s</string>
     <string name="res_chip_ready">Ready to collect</string>
     <string name="res_chip_waiting">Waiting</string>
-    <string name="reservations_cancel">Cancel reservation</string>
+    <string name="reservations_cancel">Cancel it</string>
     <string name="reservations_cancel_ask">Cancel the reservation for %1$s?</string>
     <string name="reservations_keep">Keep it</string>
     <string name="reservations_cancelled_notice">Reservation for %1$s cancelled.</string>
@@ -161,9 +161,9 @@
     <string name="res_cancelled">Cancelled</string>
     <string name="res_expired">Expired</string>
     <string name="history_step_title">A password is needed to see this</string>
-    <string name="history_manage">Turn saving your history on or off in Account</string>
+    <string name="history_manage">Reading history settings</string>
     <string name="history_needs_password">Reading history needs your password. You logged in with your card.</string>
-    <string name="history_login_password">Log in with password</string>
+    <string name="history_login_password">Enter password</string>
     <string name="history_empty">Nothing here. Reading history is empty, or switched off in Account.</string>
     <string name="history_returned">Out %1$s · returned %2$s</string>
     <string name="history_not_returned">Out %1$s · not returned</string>
@@ -197,7 +197,7 @@
     <string name="title_copies">%1$d of %2$d copies available</string>
     <string name="title_reserved">Reserved. You will see it under Reserved when it is ready.</string>
     <string name="title_reserving">Sending the request…</string>
-    <string name="title_reserve">Reserve this title</string>
+    <string name="title_reserve">Reserve</string>
     <!-- Trạng thái màn hình -->
     <string name="state_loading">Loading…</string>
     <string name="state_offline_title">No connection</string>
@@ -222,8 +222,8 @@
     <string name="checkout_read">Tag read</string>
     <string name="checkout_sending_note">The library checks that the book can be lent, how many you have and any fine. Only when it agrees is the book recorded as borrowed.</string>
     <string name="checkout_failed_title">Could not borrow</string>
-    <string name="checkout_view_loans">See my loans</string>
-    <string name="checkout_view_fines">See the fine</string>
+    <string name="checkout_view_loans">My loans</string>
+    <string name="checkout_view_fines">The fine</string>
     <string name="checkout_try_other">Try another book</string>
     <plurals name="checkout_due_days">
         <item quantity="one">Due %1$s · %2$d day</item>
@@ -272,4 +272,50 @@
     <string name="title_status">Availability</string>
     <string name="title_reserve_confirmed">Reserved · the library confirmed</string>
     <string name="title_borrow_by_tap">Borrow by tapping the phone on the book</string>
+
+    <!-- Suggestions for you: computed on the phone from loans, reservations and the reading history -->
+    <string name="tab_recommend">For you</string>
+    <string name="tab_recommend_menu">For you</string>
+    <string name="recommend_sub_full">Based on the books you have borrowed and are borrowing.</string>
+    <string name="recommend_sub_card">Card login: based only on the books you are borrowing.</string>
+    <string name="recommend_sub_off">Reading history is off: based only on the books you are borrowing.</string>
+    <string name="recommend_more_accurate">Password for better picks</string>
+    <string name="recommend_reason_author">Because you borrowed a book by %1$s</string>
+    <string name="recommend_reason_subject">Same subject: %1$s</string>
+    <string name="recommend_dismiss">Not interested</string>
+    <string name="recommend_dismiss_for">Not interested: %1$s</string>
+    <string name="recommend_empty_title">Nothing to suggest yet</string>
+    <string name="recommend_empty_hint">ShelfTap has nothing to base suggestions on: you have not borrowed a book yet, or you turned saving your reading history off and are not borrowing any. You can still browse by subject.</string>
+    <string name="recommend_by_subject">Browse by subject</string>
+    <string name="recommend_history_settings">Reading history settings</string>
+    <string name="recommend_note">Suggestions are worked out on this phone from the authors and subjects of your books. Your history is not sent anywhere.</string>
+    <string name="recommend_strip_note">Worked out on this phone from the books you borrowed. Turn off in Account.</string>
+    <string name="recommend_why_title">Why this suggestion</string>
+    <string name="recommend_open_book">View book</string>
+    <string name="recommend_status_on_loan">On loan · reserve it</string>
+    <string name="recommend_loading">Working out suggestions on this phone…</string>
+    <string name="account_recommend">Suggestions from reading history</string>
+    <string name="account_recommend_caption">Worked out on this phone, sent nowhere. When off, suggestions use only the books you are borrowing.</string>
+
+    <!-- Notifications: due-date reminders, worked out on the phone -->
+    <string name="account_notifications">Notifications</string>
+    <string name="account_notif_due">Remind me before it is due</string>
+    <string name="account_notif_due_caption">One day before the due date, at 7:30 am. Worked out on this phone.</string>
+    <string name="account_notif_hide">Hide book titles on the lock screen</string>
+    <string name="account_notif_hide_caption">Titles show only after the phone is unlocked.</string>
+    <string name="account_notif_ready_note">When a reserved book is ready, see it under Reservations in the app; ShelfTap does not send a notification for that yet.</string>
+    <string name="notif_ask_title">Remind you before a book is due?</string>
+    <string name="notif_ask_body">ShelfTap reminds you one day before the due date, worked out on this phone. No ads. By default the lock screen does not show book titles.</string>
+    <string name="notif_ask_allow">Allow notifications</string>
+    <string name="notif_ask_later">Not now</string>
+    <string name="notif_off">ShelfTap notifications are turned off in the phone\'s settings.</string>
+    <string name="notif_off_action">Turn on</string>
+    <string name="notif_channel_due">Due-date reminders</string>
+    <string name="notif_due_public_title">A book is due soon</string>
+    <string name="notif_due_body">Open ShelfTap to see it and renew.</string>
+    <string name="notif_due_one">%1$s is due tomorrow (%2$s)</string>
+    <plurals name="notif_due_many">
+        <item quantity="one">%1$d book is due tomorrow</item>
+        <item quantity="other">%1$d books are due tomorrow</item>
+    </plurals>
 </resources>

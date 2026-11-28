@@ -16,29 +16,42 @@ a{color:var(--ink)}a:hover{opacity:.85}
 @keyframes st-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes st-item{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
 @keyframes st-swapin{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+@keyframes st-fade{from{opacity:0}to{opacity:1}}
 @keyframes st-pop{0%{opacity:0;scale:.6}70%{opacity:1;scale:1.06}100%{opacity:1;scale:1}}
 @keyframes st-draw{to{stroke-dashoffset:0}}
+@keyframes st-ping{0%{opacity:.55;scale:1}100%{opacity:0;scale:1.35}}
+@keyframes st-breathe{0%,100%{scale:1}50%{scale:1.04}}
+@keyframes st-spin{to{transform:rotate(360deg)}}
 @keyframes st-xa{from{opacity:0}to{opacity:1}}
 @keyframes st-xb{from{opacity:0}to{opacity:1}}
+@keyframes st-axr{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes st-axl{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
 .st-row{animation:st-rise 320ms cubic-bezier(.2,.8,.2,1) both}
+.st-rise{animation:st-rise 420ms cubic-bezier(.2,.8,.2,1) both}
 .st-item{animation:st-item 240ms cubic-bezier(.2,.8,.2,1) both}
 .st-detail{animation:st-swapin 260ms cubic-bezier(.2,.8,.2,1) both}
+.st-fade{animation:st-fade 260ms ease-out both}
 .st-pop{animation:st-pop 380ms cubic-bezier(.2,.8,.2,1) both}
 .st-draw{stroke-dasharray:30;stroke-dashoffset:30;animation:st-draw 420ms 180ms ease-out forwards}
+.st-ping{opacity:0;animation:st-ping 1.8s cubic-bezier(.2,.6,.3,1) infinite}
+.st-late{animation-delay:.9s}
+.st-breathe{animation:st-breathe 2.4s ease-in-out infinite}
+.st-spin{animation:st-spin 900ms linear infinite;transform-origin:50% 50%}
 .st-press{transition:scale 120ms ease}.st-press:active{scale:.96}
 .st-swap{transition:background-color 220ms ease,color 220ms ease}
+.st-knob{transition:transform 220ms cubic-bezier(.2,.8,.2,1)}
 .st-chip{transition:background-color 180ms ease,color 180ms ease,transform 120ms ease}
 .st-chip:active{transform:scale(0.96)}
 .st-pick{transition:background-color 180ms ease,scale 120ms ease}.st-pick:active{scale:.98}
 @media (prefers-reduced-motion: reduce){
-  .st-row,.st-item,.st-detail,.st-pop{animation:none}
-  .st-detail{animation:none !important}
+  .st-row,.st-rise,.st-item,.st-detail,.st-fade,.st-pop,.st-ping,.st-breathe,.st-spin{animation:none}
+  .st-list,.st-detail{animation:none !important}
   .st-draw{animation:none;stroke-dashoffset:0}
-  .st-press,.st-swap,.st-chip,.st-pick{transition:none}
+  .st-press,.st-swap,.st-knob,.st-chip,.st-pick{transition:none}
 }
-.st-root{--bg:#ece7e1;--bg-rgb:236,231,225;--bg2:#d9d1c6;--surface:#ffffff;--glass:255,255,255;--edge:255,255,255;--ink:#1c1b1a;--ink-rgb:28,27,26;--ink2:#3d3833;--ink2b:#4a4540;--ink3:#5c554e;--primary:#1c1b1a;--on-primary:#ffffff;--ok:#2f5b3a;--danger:#7a3420;--danger2:#8a2f1b;--warn:#6b4a10;--warn2:#6b5220;--warn3:#8a6a2a;--warn-bg:#fff4dc;--danger-bg:#f6e4dc;--dialog:#f4f1ec;}
-.st-root[data-theme="dark"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}
-@media (prefers-color-scheme: dark){.st-root[data-theme="auto"]{--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}}
+.st-root{--switch-on:#2f5b3a;--switch-knob-on:#ffffff;--bg:#ece7e1;--bg-rgb:236,231,225;--bg2:#d9d1c6;--surface:#ffffff;--glass:255,255,255;--edge:255,255,255;--ink:#1c1b1a;--ink-rgb:28,27,26;--ink2:#3d3833;--ink2b:#4a4540;--ink3:#5c554e;--primary:#1c1b1a;--on-primary:#ffffff;--ok:#2f5b3a;--danger:#7a3420;--danger2:#8a2f1b;--warn:#6b4a10;--warn2:#6b5220;--warn3:#8a6a2a;--warn-bg:#fff4dc;--danger-bg:#f6e4dc;--dialog:#f4f1ec;}
+.st-root[data-theme="dark"]{--switch-on:#9fd3ac;--switch-knob-on:#1c1b1a;--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}
+@media (prefers-color-scheme: dark){.st-root[data-theme="auto"]{--switch-on:#9fd3ac;--switch-knob-on:#1c1b1a;--bg:#151412;--bg-rgb:21,20,18;--bg2:#1f1c19;--surface:#2a2723;--glass:44,40,36;--edge:96,88,79;--ink:#f2eee9;--ink-rgb:242,238,233;--ink2:#d3cbc1;--ink2b:#c6bdb2;--ink3:#a99f94;--primary:#f2eee9;--on-primary:#1c1b1a;--ok:#9fd3ac;--danger:#f0a58e;--danger2:#f0a58e;--warn:#f0c878;--warn2:#e6c27a;--warn3:#e6c27a;--warn-bg:#3a2e14;--danger-bg:#3b221a;--dialog:#2a2723;}}
 .st-root button,.st-root input{color:var(--ink)}
 .st-root ::placeholder{color:var(--ink3);opacity:1}
 .st-root :is(button,a,[role="switch"]){position:relative}
@@ -48,6 +61,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-scroll>*{flex-shrink:0}
 .st-root p,.st-root li{max-width:36em}
 div.st-root{container-type:size}
+
   .st-root[data-nav="mini"] .st-nav{width:72px !important;padding:12px 6px !important}
   .st-root[data-nav="mini"] .st-nav .st-hide-c{display:none !important}
   .st-root[data-nav="mini"] .st-nav a{justify-content:center !important;padding:6px !important}
@@ -65,135 +79,153 @@ div.st-root{container-type:size}
   .st-pane{left:420px !important}
   .st-full{left:104px !important}
 }
+
+@keyframes st-dkoa{from{width:56px;height:56px;background-color:var(--primary);box-shadow:0 6px 14px rgba(28,27,26,0.3)}}
+@keyframes st-dkoca{from{width:40px;height:40px;background-color:color-mix(in srgb,var(--on-primary) 16%,transparent)}}
+@keyframes st-dkola{from{opacity:1}to{opacity:0}}
+@keyframes st-dkora{0%,50%{opacity:0}100%{opacity:1}}
+@keyframes st-dkxa{from{width:var(--dkw);height:68px;background-color:rgba(var(--glass),0.92);box-shadow:none}}
+@keyframes st-dkxca{from{width:52px;height:52px;background-color:var(--primary)}}
+@keyframes st-dkxra{from{opacity:1}to{opacity:0}}
+.st-dk.dko-a{animation:st-dkoa 260ms cubic-bezier(.2,.8,.2,1) both}.dko-a .st-dkc{animation:st-dkoca 260ms cubic-bezier(.2,.8,.2,1) both}.dko-a .st-dkr{animation:st-dkora 260ms cubic-bezier(.2,.8,.2,1) both}
+.st-dk.dkc-a{animation:st-dkxa 260ms cubic-bezier(.2,.8,.2,1) both}.dkc-a .st-dkc{animation:st-dkxca 260ms cubic-bezier(.2,.8,.2,1) both}.dkc-a .st-dkr{animation:st-dkxra 130ms ease-out both}
+@keyframes st-dkob{from{width:56px;height:56px;background-color:var(--primary);box-shadow:0 6px 14px rgba(28,27,26,0.3)}}
+@keyframes st-dkocb{from{width:40px;height:40px;background-color:color-mix(in srgb,var(--on-primary) 16%,transparent)}}
+@keyframes st-dkolb{from{opacity:1}to{opacity:0}}
+@keyframes st-dkorb{0%,50%{opacity:0}100%{opacity:1}}
+@keyframes st-dkxb{from{width:var(--dkw);height:68px;background-color:rgba(var(--glass),0.92);box-shadow:none}}
+@keyframes st-dkxcb{from{width:52px;height:52px;background-color:var(--primary)}}
+@keyframes st-dkxrb{from{opacity:1}to{opacity:0}}
+.st-dk.dko-b{animation:st-dkob 260ms cubic-bezier(.2,.8,.2,1) both}.dko-b .st-dkc{animation:st-dkocb 260ms cubic-bezier(.2,.8,.2,1) both}.dko-b .st-dkr{animation:st-dkorb 260ms cubic-bezier(.2,.8,.2,1) both}
+.st-dk.dkc-b{animation:st-dkxb 260ms cubic-bezier(.2,.8,.2,1) both}.dkc-b .st-dkc{animation:st-dkxcb 260ms cubic-bezier(.2,.8,.2,1) both}.dkc-b .st-dkr{animation:st-dkxrb 130ms ease-out both}
+@media (prefers-reduced-motion: reduce){.st-dk,.st-dk .st-dkc,.st-dk .st-dkr{animation:none !important}}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
 
-  <!-- 1. Fixed menu: on a wide window the ☰ menu stays open at the left edge; the button at its top folds it into an icon rail -->
-  <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 20px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
-    <div class="st-navhead" style="display: flex; align-items: center; gap: 4px; padding: 0 0 10px 12px">
-      <div class="st-hide-c" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
-        <div style="font-size: 13px; color: var(--ink3)">Chào bạn,</div>
-        <div style="font-size: 17px; font-weight: 700">Thư viện ShelfTap</div>
-      </div>
-      <button type="button" class="st-navtoggle st-press" onClick="{{toggleNav}}" aria-label="{{navToggleLabel}}" aria-expanded="{{navOpen}}" style="width: 48px; height: 48px; flex: none; border-radius: 14px; border: 1px solid rgba(var(--ink-rgb),0.5); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="M9 4v16"></path></svg></button>
+  <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 14px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
+    <div class="st-navhead" style="display: flex; align-items: center; padding: 0 0 10px 4px">
+      <button type="button" class="st-navtoggle st-press" onClick="{{toggleNav}}" aria-label="{{navToggleLabel}}" aria-expanded="{{navOpen}}" style="width: 48px; height: 48px; flex: none; border-radius: 999px; border: 0; background: rgba(var(--glass),0.85); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="M9 4v16"></path></svg></button>
     </div>
     <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">
-      <sc-for list="{{menu}}" as="m" hint-placeholder-count="6">
-        <a href="{{m.href}}" class="st-item" aria-label="{{m.label}}" aria-current="{{m.current}}" style="{{m.style}}">
-          <span style="{{m.iconStyle}}">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="{{m.d1}}"></path><path d="{{m.d2}}"></path></svg>
+        <a href="WideCatalog.dc.html" class="st-item" aria-label="Danh mục" aria-current="page" style="animation-delay: 40ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 700; background: rgba(var(--glass),0.85)">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--surface)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z"></path><path d="M8 7h7"></path></svg>
           </span>
-          <span class="st-hide-c">{{m.label}}</span>
+          <span class="st-hide-c">Danh mục</span>
+        </a>
+        <a href="WideRecommend.dc.html" class="st-item" aria-label="Gợi ý" aria-current="false" style="animation-delay: 75ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(var(--glass),0.5)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"></path><path d=""></path></svg>
+          </span>
+          <span class="st-hide-c">Gợi ý</span>
+        </a>
+        <a href="WideLoans.dc.html" class="st-item" aria-label="Đang mượn" aria-current="false" style="animation-delay: 110ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(var(--glass),0.5)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M12 7v5l3 2"></path><path d="M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z"></path></svg>
+          </span>
+          <span class="st-hide-c">Đang mượn</span>
+        </a>
+        <a href="WideReservations.dc.html" class="st-item" aria-label="Đặt trước" aria-current="false" style="animation-delay: 145ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(var(--glass),0.5)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M6 3h12v18l-6-4-6 4z"></path><path d="M9 9h6"></path></svg>
+          </span>
+          <span class="st-hide-c">Đặt trước</span>
+        </a>
+        <a href="WideHistory.dc.html" class="st-item" aria-label="Lịch sử đọc" aria-current="false" style="animation-delay: 180ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(var(--glass),0.5)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path></svg>
+          </span>
+          <span class="st-hide-c">Lịch sử đọc</span>
+        </a>
+        <a href="WideAccount.dc.html" class="st-item" aria-label="Tài khoản" aria-current="false" style="animation-delay: 215ms; display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 10px; border-radius: 20px; text-decoration: none; color: var(--ink); font-size: 15px; font-weight: 500; background: transparent">
+          <span style="width: 36px; height: 36px; flex: none; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(var(--glass),0.5)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M4 21a8 8 0 0 1 16 0"></path><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"></path></svg>
+          </span>
+          <span class="st-hide-c">Tài khoản</span>
+        </a>
+    </div>
+  </nav>
+  <a href="WideCheckout.dc.html" class="st-press st-dock" aria-label="Chạm sách để mượn" style="position: absolute; right: 16px; bottom: 16px; z-index: 30; width: 56px; height: 56px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 10px 30px rgba(28,27,26,0.3)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg></a>
+  <section aria-label="Danh mục" class="st-scroll" style="position: absolute; left: 248px; right: 16px; max-width: 720px; top: 0; bottom: 0; padding: 0 0 104px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 18px">
+    <div style="padding: 40px 0 8px; font-size: 22px; font-weight: 600; color: var(--ink2b)">Danh mục</div>
+    <div class="st-rise" style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 14px; color: var(--ink3)">Chào bạn,</div>
+      <h1 style="margin: 0; font-size: 32px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Hôm nay đọc gì?</h1>
+    </div>
+    <a href="WideList.dc.html" aria-label="Tìm sách" class="st-rise" style="display: flex; align-items: center; gap: 10px; height: 52px; flex: none; padding: 0 18px; border-radius: 999px; background:  rgba(var(--glass),0.75); border: 1px solid rgba(var(--ink-rgb),0.5); text-decoration: none; color: var(--ink3); font-size: 15px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink3)"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      Tên sách, tác giả, ISBN
+    </a>
+    <a href="WideList.dc.html" class="st-rise" style="position: relative; height: 200px; flex: none; border-radius: 28px; overflow: hidden; display: block; text-decoration: none; background:  #2f4a44">
+      <div aria-hidden="true" style="position: absolute; inset: 0; display: flex; gap: 12px; padding: 22px 0 0 22px">
+        <sc-for list="{{banner}}" as="c" hint-placeholder-count="2">
+          <div class="st-rise" style="{{c.style}}"><div style="font-size: 17px; font-weight: 700; line-height: 1.2">{{c.title}}</div></div>
+        </sc-for>
+      </div>
+      <div aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 110px; background:  linear-gradient(to bottom, rgba(20,30,27,0), rgba(20,30,27,0.75))"></div>
+      <div style="position: absolute; left: 20px; right: 16px; bottom: 16px; display: flex; align-items: flex-end; justify-content: space-between">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.9)">Chủ đề</div>
+          <div style="font-size: 22px; font-weight: 700; color: #ffffff">Thiếu nhi</div>
+        </div>
+        <span style="width: 44px; height: 44px; border-radius: 999px; background:  rgba(var(--glass),0.25); border: 1px solid rgba(var(--edge),0.5); display: flex; align-items: center; justify-content: center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg>
+        </span>
+      </div>
+    </a>
+    
+    <div style="display: flex; align-items: baseline; justify-content: space-between; flex: none">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Gợi ý cho bạn</h2>
+      <a href="WideRecommend.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
+    </div>
+    <div style="display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; flex: none">
+      <sc-for list="{{recs}}" as="c" hint-placeholder-count="3">
+        <div style="width: 132px; flex: none; display: flex; flex-direction: column; gap: 8px">
+          <a href="WideList.dc.html" class="st-rise" style="{{c.cardStyle}};display:flex;flex-direction:column">
+            <div style="font-size: 15px; font-weight: 700; line-height: 1.2; flex: 1; padding: 14px 12px 12px">{{c.title}}</div>
+            <div style="position: relative; flex: none; margin: 0 6px 6px; padding: 8px 10px; border-radius: 14px; background:  rgba(var(--glass),0.7); color: var(--ink)">
+              <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.author}}</div>
+              <div style="font-size: 11px; color: var(--ink)">{{c.status}}</div>
+            </div>
+          </a>
+          <div style="font-size: 12px; font-weight: 700; line-height: 1.3; color: var(--warn)">{{c.reason}}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font-size: 11px; color: var(--ink3); flex: none">Tính trên máy từ sách bạn đã mượn. Tắt trong Tài khoản.</div>
+    
+    <div style="display: flex; align-items: baseline; justify-content: space-between; flex: none">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Thiếu nhi</h2>
+      <a href="WideList.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
+    </div>
+    <div style="display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; flex: none">
+      <sc-for list="{{kids}}" as="c" hint-placeholder-count="3">
+        <a href="WideList.dc.html" class="st-rise" style="{{c.cardStyle}}">
+          <div style="font-size: 15px; font-weight: 700; line-height: 1.2; padding: 14px 12px 124px">{{c.title}}</div>
+          <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 8px 10px; border-radius: 14px; background:  rgba(var(--glass),0.7); color: var(--ink)">
+            <div style="font-size: 12px; font-weight: 600">{{c.author}}</div>
+            <div style="font-size: 11px; color: var(--ink)">{{c.status}}</div>
+          </div>
         </a>
       </sc-for>
     </div>
-    <a href="WideCheckout.dc.html" class="st-press" aria-label="Chạm sách để mượn" style="min-height: 56px; padding: 8px 14px 8px 8px; border-radius: 28px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; gap: 10px; text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1.2; box-shadow: 0 10px 30px rgba(28,27,26,0.25)">
-      <span style="width: 40px; height: 40px; flex: none; border-radius: 999px; background:  rgba(var(--glass),0.16); display: flex; align-items: center; justify-content: center">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg>
-      </span>
-      <span class="st-hide-c">Chạm sách để mượn</span>
-    </a>
-  </nav>
-
-  <!-- 2. List pane -->
-  <section aria-label="Danh sách sách" class="st-list" style="position: absolute; left: 248px; top: 16px; bottom: 0; width: 320px; display: flex; flex-direction: column; gap: 12px">
-    <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Danh mục</h1>
-    <label style="display: flex; align-items: center; gap: 10px; height: 48px; flex: none; padding: 0 16px; border-radius: 999px; background:  rgba(var(--glass),0.75); border: 1px solid rgba(var(--ink-rgb),0.5)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink3)"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
-      <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Tìm sách</span>
-      <input type="search" value="{{q}}" onInput="{{onQ}}" placeholder="Tên sách, tác giả, ISBN" style="flex: 1; border: 0; background:  transparent; font: inherit; font-size: 15px; color: var(--ink); outline: none">
-    </label>
-    <div class="st-scroll" style="display: flex; gap: 8px; overflow-x: auto; flex: none; margin: 0 -4px; padding: 0 4px">
-      <sc-for list="{{chips}}" as="c" hint-placeholder-count="5">
-        <button type="button" class="st-chip" aria-pressed="{{c.on}}" onClick="{{c.pick}}" style="{{c.style}}">{{c.label}}</button>
+    <div style="display: flex; align-items: baseline; justify-content: space-between; flex: none">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Tiểu thuyết</h2>
+      <a href="WideList.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
+    </div>
+    <div style="display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; flex: none">
+      <sc-for list="{{row}}" as="c" hint-placeholder-count="3">
+        <a href="WideList.dc.html" class="st-rise" style="{{c.cardStyle}}">
+          <div style="font-size: 15px; font-weight: 700; line-height: 1.2; padding: 14px 12px 124px">{{c.title}}</div>
+          <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 8px 10px; border-radius: 14px; background:  rgba(var(--glass),0.7); color: var(--ink)">
+            <div style="font-size: 12px; font-weight: 600">{{c.author}}</div>
+            <div style="font-size: 11px; color: var(--ink)">{{c.status}}</div>
+          </div>
+        </a>
       </sc-for>
     </div>
-    <div role="status" style="font-size: 13px; color: var(--ink3); padding: 0 4px">{{countLabel}}</div>
-    <ul class="st-scroll" style="list-style: none; margin: 0; padding: 0 0 16px; flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 8px">
-      <sc-for list="{{rows}}" as="b" hint-placeholder-count="6">
-        <li class="st-row" style="{{b.delay}}">
-          <button type="button" class="st-pick" aria-current="{{b.current}}" onClick="{{b.pick}}" style="{{b.style}}">
-            <span aria-hidden="true" style="{{b.cover}}">{{b.mono}}</span>
-            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px">
-              <span style="font-size: 15px; font-weight: 700; line-height: 1.25">{{b.title}}</span>
-              <span style="font-size: 13px; color: var(--ink2b); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{b.author}}</span>
-              <span style="display: flex; gap: 6px; align-items: center; margin-top: 2px; flex-wrap: wrap">
-                <span style="{{b.pill}}">{{b.status}}</span>
-                <span style="font-size: 12px; color: var(--ink3)">Kệ {{b.shelf}}</span>
-              </span>
-            </span>
-          </button>
-        </li>
-      </sc-for>
-      <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
-        <li style="padding: 24px 8px; font-size: 14px; color: var(--ink3)">Không có sách khớp. Thử bỏ dấu hoặc chọn "Tất cả".</li>
-      </sc-if>
-    </ul>
   </section>
-
-  <!-- 3. Detail pane: shows the book picked in the list, no page change -->
-  <section aria-label="Chi tiết sách" class="st-pane" style="position: absolute; left: 584px; right: 16px; top: 16px; bottom: 16px; border-radius: 30px; overflow: hidden; background:  rgba(var(--glass),0.55); border: 1px solid rgba(var(--edge),0.85)">
-    <sc-if value="{{hasSel}}" hint-placeholder-val="{{ true }}">
-      <div class="st-scroll st-detail" style="animation: {{detailAnim}}; position: absolute; inset: 0; padding: 12px 20px 96px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 16px">
-        <div style="display: flex; align-items: center; gap: 8px; height: 48px">
-          <div style="flex: 1; font-size: 13px; font-weight: 600; color: var(--ink3)">Chi tiết sách</div>
-          <button type="button" aria-label="Chia sẻ" style="width: 48px; height: 48px; flex: none; border-radius: 999px; border: 1px solid rgba(var(--edge),0.8); background:  rgba(var(--glass),0.6); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M12 3v12"></path><path d="m7 8 5-5 5 5"></path><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path></svg>
-          </button>
-          <div style="width: 84px; flex: none"></div>
-        </div>
-        <div style="display: flex; gap: 16px; align-items: flex-start">
-          <div aria-hidden="true" style="{{sel.coverStyle}}">
-            <div style="font-size: 17px; font-weight: 700; line-height: 1.15">{{sel.title}}</div>
-            <div style="font-size: 11px; opacity: 0.85">{{sel.author}}</div>
-          </div>
-          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px">
-            <div style="display: flex; gap: 6px; flex-wrap: wrap">
-              <sc-for list="{{sel.tags}}" as="t" hint-placeholder-count="2">
-                <span style="padding: 5px 10px; border-radius: 999px; background:  rgba(var(--glass),0.8); font-size: 12px; font-weight: 500; color: var(--ink2)">{{t.label}}</span>
-              </sc-for>
-            </div>
-            <h2 style="margin: 0; font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.2px">{{sel.title}}</h2>
-            <div style="font-size: 14px; color: var(--ink2b)">{{sel.author}}</div>
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
-          <div style="padding: 12px; border-radius: 18px; background: var(--surface); display: flex; flex-direction: column; gap: 2px">
-            <div style="font-size: 11px; color: var(--ink3)">Tình trạng</div>
-            <div style="{{sel.statusStyle}}">{{sel.statusShort}}</div>
-          </div>
-          <div style="padding: 12px; border-radius: 18px; background: var(--surface); display: flex; flex-direction: column; gap: 2px">
-            <div style="font-size: 11px; color: var(--ink3)">Kệ</div>
-            <div style="font-size: 15px; font-weight: 700">{{sel.shelf}}</div>
-          </div>
-          <div style="padding: 12px; border-radius: 18px; background: var(--surface); display: flex; flex-direction: column; gap: 2px">
-            <div style="font-size: 11px; color: var(--ink3)">Hạn mượn</div>
-            <div style="font-size: 15px; font-weight: 700">14 ngày</div>
-          </div>
-        </div>
-        <p style="margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink2b)">[Mô tả sách: chưa có trong dữ liệu danh mục] · ISBN {{sel.isbn}}</p>
-      </div>
-      <div style="position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 8px; border-radius: 999px; background:  rgba(var(--glass),0.7); backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%); border: 1px solid rgba(var(--edge),0.9); display: flex; gap: 8px">
-        <button type="button" aria-label="Mượn bằng cách chạm điện thoại vào sách" style="width: 52px; height: 52px; flex: none; border-radius: 999px; border: 0; background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg>
-        </button>
-        <button type="button" onClick="{{reserve}}" aria-live="polite" class="st-swap st-press" style="{{reserveStyle}}">
-          <sc-if value="{{isDone}}" hint-placeholder-val="{{ false }}">
-            <svg class="st-pop" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path><path class="st-draw" d="m9 10 2 2 4-4"></path></svg>
-          </sc-if>
-          <sc-if value="{{isIdle}}" hint-placeholder-val="{{ true }}">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg>
-          </sc-if>
-          {{reserveLabel}}
-        </button>
-      </div>
-    </sc-if>
-    <sc-if value="{{noSel}}" hint-placeholder-val="{{ false }}">
-      <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 32px; text-align: center; font-size: 14px; color: var(--ink3)">Chọn một cuốn sách trong danh sách để xem chi tiết.</div>
-    </sc-if>
-  </section>
-
   <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 24px; right: 28px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">
     <sc-if value="{{themeIsLight}}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg></sc-if>
     <sc-if value="{{themeIsDark}}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
@@ -208,134 +240,119 @@ class Component extends DCLogic {
     var t = (this.state && this.state.__theme) || 'auto';
     var sys = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
     var dark = t === 'dark' || (t === 'auto' && sys);
-    var mini = !!(this.state && this.state.navMini);
-    return {
+    var opts = [['auto', 'Theo hệ thống'], ['light', 'Sáng'], ['dark', 'Tối']];
+    return Object.assign(this.__layout(), {
       themeAttr: t,
       themeLabel: dark ? 'Sáng' : 'Tối',
       themeAria: dark ? 'Xem bản phác ở nền sáng' : 'Xem bản phác ở nền tối',
       themeIsDark: dark,
       themeIsLight: !dark,
       toggleTheme: function () { self.setState({ __theme: dark ? 'light' : 'dark' }); },
-      // the button at the top of the menu folds it into a 72 dp icon rail
-      navMode: mini ? 'mini' : 'full',
-      navOpen: !mini,
+      themeOpts: opts.map(function (o) {
+        var on = o[0] === t;
+        return {
+          label: o[1], on: on,
+          pick: function () { self.setState({ __theme: o[0] }); },
+          style: 'flex:1;height:40px;border-radius:999px;border:0;font:inherit;font-size:13px;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? 'var(--primary)' : 'transparent') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
+        };
+      })
+    });
+  }
+  // side menu collapse (expanded window), list/detail switching (medium window) and pane transitions:
+  // medium window slides the incoming pane 30 px along the x axis (forward from the right, back from the
+  // left); expanded window fades the detail content in (the animation name alternates so it replays).
+  __layout() {
+    var self = this, st = this.state || {};
+    var mini = !!st.navMini, mid = false;
+    var view = st.view || 'list', n = st.swapN || 0;
+    var ease = ' 300ms cubic-bezier(.2,.8,.2,1) both';
+    return {
+      navMode: mini ? 'mini' : 'full', navOpen: !mini,
       navToggleLabel: mini ? 'Mở rộng menu' : 'Thu gọn menu',
       toggleNav: function () { self.setState({ navMini: !mini }); },
-      // picking another book fades the detail in again: the animation name alternates so it replays
-      detailAnim: ((this.state && this.state.swapN) % 2 ? 'st-xb' : 'st-xa') + ' 150ms ease-out both'
+      showList: !mid || view === 'list', showDetail: !mid || view === 'detail',
+      listAnim: mid && st.navDir === 'back' ? 'st-axl' + ease : 'st-fade 260ms ease-out both',
+      detailAnim: mid ? 'st-axr' + ease : (n % 2 ? 'st-xb' : 'st-xa') + ' 150ms ease-out both',
+      rowsStill: !!st.navDir,
+      back: function () { self.setState({ view: 'list', navDir: 'back', swapN: n + 1 }); },
+      toDetail: function () { var o = { swapN: n + 1, navDir: 'fwd' }; if (mid) o.view = 'detail'; self.setState(o); }
     };
   }
-  renderVals() {
+  // helpers shared by the wide boards
+  __ui() {
     var self = this;
-    var st = this.state || {};
-    var q = st.q || '';
-    var chip = st.chip || 'all';
-    var phase = st.phase || 'idle';
-    var fold = function (s) {
-      return s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
-    };
-    // Same dev catalog as List.dc.html (server/src/main/resources/db/dev/V100__dev_catalog.sql).
-    // "Đang được mượn" on Tắt đèn is sample state for the mockup, not dev data.
-    var books = [
-      { t: 'Truyện Kiều', a: 'Nguyễn Du', s: 'Thơ · Văn học Việt Nam', isbn: '9780990000013', n: 2, shelf: 'A01', g: 'vn', bg: '#e7dcc6', fg: '#2f4a44' },
-      { t: 'Dế Mèn phiêu lưu ký', a: 'Tô Hoài', s: 'Thiếu nhi · Văn học Việt Nam', isbn: '9780990000020', n: 3, shelf: 'A02', g: 'vn', bg: '#c9a66b', fg: '#1c1b1a' },
-      { t: 'Số đỏ', a: 'Vũ Trọng Phụng', s: 'Tiểu thuyết · Văn học Việt Nam', isbn: '9780990000037', n: 2, shelf: 'A03', g: 'vn', bg: '#b5452b', fg: '#ffffff' },
-      { t: 'Tắt đèn', a: 'Ngô Tất Tố', s: 'Tiểu thuyết · Văn học Việt Nam', isbn: '9780990000044', n: 0, shelf: 'A04', g: 'vn', bg: '#7a2e1e', fg: '#ffffff' },
-      { t: 'Lão Hạc', a: 'Nam Cao', s: 'Truyện ngắn · Văn học Việt Nam', isbn: '9780990000051', n: 1, shelf: 'A05', g: 'vn', bg: '#d8c9a8', fg: '#3e3a36' },
-      { t: 'Chí Phèo', a: 'Nam Cao', s: 'Truyện ngắn · Văn học Việt Nam', isbn: '9780990000068', n: 1, shelf: 'A06', g: 'vn', bg: '#3e3a36', fg: '#ffffff' },
-      { t: 'Clean Code', a: 'Robert C. Martin', s: 'Software engineering · Programming', isbn: '9780990000075', n: 3, shelf: 'A07', g: 'dev', bg: '#2f4a44', fg: '#ffffff' },
-      { t: 'Introduction to Algorithms', a: 'Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein', s: 'Algorithms · Computer science', isbn: '9780990000082', n: 2, shelf: 'A08', g: 'dev', bg: '#5a6b7a', fg: '#ffffff' },
-      { t: 'The Pragmatic Programmer', a: 'Andrew Hunt, David Thomas', s: 'Software engineering · Programming', isbn: '9780990000099', n: 1, shelf: 'A09', g: 'dev', bg: '#c9a66b', fg: '#1c1b1a' },
-      { t: 'Designing Data-Intensive Applications', a: 'Martin Kleppmann', s: 'Databases · Distributed systems', isbn: '9780990000105', n: 2, shelf: 'A10', g: 'data', bg: '#e7dcc6', fg: '#3e3a36' },
-      { t: 'Java Card Technology for Smart Cards', a: 'Zhiqun Chen', s: 'Smart cards · Java', isbn: '9780990000112', n: 1, shelf: 'A11', g: 'sec', bg: '#3e3a36', fg: '#e7dcc6' },
-      { t: 'Applied Cryptography', a: 'Bruce Schneier', s: 'Cryptography · Security', isbn: '9780990000129', n: 2, shelf: 'A12', g: 'sec', bg: '#1c1b1a', fg: '#c9a66b' },
-      { t: 'Android Programming: The Big Nerd Ranch Guide', a: 'Bill Phillips, Chris Stewart, Kristin Marsicano', s: 'Android · Mobile development', isbn: '9780990000136', n: 2, shelf: 'A13', g: 'dev', bg: '#6b8f5e', fg: '#ffffff' }
-    ];
-    var groups = [
-      { id: 'all', label: 'Tất cả' },
-      { id: 'vn', label: 'Văn học Việt Nam' },
-      { id: 'dev', label: 'Lập trình' },
-      { id: 'sec', label: 'Bảo mật và thẻ' },
-      { id: 'data', label: 'Dữ liệu' }
-    ];
-    var fq = fold(q.trim());
-    var hits = books.filter(function (b) {
-      if (chip !== 'all' && b.g !== chip) return false;
-      if (!fq) return true;
-      return fold(b.t + ' ' + b.a + ' ' + b.s).indexOf(fq) >= 0 || b.isbn.indexOf(fq.replace(/-/g, '')) >= 0;
-    });
-    // the picked book stays picked while it is in the results; otherwise the first result is shown
-    var selIsbn = st.sel || '9780990000020';
-    var sel = hits.filter(function (b) { return b.isbn === selIsbn; })[0] || hits[0] || null;
-    var mono = function (t) {
-      var w = t.split(/\s+/);
-      return (w[0][0] + (w[1] ? w[1][0] : '')).toUpperCase();
-    };
-    var n = 0;
-    var menuItem = function (label, href, d1, d2, active) {
-      return {
-        label: label, href: href, d1: d1, d2: d2, current: active ? 'page' : 'false',
-        iconStyle: 'width:36px;height:36px;flex:none;border-radius:12px;display:flex;align-items:center;justify-content:center;background:' + (active ? 'var(--surface)' : 'rgba(var(--glass),0.5)'),
-        style: 'animation-delay:' + (40 + 35 * n++) + 'ms;display:flex;align-items:center;gap:12px;min-height:52px;padding:6px 10px;border-radius:20px;text-decoration:none;color:var(--ink);font-size:15px;font-weight:' + (active ? '700' : '500') + ';background:' + (active ? 'rgba(var(--glass),0.85)' : 'transparent')
-      };
-    };
-    var labels = { idle: 'Đặt trước sách này', sending: 'Đang gửi yêu cầu…', done: 'Đã đặt trước · thư viện xác nhận' };
-    var bg = { idle: 'var(--primary)', sending: '#5c554e', done: '#2f5b3a' };
-    var out = sel && sel.n === 0;
-    return Object.assign(this.__theme(), {
-      q: q,
-      onQ: function (e) { self.setState({ q: e.target.value }); },
-      countLabel: hits.length + ' / ' + books.length + ' đầu sách',
-      empty: hits.length === 0,
-      chips: groups.map(function (g) {
-        var on = g.id === chip;
-        return {
-          label: g.label,
-          on: on,
-          pick: function () { self.setState({ chip: g.id }); },
-          style: 'flex:none;height:40px;padding:0 14px;border-radius:999px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid ' + (on ? 'var(--primary)' : 'rgba(var(--edge),0.9)') + ';background:' + (on ? 'var(--primary)' : 'rgba(var(--glass),0.6)') + ';color:' + (on ? 'var(--on-primary)' : 'var(--ink2)')
-        };
-      }),
-      rows: hits.map(function (b, i) {
-        var on = sel && b.isbn === sel.isbn;
-        var lent = b.n === 0;
-        return {
-          title: b.t, author: b.a, shelf: b.shelf, mono: mono(b.t),
-          current: on ? 'true' : 'false',
-          pick: function () { self.setState({ sel: b.isbn, phase: 'idle', swapN: (st.swapN || 0) + 1 }); },
-          status: lent ? 'Đang được mượn · đặt trước' : 'Còn ' + b.n + ' bản',
-          delay: 'animation-delay:' + Math.min(i, 8) * 40 + 'ms',
-          style: 'width:100%;display:flex;gap:12px;align-items:center;padding:10px;border-radius:20px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;min-height:48px;border:1px solid ' + (on ? 'rgba(var(--ink-rgb),0.5)' : 'transparent') + ';background:' + (on ? 'var(--surface)' : 'rgba(var(--glass),0.72)'),
-          cover: 'width:44px;height:62px;flex:none;border-radius:10px;display:flex;align-items:flex-end;padding:6px;box-sizing:border-box;font-size:13px;font-weight:700;letter-spacing:0.5px;background:' + b.bg + ';color:' + b.fg,
-          pill: 'font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:' + (lent ? 'rgba(181,69,43,0.12)' : 'rgba(47,91,58,0.12)') + ';color:' + (lent ? 'var(--danger2)' : 'var(--ok)')
-        };
-      }),
-      hasSel: !!sel,
-      noSel: !sel,
-      sel: sel ? {
-        title: sel.t, author: sel.a, shelf: sel.shelf, isbn: sel.isbn,
-        tags: sel.s.split(' · ').map(function (x) { return { label: x }; }),
-        statusShort: out ? 'Đang được mượn' : 'Còn ' + sel.n + ' bản',
-        statusStyle: 'font-size:15px;font-weight:700;line-height:1.25;color:' + (out ? 'var(--danger2)' : 'var(--ok)'),
-        coverStyle: 'width:104px;height:150px;flex:none;border-radius:14px;padding:12px 10px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 12px 28px rgba(0,0,0,0.2);background:' + sel.bg + ';color:' + sel.fg
-      } : {},
-      isIdle: phase === 'idle',
-      isDone: phase === 'done',
-      reserveLabel: labels[phase],
-      reserveStyle: 'flex:1;min-height:52px;padding:6px 16px;border-radius:999px;border:0;background:' + bg[phase] + ';color:' + (phase === 'idle' ? 'var(--on-primary)' : '#ffffff') + ';display:flex;align-items:center;justify-content:center;gap:10px;font:inherit;font-size:15px;font-weight:600;line-height:1.2;cursor:pointer',
-      reserve: function () {
-        if (phase === 'sending') return;
-        if (phase === 'done') { self.setState({ phase: 'idle' }); return; }
-        self.setState({ phase: 'sending' });
-        self.timer = setTimeout(function () { self.setState({ phase: 'done' }); }, 1200);
+    var mono = function (t) { var w = t.split(/\s+/); return (w[0][0] + (w[1] ? w[1][0] : '')).toUpperCase(); };
+    return {
+      mono: mono,
+      // state preview tabs (mockup only), same look as the preview bar on the phone boards
+      tabs: function (defs, cur, key, extra) {
+        return defs.map(function (d) {
+          var on = d[0] === cur;
+          return {
+            label: d[1], on: on,
+            pick: function () { var o = {}; o[key] = d[0]; if (extra) Object.assign(o, extra); self.setState(o); },
+            style: 'min-height:32px;padding:4px 10px;border-radius:999px;border:0;font:inherit;font-size:12px;line-height:1.15;font-weight:' + (on ? '700' : '500') + ';cursor:pointer;background:' + (on ? '#ffffff' : 'transparent') + ';color:' + (on ? '#1c1b1a' : 'rgba(255,255,255,0.85)')
+          };
+        });
       },
-      menu: [
-        menuItem('Danh mục', 'WideCatalog.dc.html', 'M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z', 'M8 7h7', true),
-        menuItem('Gợi ý cho bạn', 'WideRecommend.dc.html', 'M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z', '', false),
-        menuItem('Sách đang mượn', 'WideLoans.dc.html', 'M12 7v5l3 2', 'M21 12a9 9 0 1 1-9-9 9 9 0 0 1 9 9z', false),
-        menuItem('Đặt trước', 'WideReservations.dc.html', 'M6 3h12v18l-6-4-6 4z', 'M9 9h6', false),
-        menuItem('Lịch sử đọc', 'WideHistory.dc.html', 'M3 12a9 9 0 1 0 3-6.7L3 8', 'M3 3v5h5', false),
-        menuItem('Tài khoản', 'WideAccount.dc.html', 'M4 21a8 8 0 0 1 16 0', 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0z', false)
+      row: function (o) {
+        var lay = self.__layout();
+        return {
+          title: o.title, author: o.author || '', mono: mono(o.title),
+          status: o.status || '', hasStatus: !!o.status, pill: o.pill || '',
+          hasNote: !!o.note, note: o.note || '', hasReason: !!o.reason, reason: o.reason || '',
+          current: o.on ? 'true' : 'false', pick: function () { o.pick(); lay.toDetail(); },
+          // rows rise once, on first load; coming back to the list does not replay it
+          delay: lay.rowsStill ? 'animation:none' : 'animation-delay:' + Math.min(o.i || 0, 8) * 40 + 'ms',
+          style: 'width:100%;display:flex;gap:12px;align-items:center;padding:10px;border-radius:20px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;min-height:48px;border:1px solid ' + (o.on ? 'rgba(var(--ink-rgb),0.5)' : 'transparent') + ';background:' + (o.on ? 'var(--surface)' : 'rgba(var(--glass),0.72)'),
+          cover: 'width:44px;height:62px;flex:none;border-radius:10px;display:flex;align-items:flex-end;padding:6px;box-sizing:border-box;font-size:13px;font-weight:700;letter-spacing:0.5px;background:' + o.bg + ';color:' + o.fg
+        };
+      },
+      pill: function (kind) {
+        var bg = { ok: 'rgba(47,91,58,0.12)', bad: 'rgba(181,69,43,0.12)', wait: 'rgba(var(--ink-rgb),0.08)' }[kind];
+        var fg = { ok: 'var(--ok)', bad: 'var(--danger2)', wait: 'var(--ink2)' }[kind];
+        return 'font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:' + bg + ';color:' + fg;
+      },
+      bigCover: function (bg, fg) {
+        return 'width:104px;height:150px;flex:none;border-radius:14px;padding:12px 10px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 12px 28px rgba(0,0,0,0.2);background:' + bg + ';color:' + fg;
+      },
+      phaseBtn: function (phase, labels, extra) {
+        var bg = { idle: 'var(--primary)', sending: '#5c554e', done: '#2f5b3a' };
+        return { label: labels[phase], isIdle: phase === 'idle', isDone: phase === 'done',
+          style: 'flex:1;min-height:52px;padding:6px 16px;border-radius:999px;border:0;background:' + bg[phase] + ';color:' + (phase === 'idle' ? 'var(--on-primary)' : '#ffffff') + ';display:flex;align-items:center;justify-content:center;gap:10px;font:inherit;font-size:15px;font-weight:600;line-height:1.2;cursor:pointer' + (extra || '') };
+      },
+      track: function (on) { return 'width:52px;height:32px;flex:none;box-sizing:border-box;border-radius:999px;padding:2px;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;border:2px solid ' + (on ? 'var(--switch-on)' : 'var(--ink3)') + ';background:' + (on ? 'var(--switch-on)' : 'rgba(var(--ink-rgb),0.06)'); },
+      knob: function (on) { return 'width:24px;height:24px;border-radius:999px;background:' + (on ? 'var(--switch-knob-on)' : 'var(--ink3)') + ';box-shadow:0 1px 3px rgba(0,0,0,0.2);transform:translateX(' + (on ? '20px' : '0') + ') scale(' + (on ? '1' : '0.72') + ')'; }
+    };
+  }
+
+  renderVals() {
+    var ki = 0, ci = 0;
+    var cover = function (bg, fg) {
+      return 'animation-delay:' + (160 + 90 * ki++) + 'ms;width:104px;height:150px;flex:none;border-radius:16px;background:' + bg + ';color:' + fg + ';padding:14px 12px;box-sizing:border-box;box-shadow:0 8px 20px rgba(0,0,0,0.18)';
+    };
+    var card = function (bg, fg) {
+      return 'animation-delay:' + (140 + 70 * ci++) + 'ms;position:relative;display:block;width:132px;min-height:196px;flex:none;border-radius:22px;overflow:hidden;text-decoration:none;background:' + bg + ';color:' + fg;
+    };
+    return Object.assign(this.__theme(), {
+      banner: [
+        { title: 'Số đỏ', style: cover('#b5452b', '#ffffff') },
+        { title: 'Nhà giả kim', style: cover('#c9a66b', '#1c1b1a') }
+      ],
+      kids: [
+        { title: 'Dế Mèn phiêu lưu ký', author: 'Tô Hoài', status: 'Còn 3 bản', cardStyle: card('#b5452b', '#ffffff') },
+        { title: 'Nhà giả kim', author: 'Paulo Coelho', status: 'Đã cho mượn hết', cardStyle: card('#c9a66b', '#1c1b1a') }
+      ],
+      recs: [
+        { title: 'Vũ trụ trong vỏ hạt dẻ', author: 'Stephen Hawking', status: 'Còn 3 bản', reason: 'Cùng chủ đề Khoa học', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Tôi thấy hoa vàng trên cỏ xanh', author: 'Nguyễn Nhật Ánh', status: 'Còn 2 bản', reason: 'Cùng chủ đề Thiếu nhi', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Cho tôi xin một vé đi tuổi thơ', author: 'Nguyễn Nhật Ánh', status: 'Đang được mượn · đặt trước', reason: 'Cùng chủ đề Thiếu nhi', cardStyle: card('#b5452b', '#ffffff') }
+      ],
+      row: [
+        { title: 'Số đỏ', author: 'Vũ Trọng Phụng', status: 'Còn 2 bản', cardStyle: card('#b5452b', '#ffffff') },
+        { title: 'Tắt đèn', author: 'Ngô Tất Tố', status: 'Đã cho mượn hết', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Chí Phèo', author: 'Nam Cao', status: 'Còn 1 bản', cardStyle: card('#3e3a36', '#ffffff') },
+        { title: 'Lão Hạc', author: 'Nam Cao', status: 'Còn 1 bản', cardStyle: card('#d8c9a8', '#3e3a36') }
       ]
     });
   }

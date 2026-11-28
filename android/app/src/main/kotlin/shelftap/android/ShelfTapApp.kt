@@ -15,6 +15,7 @@ class ShelfTapApp : Application(), SingletonImageLoader.Factory {
         super.onCreate()
         container = AppContainer(this)
         container.appScope.launch { container.session.restore() }
+        container.reminders // starts following the session and the setting
     }
 
     /** Covers load through the same pinned, TLS-only client as the API, minus the bearer token. */
