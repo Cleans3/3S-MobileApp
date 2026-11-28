@@ -176,3 +176,70 @@ Done 2026-11-25. A Gemini review (gemini-4-hydrogen-high) of every slide and spe
 - **Low-end test device**: **`máy giá rẻ`** (or **`thiết bị cấu hình thấp`**) everywhere (align `máy yếu` and `máy giá rẻ` on Slides 14, 17).
 - **Logs**: **`nhật ký ứng dụng`** (or **`log`**) vs. **`nhật ký thí nghiệm`** (distinguish Slide 13 NOTES from app logs on Slides 2, 10, 22).
 - **Search**: **`tìm kiếm`** everywhere (align `tìm` on Slides 3, 17 with `tìm kiếm` on Slides 7, 20).
+
+## 3. Review rounds for the rebuilt talk (2026-11-28)
+
+The rebuilt deck, the article, the script with the outline, and the report each had one independent Vietnamese review. The reviewer was a read-only Gemini pane spawned by the orchestrator. Its brief was the binding glossary and register of the task contract (now in [../PLAYBOOK.md](../PLAYBOOK.md) §8); the findings tables are kept outside the repo in `~/work/.herdr/adhoc-1128a/langreview/` (`deck.md`, `script.md`, `report.md`). Each finding was a row: where, current text, problem, replacement, and severity (major or minor). Owners applied every major finding and every minor one that did not break a number, the glossary or the layout. Rejections were reported to the orchestrator with a reason.
+
+**Status of each finding, measured 2026-11-28.** Each finding's current text and its replacement were compared with the file as it is now. There are three outcomes:
+- *replacement present*: the reviewer's wording is in the file.
+- *reworded otherwise*: the flagged wording is gone and the owner wrote something else, usually to fit the layout, the spoken rhythm or the glossary.
+- *original still present*: not applied yet.
+
+| Round | File reviewed | Reviewer | Findings (major / minor) | Replacement present | Reworded otherwise | Original still present |
+|---|---|---|---|---|---|---|
+| 1 | presentation.html (visible text and notes) | Gemini (version not recorded in deck.md) | 69 (of 95 in deck.md; 54 / 41 overall) | 7 | 62 | 0 |
+| 1 | ARTICLE.md sample (Tóm tắt, Chương 1, §5.3, Chương 6) | same | 26 | 13 | 13 | 0 |
+| 2 | presentation-script.md | Gemini 4 Hydrogen | 34 (of 46 in script.md; 18 / 28 overall) | 10 | 24 | 0 |
+| 2 | slides-outline.md | same | 12 | 6 | 6 | 0 |
+| 3 | report/index.html | Gemini 4 Hydrogen | 36 (16 / 20) | 0 | 26 | 10 (being applied under REQ#adhoc-1128a:15 when this was written) |
+
+### Round 1 — deck and article sample
+
+- **Deck** (owner beta-deck, RE#adhoc-1128a:10). All majors were applied. The repeated wording classes were fixed across the whole deck, notes included:
+  - "khung hình trễ" is never shortened;
+  - "trợ lý AI" at first use;
+  - "kịch bản lỗi", "chế độ chỉ đề xuất", "thư mục HOME giả lập", "cấu hình kết xuất GPU";
+  - "Chạm thẻ NFC tự mượn sách · thiết bị cấu hình thấp";
+  - "Ba điểm cốt lõi cần nhớ";
+  - the hype prompt is "prompt kiểu trào lưu", decided by the orchestrator.
+  A later addendum carried the article's round-2 terms into the deck: "chấm độc lập (ẩn nhãn)", "trợ lý sửa mã", and "trợ lý AI" everywhere except fixed tool names.
+- **Rejected or adapted in the deck, with reasons:**
+  1. "ngắn" dropped from the hype-prompt phrase: prompt O is a full paragraph, and "chỉ một prompt" already says it is one-shot.
+  2. "Khi gặp lỗi chặn" kept without "quá trình chạy/build": the longer form breaks the one-line row; the notes explain it.
+  3. Đáng kể is defined as "chưa đủ làm màn hình không đạt mục tiêu", not the suggested phrase, which is not idiomatic either.
+  4. Nghiêm trọng says "màn hình thử nghiệm", not "ứng dụng": the measurements are of lab screens.
+  5. "lỗi ít gặp" kept, not "hiếm": S01 and S05 sit in the Ít gặp bin.
+  6. "phép so sánh được kiểm định", not "chênh lệch": only this comparison was tested; the slide does not claim it is the only difference.
+  7. "cấu hình theo quy tắc cố định", not "cơ học", which is a physics term.
+  8. H4 "tham chiếu thư viện", not "tọa độ", which is a calque.
+- **Article** (owner beta-article, RE#adhoc-1128a:4 and :11).
+  - The first pass rewrote all chapters to the glossary (about 350 sentence-level rewrites, 13 invariants unchanged).
+  - The second pass applied all 28 article findings and the calque families across the whole article (about 200 replacements). The chosen terms are listed in PLAYBOOK.md §8.
+  - Adapted: "major page fault" became "lỗi trang cứng (major page fault)", the standard operating-system term. "một bộ phát hiện mới" was kept in §2.3 (a generic detector, not ours). "hiện tượng ảo giác" was kept where natural.
+  - Terms printed inside the frozen figures are glossed in their captions instead of being redrawn.
+
+### Round 2 — script and outline
+
+- The reviewer judged both files to match the deck's numbers and narrative and to keep the student register ("nhóm em", "thầy cô và các bạn"). The main findings were these:
+  - a layout slip ("bên phải" on slide 13);
+  - one Thao tác that did not match the Lời nói (slide 3);
+  - a misleading "chỉ đề xuất theo danh mục" (slide 18);
+  - two vague recommendations on slide 23;
+  - missing first-use glosses: prompt, tệp quy tắc, Android Keystore, bản build đo hiệu năng;
+  - three outline errors, including a banned "gây giật" and an inverted "không giảm bảo mật".
+- Every major finding is gone from the current script and outline (0 still present).
+- **Glossary challenges not adopted:** "bản build đo hiệu năng" stays, because it is the glossary term and is printed on the frozen deck. "đăng ký trước" stays next to "chốt trước", because the glossary pairs them. "cỡ chữ 2.0" keeps the decimal point, to match the deck and the number check.
+- The script owner's per-finding dispositions went to the orchestrator and are not in the replies file; the counts above are measured.
+
+### Round 3 — report
+
+- The main findings were these:
+  - the double negative "giảm −X%" (five places);
+  - "chỉ một prompt" forced into an attributive position;
+  - calques: "chi phí hiệu năng", "byte giải mã", "cắt qua 0", "kiểm tra dấu hiệu", "bề mặt lỗi";
+  - a live-talk lead-in in the demo section of a page meant to be read alone;
+  - first-use glosses missing for R8, Baseline Profile, recompose, cleartext, ATF and Macrobenchmark;
+  - one term drift ("trợ lý sửa mã" where "trợ lý AI" was meant).
+- The reviewer also challenged the glossary entry "chỉ một prompt (one-shot prompt)" in attributive position. That decision is the orchestrator's, in REQ#adhoc-1128a:15.
+- That request also applies every major finding and syncs the report with the slide-21 update. When this section was written, 10 findings (5 major) were not applied yet.
