@@ -2,9 +2,56 @@
 
 ## Current deck
 
-This record is for the deck rebuilt on 2026-11-28: 25 main slides plus backup slides D1..D9 (34 slides) in [../presentation.html](../presentation.html).
-Current counts from `python3 -I optimization/study/proof/check_deck_proof.py`, run from the repo root (exit 0): 827 rows checked, 0 bad, 0 stale, 799 data values, 0 unproven.
-Slide numbers and quoted wording in this part refer to the current deck. Earlier passes are kept below under "History".
+This record is for the deck re-ordered on 2026-11-28 (talk flow hook → claim → experiments → results → problems → solutions → close): 27 main slides plus backup slides D1..D12 (39 slides) in [../presentation.html](../presentation.html).
+Current counts from `python3 -I optimization/study/proof/check_deck_proof.py`, run from the repo root (exit 0): 956 rows checked (518 direct, 109 derived, 329 label), 0 bad, 0 stale, 929 data values, 0 unproven.
+Slide numbers in this section and in the talk-flow pass below refer to the current deck. The earlier passes under it keep the numbering of the 25 + 9 deck they were written for; the old → new map below translates them. Earlier decks are under "History".
+
+## 2026-11-28 — talk-flow rebuild (25 + D1–D9 → 27 + D1–D12)
+
+The owner asked for the order hook → claim → experiments → results → problems behind the results → solutions → close. Every main slide now carries `data-part` (A Mở đầu, B Kết quả, C Nguyên nhân, D Giải pháp, E Kết thúc), kept as markup only (the strip that showed them at the bottom of the slide was removed on 2026-11-28 at the owner's request); slide 1 is a poster and shows no page number.
+
+### Old → new slide map
+
+| old | new | data-title (current) |
+|---|---|---|
+| 1 | 1 (rewritten as a poster) | Trông hoàn thiện, chưa tối ưu |
+| 2 | 2 | Lời hứa trên mạng |
+| — | 3 (new) | Năm con số |
+| 6 | 4 | Sáu thí nghiệm |
+| 4 | 5 | Phân loại lỗi |
+| 17 | 6 | Bản nháp build lỗi |
+| 18 | 7 | “Đã sửa xong” chưa phải kết quả |
+| 22 | 8 | Thiết bị thật |
+| 20 | 9 | Kết quả các phép kiểm định |
+| 19 | 10 | Sáu kết luận |
+| 7–9 | 11–13 | Giao diện |
+| 10–12 | 14–16 | Bộ nhớ |
+| 13–15 | 17–19 | Bảo mật |
+| 16 | 20 | Demo: trước và sau tối ưu |
+| 23, 24 | removed | replaced by 21–26 |
+| — | 21 (new) | Năm bậc giải pháp |
+| — | 22–26 (new) | Bậc 1 · Trợ lý AI tự rà soát … Bậc 5 · Sửa đúng mẫu lỗi |
+| 25 | 27 (third takeaway reworded) | Ba điều cần nhớ |
+| 26–34 (D1–D9) | 28–36 (D1–D9) | unchanged |
+| 21 | 37 (D10) | D10 · Đối chiếu mục tiêu môn học |
+| 3 | 38 (D11) | D11 · Bốn ứng dụng chỉ một prompt |
+| 5 | 39 (D12) | D12 · Ba bài học từ bảng phân loại |
+
+### What changed in the proof table
+
+- **Re-keyed, not rewritten.** Rows of every moved slide were renumbered by the map above. The 65 rows of old slides 1, 23, 24 and 25 were deleted.
+- **Stale rows removed (9).** They were labels for cross-references or timings that no longer exist: "~40 giây" on 9, "~45 giây" and "slide 14" on 10, "slide 7" on 15, "slide 7, 8, 10" on 20, "slide 3" on D8 (35), "slide 13" on D12 (39).
+- **203 rows added (63 direct, 19 derived, 121 label)** for slides 1, 3, 21–27, the new cross-references and the trimmed timings. Rows for values already proven on an older slide were copied with their source, quote and formula unchanged (for example 58/100 = `100-42`, 180 MB = `184000/1024`, gấp 2,3 lần = `2.37/1.02`). New sources: e5-optimizer/REPORT.md:43 (168 of 168 over 12 sequences), :53 (evidence arm, p = 0.25 to 1.0, 6 pairs), :89 (advice precision 0.82 to 0.94); e6-oneshot/REPORT.md:95 (rule 19 breaks 3 of 3 codex arm-R builds); e2-bench/REPORT.md:51 (12 iterations per variant).
+- **Values with two readings get one row per reading** where both readings are on the slide: 12 on slide 25 (12 lần lặp, and 12–16 ms), 60 on slide 26 (60 MB, and 60 fps).
+- **New label kinds:** rung numbers ("Bậc N", ladder steps) and the rule number "quy tắc 18" (an ID in the rules file).
+
+### Decisions recorded
+
+- **No new number was invented.** Every value on slides 3 and 21–26 already exists in a REPORT.md, a results CSV or optimization/log/opt-ui-ux.md and has a row. Where a rung has no measured effect in the study, the slide says so in words: Android Lint was not run in E3 (e3-security/REPORT.md:7), so rung 3 names R8, the compile gate and MobSF but gives Lint no number. The diff guard (e7-novel) is only mentioned in the rung-5 notes as retrospective, with no number.
+- **The example prompt on rung 1 is labelled "PROMPT MẪU"** and the notes say it is an illustration, not the E5 prompt. The two quotes on rung 2 are verbatim (guardrail/ANDROID-GUARDRAIL.md:24, e6-oneshot/prompts/S.txt); the R8 lines on rung 3 are the two settings named in rule 18 (guardrail/ANDROID-GUARDRAIL.md:31).
+- **"chưa đo" leaves the main slides.** The scoreboard moved to D10 with its one unmeasured row (NFC tap on a low-cost device) removed; its headline now ends "trừ lưới thẻ trang trí". Slide 8's notes point to D1 instead of saying "chưa đo". D1 keeps the full list of what was not measured. A grep of the 27 main slides for "chưa đo" returns 0.
+- **Notes timing:** 1170 s (19:30), within the 20:00 budget. Trimmed on moved slides: slide 5 60 → 50 s, slide 9 40 → 30 s, slide 10 45 → 35 s. New: slide 1 15 s, slide 3 45 s, slide 21 30 s, slides 22–26 40 s each.
+- **Layout check** (headless Chrome, every main slide at its last build step, `#/N/99`, at 1280×720 and 1920×1080): 0 elements outside the canvas, 0 clipped elements, smallest text 20 px at 1280 (30 px at 1920), content bottom at most 980 on slides 2–27 (the part strip that started at 1012 was removed on 2026-11-28 at the owner's request). Slide 1's phone fan ends at 1008.
 
 ## 2026-11-28 — proof pass for the frozen 33-slide deck (25 main + D1–D8)
 

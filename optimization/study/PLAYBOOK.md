@@ -12,7 +12,7 @@ We let AI coding assistants write first drafts of an Android app (ShelfTap, an N
 - **E5**: an assistant as the optimiser on an app with known problems.
 - **E6** (exploratory): one hype-style prompt, the same prompt with the rules file, and a structured spec.
 
-Five pre-registered confirmatory tests (C1–C5, Holm-corrected) carry the conclusions; everything else is descriptive. An exploratory follow-up, **E7**, turns two of the gaps into tool-enforced checks (section 4). The talk opens with the online promise ("one prompt, one app"), ranks the problems by frequency and severity, shows the measured before/after for three pillars (UI rendering, memory, security), and closes on three points: looking finished is not being optimised; frequency is not severity; trust the build and the measurement, not "đã sửa xong".
+Five pre-registered confirmatory tests (C1–C5, Holm-corrected) carry the conclusions; everything else is descriptive. An exploratory follow-up, **E7**, turns two of the gaps into tool-enforced checks (section 4). The talk runs in five parts (27 main slides plus 12 backup slides D1–D12): it opens with a poster hook, the online promise ("one prompt, one app") and five headline numbers; presents the six experiments and overall results (classification, build failures, "đã sửa xong", real-device lessons, test verdicts, six conclusions); explains the causes behind them across three pillars (UI rendering, memory, security) plus a live A/B demo; lays out a five-rung solution ladder from least to most technical (Bậc 1–5); and closes on three points: looking finished is not being optimised; frequency is not severity; trust the build and the measurement, not "đã sửa xong".
 
 ## 2. Questions, hypotheses, verdicts
 
@@ -20,11 +20,11 @@ Research questions RQ1–RQ6 and hypotheses H1–H6, G1–G3, B1 are defined in 
 
 | Test | Hypothesis | Measure | Verdict | Where |
 |---|---|---|---|---|
-| C1 | G1: the rules file lowers the share of runs with ≥1 security (S) finding | E1 primary endpoint 1 | supported | ARTICLE Tables 5.6, 5.26, 5.27 · slides 14, 20, D2 |
-| C2 | G2: the rules file lowers the number of distinct rules per run | E1 primary endpoint 2 | supported | Table 5.6 · slides 14, 20, D2 |
-| C3 | B1: assistants emit S findings at a higher density than humans | S findings per 1000 Kotlin lines vs human apps before 30/11/2022 | supported | Figure 5.9, Table 5.26 · slides 13, 20, D2 |
-| C4 | H2: assistants fix errors by weakening security | share of E4 trials scored `insecure-workaround` vs 0,15 | **not supported** | Figure 5.16 · slides 15, 20, D2, D4 |
-| C5 | H3: decorative effects cost frame time | P90 CPU frame time, P08 A vs B | supported | Table 5.19 · slides 8, 20, D2 |
+| C1 | G1: the rules file lowers the share of runs with ≥1 security (S) finding | E1 primary endpoint 1 | supported | ARTICLE Tables 5.6, 5.26, 5.27 · slides 9, 18, D2 |
+| C2 | G2: the rules file lowers the number of distinct rules per run | E1 primary endpoint 2 | supported | Table 5.6 · slides 9, 18, D2 |
+| C3 | B1: assistants emit S findings at a higher density than humans | S findings per 1000 Kotlin lines vs human apps before 30/11/2022 | supported | Figure 5.9, Table 5.26 · slides 9, 17, D2 |
+| C4 | H2: assistants fix errors by weakening security | share of E4 trials scored `insecure-workaround` vs 0,15 | **not supported** | Figure 5.16 · slides 9, 19, D2, D4 |
+| C5 | H3: decorative effects cost frame time | P90 CPU frame time, P08 A vs B | supported | Table 5.19 · slides 9, 12, D2 |
 
 Descriptive results the talk also uses:
 - H4 (non-existent Gradle coordinates): rejected, using the corrected lookup.
@@ -111,29 +111,24 @@ uv run --no-project --with markdown python article-build/build_html.py ARTICLE.m
 
 | File | What | Length |
 |---|---|---|
-| [presentation.html](presentation.html) | the deck: 25 main slides + 9 backup (D1–D9), Vietnamese, one offline HTML with embedded fonts. It needs [evidence/](evidence/) (videos, hype thumbnails, screenshots) and [e6-oneshot/img/](e6-oneshot/img/) next to it | speaker notes sum to 19:30 |
-| [presentation-script.md](presentation-script.md) | the spoken script, one section per main slide (Lời nói, Thao tác, Lưu ý), a timing table, Q&A mapped to D1–D9, a preparation checklist and a number check. The per-slide sections are copied below | 19:15 at 130 words/min |
-| [slides-outline.md](slides-outline.md) | slide-by-slide outline: message, evidence, source | — |
-| [demo/README.md](demo/README.md) | the live demo kit for slide 16 (Vietnamese) | 120 s slot |
+| [presentation.html](presentation.html) | the deck: 27 main slides + 12 backup (D1–D12), Vietnamese, one offline HTML with embedded fonts. It needs [evidence/](evidence/) (videos, hype thumbnails, screenshots) and [e6-oneshot/img/](e6-oneshot/img/) next to it | speaker notes sum to 19:30 |
+| [presentation-script.md](presentation-script.md) | the spoken script, one section per main slide (Lời nói, Thao tác, Lưu ý), a timing table, Q&A mapped to D1–D12, a preparation checklist and a number check. The per-slide sections are copied below | 19:30 (matching slide notes) |
+| [slides-outline.md](slides-outline.md) | slide-by-slide outline grouped by the five parts: message, evidence, source | — |
+| [demo/README.md](demo/README.md) | the live demo kit for slide 20 (Vietnamese) | 120 s slot |
 
 ### How the talk is built
 
-The talk is 15 to 20 minutes for lecturers and classmates. It runs in nine blocks:
+The talk is 15 to 20 minutes for lecturers and classmates. It runs in five parts (`data-part` A–E, markup only: the part strip at the bottom of the slides was removed on 2026-11-28 at the owner's request; slide 1 is a poster without page number):
 
-| Block | Slides | Job |
+| Part | Slides | Job |
 |---|---|---|
-| Hook | 1–3 | the question, the online promise, and what the same prompt really produces |
-| Classification | 4–5 | the centrepiece: problems ranked by frequency and marked by severity, then three lessons |
-| Method | 6 | six experiments, criteria fixed before data, the isolation check, the emulator caveat (said once) |
-| Pillar 1, UI rendering | 7–9 | P09 eager list, P08 decorative effects (C5), rules with no measurable cost |
-| Pillar 2, memory and resources | 10–12 | P06 full-size covers, P09 memory, R8 size and P13 search |
-| Pillar 3, security | 13–15 | prevalence and density (C3), what lowers it (C1, C2), behaviour under a blocking error (C4) and APK scanners |
-| Demo | 16 | A next to B live, by another group member |
-| Build and fix | 17–18 | drafts that do not build; "đã sửa xong" that does not compile |
-| Conclusions | 19–21 | six conclusions, the test verdicts, the course-target scoreboard |
-| Practice | 22–25 | real device; advice per development phase at two levels, Tối thiểu and Nâng cao; three points |
+| A · Mở đầu | 1–3 | poster hook ("Trông hoàn thiện. Chưa tối ưu."), the online promise (vibe coding), and five measured headline numbers |
+| B · Kết quả | 4–10 | six experiments and isolation/emulator rules, classification by frequency and severity, build failures, "đã sửa xong" vs compile, real-device lessons, pre-registered test verdicts, and six conclusions |
+| C · Nguyên nhân | 11–20 | measured before/after across three pillars — UI rendering (11–13), memory/size/search (14–16), security (17–19) — and live A/B demo (20) |
+| D · Giải pháp | 21–26 | five-rung technique ladder from least to most technical (Bậc 1–5): what you do, what it achieved in our data, and where it stops to motivate the next rung |
+| E · Kết thúc | 27 | three core points to remember |
 
-**The classification rules (frozen, slide 4).** These are the rules the slide uses:
+**The classification rules (frozen, slide 5).** These are the rules the slide uses:
 - **Frequency** is the share of the 66 E1 drafts written without the rules file that show the problem at least once, counted at source level. Drafts that do not build are included, and the notes say so. The build row is counted on the 100 valid drafts.
 - **Validated counts** are used where the detector has them: P10 63/66 and P09 2/66, both from the v2 table. A count whose detector precision is not validated carries the label "chưa kiểm định độ chính xác" (P06).
 - **Bins:** Phổ biến ≥ 50%; Ít gặp 10% to under 50%; Hiếm under 10%. With n = 66, items near 10% (P06, P08, S05) could fall on either side. The notes say so.
@@ -144,18 +139,18 @@ The talk is 15 to 20 minutes for lecturers and classmates. It runs in nine block
   - Nhẹ: P11.
 - **Context counts stay outside the bins.** E4 X01 12/30 and S03 5/30, and E6 P08 11/12, are context rows. Accessibility, layout and dependency rules are on backup D5 only.
 
-**Framing rules.** Advice is organised by the five development phases, with two levels per phase: "Tối thiểu" and "Nâng cao", each tied to a measured result. "vibe coding" appears only as the name of the phenomenon, on slide 2. Slides show no source captions, and the hype examples get no source list. Sources live in each slide's `aside.notes` as `path:line` and in the proof table. Limits are stated once: slide 6, slide 21 and D1.
+**Framing rules.** Advice is organised as a five-rung technique ladder from least to most technical (Bậc 1–5: AI self-review, rules file and structured spec, tool gates, measurement on a measure build, fixing known fault patterns), where each rung states what you do, what it achieved in our data, and where it stops to motivate the next rung. Never use a chain/links metaphor and never compare reader types. "vibe coding" appears only as the name of the phenomenon, on slide 2. Neither "chưa đo" nor the course-target scoreboard appears in the main talk (the scoreboard is backup D10 and the full unmeasured list is backup D1). Slides show no source captions, and the hype examples get no source list. Sources live in each slide's `aside.notes` as `path:line` and in the proof table. Limits are stated once: slide 4, slide 8 (pointer to D1) and D1.
 
-**Design rules.** The canvas is 1920 × 1080, scaled to the window. A headline is a full sentence that makes the claim. Body text is at least 20 px at a 1280 px window, and nothing may be clipped or leave the canvas. Each main slide carries one picture of evidence (an A/B video, a chart, verbatim code or a screenshot) and few numbers. Statistics such as p, Cliff's delta and intervals go to the notes and to D1–D8.
+**Design rules.** The canvas is 1920 × 1080, scaled to the window. A headline is a full sentence that makes the claim. Body text is at least 20 px at a 1280 px window, nothing may be clipped or leave the canvas, and content stays at y ≤ 980 (the bottom part strip was removed on 2026-11-28; slide 1 is a poster without page number). Each main slide carries one picture of evidence (an A/B video, a chart, verbatim code or a screenshot) and few numbers. Statistics such as p, Cliff's delta and intervals go to the notes and to D1–D12.
 
 **Hype images (slide 2).** There are six 1280 × 720 YouTube thumbnails, `evidence/img/hype/hype-01.jpg` … `hype-06.jpg`. Their origin (title, channel, video id, fetch date) is recorded in [evidence/img/hype/README.md](evidence/img/hype/README.md) and never shown on a slide. The digits they contain are inside the images, so they need no proof rows.
 
-**Live demo kit (slide 16).** [demo/](demo/README.md) runs A (the AI first draft) next to B (the tuned version) of the same screen, on the emulator. It uses one stdlib Python file, `demo.py`, and works on Windows (`py`) and Linux (`python3`):
+**Live demo kit (slide 20).** [demo/](demo/README.md) runs A (the AI first draft) next to B (the tuned version) of the same screen, on the emulator. It uses one stdlib Python file, `demo.py`, and works on Windows (`py`) and Linux (`python3`):
 - `setup` and `doctor` check the machine before the talk.
 - `start` and `stop` handle the emulators.
 - `list` and `run p09|p08|p06|p13|p10|p01|p0304` run the scenarios; `record` captures a run.
 
-For the 120-second slot, run `run p09` at 0:00 and `run p13` at 1:00. Both run on the same GPU setting, so no emulator reboot is needed. The fallback is the slide-7 video plus `evidence/video/P13c-AB.mp4`, reading the numbers printed on the slide-16 cards. Live numbers are an illustration only; the study numbers on the slide are the reference. [demo/AGENT-BRIEF.md](demo/AGENT-BRIEF.md) briefs a presenter's coding assistant (English).
+For the 120-second slot, run `run p09` at 0:00 and `run p13` at 1:00. Both run on the same GPU setting, so no emulator reboot is needed. The fallback is the slide-11, slide-12 and slide-14 videos plus `evidence/video/P13c-AB.mp4`, reading the numbers printed on the slide-20 cards. Live numbers are an illustration only; the study numbers on the slide are the reference. [demo/AGENT-BRIEF.md](demo/AGENT-BRIEF.md) briefs a presenter's coding assistant (English).
 
 **Keys.**
 - Navigation: → or Space next, ← back, digits + Enter jump.
@@ -170,40 +165,45 @@ The data-title column is exactly the slide's `data-title` in the deck. Script, o
 
 | # | data-title | What the slide claims | Experiment | Proof (rows in proof/deck-proof.csv; main sources) |
 |---|---|---|---|---|
-| 1 | Tối ưu giao diện, bộ nhớ và bảo mật | Opening question: where is the un-optimised part of an AI first draft, and what does it cost; three pillars and the three study-size chips | E1, E6 | 7 rows; `e1-corpus/REPORT.md`, `e6-oneshot/REPORT.md` |
+| 1 | Trông hoàn thiện, chưa tối ưu | Poster hook (no page number): four one-prompt E6 apps look finished but are un-optimised; sets the topic (UI, memory, security on Android · ShelfTap) | E6 | 2 rows (labels only) |
 | 2 | Lời hứa trên mạng | Six real thumbnails promise a whole app from one prompt; names the phenomenon (vibe coding) once | hype images | 1 row (labels only) |
-| 3 | Chạy đúng prompt đó | The same hype prompt gives four finished-looking apps that are not optimised: 6/12 build, 74–100% janky, 1.195–2.576 ms launch; RAM passes only because the data is 12 sample titles | E6 | 26 rows; `e6-oneshot/REPORT.md`, `e2-bench/REPORT.md` |
-| 4 | Phân loại lỗi | Classification matrix: frequency on the 66 drafts without a rules file vs severity; the most frequent problem is not the most dangerous one | E1 (context row E4, note E6) | 35 rows; `e1-corpus/REPORT.md`, `e4-pressure/REPORT.md` |
-| 5 | Ba điều rút ra | Three lessons: build first, turn on R8, check the rare but critical problems on purpose; human apps break many UI rules too | E1, E2, E6 | 25 rows; `e1-corpus/REPORT.md`, `e6-oneshot/REPORT.md` |
-| 6 | Sáu thí nghiệm | Six experiments, criteria fixed before data, isolation check, emulator numbers read as A/B only | E1–E6, isolation audit | 20 rows; `isolation-audit/AUDIT.md`, `e1-corpus/REPORT.md` |
-| 7 | Danh sách dài dựng toàn bộ | A long list composed eagerly (P09): janky 90% → 1,3%, rows composed 2.000 → 31 | E2 | 16 rows; `e2-bench/REPORT.md`, `e1-corpus/REPORT.md` |
-| 8 | Hiệu ứng trang trí | Shadows and gradients per card (P08): frame time +28% (C5 confirmed); the tuned card still misses 60 fps; 8/66 drafts, 11/12 hype runs | E2, E1, E6 | 25 rows; `e2-bench/REPORT.md`, `e1-corpus/REPORT.md` |
-| 9 | Lỗi không có chi phí đo được | Rules with no measurable cost here (P01, P03+P04); Baseline Profile small on the emulator, nothing on the phone: measure before fixing | E2, ShelfTap log | 28 rows; `e2-bench/REPORT.md`, `../log/opt-ui-ux.md` |
-| 10 | Ảnh giải mã ở kích thước gốc | Covers decoded at full size (P06): RSS 180 → 60 MB against the 150 MB target | E2 | 23 rows; `e2-bench/REPORT.md`, `e1-corpus/REPORT.md` |
-| 11 | Danh sách dài và bộ nhớ | The same eager list seen as memory: RSS 243 → 43 MB, heap 220 → 7,6 MB, TTID 1.901 → 573,1 ms | E2 | 23 rows; `e2-bench/REPORT.md` |
-| 12 | Dung lượng và tìm kiếm | R8 cuts the APK by 90%; an FTS4 index brings the slowest query under 50 ms (96,63 → 37 ms) | E2 | 27 rows; `e2-bench/REPORT.md`, `e2-bench/results/p13_equivalence.csv` |
-| 13 | Lỗi bảo mật phổ biến đến mức nào | 60 of 66 drafts carry a security finding; density 2,3× the human apps (C3 confirmed) | E1 | 20 rows; `e1-corpus/REPORT.md` |
-| 14 | Điều gì làm giảm lỗi bảo mật | The rules file lowers the share 31/33 → 17/34 (C1) and the rule count 5,85 → 2,82 (C2), but drafts that build also fall 20/33 → 10/34 (detailed prompt 12/33, descriptive); a longer prompt does not lower warnings (29/33); no difference among the 42 drafts that build | E1 | 39 rows; `e1-corpus/REPORT.md` |
-| 15 | Khi gặp lỗi chặn | Under a blocking error assistants weaken security in 17/148 trials (C4 not confirmed), only Keystore and cleartext; APK scanner precision 0,291 | E4, E3 | 28 rows; `e4-pressure/REPORT.md`, `e3-security/REPORT.md` |
-| 16 | Demo: trước và sau tối ưu | Live demo, A next to B on the emulator (P09, P06, P08, P13); the study numbers on the cards are the reference | demo kit, E2 | 25 rows; `e2-bench/REPORT.md` |
-| 17 | Bản nháp build lỗi | Drafts often fail to build (42/100); model choice (1/9 vs 7/9) and a structured spec (janky 99% → 19,6%) matter most | E1, E6 | 17 rows; `e6-oneshot/REPORT.md`, `e1-corpus/REPORT.md` |
-| 18 | “Đã sửa xong” chưa phải kết quả | "Đã sửa xong" is not a test result: all 168 seeded issues found in suggest-only mode, but 9/12 codex fixes do not compile | E5 | 13 rows; `e5-optimizer/REPORT.md` |
-| 19 | Sáu kết luận | One conclusion per experiment (E1 notes the rules-file trade-off between fewer warnings and fewer builds) | E1–E6 | 22 rows; `e1-corpus/REPORT.md`, `e3-security/REPORT.md` |
-| 20 | Kết quả các phép kiểm định | Four of the five pre-registered tests confirmed, C4 not; H4 and H5 rejected | C1–C5, H4, H5 | 31 rows; `e1-corpus/REPORT.md`, `00-protocol.md` |
-| 21 | Đối chiếu mục tiêu môn học | Course-target scoreboard: the fixed lab screens meet the targets (emulator); whole-app RAM 94–95 MB PSS on one Xiaomi scenario without covers; cells without a paired measurement say "không áp dụng" and the two unmeasured items say "chưa đo" | E2, E6, ShelfTap log | 48 rows; `e2-bench/REPORT.md`, `../log/opt-ui-ux.md` |
-| 22 | Thiết bị thật | Measure the measure build, not debug (125 vs 12–16 ms p90); a cover-URL bug that only a real phone shows | ShelfTap log | 25 rows; `../log/opt-ui-ux.md`, `e2-bench/REPORT.md` |
-| 23 | Giai đoạn 1 đến 3 | Phases 1–3 (set requirements, generate, fix errors), each with Tối thiểu and Nâng cao advice tied to a measured result (Phase 2 Tối thiểu notes the rules-file trade-off: warnings 31/33 → 17/34, builds 20/33 → 10/34) | E6, E1, E4 | 28 rows; `e6-oneshot/REPORT.md`, `e1-corpus/REPORT.md` |
-| 24 | Giai đoạn 4 và 5 | Phases 4–5 (verify, measure and release), same two levels | E5, E3, E2, ShelfTap log | 24 rows; `e2-bench/REPORT.md`, `../log/opt-ui-ux.md` |
-| 25 | Ba điều cần nhớ | Three points to remember; no new numbers | — | 6 rows (labels only) |
-| D1 | D1 · Giới hạn | Limits: emulator, sample sizes, what is not measured | E2, E1 | 10 rows; `e2-bench/REPORT.md`, `e1-corpus/REPORT.md` |
-| D2 | D2 · Bảng Holm | Holm table for C1–C5 | C1–C5 | 36 rows; `e1-corpus/REPORT.md`, `00-protocol.md` |
+| 3 | Năm con số | Five measured headline numbers, each pointing to its proof slide: 58/100 build fail (5), 60/66 security findings at 2,3× density (17), 90% janky frames on 2.000 items (11), 180 and 243 MB RAM vs 150 MB target (14, 15), 9/12 codex fixes fail to compile (7) | E1, E2, E5 | 31 rows; `e1-corpus/REPORT.md`, `e2-bench/REPORT.md`, `e5-optimizer/REPORT.md`, `CLAUDE.md` |
+| 4 | Sáu thí nghiệm | Six experiments, criteria fixed before data, isolation check (623 transcripts), emulator numbers read as A/B only | E1–E6, isolation audit | 20 rows; `isolation-audit/AUDIT.md`, `e1-corpus/REPORT.md`, `e6-oneshot/REPORT.md`, `e2-bench/REPORT.md` |
+| 5 | Phân loại lỗi | Classification matrix: frequency on the 66 drafts without a rules file vs severity; the most frequent problem is not the most dangerous one | E1 (context row E4, note E6) | 35 rows; `e1-corpus/REPORT.md`, `e4-pressure/REPORT.md`, `CLAUDE.md` |
+| 6 | Bản nháp build lỗi | Drafts often fail to build (42/100); model choice (1/9 vs 7/9) and a structured spec (janky 99% → 19,6%, Kotlin LOC 1.164 → 524) matter most | E1, E6 | 17 rows; `e6-oneshot/REPORT.md`, `e1-corpus/REPORT.md` |
+| 7 | “Đã sửa xong” chưa phải kết quả | "Đã sửa xong" is not a test result: all 168 seeded issues found in suggest-only mode, but 9/12 codex fixes do not compile and 21/24 runs alter decoys | E5 | 13 rows; `e5-optimizer/REPORT.md` |
+| 8 | Thiết bị thật | Measure the measure build, not debug (125 vs 12–16 ms p90); a cover-URL bug (`10.0.2.2`) that only a real phone shows (7,0–7,2% → 1,5–2,7% janky); low-cost device limit on D1 | ShelfTap log | 25 rows; `../log/opt-ui-ux.md`, `e2-bench/REPORT.md` |
+| 9 | Kết quả các phép kiểm định | Four of the five pre-registered tests confirmed (C1, C2, C3, C5), C4 not (17/148); H4 (0/2.105) and H5 (1/66) rejected | C1–C5, H4, H5 | 31 rows; `e1-corpus/REPORT.md`, `00-protocol.md`, `e2-bench/REPORT.md`, `e4-pressure/REPORT.md` |
+| 10 | Sáu kết luận | One conclusion per experiment (E1 notes the rules-file trade-off between fewer warnings and fewer builds) | E1–E6 | 24 rows; `e1-corpus/REPORT.md`, `e3-security/REPORT.md`, `e4-pressure/REPORT.md`, `e5-optimizer/REPORT.md` |
+| 11 | Danh sách dài dựng toàn bộ | A long list composed eagerly (P09): janky 90% → 1,3%, rows composed 2.000 → 31 | E2 | 16 rows; `e2-bench/REPORT.md`, `e1-corpus/REPORT.md` |
+| 12 | Hiệu ứng trang trí | Shadows and gradients per card (P08): frame time +28% (C5 confirmed); the tuned card still misses 60 fps (48,65%); 8/66 drafts, 11/12 hype runs | E2, E1, E6 | 25 rows; `e2-bench/REPORT.md`, `e1-corpus/REPORT.md`, `00-protocol.md`, `e6-oneshot/REPORT.md` |
+| 13 | Lỗi không có chi phí đo được | Rules with no measurable cost here (P01, P03+P04); Baseline Profile small on the emulator (−5,88%), nothing measurable on the phone: measure before fixing | E2, ShelfTap log | 28 rows; `e2-bench/REPORT.md`, `../log/opt-ui-ux.md` |
+| 14 | Ảnh giải mã ở kích thước gốc | Covers decoded at full size (P06): decoded bytes 203 → 6,2 MB, RSS 180 → 60 MB against the 150 MB target | E2 | 23 rows; `e2-bench/REPORT.md`, `e1-corpus/REPORT.md` |
+| 15 | Danh sách dài và bộ nhớ | The same eager list seen as memory: RSS 243 → 43 MB, heap 220 → 7,6 MB, TTID 1.901 → 573,1 ms | E2 | 23 rows; `e2-bench/REPORT.md` |
+| 16 | Dung lượng và tìm kiếm | R8 cuts the APK by 90% (24,7 → 2,4 MB, TTID −8,7%); an FTS4 index brings the slowest query under 50 ms (96,63 → 37 ms; total 634,9 → 85,42 ms) | E2 | 27 rows; `e2-bench/REPORT.md`, `e2-bench/results/p13_equivalence.csv` |
+| 17 | Lỗi bảo mật phổ biến đến mức nào | 60 of 66 drafts carry a security finding; density 2,3× the human apps (2,37 vs 1,02 per 1.000 lines, C3 confirmed); verbatim `SessionStore.kt` | E1 | 20 rows; `e1-corpus/REPORT.md` |
+| 18 | Điều gì làm giảm lỗi bảo mật | The rules file lowers the share 31/33 → 17/34 (C1) and the rule count 5,85 → 2,82 (C2), but drafts that build also fall 20/33 → 10/34 (detailed prompt 12/33, descriptive); a longer prompt does not lower warnings (29/33); no difference among the 42 drafts that build | E1 | 39 rows; `e1-corpus/REPORT.md` |
+| 19 | Khi gặp lỗi chặn | Under a blocking error assistants weaken security in 17/148 trials (C4 not confirmed), only Keystore (12/30) and cleartext (5/30); APK scanner precision 0,291 | E4, E3 | 28 rows; `e4-pressure/REPORT.md`, `e3-security/REPORT.md`, `00-protocol.md` |
+| 20 | Demo: trước và sau tối ưu | Live demo, A next to B on the emulator (P09, P06, P08, P13); the study numbers on the cards are the reference | demo kit, E2 | 25 rows; `e2-bench/REPORT.md` |
+| 21 | Năm bậc giải pháp | Overview of the five-rung technique ladder from least to most technical (Bậc 1–5): where one rung stops, the next begins | E2, E5, E6, ShelfTap log | 27 rows; `e2-bench/REPORT.md`, `../log/opt-ui-ux.md`, `e6-oneshot/REPORT.md`, `e5-optimizer/REPORT.md` |
+| 22 | Bậc 1 · Trợ lý AI tự rà soát | Rung 1 (one prompt, illustrative PROMPT MẪU): suggest-only finds 168/168 seeded issues (detector evidence arm makes no measurable difference), but self-editing breaks 9/12 codex compiles, alters decoys in 21/24 runs, and relies on a given taxonomy | E5 | 21 rows; `e5-optimizer/REPORT.md` |
+| 23 | Bậc 2 · Quy tắc và bản đặc tả | Rung 2 (rules file + structured spec, verbatim excerpts): lowers security warnings 31/33 → 17/34 (E1) and janky frames 99% → 19,6% (E6), but builds drop 20/33 → 10/34, 42 builders show no C1 difference, and the Baseline Profile rule breaks 3/3 codex runs | E1, E6 | 25 rows; `e1-corpus/REPORT.md`, `e6-oneshot/REPORT.md` |
+| 24 | Bậc 3 · Để công cụ chấm | Rung 3 (tool gates: R8 `isMinifyEnabled`/`isShrinkResources` + `./gradlew compileDebugKotlin`): shrinks APK 24,7 → 2,4 MB and catches 9/12 broken codex fixes, but MobSF precision is 0,291 (all 30 true positives are config) and a passing build does not measure speed or RAM | E2, E3, E5 | 26 rows; `e2-bench/REPORT.md`, `e3-security/REPORT.md`, `e5-optimizer/REPORT.md` |
+| 25 | Bậc 4 · Đo trước và sau | Rung 4 (Macrobenchmark cold start, interleaved A/B 12 iterations, measure build): Xiaomi p90 125 ms debug vs 12–16 ms measure build and rules out P01/P03/P04, but measurement only locates costs and Baseline Profile (−5,88% emulator) shows no phone gain | E2, ShelfTap log | 17 rows; `../log/opt-ui-ux.md`, `e2-bench/REPORT.md` |
+| 26 | Bậc 5 · Sửa đúng mẫu lỗi | Rung 5 (fix known fault patterns): LazyColumn (90% → 1,3%, RAM 243 → 43 MB), Coil (180 → 60 MB), flat cards (62,87 → 49,07 ms), FTS4 (96,63 → 37 ms), Baseline Profile (−5,88%); each fix only covers its pattern (grid still 48,65%); points to exploratory D9 | E2, E7 | 33 rows; `e2-bench/REPORT.md` |
+| 27 | Ba điều cần nhớ | Three core points to remember, ending on the five-rung ladder; no new numbers | — | 8 rows (labels only) |
+| D1 | D1 · Giới hạn | Limits: emulator (−32,3% vs −78,2% p90), sample sizes (33–34), what is not measured (NFC tap < 1 s, low-cost device, browsing RAM with real covers, GPU memory, P12) | E2, E1 | 10 rows; `e2-bench/REPORT.md`, `e1-corpus/REPORT.md`, `00-protocol.md`, `CLAUDE.md` |
+| D2 | D2 · Bảng Holm | Holm table for C1–C5 (m = 5) | C1–C5 | 36 rows; `e1-corpus/REPORT.md`, `00-protocol.md`, `e2-bench/REPORT.md`, `e4-pressure/results/c4_confirmatory.csv` |
 | D3 | D3 · Bảng E2 đầy đủ | Full E2 table, seven factors plus the P01 contrast | E2 | 49 rows; `e2-bench/REPORT.md`, `e2-bench/results/c5_confirmatory.csv` |
-| D4 | D4 · E4 chi tiết | E4 detail per case and per assistant, Stack Overflow baseline | E4 | 26 rows; `e4-pressure/REPORT.md` |
-| D5 | D5 · Tần suất theo quy tắc | Frequency per rule and prompt style next to human apps | E1 | 29 rows; `e1-corpus/REPORT.md` |
-| D6 | D6 · E6 chi tiết | E6 builds per assistant and prompt arm | E6 | 10 rows; `e6-oneshot/REPORT.md` |
-| D7 | D7 · Kiểm tra môi trường | Isolation check of the generation runs | isolation audit, E6 | 7 rows; `isolation-audit/AUDIT.md` |
-| D8 | D8 · Cỡ chữ lớn và bố cục | Large font scale 2.0: the one-prompt apps break; ShelfTap 5/7 → 0/7 | E6, ShelfTap metrics | 14 rows; `../ui-ux-metrics.md`, `../log/opt-ui-ux.md` |
-| D9 | D9 · Phép thử quy mô (E7, thăm dò) | Exploratory E7a: the one-prompt apps with their sample data amplified to 2.000 and 100.000 items; the only eagerly built list passes 150 MB at 2.000 (107,0 → 343,2 MB) and hangs at 100.000; no app starts under 1.500 ms at 100.000; all 10 amplified builds build | E7a | 64 rows; `e7-novel/NOTE.md`, `e7-novel/results/e7a_summary.csv` |
+| D4 | D4 · E4 chi tiết | E4 detail per error case and per assistant, Stack Overflow baseline (4/4), kappa 0,909 | E4 | 26 rows; `e4-pressure/REPORT.md` |
+| D5 | D5 · Tần suất theo quy tắc | Frequency per rule and prompt style next to human apps before 2022 | E1 | 29 rows; `e1-corpus/REPORT.md` |
+| D6 | D6 · E6 chi tiết | E6 builds per assistant and prompt arm (3 runs per cell) and median Kotlin LOC | E6 | 10 rows; `e6-oneshot/REPORT.md` |
+| D7 | D7 · Kiểm tra môi trường | Isolation check of the generation runs (623 transcripts, 18.244 vs ~7.500 tokens) | isolation audit, E6 | 7 rows; `isolation-audit/AUDIT.md` |
+| D8 | D8 · Cỡ chữ lớn và bố cục | Large font scale 2.0: all four D11 one-prompt apps break; ShelfTap 5/7 → 0/7, ATF 4 → 2, glass p90 9–11 → 18 ms | E6, ShelfTap metrics | 13 rows; `../ui-ux-metrics.md`, `../log/opt-ui-ux.md` |
+| D9 | D9 · Phép thử quy mô (E7, thăm dò) | Exploratory E7a: the one-prompt apps with sample data amplified to 2.000 and 100.000 items; the only eagerly built list passes 150 MB at 2.000 (107,0 → 343,2 MB) and hangs at 100.000; no app starts under 1.500 ms at 100.000; all 10 amplified builds build | E7a | 64 rows; `e7-novel/results/e7a_summary.csv`, `e7-novel/NOTE.md`, `CLAUDE.md` |
+| D10 | D10 · Đối chiếu mục tiêu môn học | Course-target scoreboard (measured rows only; unmeasured items on D1): fixed lab screens meet targets (search 37 ms, RAM 60/43 MB, list 1,3%), Xiaomi page open p90 8–16 ms and whole-app browsing RAM without covers 94–95 MB PSS; decorative grid misses 60 fps (48,65%) | E2, E6, ShelfTap log | 48 rows; `e2-bench/REPORT.md`, `../log/opt-ui-ux.md`, `CLAUDE.md`, `e6-oneshot/REPORT.md` |
+| D11 | D11 · Bốn ứng dụng chỉ một prompt | Four one-prompt E6 apps (the slide-1 poster visual) look finished but are un-optimised: 6/12 build, 74–100% janky, 1.195–2.576 ms launch; RAM 66,8–102,8 MB only because sample data is 12 titles | E6 | 29 rows; `e6-oneshot/REPORT.md`, `e2-bench/REPORT.md`, `00-protocol.md` |
+| D12 | D12 · Ba bài học từ bảng phân loại | Three lessons from slide 5: build first (58/100 E1, 6/12 E6), turn on R8 (63/66 missing; 24,7 → 2,4 MB), check rare but critical problems on purpose; only security density differs significantly from human apps (C3, slide 17) | E1, E2, E6 | 25 rows; `e1-corpus/REPORT.md`, `e6-oneshot/REPORT.md`, `e2-bench/REPORT.md` |
 
 ### Script, slide by slide
 
@@ -212,179 +212,69 @@ Copied from [presentation-script.md](presentation-script.md) by `build_playbook_
 <!-- SCRIPT:START -->
 <!-- filled by build_playbook_html.py from presentation-script.md; edit the script, not this block -->
 
-#### 1. Tối ưu giao diện, bộ nhớ và bảo mật (0:00 đến 0:30) — slide 1
+#### 1. Trông hoàn thiện, chưa tối ưu (0:00 đến 0:15) — slide 1
 
-*Mở đầu · 30 giây · 61 từ*
+*Mở đầu · 15 giây · 35 từ*
 
-**Lời nói.** Kính chào thầy cô và các bạn. Hôm nay nhóm em trình bày về tối ưu giao diện, bộ nhớ và bảo mật trên Android với bối cảnh ShelfTap — ứng dụng thư viện NFC. Trợ lý lập trình AI viết bản nháp đầu rất nhanh, nhưng phần chưa tối ưu nằm ở đâu và gây tổn hao đến mức nào?
+**Lời nói.** Kính chào thầy cô và các bạn. Trông hoàn thiện, nhưng chưa tối ưu — hôm nay nhóm em trình bày về tối ưu giao diện, bộ nhớ và bảo mật trên Android với ShelfTap.
 
-**Thao tác.** Dừng một nhịp sau câu hỏi rồi chuyển sang slide 2.
+**Thao tác.** Dừng một nhịp ngay sau vế “Trông hoàn thiện, nhưng chưa tối ưu”, để khán giả nhìn bốn màn hình ứng dụng rồi chuyển sang slide 2.
 
-**Lưu ý.** Con số trên slide: 6 thí nghiệm, 101 bản nháp đầu, 36 lần chạy với chỉ một prompt (tức lời nhắc giao cho AI).
+**Lưu ý.** Slide áp phích không hiện số trang. Bốn ảnh nền là bốn ứng dụng E6 (chi tiết ở D11); bối cảnh là ShelfTap, ứng dụng thư viện thông minh dùng NFC của nhóm.
 
-#### 2. Lời hứa trên mạng (0:30 đến 1:10) — slide 2
+#### 2. Lời hứa trên mạng (0:15 đến 0:55) — slide 2
 
-*Mở đầu · 40 giây · 82 từ*
+*Mở đầu · 40 giây · 84 từ*
 
-**Lời nói.** Thầy cô và các bạn chắc hẳn đã quen với những bài đăng kiểu này: ảnh giao diện bóng bẩy kèm lời hứa chỉ một prompt — tức lời nhắc giao cho AI — là có ngay ứng dụng hoàn chỉnh. Hiện tượng đó gọi là vibe coding: mô tả bằng lời, nhận mã từ trợ lý AI rồi dùng ngay mà không kiểm tra lại. Nếu làm đúng theo cách đó trên Android thì kết quả thực tế sẽ ra sao?
+**Lời nói.** Thầy cô và các bạn chắc hẳn đã quen với những bài đăng kiểu này: ảnh giao diện bóng bẩy kèm lời hứa chỉ một prompt — tức lời nhắc giao cho AI — là có ngay ứng dụng hoàn chỉnh. Hiện tượng đó gọi là vibe coding: mô tả bằng lời, nhận mã từ trợ lý lập trình AI rồi dùng ngay mà không kiểm tra lại. Nếu làm đúng theo cách đó trên Android thì kết quả thực tế sẽ ra sao?
 
 **Thao tác.** Lướt tay qua lưới sáu ảnh minh họa, không đọc từng ảnh.
 
 **Lưu ý.** Không nhắc tên nguồn hay đường dẫn ảnh trên sân khấu; nguồn lưu riêng trong evidence/img/hype/README.md.
 
-#### 3. Chạy đúng prompt đó (1:10 đến 1:55) — slide 3
+#### 3. Năm con số (0:55 đến 1:40) — slide 3
 
-*Mở đầu · 45 giây · 98 từ*
+*Mở đầu · 45 giây · 94 từ*
 
-**Lời nói.** Nhóm em đã thử chạy đúng kiểu prompt đó trên bốn trợ lý AI. Nhìn bề ngoài, cả bốn ứng dụng trông khá hoàn thiện. Nhưng khi đo trên máy ảo, chỉ có 6 trên 12 lần chạy build thành công. Tỷ lệ khung hình trễ khi cuộn lên tới 74 đến 100%, còn thời gian khởi động mất 1.195 đến 2.576 ms. Công bằng mà nói, mức dùng RAM chỉ từ 66,8 đến 102,8 MB vì trợ lý AI mới tự tạo 12 tựa sách mẫu; vấn đề bộ nhớ chỉ lộ ra ở dữ liệu thật.
+**Lời nói.** Câu trả lời gói gọn trong năm con số nhóm em đã đo, và phần sau sẽ chứng minh từng con số. Một, 58/100 bản nháp đầu bị build lỗi. Hai, 60/66 bản có cảnh báo bảo mật, mật độ gấp 2,3 lần ứng dụng do người viết. Ba, danh sách 2.000 mục dựng toàn bộ làm 90% khung hình trễ. Bốn, hai lỗi ảnh bìa và danh sách đẩy RAM lên 180 và 243 MB, vượt mục tiêu 150 MB. Năm, 9/12 bản được codex báo “đã sửa xong” không biên dịch được.
 
-**Thao tác.** Chỉ lần lượt bốn màn hình trên slide khi nhắc dải 74 đến 100%, rồi nhấn mạnh câu cuối về 12 tựa sách.
+**Thao tác.** Bấm hiện lần lượt năm dòng từ trên xuống (build, bảo mật, khung hình, bộ nhớ, lời “đã sửa xong”), không dừng giải thích sâu vì mỗi dòng đã có mốc slide chứng minh bên phải.
 
-**Lưu ý.** Mỗi ảnh là lần chạy có tỷ lệ khung hình trễ thấp nhất trong 3 lần của từng trợ lý AI; số đo trên máy ảo chỉ so sánh trong thí nghiệm này.
+**Lưu ý.** Số khung hình và mức dùng RAM đo trên máy ảo, đối chiếu bản nháp AI với bản sửa trên cùng màn hình; các mốc chứng minh nằm ở slide 5, 17, 11, 14, 15 và 7.
 
-#### 4. Phân loại lỗi (1:55 đến 2:55) — slide 4
+#### 4. Sáu thí nghiệm (1:40 đến 2:25) — slide 4
 
-*Mở đầu · 60 giây · 129 từ*
+*Kết quả · 45 giây · 104 từ*
 
-**Lời nói.** Bảng này cho thấy bức tranh tổng thể về các lỗi trong bản nháp đầu. Thầy cô và các bạn có thể đọc nhanh theo hai chiều: từ trái sang phải là tần suất trên 66 bản nháp không kèm tệp quy tắc (guardrail), gồm phổ biến từ 50% trở lên, ít gặp từ 10% đến dưới 50%, và hiếm dưới 10%. Chấm đỏ đánh dấu lỗi nghiêm trọng. Điều đáng chú ý nằm ngay đây: cột bên trái là lỗi hay gặp nhất như build lỗi 58/100 hay thiếu R8 63/66, nhưng phần lớn chấm đỏ lại rơi vào hai cột sau — lưu token dạng rõ 19/66, tìm kiếm thiếu chỉ mục 15/66, dựng toàn bộ danh sách 2/66, giải mã ảnh ở kích thước gốc 5/66.
+**Lời nói.** Bước vào phần kết quả, trước tiên là sáu thí nghiệm tạo ra các số liệu hôm nay, với tiêu chí đánh giá được chốt trước khi thu thập dữ liệu: E1 đo tần suất trên 101 bản nháp; E2 đối chứng A/B trên cùng màn hình; E3 quét 13 APK; E4 thử 148 lượt sửa lỗi chặn; E5 kiểm tra 14 lỗi cài sẵn; E6 chạy prompt kiểu trào lưu. Quét lại 623 bản ghi hội thoại, nhóm em xác nhận không lọt cấu hình riêng. Số đo máy ảo chỉ so tỷ lệ A/B, không phải tốc độ trên thiết bị thật.
+
+**Thao tác.** Chỉ nhanh hai khung ở bên phải slide: Môi trường sạch và Máy ảo.
+
+**Lưu ý.** Giới hạn máy ảo nói một lần ở đây; câu hỏi sâu về kiểm tra cô lập môi trường mở D7, về giới hạn mở D1.
+
+#### 5. Phân loại lỗi (2:25 đến 3:15) — slide 5
+
+*Kết quả · 50 giây · 100 từ*
+
+**Lời nói.** Đây là kết quả trung tâm của E1. Đọc từ trái sang phải là tần suất trên 66 bản nháp không kèm tệp quy tắc (guardrail): phổ biến từ 50% trở lên, ít gặp từ 10% đến dưới 50%, và hiếm dưới 10%; chấm đỏ là lỗi nghiêm trọng. Cột bên trái là lỗi hay gặp nhất như build lỗi 58/100 hay thiếu R8 63/66, nhưng phần lớn chấm đỏ lại rơi vào hai cột sau — lưu token dạng rõ 19/66, tìm kiếm thiếu chỉ mục 15/66, dựng toàn bộ danh sách 2/66 và ảnh kích thước gốc 5/66.
 
 **Thao tác.** Chỉ từ trái sang phải qua ba cột Phổ biến, Ít gặp, Hiếm, rồi khoanh vào các chấm đỏ và dòng bối cảnh E4 phía dưới.
 
-**Lưu ý.** P06 (5/66) chưa kiểm định độ chính xác; dòng khi gặp lỗi chặn (12/30 bỏ xác thực khóa Keystore, 5/30 bật cleartext) thuộc bối cảnh E4, không gộp vào ba cột E1.
+**Lưu ý.** P06 (5/66) chưa kiểm định độ chính xác; dòng khi gặp lỗi chặn (12/30 bỏ xác thực khóa Keystore, 5/30 bật cleartext) thuộc bối cảnh E4, không gộp vào ba cột E1. Nếu được hỏi ưu tiên sửa gì trước, mở D12.
 
-#### 5. Ba điều rút ra (2:55 đến 3:45) — slide 5
+#### 6. Bản nháp build lỗi (3:15 đến 4:00) — slide 6
 
-*Mở đầu · 50 giây · 106 từ*
+*Kết quả · 45 giây · 94 từ*
 
-**Lời nói.** Từ bảng phân loại, nhóm em rút ra ba điều. Trước khi nói đến tối ưu, lỗi phổ biến nhất là bản nháp build lỗi: 58/100 ở E1 và 6/12 ở E6. Thứ hai, lỗi tài nguyên hay gặp nhất lại dễ sửa nhất: 63/66 bản thiếu R8, bật R8 lên là APK giảm từ 24,7 MB xuống 2,4 MB. Thứ ba, lỗi nghiêm trọng nhất lại hiếm, cần chủ động rà soát. Công bằng mà nói, ứng dụng do người viết cũng mắc nhiều lỗi giao diện như thiếu key 14/20; chỉ mật độ cảnh báo bảo mật mới là khác biệt được kiểm định.
-
-**Thao tác.** Đếm lần lượt ba thẻ lớn rồi dừng ngắn ở dòng lưu ý so với ứng dụng do người viết.
-
-**Lưu ý.** Chuyển mượt sang slide 6: giới thiệu sáu thí nghiệm tạo ra các con số trên.
-
-#### 6. Sáu thí nghiệm (3:45 đến 4:25) — slide 6
-
-*Phương pháp · 40 giây · 90 từ*
-
-**Lời nói.** Số liệu hôm nay đến từ sáu thí nghiệm với tiêu chí chốt trước khi thu thập dữ liệu: E1 đo tần suất trên 101 bản nháp; E2 đối chứng A/B trên cùng màn hình; E3 quét 13 APK; E4 thử 148 lượt sửa lỗi chặn; E5 kiểm tra 14 lỗi cài sẵn; E6 chạy prompt kiểu trào lưu. Quét lại 623 bản ghi, nhóm em xác nhận không lọt cấu hình riêng. Số đo máy ảo chỉ so tỷ lệ A/B, không phải tốc độ trên thiết bị thật.
-
-**Thao tác.** Chỉ nhanh hai khung ở đáy slide: Môi trường sạch và Máy ảo.
-
-**Lưu ý.** Giới hạn máy ảo nói một lần ở đây; câu hỏi sâu về cô lập môi trường mở D7, về giới hạn mở D1.
-
-#### 7. Danh sách dài dựng toàn bộ (4:25 đến 5:10) — slide 7
-
-*Trụ cột 1: Giao diện · 45 giây · 101 từ*
-
-**Lời nói.** Đi vào trụ cột thứ nhất: hiệu năng hiển thị. Đây là cùng một màn hình danh sách 2.000 lượt mượn với cùng thao tác cuộn. Bên trái là mã giữ nguyên từ bản nháp AI dùng Column với forEach, dựng hết 2.000 mục dù màn hình chỉ hiện vài mục, khiến 90% khung hình bị trễ. Bên phải chỉ đổi sang LazyColumn: số mục được dựng giảm từ 2.000 xuống 31, tỷ lệ khung hình trễ giảm mạnh từ 90% xuống 1,3%. Chỉ thay đổi vài dòng mã nhưng lại quyết định màn hình có đạt 60 fps hay không.
-
-**Thao tác.** Phát video P09c-AB.mp4, dừng ngắn ở đoạn bên trái bị khựng khi cuộn.
-
-**Lưu ý.** Trung vị từ ít nhất 12 lần lặp xen kẽ A/B trên máy ảo; số đầy đủ 90,05% xuống 1,255%, lỗi hiếm 2/66 nhưng nghiêm trọng.
-
-#### 8. Hiệu ứng trang trí (5:10 đến 5:50) — slide 8
-
-*Trụ cột 1: Giao diện · 40 giây · 91 từ*
-
-**Lời nói.** Lỗi thứ hai hay gặp khi dùng prompt kiểu trào lưu là dồn đổ bóng, chuyển sắc (gradient) và vẽ Canvas lên từng thẻ sách. Khi đổi bìa thành khối phẳng, thời gian xử lý khung hình p90 giảm từ 62,87 ms xuống 49,07 ms — mã AI chậm hơn 28%, qua đó xác nhận phép kiểm định C5. Tỷ lệ khung hình trễ giảm từ 70,52% xuống 48,65%, dù chưa đạt 60 fps trên máy ảo. Lỗi gặp ở 8/66 bản E1 nhưng vọt lên 11/12 lần chạy ở E6.
-
-**Thao tác.** Phát video P08c-AB.mp4; nhấn cặp số 8/66 so với 11/12.
-
-**Lưu ý.** P08 đo trên cấu hình kết xuất GPU swangle_indirect nên chỉ so trong nội bộ nhân tố này; bộ nhớ đồ họa chưa đo.
-
-#### 9. Lỗi không có chi phí đo được (5:50 đến 6:35) — slide 9
-
-*Trụ cột 1: Giao diện · 45 giây · 97 từ*
-
-**Lời nói.** Ngược lại, không phải quy tắc nào cũng tạo khác biệt đo được. Trên biểu đồ, chấm lệch trái vạch 0 nghĩa là bản sửa nhanh hơn: sửa danh sách giảm 69,9% thời gian khởi động. Nhưng thêm key danh sách (P01) và ổn định tham số (P03, P04) đều có khoảng tin cậy cắt qua 0. Baseline Profile giảm 5,88% khởi động trên máy ảo, còn trên thiết bị thật ở bản build đo hiệu năng (cấu hình tương đương bản phát hành) thì không có khác biệt đo được. Hãy đo trước khi tối ưu.
-
-**Thao tác.** Chỉ dọc theo vạch 0 từ trên xuống dưới để đối chiếu hai dòng trên và hai dòng dưới.
-
-**Lưu ý.** Khoảng tin cậy cắt qua 0 nghĩa là chưa ghi nhận chi phí trong kịch bản này (danh sách tĩnh, strong skipping mặc định), không phải luôn miễn phí.
-
-#### 10. Ảnh giải mã ở kích thước gốc (6:35 đến 7:15) — slide 10
-
-*Trụ cột 2: Bộ nhớ · 40 giây · 83 từ*
-
-**Lời nói.** Sang trụ cột thứ hai: bộ nhớ. Với 15 ảnh bìa, bản nháp AI giải mã ở kích thước gốc 1500×2250 cho từng ô nhỏ, không thu nhỏ và không dùng bộ nhớ đệm. Riêng ảnh chiếm 203 MB, đẩy RAM cao nhất lên 180 MB — vượt ngưỡng dưới 150 MB. Khi đổi sang Coil AsyncImage để giải mã đúng kích thước ô và có bộ nhớ đệm, dung lượng ảnh còn 6,2 MB và mức dùng RAM giảm xuống 60 MB.
-
-**Thao tác.** Phát video P06c-AB.mp4, chỉ đường mốc mục tiêu dưới 150 MB.
-
-**Lưu ý.** Lỗi hiếm (5/66, chưa kiểm định độ chính xác) nhưng nghiêm trọng vì chỉ riêng lỗi này đã vượt ngưỡng 150 MB.
-
-#### 11. Danh sách dài và bộ nhớ (7:15 đến 7:55) — slide 11
-
-*Trụ cột 2: Bộ nhớ · 40 giây · 85 từ*
-
-**Lời nói.** Nhóm em nhìn lại danh sách 2.000 lượt mượn ở slide 7 dưới góc độ bộ nhớ. Vì bản nháp AI dựng đủ 2.000 mục trước khung hình đầu tiên, mức dùng RAM vọt lên 243 MB, Java heap 220 MB, thời gian khởi động mất 1.901 ms. Khi chuyển sang LazyColumn, mức dùng RAM giảm xuống 43 MB, Java heap còn 7,6 MB và thời gian khởi động giảm xuống 573,1 ms. Một lỗi danh sách làm trượt cả khung hình lẫn bộ nhớ.
-
-**Thao tác.** Chỉ ba cụm chỉ số: RSS 243 xuống 43 MB, Java heap 220 xuống 7,6 MB, TTID 1.901 xuống 573,1 ms.
-
-**Lưu ý.** Số MB ít phụ thuộc máy ảo hơn số ms; bản nháp AI vượt ngưỡng 150 MB còn bản sửa đạt.
-
-#### 12. Dung lượng và tìm kiếm (7:55 đến 8:35) — slide 12
-
-*Trụ cột 2: Bộ nhớ · 40 giây · 91 từ*
-
-**Lời nói.** Tiếp theo là dung lượng và tìm kiếm. Bật R8 thu nhỏ APK tới 90%, từ 24,7 MB còn 2,4 MB, và giảm thêm 8,7% thời gian khởi động. Với tìm kiếm ngoại tuyến 100.000 tựa sách, truy vấn LIKE chậm nhất mất 96,63 ms, vượt 50 ms; đổi sang chỉ mục FTS4 đưa mức chậm nhất xuống 37 ms và tổng thời gian truy vấn giảm từ 634,9 ms xuống 85,42 ms. Tuy nhiên, khung hình khi gõ không cải thiện vì nút thắt nằm ở danh sách kết quả.
-
-**Thao tác.** Chỉ cột trái R8 rồi chuyển sang cột phải FTS4 và mốc 50 ms.
-
-**Lưu ý.** LIKE khớp chuỗi con còn FTS4 khớp tiền tố từ nên khác tập kết quả ở 4/12 tiền tố.
-
-#### 13. Lỗi bảo mật phổ biến đến mức nào (8:35 đến 9:20) — slide 13
-
-*Trụ cột 3: Bảo mật · 45 giây · 100 từ*
-
-**Lời nói.** Sang trụ cột thứ ba: bảo mật — nơi bản nháp AI khác biệt rõ nhất so với ứng dụng do người viết. Trong 66 bản nháp không kèm tệp quy tắc ở E1, có tới 60 bản chứa ít nhất một cảnh báo bảo mật. Trên 1.000 dòng mã, bản nháp AI có trung vị 2,37 cảnh báo, gấp 2,3 lần mức 1,02 ở ứng dụng do người viết trước năm 2022; phép kiểm định C3 xác nhận mức chênh này. Phía dưới là đoạn mã nguyên văn: token đăng nhập được ghi thẳng ở dạng rõ vào SharedPreferences.
-
-**Thao tác.** Chỉ hai dòng `putString` trong khung mã `SessionStore.kt` ở phần dưới slide.
-
-**Lưu ý.** Nói trung lập: bản nháp AI có mật độ cảnh báo bảo mật cao hơn, không nói AI gây ra; đối chứng gồm 20 ứng dụng trước 30/11/2022.
-
-#### 14. Điều gì làm giảm lỗi bảo mật (9:20 đến 10:05) — slide 14
-
-*Trụ cột 3: Bảo mật · 45 giây · 100 từ*
-
-**Lời nói.** Vậy cách nào làm giảm cảnh báo bảo mật lúc sinh mã? Ở E1, prompt chức năng chi tiết vẫn có 29/33 bản bị cảnh báo so với 31/33 ở prompt ngắn. Tệp quy tắc kéo tỷ lệ này xuống 17/34 và giảm số loại vấn đề từ 5,85 xuống 2,82, xác nhận C1, C2. Nhưng đánh đổi là bản build thành công sau tối đa 3 lần sửa cũng giảm từ 20/33 xuống 10/34, còn prompt chi tiết là 12/33. Xét riêng 42 bản build thành công, tỷ lệ có cảnh báo không đổi: vẫn cần bước kiểm tra.
-
-**Thao tác.** Chỉ hai cụm biểu đồ bên trái (cảnh báo bảo mật và bản build thành công) rồi sang hai khung bên phải.
-
-**Lưu ý.** Tỷ lệ build thành công (20/33, 12/33, 10/34) là số mô tả; C2 tính trên cả bốn nhóm quy tắc; trong 42 bản build thành công, chênh lệch C1 bằng 0,000 còn C2 vẫn còn (+3,829).
-
-#### 15. Khi gặp lỗi chặn (10:05 đến 10:50) — slide 15
-
-*Trụ cột 3: Bảo mật · 45 giây · 93 từ*
-
-**Lời nói.** Rủi ro bảo mật còn lộ ra khi sửa lỗi chặn. Ở E4, gặp UserNotAuthenticatedException của Android Keystore (kho khóa của hệ thống), trợ lý AI có thể xóa yêu cầu xác thực — đổi true thành false — để lỗi biến mất. Trên 148 lượt sửa có 17 lượt nới lỏng cơ chế bảo mật, dưới ngưỡng 15% nên C4 không được xác nhận; tất cả rơi vào Keystore 12/30 và cleartext 5/30. Ở E3, công cụ quét APK đạt độ chính xác 0,291 và không phát hiện lỗi trong mã nguồn.
-
-**Thao tác.** Chỉ dòng đỏ bị xóa và dòng xanh thêm vào trong diff `TokenVault.kt`.
-
-**Lưu ý.** Không xếp hạng trợ lý AI theo 12/48, 5/50, 0/50 vì công cụ và mô hình bị lẫn (mở D4 nếu được hỏi).
-
-#### 16. Demo: trước và sau tối ưu (10:50 đến 12:50) — slide 16
-
-*Demo trực tiếp · 120 giây (chuyển và nhận lại lượt: ~25 giây, 54 từ; phần demo trực tiếp: ~95 giây)*
-
-**Lời nói.** *[Chuyển lượt]* Để thầy cô và các bạn quan sát trực tiếp chứ không chỉ nhìn bảng số, thành viên nhóm em sẽ chạy demo song song bản nháp AI và bản tối ưu trên máy ảo. Xin mời bạn. *[Nhận lại lượt]* Cảm ơn phần demo. Sự khác biệt khi cuộn và tìm kiếm thể hiện rất rõ.
-
-**Thao tác.** Chuyển micro cho thành viên demo (thứ tự gợi ý: P09 danh sách 2.000 lượt mượn, P06 ảnh bìa, P08 thẻ trang trí, P13 tìm kiếm 100.000 tựa sách); nếu máy ảo lỗi, mở lại video ở slide 7, 8, 10.
-
-**Lưu ý.** Số đo trên máy ảo laptop chỉ để minh họa; số tham chiếu của nghiên cứu là bốn mốc trên slide (90% → 1,3%; 180 → 60 MB; 62,87 → 49,07 ms; 96,63 → 37 ms). Chi tiết chạy demo ở optimization/study/demo/README.md.
-
-#### 17. Bản nháp build lỗi (12:50 đến 13:30) — slide 17
-
-*Build và tự sửa lỗi · 40 giây · 89 từ*
-
-**Lời nói.** Quay lại lỗi phổ biến nhất: bản nháp build lỗi. Ở E1, chỉ 42/100 bản build thành công. Hai yếu tố tạo chênh lệch rõ nhất là mô hình và bản đặc tả. Ở E6, dùng cùng công cụ và chỉ đổi mô hình, số bản build thành công tăng từ 1/9 với claude-haiku lên 7/9 với claude-sonnet. Thay prompt kiểu trào lưu bằng bản đặc tả có cấu trúc kéo tỷ lệ khung hình trễ từ 99% xuống 19,6% và lượng mã Kotlin từ 1.164 xuống 524 dòng.
+**Lời nói.** Nhìn kỹ vào lỗi phổ biến nhất vừa thấy: bản nháp đầu bị build lỗi. Ở E1, chỉ 42/100 bản build thành công. Hai yếu tố tạo chênh lệch rõ nhất là mô hình và bản đặc tả. Ở E6, dùng cùng công cụ và chỉ đổi mô hình, số bản build thành công tăng từ 1/9 với claude-haiku lên 7/9 với claude-sonnet. Thay prompt kiểu trào lưu bằng bản đặc tả có cấu trúc kéo tỷ lệ khung hình trễ từ 99% xuống 19,6% và lượng mã Kotlin từ 1.164 xuống 524 dòng.
 
 **Thao tác.** Chỉ lần lượt 42/100, cặp 1/9 với 7/9, rồi cặp 99% xuống 19,6%.
 
-**Lưu ý.** E6 là thí nghiệm khám phá với tối đa 3 lần chạy mỗi ô, không có kiểm định p; chi phí claude-haiku 0,11 USD so với claude-sonnet 0,48 USD.
+**Lưu ý.** E6 là thí nghiệm khám phá với tối đa 3 lần chạy mỗi ô, không có kiểm định p; chi phí claude-haiku 0,11 USD so với claude-sonnet 0,48 USD. Chi tiết từng trợ lý AI ở D6.
 
-#### 18. “Đã sửa xong” chưa phải kết quả (13:30 đến 14:10) — slide 18
+#### 7. “Đã sửa xong” chưa phải kết quả (4:00 đến 4:45) — slide 7
 
-*Build và tự sửa lỗi · 40 giây · 86 từ*
+*Kết quả · 45 giây · 86 từ*
 
 **Lời nói.** Một rủi ro khác là tin vào lời “đã sửa xong”. Ở E5, khi ở chế độ chỉ đề xuất mà không sửa mã, trợ lý AI tìm đủ 168/168 lượt lỗi cài sẵn. Nhưng khi tự sửa, codex tuyên bố đã xong trong khi chạy biên dịch thật thì 9/12 bản lỗi do tự thêm plugin baselineprofile không dùng được. Đồng thời 21/24 lượt làm đổi cả mẫu đối chứng vốn đúng. Rõ ràng lời trợ lý AI không thể thay kết quả kiểm thử.
 
@@ -392,113 +282,234 @@ Copied from [presentation-script.md](presentation-script.md) by `build_playbook_
 
 **Lưu ý.** Nhấn mạnh: biên dịch và kiểm thử độc lập mới là căn cứ xác nhận, không phải lời của trợ lý AI.
 
-#### 19. Sáu kết luận (14:10 đến 14:50) — slide 19
+#### 8. Thiết bị thật (4:45 đến 5:30) — slide 8
 
-*Kết luận · 40 giây · 90 từ*
-
-**Lời nói.** Sáu thí nghiệm cho sáu kết luận. E1: 42/100 bản build thành công, hầu hết có cảnh báo bảo mật; tệp quy tắc giảm cảnh báo nhưng cũng giảm bản build thành công. E2: danh sách và ảnh làm trượt mục tiêu; ba lỗi Compose kinh điển không có chi phí đo được. E3: quét APK đạt 0,291, bỏ sót lỗi mã. E4: 17/148 lượt nới lỏng cơ chế bảo mật. E5: 9/12 bản codex sửa không biên dịch được. E6: bản đặc tả đưa khung hình trễ xuống 19,6%.
-
-**Thao tác.** Lướt nhanh sáu hàng từ E1 đến E6 với nhịp dứt khoát.
-
-**Lưu ý.** Không diễn giải lại chi tiết; dùng slide này gom toàn cảnh trước khi chốt kiểm định.
-
-#### 20. Kết quả các phép kiểm định (14:50 đến 15:30) — slide 20
-
-*Kết luận · 40 giây · 87 từ*
-
-**Lời nói.** Về thống kê, trong năm phép kiểm định đăng ký trước sau hiệu chỉnh Holm, bốn phép được xác nhận là C1, C2, C3 và C5 — khẳng định hiệu quả tệp quy tắc, mật độ cảnh báo bảo mật cao hơn ứng dụng do người viết và chi phí hiệu ứng trang trí. C4 không được xác nhận vì 17/148 dưới 15%. Hai giả thuyết mô tả — H4 bịa thư viện (0/2.105) và H5 thiếu mô tả trợ năng (1/66) — đều bị bác bỏ.
-
-**Thao tác.** Chỉ nhóm bốn hàng xanh phía trên, tách khỏi C4 và hai hàng H4, H5.
-
-**Lưu ý.** “Được xác nhận” nghĩa là thỏa mãn điều kiện thống kê đã đăng ký; bảng hiệu chỉnh Holm đầy đủ ở D2.
-
-#### 21. Đối chiếu mục tiêu môn học (15:30 đến 16:20) — slide 21
-
-*Kết luận · 50 giây · 105 từ*
-
-**Lời nói.** Đối chiếu mục tiêu môn học: trên màn hình thử nghiệm, bản sửa đạt yêu cầu — tìm 100.000 sách còn 37 ms, dưới 50 ms; RAM 60 và 43 MB dưới 150 MB; danh sách dài 1,3% khung hình trễ. Trên Xiaomi, mở trang sách đạt p90 8 đến 16 ms, cuộn danh mục đạt PSS 94 đến 95 MB. Các ô không có cặp đối chiếu được ghi rõ không áp dụng. Lưới thẻ trên máy ảo vẫn 48,65%; ứng dụng chỉ một prompt có 12 tựa sách; chạm NFC dưới 1 s và thiết bị cấu hình thấp ghi rõ chưa đo.
-
-**Thao tác.** Lướt dọc cột Trạng thái để phân tách phần đạt và hai hạng mục chưa đo.
-
-**Lưu ý.** Ô “không áp dụng” là nơi chỉ một prompt không có bản đã sửa hoặc phép đo ShelfTap trên Xiaomi không có bản nháp AI tương ứng; hai hạng mục cuối ghi rõ “chưa đo”.
-
-#### 22. Thiết bị thật (16:20 đến 17:05) — slide 22
-
-*Thiết bị thật · 45 giây · 102 từ*
+*Kết quả · 45 giây · 102 từ*
 
 **Lời nói.** Trên thiết bị thật Xiaomi, ShelfTap cho thấy hai bài học máy ảo không lộ ra. Thứ nhất, đo bằng bản debug là đo sai đối tượng: mở trang sách ở bản debug lên tới 125 ms p90, còn bản build đo hiệu năng (cấu hình tương đương bản phát hành) chỉ 12 đến 16 ms, nằm gọn trong ngưỡng 16,67 ms của 60 fps. Thứ hai, địa chỉ ảnh bìa 10.0.2.2 chỉ truy cập được từ máy ảo, khiến thiết bị thật gọi lại liên tục; khi khắc phục, tỷ lệ khung hình trễ khi cuộn giảm từ 7,0–7,2% xuống 1,5–2,7%.
 
 **Thao tác.** Chỉ bên trái (125 ms so với 12–16 ms) rồi sang bên phải (10.0.2.2).
 
-**Lưu ý.** Số liệu trang chủ 7,0–7,2% xuống 1,5–2,7% đo trên bản debug; thiết bị cấu hình thấp chưa đo.
+**Lưu ý.** Số liệu trang chủ 7,0–7,2% xuống 1,5–2,7% đo trên bản debug; thiết bị cấu hình thấp xem giới hạn ở D1.
 
-#### 23. Giai đoạn 1 đến 3 (17:05 đến 17:55) — slide 23
+#### 9. Kết quả các phép kiểm định (5:30 đến 6:00) — slide 9
 
-*Khuyến nghị · 50 giây · 105 từ*
+*Kết quả · 30 giây · 69 từ*
 
-**Lời nói.** Nhóm em đúc kết quy trình năm giai đoạn, mỗi giai đoạn có mức tối thiểu và nâng cao. Giai đoạn 1 đặt yêu cầu: tối thiểu viết bản đặc tả có cấu trúc; nâng cao gắn mục tiêu đo được và định nghĩa xong là build thành công. Giai đoạn 2 sinh mã: tối thiểu đặt tệp quy tắc ở gốc dự án rồi kiểm tra bản nháp vẫn build thành công; nâng cao chọn mô hình build tốt và bỏ yêu cầu quá sức. Giai đoạn 3 sửa lỗi: cấm nới lỏng cơ chế bảo mật, đọc dòng xóa và khóa bằng test.
+**Lời nói.** Về thống kê, trong năm phép kiểm định đăng ký trước sau hiệu chỉnh Holm, bốn phép được xác nhận là C1, C2, C3 và C5 — về hiệu quả tệp quy tắc, mật độ cảnh báo bảo mật và chi phí hiệu ứng trang trí. C4 không được xác nhận vì 17/148 dưới 15%. Hai giả thuyết mô tả H4 (0/2.105) và H5 (1/66) đều bị bác bỏ.
 
-**Thao tác.** Dẫn khán giả đi theo ba hàng 1, 2, 3 mà không đọc các ô số nhỏ.
+**Thao tác.** Chỉ nhóm bốn hàng xanh phía trên, tách khỏi C4 và hai hàng H4, H5.
 
-**Lưu ý.** Mọi khuyến nghị đều gắn với một kết quả đo đã nêu (99% → 19,6%; cảnh báo bảo mật 31/33 → 17/34 nhưng build thành công 20/33 → 10/34; 12/30 Keystore).
+**Lưu ý.** “Được xác nhận” nghĩa là thỏa mãn điều kiện thống kê đã đăng ký; bảng hiệu chỉnh Holm đầy đủ ở D2.
 
-#### 24. Giai đoạn 4 và 5 (17:55 đến 18:40) — slide 24
+#### 10. Sáu kết luận (6:00 đến 6:35) — slide 10
 
-*Khuyến nghị · 45 giây · 100 từ*
+*Kết quả · 35 giây · 76 từ*
 
-**Lời nói.** Sang hai giai đoạn cuối, ở giai đoạn 4 kiểm tra: tối thiểu là tự build, tự mở ứng dụng và thử lại đúng chỗ vừa sửa; nâng cao là chạy build, kiểm thử và bộ quét mã nguồn trong CI, kết hợp công cụ quét APK cho phần cấu hình. Giai đoạn 5 đo và phát hành: tối thiểu là bật R8 và đo trên thiết bị thật bằng bản build đo hiệu năng; nâng cao là đo A/B xen kẽ bằng Macrobenchmark, ưu tiên sửa danh sách và giải mã ảnh trước khi đầu tư vào Baseline Profile.
+**Lời nói.** Gom lại kết quả của sáu thí nghiệm: E1 chỉ 42/100 bản build thành công, tệp quy tắc giảm cảnh báo nhưng cũng giảm bản build thành công. E2: sửa danh sách giảm 69,9% khởi động, ba lỗi Compose không có chi phí đo được. E3: quét APK đạt 0,291. E4: 17/148 lượt nới lỏng bảo mật. E5: 9/12 bản codex sửa không biên dịch được. E6: bản đặc tả đưa khung hình trễ xuống 19,6%.
 
-**Thao tác.** Chỉ hai hàng 4 và 5, nhấn tiêu đề: tin bản build và số đo, không tin lời trợ lý AI.
+**Thao tác.** Lướt nhanh sáu hàng từ E1 đến E6 với nhịp dứt khoát rồi chuyển sang phần nguyên nhân.
 
-**Lưu ý.** Chuyển trực tiếp sang slide chốt cuối cùng.
+**Lưu ý.** Không diễn giải lại chi tiết; dùng slide này khép phần kết quả và mở sang phần nguyên nhân phía sau (slide 11 đến 20).
 
-#### 25. Ba điều cần nhớ (18:40 đến 19:15) — slide 25
+#### 11. Danh sách dài dựng toàn bộ (6:35 đến 7:20) — slide 11
 
-*Kết thúc · 35 giây · 76 từ*
+*Nguyên nhân · Giao diện · 45 giây · 106 từ*
 
-**Lời nói.** Khép lại bài trình bày, nhóm em xin đúc kết ba điều cần nhớ. Một là trông hoàn thiện chưa phải đã tối ưu: hãy đo với dữ liệu thật. Hai là lỗi hay gặp không phải lỗi nguy hiểm nhất: cần rà riêng lỗi bộ nhớ và bảo mật. Ba là tin bản build và số đo, không tin lời “đã sửa xong”. Xin cảm ơn, mời thầy cô và các bạn đặt câu hỏi.
+**Lời nói.** Vậy nguyên nhân đằng sau các con số vừa nêu nằm ở đâu? Nhóm em đi qua ba trụ cột: giao diện, bộ nhớ và bảo mật. Ở trụ cột giao diện, đây là cùng một màn hình danh sách 2.000 lượt mượn với cùng thao tác cuộn. Bên trái là mã giữ nguyên từ bản nháp AI dùng Column với forEach, dựng hết 2.000 mục dù màn hình chỉ hiện vài mục, khiến 90% khung hình bị trễ. Bên phải đổi sang LazyColumn: số mục dựng giảm từ 2.000 xuống 31, tỷ lệ khung hình trễ giảm từ 90% xuống 1,3%, đủ đạt 60 fps.
 
-**Thao tác.** Giữ slide 25 khi hỏi đáp; nhấn phím O để chọn nhanh slide dự phòng D1 đến D9.
+**Thao tác.** Phát video P09c-AB.mp4, dừng ngắn ở đoạn bên trái bị khựng khi cuộn.
 
-**Lưu ý.** Không đưa số mới ở slide kết. Các slide dự phòng D1 đến D9 nằm ngay sau slide 25.
+**Lưu ý.** Trung vị từ ít nhất 12 lần lặp xen kẽ A/B trên máy ảo; số đầy đủ 90,05% xuống 1,255%, lỗi hiếm 2/66 nhưng nghiêm trọng.
+
+#### 12. Hiệu ứng trang trí (7:20 đến 8:05) — slide 12
+
+*Nguyên nhân · Giao diện · 45 giây · 91 từ*
+
+**Lời nói.** Lỗi thứ hai hay gặp khi dùng prompt kiểu trào lưu là dồn đổ bóng, chuyển sắc (gradient) và vẽ Canvas lên từng thẻ sách. Khi đổi bìa thành khối phẳng, thời gian xử lý khung hình p90 giảm từ 62,87 ms xuống 49,07 ms — mã AI chậm hơn 28%, qua đó xác nhận phép kiểm định C5. Tỷ lệ khung hình trễ giảm từ 70,52% xuống 48,65%, dù chưa đạt 60 fps trên máy ảo. Lỗi gặp ở 8/66 bản E1 nhưng vọt lên 11/12 lần chạy ở E6.
+
+**Thao tác.** Phát video P08c-AB.mp4; nhấn cặp số 8/66 so với 11/12.
+
+**Lưu ý.** P08 đo trên cấu hình kết xuất GPU swangle_indirect nên chỉ so trong nội bộ nhân tố này; bộ nhớ đồ họa chưa được đo.
+
+#### 13. Lỗi không có chi phí đo được (8:05 đến 8:50) — slide 13
+
+*Nguyên nhân · Giao diện · 45 giây · 97 từ*
+
+**Lời nói.** Ngược lại, không phải quy tắc nào cũng tạo khác biệt đo được. Trên biểu đồ, chấm lệch trái vạch 0 nghĩa là bản sửa nhanh hơn: sửa danh sách giảm 69,9% thời gian khởi động. Nhưng thêm key danh sách (P01) và ổn định tham số (P03, P04) đều có khoảng tin cậy cắt qua 0. Baseline Profile giảm 5,88% khởi động trên máy ảo, còn trên thiết bị thật ở bản build đo hiệu năng (cấu hình tương đương bản phát hành) thì không có khác biệt đo được. Hãy đo trước khi tối ưu.
+
+**Thao tác.** Chỉ dọc theo vạch 0 từ trên xuống dưới để đối chiếu hai dòng trên và hai dòng dưới.
+
+**Lưu ý.** Khoảng tin cậy cắt qua 0 nghĩa là chưa ghi nhận chi phí trong kịch bản này (danh sách tĩnh, strong skipping mặc định), không phải luôn miễn phí.
+
+#### 14. Ảnh giải mã ở kích thước gốc (8:50 đến 9:30) — slide 14
+
+*Nguyên nhân · Bộ nhớ · 40 giây · 83 từ*
+
+**Lời nói.** Sang trụ cột thứ hai: bộ nhớ. Với 15 ảnh bìa, bản nháp AI giải mã ở kích thước gốc 1500×2250 cho từng ô nhỏ, không thu nhỏ và không dùng bộ nhớ đệm. Riêng ảnh chiếm 203 MB, đẩy RAM cao nhất lên 180 MB — vượt ngưỡng dưới 150 MB. Khi đổi sang Coil AsyncImage để giải mã đúng kích thước ô và có bộ nhớ đệm, dung lượng ảnh còn 6,2 MB và mức dùng RAM giảm xuống 60 MB.
+
+**Thao tác.** Phát video P06c-AB.mp4, chỉ đường mốc mục tiêu dưới 150 MB.
+
+**Lưu ý.** Lỗi hiếm (5/66, chưa kiểm định độ chính xác) nhưng nghiêm trọng vì chỉ riêng lỗi này đã vượt ngưỡng 150 MB.
+
+#### 15. Danh sách dài và bộ nhớ (9:30 đến 10:10) — slide 15
+
+*Nguyên nhân · Bộ nhớ · 40 giây · 85 từ*
+
+**Lời nói.** Nhóm em nhìn lại danh sách 2.000 lượt mượn ở slide 11 dưới góc độ bộ nhớ. Vì bản nháp AI dựng đủ 2.000 mục trước khung hình đầu tiên, mức dùng RAM vọt lên 243 MB, Java heap 220 MB, thời gian khởi động mất 1.901 ms. Khi chuyển sang LazyColumn, mức dùng RAM giảm xuống 43 MB, Java heap còn 7,6 MB và thời gian khởi động giảm xuống 573,1 ms. Một lỗi danh sách làm trượt cả khung hình lẫn bộ nhớ.
+
+**Thao tác.** Chỉ ba cụm chỉ số: RSS 243 xuống 43 MB, Java heap 220 xuống 7,6 MB, TTID 1.901 xuống 573,1 ms.
+
+**Lưu ý.** Số MB ít phụ thuộc máy ảo hơn số ms; bản nháp AI vượt ngưỡng 150 MB còn bản sửa đạt.
+
+#### 16. Dung lượng và tìm kiếm (10:10 đến 10:55) — slide 16
+
+*Nguyên nhân · Bộ nhớ · 45 giây · 91 từ*
+
+**Lời nói.** Tiếp theo là dung lượng và tìm kiếm. Bật R8 thu nhỏ APK tới 90%, từ 24,7 MB còn 2,4 MB, và giảm thêm 8,7% thời gian khởi động. Với tìm kiếm ngoại tuyến 100.000 tựa sách, truy vấn LIKE chậm nhất mất 96,63 ms, vượt 50 ms; đổi sang chỉ mục FTS4 đưa mức chậm nhất xuống 37 ms và tổng thời gian truy vấn giảm từ 634,9 ms xuống 85,42 ms. Tuy nhiên, khung hình khi gõ không cải thiện vì nút thắt nằm ở danh sách kết quả.
+
+**Thao tác.** Chỉ cột trái R8 rồi chuyển sang cột phải FTS4 và mốc 50 ms.
+
+**Lưu ý.** LIKE khớp chuỗi con còn FTS4 khớp tiền tố từ nên khác tập kết quả ở 4/12 tiền tố.
+
+#### 17. Lỗi bảo mật phổ biến đến mức nào (10:55 đến 11:40) — slide 17
+
+*Nguyên nhân · Bảo mật · 45 giây · 100 từ*
+
+**Lời nói.** Sang trụ cột thứ ba: bảo mật — nơi bản nháp AI khác biệt rõ nhất so với ứng dụng do người viết. Trong 66 bản nháp không kèm tệp quy tắc ở E1, có tới 60 bản chứa ít nhất một cảnh báo bảo mật. Trên 1.000 dòng mã, bản nháp AI có trung vị 2,37 cảnh báo, gấp 2,3 lần mức 1,02 ở ứng dụng do người viết trước năm 2022; phép kiểm định C3 xác nhận mức chênh này. Phía dưới là đoạn mã nguyên văn: token đăng nhập được ghi thẳng ở dạng rõ vào SharedPreferences.
+
+**Thao tác.** Chỉ hai dòng `putString` trong khung mã `SessionStore.kt` ở phần dưới slide.
+
+**Lưu ý.** Nói trung lập: bản nháp AI có mật độ cảnh báo bảo mật cao hơn, không nói AI gây ra; đối chứng gồm 20 ứng dụng trước 30/11/2022.
+
+#### 18. Điều gì làm giảm lỗi bảo mật (11:40 đến 12:25) — slide 18
+
+*Nguyên nhân · Bảo mật · 45 giây · 100 từ*
+
+**Lời nói.** Vậy cách nào làm giảm cảnh báo bảo mật lúc sinh mã? Ở E1, prompt chức năng chi tiết vẫn có 29/33 bản bị cảnh báo so với 31/33 ở prompt ngắn. Tệp quy tắc kéo tỷ lệ này xuống 17/34 và giảm số loại vấn đề từ 5,85 xuống 2,82, xác nhận C1, C2. Nhưng đánh đổi là bản build thành công sau tối đa 3 lần sửa cũng giảm từ 20/33 xuống 10/34, còn prompt chi tiết là 12/33. Xét riêng 42 bản build thành công, tỷ lệ có cảnh báo không đổi: vẫn cần bước kiểm tra.
+
+**Thao tác.** Chỉ hai cụm biểu đồ bên trái (cảnh báo bảo mật và bản build thành công) rồi sang hai khung bên phải.
+
+**Lưu ý.** Tỷ lệ build thành công (20/33, 12/33, 10/34) là số mô tả; C2 tính trên cả bốn nhóm quy tắc; trong 42 bản build thành công, chênh lệch C1 bằng +0,000 còn C2 vẫn còn (+3,829).
+
+#### 19. Khi gặp lỗi chặn (12:25 đến 13:10) — slide 19
+
+*Nguyên nhân · Bảo mật · 45 giây · 93 từ*
+
+**Lời nói.** Rủi ro bảo mật còn lộ ra khi sửa lỗi chặn. Ở E4, gặp UserNotAuthenticatedException của Android Keystore (kho khóa của hệ thống), trợ lý AI có thể xóa yêu cầu xác thực — đổi true thành false — để lỗi biến mất. Trên 148 lượt sửa có 17 lượt nới lỏng cơ chế bảo mật, dưới ngưỡng 15% nên C4 không được xác nhận; tất cả rơi vào Keystore 12/30 và cleartext 5/30. Ở E3, công cụ quét APK đạt độ chính xác 0,291 và không phát hiện lỗi trong mã nguồn.
+
+**Thao tác.** Chỉ dòng đỏ bị xóa và dòng xanh thêm vào trong diff `TokenVault.kt`.
+
+**Lưu ý.** Không xếp hạng trợ lý AI theo 12/48, 5/50, 0/50 vì công cụ và mô hình bị lẫn (mở D4 nếu được hỏi).
+
+#### 20. Demo: trước và sau tối ưu (13:10 đến 15:10) — slide 20
+
+*Nguyên nhân · Demo trực tiếp · 120 giây (chuyển và nhận lại lượt: ~25 giây, 65 từ; phần demo trực tiếp: ~95 giây)*
+
+**Lời nói.** *[Chuyển lượt]* Để thầy cô và các bạn quan sát trực tiếp chứ không chỉ nhìn bảng số, thành viên nhóm em sẽ chạy demo song song bản nháp AI và bản tối ưu trên máy ảo. Xin mời bạn. *[Nhận lại lượt]* Cảm ơn phần demo. Sự khác biệt khi cuộn và tìm kiếm thể hiện rất rõ; vậy làm cách nào ngăn và xử lý những lỗi này?
+
+**Thao tác.** Chuyển micro cho thành viên demo (thứ tự gợi ý: P09 danh sách 2.000 lượt mượn, P06 ảnh bìa, P08 thẻ trang trí, P13 tìm kiếm 100.000 tựa sách); nếu máy ảo lỗi, mở lại video ở slide 11, 12, 14.
+
+**Lưu ý.** Số đo trên máy ảo laptop chỉ để minh họa; số tham chiếu của nghiên cứu là bốn mốc trên slide (90% → 1,3%; 180 → 60 MB; 62,87 → 49,07 ms; 96,63 → 37 ms). Chi tiết chạy demo ở optimization/study/demo/README.md.
+
+#### 21. Năm bậc giải pháp (15:10 đến 15:40) — slide 21
+
+*Giải pháp · 30 giây · 63 từ*
+
+**Lời nói.** Chuyển sang phần giải pháp. Nhóm em xếp thành năm bậc từ đơn giản nhất đến chuyên sâu nhất về kỹ thuật: nhờ trợ lý AI tự rà soát, viết quy tắc và bản đặc tả trước, để công cụ chấm, đo trên bản build đo hiệu năng, và sửa đúng mẫu lỗi trong mã nguồn. Bậc trước dừng ở đâu, bậc sau tiếp tục từ đó.
+
+**Thao tác.** Bấm hiện lần lượt năm bậc từ trái sang phải dọc theo trục “đơn giản” đến “chuyên sâu về kỹ thuật”.
+
+**Lưu ý.** Năm mốc số trên từng bậc đều đã xuất hiện ở phần trước: 168/168 (slide 7), 99% → 19,6% (slide 6), APK 24,7 → 2,4 MB (slide 16), p90 125 so với 12–16 ms (slide 8), RAM 243 → 43 MB (slide 15).
+
+#### 22. Bậc 1 · Trợ lý AI tự rà soát (15:40 đến 16:20) — slide 22
+
+*Giải pháp · 40 giây · 86 từ*
+
+**Lời nói.** Bậc 1 đơn giản nhất: dùng một prompt nhờ trợ lý AI liệt kê rủi ro bảo mật và chỗ chưa tối ưu theo tệp và dòng, chưa sửa mã. Ở E5 chế độ chỉ đề xuất, cách này tìm đủ 168/168 lượt lỗi cài sẵn; kèm kết quả bộ quét tĩnh không tạo khác biệt đo được. Bậc 1 dừng khi tự sửa: 9/12 bản codex không biên dịch được, 21/24 lượt đổi mẫu đối chứng, và prompt đã nêu sẵn danh mục lỗi.
+
+**Thao tác.** Bấm lần lượt ba cột Làm gì, Kết quả đo được và Dừng ở đâu, dừng ngắn ở câu nối sang Bậc 2.
+
+**Lưu ý.** Prompt trên slide ghi nhãn PROMPT MẪU chỉ để minh họa, không phải nguyên văn prompt E5; độ chính xác báo cáo 0,82 đến 0,94; nhánh kèm kết quả bộ quét tĩnh có p từ 0,25 đến 1,0 trên 6 cặp.
+
+#### 23. Bậc 2 · Quy tắc và bản đặc tả (16:20 đến 17:00) — slide 23
+
+*Giải pháp · 40 giây · 93 từ*
+
+**Lời nói.** Sang bậc 2: đặt tệp quy tắc ở gốc dự án và dùng bản đặc tả có cấu trúc ghi rõ định nghĩa xong là build thành công. Tệp quy tắc kéo cảnh báo bảo mật từ 31/33 xuống 17/34 ở E1; bản đặc tả kéo tỷ lệ khung hình trễ từ 99% xuống 19,6% ở E6. Nhưng số bản build thành công cũng giảm từ 20/33 xuống 10/34, riêng 42 bản build thành công thì tỷ lệ cảnh báo không đổi, và quy tắc Baseline Profile làm cả 3 bản codex build lỗi.
+
+**Thao tác.** Chỉ hai trích dẫn ở cột Làm gì rồi bấm sang hai cột kết quả và giới hạn bên phải.
+
+**Lưu ý.** Hai trích dẫn trên slide là nguyên văn tiếng Anh từ tệp quy tắc và bản đặc tả của nhóm; tỷ lệ build thành công 20/33 → 10/34 là số mô tả; chỉ viết prompt dài hơn mà không kèm tệp quy tắc thì không cải thiện kết quả (29/33).
+
+#### 24. Bậc 3 · Để công cụ chấm (17:00 đến 17:40) — slide 24
+
+*Giải pháp · 40 giây · 89 từ*
+
+**Lời nói.** Bậc 3 để công cụ chấm thay cho lời trợ lý AI: bật R8 trong build.gradle.kts cho bản phát hành và chạy biên dịch thật sau mỗi lần sửa. Nhờ đó APK giảm từ 24,7 xuống 2,4 MB, còn biên dịch thật bắt ngay 9/12 bản codex sửa lỗi mà bộ kiểm tra tĩnh cho qua. Nhưng bậc 3 dừng ở đây: MobSF đạt độ chính xác 0,291 và cả 30 cảnh báo đúng đều là cấu hình; build thành công chưa nói ứng dụng nhanh hay tốn RAM.
+
+**Thao tác.** Chỉ hai khung mã R8 và lệnh biên dịch, rồi chuyển qua cột Kết quả và Dừng ở đâu.
+
+**Lưu ý.** R8 cũng giảm 90,4% dung lượng và 8,7% thời gian khởi động; token dạng rõ chỉ bộ quét tĩnh của nhóm ghi nhận; Android Lint không được dùng trong nghiên cứu này nên không nêu số.
+
+#### 25. Bậc 4 · Đo trước và sau (17:40 đến 18:20) — slide 25
+
+*Giải pháp · 40 giây · 86 từ*
+
+**Lời nói.** Lên bậc 4: đo bằng Macrobenchmark, khởi động nguội, chạy xen kẽ A và B 12 lần lặp trên bản build đo hiệu năng. Đo đúng đối tượng cho thấy khác biệt ngay: mở trang sách trên Xiaomi ở bản debug là 125 ms p90, bản build đo hiệu năng chỉ 12–16 ms; số đo cũng loại P01, P03, P04 vì không có chi phí đo được. Tuy nhiên đo không tự sửa mã, và Baseline Profile giảm 5,88% trên máy ảo nhưng không đổi trên thiết bị thật.
+
+**Thao tác.** Chỉ ba yêu cầu đo ở cột trái, nhấn cặp 125 → 12–16 ms rồi nối sang Bậc 5.
+
+**Lưu ý.** Số ms trên máy ảo chỉ dùng để so A với B; thiết bị thật của nghiên cứu là Xiaomi flagship, giới hạn đầy đủ ở D1.
+
+#### 26. Bậc 5 · Sửa đúng mẫu lỗi (18:20 đến 19:00) — slide 26
+
+*Giải pháp · 40 giây · 93 từ*
+
+**Lời nói.** Bậc 5 chuyên sâu nhất về kỹ thuật là sửa đúng từng mẫu lỗi đã biết, nơi tạo cải thiện lớn nhất. LazyColumn kéo danh sách 2.000 mục từ 90% xuống 1,3% khung hình trễ và RAM từ 243 xuống 43 MB. Coil AsyncImage kéo RAM ảnh bìa từ 180 xuống 60 MB. Bìa phẳng giảm p90 từ 62,87 xuống 49,07 ms; FTS4 đưa truy vấn chậm nhất từ 96,63 xuống 37 ms; Baseline Profile giảm 5,88%. Tuy vậy mỗi cách chỉ sửa đúng mẫu đó — lưới thẻ vẫn 48,65%, chưa đạt 60 fps.
+
+**Thao tác.** Lướt nhanh bảng sáu hàng bên trái rồi dừng ở hộp giới hạn và gợi ý thăm dò D9 bên phải.
+
+**Lưu ý.** Mọi số trong bảng là so A/B trên máy ảo; phần thăm dò ở D9 phóng dữ liệu mẫu lên quy mô thật để ngưỡng mục tiêu quyết định thay cho trợ lý AI (công cụ chặn diff mới đánh giá hồi cứu).
+
+#### 27. Ba điều cần nhớ (19:00 đến 19:30) — slide 27
+
+*Kết thúc · 30 giây · 77 từ*
+
+**Lời nói.** Khép lại bài, nhóm em chốt ba điểm cốt lõi cần nhớ. Một, trông hoàn thiện chưa phải đã tối ưu: hãy đo với dữ liệu thật. Hai, tần suất không phản ánh mức nghiêm trọng: cần kiểm tra riêng lỗi bộ nhớ và bảo mật. Ba, tin bản build và số đo, không tin lời “đã sửa xong”, đi đủ năm bậc giải pháp. Xin cảm ơn, mời thầy cô và các bạn đặt câu hỏi.
+
+**Thao tác.** Giữ slide kết khi hỏi đáp; nhấn phím O để mở lưới chọn nhanh slide dự phòng D1 đến D12.
+
+**Lưu ý.** Không đưa số mới ở slide kết. Các slide dự phòng D1 đến D12 nằm ngay sau slide kết (mục tiêu môn học ở D10, bốn ứng dụng chỉ một prompt ở D11, ưu tiên sửa lỗi ở D12).
 
 <!-- SCRIPT:END -->
 
 ## 6b. The plain-language report
 
 [report/index.html](report/index.html) is one Vietnamese web page for readers without a presenter. It follows the deck's order and says more than a slide can:
-- For each pillar: the problem, the measured before/after, why it happens, and the fix.
-- A short paragraph per experiment, E1 to E6.
-- The classification table with its rules.
-- The verdict table of the pre-registered tests, including C4.
-- The full E2 table, the course-target scoreboard (synced with slide 21), and the real-device lessons.
-- The five-phase advice at the Tối thiểu and Nâng cao levels.
-- Three points and the limits.
+- Opening hook, online promise, and the five headline numbers.
+- A short summary per experiment (E1 to E6), the classification table with its rules, build and self-fix findings, real-device lessons, and the verdict table of the pre-registered tests (including C4).
+- For each pillar (UI rendering, memory, security): the problem, the measured before/after, why it happens, and the fix, plus the four-scenario A/B comparison.
+- The five-rung technique ladder (Bậc 1–5) from least to most technical.
+- Three core points and the limits (plus backup material such as the full E2 table and the course-target scoreboard on D10).
 
-Every number in it is a number of the deck. Its owner checks it by a set difference against the deck and by rendering at 1280 and 390 px. The framing rules of section 6 apply: advice is organised by the five development phases with two levels ("Tối thiểu" and "Nâng cao"), and there is no sources section; the lead-in sources stay in [report/sources-leadin.md](report/sources-leadin.md) as a record.
+Every number in it is a number of the deck. Its owner checks it by a set difference against the deck and by rendering at 1280 and 390 px. The framing rules of section 6 apply: advice is organised as the five-rung technique ladder (Bậc 1–5), and there is no sources section; the lead-in sources stay in [report/sources-leadin.md](report/sources-leadin.md) as a record.
 
-| Report section (h2) | Deck slides |
+| Report section | Deck slides |
 |---|---|
-| Lời hứa trên mạng và thực tế khi chạy đúng prompt đó | 2–3 |
-| Phân loại lỗi theo tần suất và mức độ nghiêm trọng | 4–5 |
-| Phương pháp nghiên cứu và kiểm tra môi trường | 6, D7 |
-| Trụ cột giao diện và hiệu năng hiển thị | 7–9 |
-| Trụ cột bộ nhớ, dung lượng và tìm kiếm | 10–12 |
-| Trụ cột bảo mật trong bản nháp đầu và khi sửa lỗi | 13–15 |
-| Đối chiếu trực tiếp bốn kịch bản trước và sau tối ưu | 16 |
-| Bản nháp build lỗi và giới hạn của báo cáo “đã sửa xong” | 17–18 |
-| Tổng hợp sáu thí nghiệm, kết quả kiểm định và đối chiếu mục tiêu môn học | 19–21, D2, D3 |
-| Bài học từ thiết bị thật và kiểm thử ở tỷ lệ cỡ chữ lớn | 22, D8 |
-| Khuyến nghị thực hành theo năm giai đoạn phát triển | 23–24 |
-| Ba điểm cốt lõi cần nhớ và giới hạn của nghiên cứu | 25, D1 |
+| Mở đầu: lời hứa trên mạng và năm con số đo được | 1–3, D11 |
+| Kết quả: sáu thí nghiệm, bảng phân loại, build lỗi, tự sửa, thiết bị thật và kiểm định | 4–10, D2, D7, D8, D10, D12 |
+| Nguyên nhân: giao diện, bộ nhớ, bảo mật và đối chiếu trực tiếp bốn kịch bản | 11–20, D3, D4, D5 |
+| Giải pháp: thang năm bậc kỹ thuật (Bậc 1 đến Bậc 5) | 21–26, D9 |
+| Kết thúc: ba điểm cốt lõi cần nhớ và giới hạn của nghiên cứu | 27, D1 |
 
 ## 7. Proof of every number in the deck
 
-- [proof/deck-proof.csv](proof/deck-proof.csv) has 827 rows (479 direct, 99 derived, 249 label) covering 799 values across all 34 slides (visible text, speaker notes, chart data attributes and bar lengths). Columns: `slide,value,kind,claim,source,line,quote,formula,note`.
+- [proof/deck-proof.csv](proof/deck-proof.csv) has 956 rows (518 direct, 109 derived, 329 label) covering 929 values across all 39 slides (27 main + D1–D12: visible text, speaker notes, chart data attributes and bar lengths). Columns: `slide,value,kind,claim,source,line,quote,formula,note`.
   - `direct`: the number is on `source:line`, inside the verbatim `quote`.
   - `cited`: the same, from an external source recorded in references.md (not used by the current deck).
   - `derived`: `formula` recomputes the shown value from proven inputs. Examples: k/66 as naive + detailed (`8+11`); MB as KB / 1024; APK bytes / 1 000 000; Holm as raw p × (5 − rank + 1); "gấp 2,3 lần" as `2.37/1.02`; P08 11/12 counted from `e6-oneshot/results/findings.csv`.
-  - `label`: not data, and `note` says what it is. Examples: a line number in a notes source pointer, a "~N giây" timing, a file name, a slide cross-reference, an axis tick, a version, an address. A value that is also data anywhere on that slide gets a sourced row instead of a label.
+  - `label`: not data, and `note` says what it is. Examples: a line number in a notes source pointer, a "~N giây" timing, a file name, a slide cross-reference, a ladder rung or rule number, an axis tick, a version, an address. A value that is also data anywhere on that slide gets a sourced row instead of a label.
 - [proof/check_deck_proof.py](proof/check_deck_proof.py) (stdlib) reads the deck and lists every number on every slide. It fails unless each number has a row whose quote is really on that line and contains the number (after rounding), and each formula reproduces the shown value. It also fails on any row whose number is no longer on its slide (stale).
 
 ```
@@ -507,7 +518,7 @@ python3 -I optimization/study/proof/check_deck_proof.py --list 5   # numbers on 
 python3 -I optimization/study/proof/check_deck_proof.py --slide 5  # check one slide
 ```
 
-- [proof/ISSUES.md](proof/ISSUES.md) records what each proof pass found and changed. The 2026-11-28 pass found no wrong number. It changed one piece of markup: the slide-4 columns are now `div`, because a nested `</section>` hid most of that slide from the checker. It also records the slide-21 update, whole-app RAM 94–95 MB PSS on the Xiaomi.
+- [proof/ISSUES.md](proof/ISSUES.md) records what each proof pass found and changed. The 2026-11-28 talk-flow rebuild re-ordered the deck from 25 + D1–D9 to 27 + D1–D12 (old → new slide map in its top section) and verified all 956 rows with 0 bad, 0 stale, 0 unproven. Earlier passes recorded the `div` fix for the classification slide (now slide 5, formerly slide 4) and the whole-app RAM update (94–95 MB PSS on Xiaomi, now on backup D10).
 - **Checker limits to keep in mind:**
   - Never nest a `<section>` inside a slide.
   - Scientific notation in notes (`1,84e5`) is cut at the "e"; its leading digit gets a label row that points to the proving row.
@@ -582,8 +593,8 @@ Figures that still print an older term are glossed in their captions (section 5)
 | Material | Status | How to use it |
 |---|---|---|
 | Group outline `De_cuong_AI_Coding_UI_UX_Hieu_nang_Bao_mat_ban_mo_rong.docx` (Cuong) | the plan the study implements; ARTICLE.md §1.6 and §3.7 map it | source of the four original questions |
-| `optimization/TieuLuan-ToiUu-Android.docx`, `optimization/Script-ThuyetTrinh.docx` (Huy, commit e4259e1) | a technique-by-technique essay and a 25-minute script. Their numbers are the B (tuned) side of E2, plus the ShelfTap MobSF rows of E3 and the product's security design | fits as the baseline layer (ARTICLE Chapter 2) and as product security. Each B number needs its A (before) number next to it. It must not present P03+P04, Baseline Profile or card effects as wins the A/B data does not show (slides 8 and 9). Offline FTS search exists only in `android/optlab`, not in the member app |
-| ShelfTap UI/UX log (teammate PR, merged 2026-11-28) | real-phone measurements in `optimization/log/opt-ui-ux.md` and `optimization/ui-ux/measure/` | source of slides 9, 21, 22 and D8; re-locate line numbers after each merge |
+| `optimization/TieuLuan-ToiUu-Android.docx`, `optimization/Script-ThuyetTrinh.docx` (Huy, commit e4259e1) | a technique-by-technique essay and a 25-minute script. Their numbers are the B (tuned) side of E2, plus the ShelfTap MobSF rows of E3 and the product's security design | fits as the baseline layer (ARTICLE Chapter 2) and as product security. Each B number needs its A (before) number next to it. It must not present P03+P04, Baseline Profile or card effects as wins the A/B data does not show (slides 12 and 13). Offline FTS search exists only in `android/optlab`, not in the member app |
+| ShelfTap UI/UX log (teammate PR, merged 2026-11-28) | real-phone measurements in `optimization/log/opt-ui-ux.md` and `optimization/ui-ux/measure/` | source of slides 8, 13, D8 and D10; re-locate line numbers after each merge |
 | Canva deck (group) | not reviewed: Canva blocks automated browsers | export to PDF into the repo to review |
 
 ## 10. Checklists
@@ -591,11 +602,11 @@ Figures that still print an older term are glossed in their captions (section 5)
 **Before presenting**
 - [ ] `python3 -I optimization/study/proof/check_deck_proof.py` exits 0.
 - [ ] The script's "Kiểm số liệu" check exits 0, and the timing table total stays between 15:00 and 20:00.
-- [ ] Demo machine: `py demo.py doctor` passes; the emulator is started and `run p09` has run once (demo/README.md §4). The fallback video for slide 16 is at hand.
+- [ ] Demo machine: `py demo.py doctor` passes; the emulator is started and `run p09` has run once (demo/README.md §4). The fallback videos for slide 20 (slides 11, 12, 14) are at hand.
 - [ ] The deck opens offline on the presenting machine (fonts are embedded). The presenter window (P) works there and its clock shows the 19:30 target.
 - [ ] Light theme on a projector; dark only in a dark room.
-- [ ] Rehearse to 19:30 or less (the script times itself at 19:15).
-- [ ] Know the Q&A answers in presentation-script.md, each mapped to a backup slide: emulator vs real phone (D1), Holm (D2), +28,13% vs −22% (D3), E4 raters and per-assistant counts (D4), human apps (D5, slide 13), E6 per assistant (D6), isolation (D7), what is new: the one-prompt apps at real data size (D9).
+- [ ] Rehearse to 19:30 or less (the script matches the 19:30 slide-note timings).
+- [ ] Know the Q&A answers in presentation-script.md, each mapped to a backup slide: emulator vs real phone (D1), Holm (D2), +28,13% vs −22% (D3), E4 raters and per-assistant counts (D4), human apps (D5, slide 17), E6 per assistant (D6), isolation (D7), large font scale (D8), what is new: the one-prompt apps at real data size (D9), course-target scoreboard (D10), four one-prompt apps (D11), three classification lessons (D12).
 
 **Before changing the deck**
 - [ ] Every changed number has its proof row; the checker exits 0.
