@@ -147,7 +147,7 @@ class UiAuditTest {
             runCatching { waitFor(str(R.string.recommend_strip_note)) }
             effectsPass(scenario)  // warm-up, not recorded
             val remote = "/data/local/tmp/effects-$label.mp4"
-            uiAutomation.executeShellCommand("screenrecord --bit-rate 3000000 --size 576x1248 --time-limit 170 $remote")
+            uiAutomation.executeShellCommand("screenrecord --bit-rate 3000000 --size ${args.getString("videoSize") ?: "576x1248"} --time-limit 170 $remote")
             Thread.sleep(2500) // the encoder starts
             // The frame statistics of the recorded pass only (the system counts frames per process): reset now, read after it.
             uiAutomation.executeShellCommand("dumpsys gfxinfo ${instrumentation.targetContext.packageName} reset").use { android.os.ParcelFileDescriptor.AutoCloseInputStream(it).readBytes() }
@@ -166,14 +166,21 @@ class UiAuditTest {
         pause(1200)
         compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeUp() }; pause(1000)
         compose.onAllNodes(hasScrollAction()).onFirst().performTouchInput { swipeDown() }; pause(1000)
-        openMenu(); pause(1300)
-        compose.onAllNodesWithContentDescription(str(R.string.menu_close))[0].performClick(); pause(1100)
-        openFirstTitle(); waitFor(AuditData.titles.first().isbn); pause(2200)
-        scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
-        waitFor(str(R.string.catalog_theme)); pause(1400)
+        // A window wide enough for a rail or a fixed menu has no ☰ button: nothing to open there.
+        if (hasBurger()) {
+            openMenu(); pause(1300)
+            compose.onAllNodesWithContentDescription(str(R.string.menu_close))[0].performClick(); pause(1100)
+        }
+        // The ISBN tile can lie below the fold of a very short window (the cover screen of a flip phone): then the book is only waited for by its page settling.
+        openFirstTitle(); runCatching { waitFor(AuditData.titles.first().isbn) }; compose.waitForIdle(); pause(2200)
+        // On a wide window the book is a pane beside the list, closed by its own button; elsewhere it is a screen to go back from.
+        val closePane = compose.onAllNodesWithContentDescription(str(R.string.title_close_pane))
+        if (closePane.fetchSemanticsNodes().isNotEmpty()) closePane[0].performClick() else scenario.onActivity { it.onBackPressedDispatcher.onBackPressed() }
+        // The home comes back scrolled to where it was: on a short window its banner may be off screen (a lazy list does not compose it), so do not wait for it.
+        runCatching { waitFor(str(R.string.catalog_theme)) }; compose.waitForIdle(); pause(1400)
         tab(R.string.tab_loans); waitFor(AuditData.loans.first().title); pause(1600)
         tab(R.string.tab_reservations); waitFor(AuditData.reservations.first().title); pause(1600)
-        tab(R.string.tab_catalog); waitFor(str(R.string.catalog_theme)); pause(1400)
+        tab(R.string.tab_catalog); runCatching { waitFor(str(R.string.catalog_theme)) }; compose.waitForIdle(); pause(1400)
     }
 
     @Test

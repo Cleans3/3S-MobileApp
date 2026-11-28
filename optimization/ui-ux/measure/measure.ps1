@@ -25,7 +25,13 @@ param(
     [int] $Cool = 20,
     [ValidateSet('auto', 'light')] [string] $Tier = 'auto',
     [string] $Out = (Join-Path $PSScriptRoot 'results'),
-    [string] $Package = 'shelftap.android'
+    [string] $Package = 'shelftap.android',
+    # How a book card reads to the accessibility tree ("title, author, Còn N bản"). The app as first cloned reads "title, author, N available" /
+    # "All copies on loan": pass -CardPattern ', (\d+ available|All copies on loan)' for it (it also needs a signed-in member, see -Expect).
+    [string] $CardPattern = ', (Còn|Đã cho mượn hết)',
+    # A text that must be on screen after the app has started, or the run stops: for a build that needs a signed-in member (the first clone
+    # has no guest browsing) it proves the member is still signed in, so the numbers are of the catalog and not of the login screen.
+    [string] $Expect = ''
 )
 $ErrorActionPreference = 'Stop'
 $adb = Join-Path $env:LOCALAPPDATA 'Android\Sdk\platform-tools\adb.exe'
@@ -70,7 +76,7 @@ function RunScenario([string]$name) {
     $mid = [int]($w / 2)
     switch ($name) {
         'openBook' {
-            $card = Centre ', (Còn|Đã cho mượn hết)'
+            $card = Centre $CardPattern
             if (-not $card) { throw 'openBook: no book card on screen' }
             Sh 'dumpsys gfxinfo shelftap.android reset' | Out-Null
             for ($i = 0; $i -lt 12; $i++) {
@@ -162,6 +168,7 @@ try {
             Sh "cmd package compile -f -m speed-profile $Package" | Out-Null
             Sh "am force-stop $Package" | Out-Null; Sh "am start -n $Package/.MainActivity" | Out-Null; Start-Sleep -Seconds 8
             EnterCatalog
+            if ($Expect -and -not (Centre $Expect 4)) { throw "'$Expect' is not on screen: the build is not on the catalog (signed out?). Sign in on the phone and run again." }
             foreach ($sc in $Scenarios) {
                 $ran = RunScenario $sc
                 if ($ran -eq $false) { Write-Host "  skip $sc"; continue }

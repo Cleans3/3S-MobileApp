@@ -1,6 +1,6 @@
 """Puts the two recordings (app as first cloned, app now) side by side, with the frame statistics of each pass.
 
-usage: python video_compare.py <video dir> [--before BASE] [--after NOW]
+usage: python video_compare.py <video dir> [--before BASE] [--after NOW] [--name compare] [--title <text>]
 
 Reads <video dir>/<label>/effects.mp4 and gfxinfo.txt (written by record_effects.ps1) and writes, in <video dir>:
   compare.html      two <video> elements that start together, with play, pause and speed controls, and the table below
@@ -48,6 +48,11 @@ def read(folder, label):
 def main():
     args = sys.argv[1:]
     before, after = 'BASE', 'NOW'
+    out_name, title = 'compare', 'The app as first cloned and now, the same kind of sequence'
+    if '--name' in args:
+        i = args.index('--name'); out_name = args[i + 1]; del args[i:i + 2]
+    if '--title' in args:
+        i = args.index('--title'); title = args[i + 1]; del args[i:i + 2]
     if '--before' in args:
         i = args.index('--before'); before = args[i + 1]; del args[i:i + 2]
     if '--after' in args:
@@ -61,7 +66,7 @@ def main():
         if name in a or name in b:
             rows.append('| %s | %s | %s |' % (name, a.get(name, 'n/a'), b.get(name, 'n/a')))
     table = '\n'.join(rows)
-    open(os.path.join(folder, 'gfx-summary.md'), 'w', encoding='utf-8').write(table + '\n')
+    open(os.path.join(folder, ('gfx-summary' if out_name == 'compare' else out_name + '-gfx') + '.md'), 'w', encoding='utf-8').write(table + '\n')
     html_rows = ''.join('<tr>%s</tr>' % ''.join('<td>%s</td>' % c.strip() for c in r.strip('|').split('|')) for r in rows[2:])
     page = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -76,7 +81,7 @@ video{height:76vh;max-height:900px;border-radius:12px;background:#000}
 button{font:inherit;padding:8px 16px;border-radius:999px;border:1px solid #6b655e;background:#2a2723;color:#f2eee9;cursor:pointer}
 table{border-collapse:collapse;margin-top:16px}td,th{border:1px solid #4a453f;padding:6px 12px;text-align:left}
 </style></head><body>
-<h1>The app as first cloned and now, the same kind of sequence</h1>
+<h1>%s</h1>
 <p>Scroll the home, open a book and go back, switch screens. Recorded on the same emulator and window size, debug builds, after a warm-up pass.
 The screens differ because the interface differs: the first clone has a five-tab bar and no menu.</p>
 <div class="bar"><button id="play">Play both</button><button id="pause">Pause</button><button id="restart">Restart</button>
@@ -95,8 +100,8 @@ document.getElementById('restart').onclick=function(){all(function(v){v.currentT
 document.getElementById('slow').onclick=function(){all(function(v){v.playbackRate=0.25})};
 document.getElementById('normal').onclick=function(){all(function(v){v.playbackRate=1})};
 </script></body></html>
-""" % (before, after, html_rows)
-    open(os.path.join(folder, 'compare.html'), 'w', encoding='utf-8').write(page)
+""" % (title, before, after, html_rows)
+    open(os.path.join(folder, out_name + '.html'), 'w', encoding='utf-8').write(page)
     print(table)
 
 

@@ -100,12 +100,58 @@ Hai video quay trên cùng emulator `lowend36ui`, cùng cỡ cửa sổ, cùng k
 | Slow issue draw commands | 63 | 30 |
 | Frame deadline missed | 84 | 40 |
 
-**Đọc con số này thận trọng.** Đây là emulator và bản debug: nó cho thấy cả hai bản chạy ở mức tương đương (phân vị 90 đều 48 ms, trung vị 25 so với 29 ms), không cho thấy bản mới nhanh hơn. Số khung khác nhau (295 so với 172) vì hai lượt thao tác không vẽ cùng số khung (màn khác nhau); tỷ lệ khung giật 28,5% so với 23,3% và phân vị 99 400 ms so với 200 ms chịu ảnh hưởng của vài khung đầu mỗi màn và không đủ để kết luận. Số đo hiệu năng đáng tin hơn là trên Xiaomi 25053RT47C, bản `measure` (R8, Baseline Profile), 100.013 đầu sách, nhiều lượt xen kẽ: giật 0,02% ở mọi cảnh cuộn; phân vị 90 từ 5 đến 14 ms tùy cảnh và cấu hình (có hoặc không có dải kính) (nhật ký 2026-11-26 19:00, 21:30 và 2026-11-27 04:30). Bản đầu **chưa được đo trên Xiaomi bằng cùng kịch bản**: kịch bản đo khung hình (`measure.ps1`) được viết sau, nên chưa có cột "bản đầu" trên máy thật.
+**Đọc con số này thận trọng.** Đây là emulator và bản debug: nó cho thấy cả hai bản chạy ở mức tương đương (phân vị 90 đều 48 ms, trung vị 25 so với 29 ms), không cho thấy bản mới nhanh hơn. Số khung khác nhau (295 so với 172) vì hai lượt thao tác không vẽ cùng số khung (màn khác nhau); tỷ lệ khung giật 28,5% so với 23,3% và phân vị 99 400 ms so với 200 ms chịu ảnh hưởng của vài khung đầu mỗi màn và không đủ để kết luận. Số đo hiệu năng đáng tin hơn là trên Xiaomi 25053RT47C, bản `measure` (R8, Baseline Profile), 100.013 đầu sách, nhiều lượt xen kẽ: giật 0,02% ở mọi cảnh cuộn; phân vị 90 từ 5 đến 14 ms tùy cảnh và cấu hình (có hoặc không có dải kính) (nhật ký 2026-11-26 19:00, 21:30 và 2026-11-27 04:30). Bản đầu **đã được đo trên Xiaomi bằng cùng kịch bản** ở mục 8, và cho kết quả ngược hướng với mong đợi: bản mới tốn nhiều thời gian mỗi khung hơn.
 
 ## 7. Chưa làm, chưa so được
 
-- Cột "bản đầu" của đo khung hình và bộ nhớ trên máy thật (bản đầu cần máy Xiaomi, server dev và Docker; Docker không chạy lúc làm).
-- Video bản **release**: không quay được nguyên trạng vì `FLAG_SECURE` và vì cần server để đăng nhập; hai video đều là bản debug.
+- ~~Cột "bản đầu" của đo khung hình và bộ nhớ trên máy thật~~ và ~~video bản release~~: đã làm ở mục 8 (Xiaomi, bản `measure`).
+- Video của các cỡ cửa sổ trên emulator là bản **debug**; riêng hai cỡ **vừa (720 × 840 dp) và rộng (960 × 720 dp) của bản mới quay ra màn hình đứng yên** (app không vẽ lại trong lúc bài test chạy, chưa rõ nguyên nhân; bản đầu quay được ở cả hai cỡ), nên không đưa video của hai cỡ đó vào.
 - Không có video `.mp4` của mockup: hiệu ứng mockup là CSS, được chụp thành khung và ảnh động (WebP, GIF).
 - Thử trên máy có tỷ lệ đặc biệt thật (gập, bầu dục).
 - Hộp xin quyền thông báo (cửa sổ riêng) chưa có ảnh app.
+
+## 8. Đo và quay trên Xiaomi, bản `measure`, bản cũ nhất và bản mới nhất
+
+Máy: Xiaomi 25053RT47C, Android 17, màn 1280 × 2772. Server dev chạy trên máy này (Spring Boot và PostgreSQL trong Docker), **100.013 đầu sách**, phone nối qua mạng LAN (HTTPS, chứng chỉ dev đã cài làm CA người dùng trên phone). Hai bản dựng bằng kiểu `measure`: giống release (R8, tối ưu, không cờ gỡ lỗi), ký bằng khóa debug, tin chứng chỉ dev. Bản cũ nhất là tag `ui-baseline` được thêm đúng kiểu `measure` đó (và file `network_security_config` của nó); bản mới nhất là `HEAD`. Mỗi lượt cài lại bản và cho nó hồ sơ như cài từ cửa hàng (Baseline Profile rồi biên dịch theo hồ sơ), nghỉ 20 giây giữa các lần, **5 lượt**, tầng hiệu ứng tự chọn. Kịch bản là của `optimization/ui-ux/measure/measure.ps1`; bản đầu chạy hai kịch bản có tương đương (nó không có menu, và danh sách dài là trang chủ của nó):
+
+| Kịch bản | Bản đầu (trung vị, khoảng min–max của 5 lượt) | Bản mới nhất |
+|---|---|---|
+| Mở sách rồi quay lại, 12 lần | 0,05% (0,05–0,05), p90 5 ms (5–9), RSS 220 MB | 0,94% (0,89–1), p90 14 ms (14–14), RSS 228 MB |
+| Cuộn danh sách dài (bản đầu: trang chủ là danh sách; bản mới: "Xem tất cả sách") | 0% (0–0), p90 5 ms (5–5), RSS 220 MB | 0,02% (0,01–0,02), p90 11 ms (11–11), RSS 242 MB |
+| Cuộn trang chủ (bản mới: các băng sách) | không có | 0,02% (0,02–0,02), p90 10 ms (10–10), RSS 215 MB |
+| Mở và đóng menu ☰ | không có (không có menu) | 0,02% (0,02–0,02), p90 11 ms (10–11), RSS 224 MB |
+
+Kết quả thô: `optimization/ui-ux/measure/results-xiaomi-base/` và `results-xiaomi-now/` (`results.tsv`, `summary.tsv`). Chỉ kết luận "khác nhau" khi hai khoảng min–max không chồng nhau.
+
+**Đọc kết quả, theo đúng số đo:**
+
+- Bản mới **tốn nhiều thời gian mỗi khung hơn** bản đầu và hai khoảng không chồng nhau ở cả hai kịch bản có thể so: ở mở sách, phân vị 90 là 14 ms so với 5 ms, tỷ lệ khung giật 0,94% so với 0,05%; ở cuộn danh sách dài là 11 ms so với 5 ms (giật 0,02% so với 0%). Nguyên nhân hợp lý, chưa tách riêng bằng thí nghiệm: giao diện mới vẽ nhiều hơn (kính, dải mờ, bìa chữ, chuyển trang trượt, nút đổi hình, bo góc), đúng với chi phí đã đo riêng của dải kính ở nhật ký 2026-11-26.
+- Cả hai đều ở mức tốt trên máy flagship này: khung giật từ 0 đến 1%, phân vị 90 từ 5 đến 14 ms. Chưa đo trên máy yếu, nơi chênh lệch này có thể lớn hơn.
+- Số khung của kịch bản mở sách khác hẳn (bản đầu 4030 khung, bản mới 1692 cho cùng 12 lần mở): bản đầu chờ máy chủ trả chi tiết với vòng quay tải chạy liên tục nên vẽ thêm khung; bản mới dựng trang ngay từ dữ liệu danh sách. Vì vậy **tỷ lệ giật của hai bản trong kịch bản này không so thẳng được**; phân vị theo khung công bằng hơn.
+- Bộ nhớ (RSS) tương đương: 220 MB (bản đầu) so với 215 đến 242 MB (bản mới).
+
+### Video và thống kê khung hình trên Xiaomi
+
+Hai video quay trên cùng máy bằng `screenrecord` (`optimization/ui-ux/video/phone-BASE/effects.mp4`, `phone-NOW/effects.mp4`; xem song song: `video/compare-phone.html`), mỗi video là một lượt thao tác cố định sau một lượt khởi động nóng, màn 576 × 1248, 6 Mbps. Bản đầu: vuốt danh sách, mở một sách rồi quay lại, Loans, Reserved, Catalog. Bản mới (duyệt như khách): vuốt trang chủ, mở và đóng menu, mở một sách rồi quay lại, "Xem tất cả sách" và vuốt danh sách.
+
+| Thống kê khung hình của lượt quay | Bản đầu | Bản mới |
+|---|---|---|
+| Số khung vẽ | 1702 | 2410 |
+| Khung giật | 0,12% | 0,21% |
+| Phân vị 50, 90, 99 (ms) | 5, 9, 10 | 9, 11, 18 |
+
+Hai lượt không cùng việc (màn khác nhau, số thao tác khác nhau), nên bảng này là để xem cả hai chạy trơn, không phải để so từng con số.
+
+**Cách quay, và vì sao video này không phải bản người dùng cài.** App đặt `FLAG_SECURE`, làm đen cả `screenrecord`. Cờ đó **không bị gỡ trong repo hay trong bản đo**. Hai video được quay từ **hai bản sao tạm** của mã (cây `git worktree` ngoài repo) trong đó đúng một dòng `window.setFlags(FLAG_SECURE ...)` bị comment, dựng cùng kiểu `measure`, chỉ cài trên máy đo rồi cài lại bản có cờ (`now-measure.apk`, máy hiện giữ bản này) và xóa các cây tạm. Số đo ở trên (bảng đầu mục 8) là của bản **có** cờ. Quy trình ở `optimization/ui-ux/tools/README.md`.
+
+## 9. Các tỷ lệ màn hình khác (emulator)
+
+Video của cùng một lượt thao tác ở nhiều cỡ cửa sổ, quay trên emulator `lowend36ui` bằng bản debug, sau khởi động nóng (`tools/record_effects.ps1 -Window <cỡ>`), bản đầu và bản mới cạnh nhau; xem bằng trang HTML ở cột cuối (mở trong trình duyệt, có nút phát song song và tốc độ 0,25). Thống kê khung hình do emulator vẽ bằng phần mềm nên chỉ để so sánh giữa hai bản, không phải hiệu năng thật.
+
+| Cỡ cửa sổ | Bản đầu | Bản mới | Trang xem |
+|---|---|---|---|
+| Cao (411 × 914 dp, 20:9) | 335 khung, giật 3,88%, p50 17 ms, p90 23 ms, p99 48 ms | 186 khung, giật 10,75%, p50 17 ms, p90 40 ms, p99 200 ms | [compare-tall.html](../video/compare-tall.html) |
+| Xoay ngang (731 × 411 dp) | 180 khung, giật 7,22%, p50 17 ms, p90 26 ms, p99 150 ms | 175 khung, giật 11,43%, p50 22 ms, p90 36 ms, p99 200 ms | [compare-land.html](../video/compare-land.html) |
+| Cover của máy gập (360 × 400 dp) | 183 khung, giật 7,65%, p50 17 ms, p90 31 ms, p99 250 ms | 108 khung, giật 46,30%, p50 34 ms, p90 77 ms, p99 250 ms | [compare-flipcover.html](../video/compare-flipcover.html) |
+
+Đọc: trên emulator bản mới nặng hơn ở cả ba cỡ (p90 cao hơn, tỷ lệ giật cao hơn nhiều ở cover gập: 46% so với 8%), cùng hướng với số đo trên Xiaomi nhưng lớn hơn nhiều vì emulator không có GPU thật. Video cỡ cover gập cho thấy giao diện mới trên cửa sổ rất ngắn; bản đầu chỉ là giao diện điện thoại bị kéo ngang ở các cỡ rộng. Video các cỡ **vừa và rộng** của bản đầu có trong `video/BASE-medium/` và `video/BASE-expanded/`; của bản mới thì không (xem mục 7).

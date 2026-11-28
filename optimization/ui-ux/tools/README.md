@@ -9,6 +9,8 @@ The "first clone" is the Android app as it was when the repository was cloned on
 | `frames_to_anim.py <dir> <prefix> <out>` | An animated WebP and GIF, and a contact sheet with the elapsed time under each frame, from frames named `<prefix>-<ms>-hw.png` (the frames `UiAuditTest` writes for the menu and for opening a book: the test advances the compose clock by hand, so each frame has an exact time) | Pillow |
 | `mockup_frames.py <rendered dir> <board> <out dir>` | The same kind of frames for a mockup board: its CSS animations are paused at given times and screenshot by headless Chrome | Chrome, Pillow |
 | `record_effects.ps1 -Serial <device> -Label <L> [-Repo <worktree>]` | A real video (`video/<L>/effects.mp4`) of a fixed sequence (scroll, menu, open a book and back, switch screens) at real speed, and the frame statistics of that pass (`gfxinfo.txt`) | device or emulator, Gradle |
+| `record_phone.ps1 -Serial <phone> -Apk <apk> -Label <L> -Mode now\|base` | Video thật trên **điện thoại** (`video/phone-<L>/effects.mp4`, `gfxinfo.txt`, `meminfo.txt`) bằng `adb input` và `screenrecord`; cần một APK `measure` dựng từ bản sao tạm đã bỏ dòng `FLAG_SECURE` (xem dưới) | phone, server dev, APK |
+| `record_effects.ps1 ... -Window tall\|land\|flipcover\|medium\|expanded` | Như dòng trên của nó nhưng ở một cỡ cửa sổ khác trên emulator | như trên |
 | `video_compare.py ../video` | `compare.html`: the two videos side by side with play, pause, speed 0.25 and the frame-statistics table; `gfx-summary.md` | Python; a browser to play it |
 
 ## Why the video is made through a test
@@ -29,3 +31,18 @@ python video_compare.py ..\video
 ```
 
 The baseline's `effectsVideo` is not in the repository (the baseline worktree is outside it): it is the same sequence as `UiAuditTest#effectsVideo` here, with the old screens (list, book, `Loans`, `Reserved`, `Catalog` tabs).
+
+## Recording on a phone with a release-like build
+
+`FLAG_SECURE` also blacks out `screenrecord` on a phone, and `record_effects.ps1` (an instrumented test) cannot run against a `measure` build (R8 renames the classes the test uses). For the phone, `record_phone.ps1` drives the app with `adb input` and needs an APK in which that one line is gone. That APK is made from a **throwaway copy** of the source, never from the repository:
+
+```powershell
+git worktree add --detach C:\t\now HEAD                       # a copy of the current code
+# in C:\t\now\android\app\src\main\kotlin\shelftap\android\MainActivity.kt comment out the window.setFlags(... FLAG_SECURE ...) line
+cd C:\t\now\android; .\gradlew.bat :app:assembleMeasure "-Pshelftap.apiBaseUrl=https://<dev server LAN IP>:8443/"   # the dev TLS certificate must list that IP (server/scripts/dev-tls.sh <ip>) and be a user CA on the phone
+.\record_phone.ps1 -Serial <phone> -Apk C:\t\now\android\app\build\outputs\apk\measure\app-measure.apk -Label NOW -Mode now
+# then install the normal measure build again on the phone and delete the copy:
+git worktree remove --force C:\t\now
+```
+
+The app as first cloned needs a signed-in member (it has no guest browsing); sign in on the phone once, and the session stays across `adb install -r`.

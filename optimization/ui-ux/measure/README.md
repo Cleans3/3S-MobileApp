@@ -57,4 +57,4 @@ adb shell settings put global window_animation_scale 1.0
 
 - Script chỉ chạy kịch bản bằng cách chạm và vuốt từ `adb`; cử chỉ back, chuyển cảnh nhiều bước và ảnh bìa thật chưa có kịch bản.
 - Bộ chọn thẻ sách dựa vào mô tả "tên, tác giả, Còn N bản": đổi chữ này thì phải sửa `openBook`.
-- Chưa có phép so với bản trước khi làm giao diện (`ui-baseline`): cần dựng bản đó với kiểu `measure` và sửa bộ chọn cho giao diện cũ.
+- Phép so với bản trước khi làm giao diện (`ui-baseline`) đã làm ngày 2026-11-28 (`results-xiaomi-base/`, `results-xiaomi-now/`, báo cáo ở `optimization/ui-ux/baseline-compare/README.md` mục 8): bản đó được dựng với kiểu `measure` thêm vào cây tạm, và `measure.ps1` có hai tham số mới: `-CardPattern` (cách thẻ sách đọc ra cây trợ năng) và `-Expect` (chữ phải có trên màn, để chắc app đang ở danh mục chứ không phải màn đăng nhập). Bản đó cần một phiên đăng nhập đã có sẵn trên máy.
