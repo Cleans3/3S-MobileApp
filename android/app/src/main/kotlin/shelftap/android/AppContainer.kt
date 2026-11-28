@@ -19,12 +19,17 @@ import shelftap.android.data.ThemeStore
 import shelftap.android.security.IntegrityChecker
 import shelftap.android.security.KeystoreRefreshTokenVault
 import shelftap.android.recommend.RecommendationService
+import shelftap.android.reminder.AndroidReminderAlarms
+import shelftap.android.reminder.ReminderPrefs
+import shelftap.android.reminder.ReminderService
+import shelftap.android.reminder.SessionCue
+import shelftap.android.reminder.notificationsAllowed
 import shelftap.android.security.RefreshTokenVault
 import shelftap.android.session.InactivityTracker
 import shelftap.android.session.SessionManager
 
 /** Hand-wired dependencies; one instance per process. */
-class AppContainer(context: Context) {
+class AppContainer(private val context: Context) {
     val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     val baseUrl = BuildConfig.API_BASE_URL.toHttpUrl()
 
@@ -33,6 +38,7 @@ class AppContainer(context: Context) {
     val integrity = IntegrityChecker(context)
     val themeStore = ThemeStore(dataStore)
     val recommendPrefs = RecommendPrefs(dataStore)
+    val reminderPrefs = ReminderPrefs(dataStore)
 
     val baseClient = Net.baseClient(baseUrl, BuildConfig.API_PINS.split(',').filter { it.isNotBlank() })
     val session = SessionManager(
@@ -53,6 +59,26 @@ class AppContainer(context: Context) {
     val recommender: RecommendationService by lazy {
         RecommendationService(RepositoryRecommendSource(repository), recommendPrefs.useHistory).also { service ->
             service.bind(appScope, session.state.map { it is shelftap.android.session.SessionState.Active })
+        }
+    }
+
+    /**
+     * The due-date reminders of the signed-in member: worked out on the phone from the loans, set as alarms of the phone, dropped when the
+     * setting goes off, when Android stops allowing notifications and when the session ends. Built on first use.
+     */
+    val reminders: ReminderService by lazy {
+        ReminderService(reminderPrefs, AndroidReminderAlarms(context.applicationContext), repository::loans, { notificationsAllowed(context) }).also { service ->
+            service.bind(appScope, session.state.map { state ->
+                when (state) {
+                    is shelftap.android.session.SessionState.Active -> SessionCue.ACTIVE
+                    // Signed out by the member, by the server (token reused) or by a lock key that no longer works: no reminder may outlive it.
+                    // A timeout or an expired session is the same member on the same phone, so their alarms stay.
+                    is shelftap.android.session.SessionState.LoggedOut ->
+                        if (state.reason == null || state.reason == shelftap.android.session.LogoutReason.TOKEN_REUSED ||
+                            state.reason == shelftap.android.session.LogoutReason.LOCK_KEY_INVALIDATED) SessionCue.ENDED else SessionCue.PAUSED
+                    else -> SessionCue.PAUSED
+                }
+            })
         }
     }
 

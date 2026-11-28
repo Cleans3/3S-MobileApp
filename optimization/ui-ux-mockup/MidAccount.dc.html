@@ -164,6 +164,24 @@ div.st-root{container-type:size}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
           </a>
         </div>
+    <div style="font-size: 13px; font-weight: 600; color: var(--ink2b); padding: 4px 6px 0">Thông báo</div>
+        <div style="border-radius: 24px; background:  rgba(var(--glass),0.8); padding: 6px 16px; display: flex; flex-direction: column">
+          <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+              <div style="font-size: 15px; font-weight: 600">Nhắc trước hạn trả</div>
+              <div style="font-size: 12px; line-height: 1.45; color: var(--ink2b)">Một ngày trước hạn, lúc 7:30 sáng. Tính ngay trên máy.</div>
+            </div>
+            <button type="button" role="switch" aria-checked="{{due}}" aria-label="Nhắc trước hạn trả" onClick="{{t_due}}" class="st-swap" style="{{dueTrack}}"><span class="st-knob" style="{{dueKnob}}"></span></button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+              <div style="font-size: 15px; font-weight: 600">Ẩn tên sách trên màn khóa</div>
+              <div style="font-size: 12px; line-height: 1.45; color: var(--ink2b)">Chỉ hiện tên sách sau khi mở khóa máy.</div>
+            </div>
+            <button type="button" role="switch" aria-checked="{{hide}}" aria-label="Ẩn tên sách trên màn khóa" onClick="{{t_hide}}" class="st-swap" style="{{hideTrack}}"><span class="st-knob" style="{{hideKnob}}"></span></button>
+          </div>
+          <div style="display: flex; align-items: center; min-height: 56px; padding: 6px 0; font-size: 14px; line-height: 1.45; color: var(--ink2)">Sách đặt trước sẵn sàng thì xem ở mục Đặt trước trong app; ShelfTap chưa gửi thông báo cho việc này.</div>
+        </div>
     <div style="font-size: 13px; font-weight: 600; color: var(--ink2b); padding: 4px 6px 0">Bảo mật</div>
         <div style="border-radius: 24px; background:  rgba(var(--glass),0.8); padding: 6px 16px; display: flex; flex-direction: column">
           <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">
@@ -301,13 +319,15 @@ class Component extends DCLogic {
     var flip = function (k, def) { return function () { var o = {}; o[k] = !val(k, def); self.setState(o); }; };
     var cats = [
       ['privacy', 'Quyền riêng tư'],
+      ['notifications', 'Thông báo'],
       ['security', 'Bảo mật'],
       ['look', 'Giao diện'],
       ['logout', 'Đăng xuất']
     ].filter(function (c) { return c[0] !== 'logout'; });
-    var label0 = { privacy: 'Quyền riêng tư', security: 'Bảo mật', look: 'Giao diện', logout: 'Đăng xuất' };
+    var label0 = { privacy: 'Quyền riêng tư', notifications: 'Thông báo', security: 'Bảo mật', look: 'Giao diện', logout: 'Đăng xuất' };
     var v = {};
-    ['history', 'recs', 'due', 'ready', 'hide'].forEach(function (k) { v[k] = val(k, true); });
+    ['history', 'recs', 'hide'].forEach(function (k) { v[k] = val(k, true); });
+    v.due = val('due', false);
     v.bio = val('bio', false);
     var label = label0[cat];
     return Object.assign(this.__theme(), {
@@ -319,11 +339,10 @@ class Component extends DCLogic {
       logoutCurrent: cat === 'logout' ? 'true' : 'false', logoutEdge: cat === 'logout' ? 'var(--danger)' : 'rgba(var(--ink-rgb),0.25)',
       pickLogout: function () { self.setState({ cat: 'logout' }); self.__layout().toDetail(); },
       catLabel: label,
-      isPrivacy: cat === 'privacy', isSecurity: cat === 'security', isLook: cat === 'look', isLogout: cat === 'logout',
+      isPrivacy: cat === 'privacy', isNotifications: cat === 'notifications', isSecurity: cat === 'security', isLook: cat === 'look', isLogout: cat === 'logout',
       history: v.history, historyTrack: ui.track(v.history), historyKnob: ui.knob(v.history), toggleHistory: flip('history', true),
       recs: v.recs, recsTrack: ui.track(v.recs), recsKnob: ui.knob(v.recs), toggleRecs: flip('recs', true),
-      due: v.due, dueTrack: ui.track(v.due), dueKnob: ui.knob(v.due), t_due: flip('due', true),
-      ready: v.ready, readyTrack: ui.track(v.ready), readyKnob: ui.knob(v.ready), t_ready: flip('ready', true),
+      due: v.due, dueTrack: ui.track(v.due), dueKnob: ui.knob(v.due), t_due: flip('due', false),
       hide: v.hide, hideTrack: ui.track(v.hide), hideKnob: ui.knob(v.hide), t_hide: flip('hide', true),
       bio: v.bio, bioTrack: ui.track(v.bio), bioKnob: ui.knob(v.bio), toggleBio: flip('bio', false),
       denied: val('denied', true), allow: function () { self.setState({ denied: false }); },

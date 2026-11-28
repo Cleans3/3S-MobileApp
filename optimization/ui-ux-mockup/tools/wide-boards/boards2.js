@@ -25,13 +25,15 @@ const ACCOUNT_JS = `
     var flip = function (k, def) { return function () { var o = {}; o[k] = !val(k, def); self.setState(o); }; };
     var cats = [
       ['privacy', 'Quyền riêng tư'],
+      ['notifications', 'Thông báo'],
       ['security', 'Bảo mật'],
       ['look', 'Giao diện'],
       ['logout', 'Đăng xuất']
     ].filter(function (c) { return c[0] !== 'logout'; });
-    var label0 = { privacy: 'Quyền riêng tư', security: 'Bảo mật', look: 'Giao diện', logout: 'Đăng xuất' };
+    var label0 = { privacy: 'Quyền riêng tư', notifications: 'Thông báo', security: 'Bảo mật', look: 'Giao diện', logout: 'Đăng xuất' };
     var v = {};
-    ['history', 'recs', 'due', 'ready', 'hide'].forEach(function (k) { v[k] = val(k, true); });
+    ['history', 'recs', 'hide'].forEach(function (k) { v[k] = val(k, true); });
+    v.due = val('due', false);
     v.bio = val('bio', false);
     var label = label0[cat];
     return Object.assign(this.__theme(), {
@@ -43,11 +45,10 @@ const ACCOUNT_JS = `
       logoutCurrent: cat === 'logout' ? 'true' : 'false', logoutEdge: cat === 'logout' ? 'var(--danger)' : 'rgba(var(--ink-rgb),0.25)',
       pickLogout: function () { self.setState({ cat: 'logout' }); self.__layout().toDetail(); },
       catLabel: label,
-      isPrivacy: cat === 'privacy', isSecurity: cat === 'security', isLook: cat === 'look', isLogout: cat === 'logout',
+      isPrivacy: cat === 'privacy', isNotifications: cat === 'notifications', isSecurity: cat === 'security', isLook: cat === 'look', isLogout: cat === 'logout',
       history: v.history, historyTrack: ui.track(v.history), historyKnob: ui.knob(v.history), toggleHistory: flip('history', true),
       recs: v.recs, recsTrack: ui.track(v.recs), recsKnob: ui.knob(v.recs), toggleRecs: flip('recs', true),
-      due: v.due, dueTrack: ui.track(v.due), dueKnob: ui.knob(v.due), t_due: flip('due', true),
-      ready: v.ready, readyTrack: ui.track(v.ready), readyKnob: ui.knob(v.ready), t_ready: flip('ready', true),
+      due: v.due, dueTrack: ui.track(v.due), dueKnob: ui.knob(v.due), t_due: flip('due', false),
       hide: v.hide, hideTrack: ui.track(v.hide), hideKnob: ui.knob(v.hide), t_hide: flip('hide', true),
       bio: v.bio, bioTrack: ui.track(v.bio), bioKnob: ui.knob(v.bio), toggleBio: flip('bio', false),
       denied: val('denied', true), allow: function () { self.setState({ denied: false }); },
@@ -93,6 +94,11 @@ const ACCOUNT_WIDE = S.head('Tài khoản ở cửa sổ rộng', W, H) + S.nav(
             <span style="flex: 1">Lịch sử đọc</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
           </a>`) + `
+      </sc-if>
+      <sc-if value="{{isNotifications}}" hint-placeholder-val="{{ false }}">` +
+  card(sw('Nhắc trước hạn trả', 'Một ngày trước hạn, lúc 7:30 sáng. Tính ngay trên máy.', 'due', 't_due', 'dueTrack', 'dueKnob') +
+       sw('Ẩn tên sách trên màn khóa', 'Chỉ hiện tên sách sau khi mở khóa máy.', 'hide', 't_hide', 'hideTrack', 'hideKnob') + `
+          <div style="display: flex; align-items: center; min-height: 56px; padding: 6px 0; font-size: 14px; line-height: 1.45; color: var(--ink2)">Sách đặt trước sẵn sàng thì xem ở mục Đặt trước trong app; ShelfTap chưa gửi thông báo cho việc này.</div>`) + `
       </sc-if>
       <sc-if value="{{isSecurity}}" hint-placeholder-val="{{ false }}">` +
   card(sw('Khóa bằng vân tay', 'Nếu vân tay trên máy thay đổi, ShelfTap yêu cầu đăng nhập lại bằng mật khẩu.', 'bio', 'toggleBio', 'bioTrack', 'bioKnob') + `
@@ -141,6 +147,10 @@ const ACCOUNT_MID = S.head('Tài khoản ở cửa sổ vừa', W, H) + S.nav('W
             <span style="flex: 1">Lịch sử đọc</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
           </a>`) + `
+    <div style="font-size: 13px; font-weight: 600; color: var(--ink2b); padding: 4px 6px 0">Thông báo</div>` +
+  card(sw('Nhắc trước hạn trả', 'Một ngày trước hạn, lúc 7:30 sáng. Tính ngay trên máy.', 'due', 't_due', 'dueTrack', 'dueKnob') +
+       sw('Ẩn tên sách trên màn khóa', 'Chỉ hiện tên sách sau khi mở khóa máy.', 'hide', 't_hide', 'hideTrack', 'hideKnob') + `
+          <div style="display: flex; align-items: center; min-height: 56px; padding: 6px 0; font-size: 14px; line-height: 1.45; color: var(--ink2)">Sách đặt trước sẵn sàng thì xem ở mục Đặt trước trong app; ShelfTap chưa gửi thông báo cho việc này.</div>`) + `
     <div style="font-size: 13px; font-weight: 600; color: var(--ink2b); padding: 4px 6px 0">Bảo mật</div>` +
   card(sw('Khóa sinh trắc học', '', 'bio', 'toggleBio', 'bioTrack', 'bioKnob') + `
           <a href="MidSignIn.dc.html" style="display: flex; align-items: center; min-height: 56px; text-decoration: none; font-size: 15px; font-weight: 600; color: var(--ink); border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">

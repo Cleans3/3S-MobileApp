@@ -88,3 +88,9 @@ Sau khi mỗi màn trong B xong: vẽ lại board điện thoại, Vừa, Rộng
 4. **`WideList`:** giữ trong mockup, ghi rõ là thiết kế chưa dựng (như README hiện tại).
 
 Việc tiếp theo: dựng **Thông báo** (nhóm trong Tài khoản) trong app ở ba khổ, rồi vẽ lại mockup theo app.
+
+## 8. Tiến độ B2 Thông báo (2026-11-28)
+
+- **Xong trong app:** nhắc hạn trả tính trên máy (`reminder/`: `DueReminderPlanner`, `ReminderService`, `DueReminderReceiver` không xuất, `ReminderPrefs`), ẩn tên sách trên màn khóa (mặc định bật), nhóm "Thông báo" trong Tài khoản ở ba khổ, hộp giải thích trước khi xin quyền `POST_NOTIFICATIONS`, trạng thái bị từ chối kèm nút "Bật lại". 17 kiểm thử đơn vị mới (tổng 127, đều qua); audit ATF `audit/X2/`.
+- **Xong ở mockup:** nhóm Thông báo ở `Account`, `MidAccount`, `WideAccount`; bảng `Notifications` theo lời của app.
+- **Chưa làm / chưa kiểm:** chưa thử trên máy thật (màn khóa thật, thời điểm 7:30 thật); sau khi khởi động lại máy hoặc khi sách đã trả ở quầy, nhắc chỉ cập nhật khi mở app (xem `security/README.md` mục Known limits); hộp xin quyền chưa có ảnh app đối chiếu; **Tìm khi không có mạng** để đợt sau (chờ API tải danh mục).

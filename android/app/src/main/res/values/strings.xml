@@ -293,4 +293,25 @@
     <string name="recommend_loading">Đang tính gợi ý trên máy…</string>
     <string name="account_recommend">Gợi ý theo lịch sử đọc</string>
     <string name="account_recommend_caption">Tính ngay trên máy, không gửi đi đâu. Tắt thì Gợi ý chỉ theo sách đang mượn.</string>
+
+    <!-- Notifications: due-date reminders, worked out on the phone -->
+    <string name="account_notifications">Thông báo</string>
+    <string name="account_notif_due">Nhắc trước hạn trả</string>
+    <string name="account_notif_due_caption">Một ngày trước hạn, lúc 7:30 sáng. Tính ngay trên máy.</string>
+    <string name="account_notif_hide">Ẩn tên sách trên màn khóa</string>
+    <string name="account_notif_hide_caption">Chỉ hiện tên sách sau khi mở khóa máy.</string>
+    <string name="account_notif_ready_note">Sách đặt trước sẵn sàng thì xem ở mục Đặt trước trong app; ShelfTap chưa gửi thông báo cho việc này.</string>
+    <string name="notif_ask_title">Nhắc bạn trước hạn trả?</string>
+    <string name="notif_ask_body">ShelfTap nhắc một ngày trước hạn trả, tính ngay trên máy. Không có quảng cáo. Mặc định màn khóa không hiện tên sách.</string>
+    <string name="notif_ask_allow">Cho phép thông báo</string>
+    <string name="notif_ask_later">Để sau</string>
+    <string name="notif_off">Thông báo của ShelfTap đang bị tắt trong cài đặt của máy.</string>
+    <string name="notif_off_action">Bật lại</string>
+    <string name="notif_channel_due">Nhắc hạn trả</string>
+    <string name="notif_due_public_title">Sắp đến hạn trả</string>
+    <string name="notif_due_body">Mở ShelfTap để xem và gia hạn.</string>
+    <string name="notif_due_one">%1$s đến hạn ngày mai (%2$s)</string>
+    <plurals name="notif_due_many">
+        <item quantity="other">%1$d cuốn sách đến hạn ngày mai</item>
+    </plurals>
 </resources>

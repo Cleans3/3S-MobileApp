@@ -92,6 +92,25 @@ a{color:var(--ink)}a:hover{opacity:.85}
       </a>
     </div>
 
+    <div style="font-size: 13px; font-weight: 600; color: var(--ink2b); padding: 4px 6px 0">Thông báo</div>
+    <div style="border-radius: 24px; background:  rgba(var(--glass),0.8); padding: 6px 16px; display: flex; flex-direction: column">
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 15px; font-weight: 600">Nhắc trước hạn trả</div>
+          <div style="font-size: 12px; color: var(--ink2b)">Một ngày trước hạn, lúc 7:30 sáng. Tính ngay trên máy.</div>
+        </div>
+        <button type="button" role="switch" aria-checked="{{due}}" aria-label="Nhắc trước hạn trả" onClick="{{toggleDue}}" class="st-swap" style="{{dueTrack}}"><span class="st-knob" style="{{dueKnob}}"></span></button>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 64px; border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 2px">
+          <div style="font-size: 15px; font-weight: 600">Ẩn tên sách trên màn khóa</div>
+          <div style="font-size: 12px; color: var(--ink2b)">Chỉ hiện tên sách sau khi mở khóa máy.</div>
+        </div>
+        <button type="button" role="switch" aria-checked="{{hide}}" aria-label="Ẩn tên sách trên màn khóa" onClick="{{toggleHide}}" class="st-swap" style="{{hideTrack}}"><span class="st-knob" style="{{hideKnob}}"></span></button>
+      </div>
+      <div style="display: flex; align-items: center; min-height: 56px; padding: 6px 0; font-size: 14px; line-height: 1.45; color: var(--ink2)">Sách đặt trước sẵn sàng thì xem ở mục Đặt trước trong app; ShelfTap chưa gửi thông báo cho việc này.</div>
+    </div>
+
     <div style="font-size: 13px; font-weight: 600; color: var(--ink2b); padding: 4px 6px 0">Bảo mật</div>
     <div style="border-radius: 24px; background:  rgba(var(--glass),0.8); padding: 6px 16px; display: flex; flex-direction: column">
       <div style="display: flex; align-items: center; gap: 12px; min-height: 60px; border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">
@@ -162,12 +181,16 @@ class Component extends DCLogic {
     var history = st.history !== undefined ? st.history : true;
     var bio = st.bio !== undefined ? st.bio : false;
     var recs = st.recs !== undefined ? st.recs : true;
+    var due = st.due !== undefined ? st.due : false;
+    var hide = st.hide !== undefined ? st.hide : true;
     var track = function (on) { return 'width:52px;height:32px;flex:none;box-sizing:border-box;border-radius:999px;padding:2px;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;border:2px solid ' + (on ? 'var(--switch-on)' : 'var(--ink3)') + ';background:' + (on ? 'var(--switch-on)' : 'rgba(var(--ink-rgb),0.06)'); };
     var knob = function (on) { return 'width:24px;height:24px;border-radius:999px;background:' + (on ? 'var(--switch-knob-on)' : 'var(--ink3)') + ';box-shadow:0 1px 3px rgba(0,0,0,0.2);transform:translateX(' + (on ? '20px' : '0') + ') scale(' + (on ? '1' : '0.72') + ')'; };
     return Object.assign(this.__theme(), {
       history: history, bio: bio, recs: recs,
       recsTrack: track(recs), recsKnob: knob(recs),
       toggleRecs: function () { self.setState({ recs: !recs }); },
+      due: due, dueTrack: track(due), dueKnob: knob(due), toggleDue: function () { self.setState({ due: !due }); },
+      hide: hide, hideTrack: track(hide), hideKnob: knob(hide), toggleHide: function () { self.setState({ hide: !hide }); },
       historyTrack: track(history), historyKnob: knob(history),
       bioTrack: track(bio), bioKnob: knob(bio),
       toggleHistory: function () { self.setState({ history: !history }); },

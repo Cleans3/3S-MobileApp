@@ -1,6 +1,14 @@
 package shelftap.android.ui
 
+import android.Manifest
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
 import androidx.activity.compose.LocalActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import shelftap.android.reminder.notificationsAllowed
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -183,6 +191,25 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
     val cancelLabel = stringResource(R.string.action_cancel)
     var confirmLogout by rememberSaveable { mutableStateOf(false) }
 
+    // Notifications: the member's two choices (kept on this phone), and whether Android lets the app post at all, read again each time the
+    // page comes back to the front (the member may have changed it in the phone's settings).
+    val reminderPrefs = LocalContainer.current.reminderPrefs
+    val dueReminder by reminderPrefs.dueReminder.collectAsStateWithLifecycle(false)
+    val hideTitles by reminderPrefs.hideTitles.collectAsStateWithLifecycle(true)
+    var allowed by remember { mutableStateOf(notificationsAllowed(context)) }
+    /** The member asked for the reminder but Android has not allowed notifications (yet): shows how to turn them on. */
+    var wantsReminder by rememberSaveable { mutableStateOf(false) }
+    var askNotifications by rememberSaveable { mutableStateOf(false) }
+    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        allowed = notificationsAllowed(context)
+        if (granted) { wantsReminder = false; scope.launch { reminderPrefs.setDueReminder(true) } } else wantsReminder = true
+    }
+    LifecycleResumeEffect(Unit) {
+        allowed = notificationsAllowed(context)
+        if (allowed && wantsReminder) { wantsReminder = false; scope.launch { reminderPrefs.setDueReminder(true) } }
+        onPauseOrDispose { }
+    }
+
     var section by rememberSaveable { mutableStateOf(AccountSection.PRIVACY) }
     LoadView(state.me, onRetry = vm::load) { me ->
         if (state.stepUpFor != null) {
@@ -204,6 +231,36 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
                 )
                 GroupDivider()
                 LinkItem(stringResource(R.string.account_history), onClick = onHistory)
+            }
+        }
+        val notifications: @Composable () -> Unit = {
+            GlassGroup {
+                SwitchItem(
+                    stringResource(R.string.account_notif_due), stringResource(R.string.account_notif_due_caption),
+                    checked = dueReminder && allowed, enabled = true,
+                    onChange = { on ->
+                        when {
+                            !on -> { wantsReminder = false; scope.launch { reminderPrefs.setDueReminder(false) } }
+                            allowed -> scope.launch { reminderPrefs.setDueReminder(true) }
+                            // Android 13 and up asks at run time: explain first, then ask. Earlier versions can only be turned on in the phone's settings.
+                            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> askNotifications = true
+                            else -> wantsReminder = true
+                        }
+                    },
+                )
+                if ((dueReminder || wantsReminder) && !allowed) {
+                    GroupDivider()
+                    NotificationsOff(onTurnOn = {
+                        context.startActivity(Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))
+                    })
+                }
+                GroupDivider()
+                SwitchItem(
+                    stringResource(R.string.account_notif_hide), stringResource(R.string.account_notif_hide_caption),
+                    checked = hideTitles, enabled = true, onChange = { on -> scope.launch { reminderPrefs.setHideTitles(on) } },
+                )
+                GroupDivider()
+                InfoItem(stringResource(R.string.account_notif_ready_note))
             }
         }
         val security: @Composable () -> Unit = {
@@ -250,6 +307,8 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
                     } else {
                         SectionLabel(stringResource(R.string.account_privacy))
                         privacy()
+                        SectionLabel(stringResource(R.string.account_notifications))
+                        notifications()
                         SectionLabel(stringResource(R.string.account_security))
                         security()
                         SectionLabel(stringResource(R.string.account_theme))
@@ -261,10 +320,18 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
             detail = {
                 when (section) {
                     AccountSection.PRIVACY -> privacy()
+                    AccountSection.NOTIFICATIONS -> notifications()
                     AccountSection.SECURITY -> security()
                     AccountSection.THEME -> theme()
                 }
             },
+        )
+    }
+
+    if (askNotifications) {
+        NotificationsAskSheet(
+            onAllow = { askNotifications = false; permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS) },
+            onLater = { askNotifications = false },
         )
     }
 
@@ -294,9 +361,52 @@ fun AccountScreen(onHistory: () -> Unit, onChangePassword: () -> Unit) {
     }
 }
 
+/**
+ * Why the app wants to send notifications, shown before Android's own question (which the app cannot restyle). Same kind of sheet as the
+ * sign-out one, with FLAG_SECURE like the other windows.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun NotificationsAskSheet(onAllow: () -> Unit, onLater: () -> Unit) {
+    ModalBottomSheet(
+        onDismissRequest = onLater,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        shape = RoundedCornerShape(topStart = Radius.sheet, topEnd = Radius.sheet),
+        containerColor = MaterialTheme.shelfTap.dialog,
+        properties = ModalBottomSheetProperties(securePolicy = SecureFlagPolicy.SecureOn),
+    ) {
+        Column(Modifier.padding(horizontal = Spacing.xl).padding(bottom = Spacing.xl), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+            Text(stringResource(R.string.notif_ask_title), style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(R.string.notif_ask_body), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.shelfTap.ink2)
+            Box(
+                Modifier.fillMaxWidth().height(AccountSize.action).clip(CircleShape).background(MaterialTheme.shelfTap.primary).clickable(role = Role.Button, onClick = onAllow),
+                contentAlignment = Alignment.Center,
+            ) { Text(stringResource(R.string.notif_ask_allow), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.shelfTap.onPrimary) }
+            Box(
+                Modifier.fillMaxWidth().height(AccountSize.segment).clip(CircleShape).clickable(role = Role.Button, onClick = onLater),
+                contentAlignment = Alignment.Center,
+            ) { Text(stringResource(R.string.notif_ask_later), style = MaterialTheme.typography.titleSmall) }
+        }
+    }
+}
+
+/** Shown while the member wants the reminder but Android does not allow notifications: says so and opens the phone's settings for the app. */
+@Composable
+private fun NotificationsOff(onTurnOn: () -> Unit) {
+    val c = MaterialTheme.shelfTap
+    Column(Modifier.fillMaxWidth().padding(vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        Text(stringResource(R.string.notif_off), style = MaterialTheme.typography.bodyMedium, color = c.ink2)
+        Box(
+            Modifier.heightIn(min = AccountSize.segment).clip(CircleShape).border(BorderStroke(Radius.hairline, c.ink3), CircleShape)
+                .clickable(role = Role.Button, onClick = onTurnOn).padding(horizontal = Spacing.xl),
+            contentAlignment = Alignment.Center,
+        ) { Text(stringResource(R.string.notif_off_action), style = MaterialTheme.typography.titleSmall) }
+    }
+}
+
 /** The groups of settings of the account page. */
 private enum class AccountSection(@androidx.annotation.StringRes val label: Int) {
-    PRIVACY(R.string.account_privacy), SECURITY(R.string.account_security), THEME(R.string.account_theme),
+    PRIVACY(R.string.account_privacy), NOTIFICATIONS(R.string.account_notifications), SECURITY(R.string.account_security), THEME(R.string.account_theme),
 }
 
 /** A section in the list beside the detail pane: a glass row, outlined when it is the one shown. */

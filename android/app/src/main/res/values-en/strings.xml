@@ -296,4 +296,26 @@
     <string name="recommend_loading">Working out suggestions on this phone…</string>
     <string name="account_recommend">Suggestions from reading history</string>
     <string name="account_recommend_caption">Worked out on this phone, sent nowhere. When off, suggestions use only the books you are borrowing.</string>
+
+    <!-- Notifications: due-date reminders, worked out on the phone -->
+    <string name="account_notifications">Notifications</string>
+    <string name="account_notif_due">Remind me before it is due</string>
+    <string name="account_notif_due_caption">One day before the due date, at 7:30 am. Worked out on this phone.</string>
+    <string name="account_notif_hide">Hide book titles on the lock screen</string>
+    <string name="account_notif_hide_caption">Titles show only after the phone is unlocked.</string>
+    <string name="account_notif_ready_note">When a reserved book is ready, see it under Reservations in the app; ShelfTap does not send a notification for that yet.</string>
+    <string name="notif_ask_title">Remind you before a book is due?</string>
+    <string name="notif_ask_body">ShelfTap reminds you one day before the due date, worked out on this phone. No ads. By default the lock screen does not show book titles.</string>
+    <string name="notif_ask_allow">Allow notifications</string>
+    <string name="notif_ask_later">Not now</string>
+    <string name="notif_off">ShelfTap notifications are turned off in the phone\'s settings.</string>
+    <string name="notif_off_action">Turn on</string>
+    <string name="notif_channel_due">Due-date reminders</string>
+    <string name="notif_due_public_title">A book is due soon</string>
+    <string name="notif_due_body">Open ShelfTap to see it and renew.</string>
+    <string name="notif_due_one">%1$s is due tomorrow (%2$s)</string>
+    <plurals name="notif_due_many">
+        <item quantity="one">%1$d book is due tomorrow</item>
+        <item quantity="other">%1$d books are due tomorrow</item>
+    </plurals>
 </resources>

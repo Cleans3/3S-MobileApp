@@ -250,6 +250,17 @@ class UiAuditTest {
 
             tab(R.string.tab_account); waitFor(AuditData.me.fullName)
             audit("account", activity)
+            // The notifications group: its switches, and the explanation that comes before Android's own question (on a wide window the group is a section: open it first).
+            compose.onAllNodesWithText(str(R.string.account_notifications)).onFirst().performClick()
+            compose.waitForIdle()
+            compose.onNode(hasScrollAction() and hasAnyDescendant(hasText(str(R.string.account_notif_due)))).performScrollToNode(hasText(str(R.string.account_notif_due)))
+            compose.waitForIdle()
+            audit("account-notifications", activity)
+            compose.onNodeWithText(str(R.string.account_notif_due)).performClick()
+            waitFor(str(R.string.notif_ask_title))
+            audit("notifications-ask", activity)
+            compose.onNodeWithText(str(R.string.notif_ask_later)).performClick()
+            compose.waitForIdle()
             // The foot of the page too: its theme choice and the sign-out button sit below the first screen, and the scanner only judges what is on screen.
             // The page is the scrollable that holds the sign-out button, not the first one: on a medium window the navigation rail scrolls too, and comes first.
             val accountPage = hasScrollAction() and hasAnyDescendant(hasText(str(R.string.action_logout)))
@@ -258,7 +269,9 @@ class UiAuditTest {
             repeat(3) { compose.onNode(accountPage).performTouchInput { swipeUp() } }
             compose.waitForIdle()
             audit("account-bottom", activity)
-            // (on a wide window the history link is in the pane beside the list, not in the list)
+            // (on a wide window the history link is in the pane beside the list, not in the list: open the privacy section first)
+            compose.onAllNodesWithText(str(R.string.account_privacy)).onFirst().performClick()
+            compose.waitForIdle()
             compose.onNode(hasScrollAction() and hasAnyDescendant(hasText(str(R.string.account_history)))).performScrollToNode(hasText(str(R.string.account_history)))
             compose.waitForIdle()
             compose.onNodeWithText(str(R.string.account_history)).performClick(); waitFor(AuditData.history.first().title)
