@@ -205,7 +205,7 @@ class Component extends DCLogic {
         var lay = self.__layout();
         return {
           title: o.title, author: o.author || '', mono: mono(o.title),
-          status: o.status || '', pill: o.pill || '',
+          status: o.status || '', hasStatus: !!o.status, pill: o.pill || '',
           hasNote: !!o.note, note: o.note || '', hasReason: !!o.reason, reason: o.reason || '',
           current: o.on ? 'true' : 'false', pick: function () { o.pick(); lay.toDetail(); },
           // rows rise once, on first load; coming back to the list does not replay it
@@ -249,16 +249,16 @@ const ICON = {
   books: ['M4 6h16', 'M4 12h16M4 18h10'],
   login: ['M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4', 'm10 17 5-5-5-5M15 12H3']
 };
-// Same destinations and labels as the app. "Gợi ý cho bạn" is not built yet: it shows only on its own (unbuilt) board.
+// Same destinations and labels as the app ("Gợi ý" is the short name of the menu; the screen's own title is "Gợi ý cho bạn").
 const MEMBER_MENU = [
   ['Danh mục', 'WideCatalog.dc.html', 'catalog'],
+  ['Gợi ý', 'WideRecommend.dc.html', 'recommend'],
   ['Đang mượn', 'WideLoans.dc.html', 'loans'],
   ['Đặt trước', 'WideReservations.dc.html', 'reservations'],
   ['Lịch sử đọc', 'WideHistory.dc.html', 'history'],
   ['Tài khoản', 'WideAccount.dc.html', 'account']
 ];
-const RECOMMEND_ITEM = ['Gợi ý cho bạn', 'WideRecommend.dc.html', 'recommend'];
-const memberMenu = active => active === 'WideRecommend.dc.html' ? [MEMBER_MENU[0], RECOMMEND_ITEM].concat(MEMBER_MENU.slice(1)) : MEMBER_MENU;
+const memberMenu = () => MEMBER_MENU;
 // the guest menu: the catalog and the way to sign in
 const GUEST_MENU = [['Danh mục', 'WideGuest.dc.html', 'catalog'], ['Đăng nhập', 'WideSignIn.dc.html', 'login']];
 const NFC = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg>';
@@ -323,7 +323,7 @@ const BOT = 88;
 // opts.preview: state preview group (mockup only); opts.guest: the reduced guest menu
 const nav = (active, opts) => {
   opts = opts || {};
-  const menu = opts.guest ? GUEST_MENU : memberMenu(active);
+  const menu = opts.guest ? GUEST_MENU : memberMenu();
   const own = opts.dock === false ? () => '' : dock;
   if (isMid()) return rail(active, opts, menu) + own(opts.guest, active);
   const items = menu.map((m, i) => menuItem(m[0], m[1], m[2], m[1] === active, i)).join('');
@@ -368,7 +368,7 @@ const listPane = (label, title, extra, list, after) => `
               <span style="font-size: 15px; font-weight: 700; line-height: 1.25">{{b.title}}</span>
               <span style="font-size: 13px; color: var(--ink2b); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{b.author}}</span>
               <span style="display: flex; gap: 6px; align-items: center; margin-top: 2px; flex-wrap: wrap">
-                <span style="{{b.pill}}">{{b.status}}</span>
+                <sc-if value="{{b.hasStatus}}" hint-placeholder-val="{{ true }}"><span style="{{b.pill}}">{{b.status}}</span></sc-if>
                 <sc-if value="{{b.hasNote}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: var(--ink3)">{{b.note}}</span></sc-if>
               </span>
               <sc-if value="{{b.hasReason}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; font-weight: 700; line-height: 1.35; color: var(--warn2)">{{b.reason}}</span></sc-if>
@@ -517,6 +517,26 @@ const home = (guest, list) => `
         </span>
       </div>
     </a>
+    ${guest ? '' : `
+    <div style="display: flex; align-items: baseline; justify-content: space-between; flex: none">
+      <h2 style="margin: 0; font-size: 18px; font-weight: 700">Gợi ý cho bạn</h2>
+      <a href="${isMid() ? 'MidRecommend.dc.html' : 'WideRecommend.dc.html'}" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
+    </div>
+    <div style="display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; flex: none">
+      <sc-for list="{{recs}}" as="c" hint-placeholder-count="3">
+        <div style="width: 132px; flex: none; display: flex; flex-direction: column; gap: 8px">
+          <a href="${list}" class="st-rise" style="{{c.cardStyle}}">
+            <div style="font-size: 15px; font-weight: 700; line-height: 1.2; padding: 14px 12px 124px">{{c.title}}</div>
+            <div style="position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 8px 10px; border-radius: 14px; background:  rgba(var(--glass),0.7); color: var(--ink)">
+              <div style="font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{c.author}}</div>
+              <div style="font-size: 11px; color: var(--ink)">{{c.status}}</div>
+            </div>
+          </a>
+          <div style="font-size: 12px; font-weight: 700; line-height: 1.3; color: var(--warn)">{{c.reason}}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font-size: 11px; color: var(--ink3); flex: none">Tính trên máy từ sách bạn đã mượn. Tắt trong Tài khoản.</div>`}
     ${['Thiếu nhi', 'Tiểu thuyết'].map((t, i) => `
     <div style="display: flex; align-items: baseline; justify-content: space-between; flex: none">
       <h2 style="margin: 0; font-size: 18px; font-weight: 700">${t}</h2>
@@ -551,6 +571,11 @@ const HOME_JS = `
       kids: [
         { title: 'Dế Mèn phiêu lưu ký', author: 'Tô Hoài', status: 'Còn 3 bản', cardStyle: card('#b5452b', '#ffffff') },
         { title: 'Nhà giả kim', author: 'Paulo Coelho', status: 'Đã cho mượn hết', cardStyle: card('#c9a66b', '#1c1b1a') }
+      ],
+      recs: [
+        { title: 'Vũ trụ trong vỏ hạt dẻ', author: 'Stephen Hawking', status: 'Còn 3 bản', reason: 'Cùng chủ đề Khoa học', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Tôi thấy hoa vàng trên cỏ xanh', author: 'Nguyễn Nhật Ánh', status: 'Còn 2 bản', reason: 'Cùng chủ đề Thiếu nhi', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Cho tôi xin một vé đi tuổi thơ', author: 'Nguyễn Nhật Ánh', status: 'Đang được mượn · đặt trước', reason: 'Cùng chủ đề Thiếu nhi', cardStyle: card('#b5452b', '#ffffff') }
       ],
       row: [
         { title: 'Số đỏ', author: 'Vũ Trọng Phụng', status: 'Còn 2 bản', cardStyle: card('#b5452b', '#ffffff') },

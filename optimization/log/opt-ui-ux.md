@@ -799,3 +799,12 @@
 - **Giới hạn:** **chưa đo thời gian tính trên dữ liệu thật** (server dev và Docker không chạy lúc làm), nên chưa biết lần tính đầu mất bao lâu với 100k sách và chưa có số về độ chính xác; B5 (hit@10, MRR, so với mốc đơn giản) chưa làm; ứng viên chỉ lấy từ 4 lần tìm nên danh sách ngắn hơn nếu dùng danh mục offline; "Không quan tâm" không được lưu qua phiên; chưa thử trên máy thật; mockup chưa vẽ lại theo màn này.
 - **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. AI chọn lấy ứng viên bằng 4 lần tìm và giữ mọi thứ trong bộ nhớ vì danh mục offline và kho lưu mã hóa chưa có; con người chưa duyệt thuật toán, trọng số và nửa đời 90 ngày.
 - **Kiểm thử:** `testDebugUnitTest`: qua; `compileDebugAndroidTestKotlin`: qua; `run_audit.ps1 -Configs light,medium,expanded -Locale vi`: chạy hết.
+
+## 2026-11-28 20:00 · Mockup Gợi ý vẽ theo app: lưu giữa chừng, chưa hoàn tất (nguồn: yêu cầu của người dùng dừng và lưu)
+
+- **Vấn đề:** sau khi app có màn Gợi ý, mockup còn bản thiết kế cũ: nhãn và bố cục khác app, chưa có băng ở Danh mục, chưa có công tắc ở Tài khoản.
+- **Thay đổi (chưa đăng lên link):** `Recommend.dc.html` theo app (thanh trên, thẻ có "Không quan tâm", hàng nhập mật khẩu, bốn trạng thái xem trước, trạng thái rỗng), `MidRecommend` một khung, `WideRecommend` hai khung "Vì sao gợi ý"; băng "Gợi ý cho bạn" ở `Catalog` và `home()`; mục "Gợi ý" trong menu; công tắc "Gợi ý theo lịch sử đọc" ở `Account` và các bản Vừa, Rộng; hàng danh sách ẩn nhãn trạng thái khi rỗng.
+- **Đo trước → sau:** `check-scripts` 44 màn qua; tương phản: sáng 5 (chữ trên ảnh ở màn chào), tối 0; icon, viền bắt buộc: sáng 1, tối 0; vùng chạm dưới 48 px: 0; kiểm bố cục trong trình duyệt sạch ở khổ gốc, rộng 320, 320 cùng chữ 2.0, 600 × 840 và menu thu gọn, **còn 2 chỗ chữ đè nhau ở chữ 2.0** ở băng "Gợi ý cho bạn" của `Catalog`, `RailCatalog`, `WideCatalog`.
+- **Giới hạn:** chưa sửa 2 chỗ đè chữ; chưa dựng lại ảnh cặp, chưa cập nhật README, chưa đăng lại link (đang bản 32); chưa xem ảnh cặp của màn Gợi ý.
+- **AI:** Claude Code (Sonnet 5.5). Prompt: yêu cầu của người dùng. Con người chưa duyệt.
+- **Kiểm thử:** `gen.js`, `check-scripts.js`, `contrast.js`, `nontext-contrast.js`, `target-size.js`, `layout-check.js` (trình duyệt).

@@ -87,7 +87,8 @@ const ACCOUNT_WIDE = S.head('Tài khoản ở cửa sổ rộng', W, H) + S.nav(
         <div style="width: 84px; flex: none"></div>
       </div>
       <sc-if value="{{isPrivacy}}" hint-placeholder-val="{{ true }}">` +
-  card(sw('Lưu lịch sử đọc của tôi', 'Tắt: các lượt mượn đã trả sẽ không được ghi vào lịch sử (Nghị định 13/2023).', 'history', 'toggleHistory', 'historyTrack', 'historyKnob') + `
+  card(sw('Lưu lịch sử đọc của tôi', 'Tắt: các lượt mượn đã trả sẽ không được ghi vào lịch sử (Nghị định 13/2023).', 'history', 'toggleHistory', 'historyTrack', 'historyKnob') +
+       sw('Gợi ý theo lịch sử đọc', 'Tính ngay trên máy, không gửi đi đâu. Tắt thì Gợi ý chỉ theo sách đang mượn.', 'recs', 'toggleRecs', 'recsTrack', 'recsKnob') + `
           <a href="WideHistory.dc.html" style="display: flex; align-items: center; min-height: 56px; text-decoration: none; font-size: 15px; font-weight: 600; color: var(--ink)">
             <span style="flex: 1">Lịch sử đọc</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
@@ -134,7 +135,8 @@ const ACCOUNT_MID = S.head('Tài khoản ở cửa sổ vừa', W, H) + S.nav('W
       </div>
     </div>
     <div style="font-size: 13px; font-weight: 600; color: var(--ink2b); padding: 4px 6px 0">Quyền riêng tư</div>` +
-  card(sw('Lưu lịch sử đọc của tôi', 'Tắt: các lượt mượn đã trả sẽ không được ghi vào lịch sử (Nghị định 13/2023).', 'history', 'toggleHistory', 'historyTrack', 'historyKnob') + `
+  card(sw('Lưu lịch sử đọc của tôi', 'Tắt: các lượt mượn đã trả sẽ không được ghi vào lịch sử (Nghị định 13/2023).', 'history', 'toggleHistory', 'historyTrack', 'historyKnob') +
+       sw('Gợi ý theo lịch sử đọc', 'Tính ngay trên máy, không gửi đi đâu. Tắt thì Gợi ý chỉ theo sách đang mượn.', 'recs', 'toggleRecs', 'recsTrack', 'recsKnob') + `
           <a href="MidHistory.dc.html" style="display: flex; align-items: center; min-height: 56px; text-decoration: none; font-size: 15px; font-weight: 600; color: var(--ink)">
             <span style="flex: 1">Lịch sử đọc</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>

@@ -73,3 +73,9 @@ Sau khi mỗi màn trong B xong: vẽ lại board điện thoại, Vừa, Rộng
 - Danh mục offline 100k sách có thể vượt 150 MB bộ nhớ khi dựng chỉ mục; đo trước khi làm giao diện.
 - Thông báo trên máy khóa chỉ thử được trên máy thật.
 - Mỗi màn mới thêm vào mọi khổ nên phải chạy lại audit ATF cho ba khổ và ba tầng hiệu ứng.
+
+## 6. Tiến độ (2026-11-28, lưu lại khi dừng giữa chừng)
+
+- **Xong:** bước A (mockup khớp app cho phần đã dựng, hiệu ứng đổi hình của nút), link mockup bản 32. B1 (Gợi ý) trong app: thuật toán, dịch vụ, màn hình ba khổ, băng ở Danh mục, công tắc ở Tài khoản, kiểm thử đơn vị, audit ATF (commit `493b53c`).
+- **Đang dở (chưa đăng link):** vẽ lại mockup cho Gợi ý theo app: `Recommend.dc.html` (điện thoại), `MidRecommend` và `WideRecommend` (sinh từ `tools/wide-boards/boards1.js`), băng "Gợi ý cho bạn" ở `Catalog`, `RailCatalog`, `WideCatalog` (`shell.js` `home()`), mục "Gợi ý" trong menu, công tắc ở `Account`, `MidAccount`, `WideAccount`. Đo xong: `check-scripts`, tương phản, vùng chạm như trước; kiểm bố cục trong trình duyệt sạch ở khổ gốc, rộng 320, 320 cùng chữ 2.0, 600, menu thu gọn; **còn 2 chỗ chữ đè nhau ở chữ 2.0** trên `Catalog`, `RailCatalog`, `WideCatalog` (băng "Gợi ý cho bạn": tấm thông tin đè lên tiêu đề, cần tăng chỗ chừa như đã làm cho băng chủ đề).
+- **Chưa làm:** dựng lại ảnh cặp (cần chạy `run_audit.ps1 -Configs ref,refdark,medium,expanded -Locale vi` rồi `make_compare*.py`), cập nhật hai README, nhật ký cho phần mockup, đăng lại link; đo thời gian tính gợi ý trên dữ liệu thật (cần Docker và server dev), thử trên máy thật; B2 (Thông báo) và B3 (Tìm khi không có mạng) chưa bắt đầu, chờ nhóm chốt §4.

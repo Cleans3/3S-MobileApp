@@ -151,6 +151,7 @@ div.st-root{container-type:size}
       </div>
     </a>
     
+    
     <div style="display: flex; align-items: baseline; justify-content: space-between; flex: none">
       <h2 style="margin: 0; font-size: 18px; font-weight: 700">Thiếu nhi</h2>
       <a href="WideList.dc.html" style="font-size: 13px; font-weight: 500; color: var(--ink3); padding: 12px 0 12px 12px; margin: -12px 0">Xem tất cả</a>
@@ -255,7 +256,7 @@ class Component extends DCLogic {
         var lay = self.__layout();
         return {
           title: o.title, author: o.author || '', mono: mono(o.title),
-          status: o.status || '', pill: o.pill || '',
+          status: o.status || '', hasStatus: !!o.status, pill: o.pill || '',
           hasNote: !!o.note, note: o.note || '', hasReason: !!o.reason, reason: o.reason || '',
           current: o.on ? 'true' : 'false', pick: function () { o.pick(); lay.toDetail(); },
           // rows rise once, on first load; coming back to the list does not replay it
@@ -298,6 +299,11 @@ class Component extends DCLogic {
       kids: [
         { title: 'Dế Mèn phiêu lưu ký', author: 'Tô Hoài', status: 'Còn 3 bản', cardStyle: card('#b5452b', '#ffffff') },
         { title: 'Nhà giả kim', author: 'Paulo Coelho', status: 'Đã cho mượn hết', cardStyle: card('#c9a66b', '#1c1b1a') }
+      ],
+      recs: [
+        { title: 'Vũ trụ trong vỏ hạt dẻ', author: 'Stephen Hawking', status: 'Còn 3 bản', reason: 'Cùng chủ đề Khoa học', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Tôi thấy hoa vàng trên cỏ xanh', author: 'Nguyễn Nhật Ánh', status: 'Còn 2 bản', reason: 'Cùng chủ đề Thiếu nhi', cardStyle: card('#7a2e1e', '#ffffff') },
+        { title: 'Cho tôi xin một vé đi tuổi thơ', author: 'Nguyễn Nhật Ánh', status: 'Đang được mượn · đặt trước', reason: 'Cùng chủ đề Thiếu nhi', cardStyle: card('#b5452b', '#ffffff') }
       ],
       row: [
         { title: 'Số đỏ', author: 'Vũ Trọng Phụng', status: 'Còn 2 bản', cardStyle: card('#b5452b', '#ffffff') },

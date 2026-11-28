@@ -257,7 +257,7 @@ class Component extends DCLogic {
         var lay = self.__layout();
         return {
           title: o.title, author: o.author || '', mono: mono(o.title),
-          status: o.status || '', pill: o.pill || '',
+          status: o.status || '', hasStatus: !!o.status, pill: o.pill || '',
           hasNote: !!o.note, note: o.note || '', hasReason: !!o.reason, reason: o.reason || '',
           current: o.on ? 'true' : 'false', pick: function () { o.pick(); lay.toDetail(); },
           // rows rise once, on first load; coming back to the list does not replay it

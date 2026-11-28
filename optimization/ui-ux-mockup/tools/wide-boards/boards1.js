@@ -214,10 +214,48 @@ out['WideOfflineSearch.dc.html'] = S.head('Tìm khi không có mạng ở cửa 
     });
   }`);
 
+
+// the medium window: one pane, the same cards as the phone
+const RECO_MID = `
+  <section aria-label="Gợi ý cho bạn" class="st-scroll" style="position: absolute; ${S.fullPos()}; max-width: 600px; top: 0; bottom: 0; padding: 0 0 ${S.BOT + 16}px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 12px">
+    <h1 style="margin: 0; padding: 36px 0 0; font-size: 22px; font-weight: 600; color: var(--ink2b)">Gợi ý cho bạn</h1>
+    <p style="margin: 0; padding: 0 4px; font-size: 14px; line-height: 1.45; color: var(--ink2)">{{subtitle}}</p>
+    <sc-if value="{{isCard}}" hint-placeholder-val="{{ false }}">
+      <a href="MidHistory.dc.html" style="display: flex; align-items: center; min-height: 52px; padding: 0 18px; border-radius: 20px; background: var(--surface); text-decoration: none; font-size: 14px; font-weight: 600">Nhập mật khẩu để có gợi ý chính xác hơn</a>
+    </sc-if>
+    <sc-if value="{{hasRecs}}" hint-placeholder-val="{{ true }}">
+      <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px">
+        <sc-for list="{{crows}}" as="b" hint-placeholder-count="3">
+          <li class="st-row" style="border-radius: 28px; background:  rgba(var(--glass),0.8); display: flex; flex-direction: column">
+            <a href="MidCatalog.dc.html" style="display: flex; gap: 14px; padding: 12px 12px 0; text-decoration: none; color: var(--ink); min-height: 48px">
+              <div aria-hidden="true" style="{{b.cover}}">{{b.title}}</div>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <div style="font-size: 15px; font-weight: 600; line-height: 1.25">{{b.title}}</div>
+                <div style="font-size: 13px; color: var(--ink2)">{{b.author}}</div>
+                <div style="font-size: 13px; font-weight: 700; line-height: 1.3; color: var(--warn)">{{b.reason}}</div>
+                <div style="{{b.statusStyle}}">{{b.status}}</div>
+              </div>
+            </a>
+            <button type="button" onClick="{{b.hide}}" class="st-press" aria-label="Không quan tâm: {{b.title}}" style="align-self: flex-start; min-height: 48px; margin: 0 0 4px 4px; padding: 0 16px; border-radius: 999px; border: 0; background: transparent; color: var(--ink2); font: inherit; font-size: 14px; cursor: pointer">Không quan tâm</button>
+          </li>
+        </sc-for>
+      </ul>
+      <p style="margin: 0; padding: 0 4px; font-size: 12px; line-height: 1.5; color: var(--ink3)">Gợi ý được tính ngay trên máy, theo tác giả và chủ đề của sách bạn mượn. Lịch sử không được gửi đi đâu.</p>
+    </sc-if>
+    <sc-if value="{{noRecs}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 14px; padding-top: 8px">
+        <div style="font-size: 18px; font-weight: 600">Chưa có gì để gợi ý</div>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2)">ShelfTap chưa có dữ liệu để gợi ý: bạn chưa mượn cuốn nào, hoặc đã tắt lưu lịch sử đọc và hiện không mượn cuốn nào. Bạn vẫn xem sách theo chủ đề được.</p>
+        <a href="MidCatalog.dc.html" class="st-press" style="${S.btnPrimary}">Xem theo chủ đề</a>
+        <a href="MidAccount.dc.html" class="st-press" style="${S.btnGlass}">Cài đặt lịch sử đọc</a>
+      </div>
+    </sc-if>
+  </section>`;
+
 // ---------- Gợi ý cho bạn ----------
 out['WideRecommend.dc.html'] = S.head('Gợi ý cho bạn ở cửa sổ rộng', W, H) +
   S.nav('WideRecommend.dc.html', { preview: ['tabs', 'Xem trước: đăng nhập bằng'] }) +
-  S.listPane('Sách gợi ý', 'Gợi ý cho bạn', `
+  (S.isMid() ? RECO_MID : S.listPane('Sách gợi ý', 'Gợi ý cho bạn', `
     <div style="font-size: 14px; color: var(--ink2b); padding: 0 4px">{{subtitle}}</div>
     <sc-if value="{{isCard}}" hint-placeholder-val="{{ false }}">
       <a href="WideHistory.dc.html" style="padding: 10px 14px; border-radius: 18px; background: var(--surface); font-size: 13px; font-weight: 600; text-decoration: none">Nhập mật khẩu để có gợi ý chính xác hơn</a>
@@ -225,14 +263,13 @@ out['WideRecommend.dc.html'] = S.head('Gợi ý cho bạn ở cửa sổ rộng'
       <sc-if value="{{noRecs}}" hint-placeholder-val="{{ false }}">
         <li style="padding: 16px 8px; display: flex; flex-direction: column; gap: 8px">
           <div style="font-size: 16px; font-weight: 700">Chưa có gì để gợi ý</div>
-          <div style="font-size: 14px; line-height: 1.5; color: var(--ink2b)">Bạn đã tắt lưu lịch sử đọc và hiện không mượn cuốn nào, nên ShelfTap không có dữ liệu để gợi ý. Bạn vẫn xem sách theo chủ đề được.</div>
+          <div style="font-size: 14px; line-height: 1.5; color: var(--ink2b)">ShelfTap chưa có dữ liệu để gợi ý: bạn chưa mượn cuốn nào, hoặc đã tắt lưu lịch sử đọc và hiện không mượn cuốn nào. Bạn vẫn xem sách theo chủ đề được.</div>
         </li>
       </sc-if>
       <li style="padding: 4px; font-size: 12px; line-height: 1.5; color: var(--ink3)">Gợi ý được tính ngay trên máy, theo tác giả và chủ đề của sách bạn mượn. Lịch sử không được gửi đi đâu.</li>`) +
   S.detailPane('Vì sao gợi ý', `
       <sc-if value="{{hasRecs}}" hint-placeholder-val="{{ true }}">` + S.bookHead(false) + `
         <div style="padding: 14px 16px; border-radius: 20px; background: var(--surface); display: flex; flex-direction: column; gap: 6px">
-          <div style="font-size: 12px; color: var(--ink3)">Lý do</div>
           <div style="font-size: 15px; font-weight: 700; line-height: 1.35; color: var(--warn2)">{{sel.reason}}</div>
           <div style="{{sel.statusStyle}}">{{sel.status}}</div>
         </div>
@@ -246,7 +283,7 @@ out['WideRecommend.dc.html'] = S.head('Gợi ý cho bạn ở cửa sổ rộng'
           <a href="WideCatalog.dc.html" class="st-press" style="${S.btnPrimary}">Xem theo chủ đề</a>
           <a href="WideAccount.dc.html" class="st-press" style="${S.btnGlass}">Cài đặt lịch sử đọc</a>
         </div>
-      </sc-if>`) +
+      </sc-if>`)) +
   S.foot(W, H, `
   renderVals() {
     var self = this, st = this.state || {}, ui = this.__ui();
@@ -259,18 +296,26 @@ out['WideRecommend.dc.html'] = S.head('Gợi ý cho bạn ở cửa sổ rộng'
            b('Truyện Kiều', 'Nguyễn Du', '#e7dcc6', '#2f4a44', 2, 'Cùng chủ đề Văn học Việt Nam')],
       card: [b('Tắt đèn', 'Ngô Tất Tố', '#7a2e1e', '#ffffff', 0, 'Cùng chủ đề Tiểu thuyết với sách bạn đang mượn'),
              b('Truyện Kiều', 'Nguyễn Du', '#e7dcc6', '#2f4a44', 2, 'Cùng chủ đề Văn học Việt Nam')],
-      off: []
+      off: [b('Tắt đèn', 'Ngô Tất Tố', '#7a2e1e', '#ffffff', 0, 'Cùng chủ đề Tiểu thuyết'),
+            b('Truyện Kiều', 'Nguyễn Du', '#e7dcc6', '#2f4a44', 2, 'Cùng chủ đề Văn học Việt Nam')],
+      none: []
     };
     var list = sets[v].filter(function (x) { return !hidden[v + x.t]; });
     var sel = list.filter(function (x) { return x.t === st.sel; })[0] || list[0] || null;
     var out = sel && sel.n === 0;
     return Object.assign(this.__theme(), {
-      tabs: ui.tabs([['pw', 'Mật khẩu'], ['card', 'Thẻ'], ['off', 'Tắt lịch sử']], v, 'v'),
-      subtitle: v === 'pw' ? 'Theo sách bạn đã mượn và đang mượn.' : v === 'card' ? 'Đăng nhập bằng thẻ: chỉ theo sách bạn đang mượn.' : 'Lịch sử đọc đang tắt.',
+      tabs: ui.tabs([['pw', 'Mật khẩu'], ['card', 'Thẻ'], ['off', 'Tắt lịch sử'], ['none', 'Chưa có gì']], v, 'v'),
+      subtitle: v === 'pw' ? 'Theo sách bạn đã mượn và đang mượn.' : v === 'card' ? 'Đăng nhập bằng thẻ: chỉ theo sách bạn đang mượn.' : 'Lịch sử đọc đang tắt: chỉ theo sách bạn đang mượn.',
       isCard: v === 'card', hasRecs: !!sel, noRecs: !sel,
+      crows: list.map(function (x) {
+        var out = x.n === 0;
+        return { title: x.t, author: x.a, reason: x.why, status: out ? 'Đang được mượn · đặt trước' : 'Còn ' + x.n + ' bản',
+          statusStyle: 'font-size:13px;color:' + (out ? 'var(--danger)' : 'var(--ok)'),
+          cover: 'width:48px;height:72px;flex:none;border-radius:8px;padding:6px;box-sizing:border-box;overflow:hidden;font-size:10px;font-weight:600;line-height:1.2;background:' + x.bg + ';color:' + x.fg,
+          hide: function () { var h = Object.assign({}, hidden); h[v + x.t] = true; self.setState({ hidden: h, sel: null }); } };
+      }),
       rows: list.map(function (x, i) {
-        return ui.row({ i: i, title: x.t, author: x.a, bg: x.bg, fg: x.fg, on: x === sel, reason: x.why,
-          status: x.n ? 'Còn ' + x.n + ' bản' : 'Đang được mượn · đặt trước', pill: ui.pill(x.n ? 'ok' : 'bad'),
+        return ui.row({ i: i, title: x.t, author: '', bg: x.bg, fg: x.fg, on: x === sel, reason: x.why,
           pick: function () { self.setState({ sel: x.t }); } });
       }),
       sel: sel ? { title: sel.t, author: sel.a, reason: sel.why, coverStyle: ui.bigCover(sel.bg, sel.fg),
