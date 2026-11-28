@@ -78,16 +78,16 @@ a{color:var(--ink)}a:hover{opacity:.85}
     <sc-if value="{{locked}}" hint-placeholder-val="{{ true }}">
       <button class="st-press" type="button" onClick="{{unlock}}" style="align-self: stretch; height: 54px; border-radius: 999px; border: 0; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; gap: 10px; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--on-primary)"><path d="M12 11v4"></path><path d="M8 13a4 4 0 0 1 8 0v2"></path><path d="M5 12a7 7 0 0 1 14 0v3"></path><path d="M9.5 19.5c.3-1 .5-2.3.5-4.5"></path></svg>
-        Mở khóa bằng vân tay
+        Mở khóa
       </button>
     </sc-if>
     <sc-if value="{{unlocked}}" hint-placeholder-val="{{ false }}">
       <a class="st-fade" href="Catalog.dc.html" style="align-self: stretch; height: 54px; border-radius: 999px; background:  #2f5b3a; color: #ffffff; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 16px; font-weight: 600">Tiếp tục</a>
     </sc-if>
-    <a href="Main.dc.html" style="font-size: 14px; font-weight: 500; color: var(--ink2)">Đăng xuất</a>
+    <a href="Main.dc.html" style="font-size: 14px; font-weight: 500; color: var(--ink2); text-decoration: none">Đăng xuất</a>
   </div>
 
-  <p style="position: relative; flex: none; margin: auto 32px 40px; padding-top: 16px; font-size: 12px; line-height: 1.5; color: var(--ink2); text-align: center">Nếu vân tay trên máy thay đổi, ShelfTap sẽ yêu cầu bạn đăng nhập lại bằng mật khẩu.</p>
+  <p style="position: relative; flex: none; margin: auto 32px 40px; padding-top: 16px; font-size: 12px; line-height: 1.5; color: var(--ink2); text-align: center">Nếu sinh trắc học trên máy thay đổi, ShelfTap sẽ yêu cầu bạn đăng nhập lại bằng mật khẩu.</p>
   </div>
   </div>
   <button type="button" onClick="{{toggleTheme}}" aria-label="{{themeAria}}" class="st-press" style="position: absolute; top: 12px; right: 14px; z-index: 50; height: 30px; padding: 0 12px 0 9px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.7); background: rgba(var(--glass),0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--ink); font: inherit; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer">

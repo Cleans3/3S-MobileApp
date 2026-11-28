@@ -46,6 +46,21 @@ ${MINI('.st-root[data-nav="mini"] ')}
   .st-full{left:104px !important}
 }`;
 
+// The dock changes shape as in the app (ActionDock.kt): a 56 dp round icon folds out into the glass bar, the tag circle grows 40 -> 52 dp and
+// turns dark, the reserve button fades in after half way; 260 ms. Only the "from" frame is written: the end frame is the element's own style.
+const DOCK_MS = '260ms cubic-bezier(.2,.8,.2,1) both';
+const DOCK_CSS = ['a', 'b'].map(k => `
+@keyframes st-dko${k}{from{width:56px;height:56px;background-color:var(--primary);box-shadow:0 6px 14px rgba(28,27,26,0.3)}}
+@keyframes st-dkoc${k}{from{width:40px;height:40px;background-color:color-mix(in srgb,var(--on-primary) 16%,transparent)}}
+@keyframes st-dkol${k}{from{opacity:1}to{opacity:0}}
+@keyframes st-dkor${k}{0%,50%{opacity:0}100%{opacity:1}}
+@keyframes st-dkx${k}{from{width:var(--dkw);height:68px;background-color:rgba(var(--glass),0.92);box-shadow:none}}
+@keyframes st-dkxc${k}{from{width:52px;height:52px;background-color:var(--primary)}}
+@keyframes st-dkxr${k}{from{opacity:1}to{opacity:0}}
+.st-dk.dko-${k}{animation:st-dko${k} ${DOCK_MS}}.dko-${k} .st-dkc{animation:st-dkoc${k} ${DOCK_MS}}.dko-${k} .st-dkr{animation:st-dkor${k} ${DOCK_MS}}
+.st-dk.dkc-${k}{animation:st-dkx${k} ${DOCK_MS}}.dkc-${k} .st-dkc{animation:st-dkxc${k} ${DOCK_MS}}.dkc-${k} .st-dkr{animation:st-dkxr${k} 130ms ease-out both}`).join('') + `
+@media (prefers-reduced-motion: reduce){.st-dk,.st-dk .st-dkc,.st-dk .st-dkr{animation:none !important}}`;
+
 const head = (title, w, h) => `<!doctype html>
 <html lang="vi">
 <head>
@@ -108,6 +123,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
 .st-scroll{scrollbar-width:none}.st-scroll::-webkit-scrollbar{display:none}
 .st-scroll>*{flex-shrink:0}
 ${COMPACT}
+${DOCK_CSS}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: ${w}px; height: ${h}px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
@@ -164,7 +180,7 @@ class Component extends DCLogic {
       listAnim: mid && st.navDir === 'back' ? 'st-axl' + ease : 'st-fade 260ms ease-out both',
       detailAnim: mid ? 'st-axr' + ease : (n % 2 ? 'st-xb' : 'st-xa') + ' 150ms ease-out both',
       rowsStill: !!st.navDir,
-      back: function () { self.setState({ view: 'list', navDir: 'back' }); },
+      back: function () { self.setState({ view: 'list', navDir: 'back', swapN: n + 1 }); },
       toDetail: function () { var o = { swapN: n + 1, navDir: 'fwd' }; if (mid) o.view = 'detail'; self.setState(o); }
     };
   }
@@ -273,6 +289,33 @@ const PANEL_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" 
 // the rail. A guest has no such button (the menu has "Đăng nhập" instead); the checkout board itself does not draw it.
 const dock = (guest, active) => guest || active === 'WideCheckout.dc.html' ? '' : `
   <a href="WideCheckout.dc.html" class="st-press st-dock" aria-label="Chạm sách để mượn" style="position: absolute; right: 16px; bottom: 16px; z-index: 30; width: 56px; height: 56px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 10px 30px rgba(28,27,26,0.3)">${NFC.replace('width="20" height="20"', 'width="26" height="26"')}</a>`;
+// The same button on a book's page: the round icon at rest, the glass bar (tag circle and reserve button) when a book is open.
+// Needs in renderVals: dockCls, dockStyle, dockW (css width of the bar), reserveBtn (label and colours), reserve (handler), isDone.
+const dockMorph = () => `
+  <div class="st-dk {{dockCls}}" style="{{dockStyle}}">
+    <a href="WideCheckout.dc.html" class="st-dkc" aria-label="{{dockTagLabel}}" style="{{dockCircle}}">${NFC.replace('width="20" height="20"', 'width="22" height="22"').replace('color: var(--on-primary)', 'color: var(--on-primary)')}</a>
+    <button type="button" class="st-dkr st-swap st-press" onClick="{{reserve}}" aria-live="polite" aria-hidden="{{dockHidden}}" tabindex="{{dockTab}}" style="{{dockReserve}}">
+      <sc-if value="{{reserveBtn.isDone}}" hint-placeholder-val="{{ false }}"><svg class="st-pop" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path><path class="st-draw" d="m9 10 2 2 4-4"></path></svg></sc-if>
+      <sc-if value="{{reserveBtn.isIdle}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg></sc-if>
+      {{reserveBtn.label}}
+    </button>
+  </div>`;
+// renderVals code for dockMorph: open = a book is open (always on the expanded window, the detail view on the medium one)
+const DOCK_JS = () => `
+    var dkOpen = ${isMid()} ? (st.view === 'detail') : true, dkN = (st.swapN || 0);
+    var dkW = ${isMid()} ? 360 : 336;
+    var dkKey = (dkOpen ? 'dko-' : 'dkc-') + (dkN % 2 ? 'a' : 'b');
+    var dock = {
+      dockCls: (!dkOpen && dkN === 0) ? '' : dkKey,
+      dockTagLabel: dkOpen ? 'Mượn bằng cách chạm điện thoại vào sách' : 'Chạm sách để mượn',
+      dockTab: dkOpen ? '0' : '-1', dockHidden: dkOpen ? 'false' : 'true',
+      dockStyle: 'position:absolute;right:16px;bottom:16px;z-index:30;--dkw:' + dkW + 'px;display:flex;align-items:center;gap:8px;box-sizing:border-box;padding:8px;border-radius:999px;overflow:hidden;' +
+        (dkOpen ? 'width:' + dkW + 'px;height:68px;background:rgba(var(--glass),0.92);border:1px solid rgba(var(--edge),0.8)' : 'width:56px;height:56px;background:var(--primary);border:1px solid transparent;box-shadow:0 6px 14px rgba(28,27,26,0.3)'),
+      dockCircle: 'flex:none;border-radius:999px;display:flex;align-items:center;justify-content:center;text-decoration:none;' +
+        (dkOpen ? 'width:52px;height:52px;background:var(--primary)' : 'width:40px;height:40px;background:color-mix(in srgb,var(--on-primary) 16%,transparent)'),
+      dockReserve: rb.style + ';min-height:0;height:52px;min-width:0;white-space:normal;line-height:1.15;text-align:center;padding:0 12px;' + (dkOpen ? 'opacity:1' : 'opacity:0;pointer-events:none')
+    };`;
+
 // room kept under the panes for that button (the app keeps the same clearance)
 const BOT = 88;
 
@@ -281,7 +324,8 @@ const BOT = 88;
 const nav = (active, opts) => {
   opts = opts || {};
   const menu = opts.guest ? GUEST_MENU : memberMenu(active);
-  if (isMid()) return rail(active, opts, menu) + dock(opts.guest, active);
+  const own = opts.dock === false ? () => '' : dock;
+  if (isMid()) return rail(active, opts, menu) + own(opts.guest, active);
   const items = menu.map((m, i) => menuItem(m[0], m[1], m[2], m[1] === active, i)).join('');
   return `
   <nav aria-label="Điều hướng chính" class="st-nav" style="position: absolute; left: 16px; top: 16px; bottom: 16px; width: 216px; padding: 14px 10px 12px; box-sizing: border-box; border-radius: 30px; background:  rgba(var(--glass),0.62); backdrop-filter: blur(26px) saturate(160%); -webkit-backdrop-filter: blur(26px) saturate(160%); border: 1px solid rgba(var(--edge),0.85); display: flex; flex-direction: column; gap: 2px">
@@ -290,7 +334,7 @@ const nav = (active, opts) => {
     </div>
     <div class="st-scroll" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px">${items}
     </div>${opts.preview ? preview(opts.preview[0], opts.preview[1], '', 'st-hide-c') : ''}
-  </nav>` + dock(opts.guest, active);
+  </nav>` + own(opts.guest, active);
 };
 
 // navigation rail for a medium window: the destinations with short labels, the current one on a filled block
@@ -518,4 +562,4 @@ const HOME_JS = `
   }`;
 
 module.exports = { home, HOME_JS, head, foot, nav, preview, listPane, detailPane, bookHead, fact, facts, BOOKS, searchAndChips, SEARCH_JS, btnPrimary, btnGlass, note, NFC, menuItem,
-  setMode, isMid, W, H, listPos, panePos, fullPos, backBtn, BOT, dock };
+  setMode, isMid, W, H, listPos, panePos, fullPos, backBtn, BOT, dock, dockMorph, DOCK_JS };

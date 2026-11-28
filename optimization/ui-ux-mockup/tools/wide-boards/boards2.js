@@ -17,7 +17,45 @@ const card = inner => `
         </div>`;
 
 // ---------- Tài khoản ----------
-out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) + S.nav('WideAccount.dc.html') + `
+const ACCOUNT_JS = `
+  renderVals() {
+    var self = this, st = this.state || {}, ui = this.__ui();
+    var cat = st.cat || 'privacy';
+    var val = function (k, def) { return st[k] === undefined ? def : st[k]; };
+    var flip = function (k, def) { return function () { var o = {}; o[k] = !val(k, def); self.setState(o); }; };
+    var cats = [
+      ['privacy', 'Quyền riêng tư'],
+      ['security', 'Bảo mật'],
+      ['look', 'Giao diện'],
+      ['logout', 'Đăng xuất']
+    ].filter(function (c) { return c[0] !== 'logout'; });
+    var label0 = { privacy: 'Quyền riêng tư', security: 'Bảo mật', look: 'Giao diện', logout: 'Đăng xuất' };
+    var v = {};
+    ['history', 'recs', 'due', 'ready', 'hide'].forEach(function (k) { v[k] = val(k, true); });
+    v.bio = val('bio', false);
+    var label = label0[cat];
+    return Object.assign(this.__theme(), {
+      cats: cats.map(function (c) {
+        var on = c[0] === cat;
+        return { label: c[1], current: on ? 'true' : 'false', pick: function () { self.setState({ cat: c[0] }); self.__layout().toDetail(); },
+          style: 'width:100%;display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:20px;text-align:left;font:inherit;cursor:pointer;min-height:56px;color:var(--ink);border:' + (on ? '2px solid rgba(var(--ink-rgb),0.8)' : '1px solid transparent') + ';background:' + (on ? 'var(--surface)' : 'rgba(var(--glass),0.72)') };
+      }),
+      logoutCurrent: cat === 'logout' ? 'true' : 'false', logoutEdge: cat === 'logout' ? 'var(--danger)' : 'rgba(var(--ink-rgb),0.25)',
+      pickLogout: function () { self.setState({ cat: 'logout' }); self.__layout().toDetail(); },
+      catLabel: label,
+      isPrivacy: cat === 'privacy', isSecurity: cat === 'security', isLook: cat === 'look', isLogout: cat === 'logout',
+      history: v.history, historyTrack: ui.track(v.history), historyKnob: ui.knob(v.history), toggleHistory: flip('history', true),
+      recs: v.recs, recsTrack: ui.track(v.recs), recsKnob: ui.knob(v.recs), toggleRecs: flip('recs', true),
+      due: v.due, dueTrack: ui.track(v.due), dueKnob: ui.knob(v.due), t_due: flip('due', true),
+      ready: v.ready, readyTrack: ui.track(v.ready), readyKnob: ui.knob(v.ready), t_ready: flip('ready', true),
+      hide: v.hide, hideTrack: ui.track(v.hide), hideKnob: ui.knob(v.hide), t_hide: flip('hide', true),
+      bio: v.bio, bioTrack: ui.track(v.bio), bioKnob: ui.knob(v.bio), toggleBio: flip('bio', false),
+      denied: val('denied', true), allow: function () { self.setState({ denied: false }); },
+      stay: function () { self.setState({ cat: 'privacy' }); }
+    });
+  }
+`;
+const ACCOUNT_WIDE = S.head('Tài khoản ở cửa sổ rộng', W, H) + S.nav('WideAccount.dc.html') + `
   <sc-if value="{{showList}}" hint-placeholder-val="{{ true }}">
   <section aria-label="Mục cài đặt" class="st-list st-fade" style="animation: {{listAnim}}; position: absolute; ${S.listPos(320)}; top: ${S.isMid() ? 40 : 16}px; bottom: ${S.BOT}px; display: flex; flex-direction: column; gap: 12px">
     <h1 style="margin: 12px 4px 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.3px">Tài khoản</h1>
@@ -81,43 +119,51 @@ out['WideAccount.dc.html'] = S.head('Tài khoản ở cửa sổ rộng', W, H) 
     </div>
   </section>
   </sc-if>` +
-  S.foot(W, H, `
-  renderVals() {
-    var self = this, st = this.state || {}, ui = this.__ui();
-    var cat = st.cat || 'privacy';
-    var val = function (k, def) { return st[k] === undefined ? def : st[k]; };
-    var flip = function (k, def) { return function () { var o = {}; o[k] = !val(k, def); self.setState(o); }; };
-    var cats = [
-      ['privacy', 'Quyền riêng tư'],
-      ['security', 'Bảo mật'],
-      ['look', 'Giao diện'],
-      ['logout', 'Đăng xuất']
-    ].filter(function (c) { return c[0] !== 'logout'; });
-    var label0 = { privacy: 'Quyền riêng tư', security: 'Bảo mật', look: 'Giao diện', logout: 'Đăng xuất' };
-    var v = {};
-    ['history', 'recs', 'due', 'ready', 'hide'].forEach(function (k) { v[k] = val(k, true); });
-    v.bio = val('bio', false);
-    var label = label0[cat];
-    return Object.assign(this.__theme(), {
-      cats: cats.map(function (c) {
-        var on = c[0] === cat;
-        return { label: c[1], current: on ? 'true' : 'false', pick: function () { self.setState({ cat: c[0] }); self.__layout().toDetail(); },
-          style: 'width:100%;display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:20px;text-align:left;font:inherit;cursor:pointer;min-height:56px;color:var(--ink);border:' + (on ? '2px solid rgba(var(--ink-rgb),0.8)' : '1px solid transparent') + ';background:' + (on ? 'var(--surface)' : 'rgba(var(--glass),0.72)') };
-      }),
-      logoutCurrent: cat === 'logout' ? 'true' : 'false', logoutEdge: cat === 'logout' ? 'var(--danger)' : 'rgba(var(--ink-rgb),0.25)',
-      pickLogout: function () { self.setState({ cat: 'logout' }); self.__layout().toDetail(); },
-      catLabel: label,
-      isPrivacy: cat === 'privacy', isSecurity: cat === 'security', isLook: cat === 'look', isLogout: cat === 'logout',
-      history: v.history, historyTrack: ui.track(v.history), historyKnob: ui.knob(v.history), toggleHistory: flip('history', true),
-      recs: v.recs, recsTrack: ui.track(v.recs), recsKnob: ui.knob(v.recs), toggleRecs: flip('recs', true),
-      due: v.due, dueTrack: ui.track(v.due), dueKnob: ui.knob(v.due), t_due: flip('due', true),
-      ready: v.ready, readyTrack: ui.track(v.ready), readyKnob: ui.knob(v.ready), t_ready: flip('ready', true),
-      hide: v.hide, hideTrack: ui.track(v.hide), hideKnob: ui.knob(v.hide), t_hide: flip('hide', true),
-      bio: v.bio, bioTrack: ui.track(v.bio), bioKnob: ui.knob(v.bio), toggleBio: flip('bio', false),
-      denied: val('denied', true), allow: function () { self.setState({ denied: false }); },
-      stay: function () { self.setState({ cat: 'privacy' }); }
-    });
-  }`);
+  S.foot(W, H, ACCOUNT_JS);
+const ACCOUNT_MID = S.head('Tài khoản ở cửa sổ vừa', W, H) + S.nav('WideAccount.dc.html') +
+  `
+  <section aria-label="Tài khoản" class="st-scroll" style="position: absolute; ${S.fullPos()}; max-width: 600px; top: 0; bottom: 0; padding: 0 0 ${S.BOT + 16}px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 14px">
+    <h1 style="margin: 0; padding: 36px 0 8px; font-size: 22px; font-weight: 600; color: var(--ink2b)">Tài khoản</h1>
+    <div style="padding: 16px; border-radius: 28px; background:  #2f4a44; color: #ffffff; display: flex; align-items: center; gap: 12px; flex: none">
+      <span style="width: 48px; height: 48px; flex: none; border-radius: 999px; background:  rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+      </span>
+      <div style="min-width: 0; display: flex; flex-direction: column; gap: 2px">
+        <div style="font-size: 18px; font-weight: 700">Phạm Thị Thu Hường</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.9)">thanhvien.thu@example.vn</div>
+      </div>
+    </div>
+    <div style="font-size: 13px; font-weight: 600; color: var(--ink2b); padding: 4px 6px 0">Quyền riêng tư</div>` +
+  card(sw('Lưu lịch sử đọc của tôi', 'Tắt: các lượt mượn đã trả sẽ không được ghi vào lịch sử (Nghị định 13/2023).', 'history', 'toggleHistory', 'historyTrack', 'historyKnob') + `
+          <a href="MidHistory.dc.html" style="display: flex; align-items: center; min-height: 56px; text-decoration: none; font-size: 15px; font-weight: 600; color: var(--ink)">
+            <span style="flex: 1">Lịch sử đọc</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
+          </a>`) + `
+    <div style="font-size: 13px; font-weight: 600; color: var(--ink2b); padding: 4px 6px 0">Bảo mật</div>` +
+  card(sw('Khóa sinh trắc học', '', 'bio', 'toggleBio', 'bioTrack', 'bioKnob') + `
+          <a href="MidSignIn.dc.html" style="display: flex; align-items: center; min-height: 56px; text-decoration: none; font-size: 15px; font-weight: 600; color: var(--ink); border-bottom: 1px solid rgba(var(--ink-rgb),0.08)">
+            <span style="flex: 1">Đổi mật khẩu</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
+          </a>
+          <div style="display: flex; align-items: center; min-height: 56px; font-size: 14px; color: var(--ink2)">Tự đăng xuất sau 5 phút không dùng</div>`) + `
+    <div style="font-size: 13px; font-weight: 600; color: var(--ink2b); padding: 4px 6px 0">Giao diện</div>
+    <div role="group" aria-label="Giao diện" style="padding: 4px; border-radius: 999px; background:  rgba(var(--glass),0.8); display: flex; gap: 4px; flex: none">
+      <sc-for list="{{themeOpts}}" as="o" hint-placeholder-count="3">
+        <button type="button" onClick="{{o.pick}}" aria-pressed="{{o.on}}" class="st-swap st-press" style="{{o.style}}">{{o.label}}</button>
+      </sc-for>
+    </div>
+    <button type="button" class="st-press" onClick="{{pickLogout}}" style="width: 100%; min-height: 56px; flex: none; border-radius: 999px; border: 1px solid {{logoutEdge}}; background: transparent; color: var(--danger); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Đăng xuất</button>
+    <sc-if value="{{isLogout}}" hint-placeholder-val="{{ false }}">
+      <div role="alertdialog" aria-label="Đăng xuất khỏi ShelfTap" class="st-fade" style="padding: 18px; border-radius: 24px; background: var(--dialog); border: 1px solid rgba(var(--ink-rgb),0.5); display: flex; flex-direction: column; gap: 12px; flex: none">
+        <div style="font-size: 18px; font-weight: 700">Đăng xuất khỏi ShelfTap?</div>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink2)">Phiên đăng nhập trên máy này sẽ bị xóa. Lần sau bạn cần đăng nhập lại bằng mật khẩu hoặc thẻ.</p>
+        <a href="MidSignIn.dc.html" style="min-height: 52px; border-radius: 999px; background:  #7a3420; color: #ffffff; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 15px; font-weight: 600">Đăng xuất</a>
+        <button type="button" onClick="{{stay}}" style="${S.btnGlass}">Ở lại</button>
+      </div>
+    </sc-if>
+  </section>` +
+  S.foot(W, H, ACCOUNT_JS);
+out['WideAccount.dc.html'] = S.isMid() ? ACCOUNT_MID : ACCOUNT_WIDE;
 
 // ---------- Đăng nhập (gộp Màn chào, Đăng nhập bằng thẻ, Đổi mật khẩu) ----------
 const input = (label, type, extra) => `

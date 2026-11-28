@@ -79,6 +79,26 @@ div.st-root{container-type:size}
   .st-pane{left:420px !important}
   .st-full{left:104px !important}
 }
+
+@keyframes st-dkoa{from{width:56px;height:56px;background-color:var(--primary);box-shadow:0 6px 14px rgba(28,27,26,0.3)}}
+@keyframes st-dkoca{from{width:40px;height:40px;background-color:color-mix(in srgb,var(--on-primary) 16%,transparent)}}
+@keyframes st-dkola{from{opacity:1}to{opacity:0}}
+@keyframes st-dkora{0%,50%{opacity:0}100%{opacity:1}}
+@keyframes st-dkxa{from{width:var(--dkw);height:68px;background-color:rgba(var(--glass),0.92);box-shadow:none}}
+@keyframes st-dkxca{from{width:52px;height:52px;background-color:var(--primary)}}
+@keyframes st-dkxra{from{opacity:1}to{opacity:0}}
+.st-dk.dko-a{animation:st-dkoa 260ms cubic-bezier(.2,.8,.2,1) both}.dko-a .st-dkc{animation:st-dkoca 260ms cubic-bezier(.2,.8,.2,1) both}.dko-a .st-dkr{animation:st-dkora 260ms cubic-bezier(.2,.8,.2,1) both}
+.st-dk.dkc-a{animation:st-dkxa 260ms cubic-bezier(.2,.8,.2,1) both}.dkc-a .st-dkc{animation:st-dkxca 260ms cubic-bezier(.2,.8,.2,1) both}.dkc-a .st-dkr{animation:st-dkxra 130ms ease-out both}
+@keyframes st-dkob{from{width:56px;height:56px;background-color:var(--primary);box-shadow:0 6px 14px rgba(28,27,26,0.3)}}
+@keyframes st-dkocb{from{width:40px;height:40px;background-color:color-mix(in srgb,var(--on-primary) 16%,transparent)}}
+@keyframes st-dkolb{from{opacity:1}to{opacity:0}}
+@keyframes st-dkorb{0%,50%{opacity:0}100%{opacity:1}}
+@keyframes st-dkxb{from{width:var(--dkw);height:68px;background-color:rgba(var(--glass),0.92);box-shadow:none}}
+@keyframes st-dkxcb{from{width:52px;height:52px;background-color:var(--primary)}}
+@keyframes st-dkxrb{from{opacity:1}to{opacity:0}}
+.st-dk.dko-b{animation:st-dkob 260ms cubic-bezier(.2,.8,.2,1) both}.dko-b .st-dkc{animation:st-dkocb 260ms cubic-bezier(.2,.8,.2,1) both}.dko-b .st-dkr{animation:st-dkorb 260ms cubic-bezier(.2,.8,.2,1) both}
+.st-dk.dkc-b{animation:st-dkxb 260ms cubic-bezier(.2,.8,.2,1) both}.dkc-b .st-dkc{animation:st-dkxcb 260ms cubic-bezier(.2,.8,.2,1) both}.dkc-b .st-dkr{animation:st-dkxrb 130ms ease-out both}
+@media (prefers-reduced-motion: reduce){.st-dk,.st-dk .st-dkc,.st-dk .st-dkr{animation:none !important}}
 </style>
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 960px; height: 720px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)" data-nav="{{navMode}}">
@@ -210,7 +230,7 @@ class Component extends DCLogic {
       listAnim: mid && st.navDir === 'back' ? 'st-axl' + ease : 'st-fade 260ms ease-out both',
       detailAnim: mid ? 'st-axr' + ease : (n % 2 ? 'st-xb' : 'st-xa') + ' 150ms ease-out both',
       rowsStill: !!st.navDir,
-      back: function () { self.setState({ view: 'list', navDir: 'back' }); },
+      back: function () { self.setState({ view: 'list', navDir: 'back', swapN: n + 1 }); },
       toDetail: function () { var o = { swapN: n + 1, navDir: 'fwd' }; if (mid) o.view = 'detail'; self.setState(o); }
     };
   }

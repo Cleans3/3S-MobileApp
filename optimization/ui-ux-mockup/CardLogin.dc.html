@@ -51,9 +51,6 @@ a{color:var(--ink)}a:hover{opacity:.85}
 </helmet>
 <div class="st-root" data-theme="{{themeAttr}}" style="width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); font-family: 'Nunito', system-ui, sans-serif; color: var(--ink)">
 
-  <a href="Login.dc.html" aria-label="Quay lại" style="position: absolute; top: 56px; left: 20px; width: 48px; height: 48px; border-radius: 999px; border: 1px solid rgba(var(--edge),0.9); background:  rgba(var(--glass),0.6); display: flex; align-items: center; justify-content: center; text-decoration: none">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m15 18-6-6 6-6"></path></svg>
-  </a>
 
   <div class="st-page" style="position: absolute; inset: 0; overflow-x: hidden; overflow-y: auto; scrollbar-width: none">
   <div style="position: relative; min-height: max(100%, 844px); display: flex; flex-direction: column">
@@ -93,6 +90,7 @@ a{color:var(--ink)}a:hover{opacity:.85}
     <sc-if value="{{isDone}}" hint-placeholder-val="{{ false }}">
       <a class="st-rise" href="Catalog.dc.html" style="height: 54px; border-radius: 999px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 16px; font-weight: 600">Vào thư viện</a>
     </sc-if>
+    <a href="Login.dc.html" style="align-self: center; min-height: 48px; display: flex; align-items: center; padding: 0 16px; font-size: 15px; font-weight: 500; text-decoration: none">Dùng email và mật khẩu</a>
     <p style="margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink2b); text-align: center">Không cần PIN: thẻ chỉ chứng minh bạn đang giữ thẻ. Muốn xem lịch sử đọc, bạn sẽ cần nhập mật khẩu.</p>
   </div>
   </div>

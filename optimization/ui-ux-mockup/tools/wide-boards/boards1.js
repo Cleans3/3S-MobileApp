@@ -137,25 +137,42 @@ out['WideHistory.dc.html'] = S.head('Lịch sử đọc ở cửa sổ rộng', 
     </div>
   </sc-if>
   <sc-if value="{{isList}}" hint-placeholder-val="{{ false }}">` +
-  S.listPane('Sách đã đọc', 'Lịch sử đọc', `
-    <a href="WideAccount.dc.html" style="align-self: flex-start; padding: 8px 12px; border-radius: 999px; background:  rgba(var(--glass),0.8); font-size: 12px; font-weight: 600; color: var(--ink2); text-decoration: none">Đang lưu lịch sử · tắt trong Tài khoản</a>`, 'rows', `
-      <li style="padding: 4px; font-size: 12px; line-height: 1.5; color: var(--ink3)">Sách đã trả quá 1 năm sẽ không còn gắn với tên bạn. [Dữ liệu mẫu cho bản phác]</li>`) +
-  S.detailPane('Lần mượn', S.bookHead(false) + S.facts([S.fact('Đã trả', '{{sel.date}}'), S.fact('Còn trong thư viện', '{{sel.copies}}', '{{sel.copiesStyle}}')]) + S.note('Lịch sử chỉ hiện trên máy này sau khi nhập mật khẩu. Không gửi cho ai khác (Nghị định 13/2023).'), `
-      <a href="WideCatalog.dc.html" class="st-press" style="${S.btnPrimary}; flex: 1">Xem trong danh mục</a>`) + `
+`
+    <section aria-label="Sách đã đọc" class="st-scroll" style="position: absolute; ${S.fullPos()}; max-width: ${S.isMid() ? 600 : 720}px; top: 0; bottom: 0; padding: 0 0 ${S.BOT + 16}px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; gap: 12px">
+      <h1 style="margin: 0; padding: ${S.isMid() ? 36 : 40}px 0 8px; font-size: 22px; font-weight: 600; color: var(--ink2b)">Lịch sử đọc</h1>
+      <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+        <sc-for list="{{hrows}}" as="h" hint-placeholder-count="3">
+          <li class="st-row" style="display: flex; gap: 14px; align-items: center; padding: 12px; border-radius: 24px; background:  rgba(var(--glass),0.8)">
+            <div aria-hidden="true" style="{{h.cover}}">{{h.title}}</div>
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <div style="font-size: 16px; font-weight: 600; line-height: 1.25">{{h.title}}</div>
+              <div style="font-size: 13px; color: var(--ink2b)">{{h.line}}</div>
+            </div>
+          </li>
+        </sc-for>
+      </ul>
+      <a href="WideAccount.dc.html" style="display: flex; align-items: center; min-height: 56px; padding: 0 18px; border-radius: 24px; background: var(--surface); text-decoration: none; font-size: 15px; font-weight: 500">
+        <span style="flex: 1">Bật hoặc tắt lưu lịch sử trong Tài khoản</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="m9 18 6-6-6-6"></path></svg>
+      </a>
+    </section>` + `
   </sc-if>` +
   S.foot(W, H, `
   renderVals() {
     var self = this, st = this.state || {}, ui = this.__ui();
-    var v = st.v || 'card';
+    var v = st.v || 'pw';
     var items = [
-      { t: 'Lão Hạc', a: 'Nam Cao', d: 'Trả 02/11/2026', n: 1, bg: '#d8c9a8', fg: '#3e3a36' },
-      { t: 'Tắt đèn', a: 'Ngô Tất Tố', d: 'Trả 15/10/2026', n: 0, bg: '#b5452b', fg: '#ffffff' },
-      { t: 'Dế Mèn phiêu lưu ký', a: 'Tô Hoài', d: 'Trả 20/09/2026', n: 3, bg: '#c9a66b', fg: '#1c1b1a' }
+      { t: 'Lão Hạc', a: 'Nam Cao', d: 'Trả 02/11/2026', line: 'Mượn 20/10/2026 · trả 02/11/2026', n: 1, bg: '#d8c9a8', fg: '#3e3a36' },
+      { t: 'Tắt đèn', a: 'Ngô Tất Tố', d: 'Trả 15/10/2026', line: 'Mượn 01/10/2026 · trả 15/10/2026', n: 0, bg: '#3e3a36', fg: '#ffffff' },
+      { t: 'Dế Mèn phiêu lưu ký', a: 'Tô Hoài', d: 'Trả 20/09/2026', line: 'Mượn 20/11/2026 · chưa trả', n: 3, bg: '#c9a66b', fg: '#1c1b1a' }
     ];
     var sel = items[st.sel || 0];
     return Object.assign(this.__theme(), {
       tabs: ui.tabs([['card', 'Thẻ: cần mật khẩu'], ['pw', 'Mật khẩu']], v, 'v'),
       isStepUp: v === 'card', isList: v !== 'card',
+      hrows: items.map(function (x) {
+        return { title: x.t, line: x.line, cover: 'width:56px;height:80px;flex:none;border-radius:12px;padding:8px;box-sizing:border-box;overflow:hidden;font-size:11px;font-weight:600;line-height:1.2;background:' + x.bg + ';color:' + x.fg };
+      }),
       confirm: function () { self.setState({ v: 'pw' }); },
       rows: items.map(function (x, i) {
         return ui.row({ i: i, title: x.t, author: x.a, bg: x.bg, fg: x.fg, on: x === sel,
@@ -266,7 +283,7 @@ out['WideRecommend.dc.html'] = S.head('Gợi ý cho bạn ở cửa sổ rộng'
 // ---------- Danh mục: the home (RailCatalog / WideCatalog) and the list beside the detail (MidCatalog / WideList) ----------
 out[S.isMid() ? 'RailCatalog.dc.html' : 'WideCatalog.dc.html'] = S.head('Danh mục ở cửa sổ ' + (S.isMid() ? 'vừa' : 'rộng'), W, H) +
   S.nav('WideCatalog.dc.html') + S.home(false, S.isMid() ? 'MidCatalog.dc.html' : 'WideList.dc.html') + S.foot(W, H, S.HOME_JS);
-out[S.isMid() ? 'WideCatalog.dc.html' : 'WideList.dc.html'] = S.head('Danh sách và chi tiết sách ở cửa sổ ' + (S.isMid() ? 'vừa' : 'rộng'), W, H) + S.nav('WideCatalog.dc.html') +
+out[S.isMid() ? 'WideCatalog.dc.html' : 'WideList.dc.html'] = S.head('Danh sách và chi tiết sách ở cửa sổ ' + (S.isMid() ? 'vừa' : 'rộng'), W, H) + S.nav('WideCatalog.dc.html', { dock: false }) +
   S.listPane('Danh sách sách', 'Danh mục', S.searchAndChips, 'rows', `
       <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
         <li style="padding: 24px 8px; font-size: 14px; color: var(--ink3)">Không có sách khớp. Thử bỏ dấu hoặc chọn "Tất cả".</li>
@@ -275,15 +292,7 @@ out[S.isMid() ? 'WideCatalog.dc.html' : 'WideList.dc.html'] = S.head('Danh sách
       <sc-if value="{{hasSel}}" hint-placeholder-val="{{ true }}">` + S.bookHead(true) +
   S.facts([S.fact('Tình trạng', '{{sel.status}}', '{{sel.statusStyle}}')]) + `
         <p style="margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink2b)">[Mô tả sách: chưa có trong dữ liệu danh mục] · ISBN {{sel.isbn}}</p>
-      </sc-if>`, `
-      <a href="WideCheckout.dc.html" aria-label="Mượn bằng cách chạm điện thoại vào sách" style="width: 52px; height: 52px; flex: none; border-radius: 999px; background: var(--surface); display: flex; align-items: center; justify-content: center">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--ink)"><path d="M6 8.5a6 6 0 0 1 0 7"></path><path d="M9.5 6a10 10 0 0 1 0 12"></path><path d="M13 3.5a14 14 0 0 1 0 17"></path></svg>
-      </a>
-      <button type="button" onClick="{{reserve}}" aria-live="polite" class="st-swap st-press" style="{{reserveBtn.style}}">
-        <sc-if value="{{reserveBtn.isDone}}" hint-placeholder-val="{{ false }}"><svg class="st-pop" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path><path class="st-draw" d="m9 10 2 2 4-4"></path></svg></sc-if>
-        <sc-if value="{{reserveBtn.isIdle}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg></sc-if>
-        {{reserveBtn.label}}
-      </button>`) +
+      </sc-if>`) + S.dockMorph() +
   S.foot(W, H, `
   renderVals() {
     var self = this, st = this.state || {}, ui = this.__ui();
@@ -291,7 +300,9 @@ out[S.isMid() ? 'WideCatalog.dc.html' : 'WideList.dc.html'] = S.head('Danh sách
     ${S.SEARCH_JS}
     var sel = hits.filter(function (b) { return b.isbn === (st.sel || '9780990000020'); })[0] || hits[0] || null;
     var out = sel && sel.n === 0;
-    return Object.assign(this.__theme(), search, {
+    var rb = ui.phaseBtn(phase, { idle: 'Đặt trước sách này', sending: 'Đang gửi yêu cầu…', done: 'Đã đặt trước · thư viện xác nhận' });
+    ${S.DOCK_JS()}
+    return Object.assign(this.__theme(), search, dock, {
       rows: hits.map(function (b, i) {
         return ui.row({ i: i, title: b.t, author: b.a, bg: b.bg, fg: b.fg, on: sel && b.isbn === sel.isbn,
           status: b.n ? 'Còn ' + b.n + ' bản' : 'Đang được mượn · đặt trước', pill: ui.pill(b.n ? 'ok' : 'bad'),
@@ -302,7 +313,7 @@ out[S.isMid() ? 'WideCatalog.dc.html' : 'WideList.dc.html'] = S.head('Danh sách
         tags: sel.s.split(' · ').map(function (x) { return { label: x }; }),
         status: out ? 'Đang được mượn' : 'Còn ' + sel.n + ' bản',
         statusStyle: 'font-size:15px;font-weight:700;line-height:1.25;color:' + (out ? 'var(--danger2)' : 'var(--ok)') } : { tags: [] },
-      reserveBtn: ui.phaseBtn(phase, { idle: 'Đặt trước sách này', sending: 'Đang gửi yêu cầu…', done: 'Đã đặt trước · thư viện xác nhận' }),
+      reserveBtn: rb,
       reserve: function () {
         if (phase === 'sending') return;
         if (phase === 'done') { self.setState({ phase: 'idle' }); return; }
